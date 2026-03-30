@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Campbell Family Master Biblical Study Guide</title>
@@ -130,7 +128,15 @@
 </style>
 </head>
 <body>
-<div id="app">
+<div id="github-bar" style="position:fixed;top:0;left:0;right:0;background:#1F3864;color:white;z-index:200;padding:8px 20px;display:flex;align-items:center;gap:12px;font-family:Arial,sans-serif;font-size:13px;border-bottom:2px solid #FFD700;">
+  <span style="font-weight:bold;color:#FFD700;">Campbell Bible Study</span>
+  <span style="color:rgba(255,255,255,0.4)">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
+  <button onclick="saveToGitHub()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
+  <span id="gh-status" style="font-size:12px;color:rgba(255,255,255,0.7);">Saving...</span>
+  <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: March 29, 2026</span>
+</div>
+<div id="app" style="margin-top:48px;">
 
 <!-- SIDEBAR -->
 <div id="sidebar">
@@ -292,13 +298,13 @@
   <div class="info-box"><div class="title">The Central Question</div><div class="line">Has God's covenant with Israel been transferred to the Church, or is it still active? Your answer to this question will determine whether end-times prophecy about Israel is still future or was fulfilled spiritually in/through the Church.</div></div>
   <h2 class="section-title">Israel Signs — Fulfilled Checklist</h2>
   <table class="checklist-table">
-    <tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
     <tr><td>Jewish people regathered from all nations to the land</td><td>Ezek 36:24; 37:21</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
     <tr><td>Israel reborn as a nation — May 14, 1948</td><td>Isa 66:8</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
     <tr><td>Hebrew language restored</td><td>Zeph 3:9</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
     <tr><td>Jerusalem back under Jewish control — 1967</td><td>Luke 21:24</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
     <tr><td>Desert land of Israel blossoming and fruitful again</td><td>Isa 35:1; Ezek 36:35</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
-  </table>
+  </tbody></table>
   <div class="scripture-box"><div class="ref">Romans 11:25–27</div><div class="text">"I do not want you to be ignorant of this mystery, brothers and sisters, so that you may not be conceited: Israel has experienced a hardening in part until the full number of the Gentiles has come in, and in this way all Israel will be saved."</div></div>
   <div class="views-box">
     <div class="view-item"><div class="view-title">Dispensational View</div><div class="view-body">The 1948 and 1967 events are literal, partial fulfillments of OT prophecy. Full fulfillment comes at the Second Coming when all Israel is saved and Christ reigns from Jerusalem.</div><div class="view-key">Key texts: Ezek 36–37; Isa 11:11–12; Rom 11:25–27</div></div>
@@ -467,14 +473,14 @@
   <div class="scripture-box"><div class="ref">Matthew 24:15–16 (NLT)</div><div class="text">The day is coming when you will see what Daniel the prophet spoke about, the sacrilegious object that causes desecration standing in the Holy Place (reader, pay attention!). Then those in Judea must flee to the hills.</div></div>
   <h2 class="section-title">Temple Prophecy Checklist</h2>
   <table class="checklist-table">
-    <tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
     <tr><td>Third temple built in Jerusalem</td><td>Matt 24:15; Dan 9:27; Rev 11:1–2</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Animal sacrifices resumed in the temple</td><td>Dan 9:27; 12:11</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Temple Institute preparations in Jerusalem</td><td>Dan 9:27 (context)</td><td class="status-progress">~ In Progress</td><td></td></tr>
     <tr><td>Antichrist stops sacrifices at midpoint</td><td>Dan 9:27b; 12:11</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Antichrist sets up image of himself in the holy place</td><td>Matt 24:15; 2 Thess 2:4</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Jews in Judea flee to the mountains</td><td>Matt 24:16–20</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
-  </table>
+  </tbody></table>
   <div class="notes-box">
     <div class="label">✏️ Module 8 — My notes on the Rebuilt Temple:</div>
     <textarea class="notes-input" id="n-m8" placeholder="Write your thoughts here..."></textarea>
@@ -489,17 +495,17 @@
   <p class="body">The Gog-Magog War is a massive coalition invasion of Israel that God supernaturally destroys. It occurs after the Rapture but before the Tribulation begins. The precondition is Israel living in perceived safety.</p>
   <h2 class="section-title">The Coalition</h2>
   <table class="checklist-table">
-    <tr><th style="width:30%">Ancient Name</th><th style="width:25%">Modern ID</th><th style="width:20%">Scripture</th><th style="width:15%">Status</th><th style="width:10%">Notes</th></tr>
+    <tbody><tr><th style="width:30%">Ancient Name</th><th style="width:25%">Modern ID</th><th style="width:20%">Scripture</th><th style="width:15%">Status</th><th style="width:10%">Notes</th></tr>
     <tr><td>Rosh / Magog</td><td>Russia / Central Asia</td><td>Ezek 38:1–3</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Persia</td><td>Iran</td><td>Ezek 38:5</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Cush</td><td>Sudan / Ethiopia</td><td>Ezek 38:5</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Put</td><td>Libya</td><td>Ezek 38:5</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Gomer / Beth-togarmah</td><td>Turkey / Central Asia</td><td>Ezek 38:6</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
-  </table>
+  </tbody></table>
   <div class="scripture-box"><div class="ref">Ezekiel 38:23</div><div class="text">"And so I will show my greatness and my holiness, and I will make myself known in the sight of many nations. Then they will know that I am the LORD."</div></div>
   <h2 class="section-title">God's Supernatural Defense Checklist</h2>
   <table class="checklist-table">
-    <tr><th style="width:50%">Prophecy / Event</th><th style="width:20%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tbody><tr><th style="width:50%">Prophecy / Event</th><th style="width:20%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
     <tr><td>Coalition invades Israel from the north</td><td>Ezek 38:15</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>God sends great earthquake across Israel</td><td>Ezek 38:19</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>God rains fire, brimstone, flooding rain, and hailstones</td><td>Ezek 38:22</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
@@ -507,7 +513,7 @@
     <tr><td>5/6 of the invading army destroyed on mountains of Israel</td><td>Ezek 39:2–4</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Seven months burying the dead; seven years burning weapons</td><td>Ezek 39:9–10, 12</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>God's name glorified; Israel begins to know the Lord</td><td>Ezek 39:21–22</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
-  </table>
+  </tbody></table>
   <div class="views-box">
     <div class="view-item"><div class="view-title">Pre-Tribulation (most common)</div><div class="view-body">The war happens before the tribulation begins. Israel's victory leads to a false sense of security that enables the Antichrist's peace covenant. The 7-year weapon-burning aligns with the tribulation period.</div><div class="view-key">Key texts: Dan 9:27; Ezek 39:9</div></div>
     <div class="view-item"><div class="view-title">Mid-Tribulation</div><div class="view-body">The war occurs at the midpoint, possibly connected to the Antichrist breaking the covenant and the abomination of desolation.</div><div class="view-key">Key texts: Dan 11:40–45; 2 Thess 2:4</div></div>
@@ -527,7 +533,7 @@
   <p class="body">Jesus told His disciples to recognize the signs of the times — events of prophetic significance that indicate the Tribulation is drawing near. These signs do not set dates, but they tell us the stage is being set.</p>
   <h2 class="section-title">Global Conditions — Birth Pains</h2>
   <table class="checklist-table">
-    <tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
     <tr><td>Wars and rumors of wars increasing</td><td>Matt 24:6</td><td class="status-progress">~ In Progress</td><td></td></tr>
     <tr><td>Nation rising against nation, kingdom against kingdom</td><td>Matt 24:7</td><td class="status-progress">~ In Progress</td><td></td></tr>
     <tr><td>Famines, pestilences, earthquakes in various places</td><td>Matt 24:7–8</td><td class="status-progress">~ In Progress</td><td></td></tr>
@@ -536,17 +542,17 @@
     <tr><td>Scoffers mocking the promise of Christ's return</td><td>2 Pet 3:3–4</td><td class="status-progress">~ In Progress</td><td></td></tr>
     <tr><td>Technology capable of global surveillance and mark enforcement</td><td>Rev 13:16–17</td><td class="status-progress">~ In Progress</td><td></td></tr>
     <tr><td>Explosion of knowledge and global travel</td><td>Dan 12:4</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
-  </table>
+  </tbody></table>
   <h2 class="section-title">Moral &amp; Spiritual Signs</h2>
   <table class="checklist-table">
-    <tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
     <tr><td>Lovers of self, money, and pleasure more than God</td><td>2 Tim 3:1–5</td><td class="status-progress">~ In Progress</td><td></td></tr>
     <tr><td>Disobedient to parents, ungrateful, unholy, unloving</td><td>2 Tim 3:2–3</td><td class="status-progress">~ In Progress</td><td></td></tr>
     <tr><td>Form of godliness but denying its power</td><td>2 Tim 3:5</td><td class="status-progress">~ In Progress</td><td></td></tr>
     <tr><td>Doctrines of demons spreading; departure from the faith</td><td>1 Tim 4:1–2</td><td class="status-progress">~ In Progress</td><td></td></tr>
     <tr><td>Rise of false prophets and false Christs</td><td>Matt 24:11, 24</td><td class="status-progress">~ In Progress</td><td></td></tr>
     <tr><td>UFO / occult phenomena — demonic deception as 'alien contact'</td><td>1 Tim 4:1–2; Rev 12:9</td><td class="status-progress">~ In Progress</td><td></td></tr>
-  </table>
+  </tbody></table>
   <div class="notes-box">
     <div class="label">✏️ Module 10 — My notes on Signs of the Times:</div>
     <textarea class="notes-input" id="n-m10" placeholder="Write your thoughts here..."></textarea>
@@ -602,7 +608,7 @@
   </div>
   <h2 class="section-title">Millennium Checklist</h2>
   <table class="checklist-table">
-    <tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
     <tr><td>Satan bound in the abyss for 1,000 years</td><td>Rev 20:1–3</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Christ reigns from Jerusalem for 1,000 years</td><td>Rev 20:4–6; Zech 14:9</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Ezekiel's millennial temple built in Jerusalem</td><td>Ezek 40–48</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
@@ -610,7 +616,7 @@
     <tr><td>Nature transformed — animals at peace; lifespans extended</td><td>Isa 11:6–9; 65:20</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Satan released; final rebellion crushed by fire from heaven</td><td>Rev 20:7–9</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Satan cast into lake of fire forever</td><td>Rev 20:10</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
-  </table>
+  </tbody></table>
   <div class="notes-box">
     <div class="label">✏️ Module 12 — My view of the Millennium and why:</div>
     <textarea class="notes-input" id="n-m12" placeholder="Write your convictions here... Date your entry."></textarea>
@@ -625,7 +631,7 @@
   <p class="body">The Second Coming of Jesus Christ is the climax of all prophetic Scripture. He returns visibly, physically, and in glory to defeat the Antichrist, save Israel, establish His kingdom, and ultimately usher in the New Heaven and New Earth.</p>
   <h2 class="section-title">Second Coming Checklist</h2>
   <table class="checklist-table">
-    <tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
     <tr><td>Nations gathered against Jerusalem — Armageddon</td><td>Rev 16:16; Zech 14:1–2</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Jesus returns on a white horse with the armies of heaven</td><td>Rev 19:11–14</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Antichrist and False Prophet thrown into lake of fire</td><td>Rev 19:20</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
@@ -633,10 +639,10 @@
     <tr><td>Mount of Olives splits; living waters flow east and west</td><td>Zech 14:4, 8</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Bema Seat — believers' works judged; crowns awarded</td><td>2 Cor 5:10; 1 Cor 3:11–15</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>Marriage Supper of the Lamb</td><td>Rev 19:7–9; John 14:1–3</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
-  </table>
+  </tbody></table>
   <h2 class="section-title">Eternity Checklist</h2>
   <table class="checklist-table">
-    <tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
     <tr><td>Great White Throne Judgment — unbelievers judged by works</td><td>Rev 20:11–15</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>New Heaven and New Earth created</td><td>Rev 21:1; Isa 65:17</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>New Jerusalem descends — 1,400-mile cube of glory</td><td>Rev 21:2, 16</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
@@ -644,7 +650,7 @@
     <tr><td>River of life and tree of life — healing for the nations</td><td>Rev 22:1–2</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>No temple — God and the Lamb are its temple</td><td>Rev 21:22</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
     <tr><td>No sun needed — God's glory is the light</td><td>Rev 21:23</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
-  </table>
+  </tbody></table>
   <div class="info-box">
     <div class="title">The Practical Posture of the Watchman-Believer</div>
     <div class="line"><strong>WATCH</strong> — Pay attention to what God is doing in the world. Study prophecy. Notice the signs.</div>
@@ -725,7 +731,7 @@
   <h1 class="page-title">Sermon &amp; Teaching Log</h1>
   <p class="body">Record of all sermons and audio teachings that have shaped this study. Date each entry. Over time this becomes a personal theological library.</p>
   <table class="sermon-table">
-    <tr><th style="width:5%">#</th><th style="width:12%">Date</th><th style="width:30%">Title / Source</th><th style="width:53%">Key Topic</th></tr>
+    <tbody><tr><th style="width:5%">#</th><th style="width:12%">Date</th><th style="width:30%">Title / Source</th><th style="width:53%">Key Topic</th></tr>
     <tr><td>1</td><td>3/22/26</td><td>Imitate Christ's Example — Pastor Matt</td><td>Servanthood and humility</td></tr>
     <tr><td>2</td><td>3/25/26</td><td>Judgment Seat &amp; Marriage of the Lamb</td><td>Bema Seat, crowns, bride/bridegroom — Rom 14:8–10; 1 Cor 3:11–15; Rev 19:7–9; John 14:1–3</td></tr>
     <tr><td>3</td><td>3/25/26</td><td>Ezekiel: Invasion &amp; End</td><td>Gog-Magog war (Ezek 38–39); coalition: Russia/Iran/Turkey/Sudan/Libya; Israel at rest precondition</td></tr>
@@ -736,7 +742,7 @@
     <tr><td>8</td><td></td><td></td><td></td></tr>
     <tr><td>9</td><td></td><td></td><td></td></tr>
     <tr><td>10</td><td></td><td></td><td></td></tr>
-  </table>
+  </tbody></table>
 </div>
 
 <!-- JOURNAL -->
@@ -779,7 +785,16 @@
 
   <div class="notes-box" style="margin-top:20px">
     <div class="label">✏️ Add new journal entries below — date each one:</div>
-    <textarea class="notes-input" id="n-journal-new" style="min-height:200px" placeholder="Date: ___________&#10;Topic: ___________&#10;Category: ___________&#10;&#10;Write your reflection here...&#10;&#10;Questions to sit with:&#10;•&#10;•&#10;•"></textarea>
+    <textarea class="notes-input" id="n-journal-new" style="min-height:200px" placeholder="Date: ___________
+Topic: ___________
+Category: ___________
+
+Write your reflection here...
+
+Questions to sit with:
+•
+•
+•"></textarea>
   </div>
 </div>
 
@@ -858,6 +873,61 @@ noteIds.forEach(id => {
 });
 
 loadNotes();
+
+  // Load saved token
+  const savedToken = localStorage.getItem('cbsg-gh-token');
+  if (savedToken) document.getElementById('gh-token').value = savedToken;
+  document.getElementById('gh-token').addEventListener('input', function() {
+    localStorage.setItem('cbsg-gh-token', this.value);
+  });
+
+  async function saveToGitHub() {
+    const token = document.getElementById('gh-token').value.trim();
+    const status = document.getElementById('gh-status');
+    if (!token) {
+      status.textContent = 'Please enter your GitHub token first.';
+      status.style.color = '#FF6B6B';
+      return;
+    }
+    status.textContent = 'Saving...';
+    status.style.color = 'rgba(255,255,255,0.7)';
+
+    const owner = 'acshotsprings';
+    const repo = 'CampbellBibleStudy';
+    const path = 'CampbellBibleStudy.html';
+
+    try {
+      const getResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
+        headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+      });
+      const getData = await getResp.json();
+      const sha = getData.sha;
+
+      const htmlContent = document.documentElement.outerHTML;
+      const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
+
+      const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
+        method: 'PUT',
+        headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: 'Update Campbell Bible Study Guide', content: encoded, sha: sha })
+      });
+
+      if (putResp.ok) {
+        status.textContent = 'Saved to GitHub successfully!';
+        status.style.color = '#90EE90';
+        setTimeout(() => { status.textContent = ''; }, 4000);
+      } else {
+        const err = await putResp.json();
+        status.textContent = 'Error: ' + (err.message || 'Unknown error');
+        status.style.color = '#FF6B6B';
+      }
+    } catch(e) {
+      status.textContent = 'Error: ' + e.message;
+      status.style.color = '#FF6B6B';
+    }
+  }
+
 </script>
-</body>
-</html>
+
+
+</body></html>
