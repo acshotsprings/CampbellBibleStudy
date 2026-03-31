@@ -134,7 +134,7 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
   <button onclick="saveToGitHub()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
   <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);">Saving...</span>
-  <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: March 29, 2026</span>
+  <span id="version-display" style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Last Updated: —</span>
 </div>
 <div id="app" style="margin-top:48px;">
 
@@ -880,7 +880,20 @@ loadNotes();
   document.getElementById('gh-token').addEventListener('input', function() {
     localStorage.setItem('cbsg-gh-token', this.value);
   });
-
+function updateTimestamp() {
+    const now = new Date();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const year = now.getFullYear();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const timestamp = `${month}/${day}/${year} at ${hours}:${minutes}`;
+    
+    const display = document.getElementById('version-display');
+    const sidebar = document.getElementById('sidebar-version');
+    if (display) display.textContent = 'Last Updated: ' + timestamp;
+    if (sidebar) sidebar.textContent = 'Last Updated: ' + timestamp;
+  }
   async function saveToGitHub() {
     const token = document.getElementById('gh-token').value.trim();
     const status = document.getElementById('gh-status');
