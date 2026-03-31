@@ -134,7 +134,7 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
   <button onclick="saveToGitHub()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
   <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);">Saving...</span>
-  <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: March 29, 2026</span>
+  <span id="gh-bar-version" style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: March 29, 2026</span>
 </div>
 <div id="app" style="margin-top:48px;">
 
@@ -142,15 +142,15 @@
 <div id="sidebar">
   <div id="sidebar-header">
     <h1>Campbell Family<br>Biblical Study Guide</h1>
-    <p>Version: March 29, 2026</p>
+    <p id="sidebar-version">Version: March 29, 2026</p>
   </div>
   <div id="sidebar-nav">
     <div class="nav-section">Getting Started</div>
     <div class="nav-item" onclick="show('intro', this)">Introduction</div>
     <div class="nav-item" onclick="show('index', this)">Thematic Index</div>
     <div class="nav-section">Theme 1 — End Times</div>
-    <div class="nav-item active" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
-    <div class="nav-item" onclick="show('m2', this)">Module 2 — Israel in Prophecy</div>
+    <div class="nav-item" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
+    <div class="nav-item active" onclick="show('m2', this)">Module 2 — Israel in Prophecy</div>
     <div class="nav-item" onclick="show('m3', this)">Module 3 — Day of the Lord</div>
     <div class="nav-item" onclick="show('m4', this)">Module 4 — The Watchman</div>
     <div class="nav-item" onclick="show('m5', this)">Module 5 — The New Covenant</div>
@@ -235,7 +235,7 @@
 </div>
 
 <!-- MODULE 1 -->
-<div id="m1" class="page active">
+<div id="m1" class="page">
   <span class="page-tag">Module 1 — Theme 1: End Times</span>
   <h1 class="page-title">Daniel's 70 Weeks: The Master Timeline</h1>
   <div class="info-box"><div class="title">Read first</div><div class="line">Daniel 9 in full (especially vv. 24–27), Deuteronomy 18:21–22, Isaiah 46:9–10, 2 Peter 1:20–21</div></div>
@@ -290,7 +290,7 @@
 </div>
 
 <!-- MODULE 2 -->
-<div id="m2" class="page">
+<div id="m2" class="page active">
   <span class="page-tag">Module 2 — Theme 1: End Times</span>
   <h1 class="page-title">Israel in Prophecy</h1>
   <div class="info-box"><div class="title">Read first</div><div class="line">Ezekiel 36–37, Romans 9–11, Zechariah 12</div></div>
@@ -892,6 +892,16 @@ loadNotes();
     status.textContent = 'Saving...';
     status.style.color = 'rgba(255,255,255,0.7)';
 
+    // Build the version timestamp
+    const now = new Date();
+    const versionStr = 'Version: ' + now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) + ' at ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+    // Update what the user sees on screen
+    const ghBarVer = document.getElementById('gh-bar-version');
+    const sidebarVer = document.getElementById('sidebar-version');
+    if (ghBarVer) ghBarVer.textContent = versionStr;
+    if (sidebarVer) sidebarVer.textContent = versionStr;
+
     const owner = 'acshotsprings';
     const repo = 'CampbellBibleStudy';
     const path = 'CampbellBibleStudy.html';
@@ -903,13 +913,20 @@ loadNotes();
       const getData = await getResp.json();
       const sha = getData.sha;
 
-      const htmlContent = document.documentElement.outerHTML;
+      // Get the raw HTML string
+      let htmlContent = document.documentElement.outerHTML;
+
+      // Replace ALL occurrences of "Version: ..." with the new timestamp.
+      // This pattern matches "Version: " followed by any text up to the next "<" (closing tag).
+      // The /g flag replaces every match (GitHub bar + sidebar).
+      htmlContent = htmlContent.replace(/Version: [^<]+/g, versionStr);
+
       const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
 
       const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
         method: 'PUT',
         headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: 'Update Campbell Bible Study Guide', content: encoded, sha: sha })
+        body: JSON.stringify({ message: 'Update Campbell Bible Study Guide — ' + versionStr, content: encoded, sha: sha })
       });
 
       if (putResp.ok) {
@@ -932,3 +949,4 @@ loadNotes();
 
 
 </body></html>
+
