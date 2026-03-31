@@ -880,6 +880,7 @@ loadNotes();
   document.getElementById('gh-token').addEventListener('input', function() {
     localStorage.setItem('cbsg-gh-token', this.value);
   });
+
   async function saveToGitHub() {
     const token = document.getElementById('gh-token').value.trim();
     const status = document.getElementById('gh-status');
@@ -891,51 +892,30 @@ loadNotes();
     status.textContent = 'Saving...';
     status.style.color = 'rgba(255,255,255,0.7)';
 
-    // Build the version timestamp
-    const now = new Date();
-    const versionStr = 'Version: ' + now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) + ' at ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-
-    // Update what the user sees on screen immediately
-    const ghBarVer = document.getElementById('gh-bar-version');
-    const sidebarVer = document.getElementById('sidebar-version');
-    if (ghBarVer) ghBarVer.textContent = versionStr;
-    if (sidebarVer) sidebarVer.textContent = versionStr;
-
     const owner = 'acshotsprings';
     const repo = 'CampbellBibleStudy';
-    const filePath = 'CampbellBibleStudy.html';
+    const path = 'CampbellBibleStudy.html';
 
     try {
-      // Step 1: Get file from GitHub API (includes sha AND base64 content)
-      const getResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + filePath, {
+      const getResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
         headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
       });
       const getData = await getResp.json();
       const sha = getData.sha;
 
-      // Step 2: Decode the base64 content from the API response
-      let htmlContent = decodeURIComponent(escape(atob(getData.content.replace(/\n/g, ''))));
-
-      // Step 3: Count matches for debugging (shows in console with F12)
-      const matches = (htmlContent.match(/Version: [^<]+/g) || []);
-      console.log('Found ' + matches.length + ' Version strings:', matches);
-
-      // Step 4: Replace all "Version: ..." with the new timestamp
-      htmlContent = htmlContent.replace(/Version: [^<]+/g, versionStr);
-
-      // Step 5: Encode and push back
+      const htmlContent = document.documentElement.outerHTML;
       const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
 
-      const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + filePath, {
+      const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
         method: 'PUT',
         headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: 'Update — ' + versionStr, content: encoded, sha: sha })
+        body: JSON.stringify({ message: 'Update Campbell Bible Study Guide', content: encoded, sha: sha })
       });
 
       if (putResp.ok) {
-        status.textContent = 'Saved! Refresh page to see updated version.';
+        status.textContent = 'Saved to GitHub successfully!';
         status.style.color = '#90EE90';
-        setTimeout(function() { status.textContent = ''; }, 5000);
+        setTimeout(() => { status.textContent = ''; }, 4000);
       } else {
         const err = await putResp.json();
         status.textContent = 'Error: ' + (err.message || 'Unknown error');
@@ -947,5 +927,8 @@ loadNotes();
     }
   }
 
- 
-  
+</script>
+
+
+
+</body></html>
