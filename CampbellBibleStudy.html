@@ -134,7 +134,7 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
   <button onclick="saveToGitHub()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
   <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);">Saving...</span>
-  <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: March 29, 2026</span>
+  <span id="gh-bar-version" style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: March 29, 2026</span>
 </div>
 <div id="app" style="margin-top:48px;">
 
@@ -142,7 +142,7 @@
 <div id="sidebar">
   <div id="sidebar-header">
     <h1>Campbell Family<br>Biblical Study Guide</h1>
-    <p>Version: March 29, 2026</p>
+    <p id="sidebar-version">Version: March 29, 2026</p>
   </div>
   <div id="sidebar-nav">
     <div class="nav-section">Getting Started</div>
@@ -892,24 +892,42 @@ loadNotes();
     status.textContent = 'Saving...';
     status.style.color = 'rgba(255,255,255,0.7)';
 
+    // Build the version timestamp
+    const now = new Date();
+    const versionStr = 'Version: ' + now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) + ' at ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+    // Update what the user sees on screen immediately
+    const ghBarVer = document.getElementById('gh-bar-version');
+    const sidebarVer = document.getElementById('sidebar-version');
+    if (ghBarVer) ghBarVer.textContent = versionStr;
+    if (sidebarVer) sidebarVer.textContent = versionStr;
+
     const owner = 'acshotsprings';
     const repo = 'CampbellBibleStudy';
     const path = 'CampbellBibleStudy.html';
 
     try {
+      // Step 1: Get the file metadata (sha) AND the raw content from GitHub
       const getResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
         headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
       });
       const getData = await getResp.json();
       const sha = getData.sha;
 
-      const htmlContent = document.documentElement.outerHTML;
+      // Step 2: Fetch the ACTUAL raw file content from GitHub (not the browser DOM)
+      const rawResp = await fetch('https://raw.githubusercontent.com/' + owner + '/' + repo + '/main/' + path + '?t=' + Date.now());
+      let htmlContent = await rawResp.text();
+
+      // Step 3: Replace all "Version: ..." strings in the raw source
+      htmlContent = htmlContent.replace(/Version: [^<]+/g, versionStr);
+
+      // Step 4: Encode and push back to GitHub
       const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
 
       const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
         method: 'PUT',
         headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: 'Update Campbell Bible Study Guide', content: encoded, sha: sha })
+        body: JSON.stringify({ message: 'Update Campbell Bible Study Guide — ' + versionStr, content: encoded, sha: sha })
       });
 
       if (putResp.ok) {
@@ -932,3 +950,4 @@ loadNotes();
 
 
 </body></html>
+
