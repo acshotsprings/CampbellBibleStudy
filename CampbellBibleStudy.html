@@ -152,7 +152,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <div class="nav-item" onclick="show('index', this)">Thematic Index</div>
     <div class="nav-section">Theme 1 — End Times</div>
     <div class="nav-item" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
-    <div class="nav-item active" onclick="show('m2', this)">Module 2 — Israel in Prophecy</div>
+    <div class="nav-item" onclick="show('m2', this)">Module 2 — Israel in Prophecy</div>
     <div class="nav-item" onclick="show('m3', this)">Module 3 — Day of the Lord</div>
     <div class="nav-item" onclick="show('m4', this)">Module 4 — The Watchman</div>
     <div class="nav-item" onclick="show('m5', this)">Module 5 — The New Covenant</div>
@@ -171,7 +171,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <div class="nav-item" onclick="show('themes48', this)">Themes 4–8 (Coming Soon)</div>
     <div class="nav-section">My Study</div>
     <div class="nav-item" onclick="show('sermons', this)">Sermon &amp; Teaching Log</div>
-    <div class="nav-item" onclick="show('journal', this)">Personal Journal</div>
+    <div class="nav-item active" onclick="show('journal', this)">Personal Journal</div>
     <div class="nav-item" onclick="show('convictions', this)">My Growing Convictions</div>
   </div>
 </div>
@@ -298,7 +298,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
 
 <!-- MODULE 2 -->
 
-<div id="m2" class="page active">
+<div id="m2" class="page">
   <span class="page-tag">Module 2 — Theme 1: End Times</span>
   <h1 class="page-title">Israel in Prophecy</h1>
   <div class="info-box"><div class="title">Read first</div><div class="line">Ezekiel 36–37, Romans 9–11, Zechariah 12</div></div>
@@ -935,7 +935,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
 
 <!-- JOURNAL -->
 
-<div id="journal" class="page">
+<div id="journal" class="page active">
   <span class="page-tag">My Study</span>
   <h1 class="page-title">Personal Reflections &amp; Journal</h1>
   <p class="body">A space to record observations, convictions, and spiritual insight as they emerge through study and everyday life. Date each entry.</p>
@@ -1002,20 +1002,19 @@ Write your reflection here…
 Questions to sit with:
 •
 •
-•”></textarea>
+•”&gt;&lt;/textarea&gt;
 
-  </div>
-</div>
+  &lt;/div&gt;
+&lt;/div&gt;
 
-<!-- CONVICTIONS -->
+&lt;!-- CONVICTIONS --&gt;
 
-<div id="convictions" class="page">
-  <span class="page-tag">My Study</span>
-  <h1 class="page-title">My Growing Convictions</h1>
-  <p class="body">This is your running record of what you believe and why — updated as you study. Date each entry so you can track how your understanding develops over time. These are your convictions, held with both confidence and humility.</p>
-  <div class="notes-box">
-    <div class="label">✏️ On the nature of biblical prophecy — Dated: ___________</div>
-    <textarea class="notes-input" id="c-prophecy" placeholder="Write your convictions here..."></textarea>
+&lt;div id=" convictions"="">  &lt;span class="page-tag"&gt;My Study&lt;/span&gt;
+  &lt;h1 class="page-title"&gt;My Growing Convictions&lt;/h1&gt;
+  &lt;p class="body"&gt;This is your running record of what you believe and why — updated as you study. Date each entry so you can track how your understanding develops over time. These are your convictions, held with both confidence and humility.&lt;/p&gt;
+  &lt;div class="notes-box"&gt;
+    &lt;div class="label"&gt;✏️ On the nature of biblical prophecy — Dated: ___________&lt;/div&gt;
+    &lt;textarea class="notes-input" id="c-prophecy" placeholder="Write your convictions here..."&gt;</textarea>
   </div>
   <div class="notes-box" style="margin-top:14px">
     <div class="label">✏️ On Israel's role in prophecy — Dated: ___________</div>
