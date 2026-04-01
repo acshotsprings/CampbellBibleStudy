@@ -134,7 +134,7 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
   <button onclick="saveToGitHub()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
   <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);">Saving...</span>
-  <span id="gh-bar-version" style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: March 31, 2026 at 11:00 PM</span>
+  <span id="gh-bar-version" style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: March 31, 2026 at 11:02 PM</span>
 </div>
 <div id="app" style="margin-top:48px;">
 
@@ -142,7 +142,7 @@
 <div id="sidebar">
   <div id="sidebar-header">
     <h1>Campbell Family<br>Biblical Study Guide</h1>
-    <p id="sidebar-version">Version: March 31, 2026 at 11:00 PM</p>
+    <p id="sidebar-version">Version: March 31, 2026 at 11:02 PM</p>
   </div>
   <div id="sidebar-nav">
     <div class="nav-section">Getting Started</div>
@@ -1064,10 +1064,10 @@ loadNotes();
 
     // Build the version timestamp
     const now = new Date();
-    const versionStr = 'Version: March 31, 2026 at 11:00 PM<]+/g) || []);
+    const versionStr = 'Version: March 31, 2026 at 11:02 PM<]+/g) || []);
       console.log('Found ' + matches.length + ' Version strings:', matches);
 
-      // Step 4: Replace all "Version: March 31, 2026 at 11:00 PM<]+/g, versionStr);
+      // Step 4: Replace all "Version: March 31, 2026 at 11:02 PM<]+/g, versionStr);
 
       // Step 5: Encode and push back
       const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
