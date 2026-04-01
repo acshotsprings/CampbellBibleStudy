@@ -7,125 +7,126 @@
   body { font-family: Georgia, serif; background: #f8f6f0; color: #222; }
   #app { display: flex; min-height: 100vh; }
 
-  /* SIDEBAR */
-  #sidebar {
-    width: 260px; min-width: 260px; background: #1F3864; color: #fff;
-    position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto;
-    z-index: 100; display: flex; flex-direction: column;
-  }
-  #sidebar-header { padding: 20px 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.15); }
-  #sidebar-header h1 { font-size: 14px; font-weight: bold; line-height: 1.5; color: #FFD700; }
-  #sidebar-header p { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; font-style: italic; }
-  .nav-section { padding: 12px 16px 4px; font-size: 9px; font-weight: bold; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.1em; }
-  .nav-item { padding: 8px 16px; font-size: 12px; color: rgba(255,255,255,0.8); cursor: pointer; border-left: 3px solid transparent; line-height: 1.4; transition: all 0.15s; font-family: Arial, sans-serif; }
-  .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
-  .nav-item.active { background: rgba(255,255,255,0.12); color: #FFD700; border-left-color: #FFD700; font-weight: bold; }
+/* SIDEBAR */
+#sidebar {
+width: 260px; min-width: 260px; background: #1F3864; color: #fff;
+position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto;
+z-index: 100; display: flex; flex-direction: column;
+}
+#sidebar-header { padding: 20px 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+#sidebar-header h1 { font-size: 14px; font-weight: bold; line-height: 1.5; color: #FFD700; }
+#sidebar-header p { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; font-style: italic; }
+.nav-section { padding: 12px 16px 4px; font-size: 9px; font-weight: bold; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.1em; }
+.nav-item { padding: 8px 16px; font-size: 12px; color: rgba(255,255,255,0.8); cursor: pointer; border-left: 3px solid transparent; line-height: 1.4; transition: all 0.15s; font-family: Arial, sans-serif; }
+.nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+.nav-item.active { background: rgba(255,255,255,0.12); color: #FFD700; border-left-color: #FFD700; font-weight: bold; }
 
-  /* MAIN */
-  #main { margin-left: 260px; flex: 1; padding: 40px 48px; max-width: 960px; }
-  .page { display: none; }
-  .page.active { display: block; }
+/* MAIN */
+#main { margin-left: 260px; flex: 1; padding: 40px 48px; max-width: 960px; }
+.page { display: none; }
+.page.active { display: block; }
 
-  /* TYPOGRAPHY */
-  .page-tag { display: inline-block; background: #1F3864; color: #FFD700; font-size: 10px; font-weight: bold; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; font-family: Arial, sans-serif; letter-spacing: 0.05em; text-transform: uppercase; }
-  h1.page-title { font-size: 28px; color: #1F3864; margin-bottom: 6px; font-weight: bold; }
-  .page-subtitle { font-size: 13px; color: #888; margin-bottom: 20px; font-style: italic; font-family: Arial, sans-serif; }
-  h2.section-title { font-size: 18px; color: #1F3864; margin: 28px 0 10px; font-weight: bold; border-bottom: 2px solid #2E75B6; padding-bottom: 6px; }
-  h3.sub-title { font-size: 15px; color: #2E75B6; margin: 18px 0 8px; font-weight: bold; font-family: Arial, sans-serif; }
-  p.body { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 12px; }
-  .divider { height: 1px; background: #ddd; margin: 28px 0; }
+/* TYPOGRAPHY */
+.page-tag { display: inline-block; background: #1F3864; color: #FFD700; font-size: 10px; font-weight: bold; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; font-family: Arial, sans-serif; letter-spacing: 0.05em; text-transform: uppercase; }
+h1.page-title { font-size: 28px; color: #1F3864; margin-bottom: 6px; font-weight: bold; }
+.page-subtitle { font-size: 13px; color: #888; margin-bottom: 20px; font-style: italic; font-family: Arial, sans-serif; }
+h2.section-title { font-size: 18px; color: #1F3864; margin: 28px 0 10px; font-weight: bold; border-bottom: 2px solid #2E75B6; padding-bottom: 6px; }
+h3.sub-title { font-size: 15px; color: #2E75B6; margin: 18px 0 8px; font-weight: bold; font-family: Arial, sans-serif; }
+p.body { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 12px; }
+.divider { height: 1px; background: #ddd; margin: 28px 0; }
 
-  /* BOXES */
-  .scripture-box { background: #FFFDF0; border: 1px solid #C8A800; border-left: 4px solid #C8A800; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
-  .scripture-box .ref { font-size: 12px; font-weight: bold; color: #7A6600; margin-bottom: 6px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
-  .scripture-box .text { font-size: 14px; color: #444; font-style: italic; line-height: 1.8; }
+/* BOXES */
+.scripture-box { background: #FFFDF0; border: 1px solid #C8A800; border-left: 4px solid #C8A800; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
+.scripture-box .ref { font-size: 12px; font-weight: bold; color: #7A6600; margin-bottom: 6px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+.scripture-box .text { font-size: 14px; color: #444; font-style: italic; line-height: 1.8; }
 
-  .info-box { background: #EBF4FC; border: 1px solid #2E75B6; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
-  .info-box .title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
-  .info-box .line { font-size: 13px; color: #333; line-height: 1.7; padding: 3px 0; font-family: Arial, sans-serif; }
+.info-box { background: #EBF4FC; border: 1px solid #2E75B6; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
+.info-box .title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+.info-box .line { font-size: 13px; color: #333; line-height: 1.7; padding: 3px 0; font-family: Arial, sans-serif; }
 
-  .reflection-box { background: #F4F8EE; border: 1px solid #6B8E3A; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
-  .reflection-box .title { font-size: 12px; font-weight: bold; color: #3B5E1A; margin-bottom: 10px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
-  .reflection-item { font-size: 13px; color: #444; line-height: 1.7; padding: 6px 0; border-bottom: 1px solid #C8DBA8; font-family: Arial, sans-serif; }
-  .reflection-item:last-child { border-bottom: none; }
+.reflection-box { background: #F4F8EE; border: 1px solid #6B8E3A; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
+.reflection-box .title { font-size: 12px; font-weight: bold; color: #3B5E1A; margin-bottom: 10px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+.reflection-item { font-size: 13px; color: #444; line-height: 1.7; padding: 6px 0; border-bottom: 1px solid #C8DBA8; font-family: Arial, sans-serif; }
+.reflection-item:last-child { border-bottom: none; }
 
-  .notes-box { background: #FFFBF0; border: 1px solid #C8A800; border-radius: 6px; padding: 14px 16px; margin: 14px 0; }
-  .notes-box .label { font-size: 12px; font-weight: bold; color: #7A6600; margin-bottom: 8px; font-family: Arial, sans-serif; }
-  textarea.notes-input { width: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 10px 12px; font-size: 13px; color: #333; background: #fff; font-family: Georgia, serif; resize: vertical; min-height: 100px; line-height: 1.7; margin-top: 4px; }
-  textarea.notes-input:focus { outline: none; border-color: #1F3864; box-shadow: 0 0 0 2px rgba(31,56,100,0.1); }
+.notes-box { background: #FFFBF0; border: 1px solid #C8A800; border-radius: 6px; padding: 14px 16px; margin: 14px 0; }
+.notes-box .label { font-size: 12px; font-weight: bold; color: #7A6600; margin-bottom: 8px; font-family: Arial, sans-serif; }
+textarea.notes-input { width: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 10px 12px; font-size: 13px; color: #333; background: #fff; font-family: Georgia, serif; resize: vertical; min-height: 100px; line-height: 1.7; margin-top: 4px; }
+textarea.notes-input:focus { outline: none; border-color: #1F3864; box-shadow: 0 0 0 2px rgba(31,56,100,0.1); }
 
-  .study-q-box { background: #F5F5F5; border: 1px solid #ddd; border-radius: 6px; padding: 16px 18px; margin: 12px 0; }
-  .study-q { font-size: 13px; color: #333; line-height: 1.7; margin-bottom: 6px; font-family: Arial, sans-serif; font-weight: bold; }
-  .study-q-input { width: 100%; border: none; border-bottom: 1px solid #bbb; padding: 6px 0; font-size: 13px; color: #222; background: transparent; font-family: Georgia, serif; margin-bottom: 16px; }
-  .study-q-input:focus { outline: none; border-bottom-color: #1F3864; }
+.study-q-box { background: #F5F5F5; border: 1px solid #ddd; border-radius: 6px; padding: 16px 18px; margin: 12px 0; }
+.study-q { font-size: 13px; color: #333; line-height: 1.7; margin-bottom: 6px; font-family: Arial, sans-serif; font-weight: bold; }
+.study-q-input { width: 100%; border: none; border-bottom: 1px solid #bbb; padding: 6px 0; font-size: 13px; color: #222; background: transparent; font-family: Georgia, serif; margin-bottom: 16px; }
+.study-q-input:focus { outline: none; border-bottom-color: #1F3864; }
 
-  .views-box { border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin: 12px 0; }
-  .view-item { padding: 12px 16px; border-bottom: 1px solid #eee; }
-  .view-item:last-child { border-bottom: none; }
-  .view-item:nth-child(even) { background: #fafafa; }
-  .view-title { font-size: 14px; font-weight: bold; color: #1F3864; margin-bottom: 4px; font-family: Arial, sans-serif; }
-  .view-body { font-size: 13px; color: #555; line-height: 1.7; }
-  .view-key { font-size: 12px; color: #2E75B6; margin-top: 4px; font-style: italic; font-family: Arial, sans-serif; }
+.views-box { border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin: 12px 0; }
+.view-item { padding: 12px 16px; border-bottom: 1px solid #eee; }
+.view-item:last-child { border-bottom: none; }
+.view-item:nth-child(even) { background: #fafafa; }
+.view-title { font-size: 14px; font-weight: bold; color: #1F3864; margin-bottom: 4px; font-family: Arial, sans-serif; }
+.view-body { font-size: 13px; color: #555; line-height: 1.7; }
+.view-key { font-size: 12px; color: #2E75B6; margin-top: 4px; font-style: italic; font-family: Arial, sans-serif; }
 
-  .cross-ref-box { background: #EBF4FC; border: 1px solid #2E75B6; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
-  .cross-ref-box .title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; }
-  .cross-ref-box .line { font-size: 13px; color: #333; line-height: 1.7; padding: 3px 0; font-family: Arial, sans-serif; }
+.cross-ref-box { background: #EBF4FC; border: 1px solid #2E75B6; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
+.cross-ref-box .title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; }
+.cross-ref-box .line { font-size: 13px; color: #333; line-height: 1.7; padding: 3px 0; font-family: Arial, sans-serif; }
 
-  /* TABLES */
-  .checklist-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; font-family: Arial, sans-serif; }
-  .checklist-table th { background: #1F3864; color: #fff; padding: 10px 12px; text-align: left; font-weight: bold; font-size: 12px; }
-  .checklist-table td { padding: 9px 12px; border-bottom: 1px solid #eee; color: #444; vertical-align: top; }
-  .checklist-table tr:nth-child(even) td { background: #f9f9f9; }
-  .checklist-table td:last-child { min-width: 120px; }
-  .status-fulfilled { color: #2E6B0E; font-weight: bold; }
-  .status-progress { color: #7A4F00; font-weight: bold; }
-  .status-notyet { color: #999; }
+/* TABLES */
+.checklist-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; font-family: Arial, sans-serif; }
+.checklist-table th { background: #1F3864; color: #fff; padding: 10px 12px; text-align: left; font-weight: bold; font-size: 12px; }
+.checklist-table td { padding: 9px 12px; border-bottom: 1px solid #eee; color: #444; vertical-align: top; }
+.checklist-table tr:nth-child(even) td { background: #f9f9f9; }
+.checklist-table td:last-child { min-width: 120px; }
+.status-fulfilled { color: #2E6B0E; font-weight: bold; }
+.status-progress { color: #7A4F00; font-weight: bold; }
+.status-notyet { color: #999; }
 
-  .sermon-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; font-family: Arial, sans-serif; }
-  .sermon-table th { background: #1F3864; color: #fff; padding: 10px 12px; text-align: left; font-weight: bold; font-size: 12px; }
-  .sermon-table td { padding: 9px 12px; border-bottom: 1px solid #eee; color: #444; vertical-align: top; }
-  .sermon-table tr:nth-child(even) td { background: #f9f9f9; }
+.sermon-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; font-family: Arial, sans-serif; }
+.sermon-table th { background: #1F3864; color: #fff; padding: 10px 12px; text-align: left; font-weight: bold; font-size: 12px; }
+.sermon-table td { padding: 9px 12px; border-bottom: 1px solid #eee; color: #444; vertical-align: top; }
+.sermon-table tr:nth-child(even) td { background: #f9f9f9; }
 
-  /* JOURNAL */
-  .journal-box { background: #FFF8EE; border: 1px solid #C8A800; border-radius: 8px; padding: 20px; margin: 16px 0; }
-  .journal-date { font-size: 16px; font-weight: bold; color: #1F3864; margin-bottom: 3px; }
-  .journal-topic { font-size: 13px; color: #7A6600; font-weight: bold; margin-bottom: 2px; font-family: Arial, sans-serif; }
-  .journal-cat { font-size: 12px; color: #3B5E1A; font-style: italic; margin-bottom: 14px; font-family: Arial, sans-serif; }
-  .journal-p { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 10px; }
-  .journal-qs { margin-top: 12px; padding-top: 12px; border-top: 1px solid #E5C875; }
-  .journal-qs-title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; }
-  .journal-q { font-size: 13px; color: #555; line-height: 1.7; padding: 4px 0 4px 12px; border-left: 3px solid #C8A800; margin-bottom: 6px; font-family: Arial, sans-serif; }
+/* JOURNAL */
+.journal-box { background: #FFF8EE; border: 1px solid #C8A800; border-radius: 8px; padding: 20px; margin: 16px 0; }
+.journal-date { font-size: 16px; font-weight: bold; color: #1F3864; margin-bottom: 3px; }
+.journal-topic { font-size: 13px; color: #7A6600; font-weight: bold; margin-bottom: 2px; font-family: Arial, sans-serif; }
+.journal-cat { font-size: 12px; color: #3B5E1A; font-style: italic; margin-bottom: 14px; font-family: Arial, sans-serif; }
+.journal-p { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 10px; }
+.journal-qs { margin-top: 12px; padding-top: 12px; border-top: 1px solid #E5C875; }
+.journal-qs-title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; }
+.journal-q { font-size: 13px; color: #555; line-height: 1.7; padding: 4px 0 4px 12px; border-left: 3px solid #C8A800; margin-bottom: 6px; font-family: Arial, sans-serif; }
 
-  /* BUTTONS */
-  .btn-primary { background: #1F3864; color: #fff; border: none; border-radius: 6px; padding: 10px 20px; font-size: 13px; cursor: pointer; font-family: Arial, sans-serif; font-weight: bold; display: inline-block; margin-top: 16px; }
-  .btn-primary:hover { background: #2E4F8A; }
-  .btn-print { background: #fff; color: #1F3864; border: 1px solid #1F3864; border-radius: 6px; padding: 8px 16px; font-size: 12px; cursor: pointer; font-family: Arial, sans-serif; margin-left: 10px; }
-  .btn-print:hover { background: #f0f4ff; }
+/* BUTTONS */
+.btn-primary { background: #1F3864; color: #fff; border: none; border-radius: 6px; padding: 10px 20px; font-size: 13px; cursor: pointer; font-family: Arial, sans-serif; font-weight: bold; display: inline-block; margin-top: 16px; }
+.btn-primary:hover { background: #2E4F8A; }
+.btn-print { background: #fff; color: #1F3864; border: 1px solid #1F3864; border-radius: 6px; padding: 8px 16px; font-size: 12px; cursor: pointer; font-family: Arial, sans-serif; margin-left: 10px; }
+.btn-print:hover { background: #f0f4ff; }
 
-  /* COMING SOON */
-  .coming-soon { background: #f9f9f9; border: 2px dashed #ccc; border-radius: 8px; padding: 48px 24px; text-align: center; margin: 20px 0; }
-  .coming-soon p { font-size: 15px; color: #999; font-family: Arial, sans-serif; }
+/* COMING SOON */
+.coming-soon { background: #f9f9f9; border: 2px dashed #ccc; border-radius: 8px; padding: 48px 24px; text-align: center; margin: 20px 0; }
+.coming-soon p { font-size: 15px; color: #999; font-family: Arial, sans-serif; }
 
-  /* BULLET LISTS */
-  ul.bullet-list { margin: 8px 0 12px 20px; }
-  ul.bullet-list li { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 4px; font-family: Arial, sans-serif; }
+/* BULLET LISTS */
+ul.bullet-list { margin: 8px 0 12px 20px; }
+ul.bullet-list li { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 4px; font-family: Arial, sans-serif; }
 
-  /* PRINT */
-  @media print {
-    #sidebar { display: none; }
-    #main { margin-left: 0; padding: 20px; }
-    .btn-primary, .btn-print { display: none; }
-    .page { display: block !important; page-break-before: always; }
-    .page:first-of-type { page-break-before: avoid; }
-    textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
-  }
+/* PRINT */
+@media print {
+#sidebar { display: none; }
+#main { margin-left: 0; padding: 20px; }
+.btn-primary, .btn-print { display: none; }
+.page { display: block !important; page-break-before: always; }
+.page:first-of-type { page-break-before: avoid; }
+textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
+}
 
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    #sidebar { width: 200px; min-width: 200px; }
-    #main { margin-left: 200px; padding: 24px 20px; }
-  }
+/* RESPONSIVE */
+@media (max-width: 768px) {
+#sidebar { width: 200px; min-width: 200px; }
+#main { margin-left: 200px; padding: 24px 20px; }
+}
 </style>
+
 </head>
 <body>
 <div id="github-bar" style="position:fixed;top:0;left:0;right:0;background:#1F3864;color:white;z-index:200;padding:8px 20px;display:flex;align-items:center;gap:12px;font-family:Arial,sans-serif;font-size:13px;border-bottom:2px solid #FFD700;">
@@ -134,15 +135,16 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
   <button onclick="saveToGitHub()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
   <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);">Saving...</span>
-  <span id="gh-bar-version" style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: March 31, 2026 at 11:14 PM</span>
+  <span id="gh-bar-version" style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: April 1, 2026</span>
 </div>
 <div id="app" style="margin-top:48px;">
 
 <!-- SIDEBAR -->
+
 <div id="sidebar">
   <div id="sidebar-header">
     <h1>Campbell Family<br>Biblical Study Guide</h1>
-    <p id="sidebar-version">Version: March 31, 2026 at 11:14 PM</p>
+    <p id="sidebar-version">Version: April 1, 2026</p>
   </div>
   <div id="sidebar-nav">
     <div class="nav-section">Getting Started</div>
@@ -175,9 +177,11 @@
 </div>
 
 <!-- MAIN CONTENT -->
+
 <div id="main">
 
 <!-- INTRO -->
+
 <div id="intro" class="page">
   <span class="page-tag">Introduction</span>
   <h1 class="page-title">Campbell Family Master Biblical Study Guide</h1>
@@ -208,6 +212,7 @@
 </div>
 
 <!-- INDEX -->
+
 <div id="index" class="page">
   <span class="page-tag">Thematic Index</span>
   <h1 class="page-title">How This Guide Is Organized</h1>
@@ -236,6 +241,7 @@
 </div>
 
 <!-- MODULE 1 -->
+
 <div id="m1" class="page">
   <span class="page-tag">Module 1 — Theme 1: End Times</span>
   <h1 class="page-title">Daniel's 70 Weeks: The Master Timeline</h1>
@@ -291,6 +297,7 @@
 </div>
 
 <!-- MODULE 2 -->
+
 <div id="m2" class="page active">
   <span class="page-tag">Module 2 — Theme 1: End Times</span>
   <h1 class="page-title">Israel in Prophecy</h1>
@@ -319,6 +326,7 @@
 </div>
 
 <!-- MODULE 3 -->
+
 <div id="m3" class="page">
   <span class="page-tag">Module 3 — Theme 1: End Times</span>
   <h1 class="page-title">The Day of the Lord</h1>
@@ -344,6 +352,7 @@
 </div>
 
 <!-- MODULE 4 -->
+
 <div id="m4" class="page">
   <span class="page-tag">Module 4 — Theme 1: End Times</span>
   <h1 class="page-title">Ezekiel 33: The Watchman Principle</h1>
@@ -372,6 +381,7 @@
 </div>
 
 <!-- MODULE 5 -->
+
 <div id="m5" class="page">
   <span class="page-tag">Module 5 — Theme 1: End Times</span>
   <h1 class="page-title">Ezekiel 36: The New Covenant</h1>
@@ -397,6 +407,7 @@
 </div>
 
 <!-- MODULE 6 -->
+
 <div id="m6" class="page">
   <span class="page-tag">Module 6 — Theme 1: End Times</span>
   <h1 class="page-title">The Rapture: Scripture &amp; Honest Inquiry</h1>
@@ -435,6 +446,7 @@
 </div>
 
 <!-- MODULE 7 -->
+
 <div id="m7" class="page">
   <span class="page-tag">Module 7 — Theme 1: End Times</span>
   <h1 class="page-title">The Antichrist</h1>
@@ -461,6 +473,7 @@
 </div>
 
 <!-- MODULE 8 -->
+
 <div id="m8" class="page">
   <span class="page-tag">Module 8 — Theme 1: End Times</span>
   <h1 class="page-title">The Rebuilt Temple &amp; Abomination of Desolation</h1>
@@ -489,6 +502,7 @@
 </div>
 
 <!-- MODULE 9 -->
+
 <div id="m9" class="page">
   <span class="page-tag">Module 9 — Theme 1: End Times</span>
   <h1 class="page-title">Ezekiel 38–39: The Gog-Magog War</h1>
@@ -527,6 +541,7 @@
 </div>
 
 <!-- MODULE 10 -->
+
 <div id="m10" class="page">
   <span class="page-tag">Module 10 — Theme 1: End Times</span>
   <h1 class="page-title">Signs of the Times</h1>
@@ -561,6 +576,7 @@
 </div>
 
 <!-- MODULE 11 -->
+
 <div id="m11" class="page">
   <span class="page-tag">Module 11 — Theme 1: End Times</span>
   <h1 class="page-title">Identifying False Prophets</h1>
@@ -596,6 +612,7 @@
 </div>
 
 <!-- MODULE 12 -->
+
 <div id="m12" class="page">
   <span class="page-tag">Module 12 — Theme 1: End Times</span>
   <h1 class="page-title">The Millennial Kingdom</h1>
@@ -625,6 +642,7 @@
 </div>
 
 <!-- MODULE 13 -->
+
 <div id="m13" class="page">
   <span class="page-tag">Module 13 — Theme 1: End Times</span>
   <h1 class="page-title">Second Coming, Eternity &amp; Living Now</h1>
@@ -669,6 +687,7 @@
 </div>
 
 <!-- MODULE 14 -->
+
 <div id="m14" class="page">
   <span class="page-tag">Module 14 — Theme 1: End Times</span>
   <h1 class="page-title">Matthew 24 ↔ Revelation: Side-by-Side Parallel</h1>
@@ -691,13 +710,13 @@
     </div>
     <div class="view-item">
       <div class="view-title">〰️ THEMATIC — Unparalleled severity — no period like it</div>
-      <div class="view-body"><strong>Matt 24:21:</strong> "There will be great tribulation, such as has not been from the beginning of the world until now, no, and never will be." — This specifically describes the Great Tribulation (second half, after the abomination in v. 15).</div>
-      <div class="view-key"><strong>Rev 6:17; 7:14:</strong> "For the great day of their wrath has come, and who can stand?" — This is a response to the 6th seal, which may be earlier in the sequence. Both describe unprecedented severity, but they may not point to the same moment.</div>
+      <div class="view-body"><strong>Matt 24:21:</strong> "There will be great tribulation, such as has not been from the beginning of the world until now, no, and never will be."</div>
+      <div class="view-key"><strong>Rev 6:17; 7:14:</strong> "For the great day of their wrath has come, and who can stand?"</div>
     </div>
     <div class="view-item">
       <div class="view-title">? LOOSE — Time shortened for the elect's sake</div>
-      <div class="view-body"><strong>Matt 24:22:</strong> "If those days had not been cut short, no human being would be saved. But for the sake of the elect those days will be cut short." — God shortens the <em>duration</em> of suffering.</div>
-      <div class="view-key"><strong>Rev 7:1–8:</strong> God seals 144,000 from Israel before the next wave of judgment — protection during judgment. The theme of God protecting His people connects, but the mechanism differs: one is about time, the other is about sealing. This is a thematic association, not a direct parallel.</div>
+      <div class="view-body"><strong>Matt 24:22:</strong> "If those days had not been cut short, no human being would be saved. But for the sake of the elect those days will be cut short."</div>
+      <div class="view-key"><strong>Rev 7:1–8:</strong> God seals 144,000 from Israel before the next wave of judgment — protection during judgment.</div>
     </div>
   </div>
 
@@ -719,7 +738,7 @@
   <div class="views-box">
     <div class="view-item">
       <div class="view-title">🔗 DIRECT — The Abomination set up in the Holy Place</div>
-      <div class="view-body"><strong>Matt 24:15:</strong> "When you see the abomination of desolation spoken of by Daniel the prophet, standing in the holy place (let the reader understand)..."</div>
+      <div class="view-body"><strong>Matt 24:15:</strong> "When you see the abomination of desolation spoken of by Daniel the prophet, standing in the holy place..."</div>
       <div class="view-key"><strong>Rev 13:14–17:</strong> The Beast sets up his image; the False Prophet causes all to worship it. No one can buy or sell without the mark.</div>
     </div>
     <div class="view-item">
@@ -729,97 +748,92 @@
     </div>
   </div>
 
-  <h2 class="section-title">Section 4 — The Seal Judgments (Scroll of Wrath)</h2>
+  <h2 class="section-title">Section 4 — The Seal Judgments</h2>
   <div class="views-box">
     <div class="view-item">
       <div class="view-title">🔗 DIRECT — Conquest / Antichrist rises</div>
       <div class="view-body"><strong>Matt 24:5:</strong> "Many will come in my name, saying, 'I am the Christ,' and they will lead many astray."</div>
-      <div class="view-key"><strong>Rev 6:1–2:</strong> Seal 1: White horse — rider goes out "conquering and to conquer." Widely identified as the Antichrist.</div>
+      <div class="view-key"><strong>Rev 6:1–2:</strong> Seal 1: White horse — rider goes out "conquering and to conquer."</div>
     </div>
     <div class="view-item">
-      <div class="view-title">🔗 DIRECT — War, famine, death — death of a quarter</div>
-      <div class="view-body"><strong>Matt 24:6–7:</strong> "Wars and rumors of wars... nation against nation... famines and earthquakes in various places."</div>
-      <div class="view-key"><strong>Rev 6:3–8:</strong> Seals 2–4: Red horse (war), Black horse (famine), Pale horse — power to kill with sword, famine, pestilence, and wild beasts.</div>
+      <div class="view-title">🔗 DIRECT — War, famine, death</div>
+      <div class="view-body"><strong>Matt 24:6–7:</strong> "Wars and rumors of wars... nation against nation... famines and earthquakes."</div>
+      <div class="view-key"><strong>Rev 6:3–8:</strong> Seals 2–4: Red horse (war), Black horse (famine), Pale horse — death by sword, famine, pestilence.</div>
     </div>
     <div class="view-item">
       <div class="view-title">🔗 DIRECT — Martyrdom of believers</div>
-      <div class="view-body"><strong>Matt 24:9:</strong> "They will deliver you up to tribulation and put you to death... you will be hated by all nations for my name's sake."</div>
-      <div class="view-key"><strong>Rev 6:9–10:</strong> Seal 5: Souls under the altar cry out — those slain "for the word of God and for the witness they had borne."</div>
+      <div class="view-body"><strong>Matt 24:9:</strong> "They will deliver you up to tribulation and put you to death... hated by all nations for my name's sake."</div>
+      <div class="view-key"><strong>Rev 6:9–10:</strong> Seal 5: Souls under the altar — those slain "for the word of God and for the witness they had borne."</div>
     </div>
     <div class="view-item">
       <div class="view-title">🔗 DIRECT — Cosmic signs / terror in the heavens</div>
       <div class="view-body"><strong>Matt 24:29:</strong> "The sun will be darkened, and the moon will not give its light, and the stars will fall from heaven."</div>
-      <div class="view-key"><strong>Rev 6:12–17:</strong> Seal 6: Great earthquake, sun black as sackcloth, moon like blood, stars fell — "the great day of their wrath has come."</div>
+      <div class="view-key"><strong>Rev 6:12–17:</strong> Seal 6: Great earthquake, sun black as sackcloth, moon like blood, stars fell.</div>
     </div>
   </div>
 
-  <h2 class="section-title">Section 5 — The Seven Thunders / Little Scroll (Rev 10)</h2>
+  <h2 class="section-title">Section 5 — Sealed Mysteries</h2>
   <div class="views-box">
     <div class="view-item">
-      <div class="view-title">〰️ THEMATIC — Sealed mysteries / things hidden until the end</div>
-      <div class="view-body"><strong>Matt 24:36:</strong> "But concerning that day and hour no one knows, not even the angels of heaven, nor the Son, but the Father only." Some things are sealed.</div>
-      <div class="view-key"><strong>Rev 10:4, 7:</strong> "Seal up what the seven thunders have said; do not write it down." The mystery of God is reserved until the 7th trumpet sounds.</div>
+      <div class="view-title">〰️ THEMATIC — Things hidden until the end</div>
+      <div class="view-body"><strong>Matt 24:36:</strong> "But concerning that day and hour no one knows, not even the angels of heaven, nor the Son, but the Father only."</div>
+      <div class="view-key"><strong>Rev 10:4, 7:</strong> "Seal up what the seven thunders have said; do not write it down."</div>
     </div>
     <div class="view-item">
       <div class="view-title">〰️ THEMATIC — Word of God sweet and bitter</div>
-      <div class="view-body"><strong>Matt 24:13 vs. 24:22:</strong> Jesus' Olivet Discourse brings comfort to believers — sweet — and warning of judgment — bitter. The same Word produces opposite reactions depending on who receives it.</div>
-      <div class="view-key"><strong>Rev 10:9–10:</strong> John eats the little scroll: "sweet as honey in my mouth, but when I had eaten it my stomach was made bitter." Sweet to believers, bitter in judgment to the world.</div>
+      <div class="view-body"><strong>Matt 24:13 vs. 24:22:</strong> Jesus' words bring comfort to believers — sweet — and warning of judgment — bitter.</div>
+      <div class="view-key"><strong>Rev 10:9–10:</strong> John eats the little scroll: "sweet as honey in my mouth, but when I had eaten it my stomach was made bitter."</div>
     </div>
   </div>
 
-  <h2 class="section-title">Section 6 — The First Beast (Rev 13) &amp; His Counterfeit Resurrection</h2>
+  <h2 class="section-title">Section 6 — The Beast &amp; His Counterfeit Resurrection</h2>
   <div class="views-box">
     <div class="view-item">
       <div class="view-title">〰️ THEMATIC — Antichrist receives global authority</div>
-      <div class="view-body"><strong>Matt 24:24:</strong> "False christs and false prophets will arise and perform great signs and wonders." — The counterfeit messiah.</div>
-      <div class="view-key"><strong>Rev 13:1–2:</strong> Beast from the sea: ten horns, seven heads, like leopard/bear/lion. Satan gives him "his power and his throne and great authority."</div>
+      <div class="view-body"><strong>Matt 24:24:</strong> "False christs and false prophets will arise and perform great signs and wonders."</div>
+      <div class="view-key"><strong>Rev 13:1–2:</strong> Beast from the sea receives Satan's "power and his throne and great authority."</div>
     </div>
     <div class="view-item">
-      <div class="view-title">? LOOSE — Counterfeit resurrection / fatal wound healed</div>
-      <div class="view-body"><strong>Matt 24:26:</strong> "If they say to you, 'Look, he is in the wilderness' — do not go out. 'Look, he is in the inner rooms' — do not believe it." Counterfeit appearing of a great one.</div>
-      <div class="view-key"><strong>Rev 13:3–4:</strong> One of the beast's heads has a fatal wound that is healed — the whole earth marvels and follows him. Satan's counterfeit of the resurrection.</div>
+      <div class="view-title">? LOOSE — Counterfeit resurrection</div>
+      <div class="view-body"><strong>Matt 24:26:</strong> "If they say to you, 'Look, he is in the wilderness' — do not go out."</div>
+      <div class="view-key"><strong>Rev 13:3–4:</strong> One of the beast's heads has a fatal wound that is healed — Satan's counterfeit of the resurrection.</div>
     </div>
   </div>
 
   <h2 class="section-title">Section 7 — The Second Coming: Visible, Global, Unmistakable</h2>
   <div class="views-box">
     <div class="view-item">
-      <div class="view-title">🔗 DIRECT — Return visible to all — lightning from east to west</div>
+      <div class="view-title">🔗 DIRECT — Return visible to all</div>
       <div class="view-body"><strong>Matt 24:27:</strong> "For as the lightning comes from the east and shines as far as the west, so will be the coming of the Son of Man."</div>
-      <div class="view-key"><strong>Rev 1:7:</strong> "Behold, he is coming with the clouds, and every eye will see him, even those who pierced him, and all tribes of the earth will wail."</div>
+      <div class="view-key"><strong>Rev 1:7:</strong> "Behold, he is coming with the clouds, and every eye will see him."</div>
     </div>
     <div class="view-item">
-      <div class="view-title">🔗 DIRECT — Son of Man coming on the clouds with power and glory</div>
+      <div class="view-title">🔗 DIRECT — Son of Man coming in power and glory</div>
       <div class="view-body"><strong>Matt 24:30:</strong> "They will see the Son of Man coming on the clouds of heaven with power and great glory."</div>
-      <div class="view-key"><strong>Rev 19:11–14:</strong> Christ appears on a white horse — "Faithful and True... his eyes are like a flame of fire... the armies of heaven were following him."</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">〰️ THEMATIC — Angels gather the elect from the four winds</div>
-      <div class="view-body"><strong>Matt 24:31:</strong> "He will send out his angels with a loud trumpet call, and they will gather his elect from the four winds, from one end of heaven to the other."</div>
-      <div class="view-key"><strong>Rev 11:15:</strong> At the 7th trumpet: "The kingdom of the world has become the kingdom of our Lord and of his Christ, and he shall reign forever and ever."</div>
+      <div class="view-key"><strong>Rev 19:11–14:</strong> Christ appears on a white horse — "Faithful and True... his eyes are like a flame of fire."</div>
     </div>
   </div>
 
-  <h2 class="section-title">Section 8 — Watchfulness, Readiness &amp; the Faithful Servant</h2>
+  <h2 class="section-title">Section 8 — Watchfulness &amp; Readiness</h2>
   <div class="views-box">
     <div class="view-item">
       <div class="view-title">🔗 DIRECT — No one knows the hour — be ready</div>
-      <div class="view-body"><strong>Matt 24:36, 42:</strong> "Concerning that day and hour no one knows... Therefore, stay awake, for you do not know on what day your Lord is coming."</div>
-      <div class="view-key"><strong>Rev 16:15:</strong> "Blessed is the one who stays awake, keeping his garments on, that he may not go about naked and be seen exposed!"</div>
+      <div class="view-body"><strong>Matt 24:36, 42:</strong> "Concerning that day and hour no one knows... Therefore, stay awake."</div>
+      <div class="view-key"><strong>Rev 16:15:</strong> "Blessed is the one who stays awake, keeping his garments on."</div>
     </div>
     <div class="view-item">
-      <div class="view-title">〰️ THEMATIC — Faithful servant vs. unfaithful — rewards and judgment</div>
-      <div class="view-body"><strong>Matt 24:45–46:</strong> "Who then is the faithful and wise servant, whom his master has set over his household... Blessed is that servant whom his master will find so doing when he comes."</div>
-      <div class="view-key"><strong>Rev 2–3:</strong> Letters to the 7 churches: overcomers receive rewards — the crown of life, authority over nations, the morning star. Those who don't repent face discipline and rejection.</div>
+      <div class="view-title">〰️ THEMATIC — Faithful servant vs. unfaithful</div>
+      <div class="view-body"><strong>Matt 24:45–46:</strong> "Who then is the faithful and wise servant... Blessed is that servant whom his master will find so doing when he comes."</div>
+      <div class="view-key"><strong>Rev 2–3:</strong> Letters to the 7 churches: overcomers receive rewards. Those who don't repent face discipline.</div>
     </div>
   </div>
 
   <div class="reflection-box">
     <div class="title">🙏 Personal Reflection &amp; Prayer</div>
-    <div class="reflection-item">Reading Matthew 24 and Revelation side by side — what stands out to me as the clearest overlap? Does seeing both accounts strengthen my confidence in the prophetic picture?</div>
-    <div class="reflection-item">The "sweet and bitter" scroll (Rev 10) — in what ways is God's Word sweet to me right now? In what ways does it carry a weight or bitterness I need to sit with honestly?</div>
+    <div class="reflection-item">Reading Matthew 24 and Revelation side by side — what stands out as the clearest overlap? Does seeing both accounts strengthen my confidence in the prophetic picture?</div>
+    <div class="reflection-item">The "sweet and bitter" scroll (Rev 10) — in what ways is God's Word sweet to me right now? In what ways does it carry a weight I need to sit with honestly?</div>
     <div class="reflection-item">The counterfeit resurrection of the Beast (Rev 13:3) — what does this tell me about how convincing the Antichrist's deception will be? How does this sharpen my discernment now?</div>
-    <div class="reflection-item">Am I the faithful servant of Matthew 24:45 — actively serving, watching, and ready? Or am I drifting toward the posture of the unfaithful servant who says "my master is delayed"?</div>
+    <div class="reflection-item">Am I the faithful servant of Matthew 24:45 — actively serving, watching, and ready?</div>
   </div>
 
   <div class="cross-ref-box">
@@ -838,6 +852,7 @@
 </div>
 
 <!-- THEME 2 -->
+
 <div id="theme2" class="page">
   <span class="page-tag">Theme 2 — Coming Soon</span>
   <h1 class="page-title">Creation &amp; the Fall</h1>
@@ -857,6 +872,7 @@
 </div>
 
 <!-- THEME 3 -->
+
 <div id="theme3" class="page">
   <span class="page-tag">Theme 3 — Coming Soon</span>
   <h1 class="page-title">Judgment &amp; Mercy: Noah's Ark</h1>
@@ -872,7 +888,7 @@
   </div>
   <div class="cross-ref-box">
     <div class="title">🔗 Key Connection to Theme 1 (End Times)</div>
-    <div class="line">Matthew 24:37–39 — "As it was in the days of Noah, so it will be at the coming of the Son of Man." The flood is Jesus' own illustration of the end times.</div>
+    <div class="line">Matthew 24:37–39 — "As it was in the days of Noah, so it will be at the coming of the Son of Man."</div>
   </div>
   <div class="notes-box">
     <div class="label">✏️ Theme 3 Notes — What I want to explore when we build this out:</div>
@@ -881,6 +897,7 @@
 </div>
 
 <!-- THEMES 4-8 -->
+
 <div id="themes48" class="page">
   <span class="page-tag">Themes 4–8 — Coming Soon</span>
   <h1 class="page-title">Future Themes</h1>
@@ -896,6 +913,7 @@
 </div>
 
 <!-- SERMONS -->
+
 <div id="sermons" class="page">
   <span class="page-tag">My Study</span>
   <h1 class="page-title">Sermon &amp; Teaching Log</h1>
@@ -907,7 +925,7 @@
     <tr><td>3</td><td>3/25/26</td><td>Ezekiel: Invasion &amp; End</td><td>Gog-Magog war (Ezek 38–39); coalition: Russia/Iran/Turkey/Sudan/Libya; Israel at rest precondition</td></tr>
     <tr><td>4</td><td>3/26/26</td><td>Ezekiel 38–39 continued (partial)</td><td>Scholars debate whether invasion already occurred; nation identification</td></tr>
     <tr><td>5</td><td>3/27/26</td><td>Antichrist &amp; End Times — Audio Teaching</td><td>Day of the Lord; Antichrist profile; not Muslim/not Gog; temple rebuild; signs of the times; false prophets</td></tr>
-    <tr><td>6</td><td>3/31/26</td><td>Tribulation &amp; Judgment — Ron Rhodes, The End Times in Chronological Order</td><td>Seal &amp; trumpet judgments (Rev 6–8); Two Witnesses (Rev 11) — camel-hair garments, spiritual revival, fiery response; seals → trumpets → martyrdom intensifies; God sovereign and a God of judgment — J.I. Packer, Knowing God; biblical precedents: Adam &amp; Eve expelled; Noah's flood.</td></tr>
+    <tr><td>6</td><td>3/31/26</td><td>Tribulation &amp; Judgment — Ron Rhodes, The End Times in Chronological Order</td><td>Seal &amp; trumpet judgments (Rev 6–8); Two Witnesses (Rev 11); seals → trumpets → martyrdom intensifies; God sovereign and a God of judgment</td></tr>
     <tr><td>7</td><td>4/1/26</td><td>End-Times Tribulation — Audio Teaching (Summary AI)</td><td>Tribulation judgment, seal sequence, Rev 10 little scroll, Beast (Rev 13), false teachers — plus Matt 24 ↔ Rev parallel developed. Key: Rev 7:14; Jer 30:7; Rev 6:1–17; Rev 10:4–10; Rev 13:1–4; Acts 4:12</td></tr>
     <tr><td>8</td><td></td><td></td><td></td></tr>
     <tr><td>9</td><td></td><td></td><td></td></tr>
@@ -916,6 +934,7 @@
 </div>
 
 <!-- JOURNAL -->
+
 <div id="journal" class="page">
   <span class="page-tag">My Study</span>
   <h1 class="page-title">Personal Reflections &amp; Journal</h1>
@@ -942,7 +961,7 @@
     <div class="journal-topic">Topic: Grace, Holiness &amp; the Danger of Carnal Christianity</div>
     <div class="journal-cat">Category: Christian Living / Church Health / End Times Readiness</div>
     <div class="journal-p">Came across a powerful Facebook post from Pastor Larry Burton today that addresses something increasingly relevant in the end times context — the misuse of grace as a license to continue in sin. His central argument is compelling: Grace isn't a lowered bar — it's a higher one, backed by better resources (the Holy Spirit, the new covenant, Christ's indwelling). Using grace as a license to sin inverts its entire purpose.</div>
-    <div class="journal-p">This connects directly to the end times framework. Jesus himself warns in Matthew 7:21–23 that He will say to many who did ministry in His name: "I never knew you; depart from me, you workers of iniquity." A church full of people who claim grace but live in sin is completely unprepared for the deception to come. The Antichrist's deception will be most effective against people whose faith is cultural and surface-level rather than genuine and transformed.</div>
+    <div class="journal-p">This connects directly to the end-times framework. Jesus himself warns in Matthew 7:21–23 that He will say to many who did ministry in His name: "I never knew you; depart from me, you workers of iniquity." A church full of people who claim grace but live in sin is completely unprepared for the deception to come. The Antichrist's deception will be most effective against people whose faith is cultural and surface-level rather than genuine and transformed.</div>
     <div class="journal-p">Pastor Burton's definition of repentance is worth noting: not just feeling sorry, but a change of attitude, behavior, direction, affections, and relationships. Christ is coming for a pure Bride. Five of the seven churches in Revelation are told to repent.</div>
     <div class="journal-p"><strong>Key scriptures:</strong> Heb 12:14 ("without holiness no man shall see God"), Ezek 18:24, Rom 6:1–2 ("Shall we continue in sin that grace may abound? God forbid!"), Rev 3:5.</div>
     <div class="journal-qs">
@@ -953,22 +972,43 @@
     </div>
   </div>
 
+  <div class="journal-box">
+    <div class="journal-date">April 1, 2026</div>
+    <div class="journal-topic">Topic: Grace, Truth &amp; Witness in the Last Days</div>
+    <div class="journal-cat">Category: Evangelism / Christian Living / Signs of the Times</div>
+    <div class="journal-p">Came across the Jaden Ivey situation today — the NBA player waived by the Chicago Bulls after publicly calling out the league's Pride Month promotion as "unrighteous." He's clearly sincere in his faith and the biblical convictions he holds are real. Scripture is clear on the subject: Leviticus 18:22, Romans 1:26–27, 1 Corinthians 6:9. That's not in dispute. But the situation raised a deeper question for me about <em>how</em> we witness in the last days — not just <em>what</em> we believe.</div>
+    <div class="journal-p">What struck me is how quickly sincerity and wisdom can come apart. Ivey's message — that the NBA celebrates unrighteousness — may be theologically accurate. But the method led with accusation rather than grace. And the most powerful gospel witness in history has always led with "I was lost too" rather than "you are wrong." Romans 3:23 is the great equalizer: all have sinned and fallen short. Criticism has no place in Christianity when we remember that we all need the same forgiveness.</div>
+    <div class="journal-p">Paul's model in 1 Corinthians 9:19–23 is instructive: he became all things to all people so that by all means he might save some. He was in prison and still won guards to Christ. He didn't lead with condemnation of Rome's institutions — he led with relationship, truth spoken in love (Ephesians 4:15), and a testimony rooted in his own transformation.</div>
+    <div class="journal-p">This connects directly to the end-times urgency I feel. If the Rapture is near — and everything we've studied in Daniel, Ezekiel, and Revelation suggests the stage is being set — then the method of witness matters as much as the message. The person most likely to respond to the gospel isn't the one who feels condemned. It's the one who feels loved despite themselves. That's the scandal of grace that makes Christianity distinct from every other religion on earth.</div>
+    <div class="journal-p">I'm out in people's homes every day. Real conversations, one-on-one. That's more gospel opportunity in a week than most believers get in a month — not from a soapbox, but face to face, where real change actually happens. That access is a gift. Use it well.</div>
+    <div class="journal-p"><strong>Key scriptures:</strong> Romans 3:23, Ephesians 4:15, 1 Corinthians 9:19–23, Matthew 7:21–23. Cross-reference with Module 4 (The Watchman) and Module 13 (Living Now).</div>
+    <div class="journal-qs">
+      <div class="journal-qs-title">Questions to sit with:</div>
+      <div class="journal-q">• How did Paul balance bold truth-telling with relational witness? (Acts 17; 1 Cor. 9:19–23) What can I apply from his example?</div>
+      <div class="journal-q">• What is the difference between standing for biblical truth and leading with condemnation? Where is that line?</div>
+      <div class="journal-q">• Who in my life needs to hear grace more than judgment right now — and what would it look like to lead with love?</div>
+      <div class="journal-q">• Am I using the access I have daily — in homes, in conversations — as a watchman who warns with love, or am I staying silent to avoid discomfort?</div>
+    </div>
+  </div>
+
   <div class="notes-box" style="margin-top:20px">
     <div class="label">✏️ Add new journal entries below — date each one:</div>
     <textarea class="notes-input" id="n-journal-new" style="min-height:200px" placeholder="Date: ___________
 Topic: ___________
 Category: ___________
 
-Write your reflection here...
+Write your reflection here…
 
 Questions to sit with:
 •
 •
-•"></textarea>
+•”></textarea>
+
   </div>
 </div>
 
 <!-- CONVICTIONS -->
+
 <div id="convictions" class="page">
   <span class="page-tag">My Study</span>
   <h1 class="page-title">My Growing Convictions</h1>
@@ -1013,7 +1053,6 @@ function show(id, el) {
   window.scrollTo(0, 0);
 }
 
-// Save notes to localStorage so they persist when you reopen the file locally
 const noteIds = [
   'n-intro','n-m1','n-m2','n-m3','n-m4','n-m5','n-m6','n-m7','n-m8','n-m9','n-m10','n-m11','n-m12','n-m13','n-m14',
   'n-theme2','n-theme3','n-journal-new',
@@ -1044,55 +1083,57 @@ noteIds.forEach(id => {
 
 loadNotes();
 
-  // Load saved token
-  const savedToken = localStorage.getItem('cbsg-gh-token');
-  if (savedToken) document.getElementById('gh-token').value = savedToken;
-  document.getElementById('gh-token').addEventListener('input', function() {
-    localStorage.setItem('cbsg-gh-token', this.value);
-  });
+const savedToken = localStorage.getItem('cbsg-gh-token');
+if (savedToken) document.getElementById('gh-token').value = savedToken;
+document.getElementById('gh-token').addEventListener('input', function() {
+  localStorage.setItem('cbsg-gh-token', this.value);
+});
 
-  async function saveToGitHub() {
-    const token = document.getElementById('gh-token').value.trim();
-    const status = document.getElementById('gh-status');
-    if (!token) {
-      status.textContent = 'Please enter your GitHub token first.';
-      status.style.color = '#FF6B6B';
-      return;
-    }
-    status.textContent = 'Saving...';
-    status.style.color = 'rgba(255,255,255,0.7)';
-
-    // Build the version timestamp
-    const now = new Date();
-    const versionStr = 'Version: March 31, 2026 at 11:14 PM<]+/g) || []);
-      console.log('Found ' + matches.length + ' Version strings:', matches);
-
-      // Step 4: Replace all "Version: March 31, 2026 at 11:14 PM<]+/g, versionStr);
-
-      // Step 5: Encode and push back
-      const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
-
-      const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + filePath, {
-        method: 'PUT',
-        headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: 'Update — ' + versionStr, content: encoded, sha: sha })
-      });
-
-      if (putResp.ok) {
-        status.textContent = 'Saved! Refresh page to see updated version.';
-        status.style.color = '#90EE90';
-        setTimeout(() => { status.textContent = ''; }, 5000);
-      } else {
-        const err = await putResp.json();
-        status.textContent = 'Error: ' + (err.message || 'Unknown error');
-        status.style.color = '#FF6B6B';
-      }
-    } catch(e) {
-      status.textContent = 'Error: ' + e.message;
-      status.style.color = '#FF6B6B';
-    }
+async function saveToGitHub() {
+  const token = document.getElementById('gh-token').value.trim();
+  const status = document.getElementById('gh-status');
+  if (!token) {
+    status.textContent = 'Please enter your GitHub token first.';
+    status.style.color = '#FF6B6B';
+    return;
   }
+  status.textContent = 'Saving...';
+  status.style.color = 'rgba(255,255,255,0.7)';
 
+  try {
+    const owner = 'acshotsprings';
+    const repo = 'CampbellBibleStudy';
+    const filePath = 'CampbellBibleStudy.html';
+
+    const getResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + filePath, {
+      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const fileData = await getResp.json();
+    const sha = fileData.sha;
+
+    const htmlContent = document.documentElement.outerHTML;
+    const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
+
+    const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + filePath, {
+      method: 'PUT',
+      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Update — April 1, 2026', content: encoded, sha: sha })
+    });
+
+    if (putResp.ok) {
+      status.textContent = 'Saved to GitHub!';
+      status.style.color = '#90EE90';
+      setTimeout(() => { status.textContent = ''; }, 5000);
+    } else {
+      const err = await putResp.json();
+      status.textContent = 'Error: ' + (err.message || 'Unknown error');
+      status.style.color = '#FF6B6B';
+    }
+  } catch(e) {
+    status.textContent = 'Error: ' + e.message;
+    status.style.color = '#FF6B6B';
+  }
+}
 </script>
 
 </body></html>
