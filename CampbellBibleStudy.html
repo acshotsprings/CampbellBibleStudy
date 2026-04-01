@@ -134,7 +134,7 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
   <button onclick="saveToGitHub()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
   <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);">Saving...</span>
-  <span id="gh-bar-version" style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: March 29, 2026</span>
+  <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: March 29, 2026</span>
 </div>
 <div id="app" style="margin-top:48px;">
 
@@ -142,15 +142,15 @@
 <div id="sidebar">
   <div id="sidebar-header">
     <h1>Campbell Family<br>Biblical Study Guide</h1>
-    <p id="sidebar-version">Version: March 29, 2026</p>
+    <p>Version: March 29, 2026</p>
   </div>
   <div id="sidebar-nav">
     <div class="nav-section">Getting Started</div>
     <div class="nav-item" onclick="show('intro', this)">Introduction</div>
     <div class="nav-item" onclick="show('index', this)">Thematic Index</div>
     <div class="nav-section">Theme 1 — End Times</div>
-    <div class="nav-item" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
-    <div class="nav-item active" onclick="show('m2', this)">Module 2 — Israel in Prophecy</div>
+    <div class="nav-item active" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
+    <div class="nav-item" onclick="show('m2', this)">Module 2 — Israel in Prophecy</div>
     <div class="nav-item" onclick="show('m3', this)">Module 3 — Day of the Lord</div>
     <div class="nav-item" onclick="show('m4', this)">Module 4 — The Watchman</div>
     <div class="nav-item" onclick="show('m5', this)">Module 5 — The New Covenant</div>
@@ -162,7 +162,6 @@
     <div class="nav-item" onclick="show('m11', this)">Module 11 — False Prophets</div>
     <div class="nav-item" onclick="show('m12', this)">Module 12 — The Millennium</div>
     <div class="nav-item" onclick="show('m13', this)">Module 13 — Second Coming</div>
-    <div class="nav-item" onclick="show('m14', this)">Module 14 — Matt 24 ↔ Revelation</div>
     <div class="nav-section">Themes 2–8</div>
     <div class="nav-item" onclick="show('theme2', this)">Theme 2 — Creation &amp; the Fall</div>
     <div class="nav-item" onclick="show('theme3', this)">Theme 3 — Judgment &amp; Mercy</div>
@@ -236,7 +235,7 @@
 </div>
 
 <!-- MODULE 1 -->
-<div id="m1" class="page">
+<div id="m1" class="page active">
   <span class="page-tag">Module 1 — Theme 1: End Times</span>
   <h1 class="page-title">Daniel's 70 Weeks: The Master Timeline</h1>
   <div class="info-box"><div class="title">Read first</div><div class="line">Daniel 9 in full (especially vv. 24–27), Deuteronomy 18:21–22, Isaiah 46:9–10, 2 Peter 1:20–21</div></div>
@@ -291,7 +290,7 @@
 </div>
 
 <!-- MODULE 2 -->
-<div id="m2" class="page active">
+<div id="m2" class="page">
   <span class="page-tag">Module 2 — Theme 1: End Times</span>
   <h1 class="page-title">Israel in Prophecy</h1>
   <div class="info-box"><div class="title">Read first</div><div class="line">Ezekiel 36–37, Romans 9–11, Zechariah 12</div></div>
@@ -668,169 +667,6 @@
   </div>
 </div>
 
-<!-- MODULE 14 -->
-<div id="m14" class="page">
-  <span class="page-tag">Module 14 — Theme 1: End Times</span>
-  <h1 class="page-title">Matthew 24 ↔ Revelation: Side-by-Side Parallel</h1>
-  <p class="page-subtitle">Developed from teaching notes — April 1, 2026</p>
-  <div class="info-box"><div class="title">Read first</div><div class="line">Matthew 24 in full, then Revelation 6–13, 19. Read them side by side.</div></div>
-  <p class="body">The Olivet Discourse (Matthew 24) and John's Revelation cover overlapping prophetic ground. Jesus described the same tribulation events in narrative form that John later received as apocalyptic vision. These passages are not competing — they are complementary witnesses to the same end-times reality, each adding detail the other does not have.</p>
-
-  <h2 class="section-title">Section 1 — General Tribulation vs. End-Times Judgment</h2>
-  <div class="views-box">
-    <div class="view-item">
-      <div class="view-title">General suffering / 'birth pains'</div>
-      <div class="view-body"><strong>Matt 24:6–8:</strong> "You will hear of wars and rumors of wars... nation against nation, kingdom against kingdom, famines, earthquakes."</div>
-      <div class="view-key"><strong>Rev 6:1–8:</strong> Seals 1–4: Conquest, war, famine, death — power over ¼ of the earth.</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Unparalleled severity — no period like it</div>
-      <div class="view-body"><strong>Matt 24:21:</strong> "There will be great tribulation, such as has not been from the beginning of the world until now, no, and never will be."</div>
-      <div class="view-key"><strong>Rev 6:17; 7:14:</strong> "For the great day of their wrath has come, and who can stand?"</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Time shortened for the elect's sake</div>
-      <div class="view-body"><strong>Matt 24:22:</strong> "If those days had not been cut short, no human being would be saved. But for the sake of the elect those days will be cut short."</div>
-      <div class="view-key"><strong>Rev 7:1–8:</strong> God seals 144,000 from Israel before the next wave of judgment — protection during judgment.</div>
-    </div>
-  </div>
-
-  <h2 class="section-title">Section 2 — False Christs, False Prophets &amp; Spiritual Deception</h2>
-  <div class="views-box">
-    <div class="view-item">
-      <div class="view-title">False Christs appear</div>
-      <div class="view-body"><strong>Matt 24:23:</strong> "If anyone says to you, 'Look, here is the Christ!' or 'There he is!' — do not believe it."</div>
-      <div class="view-key"><strong>Rev 13:7–8:</strong> The Beast exercises authority globally; all whose names are not in the Lamb's book of life worship him.</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Signs &amp; wonders used to deceive</div>
-      <div class="view-body"><strong>Matt 24:24:</strong> "False christs and false prophets will arise and perform great signs and wonders, so as to lead astray, if possible, even the elect."</div>
-      <div class="view-key"><strong>Rev 13:13–14:</strong> The False Prophet "performs great signs, even making fire come down from heaven," deceiving the earth.</div>
-    </div>
-  </div>
-
-  <h2 class="section-title">Section 3 — The Abomination of Desolation / Midpoint Betrayal</h2>
-  <div class="views-box">
-    <div class="view-item">
-      <div class="view-title">The Abomination set up in the Holy Place</div>
-      <div class="view-body"><strong>Matt 24:15:</strong> "When you see the abomination of desolation spoken of by Daniel the prophet, standing in the holy place (let the reader understand)..."</div>
-      <div class="view-key"><strong>Rev 13:14–17:</strong> The Beast sets up his image; the False Prophet causes all to worship it. No one can buy or sell without the mark.</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Israel flees — Great Tribulation begins</div>
-      <div class="view-body"><strong>Matt 24:16–21:</strong> "Then let those who are in Judea flee to the mountains... For then there will be great tribulation."</div>
-      <div class="view-key"><strong>Rev 12:6, 13–17:</strong> The woman (Israel) flees into the wilderness, protected for 1,260 days while the dragon makes war on her offspring.</div>
-    </div>
-  </div>
-
-  <h2 class="section-title">Section 4 — The Seal Judgments (Scroll of Wrath)</h2>
-  <div class="views-box">
-    <div class="view-item">
-      <div class="view-title">Conquest / Antichrist rises</div>
-      <div class="view-body"><strong>Matt 24:5:</strong> "Many will come in my name, saying, 'I am the Christ,' and they will lead many astray."</div>
-      <div class="view-key"><strong>Rev 6:1–2:</strong> Seal 1: White horse — rider goes out "conquering and to conquer." Widely identified as the Antichrist.</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">War, famine, death — death of a quarter</div>
-      <div class="view-body"><strong>Matt 24:6–7:</strong> "Wars and rumors of wars... nation against nation... famines and earthquakes in various places."</div>
-      <div class="view-key"><strong>Rev 6:3–8:</strong> Seals 2–4: Red horse (war), Black horse (famine), Pale horse — power to kill with sword, famine, pestilence, and wild beasts.</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Martyrdom of believers</div>
-      <div class="view-body"><strong>Matt 24:9:</strong> "They will deliver you up to tribulation and put you to death... you will be hated by all nations for my name's sake."</div>
-      <div class="view-key"><strong>Rev 6:9–10:</strong> Seal 5: Souls under the altar cry out — those slain "for the word of God and for the witness they had borne."</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Cosmic signs / terror in the heavens</div>
-      <div class="view-body"><strong>Matt 24:29:</strong> "The sun will be darkened, and the moon will not give its light, and the stars will fall from heaven."</div>
-      <div class="view-key"><strong>Rev 6:12–17:</strong> Seal 6: Great earthquake, sun black as sackcloth, moon like blood, stars fell — "the great day of their wrath has come."</div>
-    </div>
-  </div>
-
-  <h2 class="section-title">Section 5 — The Seven Thunders / Little Scroll (Rev 10)</h2>
-  <div class="views-box">
-    <div class="view-item">
-      <div class="view-title">Sealed mysteries / things hidden until the end</div>
-      <div class="view-body"><strong>Matt 24:36:</strong> "But concerning that day and hour no one knows, not even the angels of heaven, nor the Son, but the Father only." Some things are sealed.</div>
-      <div class="view-key"><strong>Rev 10:4, 7:</strong> "Seal up what the seven thunders have said; do not write it down." The mystery of God is reserved until the 7th trumpet sounds.</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Word of God sweet and bitter</div>
-      <div class="view-body"><strong>Matt 24:13 vs. 24:22:</strong> Jesus' Olivet Discourse brings comfort to believers — sweet — and warning of judgment — bitter. The same Word produces opposite reactions depending on who receives it.</div>
-      <div class="view-key"><strong>Rev 10:9–10:</strong> John eats the little scroll: "sweet as honey in my mouth, but when I had eaten it my stomach was made bitter." Sweet to believers, bitter in judgment to the world.</div>
-    </div>
-  </div>
-
-  <h2 class="section-title">Section 6 — The First Beast (Rev 13) &amp; His Counterfeit Resurrection</h2>
-  <div class="views-box">
-    <div class="view-item">
-      <div class="view-title">Antichrist receives global authority</div>
-      <div class="view-body"><strong>Matt 24:24:</strong> "False christs and false prophets will arise and perform great signs and wonders." — The counterfeit messiah.</div>
-      <div class="view-key"><strong>Rev 13:1–2:</strong> Beast from the sea: ten horns, seven heads, like leopard/bear/lion. Satan gives him "his power and his throne and great authority."</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Counterfeit resurrection / fatal wound healed</div>
-      <div class="view-body"><strong>Matt 24:26:</strong> "If they say to you, 'Look, he is in the wilderness' — do not go out. 'Look, he is in the inner rooms' — do not believe it." Counterfeit appearing of a great one.</div>
-      <div class="view-key"><strong>Rev 13:3–4:</strong> One of the beast's heads has a fatal wound that is healed — the whole earth marvels and follows him. Satan's counterfeit of the resurrection.</div>
-    </div>
-  </div>
-
-  <h2 class="section-title">Section 7 — The Second Coming: Visible, Global, Unmistakable</h2>
-  <div class="views-box">
-    <div class="view-item">
-      <div class="view-title">Return visible to all — lightning from east to west</div>
-      <div class="view-body"><strong>Matt 24:27:</strong> "For as the lightning comes from the east and shines as far as the west, so will be the coming of the Son of Man."</div>
-      <div class="view-key"><strong>Rev 1:7:</strong> "Behold, he is coming with the clouds, and every eye will see him, even those who pierced him, and all tribes of the earth will wail."</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Son of Man coming on the clouds with power and glory</div>
-      <div class="view-body"><strong>Matt 24:30:</strong> "They will see the Son of Man coming on the clouds of heaven with power and great glory."</div>
-      <div class="view-key"><strong>Rev 19:11–14:</strong> Christ appears on a white horse — "Faithful and True... his eyes are like a flame of fire... the armies of heaven were following him."</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Angels gather the elect from the four winds</div>
-      <div class="view-body"><strong>Matt 24:31:</strong> "He will send out his angels with a loud trumpet call, and they will gather his elect from the four winds, from one end of heaven to the other."</div>
-      <div class="view-key"><strong>Rev 11:15:</strong> At the 7th trumpet: "The kingdom of the world has become the kingdom of our Lord and of his Christ, and he shall reign forever and ever."</div>
-    </div>
-  </div>
-
-  <h2 class="section-title">Section 8 — Watchfulness, Readiness &amp; the Faithful Servant</h2>
-  <div class="views-box">
-    <div class="view-item">
-      <div class="view-title">No one knows the hour — be ready</div>
-      <div class="view-body"><strong>Matt 24:36, 42:</strong> "Concerning that day and hour no one knows... Therefore, stay awake, for you do not know on what day your Lord is coming."</div>
-      <div class="view-key"><strong>Rev 16:15:</strong> "Blessed is the one who stays awake, keeping his garments on, that he may not go about naked and be seen exposed!"</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Faithful servant vs. unfaithful — rewards and judgment</div>
-      <div class="view-body"><strong>Matt 24:45–46:</strong> "Who then is the faithful and wise servant, whom his master has set over his household... Blessed is that servant whom his master will find so doing when he comes."</div>
-      <div class="view-key"><strong>Rev 2–3:</strong> Letters to the 7 churches: overcomers receive rewards — the crown of life, authority over nations, the morning star. Those who don't repent face discipline and rejection.</div>
-    </div>
-  </div>
-
-  <div class="reflection-box">
-    <div class="title">🙏 Personal Reflection &amp; Prayer</div>
-    <div class="reflection-item">Reading Matthew 24 and Revelation side by side — what stands out to me as the clearest overlap? Does seeing both accounts strengthen my confidence in the prophetic picture?</div>
-    <div class="reflection-item">The "sweet and bitter" scroll (Rev 10) — in what ways is God's Word sweet to me right now? In what ways does it carry a weight or bitterness I need to sit with honestly?</div>
-    <div class="reflection-item">The counterfeit resurrection of the Beast (Rev 13:3) — what does this tell me about how convincing the Antichrist's deception will be? How does this sharpen my discernment now?</div>
-    <div class="reflection-item">Am I the faithful servant of Matthew 24:45 — actively serving, watching, and ready? Or am I drifting toward the posture of the unfaithful servant who says "my master is delayed"?</div>
-  </div>
-
-  <div class="cross-ref-box">
-    <div class="title">🔗 Cross-References</div>
-    <div class="line">• Module 3 (Day of the Lord) — The seal judgments in Section 4 overlap directly with the Day of the Lord content</div>
-    <div class="line">• Module 7 (The Antichrist) — Sections 2, 3, and 6 detail the Antichrist's profile from both Matthew and Revelation</div>
-    <div class="line">• Module 6 (The Rapture) — Section 7 connects to the Second Coming and the gathering of the elect</div>
-    <div class="line">• Module 11 (False Prophets) — Section 2 shows how both Jesus and John warn about deceptive signs and wonders</div>
-    <div class="line">• Module 8 (The Rebuilt Temple) — Section 3 on the Abomination of Desolation ties directly to the temple module</div>
-  </div>
-
-  <div class="notes-box">
-    <div class="label">✏️ Module 14 — My notes on the Matthew 24 ↔ Revelation parallel:</div>
-    <textarea class="notes-input" id="n-m14" placeholder="Write your convictions here... Date your entry."></textarea>
-  </div>
-</div>
-
 <!-- THEME 2 -->
 <div id="theme2" class="page">
   <span class="page-tag">Theme 2 — Coming Soon</span>
@@ -902,7 +738,7 @@
     <tr><td>4</td><td>3/26/26</td><td>Ezekiel 38–39 continued (partial)</td><td>Scholars debate whether invasion already occurred; nation identification</td></tr>
     <tr><td>5</td><td>3/27/26</td><td>Antichrist &amp; End Times — Audio Teaching</td><td>Day of the Lord; Antichrist profile; not Muslim/not Gog; temple rebuild; signs of the times; false prophets</td></tr>
     <tr><td>6</td><td>3/31/26</td><td>Tribulation &amp; Judgment — Ron Rhodes, The End Times in Chronological Order</td><td>Seal &amp; trumpet judgments (Rev 6–8); Two Witnesses (Rev 11) — camel-hair garments, spiritual revival, fiery response; seals → trumpets → martyrdom intensifies; God sovereign and a God of judgment — J.I. Packer, Knowing God; biblical precedents: Adam &amp; Eve expelled; Noah's flood.</td></tr>
-    <tr><td>7</td><td>4/1/26</td><td>End-Times Tribulation — Audio Teaching (Summary AI)</td><td>Tribulation judgment, seal sequence, Rev 10 little scroll, Beast (Rev 13), false teachers — plus Matt 24 ↔ Rev parallel developed. Key: Rev 7:14; Jer 30:7; Rev 6:1–17; Rev 10:4–10; Rev 13:1–4; Acts 4:12</td></tr>
+    <tr><td>7</td><td></td><td></td><td></td></tr>
     <tr><td>8</td><td></td><td></td><td></td></tr>
     <tr><td>9</td><td></td><td></td><td></td></tr>
     <tr><td>10</td><td></td><td></td><td></td></tr>
@@ -1009,7 +845,7 @@ function show(id, el) {
 
 // Save notes to localStorage so they persist when you reopen the file locally
 const noteIds = [
-  'n-intro','n-m1','n-m2','n-m3','n-m4','n-m5','n-m6','n-m7','n-m8','n-m9','n-m10','n-m11','n-m12','n-m13','n-m14',
+  'n-intro','n-m1','n-m2','n-m3','n-m4','n-m5','n-m6','n-m7','n-m8','n-m9','n-m10','n-m11','n-m12','n-m13',
   'n-theme2','n-theme3','n-journal-new',
   'q-m1-1','q-m1-2','q-m1-3','q-m1-4',
   'q-m3-1','q-m3-2',
@@ -1056,51 +892,30 @@ loadNotes();
     status.textContent = 'Saving...';
     status.style.color = 'rgba(255,255,255,0.7)';
 
-    // Build the version timestamp
-    const now = new Date();
-    const versionStr = 'Version: ' + now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) + ' at ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-
-    // Update what the user sees on screen immediately
-    const ghBarVer = document.getElementById('gh-bar-version');
-    const sidebarVer = document.getElementById('sidebar-version');
-    if (ghBarVer) ghBarVer.textContent = versionStr;
-    if (sidebarVer) sidebarVer.textContent = versionStr;
-
     const owner = 'acshotsprings';
     const repo = 'CampbellBibleStudy';
-    const filePath = 'CampbellBibleStudy.html';
+    const path = 'CampbellBibleStudy.html';
 
     try {
-      // Step 1: Get file from GitHub API (includes sha AND base64 content)
-      const getResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + filePath, {
+      const getResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
         headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
       });
       const getData = await getResp.json();
       const sha = getData.sha;
 
-      // Step 2: Decode the base64 content from the API response
-      let htmlContent = decodeURIComponent(escape(atob(getData.content.replace(/\n/g, ''))));
-
-      // Step 3: Count matches for debugging (shows in console)
-      const matches = (htmlContent.match(/Version: [^<]+/g) || []);
-      console.log('Found ' + matches.length + ' Version strings:', matches);
-
-      // Step 4: Replace all "Version: ..." with the new timestamp
-      htmlContent = htmlContent.replace(/Version: [^<]+/g, versionStr);
-
-      // Step 5: Encode and push back
+      const htmlContent = document.documentElement.outerHTML;
       const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
 
-      const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + filePath, {
+      const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
         method: 'PUT',
         headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: 'Update — ' + versionStr, content: encoded, sha: sha })
+        body: JSON.stringify({ message: 'Update Campbell Bible Study Guide', content: encoded, sha: sha })
       });
 
       if (putResp.ok) {
-        status.textContent = 'Saved! Refresh page to see updated version.';
+        status.textContent = 'Saved to GitHub successfully!';
         status.style.color = '#90EE90';
-        setTimeout(() => { status.textContent = ''; }, 5000);
+        setTimeout(() => { status.textContent = ''; }, 4000);
       } else {
         const err = await putResp.json();
         status.textContent = 'Error: ' + (err.message || 'Unknown error');
@@ -1113,5 +928,7 @@ loadNotes();
   }
 
 </script>
+
+
 
 </body></html>
