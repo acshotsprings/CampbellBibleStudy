@@ -154,7 +154,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <div class="nav-item" onclick="show('intro', this)">Introduction</div>
     <div class="nav-item" onclick="show('index', this)">Thematic Index</div>
     <div class="nav-section">Theme 1 — End Times</div>
-    <div class="nav-item active" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
+    <div class="nav-item" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
     <div class="nav-item" onclick="show('m2', this)">Module 2 — Israel in Prophecy</div>
     <div class="nav-item" onclick="show('m3', this)">Module 3 — Day of the Lord</div>
     <div class="nav-item" onclick="show('m4', this)">Module 4 — The Watchman</div>
@@ -168,7 +168,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <div class="nav-item" onclick="show('m12', this)">Module 12 — The Millennium</div>
     <div class="nav-item" onclick="show('m13', this)">Module 13 — Second Coming</div>
     <div class="nav-item" onclick="show('m14', this)">Module 14 — Matt 24 ↔ Revelation</div>
-    <div class="nav-item" onclick="show('dss-calendar', this)">Dead Sea Scroll Calendar</div>
+    <div class="nav-item active" onclick="show('dss-calendar', this)">Dead Sea Scroll Calendar</div>
     <div class="nav-section">Themes 2–8</div>
     <div class="nav-item" onclick="show('theme2', this)">Theme 2 — Creation &amp; the Fall</div>
     <div class="nav-item" onclick="show('theme3', this)">Theme 3 — Judgment &amp; Mercy</div>
@@ -247,7 +247,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
 
 <!-- MODULE 1 -->
 
-<div id="m1" class="page active">
+<div id="m1" class="page">
   <span class="page-tag">Module 1 — Theme 1: End Times</span>
   <h1 class="page-title">Daniel's 70 Weeks: The Master Timeline</h1>
   <div class="info-box"><div class="title">Read first</div><div class="line">Daniel 9 in full (especially vv. 24–27), Deuteronomy 18:21–22, Isaiah 46:9–10, 2 Peter 1:20–21</div></div>
@@ -859,7 +859,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
 
 <!-- DEAD SEA SCROLL CALENDAR -->
 
-<div id="dss-calendar" class="page">
+<div id="dss-calendar" class="page active">
   <span class="page-tag">Supporting Study</span>
   <h1 class="page-title">The Dead Sea Scroll Calendar</h1>
   <p class="page-subtitle">The Essene Solar Calendar · Prophetic Timing · The Origin of the Modern Jewish Calendar</p>
@@ -1268,4 +1268,5 @@ function insertTimestamp() {
   activeTextarea.focus();
 }
 </script>
+
 </body></html>
