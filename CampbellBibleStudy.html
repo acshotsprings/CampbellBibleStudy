@@ -1162,7 +1162,7 @@ function show(id, el) {
   document.getElementById('main').scrollTop = 0;
   window.scrollTo(0, 0);
 }
-
+let lastFocusedTextarea = null;
 const noteIds = [
   'n-intro','n-m1','n-m2','n-m3','n-m4','n-m5','n-m6','n-m7','n-m8','n-m9','n-m10','n-m11','n-m12','n-m13','n-m14',
   'n-dss-calendar','n-theme2','n-theme3','n-journal-new',
@@ -1242,10 +1242,30 @@ async function saveToGitHub() {
   } catch(e) {
     status.textContent = 'Error: ' + e.message;
     status.style.color = '#FF6B6B';
+}
+}
+
+document.querySelectorAll('textarea.notes-input').forEach(function(ta) {
+  ta.addEventListener('focus', function() { lastFocusedTextarea = ta; });
+});
+
+function insertTimestamp() {
+  var activeTextarea = lastFocusedTextarea;
+  if (!activeTextarea) {
+    alert('Click inside a note field first, then hit New Entry.');
+    return;
   }
+  var now = new Date();
+  var datePart = now.toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  var timePart = now.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit',hour12:true});
+  var block = '\n\n═══════════════════════════════════════════\n📅 ' + datePart + ' at ' + timePart + '\n═══════════════════════════════════════════\n\n';
+  var start = activeTextarea.selectionStart;
+  var before = activeTextarea.value.substring(0, start);
+  var after = activeTextarea.value.substring(start);
+  activeTextarea.value = before + block + after;
+  activeTextarea.setSelectionRange(start + block.length, start + block.length);
+  saveNote(activeTextarea.id);
+  activeTextarea.focus();
 }
 </script>
-
-
-
 </body></html>
