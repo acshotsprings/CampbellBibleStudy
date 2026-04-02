@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module Title — Campbell Bible Study</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<!-- GITHUB BAR -->
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span id="gh-bar-version">Version: April 2, 2026</span>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div id="sidebar"></div>
+
+<!-- MAIN -->
+<div id="app">
+<div id="main">
+
+  <span class="page-tag">Module N — Theme X: Theme Name</span>
+  <h1 class="page-title">Module Title Here</h1>
+  <p class="page-subtitle">Optional subtitle or date</p>
+
+  <div class="info-box">
+    <div class="title">Read first</div>
+    <div class="line">Scripture references to read before starting</div>
+  </div>
+
+  <p class="body">Introduction paragraph...</p>
+
+  <h2 class="section-title">Section Title</h2>
+  <p class="body">Body content...</p>
+
+  <div class="scripture-box">
+    <div class="ref">Reference (NLT)</div>
+    <div class="text">Scripture text...</div>
+  </div>
+
+  <div class="reflection-box">
+    <div class="title">🙏 Reflection &amp; Prayer</div>
+    <div class="reflection-item">Question 1...</div>
+    <div class="reflection-item">Question 2...</div>
+  </div>
+
+  <div class="cross-ref-box">
+    <div class="title">🔗 Cross-References</div>
+    <div class="line">• Reference 1</div>
+    <div class="line">• Reference 2</div>
+  </div>
+
+  <div class="notes-box">
+    <div class="label">✏️ My notes &amp; convictions:</div>
+    <textarea class="notes-input" id="n-PAGEID" placeholder="Write your convictions here... Date your entry."></textarea>
+  </div>
+
+  <!-- Navigation between modules -->
+  <div style="display:flex;justify-content:space-between;margin-top:32px;padding-top:20px;border-top:1px solid #ddd;">
+    <a href="moduleN-1.html" class="btn-primary" style="font-size:12px;">← Previous Module</a>
+    <a href="moduleN+1.html" class="btn-primary" style="font-size:12px;">Next Module →</a>
+  </div>
+
+</div><!-- /#main -->
+</div><!-- /#app -->
+
+<!-- PAGE NOTE IDS — add every textarea/input id on this page -->
+<script>
+  window.PAGE_NOTE_IDS = ['n-PAGEID'];
+</script>
+
+<!-- SCRIPTS -->
+<script src="../assets/js/nav.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>
+  buildSidebar('..');
+</script>
+
+</body>
+</html>
