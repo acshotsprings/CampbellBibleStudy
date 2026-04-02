@@ -236,8 +236,11 @@ function markActivePage() {
 function insertTimestamp() {
   const el = document.getElementById('n-journal-new');
   if (!el) return;
-  const label = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  el.value += `\n--- ${label} ---\n`;
+  const now   = new Date();
+  const date  = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const time  = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  const divider = '─'.repeat(40);
+  el.value += `\n${divider}\n${date} at ${time}\n${divider}\n`;
   el.focus();
   el.scrollTop = el.scrollHeight;
 }
