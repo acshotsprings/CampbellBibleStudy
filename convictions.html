@@ -42,6 +42,11 @@
     <div style="font-size:12px;color:rgba(255,255,255,0.55);font-family:Arial,sans-serif;margin-bottom:12px;">
       Example questions: "What do I actually believe about the rapture?" &nbsp;·&nbsp; "What themes keep showing up in my notes?" &nbsp;·&nbsp; "Where am I still uncertain?" &nbsp;·&nbsp; "Summarize my convictions on Israel"
     </div>
+    <div style="margin-bottom:10px;">
+      <input id="gemini-key" type="password"
+        placeholder="Paste Gemini API key here (saved locally, never shared)"
+        style="width:100%;padding:6px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:white;font-size:12px;font-family:Arial,sans-serif;">
+    </div>
     <div class="ai-input-row">
       <textarea class="ai-prompt-input" id="ai-prompt" placeholder="Ask something about your own convictions..." rows="2"></textarea>
       <button class="ai-btn" id="ai-btn" onclick="askAboutMyNotes()">
@@ -49,7 +54,7 @@
       </button>
     </div>
     <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:8px;font-family:Arial,sans-serif;">
-      💡 Save to GitHub first to make sure your latest notes are included.
+      💡 Save to GitHub first to make sure your latest notes are included. Your Gemini key is saved locally and never shared.
     </div>
   </div>
 
@@ -206,10 +211,22 @@ async function askAboutMyNotes() {
         : '(No notes found. Please write in some note fields first, then either save to GitHub or ask again.)';
     }
 
-    // 2. Call Claude API — context is ONLY the user's own words
-    const systemPrompt = `You are a thoughtful spiritual reflection assistant for a personal Bible study guide called the Campbell Family Master Biblical Study Guide. 
+    // 2. Get Gemini API key
+    const geminiKey = document.getElementById('gemini-key').value.trim()
+      || localStorage.getItem('cbsg-gemini-key');
+    if (!geminiKey) {
+      out.textContent = 'Please paste your Gemini API key in the field above.';
+      box.classList.add('visible');
+      btn.disabled = false;
+      text.textContent = '✨ Ask';
+      return;
+    }
+    localStorage.setItem('cbsg-gemini-key', geminiKey);
 
-Your ONLY job in this conversation is to reflect back and synthesize what the user has personally written in their own study notes. You have been given the complete text of everything they have written — their module notes, journal entries, study question answers, and conviction summaries.
+    // 3. Call Gemini API — context is ONLY the user's own words
+    const systemPrompt = `You are a thoughtful spiritual reflection assistant for a personal Bible study guide called the Campbell Family Master Biblical Study Guide.
+
+Your ONLY job is to reflect back and synthesize what the user has personally written in their own study notes. You have been given the complete text of everything they have written — their module notes, journal entries, study question answers, and conviction summaries.
 
 CRITICAL RULES:
 - Draw ONLY from what the user has written. Do not introduce theological positions, quotes, or ideas that are not already present in their notes.
@@ -219,23 +236,24 @@ CRITICAL RULES:
 - Never be preachy. You are a mirror, not a teacher.
 - Keep responses focused and readable — 2 to 4 paragraphs maximum unless they ask for more detail.`;
 
-    const userMessage = `Here is everything I have personally written in my Bible study notes:\n\n${notesContext}\n\n---\n\nMy question: ${prompt}`;
+    const fullPrompt = `${systemPrompt}\n\nHere is everything I have personally written in my Bible study notes:\n\n${notesContext}\n\n---\n\nMy question: ${prompt}`;
 
-    const apiRes = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userMessage }]
-      })
-    });
+    const apiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: fullPrompt }] }],
+          generationConfig: { maxOutputTokens: 1000, temperature: 0.7 }
+        })
+      }
+    );
 
     const apiData = await apiRes.json();
-    const responseText = apiData.content
-      ? apiData.content.filter(b => b.type === 'text').map(b => b.text).join('\n')
-      : 'Something went wrong. Please try again.';
+    const responseText = apiData.candidates?.[0]?.content?.parts?.[0]?.text
+      || apiData.error?.message
+      || 'Something went wrong. Please try again.';
 
     // Render response
     out.innerHTML = responseText.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
@@ -261,6 +279,12 @@ document.addEventListener('DOMContentLoaded', () => {
         askAboutMyNotes();
       }
     });
+  }
+  // Restore saved Gemini key
+  const savedKey = localStorage.getItem('cbsg-gemini-key');
+  if (savedKey) {
+    const keyEl = document.getElementById('gemini-key');
+    if (keyEl) keyEl.value = savedKey;
   }
 });
 </script>
