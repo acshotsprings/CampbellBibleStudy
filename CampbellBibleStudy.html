@@ -1097,8 +1097,7 @@ const headers = {'Authorization':'token '+token,'Accept':'application/vnd.github
 const base = 'https://api.github.com/repos/'+owner+'/'+repo;
 const fileResp = await fetch(base+'/contents/'+filePath, {headers});
 const fileData = await fileResp.json();
-let html = decodeURIComponent(escape(atob(fileData.content.replace(/
-/g,''))));
+let html = decodeURIComponent(escape(atob(fileData.content.split('\n').join(''))));
 noteIds.forEach(function(id) {
 const el = document.getElementById(id);
 const val = el ? el.value : (localStorage.getItem('cbsg-'+id)||'');
@@ -1162,43 +1161,20 @@ noteIds.forEach(function(id) {
 if (id === 'c-snapshots') return;
 const el = document.getElementById(id);
 const val = (el ? el.value : (localStorage.getItem('cbsg-'+id)||'')).trim();
-if (val) allNotes += '
-
-[' + (labels[id]||id) + ']:
-' + val;
+if (val) allNotes += '\n\n[' + (labels[id]||id) + ']:\n' + val;
 });
 const prevSnaps = snapEl ? snapEl.value.trim() : '';
 if (!allNotes.trim()) { btn.disabled=false; btn.textContent='Generate My Conviction Snapshot'; statusEl.textContent='No notes found yet.'; return; }
 statusEl.textContent='Asking Claude to reflect on your study...';
+const userMsg = 'Here are all my notes:\n' + allNotes + (prevSnaps ? '\n\nPrevious snapshots:\n' + prevSnaps : '') + '\n\nPlease write a conviction snapshot for today.';
+const sysMsg = 'You are helping Chris Campbell track his growing theological convictions. Read his notes and write a conviction snapshot covering what he currently believes, where convictions are settled vs open, any growth since previous snapshots, and one encouraging word about what the Spirit is doing. Second person, warm, 400 words max.';
 try {
-const response = await fetch('https://api.anthropic.com/v1/messages', {
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({
-model:'claude-sonnet-4-20250514',
-max_tokens:1000,
-system:'You are helping Chris Campbell, a sincere believer, track his growing theological convictions. Read his notes and write a conviction snapshot covering: 1) What he currently believes on key topics. 2) Settled convictions vs open questions. 3) Growth since previous snapshots if any. 4) One short encouraging word about what the Spirit is doing. Write in second person, warm and honest, 400 words max.',
-messages:[{role:'user',content:'Here are all my notes:
-'+allNotes+(prevSnaps?'
-
-Previous snapshots:
-'+prevSnaps:'')+'
-
-Please write a conviction snapshot for today.'}]
-})
-});
+const response = await fetch('https://api.anthropic.com/v1/messages', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sysMsg,messages:[{role:'user',content:userMsg}]})});
 const data = await response.json();
 const reflection = data.content && data.content[0] ? data.content[0].text : 'Unable to generate.';
 const now = new Date();
-const line = '===========================================';
-const block = '
-
-'+line+'
-CONVICTION SNAPSHOT - '+now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})+' at '+now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true})+'
-'+line+'
-
-'+reflection+'
-';
+const ln = '===========================================';
+const block = '\n\n'+ln+'\nCONVICTION SNAPSHOT - '+now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})+' at '+now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true})+'\n'+ln+'\n\n'+reflection+'\n';
 if (snapEl) { snapEl.value=(snapEl.value||'')+block; saveNote('c-snapshots'); }
 btn.disabled=false; btn.textContent='Generate My Conviction Snapshot';
 statusEl.textContent='Snapshot added! Scroll down to read it.';
