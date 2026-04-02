@@ -34,11 +34,15 @@
 
   <!-- New entry textarea always at top -->
   <div class="notes-box">
-    <div class="label">✏️ New entry — click "New Entry" above to insert today's date:</div>
-    <textarea class="notes-input" id="n-journal-new" placeholder="Write a new journal entry here..." style="min-height:160px;"></textarea>
+    <div class="label">✏️ New entry — click "New Entry" above to insert today's date and time:</div>
+    <textarea class="notes-input" id="n-journal-new" placeholder="Click 'New Entry' in the top bar to stamp the date and time, then write your entry here..." style="min-height:220px;"></textarea>
   </div>
 
-  <div class="divider"></div>
+  <div style="display:flex;align-items:center;gap:12px;margin:28px 0;">
+    <div style="flex:1;height:2px;background:linear-gradient(to right,#C8A800,transparent);"></div>
+    <div style="font-size:11px;font-weight:bold;color:#7A6600;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;">Past Entries</div>
+    <div style="flex:1;height:2px;background:linear-gradient(to left,#C8A800,transparent);"></div>
+  </div>
 
   <!-- ── MARCH 28, 2026 ── -->
   <div class="journal-box">
