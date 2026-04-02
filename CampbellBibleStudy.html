@@ -135,7 +135,10 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
   <button onclick="saveToGitHub()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
   <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);">Saving...</span>
-  <span id="gh-bar-version" style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: April 2, 2026</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
+  <button onclick="insertTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;">⏰ New Entry</button>
+  <span id="gh-bar-version" style="font-size:11px;color:rgba(255,255,255,0.4);">Version: April 2, 2026</span>
+</div>
 </div>
 <div id="app" style="margin-top:48px;">
 
@@ -1228,7 +1231,7 @@ async function saveToGitHub() {
     });
 
     if (putResp.ok) {
-      status.textContent = 'Saved to GitHub!';
+      status.textContent = '✓ Saved to GitHub — notes are now permanent!';
       status.style.color = '#90EE90';
       setTimeout(() => { status.textContent = ''; }, 5000);
     } else {
