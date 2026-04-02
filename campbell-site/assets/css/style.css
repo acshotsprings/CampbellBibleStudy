@@ -1,0 +1,589 @@
+/* ============================================================
+   CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
+   Shared Stylesheet — v2.0 Multi-Page
+   ============================================================ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Georgia, serif;
+  background: #f8f6f0;
+  color: #222;
+}
+
+/* ── LAYOUT ─────────────────────────────────────────────── */
+
+#app { display: flex; min-height: 100vh; }
+
+#main {
+  margin-left: 260px;
+  flex: 1;
+  padding: 40px 48px;
+  max-width: 960px;
+}
+
+@media (max-width: 768px) {
+  #sidebar { width: 200px; min-width: 200px; }
+  #main { margin-left: 200px; padding: 24px 20px; }
+}
+
+/* ── SIDEBAR ─────────────────────────────────────────────── */
+
+#sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: #1F3864;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+#sidebar-header {
+  padding: 20px 16px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+#sidebar-header h1 {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.5;
+  color: #FFD700;
+}
+
+#sidebar-header p {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+#sidebar-nav { padding-bottom: 24px; }
+
+.nav-section {
+  padding: 12px 16px 4px;
+  font-size: 9px;
+  font-weight: bold;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: Arial, sans-serif;
+}
+
+.nav-item {
+  display: block;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  line-height: 1.4;
+  transition: all 0.15s;
+  font-family: Arial, sans-serif;
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+.nav-item.active {
+  background: rgba(255,255,255,0.12);
+  color: #FFD700;
+  border-left-color: #FFD700;
+  font-weight: bold;
+}
+
+.nav-item.sub {
+  padding-left: 28px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.65);
+}
+
+.nav-item.sub:hover { color: #fff; }
+.nav-item.sub.active { color: #FFD700; }
+
+/* ── GITHUB BAR ──────────────────────────────────────────── */
+
+#github-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: #1F3864;
+  color: white;
+  z-index: 200;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  border-bottom: 2px solid #FFD700;
+}
+
+#github-bar .bar-title {
+  font-weight: bold;
+  color: #FFD700;
+}
+
+#github-bar .bar-sep {
+  color: rgba(255,255,255,0.3);
+}
+
+#gh-token {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.3);
+  font-size: 12px;
+  width: 280px;
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+#gh-token::placeholder { color: rgba(255,255,255,0.5); }
+
+.btn-save {
+  background: #FFD700;
+  color: #1F3864;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-save:hover { background: #e6c200; }
+
+#gh-status {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+}
+
+.bar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+#gh-bar-version {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+}
+
+/* Shift main content below fixed bar */
+#app { margin-top: 48px; }
+
+/* ── TYPOGRAPHY ──────────────────────────────────────────── */
+
+.page-tag {
+  display: inline-block;
+  background: #1F3864;
+  color: #FFD700;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  font-family: Arial, sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+h1.page-title {
+  font-size: 28px;
+  color: #1F3864;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 20px;
+  font-style: italic;
+  font-family: Arial, sans-serif;
+}
+
+h2.section-title {
+  font-size: 18px;
+  color: #1F3864;
+  margin: 28px 0 10px;
+  font-weight: bold;
+  border-bottom: 2px solid #2E75B6;
+  padding-bottom: 6px;
+}
+
+h3.sub-title {
+  font-size: 15px;
+  color: #2E75B6;
+  margin: 18px 0 8px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+}
+
+p.body {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+.divider {
+  height: 1px;
+  background: #ddd;
+  margin: 28px 0;
+}
+
+/* ── BOXES ───────────────────────────────────────────────── */
+
+.scripture-box {
+  background: #FFFDF0;
+  border: 1px solid #C8A800;
+  border-left: 4px solid #C8A800;
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 12px 0;
+}
+
+.scripture-box .ref {
+  font-size: 12px;
+  font-weight: bold;
+  color: #7A6600;
+  margin-bottom: 6px;
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.scripture-box .text {
+  font-size: 14px;
+  color: #444;
+  font-style: italic;
+  line-height: 1.8;
+}
+
+.info-box {
+  background: #EBF4FC;
+  border: 1px solid #2E75B6;
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 12px 0;
+}
+
+.info-box .title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #1F3864;
+  margin-bottom: 8px;
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.info-box .line {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.7;
+  padding: 3px 0;
+  font-family: Arial, sans-serif;
+}
+
+.reflection-box {
+  background: #F4F8EE;
+  border: 1px solid #6B8E3A;
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 12px 0;
+}
+
+.reflection-box .title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #3B5E1A;
+  margin-bottom: 10px;
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.reflection-item {
+  font-size: 13px;
+  color: #444;
+  line-height: 1.7;
+  padding: 6px 0;
+  border-bottom: 1px solid #C8DBA8;
+  font-family: Arial, sans-serif;
+}
+
+.reflection-item:last-child { border-bottom: none; }
+
+.notes-box {
+  background: #FFFBF0;
+  border: 1px solid #C8A800;
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 14px 0;
+}
+
+.notes-box .label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #7A6600;
+  margin-bottom: 8px;
+  font-family: Arial, sans-serif;
+}
+
+textarea.notes-input {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #333;
+  background: #fff;
+  font-family: Georgia, serif;
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.7;
+  margin-top: 4px;
+}
+
+textarea.notes-input:focus {
+  outline: none;
+  border-color: #1F3864;
+  box-shadow: 0 0 0 2px rgba(31,56,100,0.1);
+}
+
+.cross-ref-box {
+  background: #EBF4FC;
+  border: 1px solid #2E75B6;
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 12px 0;
+}
+
+.cross-ref-box .title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #1F3864;
+  margin-bottom: 8px;
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.cross-ref-box .line {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.7;
+  padding: 3px 0;
+  font-family: Arial, sans-serif;
+}
+
+.views-box {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+.view-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.view-item:last-child { border-bottom: none; }
+.view-item:nth-child(even) { background: #fafafa; }
+
+.view-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1F3864;
+  margin-bottom: 4px;
+  font-family: Arial, sans-serif;
+}
+
+.view-body {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+}
+
+.view-key {
+  font-size: 12px;
+  color: #2E75B6;
+  margin-top: 4px;
+  font-style: italic;
+  font-family: Arial, sans-serif;
+}
+
+/* ── TABLES ──────────────────────────────────────────────── */
+
+.checklist-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 12px 0;
+  font-family: Arial, sans-serif;
+}
+
+.checklist-table th {
+  background: #1F3864;
+  color: #fff;
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.checklist-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid #eee;
+  color: #444;
+  vertical-align: top;
+}
+
+.checklist-table tr:nth-child(even) td { background: #f9f9f9; }
+
+.status-fulfilled { color: #2E6B0E; font-weight: bold; }
+.status-progress  { color: #7A4F00; font-weight: bold; }
+.status-notyet    { color: #999; }
+
+.sermon-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 12px 0;
+  font-family: Arial, sans-serif;
+}
+
+.sermon-table th {
+  background: #1F3864;
+  color: #fff;
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.sermon-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid #eee;
+  color: #444;
+  vertical-align: top;
+}
+
+.sermon-table tr:nth-child(even) td { background: #f9f9f9; }
+
+/* ── JOURNAL ─────────────────────────────────────────────── */
+
+.journal-box {
+  background: #FFF8EE;
+  border: 1px solid #C8A800;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+}
+
+.journal-date  { font-size: 16px; font-weight: bold; color: #1F3864; margin-bottom: 3px; }
+.journal-topic { font-size: 13px; color: #7A6600; font-weight: bold; margin-bottom: 2px; font-family: Arial, sans-serif; }
+.journal-cat   { font-size: 12px; color: #3B5E1A; font-style: italic; margin-bottom: 14px; font-family: Arial, sans-serif; }
+.journal-p     { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 10px; }
+
+.journal-qs { margin-top: 12px; padding-top: 12px; border-top: 1px solid #E5C875; }
+
+.journal-qs-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #1F3864;
+  margin-bottom: 8px;
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.journal-q {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+  padding: 4px 0 4px 12px;
+  border-left: 3px solid #C8A800;
+  margin-bottom: 6px;
+  font-family: Arial, sans-serif;
+}
+
+/* ── BULLET LISTS ────────────────────────────────────────── */
+
+ul.bullet-list { margin: 8px 0 12px 20px; }
+
+ul.bullet-list li {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.8;
+  margin-bottom: 4px;
+  font-family: Arial, sans-serif;
+}
+
+/* ── BUTTONS ─────────────────────────────────────────────── */
+
+.btn-primary {
+  background: #1F3864;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 16px;
+  text-decoration: none;
+}
+
+.btn-primary:hover { background: #2E4F8A; }
+
+.btn-print {
+  background: #fff;
+  color: #1F3864;
+  border: 1px solid #1F3864;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  margin-left: 10px;
+}
+
+.btn-print:hover { background: #f0f4ff; }
+
+/* ── COMING SOON ─────────────────────────────────────────── */
+
+.coming-soon {
+  background: #f9f9f9;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 48px 24px;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.coming-soon p {
+  font-size: 15px;
+  color: #999;
+  font-family: Arial, sans-serif;
+}
+
+/* ── PRINT ───────────────────────────────────────────────── */
+
+@media print {
+  #sidebar, #github-bar { display: none; }
+  #main { margin-left: 0; padding: 20px; }
+  .btn-primary, .btn-print { display: none; }
+  textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
+}

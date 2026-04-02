@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Journal — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <button onclick="insertTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;">New Entry</button>
+    <span id="gh-bar-version">Version: April 2, 2026</span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <span class="page-tag">My Study</span>
+  <h1 class="page-title">Personal Reflections &amp; Journal</h1>
+  <p class="body">A space to record observations, convictions, and spiritual insight as they emerge through study and everyday life. Date each entry.</p>
+
+  <!-- New entry textarea always at top -->
+  <div class="notes-box">
+    <div class="label">✏️ New entry — click "New Entry" above to insert today's date:</div>
+    <textarea class="notes-input" id="n-journal-new" placeholder="Write a new journal entry here..." style="min-height:160px;"></textarea>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── MARCH 28, 2026 ── -->
+  <div class="journal-box">
+    <div class="journal-date">March 28, 2026</div>
+    <div class="journal-topic">Topic: Spiritual Deception &amp; the Demonic Realm</div>
+    <div class="journal-cat">Category: Signs of the Times / Spiritual Warfare</div>
+    <div class="journal-p">I came across something today that connected directly to what we've been studying. VP JD Vance made a public statement arguing that unexplained aerial phenomena — the UFO phenomenon that has been in the news for years — may not be extraterrestrial at all, but something from the spiritual realm. He specifically referenced the Christian understanding that evil is real and active, and quoted what felt like a paraphrase of a well-known idea: that one of the devil's greatest tricks is convincing the world he doesn't exist.</div>
+    <div class="journal-p">This strikes me as deeply connected to what we've been studying about deception in the end times. Scripture is clear that the enemy doesn't announce himself — he masquerades. 2 Corinthians 11:14 says that Satan disguises himself as an angel of light. The idea that something supernatural could be repackaged as "extraterrestrial" or "scientific" fits exactly the kind of deception Jesus warned about in Matthew 24. The false signs and wonders of the Antichrist and the False Prophet won't look obviously evil — they will look convincing, maybe even miraculous.</div>
+    <div class="journal-p">What stood out to me is how this connects to the broader cultural moment. If demonic activity can be reframed as a cosmic, non-threatening mystery — something humanity is meant to "discover" and "open up" to — that is exactly the kind of deception the end times framework warns about.</div>
+    <div class="journal-p"><strong>Key scriptures:</strong> 2 Corinthians 11:14, Matthew 24:24, Revelation 13:13–14, Ephesians 6:12. Cross-reference with Module 11 (False Prophets) and Module 10 (Signs of the Times).</div>
+    <div class="journal-qs">
+      <div class="journal-qs-title">Questions to sit with:</div>
+      <div class="journal-q">• How does the enemy disguise evil as wonder or curiosity in our own culture today?</div>
+      <div class="journal-q">• What is the difference between healthy curiosity about the unknown and dangerous spiritual openness?</div>
+      <div class="journal-q">• How do we teach our kids to recognize spiritual deception when it comes dressed as something appealing?</div>
+    </div>
+  </div>
+
+  <!-- ── MARCH 29, 2026 ── -->
+  <div class="journal-box">
+    <div class="journal-date">March 29, 2026</div>
+    <div class="journal-topic">Topic: Grace, Holiness &amp; the Danger of Carnal Christianity</div>
+    <div class="journal-cat">Category: Christian Living / Church Health / End Times Readiness</div>
+    <div class="journal-p">Came across a powerful Facebook post from Pastor Larry Burton today that addresses something increasingly relevant in the end times context — the misuse of grace as a license to continue in sin. His central argument is compelling: Grace isn't a lowered bar — it's a higher one, backed by better resources (the Holy Spirit, the new covenant, Christ's indwelling). Using grace as a license to sin inverts its entire purpose.</div>
+    <div class="journal-p">This connects directly to the end-times framework. Jesus himself warns in Matthew 7:21–23 that He will say to many who did ministry in His name: "I never knew you; depart from me, you workers of iniquity." A church full of people who claim grace but live in sin is completely unprepared for the deception to come. The Antichrist's deception will be most effective against people whose faith is cultural and surface-level rather than genuine and transformed.</div>
+    <div class="journal-p">Pastor Burton's definition of repentance is worth noting: not just feeling sorry, but a change of attitude, behavior, direction, affections, and relationships. Christ is coming for a pure Bride. Five of the seven churches in Revelation are told to repent.</div>
+    <div class="journal-p"><strong>Key scriptures:</strong> Heb 12:14 ("without holiness no man shall see God"), Ezek 18:24, Rom 6:1–2 ("Shall we continue in sin that grace may abound? God forbid!"), Rev 3:5.</div>
+    <div class="journal-qs">
+      <div class="journal-qs-title">Questions to sit with:</div>
+      <div class="journal-q">• Am I using grace as a covering for patterns in my life that I haven't genuinely surrendered?</div>
+      <div class="journal-q">• Ezekiel 18:24 raises the hard question: can a righteous person forfeit their standing through willful, unrepented sin? How do I hold this passage honestly?</div>
+      <div class="journal-q">• What would it look like for our family to be genuinely prepared — spiritually discerning, holy, and watchful — when Christ returns?</div>
+    </div>
+  </div>
+
+  <!-- ── APRIL 1, 2026 ── -->
+  <div class="journal-box">
+    <div class="journal-date">April 1, 2026</div>
+    <div class="journal-topic">Topic: Grace, Truth &amp; Witness in the Last Days</div>
+    <div class="journal-cat">Category: Evangelism / Christian Living / Signs of the Times</div>
+    <div class="journal-p">Came across the Jaden Ivey situation today — the NBA player waived by the Chicago Bulls after publicly calling out the league's Pride Month promotion as "unrighteous." He's clearly sincere in his faith and the biblical convictions he holds are real. Scripture is clear on the subject: Leviticus 18:22, Romans 1:26–27, 1 Corinthians 6:9. The question this raises isn't whether the conviction is biblical — it is — but whether the expression of that conviction was the most effective witness in that moment.</div>
+    <div class="journal-p">Jesus was full of both grace AND truth (John 1:14). Neither one at the expense of the other. He called sin what it was, but he also ate with sinners, healed them, and spoke to them with love before and after correction. The Pharisees had truth without grace. The culture today often pushes grace without truth. Both are distortions.</div>
+    <div class="journal-p">What strikes me most is the cost. This young man lost his career — or at least accelerated its end — over a public statement of faith. That's not nothing. And yet this is exactly what Jesus said would happen: "You will be hated by all for my name's sake." (Matt 10:22)</div>
+    <div class="journal-p"><strong>Key scriptures:</strong> John 1:14, Matthew 10:22, Romans 1:16, Colossians 4:5–6. Cross-reference with Module 11 (False Prophets) and Module 4 (The Watchman).</div>
+    <div class="journal-qs">
+      <div class="journal-qs-title">Questions to sit with:</div>
+      <div class="journal-q">• Where in my own life am I tempted to choose comfort over honest witness?</div>
+      <div class="journal-q">• What does it look like to speak truth with grace — not softening the truth, but not weaponizing it either?</div>
+      <div class="journal-q">• Am I prepared for the cost of faithfulness to increase as culture shifts further from biblical values?</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-journal-new'];</script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+</body>
+</html>

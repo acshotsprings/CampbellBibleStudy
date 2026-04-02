@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sermon & Teaching Log — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span id="gh-bar-version">Version: April 2, 2026</span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <span class="page-tag">My Study</span>
+  <h1 class="page-title">Sermon &amp; Teaching Log</h1>
+  <p class="body">Record of all sermons and audio teachings that have shaped this study. Date each entry. Over time this becomes a personal theological library.</p>
+
+  <table class="sermon-table">
+    <tr>
+      <th style="width:5%">#</th>
+      <th style="width:10%">Date</th>
+      <th style="width:30%">Title / Source</th>
+      <th style="width:55%">Key Topics &amp; Notes</th>
+    </tr>
+    <tr><td>1</td><td>3/22/26</td><td>Imitate Christ's Example — Pastor Matt</td><td>Servanthood and humility</td></tr>
+    <tr><td>2</td><td>3/25/26</td><td>Judgment Seat &amp; Marriage of the Lamb</td><td>Bema Seat, crowns, bride/bridegroom — Rom 14:8–10; 1 Cor 3:11–15; Rev 19:7–9; John 14:1–3</td></tr>
+    <tr><td>3</td><td>3/25/26</td><td>Ezekiel: Invasion &amp; End</td><td>Gog-Magog war (Ezek 38–39); coalition: Russia/Iran/Turkey/Sudan/Libya; Israel at rest precondition</td></tr>
+    <tr><td>4</td><td>3/26/26</td><td>Ezekiel 38–39 continued (partial)</td><td>Scholars debate whether invasion already occurred; nation identification</td></tr>
+    <tr><td>5</td><td>3/27/26</td><td>Antichrist &amp; End Times — Audio Teaching</td><td>Day of the Lord; Antichrist profile; not Muslim/not Gog; temple rebuild; signs of the times; false prophets</td></tr>
+    <tr><td>6</td><td>3/31/26</td><td>Tribulation &amp; Judgment — Ron Rhodes, The End Times in Chronological Order</td><td>Seal &amp; trumpet judgments (Rev 6–8); Two Witnesses (Rev 11); seals → trumpets → martyrdom intensifies; God sovereign and a God of judgment</td></tr>
+    <tr><td>7</td><td>4/1/26</td><td>End-Times Tribulation — Audio Teaching (Summary AI)</td><td>Tribulation judgment, seal sequence, Rev 10 little scroll, Beast (Rev 13), false teachers — plus Matt 24 ↔ Rev parallel developed. Key: Rev 7:14; Jer 30:7; Rev 6:1–17; Rev 10:4–10; Rev 13:1–4; Acts 4:12</td></tr>
+    <tr><td>8</td><td>4/2/26</td><td>Jewish &amp; Essene Calendar History — Audio Teaching Series (Summary AI)</td><td>Jewish calendar development; Hillel II's 4th-century modifications; Pharisee observation-based calendar; Essene 364-day solar calendar; Dead Sea Scrolls evidence; Sons of Light vs. Sons of Darkness; high priest crisis (Yoma 9a); Seleucid Greek calendar; Birkat Hachama 28-year cycle; seven-day week unbroken from creation — integrated into Theme 2, Module 1. Key: Exod 12:1–2; Jubilees 6:36–38; Enoch 72:32; Isa 66:23; Ezek 46:1</td></tr>
+    <tr><td>9</td><td></td><td></td><td></td></tr>
+    <tr><td>10</td><td></td><td></td><td></td></tr>
+    <tr><td>11</td><td></td><td></td><td></td></tr>
+    <tr><td>12</td><td></td><td></td><td></td></tr>
+  </table>
+
+  <div class="notes-box">
+    <div class="label">✏️ Teaching notes — overflow &amp; observations:</div>
+    <textarea class="notes-input" id="n-sermons" placeholder="Additional notes, things to follow up on..."></textarea>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-sermons'];</script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+</body>
+</html>
