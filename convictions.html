@@ -16,6 +16,7 @@
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
   <span id="gh-status"></span>
   <div class="bar-right">
+    <button onclick="insertConvictionTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;">New Entry</button>
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
     <span id="gh-bar-version">Version: April 2, 2026</span>
@@ -287,6 +288,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (keyEl) keyEl.value = savedKey;
   }
 });
+
+function insertConvictionTimestamp() {
+  // Stamps into the snapshots field — the natural home for dated conviction entries
+  const el = document.getElementById('c-snapshots');
+  if (!el) return;
+  const now   = new Date();
+  const date  = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const time  = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  const divider = '─'.repeat(40);
+  el.value += `\n${divider}\n${date} at ${time}\n${divider}\n`;
+  el.focus();
+  el.scrollTop = el.scrollHeight;
+  // Scroll the page down to the snapshots field so user sees it
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
 </script>
 
 </body>
