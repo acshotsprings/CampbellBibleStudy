@@ -1,4 +1,6 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Campbell Family Master Biblical Study Guide</title>
@@ -12,20 +14,17 @@
   <span class="bar-sep">|</span>
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
-  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Fetching current file SHA...</span>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status"></span>
   <div class="bar-right">
+    <span class="bar-originated">Originated: March 30, 2026</span>
+    <span class="bar-sep">|</span>
     <span id="gh-bar-version">Version: April 2, 2026</span>
   </div>
 </div>
 
 <!-- SIDEBAR -->
-<div id="sidebar">
-    <div id="sidebar-header">
-      <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 2, 2026</p>
-    </div>
-    <div id="sidebar-nav">
-  <div class="nav-section">Getting Started</div><a class="nav-item" href="./index.html#intro">Introduction</a><a class="nav-item" href="./index.html#index">Thematic Index</a><div class="nav-section">Theme 1 — End Times</div><a class="nav-item" href="./theme1/module1.html">Module 1 — Daniel's 70 Weeks</a><a class="nav-item" href="./theme1/module2.html">Module 2 — Israel in Prophecy</a><a class="nav-item" href="./theme1/module3.html">Module 3 — Day of the Lord</a><a class="nav-item" href="./theme1/module4.html">Module 4 — The Watchman</a><a class="nav-item" href="./theme1/module5.html">Module 5 — The New Covenant</a><a class="nav-item" href="./theme1/module6.html">Module 6 — The Rapture</a><a class="nav-item" href="./theme1/module7.html">Module 7 — The Antichrist</a><a class="nav-item" href="./theme1/module8.html">Module 8 — The Rebuilt Temple</a><a class="nav-item" href="./theme1/module9.html">Module 9 — Gog-Magog War</a><a class="nav-item" href="./theme1/module10.html">Module 10 — Signs of the Times</a><a class="nav-item" href="./theme1/module11.html">Module 11 — False Prophets</a><a class="nav-item" href="./theme1/module12.html">Module 12 — The Millennium</a><a class="nav-item" href="./theme1/module13.html">Module 13 — Second Coming</a><a class="nav-item" href="./theme1/module14.html">Module 14 — Matt 24 ↔ Revelation</a><a class="nav-item" href="./theme1/module15.html">Module 15 — Armageddon</a><div class="nav-section">Theme 2 — Biblical Calendar</div><a class="nav-item" href="./theme2/index.html">Theme 2 Overview</a><a class="nav-item sub" href="./theme2/module1.html">↳ Module 1 — Calendar History</a><div class="nav-section">Theme 3 — Judgment &amp; Mercy</div><a class="nav-item" href="./theme3/index.html">Theme 3 Overview</a><div class="nav-section">Themes 4–8</div><a class="nav-item" href="./index.html#themes48">Themes 4–8 (Coming Soon)</a><div class="nav-section">My Study</div><a class="nav-item" href="./sermons.html">Sermon &amp; Teaching Log</a><a class="nav-item" href="./journal.html">Personal Journal</a><a class="nav-item" href="./convictions.html">My Growing Convictions</a></div></div>
+<div id="sidebar"></div>
 
 <!-- MAIN -->
 <div id="app">
@@ -170,6 +169,5 @@
   buildSidebar('.');
 </script>
 
-
-
-</body></html>
+</body>
+</html>
