@@ -2,130 +2,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Campbell Family Master Biblical Study Guide</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Georgia, serif; background: #f8f6f0; color: #222; }
-  #app { display: flex; min-height: 100vh; }
-
-/* SIDEBAR */
-#sidebar {
-width: 260px; min-width: 260px; background: #1F3864; color: #fff;
-position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto;
-z-index: 100; display: flex; flex-direction: column;
-}
-#sidebar-header { padding: 20px 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.15); }
-#sidebar-header h1 { font-size: 14px; font-weight: bold; line-height: 1.5; color: #FFD700; }
-#sidebar-header p { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; font-style: italic; }
-.nav-section { padding: 12px 16px 4px; font-size: 9px; font-weight: bold; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.1em; }
-.nav-item { padding: 8px 16px; font-size: 12px; color: rgba(255,255,255,0.8); cursor: pointer; border-left: 3px solid transparent; line-height: 1.4; transition: all 0.15s; font-family: Arial, sans-serif; }
-.nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
-.nav-item.active { background: rgba(255,255,255,0.12); color: #FFD700; border-left-color: #FFD700; font-weight: bold; }
-
-/* MAIN */
-#main { margin-left: 260px; flex: 1; padding: 40px 48px; max-width: 960px; }
-.page { display: none; }
-.page.active { display: block; }
-
-/* TYPOGRAPHY */
-.page-tag { display: inline-block; background: #1F3864; color: #FFD700; font-size: 10px; font-weight: bold; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; font-family: Arial, sans-serif; letter-spacing: 0.05em; text-transform: uppercase; }
-h1.page-title { font-size: 28px; color: #1F3864; margin-bottom: 6px; font-weight: bold; }
-.page-subtitle { font-size: 13px; color: #888; margin-bottom: 20px; font-style: italic; font-family: Arial, sans-serif; }
-h2.section-title { font-size: 18px; color: #1F3864; margin: 28px 0 10px; font-weight: bold; border-bottom: 2px solid #2E75B6; padding-bottom: 6px; }
-h3.sub-title { font-size: 15px; color: #2E75B6; margin: 18px 0 8px; font-weight: bold; font-family: Arial, sans-serif; }
-p.body { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 12px; }
-.divider { height: 1px; background: #ddd; margin: 28px 0; }
-
-/* BOXES */
-.scripture-box { background: #FFFDF0; border: 1px solid #C8A800; border-left: 4px solid #C8A800; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
-.scripture-box .ref { font-size: 12px; font-weight: bold; color: #7A6600; margin-bottom: 6px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
-.scripture-box .text { font-size: 14px; color: #444; font-style: italic; line-height: 1.8; }
-
-.info-box { background: #EBF4FC; border: 1px solid #2E75B6; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
-.info-box .title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
-.info-box .line { font-size: 13px; color: #333; line-height: 1.7; padding: 3px 0; font-family: Arial, sans-serif; }
-
-.reflection-box { background: #F4F8EE; border: 1px solid #6B8E3A; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
-.reflection-box .title { font-size: 12px; font-weight: bold; color: #3B5E1A; margin-bottom: 10px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
-.reflection-item { font-size: 13px; color: #444; line-height: 1.7; padding: 6px 0; border-bottom: 1px solid #C8DBA8; font-family: Arial, sans-serif; }
-.reflection-item:last-child { border-bottom: none; }
-
-.notes-box { background: #FFFBF0; border: 1px solid #C8A800; border-radius: 6px; padding: 14px 16px; margin: 14px 0; }
-.notes-box .label { font-size: 12px; font-weight: bold; color: #7A6600; margin-bottom: 8px; font-family: Arial, sans-serif; }
-textarea.notes-input { width: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 10px 12px; font-size: 13px; color: #333; background: #fff; font-family: Georgia, serif; resize: vertical; min-height: 100px; line-height: 1.7; margin-top: 4px; }
-textarea.notes-input:focus { outline: none; border-color: #1F3864; box-shadow: 0 0 0 2px rgba(31,56,100,0.1); }
-
-.study-q-box { background: #F5F5F5; border: 1px solid #ddd; border-radius: 6px; padding: 16px 18px; margin: 12px 0; }
-.study-q { font-size: 13px; color: #333; line-height: 1.7; margin-bottom: 6px; font-family: Arial, sans-serif; font-weight: bold; }
-.study-q-input { width: 100%; border: none; border-bottom: 1px solid #bbb; padding: 6px 0; font-size: 13px; color: #222; background: transparent; font-family: Georgia, serif; margin-bottom: 16px; }
-.study-q-input:focus { outline: none; border-bottom-color: #1F3864; }
-
-.views-box { border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin: 12px 0; }
-.view-item { padding: 12px 16px; border-bottom: 1px solid #eee; }
-.view-item:last-child { border-bottom: none; }
-.view-item:nth-child(even) { background: #fafafa; }
-.view-title { font-size: 14px; font-weight: bold; color: #1F3864; margin-bottom: 4px; font-family: Arial, sans-serif; }
-.view-body { font-size: 13px; color: #555; line-height: 1.7; }
-.view-key { font-size: 12px; color: #2E75B6; margin-top: 4px; font-style: italic; font-family: Arial, sans-serif; }
-
-.cross-ref-box { background: #EBF4FC; border: 1px solid #2E75B6; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
-.cross-ref-box .title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; }
-.cross-ref-box .line { font-size: 13px; color: #333; line-height: 1.7; padding: 3px 0; font-family: Arial, sans-serif; }
-
-/* TABLES */
-.checklist-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; font-family: Arial, sans-serif; }
-.checklist-table th { background: #1F3864; color: #fff; padding: 10px 12px; text-align: left; font-weight: bold; font-size: 12px; }
-.checklist-table td { padding: 9px 12px; border-bottom: 1px solid #eee; color: #444; vertical-align: top; }
-.checklist-table tr:nth-child(even) td { background: #f9f9f9; }
-.checklist-table td:last-child { min-width: 120px; }
-.status-fulfilled { color: #2E6B0E; font-weight: bold; }
-.status-progress { color: #7A4F00; font-weight: bold; }
-.status-notyet { color: #999; }
-
-.sermon-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; font-family: Arial, sans-serif; }
-.sermon-table th { background: #1F3864; color: #fff; padding: 10px 12px; text-align: left; font-weight: bold; font-size: 12px; }
-.sermon-table td { padding: 9px 12px; border-bottom: 1px solid #eee; color: #444; vertical-align: top; }
-.sermon-table tr:nth-child(even) td { background: #f9f9f9; }
-
-/* JOURNAL */
-.journal-box { background: #FFF8EE; border: 1px solid #C8A800; border-radius: 8px; padding: 20px; margin: 16px 0; }
-.journal-date { font-size: 16px; font-weight: bold; color: #1F3864; margin-bottom: 3px; }
-.journal-topic { font-size: 13px; color: #7A6600; font-weight: bold; margin-bottom: 2px; font-family: Arial, sans-serif; }
-.journal-cat { font-size: 12px; color: #3B5E1A; font-style: italic; margin-bottom: 14px; font-family: Arial, sans-serif; }
-.journal-p { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 10px; }
-.journal-qs { margin-top: 12px; padding-top: 12px; border-top: 1px solid #E5C875; }
-.journal-qs-title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; }
-.journal-q { font-size: 13px; color: #555; line-height: 1.7; padding: 4px 0 4px 12px; border-left: 3px solid #C8A800; margin-bottom: 6px; font-family: Arial, sans-serif; }
-
-/* BUTTONS */
-.btn-primary { background: #1F3864; color: #fff; border: none; border-radius: 6px; padding: 10px 20px; font-size: 13px; cursor: pointer; font-family: Arial, sans-serif; font-weight: bold; display: inline-block; margin-top: 16px; }
-.btn-primary:hover { background: #2E4F8A; }
-.btn-print { background: #fff; color: #1F3864; border: 1px solid #1F3864; border-radius: 6px; padding: 8px 16px; font-size: 12px; cursor: pointer; font-family: Arial, sans-serif; margin-left: 10px; }
-.btn-print:hover { background: #f0f4ff; }
-
-/* COMING SOON */
-.coming-soon { background: #f9f9f9; border: 2px dashed #ccc; border-radius: 8px; padding: 48px 24px; text-align: center; margin: 20px 0; }
-.coming-soon p { font-size: 15px; color: #999; font-family: Arial, sans-serif; }
-
-/* BULLET LISTS */
-ul.bullet-list { margin: 8px 0 12px 20px; }
-ul.bullet-list li { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 4px; font-family: Arial, sans-serif; }
-
-/* PRINT */
-@media print {
-#sidebar { display: none; }
-#main { margin-left: 0; padding: 20px; }
-.btn-primary, .btn-print { display: none; }
-.page { display: block !important; page-break-before: always; }
-.page:first-of-type { page-break-before: avoid; }
-textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-#sidebar { width: 200px; min-width: 200px; }
-#main { margin-left: 200px; padding: 24px 20px; }
-}
-</style>
+<style> *{box-sizing:border-box;margin:0;padding:0;}body{font-family:Georgia,serif;background:#f8f6f0;color:#222;}#app{display:flex;min-height:100vh;}#sidebar{width:260px;min-width:260px;background:#1F3864;color:#fff;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;display:flex;flex-direction:column;}#sidebar-header{padding:20px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.15);}#sidebar-header h1{font-size:14px;font-weight:bold;line-height:1.5;color:#FFD700;}#sidebar-header p{font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-style:italic;}.nav-section{padding:12px 16px 4px;font-size:9px;font-weight:bold;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.1em;}.nav-item{padding:8px 16px;font-size:12px;color:rgba(255,255,255,0.8);cursor:pointer;border-left:3px solid transparent;line-height:1.4;transition:all 0.15s;font-family:Arial,sans-serif;}.nav-item:hover{background:rgba(255,255,255,0.08);color:#fff;}.nav-item.active{background:rgba(255,255,255,0.12);color:#FFD700;border-left-color:#FFD700;font-weight:bold;}#main{margin-left:260px;flex:1;padding:40px 48px;max-width:960px;}.page{display:none;}.page.active{display:block;}.page-tag{display:inline-block;background:#1F3864;color:#FFD700;font-size:10px;font-weight:bold;padding:3px 10px;border-radius:20px;margin-bottom:10px;font-family:Arial,sans-serif;letter-spacing:0.05em;text-transform:uppercase;}h1.page-title{font-size:28px;color:#1F3864;margin-bottom:6px;font-weight:bold;}.page-subtitle{font-size:13px;color:#888;margin-bottom:20px;font-style:italic;font-family:Arial,sans-serif;}h2.section-title{font-size:18px;color:#1F3864;margin:28px 0 10px;font-weight:bold;border-bottom:2px solid #2E75B6;padding-bottom:6px;}h3.sub-title{font-size:15px;color:#2E75B6;margin:18px 0 8px;font-weight:bold;font-family:Arial,sans-serif;}p.body{font-size:14px;color:#444;line-height:1.8;margin-bottom:12px;}.divider{height:1px;background:#ddd;margin:28px 0;}.scripture-box{background:#FFFDF0;border:1px solid #C8A800;border-left:4px solid #C8A800;border-radius:6px;padding:14px 16px;margin:12px 0;}.scripture-box .ref{font-size:12px;font-weight:bold;color:#7A6600;margin-bottom:6px;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.05em;}.scripture-box .text{font-size:14px;color:#444;font-style:italic;line-height:1.8;}.info-box{background:#EBF4FC;border:1px solid #2E75B6;border-radius:6px;padding:14px 16px;margin:12px 0;}.info-box .title{font-size:12px;font-weight:bold;color:#1F3864;margin-bottom:8px;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.05em;}.info-box .line{font-size:13px;color:#333;line-height:1.7;padding:3px 0;font-family:Arial,sans-serif;}.reflection-box{background:#F4F8EE;border:1px solid #6B8E3A;border-radius:6px;padding:14px 16px;margin:12px 0;}.reflection-box .title{font-size:12px;font-weight:bold;color:#3B5E1A;margin-bottom:10px;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.05em;}.reflection-item{font-size:13px;color:#444;line-height:1.7;padding:6px 0;border-bottom:1px solid #C8DBA8;font-family:Arial,sans-serif;}.reflection-item:last-child{border-bottom:none;}.notes-box{background:#FFFBF0;border:1px solid #C8A800;border-radius:6px;padding:14px 16px;margin:14px 0;}.notes-box .label{font-size:12px;font-weight:bold;color:#7A6600;margin-bottom:8px;font-family:Arial,sans-serif;}textarea.notes-input{width:100%;border:1px solid #ddd;border-radius:4px;padding:10px 12px;font-size:13px;color:#333;background:#fff;font-family:Georgia,serif;resize:vertical;min-height:100px;line-height:1.7;margin-top:4px;}textarea.notes-input:focus{outline:none;border-color:#1F3864;box-shadow:0 0 0 2px rgba(31,56,100,0.1);}.study-q-box{background:#F5F5F5;border:1px solid #ddd;border-radius:6px;padding:16px 18px;margin:12px 0;}.study-q{font-size:13px;color:#333;line-height:1.7;margin-bottom:6px;font-family:Arial,sans-serif;font-weight:bold;}.study-q-input{width:100%;border:none;border-bottom:1px solid #bbb;padding:6px 0;font-size:13px;color:#222;background:transparent;font-family:Georgia,serif;margin-bottom:16px;}.study-q-input:focus{outline:none;border-bottom-color:#1F3864;}.views-box{border:1px solid #ccc;border-radius:6px;overflow:hidden;margin:12px 0;}.view-item{padding:12px 16px;border-bottom:1px solid #eee;}.view-item:last-child{border-bottom:none;}.view-item:nth-child(even){background:#fafafa;}.view-title{font-size:14px;font-weight:bold;color:#1F3864;margin-bottom:4px;font-family:Arial,sans-serif;}.view-body{font-size:13px;color:#555;line-height:1.7;}.view-key{font-size:12px;color:#2E75B6;margin-top:4px;font-style:italic;font-family:Arial,sans-serif;}.cross-ref-box{background:#EBF4FC;border:1px solid #2E75B6;border-radius:6px;padding:14px 16px;margin:12px 0;}.cross-ref-box .title{font-size:12px;font-weight:bold;color:#1F3864;margin-bottom:8px;font-family:Arial,sans-serif;text-transform:uppercase;}.cross-ref-box .line{font-size:13px;color:#333;line-height:1.7;padding:3px 0;font-family:Arial,sans-serif;}.checklist-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0;font-family:Arial,sans-serif;}.checklist-table th{background:#1F3864;color:#fff;padding:10px 12px;text-align:left;font-weight:bold;font-size:12px;}.checklist-table td{padding:9px 12px;border-bottom:1px solid #eee;color:#444;vertical-align:top;}.checklist-table tr:nth-child(even) td{background:#f9f9f9;}.checklist-table td:last-child{min-width:120px;}.status-fulfilled{color:#2E6B0E;font-weight:bold;}.status-progress{color:#7A4F00;font-weight:bold;}.status-notyet{color:#999;}.sermon-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0;font-family:Arial,sans-serif;}.sermon-table th{background:#1F3864;color:#fff;padding:10px 12px;text-align:left;font-weight:bold;font-size:12px;}.sermon-table td{padding:9px 12px;border-bottom:1px solid #eee;color:#444;vertical-align:top;}.sermon-table tr:nth-child(even) td{background:#f9f9f9;}.journal-box{background:#FFF8EE;border:1px solid #C8A800;border-radius:8px;padding:20px;margin:16px 0;}.journal-date{font-size:16px;font-weight:bold;color:#1F3864;margin-bottom:3px;}.journal-topic{font-size:13px;color:#7A6600;font-weight:bold;margin-bottom:2px;font-family:Arial,sans-serif;}.journal-cat{font-size:12px;color:#3B5E1A;font-style:italic;margin-bottom:14px;font-family:Arial,sans-serif;}.journal-p{font-size:14px;color:#444;line-height:1.8;margin-bottom:10px;}.journal-qs{margin-top:12px;padding-top:12px;border-top:1px solid #E5C875;}.journal-qs-title{font-size:12px;font-weight:bold;color:#1F3864;margin-bottom:8px;font-family:Arial,sans-serif;text-transform:uppercase;}.journal-q{font-size:13px;color:#555;line-height:1.7;padding:4px 0 4px 12px;border-left:3px solid #C8A800;margin-bottom:6px;font-family:Arial,sans-serif;}.btn-primary{background:#1F3864;color:#fff;border:none;border-radius:6px;padding:10px 20px;font-size:13px;cursor:pointer;font-family:Arial,sans-serif;font-weight:bold;display:inline-block;margin-top:16px;}.btn-primary:hover{background:#2E4F8A;}.btn-print{background:#fff;color:#1F3864;border:1px solid #1F3864;border-radius:6px;padding:8px 16px;font-size:12px;cursor:pointer;font-family:Arial,sans-serif;margin-left:10px;}.btn-print:hover{background:#f0f4ff;}.coming-soon{background:#f9f9f9;border:2px dashed #ccc;border-radius:8px;padding:48px 24px;text-align:center;margin:20px 0;}.coming-soon p{font-size:15px;color:#999;font-family:Arial,sans-serif;}ul.bullet-list{margin:8px 0 12px 20px;}ul.bullet-list li{font-size:14px;color:#444;line-height:1.8;margin-bottom:4px;font-family:Arial,sans-serif;}@media print{#sidebar{display:none;}#main{margin-left:0;padding:20px;}.btn-primary,.btn-print{display:none;}.page{display:block !important;page-break-before:always;}.page:first-of-type{page-break-before:avoid;}textarea.notes-input{border:1px solid #ccc;min-height:60px;}}@media (max-width:768px){#sidebar{width:200px;min-width:200px;}#main{margin-left:200px;padding:24px 20px;}}</style>
 
 </head>
 <body>
@@ -138,9 +15,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
   <span id="gh-bar-version" style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: April 1, 2026</span>
 </div>
 <div id="app" style="margin-top:48px;">
-
-<!-- SIDEBAR -->
-
 <div id="sidebar">
   <div id="sidebar-header">
     <h1>Campbell Family<br>Biblical Study Guide</h1>
@@ -175,13 +49,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <div class="nav-item" onclick="show('convictions', this)">My Growing Convictions</div>
   </div>
 </div>
-
-<!-- MAIN CONTENT -->
-
 <div id="main">
-
-<!-- INTRO -->
-
 <div id="intro" class="page">
   <span class="page-tag">Introduction</span>
   <h1 class="page-title">Campbell Family Master Biblical Study Guide</h1>
@@ -210,9 +78,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
   </div>
   <button class="btn-print" onclick="window.print()">🖨️ Print this page</button>
 </div>
-
-<!-- INDEX -->
-
 <div id="index" class="page">
   <span class="page-tag">Thematic Index</span>
   <h1 class="page-title">How This Guide Is Organized</h1>
@@ -239,9 +104,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <div class="line">The Messiah promised (Isa 7:14; 9:6; 53) ↔ Fulfilled in the Gospels ↔ Coming again in Revelation 19</div>
   </div>
 </div>
-
-<!-- MODULE 1 -->
-
 <div id="m1" class="page">
   <span class="page-tag">Module 1 — Theme 1: End Times</span>
   <h1 class="page-title">Daniel's 70 Weeks: The Master Timeline</h1>
@@ -295,9 +157,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <div class="line">• Theme 5: The Messiah — The double-fulfillment principle is most clearly seen in Messianic prophecy</div>
   </div>
 </div>
-
-<!-- MODULE 2 -->
-
 <div id="m2" class="page">
   <span class="page-tag">Module 2 — Theme 1: End Times</span>
   <h1 class="page-title">Israel in Prophecy</h1>
@@ -324,9 +183,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-m2" placeholder="Write your convictions here... Date your entry."></textarea>
   </div>
 </div>
-
-<!-- MODULE 3 -->
-
 <div id="m3" class="page">
   <span class="page-tag">Module 3 — Theme 1: End Times</span>
   <h1 class="page-title">The Day of the Lord</h1>
@@ -350,9 +206,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-m3" placeholder="Write your thoughts here..."></textarea>
   </div>
 </div>
-
-<!-- MODULE 4 -->
-
 <div id="m4" class="page">
   <span class="page-tag">Module 4 — Theme 1: End Times</span>
   <h1 class="page-title">Ezekiel 33: The Watchman Principle</h1>
@@ -379,9 +232,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-m4" placeholder="Write your convictions here..."></textarea>
   </div>
 </div>
-
-<!-- MODULE 5 -->
-
 <div id="m5" class="page">
   <span class="page-tag">Module 5 — Theme 1: End Times</span>
   <h1 class="page-title">Ezekiel 36: The New Covenant</h1>
@@ -405,9 +255,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-m5" placeholder="Write your convictions here..."></textarea>
   </div>
 </div>
-
-<!-- MODULE 6 -->
-
 <div id="m6" class="page">
   <span class="page-tag">Module 6 — Theme 1: End Times</span>
   <h1 class="page-title">The Rapture: Scripture &amp; Honest Inquiry</h1>
@@ -444,9 +291,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-m6" placeholder="Write your convictions here... Date your entry."></textarea>
   </div>
 </div>
-
-<!-- MODULE 7 -->
-
 <div id="m7" class="page">
   <span class="page-tag">Module 7 — Theme 1: End Times</span>
   <h1 class="page-title">The Antichrist</h1>
@@ -471,9 +315,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-m7" placeholder="Write your thoughts here..."></textarea>
   </div>
 </div>
-
-<!-- MODULE 8 -->
-
 <div id="m8" class="page">
   <span class="page-tag">Module 8 — Theme 1: End Times</span>
   <h1 class="page-title">The Rebuilt Temple &amp; Abomination of Desolation</h1>
@@ -500,9 +341,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-m8" placeholder="Write your thoughts here..."></textarea>
   </div>
 </div>
-
-<!-- MODULE 9 -->
-
 <div id="m9" class="page">
   <span class="page-tag">Module 9 — Theme 1: End Times</span>
   <h1 class="page-title">Ezekiel 38–39: The Gog-Magog War</h1>
@@ -539,9 +377,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-m9" placeholder="Write your convictions here..."></textarea>
   </div>
 </div>
-
-<!-- MODULE 10 -->
-
 <div id="m10" class="page">
   <span class="page-tag">Module 10 — Theme 1: End Times</span>
   <h1 class="page-title">Signs of the Times</h1>
@@ -574,9 +409,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-m10" placeholder="Write your thoughts here..."></textarea>
   </div>
 </div>
-
-<!-- MODULE 11 -->
-
 <div id="m11" class="page">
   <span class="page-tag">Module 11 — Theme 1: End Times</span>
   <h1 class="page-title">Identifying False Prophets</h1>
@@ -610,9 +442,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-m11" placeholder="Write your thoughts here..."></textarea>
   </div>
 </div>
-
-<!-- MODULE 12 -->
-
 <div id="m12" class="page">
   <span class="page-tag">Module 12 — Theme 1: End Times</span>
   <h1 class="page-title">The Millennial Kingdom</h1>
@@ -640,9 +469,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-m12" placeholder="Write your convictions here... Date your entry."></textarea>
   </div>
 </div>
-
-<!-- MODULE 13 -->
-
 <div id="m13" class="page">
   <span class="page-tag">Module 13 — Theme 1: End Times</span>
   <h1 class="page-title">Second Coming, Eternity &amp; Living Now</h1>
@@ -685,9 +511,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-m13" placeholder="Write your convictions here... Date your entry."></textarea>
   </div>
 </div>
-
-<!-- MODULE 14 -->
-
 <div id="m14" class="page">
   <span class="page-tag">Module 14 — Theme 1: End Times</span>
   <h1 class="page-title">Matthew 24 ↔ Revelation: Side-by-Side Parallel</h1>
@@ -850,9 +673,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-m14" placeholder="Write your convictions here... Date your entry."></textarea>
   </div>
 </div>
-
-<!-- THEME 2 -->
-
 <div id="theme2" class="page">
   <span class="page-tag">Theme 2 — Coming Soon</span>
   <h1 class="page-title">Creation &amp; the Fall</h1>
@@ -870,9 +690,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-theme2" placeholder="Write your thoughts here..."></textarea>
   </div>
 </div>
-
-<!-- THEME 3 -->
-
 <div id="theme3" class="page">
   <span class="page-tag">Theme 3 — Coming Soon</span>
   <h1 class="page-title">Judgment &amp; Mercy: Noah's Ark</h1>
@@ -895,9 +712,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-theme3" placeholder="Write your thoughts here..."></textarea>
   </div>
 </div>
-
-<!-- THEMES 4-8 -->
-
 <div id="themes48" class="page">
   <span class="page-tag">Themes 4–8 — Coming Soon</span>
   <h1 class="page-title">Future Themes</h1>
@@ -911,9 +725,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <div class="line"><strong>Theme 8: Prayer &amp; Intimacy with God</strong> — The biblical theology of prayer, with examples and reflection</div>
   </div>
 </div>
-
-<!-- SERMONS -->
-
 <div id="sermons" class="page">
   <span class="page-tag">My Study</span>
   <h1 class="page-title">Sermon &amp; Teaching Log</h1>
@@ -932,9 +743,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <tr><td>10</td><td></td><td></td><td></td></tr>
   </tbody></table>
 </div>
-
-<!-- JOURNAL -->
-
 <div id="journal" class="page active">
   <span class="page-tag">My Study</span>
   <h1 class="page-title">Personal Reflections &amp; Journal</h1>
@@ -996,9 +804,6 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <textarea class="notes-input" id="n-journal-new" style="min-height:200px" placeholder="Date: ___________&#10;Topic: ___________&#10;Category: ___________&#10;&#10;Write your reflection here...&#10;"></textarea>
   </div>
 </div>
-
-<!-- CONVICTIONS -->
-
 <div id="convictions" class="page">
   <span class="page-tag">My Study</span>
   <h1 class="page-title">My Growing Convictions</h1>
@@ -1045,171 +850,179 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
 
 <script>
 function show(id, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const page = document.getElementById(id);
-  if (page) page.classList.add('active');
-  if (el) el.classList.add('active');
-  document.getElementById('main').scrollTop = 0;
-  window.scrollTo(0, 0);
+document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+const page = document.getElementById(id);
+if (page) page.classList.add('active');
+if (el) el.classList.add('active');
+document.getElementById('main').scrollTop = 0;
+window.scrollTo(0, 0);
 }
-
 const noteIds = [
-  'n-intro','n-m1','n-m2','n-m3','n-m4','n-m5','n-m6','n-m7','n-m8','n-m9','n-m10','n-m11','n-m12','n-m13','n-m14',
-  'n-dss-calendar','n-theme2','n-theme3','n-journal-new',
-  'c-prophecy','c-israel','c-rapture','c-millennium','c-grace','c-live','c-snapshots',
-  'q-m1-1','q-m1-2','q-m1-3','q-m1-4',
-  'q-m3-1','q-m3-2',
-  'q-m6-1','q-m6-2','q-m6-3','q-m6-4',
-  'q-m11-1','q-m11-2','q-m11-3','q-m11-4',
+'n-intro','n-m1','n-m2','n-m3','n-m4','n-m5','n-m6','n-m7','n-m8','n-m9','n-m10','n-m11','n-m12','n-m13','n-m14',
+'n-dss-calendar','n-theme2','n-theme3','n-journal-new',
+'c-prophecy','c-israel','c-rapture','c-millennium','c-grace','c-live','c-snapshots',
+'q-m1-1','q-m1-2','q-m1-3','q-m1-4',
+'q-m3-1','q-m3-2',
+'q-m6-1','q-m6-2','q-m6-3','q-m6-4',
+'q-m11-1','q-m11-2','q-m11-3','q-m11-4',
 ];
-
 function saveNote(id) {
-  const el = document.getElementById(id);
-  if (el) localStorage.setItem('cbsg-' + id, el.value);
+const el = document.getElementById(id);
+if (el) localStorage.setItem('cbsg-' + id, el.value);
 }
-
 function loadNotes() {
-  noteIds.forEach(id => {
-    const el = document.getElementById(id);
-    const saved = localStorage.getItem('cbsg-' + id);
-    if (el && saved) el.value = saved;
-  });
-}
-
 noteIds.forEach(id => {
-  const el = document.getElementById(id);
-  if (el) el.addEventListener('input', () => saveNote(id));
+const el = document.getElementById(id);
+const saved = localStorage.getItem('cbsg-' + id);
+if (el && saved) el.value = saved;
 });
-
+}
+noteIds.forEach(id => {
+const el = document.getElementById(id);
+if (el) el.addEventListener('input', () => saveNote(id));
+});
 loadNotes();
-
 const savedToken = localStorage.getItem('cbsg-gh-token');
 if (savedToken) document.getElementById('gh-token').value = savedToken;
 document.getElementById('gh-token').addEventListener('input', function() {
-  localStorage.setItem('cbsg-gh-token', this.value);
+localStorage.setItem('cbsg-gh-token', this.value);
 });
-
 async function saveToGitHub() {
-  const token = document.getElementById('gh-token').value.trim();
-  const status = document.getElementById('gh-status');
-  if (!token) { status.textContent = 'Please enter your GitHub token first.'; status.style.color = '#FF6B6B'; return; }
-  status.textContent = 'Saving...'; status.style.color = 'rgba(255,255,255,0.7)';
-  try {
-    const owner = 'acshotsprings'; const repo = 'CampbellBibleStudy'; const filePath = 'CampbellBibleStudy.html';
-    const getResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + filePath, {
-      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
-    });
-    const fileData = await getResp.json();
-    const sha = fileData.sha;
-    let htmlContent = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
-    noteIds.forEach(function(id) {
-      const el = document.getElementById(id);
-      const val = el ? el.value : (localStorage.getItem('cbsg-' + id) || '');
-      if (val) {
-        const escaped = val.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-        const regex = new RegExp('(<textarea[^>]*id="' + id + '"[^>]*>)[\s\S]*?(<\/textarea>)', 'g');
-        htmlContent = htmlContent.replace(regex, '$1' + escaped + '$2');
-      }
-    });
-    const today = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-    const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
-    const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + filePath, {
-      method: 'PUT',
-      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'Journal save - ' + today, content: encoded, sha: sha })
-    });
-    if (putResp.ok) {
-      status.textContent = 'Saved to GitHub - notes are now permanent!';
-      status.style.color = '#90EE90';
-      setTimeout(() => { status.textContent = ''; }, 6000);
-    } else {
-      const err = await putResp.json();
-      status.textContent = 'Error: ' + (err.message || 'Unknown error');
-      status.style.color = '#FF6B6B';
-    }
-  } catch(e) { status.textContent = 'Error: ' + e.message; status.style.color = '#FF6B6B'; }
+const token = document.getElementById('gh-token').value.trim();
+const status = document.getElementById('gh-status');
+if (!token) { status.textContent = 'Please enter your GitHub token first.'; status.style.color = '#FF6B6B'; return; }
+status.textContent = 'Saving...'; status.style.color = 'rgba(255,255,255,0.7)';
+try {
+const owner = 'acshotsprings'; const repo = 'CampbellBibleStudy'; const filePath = 'CampbellBibleStudy.html';
+const headers = { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' };
+const base = 'https://api.github.com/repos/' + owner + '/' + repo;
+// Get current file SHA
+const fileResp = await fetch(base + '/contents/' + filePath, {headers});
+const fileData = await fileResp.json();
+const sha = fileData.sha;
+// Get raw HTML and inject notes
+let html = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
+noteIds.forEach(function(id) {
+const el = document.getElementById(id);
+const val = el ? el.value : (localStorage.getItem('cbsg-'+id)||'');
+if (val) {
+const esc = val.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+html = html.replace(new RegExp('(<textarea[^>]*id="'+id+'"[^>]*>)[\s\S]*?(<\/textarea>)','g'),'$1'+esc+'$2');
 }
-
+});
+// Get current branch SHA
+const branchResp = await fetch(base + '/git/refs/heads/main', {headers});
+const branchData = await branchResp.json();
+const treeSha = branchData.object.sha;
+// Create blob
+const blobResp = await fetch(base + '/git/blobs', {method:'POST', headers, body:JSON.stringify({content:html, encoding:'utf-8'})});
+const blobData = await blobResp.json();
+// Get current tree
+const commitResp = await fetch(base + '/git/commits/' + treeSha, {headers});
+const commitData = await commitResp.json();
+// Create new tree
+const treeResp = await fetch(base + '/git/trees', {method:'POST', headers, body:JSON.stringify({base_tree:commitData.tree.sha, tree:[{path:filePath, mode:'100644', type:'blob', sha:blobData.sha}]})});
+const treeData = await treeResp.json();
+// Create commit
+const today = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+const newCommitResp = await fetch(base + '/git/commits', {method:'POST', headers, body:JSON.stringify({message:'Journal save - '+today, tree:treeData.sha, parents:[treeSha]})});
+const newCommit = await newCommitResp.json();
+// Update ref
+await fetch(base + '/git/refs/heads/main', {method:'PATCH', headers, body:JSON.stringify({sha:newCommit.sha})});
+status.textContent = 'Saved to GitHub - notes are now permanent!';
+status.style.color = '#90EE90';
+setTimeout(() => { status.textContent = ''; }, 6000);
+} catch(e) { status.textContent = 'Error: ' + e.message; status.style.color = '#FF6B6B'; }
+});
+if (putResp.ok) {
+status.textContent = 'Saved to GitHub - notes are now permanent!';
+status.style.color = '#90EE90';
+setTimeout(() => { status.textContent = ''; }, 6000);
+} else {
+const err = await putResp.json();
+status.textContent = 'Error: ' + (err.message || 'Unknown error');
+status.style.color = '#FF6B6B';
+}
+} catch(e) { status.textContent = 'Error: ' + e.message; status.style.color = '#FF6B6B'; }
+}
 let lastFocusedTextarea = null;
 document.querySelectorAll('textarea.notes-input').forEach(function(ta) {
-  ta.addEventListener('focus', function() { lastFocusedTextarea = ta; });
+ta.addEventListener('focus', function() { lastFocusedTextarea = ta; });
 });
-
 function insertTimestamp() {
-  var activeTextarea = lastFocusedTextarea;
-  if (!activeTextarea) { alert('Click inside a note field first, then hit New Entry.'); return; }
-  var now = new Date();
-  var datePart = now.toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
-  var timePart = now.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit',hour12:true});
-  var line = '=======================================';
-  var block = '\n\n' + line + '\nDate: ' + datePart + ' at ' + timePart + '\n' + line + '\n\n';
-  var start = activeTextarea.selectionStart;
-  activeTextarea.value = activeTextarea.value.substring(0,start) + block + activeTextarea.value.substring(start);
-  activeTextarea.setSelectionRange(start+block.length, start+block.length);
-  saveNote(activeTextarea.id);
-  activeTextarea.focus();
+var activeTextarea = lastFocusedTextarea;
+if (!activeTextarea) { alert('Click inside a note field first, then hit New Entry.'); return; }
+var now = new Date();
+var datePart = now.toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+var timePart = now.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit',hour12:true});
+var line = '=======================================';
+var block = '\n\n' + line + '\nDate: ' + datePart + ' at ' + timePart + '\n' + line + '\n\n';
+var start = activeTextarea.selectionStart;
+activeTextarea.value = activeTextarea.value.substring(0,start) + block + activeTextarea.value.substring(start);
+activeTextarea.setSelectionRange(start+block.length, start+block.length);
+saveNote(activeTextarea.id);
+activeTextarea.focus();
 }
-
 async function generateReflection() {
-  const btn = document.getElementById('reflect-btn');
-  const statusEl = document.getElementById('reflect-status');
-  const snapEl = document.getElementById('c-snapshots');
-  btn.disabled = true; btn.textContent = 'Reading your notes...';
-  statusEl.textContent = 'Gathering everything you have written...';
-  const labels = {
-    'n-intro':'Introduction','n-m1':'Module 1 Daniel 70 Weeks','n-m2':'Module 2 Israel in Prophecy',
-    'n-m3':'Module 3 Day of the Lord','n-m4':'Module 4 The Watchman','n-m5':'Module 5 New Covenant',
-    'n-m6':'Module 6 The Rapture','n-m7':'Module 7 The Antichrist','n-m8':'Module 8 Rebuilt Temple',
-    'n-m9':'Module 9 Gog Magog','n-m10':'Module 10 Signs of the Times','n-m11':'Module 11 False Prophets',
-    'n-m12':'Module 12 The Millennium','n-m13':'Module 13 Second Coming','n-m14':'Module 14 Matt 24 vs Revelation',
-    'n-dss-calendar':'Dead Sea Scroll Calendar','n-journal-new':'Personal Journal',
-    'q-m1-1':'Q: Two events in Daniel 9:26','q-m1-2':'Q: God predicting Messiah timing',
-    'q-m1-3':'Q: The gap between weeks','q-m1-4':'Q: Daniel and Revelation',
-    'q-m6-1':'Q: Rapture and Restrainer','q-m6-2':'Q: Church in tribulation',
-    'q-m6-3':'Q: Pre-trib history vs Scripture','q-m6-4':'Q: Spirit restraining lawlessness',
-    'c-prophecy':'Conviction on biblical prophecy','c-israel':'Conviction on Israel',
-    'c-rapture':'Conviction on Rapture','c-millennium':'Conviction on Millennium',
-    'c-grace':'Conviction on grace and holiness','c-live':'Conviction on how to live'
-  };
-  let allNotes = '';
-  noteIds.forEach(function(id) {
-    if (id === 'c-snapshots') return;
-    const el = document.getElementById(id);
-    const val = (el ? el.value : (localStorage.getItem('cbsg-'+id)||'')).trim();
-    if (val) allNotes += '\n\n[' + (labels[id]||id) + ']:\n' + val;
-  });
-  const prevSnaps = snapEl ? snapEl.value.trim() : '';
-  if (!allNotes.trim()) {
-    btn.disabled=false; btn.textContent='Generate My Conviction Snapshot';
-    statusEl.textContent='No notes found yet. Write something in a module first!'; return;
-  }
-  statusEl.textContent='Asking Claude to reflect on your study...';
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        system:'You are a compassionate Christ-centered study companion helping a believer named Chris Campbell track how his theological convictions are developing over time. Chris is building a personal Bible study guide with his family. He is a sincere believer studying the Word piece by piece with the Holy Spirit as his guide, not a theologian. Read all of Chris notes, journal entries, study question answers, and any previous conviction snapshots provided. Then write a conviction snapshot that: 1) Summarizes what he appears to genuinely believe right now across key topics like prophecy, Israel, the rapture, the millennium, grace and holiness, and how to live. 2) Notes where his convictions are strong and settled vs where he still has open questions. 3) Notes any visible growth or shifts compared to previous snapshots if any exist. 4) Ends with one short encouraging word about what the Spirit seems to be doing in his study. Write in second person using you and your. Be warm honest and concise. Keep it to 400-500 words maximum.',
-        messages:[{role:'user',content:'Here are all my notes from my Bible study guide:\n' + allNotes + (prevSnaps ? '\n\nHere are my previous conviction snapshots for context:\n' + prevSnaps : '') + '\n\nPlease write a conviction snapshot for today.'}]
-      })
-    });
-    const data = await response.json();
-    const reflection = data.content && data.content[0] ? data.content[0].text : 'Unable to generate reflection.';
-    const now = new Date();
-    const line = '===========================================';
-    const block = '\n\n' + line + '\nCONVICTION SNAPSHOT - ' + now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}) + ' at ' + now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}) + '\n' + line + '\n\n' + reflection + '\n';
-    if (snapEl) { snapEl.value = (snapEl.value||'') + block; saveNote('c-snapshots'); }
-    btn.disabled=false; btn.textContent='Generate My Conviction Snapshot';
-    statusEl.textContent='Snapshot added! Scroll down to read it.';
-    setTimeout(()=>{statusEl.textContent='';},8000);
-    if (snapEl) snapEl.scrollIntoView({behavior:'smooth',block:'center'});
-  } catch(e) {
-    btn.disabled=false; btn.textContent='Generate My Conviction Snapshot';
-    statusEl.textContent='Error: '+e.message;
-  }
+const btn = document.getElementById('reflect-btn');
+const statusEl = document.getElementById('reflect-status');
+const snapEl = document.getElementById('c-snapshots');
+btn.disabled = true; btn.textContent = 'Reading your notes...';
+statusEl.textContent = 'Gathering everything you have written...';
+const labels = {
+'n-intro':'Introduction','n-m1':'Module 1 Daniel 70 Weeks','n-m2':'Module 2 Israel in Prophecy',
+'n-m3':'Module 3 Day of the Lord','n-m4':'Module 4 The Watchman','n-m5':'Module 5 New Covenant',
+'n-m6':'Module 6 The Rapture','n-m7':'Module 7 The Antichrist','n-m8':'Module 8 Rebuilt Temple',
+'n-m9':'Module 9 Gog Magog','n-m10':'Module 10 Signs of the Times','n-m11':'Module 11 False Prophets',
+'n-m12':'Module 12 The Millennium','n-m13':'Module 13 Second Coming','n-m14':'Module 14 Matt 24 vs Revelation',
+'n-dss-calendar':'Dead Sea Scroll Calendar','n-journal-new':'Personal Journal',
+'q-m1-1':'Q: Two events in Daniel 9:26','q-m1-2':'Q: God predicting Messiah timing',
+'q-m1-3':'Q: The gap between weeks','q-m1-4':'Q: Daniel and Revelation',
+'q-m6-1':'Q: Rapture and Restrainer','q-m6-2':'Q: Church in tribulation',
+'q-m6-3':'Q: Pre-trib history vs Scripture','q-m6-4':'Q: Spirit restraining lawlessness',
+'c-prophecy':'Conviction on biblical prophecy','c-israel':'Conviction on Israel',
+'c-rapture':'Conviction on Rapture','c-millennium':'Conviction on Millennium',
+'c-grace':'Conviction on grace and holiness','c-live':'Conviction on how to live'
+};
+let allNotes = '';
+noteIds.forEach(function(id) {
+if (id === 'c-snapshots') return;
+const el = document.getElementById(id);
+const val = (el ? el.value : (localStorage.getItem('cbsg-'+id)||'')).trim();
+if (val) allNotes += '\n\n[' + (labels[id]||id) + ']:\n' + val;
+});
+const prevSnaps = snapEl ? snapEl.value.trim() : '';
+if (!allNotes.trim()) {
+btn.disabled=false; btn.textContent='Generate My Conviction Snapshot';
+statusEl.textContent='No notes found yet. Write something in a module first!'; return;
+}
+statusEl.textContent='Asking Claude to reflect on your study...';
+try {
+const response = await fetch('https:
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+model:'claude-sonnet-4-20250514',
+max_tokens:1000,
+system:'You are helping Chris Campbell, a sincere believer, track his growing theological convictions. Read his notes and write a conviction snapshot covering: 1) What he currently believes on key topics. 2) Settled convictions vs open questions. 3) Growth since previous snapshots if any. 4) One short encouraging word about what the Spirit is doing. Write in second person, warm and honest, 400 words max.',
+messages:[{role:'user',content:'Here are all my notes from my Bible study guide:\n' + allNotes + (prevSnaps ? '\n\nHere are my previous conviction snapshots for context:\n' + prevSnaps : '') + '\n\nPlease write a conviction snapshot for today.'}]
+})
+});
+const data = await response.json();
+const reflection = data.content && data.content[0] ? data.content[0].text : 'Unable to generate reflection.';
+const now = new Date();
+const line = '===========================================';
+const block = '\n\n' + line + '\nCONVICTION SNAPSHOT - ' + now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}) + ' at ' + now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}) + '\n' + line + '\n\n' + reflection + '\n';
+if (snapEl) { snapEl.value = (snapEl.value||'') + block; saveNote('c-snapshots'); }
+btn.disabled=false; btn.textContent='Generate My Conviction Snapshot';
+statusEl.textContent='Snapshot added! Scroll down to read it.';
+setTimeout(()=>{statusEl.textContent='';},8000);
+if (snapEl) snapEl.scrollIntoView({behavior:'smooth',block:'center'});
+} catch(e) {
+btn.disabled=false; btn.textContent='Generate My Conviction Snapshot';
+statusEl.textContent='Error: '+e.message;
+}
 }
 </script>
 
