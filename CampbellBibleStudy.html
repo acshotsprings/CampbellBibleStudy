@@ -135,7 +135,10 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
   <button onclick="saveToGitHub()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
   <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);">Saving...</span>
-  <span id="gh-bar-version" style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: April 2, 2026</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
+    <button onclick="insertTimestamp()" title="Insert a dated divider into the note you are editing" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;" onmouseover="this.style.background='rgba(255,215,0,0.3)'" onmouseout="this.style.background='rgba(255,215,0,0.15)'">⏰ New Entry</button>
+    <span id="gh-bar-version" style="font-size:11px;color:rgba(255,255,255,0.4);">Version: April 2, 2026</span>
+  </div>
 </div>
 <div id="app" style="margin-top:48px;">
 
@@ -151,7 +154,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <div class="nav-item" onclick="show('intro', this)">Introduction</div>
     <div class="nav-item" onclick="show('index', this)">Thematic Index</div>
     <div class="nav-section">Theme 1 — End Times</div>
-    <div class="nav-item active" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
+    <div class="nav-item" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
     <div class="nav-item" onclick="show('m2', this)">Module 2 — Israel in Prophecy</div>
     <div class="nav-item" onclick="show('m3', this)">Module 3 — Day of the Lord</div>
     <div class="nav-item" onclick="show('m4', this)">Module 4 — The Watchman</div>
@@ -172,7 +175,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <div class="nav-item" onclick="show('themes48', this)">Themes 4–8 (Coming Soon)</div>
     <div class="nav-section">My Study</div>
     <div class="nav-item" onclick="show('sermons', this)">Sermon &amp; Teaching Log</div>
-    <div class="nav-item" onclick="show('journal', this)">Personal Journal</div>
+    <div class="nav-item active" onclick="show('journal', this)">Personal Journal</div>
     <div class="nav-item" onclick="show('convictions', this)">My Growing Convictions</div>
   </div>
 </div>
@@ -244,7 +247,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
 
 <!-- MODULE 1 -->
 
-<div id="m1" class="page active">
+<div id="m1" class="page">
   <span class="page-tag">Module 1 — Theme 1: End Times</span>
   <h1 class="page-title">Daniel's 70 Weeks: The Master Timeline</h1>
   <div class="info-box"><div class="title">Read first</div><div class="line">Daniel 9 in full (especially vv. 24–27), Deuteronomy 18:21–22, Isaiah 46:9–10, 2 Peter 1:20–21</div></div>
@@ -287,7 +290,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
   </div>
   <div class="notes-box">
     <div class="label">✏️ Module 1 — My convictions on Daniel's 70 Weeks and how to read prophecy:</div>
-    <textarea class="notes-input" id="n-m1" placeholder="Write your convictions here... Date your entry.">I read the GREAT RED DRAGON as literal. I guess, because that always what I pictued...? THere are so many diffeent ways to interpret all of these verses...I am hoping to gain more and more insight throughout my study. THATS WHY I BUILT IT! I can only do bits at a time though, because it is way too much to take in at once. It's like THE APPLE, its hard to put the whole thing in your mouth, but bites at a time is much easier.</textarea>
+    <textarea class="notes-input" id="n-m1" placeholder="Write your convictions here... Date your entry."></textarea>
   </div>
   <div class="cross-ref-box">
     <div class="title">🔗 Cross-References</div>
@@ -1048,7 +1051,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
 
 <!-- JOURNAL -->
 
-<div id="journal" class="page">
+<div id="journal" class="page active">
   <span class="page-tag">My Study</span>
   <h1 class="page-title">Personal Reflections &amp; Journal</h1>
   <p class="body">A space to record observations, convictions, and spiritual insight as they emerge through study and everyday life. Date each entry.</p>
@@ -1122,7 +1125,12 @@ Questions to sit with:
 
 &lt;!-- CONVICTIONS --&gt;
 
-&lt;div id=" convictions"="">Started a new book today about the Dead Sea Scrolls and calendars</textarea>
+&lt;div id=" convictions"="">  &lt;span class="page-tag"&gt;My Study&lt;/span&gt;
+  &lt;h1 class="page-title"&gt;My Growing Convictions&lt;/h1&gt;
+  &lt;p class="body"&gt;This is your running record of what you believe and why — updated as you study. Date each entry so you can track how your understanding develops over time. These are your convictions, held with both confidence and humility.&lt;/p&gt;
+  &lt;div class="notes-box"&gt;
+    &lt;div class="label"&gt;✏️ On the nature of biblical prophecy — Dated: ___________&lt;/div&gt;
+    &lt;textarea class="notes-input" id="c-prophecy" placeholder="Write your convictions here..."&gt;</textarea>
   </div>
   <div class="notes-box" style="margin-top:14px">
     <div class="label">✏️ On Israel's role in prophecy — Dated: ___________</div>
@@ -1212,25 +1220,63 @@ async function saveToGitHub() {
     const repo = 'CampbellBibleStudy';
     const filePath = 'CampbellBibleStudy.html';
 
+    // Step 1: Get the raw HTML file from GitHub (the clean base)
     const getResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + filePath, {
       headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
     });
     const fileData = await getResp.json();
     const sha = fileData.sha;
 
-    const htmlContent = document.documentElement.outerHTML;
+    // Step 2: Decode the current file from GitHub as a string
+    let htmlContent = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, ''))));
+
+    // Step 3: For every note textarea, grab the value from localStorage
+    // and inject it directly into the HTML string as the textarea content.
+    // This replaces the blank <textarea id="n-xxx" ...></textarea> 
+    // with <textarea id="n-xxx" ...>YOUR SAVED TEXT</textarea>
+    noteIds.forEach(function(id) {
+      const saved = localStorage.getItem('cbsg-' + id) || '';
+      if (saved) {
+        // Escape special chars for safe HTML injection
+        const escaped = saved
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        // Match the textarea by id and inject content between tags
+        const regex = new RegExp('(<textarea[^>]*id="' + id + '"[^>]*>)[\\s\\S]*?(<\/textarea>)', 'g');
+        htmlContent = htmlContent.replace(regex, '$1' + escaped + '$2');
+      }
+    });
+
+    // Step 4: Also save any inline-created journal entries
+    // (textareas inside .journal-entry that don't have a fixed id)
+    document.querySelectorAll('textarea').forEach(function(el) {
+      if (el.id && el.value) {
+        const escaped = el.value
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        const regex = new RegExp('(<textarea[^>]*id="' + el.id + '"[^>]*>)[\\s\\S]*?(<\/textarea>)', 'g');
+        htmlContent = htmlContent.replace(regex, '$1' + escaped + '$2');
+      }
+    });
+
+    // Step 5: Update the commit message with today's date
+    const today = new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
+
+    // Step 6: Encode and push
     const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
 
     const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + filePath, {
       method: 'PUT',
       headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'Update — April 1, 2026', content: encoded, sha: sha })
+      body: JSON.stringify({ message: 'Journal save — ' + today, content: encoded, sha: sha })
     });
 
     if (putResp.ok) {
-      status.textContent = 'Saved to GitHub!';
+      status.textContent = '✓ Saved to GitHub — notes are now permanent!';
       status.style.color = '#90EE90';
-      setTimeout(() => { status.textContent = ''; }, 5000);
+      setTimeout(() => { status.textContent = ''; }, 6000);
     } else {
       const err = await putResp.json();
       status.textContent = 'Error: ' + (err.message || 'Unknown error');
@@ -1241,7 +1287,54 @@ async function saveToGitHub() {
     status.style.color = '#FF6B6B';
   }
 }
-</script>
 
+function insertTimestamp() {
+  // Find which textarea currently has focus
+  let activeTextarea = null;
+  const textareas = document.querySelectorAll('textarea.notes-input');
+
+  for (let ta of textareas) {
+    if (document.activeElement === ta) {
+      activeTextarea = ta;
+      break;
+    }
+  }
+
+  // If none has focus, alert the user to click in a note area first
+  if (!activeTextarea) {
+    alert('Click inside a note field first, then hit New Entry to stamp it.');
+    return;
+  }
+
+  // Build date/time string — e.g. "April 2, 2026 at 3:45 PM"
+  const now = new Date();
+  const datePart = now.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  const timePart = now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
+  const dateTimeString = datePart + ' at ' + timePart;
+
+  // Build the full timestamp block
+  const divider = '\n\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n';
+  const stamp  = '\uD83D\uDCC5 ' + dateTimeString + '\n';
+  const close  = '\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n';
+  const block  = divider + stamp + close;
+
+  // Insert at cursor position
+  const start  = activeTextarea.selectionStart;
+  const end    = activeTextarea.selectionEnd;
+  const before = activeTextarea.value.substring(0, start);
+  const after  = activeTextarea.value.substring(end);
+  activeTextarea.value = before + block + after;
+
+  // Place cursor right after the timestamp block, ready to type
+  const newPos = start + block.length;
+  activeTextarea.setSelectionRange(newPos, newPos);
+
+  // Save to localStorage immediately
+  saveNote(activeTextarea.id);
+
+  // Keep focus in the textarea
+  activeTextarea.focus();
+}
+</script>
 
 </body></html>
