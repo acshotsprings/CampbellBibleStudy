@@ -151,7 +151,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <div class="nav-item" onclick="show('intro', this)">Introduction</div>
     <div class="nav-item" onclick="show('index', this)">Thematic Index</div>
     <div class="nav-section">Theme 1 — End Times</div>
-    <div class="nav-item" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
+    <div class="nav-item active" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
     <div class="nav-item" onclick="show('m2', this)">Module 2 — Israel in Prophecy</div>
     <div class="nav-item" onclick="show('m3', this)">Module 3 — Day of the Lord</div>
     <div class="nav-item" onclick="show('m4', this)">Module 4 — The Watchman</div>
@@ -172,7 +172,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
     <div class="nav-item" onclick="show('themes48', this)">Themes 4–8 (Coming Soon)</div>
     <div class="nav-section">My Study</div>
     <div class="nav-item" onclick="show('sermons', this)">Sermon &amp; Teaching Log</div>
-    <div class="nav-item active" onclick="show('journal', this)">Personal Journal</div>
+    <div class="nav-item" onclick="show('journal', this)">Personal Journal</div>
     <div class="nav-item" onclick="show('convictions', this)">My Growing Convictions</div>
   </div>
 </div>
@@ -244,7 +244,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
 
 <!-- MODULE 1 -->
 
-<div id="m1" class="page">
+<div id="m1" class="page active">
   <span class="page-tag">Module 1 — Theme 1: End Times</span>
   <h1 class="page-title">Daniel's 70 Weeks: The Master Timeline</h1>
   <div class="info-box"><div class="title">Read first</div><div class="line">Daniel 9 in full (especially vv. 24–27), Deuteronomy 18:21–22, Isaiah 46:9–10, 2 Peter 1:20–21</div></div>
@@ -1048,7 +1048,7 @@ textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
 
 <!-- JOURNAL -->
 
-<div id="journal" class="page active">
+<div id="journal" class="page">
   <span class="page-tag">My Study</span>
   <h1 class="page-title">Personal Reflections &amp; Journal</h1>
   <p class="body">A space to record observations, convictions, and spiritual insight as they emerge through study and everyday life. Date each entry.</p>
@@ -1217,63 +1217,25 @@ async function saveToGitHub() {
     const repo = 'CampbellBibleStudy';
     const filePath = 'CampbellBibleStudy.html';
 
-    // Step 1: Get the raw HTML file from GitHub (the clean base)
     const getResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + filePath, {
       headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
     });
     const fileData = await getResp.json();
     const sha = fileData.sha;
 
-    // Step 2: Decode the current file from GitHub as a string
-    let htmlContent = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, ''))));
-
-    // Step 3: For every note textarea, grab the value from localStorage
-    // and inject it directly into the HTML string as the textarea content.
-    // This replaces the blank <textarea id="n-xxx" ...></textarea> 
-    // with <textarea id="n-xxx" ...>YOUR SAVED TEXT</textarea>
-    noteIds.forEach(function(id) {
-      const saved = localStorage.getItem('cbsg-' + id) || '';
-      if (saved) {
-        // Escape special chars for safe HTML injection
-        const escaped = saved
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
-        // Match the textarea by id and inject content between tags
-        const regex = new RegExp('(<textarea[^>]*id="' + id + '"[^>]*>)[\\s\\S]*?(<\/textarea>)', 'g');
-        htmlContent = htmlContent.replace(regex, '$1' + escaped + '$2');
-      }
-    });
-
-    // Step 4: Also save any inline-created journal entries
-    // (textareas inside .journal-entry that don't have a fixed id)
-    document.querySelectorAll('textarea').forEach(function(el) {
-      if (el.id && el.value) {
-        const escaped = el.value
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
-        const regex = new RegExp('(<textarea[^>]*id="' + el.id + '"[^>]*>)[\\s\\S]*?(<\/textarea>)', 'g');
-        htmlContent = htmlContent.replace(regex, '$1' + escaped + '$2');
-      }
-    });
-
-    // Step 5: Update the commit message with today's date
-    const today = new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
-
-    // Step 6: Encode and push
+    const htmlContent = document.documentElement.outerHTML;
     const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
 
     const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + filePath, {
       method: 'PUT',
       headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'Journal save — ' + today, content: encoded, sha: sha })
+      body: JSON.stringify({ message: 'Update — April 1, 2026', content: encoded, sha: sha })
     });
 
     if (putResp.ok) {
-      status.textContent = '✓ Saved to GitHub — notes are now permanent!';
+      status.textContent = 'Saved to GitHub!';
       status.style.color = '#90EE90';
-      setTimeout(() => { status.textContent = ''; }, 6000);
+      setTimeout(() => { status.textContent = ''; }, 5000);
     } else {
       const err = await putResp.json();
       status.textContent = 'Error: ' + (err.message || 'Unknown error');
@@ -1285,5 +1247,6 @@ async function saveToGitHub() {
   }
 }
 </script>
+
 
 </body></html>
