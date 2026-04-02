@@ -43,11 +43,13 @@
     <div style="font-size:12px;color:rgba(255,255,255,0.55);font-family:Arial,sans-serif;margin-bottom:12px;">
       Example questions: "What do I actually believe about the rapture?" &nbsp;·&nbsp; "What themes keep showing up in my notes?" &nbsp;·&nbsp; "Where am I still uncertain?" &nbsp;·&nbsp; "Summarize my convictions on Israel"
     </div>
-    <div style="margin-bottom:10px;">
+    <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center;">
       <input id="gemini-key" type="password"
         placeholder="Paste Gemini API key here (saved locally, never shared)"
-        style="width:100%;padding:6px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:white;font-size:12px;font-family:Arial,sans-serif;">
+        style="flex:1;padding:6px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:white;font-size:12px;font-family:Arial,sans-serif;">
+      <button onclick="saveGeminiKey()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 12px;font-size:11px;font-weight:bold;cursor:pointer;white-space:nowrap;">Save Key</button>
     </div>
+    <div id="key-status" style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:Arial,sans-serif;display:none;"></div>
     <div class="ai-input-row">
       <textarea class="ai-prompt-input" id="ai-prompt" placeholder="Ask something about your own convictions..." rows="2"></textarea>
       <button class="ai-btn" id="ai-btn" onclick="askAboutMyNotes()">
@@ -271,21 +273,46 @@ CRITICAL RULES:
 }
 
 // Allow Enter key in the prompt textarea (Shift+Enter for new line)
+function saveGeminiKey() {
+  const keyEl = document.getElementById('gemini-key');
+  const statusEl = document.getElementById('key-status');
+  const key = keyEl ? keyEl.value.trim() : '';
+  if (!key) {
+    if (statusEl) { statusEl.textContent = '⚠️ No key entered.'; statusEl.style.display = 'block'; statusEl.style.color = '#FFD700'; }
+    return;
+  }
+  localStorage.setItem('cbsg-gemini-key', key);
+  if (statusEl) { statusEl.textContent = '✅ Key saved — ready to use.'; statusEl.style.display = 'block'; statusEl.style.color = '#90EE90'; }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Restore saved Gemini key
+  const savedKey = localStorage.getItem('cbsg-gemini-key');
+  const keyEl = document.getElementById('gemini-key');
+  const statusEl = document.getElementById('key-status');
+  if (savedKey && keyEl) {
+    keyEl.value = savedKey;
+    if (statusEl) { statusEl.textContent = '✅ Key loaded from saved storage.'; statusEl.style.display = 'block'; statusEl.style.color = '#90EE90'; }
+  }
+
+  // Auto-save key to localStorage as user types
+  if (keyEl) {
+    keyEl.addEventListener('input', () => {
+      const val = keyEl.value.trim();
+      if (val) localStorage.setItem('cbsg-gemini-key', val);
+    });
+    // Also save on Enter key in key field
+    keyEl.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); saveGeminiKey(); }
+    });
+  }
+
+  // Wire Enter key on prompt field
   const input = document.getElementById('ai-prompt');
   if (input) {
     input.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        askAboutMyNotes();
-      }
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); askAboutMyNotes(); }
     });
-  }
-  // Restore saved Gemini key
-  const savedKey = localStorage.getItem('cbsg-gemini-key');
-  if (savedKey) {
-    const keyEl = document.getElementById('gemini-key');
-    if (keyEl) keyEl.value = savedKey;
   }
 });
 
