@@ -19,7 +19,7 @@
     <button onclick="insertConvictionTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;">New Entry</button>
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 2, 2026</span>
+    <span id="gh-bar-version">Version: April 3, 2026</span>
   </div>
 </div>
 
@@ -174,7 +174,6 @@ async function askAboutMyNotes() {
       const labels    = notesData.noteLabels || {};
       const notes     = notesData.notes || {};
 
-      // Build a clean, readable summary of the user's own words only
       const lines = [];
       for (const [key, value] of Object.entries(notes)) {
         if (value && value.trim()) {
@@ -189,7 +188,6 @@ async function askAboutMyNotes() {
         notesContext = lines.join('\n\n---\n\n');
       }
     } else {
-      // Fall back to reading from localStorage directly
       const lines = [];
       const labels = {
         'n-intro': 'Introduction notes',
@@ -227,7 +225,7 @@ async function askAboutMyNotes() {
     }
     localStorage.setItem('cbsg-gemini-key', geminiKey);
 
-    // 3. Call Gemini API — context is ONLY the user's own words
+    // 3. Call Gemini API
     const systemPrompt = `You are a thoughtful spiritual reflection assistant for a personal Bible study guide called the Campbell Family Master Biblical Study Guide.
 
 Your ONLY job is to reflect back and synthesize what the user has personally written in their own study notes. You have been given the complete text of everything they have written — their module notes, journal entries, study question answers, and conviction summaries.
@@ -243,7 +241,7 @@ CRITICAL RULES:
     const fullPrompt = `${systemPrompt}\n\nHere is everything I have personally written in my Bible study notes:\n\n${notesContext}\n\n---\n\nMy question: ${prompt}`;
 
     const apiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${geminiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -259,7 +257,6 @@ CRITICAL RULES:
       || apiData.error?.message
       || 'Something went wrong. Please try again.';
 
-    // Render response
     out.innerHTML = responseText.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
     if (!out.innerHTML.startsWith('<p>')) out.innerHTML = '<p>' + out.innerHTML + '</p>';
     box.classList.add('visible');
@@ -273,7 +270,6 @@ CRITICAL RULES:
   }
 }
 
-// Allow Enter key in the prompt textarea (Shift+Enter for new line)
 async function listAvailableModels() {
   const key = document.getElementById('gemini-key').value.trim()
     || localStorage.getItem('cbsg-gemini-key');
@@ -312,7 +308,6 @@ function saveGeminiKey() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Restore saved Gemini key
   const savedKey = localStorage.getItem('cbsg-gemini-key');
   const keyEl = document.getElementById('gemini-key');
   const statusEl = document.getElementById('key-status');
@@ -321,19 +316,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (statusEl) { statusEl.textContent = '✅ Key loaded from saved storage.'; statusEl.style.display = 'block'; statusEl.style.color = '#90EE90'; }
   }
 
-  // Auto-save key to localStorage as user types
   if (keyEl) {
     keyEl.addEventListener('input', () => {
       const val = keyEl.value.trim();
       if (val) localStorage.setItem('cbsg-gemini-key', val);
     });
-    // Also save on Enter key in key field
     keyEl.addEventListener('keydown', e => {
       if (e.key === 'Enter') { e.preventDefault(); saveGeminiKey(); }
     });
   }
 
-  // Wire Enter key on prompt field
   const input = document.getElementById('ai-prompt');
   if (input) {
     input.addEventListener('keydown', e => {
@@ -343,7 +335,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function insertConvictionTimestamp() {
-  // Stamps into the snapshots field — the natural home for dated conviction entries
   const el = document.getElementById('c-snapshots');
   if (!el) return;
   const now   = new Date();
@@ -353,7 +344,6 @@ function insertConvictionTimestamp() {
   el.value += `\n${divider}\n${date} at ${time}\n${divider}\n`;
   el.focus();
   el.scrollTop = el.scrollHeight;
-  // Scroll the page down to the snapshots field so user sees it
   el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 </script>
