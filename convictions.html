@@ -56,9 +56,10 @@
         <span id="ai-btn-text">✨ Ask</span>
       </button>
     </div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:8px;font-family:Arial,sans-serif;">
-      💡 Save to GitHub first to make sure your latest notes are included. Your Gemini key is saved locally and never shared.
+    <div style="margin-top:8px;">
+      <button onclick="listAvailableModels()" style="background:transparent;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:4px 10px;font-size:10px;cursor:pointer;font-family:Arial,sans-serif;">🔍 Check available models</button>
     </div>
+    <div id="model-list" style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:6px;font-family:monospace;display:none;max-height:120px;overflow-y:auto;background:rgba(0,0,0,0.2);padding:8px;border-radius:4px;"></div>
   </div>
 
   <div class="ai-response-box" id="ai-response">
@@ -273,6 +274,31 @@ CRITICAL RULES:
 }
 
 // Allow Enter key in the prompt textarea (Shift+Enter for new line)
+async function listAvailableModels() {
+  const key = document.getElementById('gemini-key').value.trim()
+    || localStorage.getItem('cbsg-gemini-key');
+  const listEl = document.getElementById('model-list');
+  if (!key) { listEl.textContent = 'Save your API key first.'; listEl.style.display = 'block'; return; }
+  listEl.textContent = 'Fetching...';
+  listEl.style.display = 'block';
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models?key=${key}`
+    );
+    const data = await res.json();
+    if (data.models) {
+      const names = data.models
+        .filter(m => m.supportedGenerationMethods?.includes('generateContent'))
+        .map(m => m.name.replace('models/', ''));
+      listEl.textContent = 'Available: ' + names.join(', ');
+    } else {
+      listEl.textContent = JSON.stringify(data);
+    }
+  } catch(e) {
+    listEl.textContent = 'Error: ' + e.message;
+  }
+}
+
 function saveGeminiKey() {
   const keyEl = document.getElementById('gemini-key');
   const statusEl = document.getElementById('key-status');
