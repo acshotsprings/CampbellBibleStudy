@@ -241,7 +241,7 @@ CRITICAL RULES:
     const fullPrompt = `${systemPrompt}\n\nHere is everything I have personally written in my Bible study notes:\n\n${notesContext}\n\n---\n\nMy question: ${prompt}`;
 
     const apiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${geminiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${geminiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
