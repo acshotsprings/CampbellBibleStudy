@@ -1,6 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v4.0 Collapsible Themes
+   Sidebar Navigation Builder — v4.1 Collapsible Themes
    ============================================================ */
 
 const NAV_STRUCTURE = [
@@ -42,8 +42,9 @@ const NAV_STRUCTURE = [
     collapsible: true,
     key: 'theme2',
     items: [
-      { label: 'Theme 2 Overview',              href: '/theme2/index.html' },
-      { label: '↳ Module 1 — Calendar History', href: '/theme2/module1.html', sub: true },
+      { label: 'Theme 2 Overview',                  href: '/theme2/index.html' },
+      { label: '↳ Module 1 — Calendar History',     href: '/theme2/module1.html', sub: true },
+      { label: '↳ Module 2 — Calendar Timeline',    href: '/theme2/module2.html', sub: true },
     ]
   },
   {
@@ -81,7 +82,6 @@ function buildSidebar(root) {
   const base = '/CampbellBibleStudy';
   const currentPath = window.location.pathname;
 
-  // Determine which theme section contains the current page
   function isActiveSection(section) {
     if (!section.items) return false;
     return section.items.some(item => {
@@ -91,30 +91,26 @@ function buildSidebar(root) {
     });
   }
 
-  // Load collapse state from localStorage
   function isCollapsed(key) {
-    // Default: collapsed unless it contains the active page
     const stored = localStorage.getItem('cbsg-nav-' + key);
     if (stored !== null) return stored === 'true';
-    return true; // default to collapsed
+    return true;
   }
 
   function setCollapsed(key, val) {
     localStorage.setItem('cbsg-nav-' + key, val ? 'true' : 'false');
   }
 
-  // Build the HTML
   let html = `
     <div id="sidebar-header">
       <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 2, 2026</p>
+      <p id="sidebar-version">Version: April 3, 2026</p>
     </div>
     <div id="sidebar-nav">
   `;
 
   NAV_STRUCTURE.forEach(section => {
     if (!section.collapsible) {
-      // Non-collapsible section header
       html += `<div class="nav-section">${section.label}</div>`;
       section.items.forEach(item => {
         const fullHref = base + item.href;
@@ -124,11 +120,8 @@ function buildSidebar(root) {
         html += `<a class="nav-item${sub}${active}" href="${root + item.href}">${item.label}</a>`;
       });
     } else {
-      // Collapsible section
       const key = section.key;
       const hasActivePage = isActiveSection(section);
-
-      // If this section has the active page, force it open
       if (hasActivePage) setCollapsed(key, false);
       const collapsed = isCollapsed(key);
 
