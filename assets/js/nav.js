@@ -45,6 +45,7 @@ const NAV_STRUCTURE = [
       { label: 'Theme 2 Overview',                  href: '/theme2/index.html' },
       { label: '↳ Module 1 — Calendar History',     href: '/theme2/module1.html', sub: true },
       { label: '↳ Module 2 — Calendar Timeline',    href: '/theme2/module2.html', sub: true },
+      { label: '↳ Module 3 — Book of Jubilees',      href: '/theme2/module3.html', sub: true },
     ]
   },
   {

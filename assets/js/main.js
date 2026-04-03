@@ -157,6 +157,7 @@ async function saveNotesJson(token) {
       'n-m14': 'Module 14 — Matt 24 vs Revelation: my notes',
       'n-m15': 'Module 15 — Armageddon: my notes',
       'n-t2m1': 'Theme 2 Module 1 — Calendar History: my notes',
+      'n-t2m3': 'Theme 2 Module 3 — Book of Jubilees: my notes',
       'n-journal-new': 'Personal Journal entries',
       'n-sermons': 'Sermon log overflow notes',
       'c-prophecy': 'Conviction — On prophecy and how to interpret it',
