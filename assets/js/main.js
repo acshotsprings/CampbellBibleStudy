@@ -1,6 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Shared JavaScript — v3.0 Multi-Page + Shared Notes
+   Shared JavaScript — v3.1 Multi-Page + Shared Notes
    ============================================================ */
 
 const OWNER = 'acshotsprings';
@@ -39,7 +39,6 @@ async function loadFromGitHub() {
   setStatus('📡 Loading your notes...', 'info');
 
   try {
-    // Fetch my-notes.json fresh (bypass cache)
     const res = await fetch(
       `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/my-notes.json?t=${Date.now()}`,
       { cache: 'no-store' }
@@ -62,7 +61,6 @@ async function loadFromGitHub() {
       return;
     }
 
-    // Write every note into localStorage
     let loaded = 0;
     for (const [key, value] of Object.entries(notes)) {
       if (value && value.trim()) {
@@ -71,9 +69,7 @@ async function loadFromGitHub() {
       }
     }
 
-    // Populate any fields visible on this page right now
     loadNotes();
-
     setStatus(`✅ Loaded ${loaded} notes from GitHub.`, 'ok');
 
   } catch(e) {
@@ -117,14 +113,28 @@ async function putFileNew(token, filePath, content) {
 
 // ── SHARED NOTES JSON ─────────────────────────────────────
 
+// Keys that should NEVER be saved to GitHub
+const EXCLUDED_KEYS = [
+  'gh-token',
+  'gemini-key',
+  'nav-theme1',
+  'nav-theme2',
+  'nav-theme3',
+  'nav-themes48',
+];
+
 async function saveNotesJson(token) {
   const notes = {};
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    if (key && key.startsWith('cbsg-') && key !== 'cbsg-gh-token') {
-      const value = localStorage.getItem(key);
-      if (value && value.trim()) notes[key.replace('cbsg-', '')] = value;
-    }
+    if (!key || !key.startsWith('cbsg-')) continue;
+    const shortKey = key.replace('cbsg-', '');
+    // Skip excluded keys — tokens, API keys, nav states
+    if (EXCLUDED_KEYS.includes(shortKey)) continue;
+    // Skip any key that looks like a nav collapse state
+    if (shortKey.startsWith('nav-')) continue;
+    const value = localStorage.getItem(key);
+    if (value && value.trim()) notes[shortKey] = value;
   }
   const payload = {
     lastUpdated: new Date().toISOString(),
