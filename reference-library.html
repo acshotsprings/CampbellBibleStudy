@@ -6,27 +6,25 @@
   <title>Reference Library — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
-
     /* ── SEARCH BAR ── */
     .search-wrap {
       display: flex;
       gap: 10px;
       margin: 24px 0 32px;
-      align-items: center;
     }
-    #search-input {
+    .search-wrap input {
       flex: 1;
-      padding: 10px 14px;
+      padding: 12px 16px;
       font-size: 14px;
-      border: 2px solid #2E75B6;
+      border: 2px solid #ccc;
       border-radius: 6px;
       font-family: Arial, sans-serif;
       outline: none;
-      color: #1F3864;
+      transition: border-color 0.2s;
     }
-    #search-input:focus { border-color: #1F3864; box-shadow: 0 0 0 3px rgba(46,117,182,0.15); }
-    #search-btn {
-      padding: 10px 20px;
+    .search-wrap input:focus { border-color: #2E75B6; }
+    .search-wrap button {
+      padding: 12px 22px;
       background: #1F3864;
       color: #fff;
       border: none;
@@ -35,136 +33,133 @@
       font-family: Arial, sans-serif;
       font-weight: bold;
       cursor: pointer;
+      transition: background 0.2s;
     }
-    #search-btn:hover { background: #2E75B6; }
-    #clear-btn {
-      padding: 10px 14px;
-      background: #eee;
-      color: #555;
-      border: none;
-      border-radius: 6px;
-      font-size: 13px;
-      font-family: Arial, sans-serif;
-      cursor: pointer;
-      display: none;
-    }
-    #clear-btn:hover { background: #ddd; }
+    .search-wrap button:hover { background: #2E75B6; }
 
-    /* ── SEARCH RESULTS ── */
-    #search-results {
-      display: none;
-      margin-bottom: 32px;
-    }
-    .results-header {
-      font-size: 13px;
-      font-weight: bold;
-      color: #1F3864;
-      font-family: Arial, sans-serif;
+    #search-results { margin-bottom: 32px; }
+
+    .search-result-item {
+      background: #FFFDF0;
+      border-left: 4px solid #C8A800;
+      border-radius: 6px;
+      padding: 12px 16px;
       margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #2E75B6;
+      font-family: Arial, sans-serif;
     }
-    .result-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 10px 14px;
-      border-radius: 6px;
-      margin-bottom: 8px;
-      background: #f4f8fc;
-      border-left: 4px solid #2E75B6;
-      cursor: pointer;
-      transition: background 0.15s;
-      text-decoration: none;
-    }
-    .result-item:hover { background: #e0edf8; }
-    .result-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-    .result-body { flex: 1; }
-    .result-title { font-size: 14px; font-weight: bold; color: #1F3864; font-family: Arial, sans-serif; }
-    .result-desc  { font-size: 12px; color: #555; font-family: Arial, sans-serif; margin-top: 2px; }
-    .result-tag   {
-      display: inline-block; font-size: 10px; font-weight: bold;
-      padding: 1px 7px; border-radius: 10px; margin-top: 4px;
-      font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em;
-    }
-    .tag-scripture  { background: #1F3864; color: #fff; }
-    .tag-apocryphal { background: #6B8E3A; color: #fff; }
-    .tag-historical { background: #8E44AD; color: #fff; }
-    .tag-tool       { background: #C8A800; color: #fff; }
-    .no-results { font-size: 13px; color: #888; font-family: Arial, sans-serif; font-style: italic; }
-
-    /* ── SECTION HEADERS ── */
-    .lib-section {
-      margin-bottom: 40px;
-    }
-    .lib-section-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #e8e8e8;
-    }
-    .lib-section-icon { font-size: 22px; }
-    .lib-section-title {
-      font-size: 17px;
+    .search-result-item .sr-title {
+      font-size: 14px;
       font-weight: bold;
       color: #1F3864;
+      margin-bottom: 4px;
+    }
+    .search-result-item .sr-excerpt {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.6;
+    }
+    .search-result-item .sr-modules {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #2E75B6;
+      font-weight: bold;
+    }
+    .search-result-item a {
+      color: #2E75B6;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .search-result-item a:hover { text-decoration: underline; }
+    .no-results {
+      font-size: 14px;
+      color: #888;
+      font-style: italic;
+      padding: 16px 0;
       font-family: Arial, sans-serif;
     }
-    .lib-section-sub {
-      font-size: 12px;
-      color: #888;
+    .search-count {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 16px;
       font-family: Arial, sans-serif;
-      margin-top: 2px;
     }
 
     /* ── RESOURCE CARDS ── */
     .resource-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+      margin: 20px 0 40px;
     }
     .resource-card {
       border-radius: 8px;
-      padding: 14px 16px;
+      padding: 18px 20px;
       border-left: 4px solid #ccc;
-      background: #fafafa;
+      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       gap: 6px;
-      text-decoration: none;
-      transition: box-shadow 0.15s, background 0.15s;
     }
-    .resource-card:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.12); background: #f0f4f8; }
-    .rc-scripture  { border-left-color: #1F3864; background: #EBF4FC; }
-    .rc-scripture:hover  { background: #d8eaf8; }
-    .rc-apocryphal { border-left-color: #6B8E3A; background: #F4F8EE; }
-    .rc-apocryphal:hover { background: #e6f0d8; }
-    .rc-historical { border-left-color: #8E44AD; background: #F5EEF8; }
-    .rc-historical:hover { background: #e9ddf5; }
-    .rc-tool       { border-left-color: #C8A800; background: #FFFDF0; }
-    .rc-tool:hover       { background: #f5f0d0; }
+    .rc-scripture   { background: #EBF4FC; border-left-color: #1F3864; }
+    .rc-apocryphal  { background: #F4F8EE; border-left-color: #6B8E3A; }
+    .rc-scrolls     { background: #F5EEF8; border-left-color: #8E44AD; }
+    .rc-historical  { background: #FFF8EE; border-left-color: #7A4F00; }
+    .rc-zadokite    { background: #FEF0EE; border-left-color: #C0392B; }
 
-    .rc-header { display: flex; align-items: center; gap: 8px; }
-    .rc-icon   { font-size: 18px; flex-shrink: 0; }
-    .rc-title  { font-size: 14px; font-weight: bold; color: #1F3864; font-family: Arial, sans-serif; }
-    .rc-desc   { font-size: 12px; color: #555; font-family: Arial, sans-serif; line-height: 1.5; }
-    .rc-tags   { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }
-    .rc-link-hint { font-size: 11px; color: #2E75B6; font-family: Arial, sans-serif; margin-top: 2px; }
-
-    /* ── ADD RESOURCE BOX ── */
-    .add-resource-box {
-      border: 2px dashed #ccc;
-      border-radius: 8px;
-      padding: 14px 16px;
-      text-align: center;
-      color: #aaa;
+    .rc-category {
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #888;
+    }
+    .rc-title {
+      font-size: 15px;
+      font-weight: bold;
+      color: #1F3864;
+      line-height: 1.3;
+    }
+    .rc-desc {
       font-size: 13px;
-      font-family: Arial, sans-serif;
-      cursor: default;
+      color: #555;
+      line-height: 1.6;
     }
+    .rc-modules {
+      font-size: 11px;
+      color: #2E75B6;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+    .rc-link {
+      margin-top: 10px;
+      display: inline-block;
+      font-size: 12px;
+      font-weight: bold;
+      color: #fff;
+      background: #2E75B6;
+      padding: 5px 14px;
+      border-radius: 4px;
+      text-decoration: none;
+      align-self: flex-start;
+      transition: background 0.2s;
+    }
+    .rc-link:hover   { background: #1F3864; }
+    .rc-link.green   { background: #6B8E3A; }
+    .rc-link.green:hover  { background: #4a6628; }
+    .rc-link.brown   { background: #7A4F00; }
+    .rc-link.brown:hover  { background: #5a3a00; }
+    .rc-link.purple  { background: #8E44AD; }
+    .rc-link.purple:hover { background: #6c3483; }
+    .rc-link.red     { background: #C0392B; }
+    .rc-link.red:hover    { background: #922b21; }
 
+    .section-intro {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 6px;
+      font-family: Arial, sans-serif;
+    }
   </style>
 </head>
 <body>
@@ -188,220 +183,268 @@
 <div id="app">
 <div id="main">
 
-  <span class="page-tag">Reference Library</span>
+  <span class="page-tag">My Study — Reference Library</span>
   <h1 class="page-title">Reference Library</h1>
-  <p class="page-subtitle">Scripture tools, primary texts, apocryphal writings, and historical references used throughout this study guide</p>
+  <p class="page-subtitle">Scripture tools, source texts, and historical documents used throughout this study</p>
 
   <!-- SEARCH -->
+  <div class="info-box">
+    <div class="title">How to use this page</div>
+    <div class="line">Use the search box to find any reference by keyword — try searching for a topic like <em>Dead Sea Scrolls</em>, a person like <em>Zadokite</em>, or a theme like <em>calendar</em> or <em>Daniel</em>. Each card shows which study modules the reference connects to so you can trace it back to where it appears in the guide.</div>
+  </div>
+
   <div class="search-wrap">
-    <input id="search-input" type="text" placeholder="Search resources… (e.g. Enoch, Daniel, calendar, Josephus)" oninput="runSearch()" onkeydown="if(event.key==='Enter')runSearch()">
-    <button id="search-btn" onclick="runSearch()">🔍 Search</button>
-    <button id="clear-btn" onclick="clearSearch()">✕ Clear</button>
+    <input type="text" id="search-input"
+      placeholder="Search references… e.g. Dead Sea Scrolls, Jubilees, Zadokite, Daniel, calendar…"
+      oninput="runSearch()"
+      onkeydown="if(event.key==='Enter') runSearch()">
+    <button onclick="runSearch()">Search</button>
   </div>
+  <div id="search-results"></div>
 
-  <!-- SEARCH RESULTS (hidden until query) -->
-  <div id="search-results">
-    <div class="results-header" id="results-header"></div>
-    <div id="results-list"></div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════
-       SECTION 1 — CANONICAL SCRIPTURE
-  ══════════════════════════════════════════════ -->
-  <div class="lib-section" id="section-scripture">
-    <div class="lib-section-header">
-      <div class="lib-section-icon">📖</div>
-      <div>
-        <div class="lib-section-title">Canonical Scripture</div>
-        <div class="lib-section-sub">Bible translations, verse lookup tools, and interlinear references</div>
-      </div>
-    </div>
-    <div class="resource-grid">
-
-      <a class="resource-card rc-scripture" href="https://www.biblegateway.com" target="_blank"
-         data-title="Bible Gateway" data-desc="Multi-translation Bible search and verse lookup. NLT, KJV, ESV, NIV, NASB and more. Primary tool for verse lookup." data-tags="scripture,translation,NLT,search,online" data-type="scripture">
-        <div class="rc-header"><div class="rc-icon">📖</div><div class="rc-title">Bible Gateway</div></div>
-        <div class="rc-desc">Multi-translation search — NLT, KJV, ESV, NIV, NASB and more. Primary tool for verse lookup throughout this guide.</div>
-        <div class="rc-tags"><span class="result-tag tag-scripture">Scripture</span></div>
-        <div class="rc-link-hint">↗ biblegateway.com</div>
-      </a>
-
-      <a class="resource-card rc-scripture" href="https://www.blueletterbible.org" target="_blank"
-         data-title="Blue Letter Bible" data-desc="Deep word study tool with original Greek and Hebrew, Strong's concordance, commentaries, and interlinear." data-tags="scripture,greek,hebrew,strongs,concordance,interlinear,word study" data-type="scripture">
-        <div class="rc-header"><div class="rc-icon">🔤</div><div class="rc-title">Blue Letter Bible</div></div>
-        <div class="rc-desc">Original Greek & Hebrew word studies, Strong's concordance, interlinear text, and commentaries. Indispensable for deep study.</div>
-        <div class="rc-tags"><span class="result-tag tag-scripture">Scripture</span></div>
-        <div class="rc-link-hint">↗ blueletterbible.org</div>
-      </a>
-
-      <a class="resource-card rc-scripture" href="https://www.biblegateway.com/passage/?search=Daniel+9%3A24-27&version=NLT" target="_blank"
-         data-title="Daniel 9:24–27 — NLT" data-desc="Daniel's 70 Weeks — the foundational prophetic passage for end times. Direct link to NLT text." data-tags="scripture,daniel,70 weeks,prophecy,NLT,end times" data-type="scripture">
-        <div class="rc-header"><div class="rc-icon">📌</div><div class="rc-title">Daniel 9:24–27 — NLT</div></div>
-        <div class="rc-desc">Daniel's 70 Weeks — foundational to Theme 1. Direct NLT link. Cross-reference with Module 1.</div>
-        <div class="rc-tags"><span class="result-tag tag-scripture">Scripture</span></div>
-        <div class="rc-link-hint">↗ Bible Gateway · Daniel 9</div>
-      </a>
-
-      <a class="resource-card rc-scripture" href="https://www.biblegateway.com/passage/?search=Revelation+1-22&version=NLT" target="_blank"
-         data-title="Revelation — Full Text NLT" data-desc="Complete Book of Revelation in NLT. Cross-reference with Theme 1 modules throughout." data-tags="scripture,revelation,NLT,end times,tribulation,millennium" data-type="scripture">
-        <div class="rc-header"><div class="rc-icon">📌</div><div class="rc-title">Revelation — Full Text NLT</div></div>
-        <div class="rc-desc">Complete Book of Revelation in NLT. Referenced throughout Theme 1.</div>
-        <div class="rc-tags"><span class="result-tag tag-scripture">Scripture</span></div>
-        <div class="rc-link-hint">↗ Bible Gateway · Revelation</div>
-      </a>
-
-      <a class="resource-card rc-scripture" href="https://www.biblegateway.com/passage/?search=Matthew+24&version=NLT" target="_blank"
-         data-title="Matthew 24 — Olivet Discourse NLT" data-desc="The Olivet Discourse — Jesus on end times signs. Cross-reference with Module 14 (Matt 24 ↔ Revelation)." data-tags="scripture,matthew 24,olivet discourse,NLT,signs,end times" data-type="scripture">
-        <div class="rc-header"><div class="rc-icon">📌</div><div class="rc-title">Matthew 24 — Olivet Discourse</div></div>
-        <div class="rc-desc">Jesus on end times signs. Cross-reference with Module 14 (Matt 24 ↔ Revelation parallel study).</div>
-        <div class="rc-tags"><span class="result-tag tag-scripture">Scripture</span></div>
-        <div class="rc-link-hint">↗ Bible Gateway · Matthew 24</div>
-      </a>
-
-      <a class="resource-card rc-scripture" href="https://www.biblegateway.com/passage/?search=2+Thessalonians+2&version=NLT" target="_blank"
-         data-title="2 Thessalonians 2 — NLT" data-desc="The Man of Lawlessness and the Restrainer. Cross-reference with Module 7 (The Antichrist)." data-tags="scripture,2 thessalonians,restrainer,antichrist,man of lawlessness,NLT" data-type="scripture">
-        <div class="rc-header"><div class="rc-icon">📌</div><div class="rc-title">2 Thessalonians 2 — NLT</div></div>
-        <div class="rc-desc">The Man of Lawlessness and the Restrainer. Cross-reference with Module 7.</div>
-        <div class="rc-tags"><span class="result-tag tag-scripture">Scripture</span></div>
-        <div class="rc-link-hint">↗ Bible Gateway · 2 Thess 2</div>
-      </a>
-
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════
-       SECTION 2 — APOCRYPHAL & SECOND TEMPLE TEXTS
-  ══════════════════════════════════════════════ -->
-  <div class="lib-section" id="section-apocryphal">
-    <div class="lib-section-header">
-      <div class="lib-section-icon">📜</div>
-      <div>
-        <div class="lib-section-title">Apocryphal &amp; Second Temple Texts</div>
-        <div class="lib-section-sub">Non-canonical writings referenced in this study — important historical and theological context</div>
-      </div>
-    </div>
-    <div class="resource-grid">
-
-      <a class="resource-card rc-apocryphal" href="https://www.sacred-texts.com/bib/boe/index.htm" target="_blank"
-         data-title="Book of Enoch (1 Enoch)" data-desc="Full online text of 1 Enoch. Referenced in Theme 2 for the 364-day solar calendar, the Watchers, and the Enoch astronomy texts (72–82)." data-tags="enoch,calendar,solar,364,watchers,second temple,apocryphal,DSS" data-type="apocryphal">
-        <div class="rc-header"><div class="rc-icon">📜</div><div class="rc-title">Book of Enoch (1 Enoch)</div></div>
-        <div class="rc-desc">Full text online. Referenced in Theme 2 for the 364-day calendar (chapters 72–82), the Watchers, and angelic order. Not canonical but historically significant.</div>
-        <div class="rc-tags"><span class="result-tag tag-apocryphal">Apocryphal</span></div>
-        <div class="rc-link-hint">↗ sacred-texts.com</div>
-      </a>
-
-      <a class="resource-card rc-apocryphal" href="https://www.sacred-texts.com/bib/jub/index.htm" target="_blank"
-         data-title="Book of Jubilees" data-desc="Full online text of the Book of Jubilees. Referenced in Theme 2, Module 3 for calendar laws, solar year structure, and Sabbath commands." data-tags="jubilees,calendar,solar,364,sabbath,second temple,apocryphal" data-type="apocryphal">
-        <div class="rc-header"><div class="rc-icon">📜</div><div class="rc-title">Book of Jubilees</div></div>
-        <div class="rc-desc">Full text online. Referenced in Theme 2 Module 3. Provides calendar laws, 364-day structure, and the Sabbath framework. Found among the Dead Sea Scrolls.</div>
-        <div class="rc-tags"><span class="result-tag tag-apocryphal">Apocryphal</span></div>
-        <div class="rc-link-hint">↗ sacred-texts.com</div>
-      </a>
-
-      <a class="resource-card rc-apocryphal" href="https://www.deadseascrolls.org.il/learn-about-the-scrolls/introduction" target="_blank"
-         data-title="Dead Sea Scrolls — Israel Antiquities Authority" data-desc="Official archive and introduction to the Dead Sea Scrolls. Includes the Damascus Document, Community Rule, War Scroll, and calendar texts 4Q318, 4Q394." data-tags="dead sea scrolls,DSS,Qumran,Essenes,Zadokite,calendar,damascus document,community rule" data-type="apocryphal">
-        <div class="rc-header"><div class="rc-icon">🏺</div><div class="rc-title">Dead Sea Scrolls — IAA Archive</div></div>
-        <div class="rc-desc">Official Israel Antiquities Authority site. Includes the Damascus Document, Community Rule, War Scroll, and key calendar texts. The Essene library from Qumran.</div>
-        <div class="rc-tags"><span class="result-tag tag-apocryphal">Apocryphal</span></div>
-        <div class="rc-link-hint">↗ deadseascrolls.org.il</div>
-      </a>
-
-      <a class="resource-card rc-apocryphal" href="https://www.biblegateway.com/passage/?search=1+Maccabees+1&version=NRSVA" target="_blank"
-         data-title="1 Maccabees" data-desc="Historical account of the Maccabean revolt against Antiochus Epiphanes. Context for the calendar conflict and Zadokite priestly crisis in Theme 2, Module 2." data-tags="maccabees,antiochus,seleucid,zadokite,calendar,second temple,apocryphal" data-type="apocryphal">
-        <div class="rc-header"><div class="rc-icon">⚔️</div><div class="rc-title">1 Maccabees</div></div>
-        <div class="rc-desc">Historical account of the Maccabean revolt. Key context for Antiochus Epiphanes, the Zadokite priestly crisis, and the calendar corruption covered in Theme 2 Module 2.</div>
-        <div class="rc-tags"><span class="result-tag tag-apocryphal">Apocryphal</span></div>
-        <div class="rc-link-hint">↗ Bible Gateway · NRSVA</div>
-      </a>
-
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════
-       SECTION 3 — HISTORICAL & SCHOLARLY REFERENCES
-  ══════════════════════════════════════════════ -->
-  <div class="lib-section" id="section-historical">
-    <div class="lib-section-header">
-      <div class="lib-section-icon">🏛️</div>
-      <div>
-        <div class="lib-section-title">Historical &amp; Scholarly References</div>
-        <div class="lib-section-sub">Josephus, early church writings, and trusted reference sources used in this study</div>
-      </div>
-    </div>
-    <div class="resource-grid">
-
-      <a class="resource-card rc-historical" href="https://penelope.uchicago.edu/josephus/" target="_blank"
-         data-title="Josephus — Complete Works (University of Chicago)" data-desc="Complete works of Josephus online — Antiquities of the Jews, Jewish War. Referenced for first-century history, temple descriptions, Zadokite priests, and Qumran context." data-tags="josephus,antiquities,jewish war,first century,historical,zadokite,temple,Qumran" data-type="historical">
-        <div class="rc-header"><div class="rc-icon">🏛️</div><div class="rc-title">Josephus — Complete Works</div></div>
-        <div class="rc-desc">Complete works of Josephus — <em>Antiquities of the Jews</em> and <em>Jewish War</em>. Invaluable for first-century Jewish history, the Temple, Zadokite priests, and the Essene community.</div>
-        <div class="rc-tags"><span class="result-tag tag-historical">Historical</span></div>
-        <div class="rc-link-hint">↗ University of Chicago</div>
-      </a>
-
-      <a class="resource-card rc-historical" href="https://www.gotquestions.org" target="_blank"
-         data-title="Got Questions" data-desc="Evangelical biblical Q&A resource. Good for quick theological background checks on topics, people, and passages." data-tags="theology,questions,reference,evangelical,background" data-type="historical">
-        <div class="rc-header"><div class="rc-icon">❓</div><div class="rc-title">Got Questions</div></div>
-        <div class="rc-desc">Trusted evangelical Q&A resource for quick theological and historical background on people, passages, and topics throughout the study guide.</div>
-        <div class="rc-tags"><span class="result-tag tag-historical">Reference</span></div>
-        <div class="rc-link-hint">↗ gotquestions.org</div>
-      </a>
-
-      <a class="resource-card rc-historical" href="https://www.worldhistory.org" target="_blank"
-         data-title="World History Encyclopedia" data-desc="Academic-level world history articles. Useful for background on Babylon, Persia, Seleucid Empire, Rome, and the Second Temple period." data-tags="history,babylon,persia,seleucid,rome,second temple,world history" data-type="historical">
-        <div class="rc-header"><div class="rc-icon">🌍</div><div class="rc-title">World History Encyclopedia</div></div>
-        <div class="rc-desc">Academic world history articles. Useful for background on Babylon, Persia, Seleucid Empire, Rome, and Second Temple period — all relevant to end times prophecy context.</div>
-        <div class="rc-tags"><span class="result-tag tag-historical">Historical</span></div>
-        <div class="rc-link-hint">↗ worldhistory.org</div>
-      </a>
-
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════
-       SECTION 4 — STUDY TOOLS
-  ══════════════════════════════════════════════ -->
-  <div class="lib-section" id="section-tools">
-    <div class="lib-section-header">
-      <div class="lib-section-icon">🛠️</div>
-      <div>
-        <div class="lib-section-title">Study Tools</div>
-        <div class="lib-section-sub">Concordances, maps, timelines, and other tools useful for active study</div>
-      </div>
-    </div>
-    <div class="resource-grid">
-
-      <a class="resource-card rc-tool" href="https://www.biblegateway.com/resources/encyclopedia-of-the-bible/toc/" target="_blank"
-         data-title="Encyclopedia of the Bible — Bible Gateway" data-desc="Comprehensive Bible encyclopedia with articles on people, places, themes, and events." data-tags="encyclopedia,reference,bible,people,places,themes" data-type="tool">
-        <div class="rc-header"><div class="rc-icon">📚</div><div class="rc-title">Encyclopedia of the Bible</div></div>
-        <div class="rc-desc">Comprehensive Bible encyclopedia — articles on people, places, themes, and events. Good first stop for background on unfamiliar names or concepts.</div>
-        <div class="rc-tags"><span class="result-tag tag-tool">Tool</span></div>
-        <div class="rc-link-hint">↗ Bible Gateway</div>
-      </a>
-
-      <a class="resource-card rc-tool" href="https://www.biblemapper.com" target="_blank"
-         data-title="Bible Mapper — Interactive Biblical Maps" data-desc="Interactive maps of the biblical world — Israel, the ancient Near East, Paul's journeys, the Exodus route, and more." data-tags="maps,geography,israel,ancient near east,exodus,journey,biblical" data-type="tool">
-        <div class="rc-header"><div class="rc-icon">🗺️</div><div class="rc-title">Bible Mapper — Interactive Maps</div></div>
-        <div class="rc-desc">Interactive maps of the biblical world — Israel, ancient Near East, Paul's journeys, Exodus route, and more. Helpful for placing prophecy in geographic context.</div>
-        <div class="rc-tags"><span class="result-tag tag-tool">Tool</span></div>
-        <div class="rc-link-hint">↗ biblemapper.com</div>
-      </a>
-
-      <a class="resource-card rc-tool" href="https://www.esri.com/en-us/maps/ancient-empires" target="_blank"
-         data-title="Ancient Empires Maps — ESRI" data-desc="Detailed maps of ancient empires — Babylon, Persia, Greece, Rome. Useful for understanding Daniel's four kingdoms and the prophetic arc of history." data-tags="maps,babylon,persia,greece,rome,empires,daniel,kingdoms" data-type="tool">
-        <div class="rc-header"><div class="rc-icon">🏰</div><div class="rc-title">Ancient Empires Maps</div></div>
-        <div class="rc-desc">Detailed maps of Babylon, Persia, Greece, and Rome — the four kingdoms of Daniel's prophecy. Helpful for visualizing the prophetic arc of history.</div>
-        <div class="rc-tags"><span class="result-tag tag-tool">Tool</span></div>
-        <div class="rc-link-hint">↗ ESRI</div>
-      </a>
-
-    </div>
-  </div>
-
-  <!-- NOTES -->
   <div class="divider"></div>
-  <h2 class="section-title">📝 My Resource Notes</h2>
-  <p style="font-size:13px;color:#555;font-family:Arial,sans-serif;margin-bottom:8px;">Add your own notes about resources you've found useful, or flag ones to revisit.</p>
-  <textarea id="note-library-resources" class="note-area" placeholder="e.g. Ken Johnson's book on the Dead Sea Scrolls — check chapter 4 on the calendar…" style="min-height:120px;"></textarea>
+
+  <!-- ══ SECTION 1: SCRIPTURE TOOLS ══ -->
+  <h2 class="section-title">📖 Scripture Tools</h2>
+  <p class="section-intro">Online Bible tools used for reading, cross-referencing, and looking up passages cited throughout the study modules. All scripture quotations in this guide default to the New Living Translation (NLT).</p>
+
+  <div class="resource-grid">
+
+    <div class="resource-card rc-scripture"
+      data-title="BibleGateway.com — Verse Lookup & Cross-Reference"
+      data-desc="Search any passage, compare translations side-by-side, and read full chapter context. Primary tool for looking up every scripture reference across all modules."
+      data-modules="Used in: All modules across all themes"
+      data-href="https://www.biblegateway.com"
+      data-linktxt="Open BibleGateway →"
+      data-search="bible gateway scripture verse lookup NLT ESV translation cross reference all modules">
+      <div class="rc-category">Bible Gateway</div>
+      <div class="rc-title">BibleGateway.com — Verse Lookup &amp; Cross-Reference</div>
+      <div class="rc-desc">Search any passage, compare translations side-by-side, and read full chapter context. The primary tool for looking up scripture cited in every module. Default translation throughout this guide is NLT.</div>
+      <div class="rc-modules">📌 Used in: All modules across all themes</div>
+      <a class="rc-link" href="https://www.biblegateway.com" target="_blank">Open BibleGateway →</a>
+    </div>
+
+    <div class="resource-card rc-scripture"
+      data-title="BlueLetterBible.org — Hebrew & Greek Word Study"
+      data-desc="Dig into original Hebrew and Greek words using Strong's Concordance. Especially useful when exact word meaning affects interpretation — e.g. parousia, abomination, restrainer."
+      data-modules="Used in: Theme 1 Modules 1, 7, 14 — Theme 2 Modules 1–2"
+      data-href="https://www.blueletterbible.org"
+      data-linktxt="Open Blue Letter Bible →"
+      data-search="blue letter bible hebrew greek strongs concordance word study original language parousia abomination restrainer">
+      <div class="rc-category">Blue Letter Bible</div>
+      <div class="rc-title">BlueLetterBible.org — Hebrew &amp; Greek Word Study</div>
+      <div class="rc-desc">Dig into original Hebrew and Greek words using Strong's Concordance. Especially useful when the exact meaning of a word affects interpretation — e.g. <em>parousia</em> (coming/presence), <em>abomination</em>, <em>restrainer</em> (2 Thess 2).</div>
+      <div class="rc-modules">📌 Used in: Theme 1 Modules 1, 7, 14 — Theme 2 Modules 1–2</div>
+      <a class="rc-link" href="https://www.blueletterbible.org" target="_blank">Open Blue Letter Bible →</a>
+    </div>
+
+    <div class="resource-card rc-scripture"
+      data-title="BibleProject.com — Book Overviews & Theme Videos"
+      data-desc="Excellent video overviews of every book of the Bible plus thematic videos on the Day of the Lord, covenant, and Kingdom of God. Great orientation before going deep."
+      data-modules="Used in: Theme 1 background — upcoming Themes 4–6"
+      data-href="https://bibleproject.com"
+      data-linktxt="Open Bible Project →"
+      data-search="bible project overview video genesis revelation old testament new testament day of the lord covenant kingdom">
+      <div class="rc-category">The Bible Project</div>
+      <div class="rc-title">BibleProject.com — Book Overviews &amp; Theme Videos</div>
+      <div class="rc-desc">Video overviews of every book of the Bible plus thematic videos on the Day of the Lord, covenant, and the Kingdom of God. Great for orientation before going deep into a module.</div>
+      <div class="rc-modules">📌 Used in: Theme 1 background — upcoming Themes 4–6</div>
+      <a class="rc-link" href="https://bibleproject.com" target="_blank">Open Bible Project →</a>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══ SECTION 2: APOCRYPHAL TEXTS ══ -->
+  <h2 class="section-title">📜 Apocryphal &amp; Second Temple Texts</h2>
+  <p class="section-intro">These texts are not canonical Scripture in most Protestant traditions, but they are significant historical and theological documents — especially for understanding what Jewish communities believed in the centuries before Christ. The Dead Sea Scroll community (Essenes) treated the Book of Jubilees and 1 Enoch as authoritative alongside Torah.</p>
+
+  <div class="resource-grid">
+
+    <div class="resource-card rc-apocryphal"
+      data-title="The Book of Jubilees"
+      data-desc="A retelling of Genesis through Exodus 14 organized around 49-year Jubilee cycles. Explicitly commands the 364-day solar calendar and declares that using the lunar calendar corrupts the feasts. Key passages: Jubilees 6:36–38 (the 364-day year), Jubilees 1 (covenant at Sinai)."
+      data-modules="Studied in: Theme 2 Module 3 — Referenced in: Theme 2 Modules 1–2, Theme 1 Module 1"
+      data-href="https://www.sacred-texts.com/bib/jub/index.htm"
+      data-linktxt="Read Online →"
+      data-search="book of jubilees 364 day calendar solar feasts sabbath creation noah exodus appointed times jubilee cycle">
+      <div class="rc-category">Apocryphal Text</div>
+      <div class="rc-title">The Book of Jubilees</div>
+      <div class="rc-desc">A retelling of Genesis through Exodus 14, organized around 49-year Jubilee cycles. Explicitly commands the 364-day solar calendar and declares that using the lunar calendar corrupts the feasts and Sabbaths. Considered authoritative at Qumran. Key passages: Jubilees 6:36–38 (the 364-day year).</div>
+      <div class="rc-modules">📌 Studied in: Theme 2, Module 3 — Referenced in: Theme 2 Modules 1–2, Theme 1 Module 1</div>
+      <a class="rc-link green" href="https://www.sacred-texts.com/bib/jub/index.htm" target="_blank">Read Online →</a>
+    </div>
+
+    <div class="resource-card rc-apocryphal"
+      data-title="1 Enoch (Book of Enoch)"
+      data-desc="Jewish apocalyptic writings attributed to the biblical Enoch (Genesis 5:18–24). Sections include the Book of the Watchers (fallen angels), the Astronomical Book (calendar), and the Book of Parables (Son of Man). Jude 14 quotes 1 Enoch directly. Key passage: 1 Enoch 72:32 (364-day year)."
+      data-modules="Studied in: Theme 2 Modules 1–2 — Referenced in: Theme 1 Module 1"
+      data-href="https://www.sacred-texts.com/bib/eth/index.htm"
+      data-linktxt="Read Online →"
+      data-search="book of enoch 1 enoch watchers fallen angels calendar 364 day solar year astronomical enoch 72 son of man jude">
+      <div class="rc-category">Apocryphal Text</div>
+      <div class="rc-title">1 Enoch (Book of Enoch)</div>
+      <div class="rc-desc">Jewish apocalyptic writings attributed to the biblical Enoch (Genesis 5:18–24). Sections include the Book of the Watchers, the Astronomical Book (calendar), and the Book of Parables (messianic Son of Man). Jude 14 quotes 1 Enoch directly. Key calendar passage: 1 Enoch 72:32. Enoch 72:1 states original cycles do not change until the new creation.</div>
+      <div class="rc-modules">📌 Studied in: Theme 2, Modules 1–2 — Referenced in: Theme 1 Module 1</div>
+      <a class="rc-link green" href="https://www.sacred-texts.com/bib/eth/index.htm" target="_blank">Read Online →</a>
+    </div>
+
+    <div class="resource-card rc-apocryphal"
+      data-title="1 & 2 Maccabees"
+      data-desc="Historical accounts of the Maccabean revolt (175–134 BC) against Antiochus IV Epiphanes. Critical background for the abomination of desolation in Daniel and Matthew 24, and for understanding what the Zadokite priests were responding to. 2 Maccabees 4 documents the removal of Onias III."
+      data-modules="Referenced in: Theme 1 Modules 7, 14 — Theme 2 Modules 1–2"
+      data-href="https://www.biblegateway.com/passage/?search=1+Maccabees+1&version=NRSVA"
+      data-linktxt="Read on BibleGateway →"
+      data-search="maccabees 1 2 maccabees antiochus epiphanes temple rededication hanukkah seleucid Onias abomination desolation zadokite revolt">
+      <div class="rc-category">Deuterocanonical Text</div>
+      <div class="rc-title">1 &amp; 2 Maccabees</div>
+      <div class="rc-desc">Historical accounts of the Maccabean revolt against Antiochus IV Epiphanes. 1 Maccabees covers the military story; 2 Maccabees provides theological reflection. Critical background for Daniel's "abomination of desolation," Matthew 24, and the Zadokite priestly crisis. 2 Maccabees 4 specifically documents the removal of Onias III.</div>
+      <div class="rc-modules">📌 Referenced in: Theme 1 Modules 7, 14 — Theme 2 Modules 1–2</div>
+      <a class="rc-link green" href="https://www.biblegateway.com/passage/?search=1+Maccabees+1&version=NRSVA" target="_blank">Read on BibleGateway →</a>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══ SECTION 3: DEAD SEA SCROLLS ══ -->
+  <h2 class="section-title">🗺️ Dead Sea Scrolls &amp; Qumran Texts</h2>
+  <p class="section-intro">Discovered at Qumran between 1947 and 1956, the Dead Sea Scrolls are the oldest known manuscripts of the Hebrew Bible along with a library of documents produced by the Essene community. They are directly relevant to both the calendar study (Theme 2) and the prophetic timeline study (Theme 1).</p>
+
+  <div class="resource-grid">
+
+    <div class="resource-card rc-scrolls"
+      data-title="The Leon Levy Dead Sea Scrolls Digital Library"
+      data-desc="High-resolution images of actual Dead Sea Scroll fragments with English translation tools. Browse calendar texts (4Q318, 4Q394), the Community Rule, and the Damascus Document. Hosted by the Israel Antiquities Authority."
+      data-modules="Referenced in: Theme 2 Modules 1–2"
+      data-href="https://www.deadseascrolls.org.il"
+      data-linktxt="Browse Scrolls →"
+      data-search="dead sea scrolls digital library qumran manuscripts 4Q318 4Q394 community rule damascus document fragments Israel antiquities">
+      <div class="rc-category">Digital Archive</div>
+      <div class="rc-title">The Leon Levy Dead Sea Scrolls Digital Library</div>
+      <div class="rc-desc">High-resolution images of the actual Dead Sea Scroll fragments with English translation tools. Browse the calendar texts (4Q318, 4Q394), the Community Rule, and the Damascus Document. Hosted by the Israel Antiquities Authority.</div>
+      <div class="rc-modules">📌 Referenced in: Theme 2, Modules 1–2</div>
+      <a class="rc-link purple" href="https://www.deadseascrolls.org.il" target="_blank">Browse Scrolls →</a>
+    </div>
+
+    <div class="resource-card rc-scrolls"
+      data-title="The Damascus Document (Zadokite Fragments)"
+      data-desc="A community covenant text that outlines the founding of the Qumran community, its laws, and its identity as the faithful remnant. Calls members 'sons of Zadok.' Explicitly condemns the corruption of the priesthood under Hellenized high priests. Also known as the Zadokite Fragments."
+      data-modules="Referenced in: Theme 2 Module 2 (Calendar Timeline — Zadokite section)"
+      data-href="https://www.sacred-texts.com/chr/apo/zadokite.htm"
+      data-linktxt="Read Online →"
+      data-search="damascus document zadokite fragments essene covenant new covenant sons of zadok qumran community corrupt priesthood hellenized">
+      <div class="rc-category">Dead Sea Scroll Document</div>
+      <div class="rc-title">The Damascus Document (Zadokite Fragments)</div>
+      <div class="rc-desc">One of the most important Essene documents — a community covenant text outlining the founding of the Qumran community and its identity as the faithful remnant. Calls members "sons of Zadok." Explicitly condemns the corruption of the priesthood under the Hellenized high priests. Two medieval copies were also found in a Cairo synagogue in 1896.</div>
+      <div class="rc-modules">📌 Referenced in: Theme 2, Module 2 (Calendar Timeline — Zadokite section)</div>
+      <a class="rc-link purple" href="https://www.sacred-texts.com/chr/apo/zadokite.htm" target="_blank">Read Online →</a>
+    </div>
+
+    <div class="resource-card rc-scrolls"
+      data-title="The Community Rule (1QS — Manual of Discipline)"
+      data-desc="The governing charter of the Essene community at Qumran. Contains the famous 'Two Spirits' teaching — Sons of Light vs. Sons of Darkness — language that closely parallels John's Gospel and 1 John. Outlines 364-day calendar observances and ritual purity laws."
+      data-modules="Referenced in: Theme 2 Modules 1–2 — Parallels: Theme 1 Module 11, John 1, 1 John 4"
+      data-href="https://www.sacred-texts.com/chr/dss/dss12.htm"
+      data-linktxt="Read Online →"
+      data-search="community rule manual of discipline sons of light sons of darkness two spirits qumran essene 364 day calendar purity 1QS">
+      <div class="rc-category">Dead Sea Scroll Document</div>
+      <div class="rc-title">The Community Rule (1QS — Manual of Discipline)</div>
+      <div class="rc-desc">The governing charter of the Essene community at Qumran. Contains the famous "Two Spirits" teaching — the Spirit of Truth (Sons of Light) vs. the Spirit of Falsehood (Sons of Darkness) — language that closely parallels John's Gospel and 1 John. Outlines 364-day calendar observances the community followed.</div>
+      <div class="rc-modules">📌 Referenced in: Theme 2, Modules 1–2 — Parallels: Theme 1 Module 11 (False Prophets), John 1, 1 John 4</div>
+      <a class="rc-link purple" href="https://www.sacred-texts.com/chr/dss/dss12.htm" target="_blank">Read Online →</a>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══ SECTION 4: HISTORICAL ══ -->
+  <h2 class="section-title">🏛️ Historical Background</h2>
+  <p class="section-intro">Key historical sources for understanding the inter-testamental period, the Jewish sects, and the political context that shapes Daniel's prophecies and the New Testament.</p>
+
+  <div class="resource-grid">
+
+    <div class="resource-card rc-historical"
+      data-title="Josephus — Antiquities of the Jews & The Jewish War"
+      data-desc="Flavius Josephus (37–100 AD) is the primary first-century Jewish historian. Antiquities covers from Creation through Nero; The Jewish War documents the revolt and destruction of Jerusalem in 70 AD. Essential for understanding how the Pharisees, Sadducees, and Essenes functioned."
+      data-modules="Referenced in: Theme 1 Modules 1, 8, 14 — Theme 2 Modules 1–2"
+      data-href="https://penelope.uchicago.edu/josephus/"
+      data-linktxt="Read Online →"
+      data-search="josephus antiquities jewish war flavius josephus first century history pharisees sadducees essenes 70 AD Jerusalem temple destruction">
+      <div class="rc-category">First-Century Jewish Historian</div>
+      <div class="rc-title">Josephus — Antiquities of the Jews &amp; The Jewish War</div>
+      <div class="rc-desc">Flavius Josephus (37–100 AD) is the primary first-century Jewish historian. <em>Antiquities of the Jews</em> covers Creation through Nero; <em>The Jewish War</em> documents the revolt and destruction of Jerusalem in 70 AD. Essential for the historical fulfillment of Matthew 24 prophecies and for understanding the Pharisee, Sadducee, and Essene sects.</div>
+      <div class="rc-modules">📌 Referenced in: Theme 1 Modules 1, 8, 14 — Theme 2 Modules 1–2</div>
+      <a class="rc-link brown" href="https://penelope.uchicago.edu/josephus/" target="_blank">Read Online →</a>
+    </div>
+
+    <div class="resource-card rc-historical"
+      data-title="Antiochus IV Epiphanes — Historical Background"
+      data-desc="Antiochus IV Epiphanes (175–164 BC) is one of the most significant figures in prophetic history. Daniel 11 describes him as a type of the future Antichrist. He desecrated the Temple, sacrificed a pig on the altar, forced the Seleucid lunar calendar on Jewish worship, and replaced the Zadokite high priest."
+      data-modules="Referenced in: Theme 1 Modules 1, 7, 14 — Theme 2 Modules 1–2"
+      data-href="https://www.gotquestions.org/Antiochus-Epiphanes.html"
+      data-linktxt="Learn More →"
+      data-search="antiochus epiphanes seleucid empire 175 BC abomination desolation temple pig altar Daniel 11 antichrist type calendar forced lunar">
+      <div class="rc-category">Historical Figure</div>
+      <div class="rc-title">Antiochus IV Epiphanes — Historical Background</div>
+      <div class="rc-desc">Antiochus IV Epiphanes (175–164 BC) is one of the most significant figures in prophetic history. Daniel 11 describes him as a type of the future Antichrist. He desecrated the Jerusalem Temple, sacrificed a pig on the altar, forced the Seleucid lunar calendar on Jewish worship, and displaced the Zadokite high priest — the historical template for the "abomination of desolation."</div>
+      <div class="rc-modules">📌 Referenced in: Theme 1 Modules 1, 7, 14 — Theme 2 Modules 1–2</div>
+      <a class="rc-link brown" href="https://www.gotquestions.org/Antiochus-Epiphanes.html" target="_blank">Learn More →</a>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══ SECTION 5: ZADOKITE PRIESTS ══ -->
+  <h2 class="section-title">⚜️ The Zadokite Priests</h2>
+  <p class="section-intro">The Zadokite priestly line is a key thread connecting the Old Testament priesthood, the Essenes, the Dead Sea Scrolls, the calendar controversy, and the corruption that Daniel and Revelation warn about. Understanding who they were unlocks context across multiple modules.</p>
+
+  <div class="resource-grid">
+
+    <div class="resource-card rc-zadokite"
+      data-title="Who Were the Zadokite Priests?"
+      data-desc="The Zadokites held the Jerusalem high priesthood in an unbroken line for roughly 800 years — from Solomon's appointment of Zadok (~950 BC) through 175 BC. They guarded both the Temple rituals and the 364-day solar calendar. When Antiochus IV removed Onias III (replaced first by Jason through bribery, then by Menelaus — not even a Zadokite), the faithful Zadokites withdrew to Qumran with the Temple library — producing the Dead Sea Scrolls."
+      data-modules="Studied in: Theme 2 Module 2 (Calendar Timeline) — Referenced in: Theme 2 Module 1"
+      data-href="theme2/module2.html"
+      data-linktxt="See Theme 2 Module 2 →"
+      data-search="zadokite priests sons of zadok high priest solomon temple lineage Onias III Jason Menelaus priesthood bribery 175 BC 800 years solar calendar qumran">
+      <div class="rc-category">Priestly Lineage</div>
+      <div class="rc-title">Who Were the Zadokite Priests?</div>
+      <div class="rc-desc">The Zadokites (Sons of Zadok) held the Jerusalem high priesthood in an unbroken line for roughly 800 years — from Solomon's appointment of Zadok (~950 BC) through 175 BC. They were guardians of both the Temple rituals and the sacred 364-day solar calendar, which they believed was divinely revealed. When Antiochus IV removed Onias III (replaced first by Jason through bribery, then by Menelaus — who wasn't even a Zadokite), the faithful Zadokites withdrew to Qumran with the Temple library — producing the Dead Sea Scrolls.</div>
+      <div class="rc-modules">📌 Studied in: Theme 2, Module 2 (Calendar Timeline) — Referenced in: Theme 2, Module 1</div>
+      <a class="rc-link red" href="theme2/module2.html" target="_blank">See Theme 2 Module 2 →</a>
+    </div>
+
+    <div class="resource-card rc-zadokite"
+      data-title="The Fall of the Zadokite Priesthood (175 BC)"
+      data-desc="In 175 BC, the legitimate Zadokite high priest Onias III was removed when his brother Jason bribed Antiochus IV for the position. Then Menelaus — not from the Zadokite line — outbid Jason. Onias III was assassinated. The Essenes saw this as the catastrophic corruption of the Temple. Documented in 2 Maccabees 4."
+      data-modules="Studied in: Theme 2 Module 2 — Background for: Theme 1 Modules 7, 8"
+      data-href="https://www.biblegateway.com/passage/?search=2+Maccabees+4&version=NRSVA"
+      data-linktxt="Read 2 Maccabees 4 →"
+      data-search="Onias III high priest zadokite assassinated Jason Menelaus bribe antiochus temple sold corruption 175 BC essene catastrophe 2 Maccabees 4">
+      <div class="rc-category">Historical Event</div>
+      <div class="rc-title">The Fall of the Zadokite Priesthood (175 BC)</div>
+      <div class="rc-desc">In 175 BC, the legitimate Zadokite high priest Onias III was removed when his own brother Jason bribed Antiochus IV for the position. Then Menelaus — not even from the Zadokite line — outbid Jason, and Onias III was assassinated. The Essenes identified this as the beginning of catastrophic corruption of the Temple and the calendar. Documented in 2 Maccabees 4.</div>
+      <div class="rc-modules">📌 Studied in: Theme 2, Module 2 — Background for: Theme 1 Modules 7 (Antichrist), 8 (Rebuilt Temple)</div>
+      <a class="rc-link red" href="https://www.biblegateway.com/passage/?search=2+Maccabees+4&version=NRSVA" target="_blank">Read 2 Maccabees 4 →</a>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="cross-ref-box">
+    <div class="title">🔗 Cross-Theme Connections from This Library</div>
+    <div class="line">• Zadokite calendar corruption (175 BC) → Daniel 11 "abomination" type → Theme 1, Modules 7 &amp; 14</div>
+    <div class="line">• Book of Jubilees 364-day calendar → Daniel's 70 Weeks timeline precision → Theme 1, Module 1</div>
+    <div class="line">• Essene "Sons of Light vs. Sons of Darkness" (Community Rule) → John's Gospel, 1 John → Theme 1, Module 11</div>
+    <div class="line">• Dead Sea Scrolls community = deposed Zadokite priests → preservers of original Temple calendar → Theme 2, Modules 1–2</div>
+    <div class="line">• 1 Enoch 72:1 (original cycles unchanged until new creation) → Millennial worship Isa 66:23, Ezek 46:1 → Theme 1, Module 12</div>
+    <div class="line">• Josephus on 70 AD Temple destruction → Matthew 24 near-term fulfillment → Theme 1, Module 14</div>
+  </div>
 
 </div>
 </div>
@@ -411,78 +454,63 @@
 <script>buildSidebar('.');</script>
 
 <script>
-// ── SEARCH ENGINE ──
-const RESOURCES = [
-  // Scripture
-  { title: "Bible Gateway", desc: "Multi-translation Bible search — NLT, KJV, ESV, NIV, NASB and more. Primary verse lookup tool.", tags: "scripture translation NLT KJV ESV NIV search online bible", type: "scripture", icon: "📖", href: "https://www.biblegateway.com" },
-  { title: "Blue Letter Bible", desc: "Original Greek & Hebrew word studies, Strong's concordance, interlinear, commentaries.", tags: "scripture greek hebrew strongs concordance interlinear word study", type: "scripture", icon: "🔤", href: "https://www.blueletterbible.org" },
-  { title: "Daniel 9:24–27 — NLT", desc: "Daniel's 70 Weeks — foundational end times prophecy. Cross-reference Module 1.", tags: "scripture daniel 70 weeks prophecy NLT end times tribulation", type: "scripture", icon: "📌", href: "https://www.biblegateway.com/passage/?search=Daniel+9%3A24-27&version=NLT" },
-  { title: "Revelation — Full Text NLT", desc: "Complete Book of Revelation in NLT. Referenced throughout Theme 1.", tags: "scripture revelation NLT end times tribulation millennium antichrist", type: "scripture", icon: "📌", href: "https://www.biblegateway.com/passage/?search=Revelation+1-22&version=NLT" },
-  { title: "Matthew 24 — Olivet Discourse", desc: "Jesus on end times signs. Cross-reference Module 14 parallel study.", tags: "scripture matthew 24 olivet discourse NLT signs end times rapture", type: "scripture", icon: "📌", href: "https://www.biblegateway.com/passage/?search=Matthew+24&version=NLT" },
-  { title: "2 Thessalonians 2 — NLT", desc: "The Man of Lawlessness and the Restrainer. Cross-reference Module 7.", tags: "scripture 2 thessalonians restrainer antichrist man of lawlessness NLT", type: "scripture", icon: "📌", href: "https://www.biblegateway.com/passage/?search=2+Thessalonians+2&version=NLT" },
-  // Apocryphal
-  { title: "Book of Enoch (1 Enoch)", desc: "Full text. Referenced in Theme 2 for the 364-day calendar, Watchers, and astrology section (chapters 72–82).", tags: "enoch calendar solar 364 watchers second temple apocryphal DSS dead sea scrolls", type: "apocryphal", icon: "📜", href: "https://www.sacred-texts.com/bib/boe/index.htm" },
-  { title: "Book of Jubilees", desc: "Full text. Referenced in Theme 2 Module 3. Calendar laws, 364-day structure, Sabbath framework.", tags: "jubilees calendar solar 364 sabbath second temple apocryphal dead sea scrolls", type: "apocryphal", icon: "📜", href: "https://www.sacred-texts.com/bib/jub/index.htm" },
-  { title: "Dead Sea Scrolls — IAA Archive", desc: "Official archive. Damascus Document, Community Rule, War Scroll, calendar texts 4Q318, 4Q394.", tags: "dead sea scrolls DSS Qumran Essenes Zadokite calendar damascus document community rule", type: "apocryphal", icon: "🏺", href: "https://www.deadseascrolls.org.il/learn-about-the-scrolls/introduction" },
-  { title: "1 Maccabees", desc: "Historical account of the Maccabean revolt, Antiochus Epiphanes, and the Zadokite priestly crisis.", tags: "maccabees antiochus seleucid zadokite calendar second temple apocryphal hanukkah", type: "apocryphal", icon: "⚔️", href: "https://www.biblegateway.com/passage/?search=1+Maccabees+1&version=NRSVA" },
-  // Historical
-  { title: "Josephus — Complete Works", desc: "Antiquities of the Jews and Jewish War. First-century Jewish history, temple, Zadokite priests, Essenes.", tags: "josephus antiquities jewish war first century historical zadokite temple Qumran essene", type: "historical", icon: "🏛️", href: "https://penelope.uchicago.edu/josephus/" },
-  { title: "Got Questions", desc: "Trusted evangelical Q&A resource for quick theological and historical background.", tags: "theology questions reference evangelical background", type: "historical", icon: "❓", href: "https://www.gotquestions.org" },
-  { title: "World History Encyclopedia", desc: "Academic history articles — Babylon, Persia, Seleucid Empire, Rome, Second Temple period.", tags: "history babylon persia seleucid rome second temple world history ancient", type: "historical", icon: "🌍", href: "https://www.worldhistory.org" },
-  // Tools
-  { title: "Encyclopedia of the Bible", desc: "Comprehensive Bible encyclopedia — people, places, themes, events.", tags: "encyclopedia reference bible people places themes", type: "tool", icon: "📚", href: "https://www.biblegateway.com/resources/encyclopedia-of-the-bible/toc/" },
-  { title: "Bible Mapper — Interactive Maps", desc: "Interactive maps of Israel, ancient Near East, Paul's journeys, Exodus route.", tags: "maps geography israel ancient near east exodus journey biblical", type: "tool", icon: "🗺️", href: "https://www.biblemapper.com" },
-  { title: "Ancient Empires Maps", desc: "Maps of Babylon, Persia, Greece, Rome — Daniel's four kingdoms.", tags: "maps babylon persia greece rome empires daniel kingdoms", type: "tool", icon: "🏰", href: "https://www.esri.com/en-us/maps/ancient-empires" },
-];
+  function runSearch() {
+    const query = document.getElementById('search-input').value.trim().toLowerCase();
+    const resultsDiv = document.getElementById('search-results');
 
-const TYPE_LABEL = { scripture: "Scripture", apocryphal: "Apocryphal", historical: "Historical", tool: "Tool" };
-const TYPE_TAG   = { scripture: "tag-scripture", apocryphal: "tag-apocryphal", historical: "tag-historical", tool: "tag-tool" };
+    if (!query) {
+      resultsDiv.innerHTML = '';
+      return;
+    }
 
-function runSearch() {
-  const q = document.getElementById('search-input').value.trim().toLowerCase();
-  const resultsBox  = document.getElementById('search-results');
-  const resultsList = document.getElementById('results-list');
-  const resultsHdr  = document.getElementById('results-header');
-  const clearBtn    = document.getElementById('clear-btn');
+    const cards = document.querySelectorAll('.resource-card');
+    const matches = [];
 
-  if (!q) { clearSearch(); return; }
+    cards.forEach(card => {
+      const title   = card.dataset.title   || '';
+      const desc    = card.dataset.desc    || '';
+      const modules = card.dataset.modules || '';
+      const search  = card.dataset.search  || '';
+      const href    = card.dataset.href    || '#';
+      const linktxt = card.dataset.linktxt || 'Open →';
 
-  clearBtn.style.display = 'inline-block';
-  const terms = q.split(/\s+/);
+      const haystack = (title + ' ' + desc + ' ' + modules + ' ' + search).toLowerCase();
+      const terms = query.split(/\s+/).filter(Boolean);
+      const matched = terms.every(t => haystack.includes(t));
 
-  const matches = RESOURCES.filter(r => {
-    const haystack = (r.title + ' ' + r.desc + ' ' + r.tags).toLowerCase();
-    return terms.every(t => haystack.includes(t));
-  });
+      if (matched) {
+        matches.push({ title, desc, modules, href, linktxt });
+      }
+    });
 
-  resultsHdr.textContent = matches.length
-    ? `${matches.length} result${matches.length > 1 ? 's' : ''} for "${q}"`
-    : `No results for "${q}"`;
+    if (matches.length === 0) {
+      resultsDiv.innerHTML = `<div class="no-results">No references found for "<strong>${esc(query)}</strong>". Try a broader keyword.</div>`;
+      return;
+    }
 
-  if (matches.length === 0) {
-    resultsList.innerHTML = '<div class="no-results">Try different keywords — e.g. "Daniel", "calendar", "Enoch", "Josephus", "map"</div>';
-  } else {
-    resultsList.innerHTML = matches.map(r => `
-      <a class="result-item" href="${r.href}" target="_blank">
-        <div class="result-icon">${r.icon}</div>
-        <div class="result-body">
-          <div class="result-title">${r.title}</div>
-          <div class="result-desc">${r.desc}</div>
-          <span class="result-tag ${TYPE_TAG[r.type]}">${TYPE_LABEL[r.type]}</span>
-        </div>
-      </a>
-    `).join('');
+    let html = `<div class="search-count">${matches.length} result${matches.length !== 1 ? 's' : ''} for "<strong>${esc(query)}</strong>"</div>`;
+    matches.forEach(m => {
+      const excerpt = m.desc.length > 220 ? m.desc.substring(0, 220) + '…' : m.desc;
+      html += `
+        <div class="search-result-item">
+          <div class="sr-title">${esc(m.title)}</div>
+          <div class="sr-excerpt">${esc(excerpt)}</div>
+          ${m.modules ? `<div class="sr-modules">📌 ${esc(m.modules)}</div>` : ''}
+          <div style="margin-top:10px"><a href="${m.href}" target="_blank">${esc(m.linktxt)}</a></div>
+        </div>`;
+    });
+
+    resultsDiv.innerHTML = html;
+    resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  resultsBox.style.display = 'block';
-  resultsBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-function clearSearch() {
-  document.getElementById('search-input').value = '';
-  document.getElementById('search-results').style.display = 'none';
-  document.getElementById('clear-btn').style.display = 'none';
-}
+  function esc(str) {
+    return String(str)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
 </script>
 
 </body>
