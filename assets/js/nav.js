@@ -74,6 +74,7 @@ const NAV_STRUCTURE = [
       { label: 'Sermon & Teaching Log',  href: '/sermons.html' },
       { label: 'Personal Journal',       href: '/journal.html' },
       { label: 'My Growing Convictions', href: '/convictions.html' },
+      { label: 'Reference Library',      href: '/reference-library.html' },
     ]
   }
 ];
