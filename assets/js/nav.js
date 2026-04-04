@@ -107,7 +107,7 @@ function buildSidebar(root) {
   const bar = document.getElementById('github-bar');
   if (bar) {
     // Only inject if the timestamp button isn't already present
-    if (!document.getElementById('btn-timestamp')) {
+    if (!document.getElementById('btn-log-time')) {
       const tsBtn = document.createElement('button');
       tsBtn.id        = 'btn-timestamp';
       tsBtn.className = 'btn-timestamp';
