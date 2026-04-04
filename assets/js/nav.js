@@ -113,7 +113,7 @@ function buildSidebar(root) {
       tsBtn.className = 'btn-timestamp';
       tsBtn.title     = 'Insert timestamp at cursor in your notes';
       tsBtn.textContent = '🕐 Timestamp';
-      tsBtn.onclick   = insertTimestamp;
+      tsBtn.setAttribute('onclick', 'insertTimestamp()');
 
       // Log Study Time button
       const logBtn = document.createElement('button');
@@ -121,7 +121,7 @@ function buildSidebar(root) {
       logBtn.className = 'btn-timestamp';
       logBtn.title     = 'Insert study time summary at cursor in your notes';
       logBtn.textContent = '📚 Log Study Time';
-      logBtn.onclick   = insertStudyTime;
+      logBtn.setAttribute('onclick', 'insertStudyTime()');
 
       // Timer display (live clock)
       const timerSpan = document.createElement('span');
