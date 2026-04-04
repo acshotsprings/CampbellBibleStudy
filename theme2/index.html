@@ -1,70 +1,141 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Theme 2: Biblical Calendar &amp; Prophecy — Campbell Bible Study</title>
+  <title>Theme 2: Biblical Calendar & Prophecy — Campbell Bible Study</title>
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
- 
+
 <div id="github-bar">
   <span class="bar-title">Campbell Bible Study</span>
   <span class="bar-sep">|</span>
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
+  <span id="gh-status"></span>
   <div class="bar-right">
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 2, 2026</span>
+    <span id="gh-bar-version">Version: April 4, 2026</span>
   </div>
 </div>
 
-<div id="sidebar">
-    <div id="sidebar-header">
-      <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 3, 2026</p>
-    </div>
-    <div id="sidebar-nav">
-  <div class="nav-section">Getting Started</div><a class="nav-item active" href="../index.html">Introduction</a><a class="nav-item" href="../index.html#index">Thematic Index</a>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme1')" id="nav-header-theme1">
-          <span>Theme 1 — End Times</span>
-          <span class="nav-arrow " id="nav-arrow-theme1">▶</span>
-        </div>
-        <div class="nav-section-items collapsed" id="nav-items-theme1">
-      <a class="nav-item" href="../theme1/module1.html">Module 1 — Daniel's 70 Weeks</a><a class="nav-item" href="../theme1/module2.html">Module 2 — Israel in Prophecy</a><a class="nav-item" href="../theme1/module3.html">Module 3 — Day of the Lord</a><a class="nav-item" href="../theme1/module4.html">Module 4 — The Watchman</a><a class="nav-item" href="../theme1/module5.html">Module 5 — The New Covenant</a><a class="nav-item" href="../theme1/module6.html">Module 6 — The Rapture</a><a class="nav-item" href="../theme1/module7.html">Module 7 — The Antichrist</a><a class="nav-item" href="../theme1/module8.html">Module 8 — The Rebuilt Temple</a><a class="nav-item" href="../theme1/module9.html">Module 9 — Gog-Magog War</a><a class="nav-item" href="../theme1/module10.html">Module 10 — Signs of the Times</a><a class="nav-item" href="../theme1/module11.html">Module 11 — False Prophets</a><a class="nav-item" href="../theme1/module12.html">Module 12 — The Millennium</a><a class="nav-item" href="../theme1/module13.html">Module 13 — Second Coming</a><a class="nav-item" href="../theme1/module14.html">Module 14 — Matt 24 ↔ Revelation</a><a class="nav-item" href="../theme1/module15.html">Module 15 — Armageddon</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme2')" id="nav-header-theme2">
-          <span>Theme 2 — Biblical Calendar</span>
-          <span class="nav-arrow open" id="nav-arrow-theme2">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme2">
-      <a class="nav-item active" href="../theme2/index.html">Theme 2 Overview</a><a class="nav-item sub" href="../theme2/module1.html">↳ Module 1 — Calendar History</a><a class="nav-item sub" href="../theme2/module2.html">↳ Module 2 — Calendar Timeline</a><a class="nav-item sub" href="../theme2/module3.html">↳ Module 3 — Book of Jubilees</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme3')" id="nav-header-theme3">
-          <span>Theme 3 — Judgment &amp; Mercy</span>
-          <span class="nav-arrow open" id="nav-arrow-theme3">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme3">
-      <a class="nav-item active" href="../theme3/index.html">Theme 3 Overview</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('themes48')" id="nav-header-themes48">
-          <span>Themes 4–8</span>
-          <span class="nav-arrow open" id="nav-arrow-themes48">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-themes48">
-      <a class="nav-item" href="../index.html#themes48">Themes 4–8 (Coming Soon)</a></div><div class="nav-section">My Study</div><a class="nav-item" href="../sermons.html">Sermon &amp; Teaching Log</a><a class="nav-item" href="../journal.html">Personal Journal</a><a class="nav-item" href="../convictions.html">My Growing Convictions</a></div></div>
+<div id="sidebar"></div>
 
 <div id="app">
 <div id="main">
 
   <span class="page-tag">Theme 2 — Biblical Calendar</span>
   <h1 class="page-title">Theme 2: Biblical Calendar &amp; Prophecy</h1>
+  <p class="page-subtitle">God designed time itself — and the calendar may be the key that unlocks prophecy</p>
 
-  <div class="coming-soon">
-    <p>Content for this page is being migrated. Check back soon — or open the original study guide while this page is being built.</p>
+  <div class="info-box">
+    <div class="title">The Big Idea</div>
+    <div class="line">Most of us read the Bible through a calendar we inherited from Greece, Rome, and medieval popes. But God gave Israel a different calendar — a perfect 364-day solar calendar used from Adam through David. When you read prophecy through that original calendar, the numbers in Daniel, Revelation, and the Feasts of Israel snap into place with stunning precision. This theme is about recovering that original framework.</div>
   </div>
 
-  <div style="display:flex;justify-content:space-between;margin-top:32px;padding-top:20px;border-top:1px solid #ddd;">
-    <span></span>
-    <a href="module1.html" class="btn-primary" style="font-size:12px;">Next →</a>
+  <div class="scripture-box">
+    <div class="ref">Genesis 1:14 (NLT)</div>
+    <div class="text">Then God said, "Let lights appear in the sky to separate the day from the night. Let them be signs to mark the seasons, days, and years."</div>
+  </div>
+
+  <p class="body">God built a timekeeping system into creation itself — sun, moon, and stars as precision instruments marking His appointed times. The question this theme explores: <em>What calendar did God have in mind?</em> And why does the answer matter more than most people realize?</p>
+
+  <h2 class="section-title">Why This Theme Exists</h2>
+  <p class="body">This theme grew directly out of a sermon series on the Dead Sea Scrolls and the writings of Ken Johnson (April 2026). As we studied the calendar debate — Essenes vs. Pharisees, solar vs. lunar, 364-day vs. 354-day — a key insight emerged:</p>
+
+  <div class="info-box">
+    <div class="title">🔑 The Core Insight</div>
+    <div class="line"><strong>If the feasts were ordained by God on a 364-day solar calendar, and we are calculating prophetic fulfillment against a 354-day lunar calendar, we may be systematically misreading God's prophetic timeline.</strong></div>
+    <div class="line" style="margin-top:8px">The 1,260 days of Revelation 11:3 and 12:6 don't align cleanly to 3½ years on a lunar calendar — but they do on a 360-day prophetic year derived from the original solar framework. The feasts in Leviticus 23 are "appointed times" (<em>mo'edim</em>) — precision appointments on God's calendar, not cultural suggestions.</div>
+    <div class="line" style="margin-top:8px;color:#555;font-style:italic">This is not about discarding Bible study — it's about reading Scripture in its original framework and letting it become more accurate, not less.</div>
+  </div>
+
+  <h2 class="section-title">The Three Calendars in Play</h2>
+
+  <div class="info-box">
+    <div class="title">Calendar Comparison at a Glance</div>
+    <div class="line"><strong>The Essene Solar Calendar (God's original):</strong> 364 days · 52 exact weeks · Every feast on the same weekday every year · Used from Adam through the Second Temple period · Preserved in the Dead Sea Scrolls, Book of Jubilees, and Book of Enoch</div>
+    <div class="line" style="margin-top:8px"><strong>The Pharisee Lunar Calendar:</strong> 354 days · Months follow the moon · New Year in the fall (Tishrei) · Adopted under Greek pressure during the Maccabean period · Codified by Rabbi Hillel II in the 4th century AD · The calendar modern Judaism uses today</div>
+    <div class="line" style="margin-top:8px"><strong>The Gregorian Calendar (our daily calendar):</strong> 365.25 days · Pure solar, but not tied to God's feasts · Shaped by Julius Caesar and Pope Gregory XIII · Shifts holy days off their original weekday anchors</div>
+  </div>
+
+  <h2 class="section-title">Key Scripture Anchors</h2>
+
+  <div class="scripture-box">
+    <div class="ref">Leviticus 23:2 (NLT)</div>
+    <div class="text">"Give the following instructions to the people of Israel. These are the LORD's appointed festivals, which you are to proclaim as official days for holy assembly."</div>
+  </div>
+
+  <div class="scripture-box">
+    <div class="ref">Daniel 9:24 (NLT)</div>
+    <div class="text">"A period of seventy sets of seven has been decreed for your people and your holy city to finish their rebellion, to put an end to their sin, to atone for their guilt, to bring in everlasting righteousness, to confirm the prophetic vision, and to anoint the Most Holy Place."</div>
+  </div>
+
+  <div class="scripture-box">
+    <div class="ref">Revelation 11:3 (NLT)</div>
+    <div class="text">"And I will give power to my two witnesses, and they will be clothed in burlap and will prophesy during those 1,260 days."</div>
+  </div>
+
+  <div class="info-box">
+    <div class="title">📌 Why 1,260 Days Matters</div>
+    <div class="line">1,260 days appears twice in Revelation (11:3 and 12:6) and refers to the second half of the Tribulation (also called "42 months" and "a time, times, and half a time"). On a 360-day prophetic year — derived from the original solar calendar — this equals exactly 3½ years (3.5 × 360 = 1,260). The math works with God's calendar. It gets complicated with ours.</div>
+  </div>
+
+  <h2 class="section-title">What You'll Study in This Theme</h2>
+
+  <a href="module1.html" style="text-decoration:none;">
+    <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;margin-bottom:12px;transition:background 0.15s;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
+      <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Theme 2 · Module 1</div>
+      <div style="font-size:14px;font-weight:bold;line-height:1.4">Calendar History: From Creation to the Dead Sea Scrolls</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:6px;font-family:Arial,sans-serif;line-height:1.5">The story of how Israel's original 364-day solar calendar was replaced — and what the Essenes preserved when they fled to Qumran. Covers the Birkat Hachama, the Book of Enoch, and the calendar crisis under Antiochus Epiphanes.</div>
+    </div>
+  </a>
+
+  <a href="module2.html" style="text-decoration:none;">
+    <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;margin-bottom:12px;transition:background 0.15s;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
+      <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Theme 2 · Module 2</div>
+      <div style="font-size:14px;font-weight:bold;line-height:1.4">Calendar Timeline</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:6px;font-family:Arial,sans-serif;line-height:1.5">A visual chronological timeline tracing the calendar from Creation through the modern era — showing key turning points where God's original design was changed, recovered, or debated.</div>
+    </div>
+  </a>
+
+  <a href="module3.html" style="text-decoration:none;">
+    <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;margin-bottom:12px;transition:background 0.15s;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
+      <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Theme 2 · Module 3</div>
+      <div style="font-size:14px;font-weight:bold;line-height:1.4">The Book of Jubilees</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:6px;font-family:Arial,sans-serif;line-height:1.5">A study of one of the most important Dead Sea Scroll texts — an ancient Jewish book that retells Genesis and Exodus specifically to defend the 364-day calendar. Its warnings about losing the original calendar feel prophetic for today.</div>
+    </div>
+  </a>
+
+  <h2 class="section-title">Cross-References to Theme 1</h2>
+
+  <div class="info-box">
+    <div class="title">How This Theme Connects to the End Times</div>
+    <div class="line"><strong>Daniel's 70 Weeks (Module 1):</strong> The 70 "weeks" (490 years) only calculate precisely when using the 360-day prophetic year derived from the original solar calendar.</div>
+    <div class="line" style="margin-top:6px"><strong>The Tribulation Timeline (Modules 6–8):</strong> The 1,260 days, 42 months, and "time, times, and half a time" all refer to the same 3½-year period — and only align mathematically using the 360-day year.</div>
+    <div class="line" style="margin-top:6px"><strong>The Feasts as Prophetic Appointments:</strong> The spring feasts (Passover, Firstfruits, Pentecost) were fulfilled at Jesus' first coming. The fall feasts (Trumpets, Atonement, Tabernacles) are still awaiting fulfillment — and their weekday anchors only hold on the original 364-day solar calendar.</div>
+    <div class="line" style="margin-top:6px"><strong>The Millennial Kingdom (Module 12):</strong> Isaiah 66:23 says that in the Millennium all people will worship on the new moon and Sabbath — suggesting God's original calendar structure is restored.</div>
+  </div>
+
+  <div class="scripture-box">
+    <div class="ref">Isaiah 66:23 (NLT)</div>
+    <div class="text">"And it shall be that from one New Moon to another New Moon, and from one Sabbath to another Sabbath, all flesh shall come to worship before Me," says the LORD.</div>
+  </div>
+
+  <h2 class="section-title">A Personal Reflection</h2>
+  <p class="body">When this study first opened up in April 2026, the reaction was something like: <em>"The deeper I get on this, the more I realize we have twisted the true meaning of what God had in mind when He invented time. It makes me want to go back — so that I understand the Word better."</em></p>
+  <p class="body">That's exactly the right response. We inherited a calendar shaped by Greek politics, Roman power, and papal reform. The Essenes went to the desert and preserved the original framework at enormous cost — because they understood what was at stake. This study is an attempt to read Scripture in the framework it was written in.</p>
+
+  <div class="info-box">
+    <div class="title">🙏 Reflection & Prayer Before You Begin</div>
+    <div class="line">Lord, You said You set the lights in the sky to mark seasons, days, and years. You called Your feasts "my appointed times." Open my eyes to the calendar You designed — not the ones men have modified. Let me read Your Word in the framework You intended, and let that make Your prophetic timeline more clear, not more confusing. Help me hold new insights with humility, and connect everything back to Jesus — who is Lord of the Sabbath and fulfiller of every feast. Amen.</div>
+  </div>
+
+  <div style="display:flex;justify-content:flex-end;margin-top:32px;padding-top:20px;border-top:1px solid #ddd;">
+    <a href="module1.html" class="btn-primary" style="font-size:12px;">Module 1: Calendar History →</a>
   </div>
 
 </div>
@@ -75,6 +146,5 @@
 <script src="../assets/js/main.js"></script>
 <script>buildSidebar('..');</script>
 
-
-
-</body></html>
+</body>
+</html>
