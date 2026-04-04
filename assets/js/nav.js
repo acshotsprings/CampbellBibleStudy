@@ -114,12 +114,30 @@ function buildSidebar(root) {
       tsBtn.textContent = '🕐 Timestamp';
       tsBtn.onclick   = insertTimestamp;
 
+      // Log Study Time button
+      const logBtn = document.createElement('button');
+      logBtn.id        = 'btn-log-time';
+      logBtn.className = 'btn-timestamp';
+      logBtn.title     = 'Insert study time summary at cursor in your notes';
+      logBtn.textContent = '📚 Log Study Time';
+      logBtn.onclick   = insertStudyTime;
+
+      // Timer display (live clock)
+      const timerSpan = document.createElement('span');
+      timerSpan.id        = 'study-timer-display';
+      timerSpan.className = 'study-timer-display';
+      timerSpan.textContent = '⏱ 0m 0s';
+
       // Insert after the Load from GitHub button
       const loadBtn = bar.querySelector('.btn-load');
       if (loadBtn && loadBtn.nextSibling) {
         bar.insertBefore(tsBtn, loadBtn.nextSibling);
+        bar.insertBefore(logBtn, tsBtn.nextSibling);
+        bar.insertBefore(timerSpan, logBtn.nextSibling);
       } else {
         bar.appendChild(tsBtn);
+        bar.appendChild(logBtn);
+        bar.appendChild(timerSpan);
       }
     }
   }

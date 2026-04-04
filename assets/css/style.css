@@ -736,3 +736,13 @@ ul.bullet-list li {
   background: rgba(255,255,255,0.12);
   color: #fff;
 }
+
+/* ── STUDY TIMER DISPLAY ─────────────────────────────────── */
+.study-timer-display {
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+  font-family: Arial, sans-serif;
+  margin-left: 8px;
+  white-space: nowrap;
+  align-self: center;
+}

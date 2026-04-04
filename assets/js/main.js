@@ -280,6 +280,97 @@ function insertTimestamp() {
   el.dispatchEvent(new Event('input'));
 }
 
+// ── STUDY TIMER ───────────────────────────────────────────
+// Tracks time spent on each module page.
+// Session time = time since page opened this visit.
+// Total time   = accumulated across all visits, stored in localStorage.
+// Key pattern  : cbsg-timer-[pageKey]  e.g. cbsg-timer-theme2-module1
+
+let _timerStart = null;
+let _timerKey   = null;
+let _timerInterval = null;
+
+function getPageTimerKey() {
+  // Derive a short key from the current URL path
+  const path = window.location.pathname;
+  const match = path.match(/\/(theme\d+\/[^/]+|[^/]+)\.html$/);
+  if (!match) return null;
+  return match[1].replace('/', '-').replace('.html', '');
+}
+
+function formatDuration(totalSeconds) {
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  if (h > 0) return `${h}h ${m}m ${s}s`;
+  if (m > 0) return `${m}m ${s}s`;
+  return `${s}s`;
+}
+
+function getStoredTotal(key) {
+  const val = parseInt(localStorage.getItem('cbsg-timer-' + key) || '0', 10);
+  return isNaN(val) ? 0 : val;
+}
+
+function saveTimerTotal(key, totalSeconds) {
+  localStorage.setItem('cbsg-timer-' + key, totalSeconds);
+}
+
+function getSessionSeconds() {
+  if (!_timerStart) return 0;
+  return Math.floor((Date.now() - _timerStart) / 1000);
+}
+
+function updateTimerDisplay() {
+  const dispEl = document.getElementById('study-timer-display');
+  if (!dispEl || !_timerKey) return;
+  const session = getSessionSeconds();
+  const total   = getStoredTotal(_timerKey) + session;
+  dispEl.textContent = `⏱ ${formatDuration(session)} (total: ${formatDuration(total)})`;
+}
+
+function startStudyTimer() {
+  _timerKey   = getPageTimerKey();
+  if (!_timerKey) return;
+  _timerStart = Date.now();
+  _timerInterval = setInterval(updateTimerDisplay, 1000);
+  updateTimerDisplay();
+}
+
+function stopAndSaveTimer() {
+  if (!_timerKey || !_timerStart) return;
+  clearInterval(_timerInterval);
+  const sessionSecs = getSessionSeconds();
+  const prevTotal   = getStoredTotal(_timerKey);
+  saveTimerTotal(_timerKey, prevTotal + sessionSecs);
+}
+
+// Called by the "Log Study Time" button — inserts time summary at cursor
+function insertStudyTime() {
+  const el = lastFocusedTextarea || document.querySelector('textarea');
+  if (!el || !_timerKey) return;
+
+  const session = getSessionSeconds();
+  const total   = getStoredTotal(_timerKey) + session;
+  const now     = new Date();
+  const date    = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const time    = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+  const entry = `\n📚 Study Time — ${date} at ${time}\n   This session : ${formatDuration(session)}\n   Total on this module : ${formatDuration(total)}\n`;
+
+  const start = el.selectionStart;
+  const end   = el.selectionEnd;
+  if (typeof start === 'number') {
+    el.value = el.value.substring(0, start) + entry + el.value.substring(end);
+    el.selectionStart = el.selectionEnd = start + entry.length;
+  } else {
+    el.value += entry;
+  }
+
+  el.focus();
+  el.dispatchEvent(new Event('input'));
+}
+
 // ── INIT ──────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -287,4 +378,11 @@ document.addEventListener('DOMContentLoaded', () => {
   wireAutoSave();
   markActivePage();
   trackFocus();
+  startStudyTimer();
 });
+
+// Save timer total when leaving the page
+window.addEventListener('beforeunload', stopAndSaveTimer);
+// Also save when clicking Save to GitHub (already calls saveAllNotes, timer save is a bonus)
+const _origSave = window.saveToGitHub;
+
