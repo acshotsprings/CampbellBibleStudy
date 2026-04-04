@@ -233,11 +233,16 @@ function wireAutoSave() {
 
 function markActivePage() {
   const currentPath = window.location.pathname;
+  const base = '/CampbellBibleStudy';
   document.querySelectorAll('.nav-item').forEach(item => {
     const href = item.getAttribute('href');
     if (!href) return;
-    const tail = href.split('/').pop();
-    if (tail && currentPath.endsWith(tail)) item.classList.add('active');
+    // Build the full expected path from the href
+    // href may be relative (../theme1/module1.html) or root-relative (/theme1/module1.html)
+    // Normalize to just the path segment after /CampbellBibleStudy/
+    const normalized = href.replace(/^\.\.\//, '/').replace(/^\.\//, '/');
+    const fullPath = base + (normalized.startsWith('/') ? normalized : '/' + normalized);
+    if (currentPath === fullPath) item.classList.add('active');
   });
 }
 
