@@ -11,117 +11,111 @@
     .search-wrap {
       display: flex;
       gap: 10px;
-      margin: 24px 0 32px;
+      margin: 20px 0 28px;
       align-items: center;
     }
-    .search-input {
+    .search-wrap input {
       flex: 1;
-      padding: 10px 16px;
+      padding: 10px 14px;
       font-size: 14px;
-      border: 2px solid #d0d8e8;
+      border: 2px solid #2E75B6;
       border-radius: 6px;
       font-family: Arial, sans-serif;
-      color: #1F3864;
       outline: none;
-      transition: border-color 0.2s;
     }
-    .search-input:focus { border-color: #2E75B6; }
-    .search-btn {
+    .search-wrap input:focus { border-color: #1F3864; }
+    .search-wrap button {
       padding: 10px 20px;
       background: #1F3864;
       color: #fff;
       border: none;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 14px;
       font-family: Arial, sans-serif;
-      font-weight: bold;
       cursor: pointer;
-      transition: background 0.2s;
+      font-weight: bold;
     }
-    .search-btn:hover { background: #2E75B6; }
+    .search-wrap button:hover { background: #2E75B6; }
     .search-clear {
       padding: 10px 14px;
       background: #eee;
       color: #555;
       border: none;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 13px;
       font-family: Arial, sans-serif;
       cursor: pointer;
     }
-    .search-clear:hover { background: #ddd; }
 
     /* ── SEARCH RESULTS ── */
     #search-results {
       display: none;
-      margin-bottom: 32px;
+      background: #F4F8EE;
+      border: 1px solid #6B8E3A;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
     }
     #search-results.active { display: block; }
     .results-title {
       font-size: 13px;
       font-weight: bold;
       color: #1F3864;
-      font-family: Arial, sans-serif;
       margin-bottom: 12px;
-      padding-bottom: 6px;
-      border-bottom: 2px solid #2E75B6;
+      font-family: Arial, sans-serif;
     }
     .result-item {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: 6px;
-      border-left: 4px solid #2E75B6;
-      background: #EBF4FC;
-      margin-bottom: 8px;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #dde;
       font-family: Arial, sans-serif;
     }
-    .result-item.no-match {
-      background: #fafafa;
-      border-left-color: #ccc;
-      color: #888;
-      font-size: 13px;
-    }
-    .result-badge {
+    .result-item:last-child { border-bottom: none; }
+    .result-tag {
       font-size: 10px;
       font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 3px 8px;
+      padding: 2px 8px;
       border-radius: 10px;
+      text-transform: uppercase;
       white-space: nowrap;
       flex-shrink: 0;
-      margin-top: 1px;
+      margin-top: 2px;
     }
-    .badge-scripture  { background: #1F3864; color: #fff; }
-    .badge-text       { background: #6B8E3A; color: #fff; }
-    .badge-tool       { background: #8E44AD; color: #fff; }
-    .badge-historical { background: #7A4F00; color: #fff; }
-    .result-content { flex: 1; }
-    .result-name { font-size: 14px; font-weight: bold; color: #1F3864; }
-    .result-desc { font-size: 12px; color: #555; margin-top: 2px; line-height: 1.5; }
+    .tag-scripture  { background: #1F3864; color: #fff; }
+    .tag-apocryphal { background: #2E75B6; color: #fff; }
+    .tag-historical { background: #6B8E3A; color: #fff; }
+    .tag-commentary { background: #8E44AD; color: #fff; }
+    .tag-external   { background: #7A4F00; color: #fff; }
+    .result-body { flex: 1; }
+    .result-name {
+      font-size: 14px;
+      font-weight: bold;
+      color: #1F3864;
+      margin-bottom: 2px;
+    }
+    .result-desc { font-size: 12px; color: #555; line-height: 1.5; }
     .result-link {
+      display: inline-block;
+      margin-top: 5px;
       font-size: 12px;
       color: #2E75B6;
       text-decoration: none;
       font-weight: bold;
-      margin-top: 4px;
-      display: inline-block;
     }
     .result-link:hover { text-decoration: underline; }
+    .no-results { font-size: 13px; color: #888; font-style: italic; font-family: Arial, sans-serif; }
 
-    /* ── LIBRARY SECTIONS ── */
-    .lib-section {
-      margin-bottom: 40px;
-    }
+    /* ── SECTION HEADERS ── */
+    .lib-section { margin-bottom: 36px; }
     .lib-section-header {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
+      gap: 10px;
+      margin-bottom: 14px;
       padding-bottom: 8px;
-      border-bottom: 2px solid #d0d8e8;
+      border-bottom: 2px solid #1F3864;
     }
     .lib-section-icon { font-size: 20px; }
     .lib-section-title {
@@ -130,9 +124,12 @@
       color: #1F3864;
       font-family: Arial, sans-serif;
     }
-    .lib-section-subtitle {
-      font-size: 12px;
-      color: #888;
+    .lib-section-count {
+      font-size: 11px;
+      background: #1F3864;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 10px;
       font-family: Arial, sans-serif;
     }
 
@@ -144,77 +141,77 @@
     }
     .resource-card {
       border-radius: 8px;
-      border: 1px solid #d8e4f0;
       padding: 14px 16px;
+      border-left: 4px solid #ccc;
       font-family: Arial, sans-serif;
-      background: #fff;
-      transition: box-shadow 0.2s, border-color 0.2s;
     }
-    .resource-card:hover {
-      box-shadow: 0 3px 12px rgba(31,56,100,0.10);
-      border-color: #2E75B6;
-    }
-    .rc-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 6px;
-    }
-    .rc-name {
+    .card-scripture   { background: #EBF4FC; border-left-color: #1F3864; }
+    .card-apocryphal  { background: #EBF4FC; border-left-color: #2E75B6; }
+    .card-historical  { background: #F4F8EE; border-left-color: #6B8E3A; }
+    .card-commentary  { background: #F5EEF8; border-left-color: #8E44AD; }
+    .card-external    { background: #FFF8EE; border-left-color: #7A4F00; }
+
+    .resource-card-title {
       font-size: 14px;
       font-weight: bold;
       color: #1F3864;
-      line-height: 1.3;
+      margin-bottom: 4px;
     }
-    .rc-badge {
-      font-size: 10px;
-      font-weight: bold;
+    .resource-card-meta {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 2px 7px;
-      border-radius: 10px;
-      white-space: nowrap;
-      flex-shrink: 0;
-      margin-left: 8px;
+      letter-spacing: 0.05em;
     }
-    .rc-desc {
+    .resource-card-desc {
       font-size: 12px;
       color: #555;
       line-height: 1.6;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
-    .rc-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-bottom: 10px;
-    }
-    .rc-tag {
+    .resource-card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+    .res-tag {
       font-size: 10px;
       padding: 2px 7px;
-      border-radius: 10px;
-      background: #EBF4FC;
-      color: #2E75B6;
-      font-family: Arial, sans-serif;
+      border-radius: 8px;
+      background: #dde;
+      color: #444;
+      font-weight: bold;
     }
-    .rc-link {
-      display: inline-block;
+    .resource-card-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .res-link {
       font-size: 12px;
       font-weight: bold;
-      color: #fff;
-      background: #2E75B6;
-      padding: 5px 12px;
-      border-radius: 5px;
+      color: #2E75B6;
       text-decoration: none;
-      transition: background 0.2s;
+      padding: 3px 10px;
+      border: 1px solid #2E75B6;
+      border-radius: 4px;
     }
-    .rc-link:hover { background: #1F3864; }
-    .rc-link.green  { background: #6B8E3A; }
-    .rc-link.green:hover  { background: #4a6228; }
-    .rc-link.purple { background: #8E44AD; }
-    .rc-link.purple:hover { background: #6c3483; }
-    .rc-link.brown  { background: #7A4F00; }
-    .rc-link.brown:hover  { background: #5a3a00; }
+    .res-link:hover { background: #2E75B6; color: #fff; }
+    .res-link.primary { background: #1F3864; color: #fff; border-color: #1F3864; }
+    .res-link.primary:hover { background: #2E75B6; border-color: #2E75B6; }
+
+    /* ── LEGEND ── */
+    .lib-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 0 0 28px;
+      padding: 12px 16px;
+      background: #f7f7f7;
+      border-radius: 8px;
+    }
+    .lib-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-family: Arial, sans-serif;
+      color: #555;
+    }
+    .lib-legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
 
   </style>
 </head>
@@ -241,259 +238,321 @@
 
   <span class="page-tag">My Study</span>
   <h1 class="page-title">Reference Library</h1>
-  <p class="page-subtitle">Scripture tools, historical texts, and study resources — all in one place</p>
+  <p class="page-subtitle">Scripture tools, primary texts, historical documents, and commentaries used in this study</p>
+
+  <!-- LEGEND -->
+  <div class="lib-legend">
+    <div class="lib-legend-item"><div class="lib-legend-dot" style="background:#1F3864"></div> Scripture</div>
+    <div class="lib-legend-item"><div class="lib-legend-dot" style="background:#2E75B6"></div> Apocryphal / DSS Texts</div>
+    <div class="lib-legend-item"><div class="lib-legend-dot" style="background:#6B8E3A"></div> Historical</div>
+    <div class="lib-legend-item"><div class="lib-legend-dot" style="background:#8E44AD"></div> Commentary</div>
+    <div class="lib-legend-item"><div class="lib-legend-dot" style="background:#7A4F00"></div> External Resource</div>
+  </div>
 
   <!-- SEARCH -->
   <div class="search-wrap">
-    <input type="text" id="lib-search" class="search-input"
-      placeholder="Search resources — e.g. Daniel, Enoch, calendar, concordance…"
-      onkeydown="if(event.key==='Enter') runSearch()">
-    <button class="search-btn" onclick="runSearch()">🔍 Search</button>
-    <button class="search-clear" onclick="clearSearch()">✕ Clear</button>
+    <input type="text" id="lib-search" placeholder="Search — e.g. 'Daniel', 'calendar', 'Essene', 'rapture'..." onkeydown="if(event.key==='Enter') runSearch()">
+    <button onclick="runSearch()">Search</button>
+    <button class="search-clear" onclick="clearSearch()">Clear</button>
   </div>
 
-  <!-- SEARCH RESULTS (hidden until search fires) -->
+  <!-- RESULTS PANEL -->
   <div id="search-results">
     <div class="results-title" id="results-title"></div>
-    <div id="results-list"></div>
+    <div id="results-body"></div>
   </div>
 
-  <!-- SECTION 1: SCRIPTURE -->
-  <div class="lib-section">
+  <!-- SECTION 1 — SCRIPTURE -->
+  <div class="lib-section" data-section="scripture">
     <div class="lib-section-header">
       <span class="lib-section-icon">📖</span>
-      <div>
-        <div class="lib-section-title">Scripture Resources</div>
-        <div class="lib-section-subtitle">Bible translations, concordances, lexicons, and cross-reference tools</div>
-      </div>
+      <span class="lib-section-title">Scripture</span>
+      <span class="lib-section-count">4 resources</span>
     </div>
-    <div class="resource-grid" id="grid-scripture"></div>
+    <div class="resource-grid">
+
+      <div class="resource-card card-scripture" data-keywords="bible gateway nlt new living translation scripture verse lookup search">
+        <div class="resource-card-title">Bible Gateway — NLT</div>
+        <div class="resource-card-meta">Online Scripture · Default Translation</div>
+        <div class="resource-card-desc">Quick verse lookup in the New Living Translation — the default translation used throughout this study guide. Search by reference, keyword, or topic.</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">NLT</span><span class="res-tag">Search</span><span class="res-tag">Cross-reference</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://www.biblegateway.com/passage/?search=John+3%3A16&version=NLT" target="_blank">Open Bible Gateway →</a>
+        </div>
+      </div>
+
+      <div class="resource-card card-scripture" data-keywords="bible hub interlinear greek hebrew original language concordance strong's verse">
+        <div class="resource-card-title">Bible Hub — Interlinear &amp; Concordance</div>
+        <div class="resource-card-meta">Online Scripture · Original Languages</div>
+        <div class="resource-card-desc">Interlinear Greek/Hebrew with Strong's numbers, concordance, and parallel translations. Use when you want to go deeper on a specific word or phrase.</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">Greek</span><span class="res-tag">Hebrew</span><span class="res-tag">Interlinear</span><span class="res-tag">Strong's</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://biblehub.com/" target="_blank">Open Bible Hub →</a>
+        </div>
+      </div>
+
+      <div class="resource-card card-scripture" data-keywords="blue letter bible concordance lexicon word study original language strong's">
+        <div class="resource-card-title">Blue Letter Bible</div>
+        <div class="resource-card-meta">Online Scripture · Word Studies</div>
+        <div class="resource-card-desc">In-depth word studies, lexicon, commentaries, and Strong's concordance. Excellent for tracing a word through the whole Bible to understand its full meaning.</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">Word Study</span><span class="res-tag">Lexicon</span><span class="res-tag">Strong's</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://www.blueletterbible.org/" target="_blank">Open Blue Letter Bible →</a>
+        </div>
+      </div>
+
+      <div class="resource-card card-scripture" data-keywords="youversion bible app audio listen scripture reading plan mobile">
+        <div class="resource-card-title">YouVersion Bible App</div>
+        <div class="resource-card-meta">Mobile App · Audio Bible</div>
+        <div class="resource-card-desc">Audio Bible, reading plans, and highlights. Good companion for listening to passages while driving or on the go. NLT available.</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">Audio</span><span class="res-tag">Mobile</span><span class="res-tag">Reading Plans</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://www.bible.com/" target="_blank">Open YouVersion →</a>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <!-- SECTION 2: APOCRYPHAL & HISTORICAL TEXTS -->
-  <div class="lib-section">
+  <!-- SECTION 2 — APOCRYPHAL & DSS -->
+  <div class="lib-section" data-section="apocryphal">
     <div class="lib-section-header">
       <span class="lib-section-icon">📜</span>
-      <div>
-        <div class="lib-section-title">Apocryphal &amp; Historical Texts</div>
-        <div class="lib-section-subtitle">Intertestamental writings, Dead Sea Scrolls resources, and background literature</div>
-      </div>
+      <span class="lib-section-title">Apocryphal &amp; Dead Sea Scrolls Texts</span>
+      <span class="lib-section-count">4 resources</span>
     </div>
-    <div class="resource-grid" id="grid-apocryphal"></div>
+    <div class="resource-grid">
+
+      <div class="resource-card card-apocryphal" data-keywords="book of enoch enoch calendar 364 day solar watchers angels fallen dead sea scrolls prophecy enoch 72">
+        <div class="resource-card-title">Book of Enoch (1 Enoch)</div>
+        <div class="resource-card-meta">Apocryphal · Second Temple Period</div>
+        <div class="resource-card-desc">The primary ancient source for the 364-day solar calendar. Enoch 72 describes the sun's path and the 364-day year in precise detail. The Essenes treated it as authoritative. Referenced throughout Theme 2 calendar modules and Theme 1 prophecy calculations.</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">364-Day Calendar</span><span class="res-tag">Watchers</span><span class="res-tag">DSS</span><span class="res-tag">Enoch 72</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://www.sacred-texts.com/bib/boe/index.htm" target="_blank">Read Online →</a>
+          <a class="res-link" href="https://www.biblegateway.com/passage/?search=Jude+1%3A14&version=NLT" target="_blank">Jude 1:14 (NT ref)</a>
+        </div>
+      </div>
+
+      <div class="resource-card card-apocryphal" data-keywords="book of jubilees jubilees calendar 364 day solar sabbath feasts moses appointed times jubilees 6">
+        <div class="resource-card-title">Book of Jubilees</div>
+        <div class="resource-card-meta">Apocryphal · Second Temple Period</div>
+        <div class="resource-card-desc">Retells Genesis through Exodus from the perspective of the 364-day solar calendar. Jubilees 6:36–38 is the key passage warning Israel never to abandon the solar calendar or the feasts will fall on wrong days. Central to Theme 2, Module 3.</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">364-Day Calendar</span><span class="res-tag">Feasts</span><span class="res-tag">Jubilees 6:36–38</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://www.sacred-texts.com/bib/jub/index.htm" target="_blank">Read Online →</a>
+        </div>
+      </div>
+
+      <div class="resource-card card-apocryphal" data-keywords="dead sea scrolls qumran essene community rule damascus document calendar 4Q318 4Q394 sons of light solar">
+        <div class="resource-card-title">Dead Sea Scrolls — Key Texts</div>
+        <div class="resource-card-meta">Archaeological · ~150 BC – 68 AD</div>
+        <div class="resource-card-desc">The Qumran community preserved the 364-day solar calendar in multiple scrolls. Key calendar texts: 4Q318, 4Q394, the Damascus Document, and the Community Rule. The Essenes called themselves the Sons of Light and preserved the Zadokite priestly tradition.</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">4Q318</span><span class="res-tag">4Q394</span><span class="res-tag">Damascus Doc</span><span class="res-tag">Sons of Light</span><span class="res-tag">Zadokite</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://www.deadseascrolls.org.il/explore-the-archive" target="_blank">Israel Antiquities Archive →</a>
+          <a class="res-link" href="https://www.sacred-texts.com/chr/dss/index.htm" target="_blank">DSS Online →</a>
+        </div>
+      </div>
+
+      <div class="resource-card card-apocryphal" data-keywords="didache early church fathers teaching apostles early christianity first century document">
+        <div class="resource-card-title">The Didache</div>
+        <div class="resource-card-meta">Early Church · ~1st–2nd Century AD</div>
+        <div class="resource-card-desc">One of the earliest known Christian writings outside the New Testament — a short manual of church instruction. Useful background for understanding early Christian practice and its Jewish roots.</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">Early Church</span><span class="res-tag">Apostolic</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://www.sacred-texts.com/chr/did/index.htm" target="_blank">Read Online →</a>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <!-- SECTION 3: STUDY TOOLS -->
-  <div class="lib-section">
+  <!-- SECTION 3 — HISTORICAL -->
+  <div class="lib-section" data-section="historical">
     <div class="lib-section-header">
-      <span class="lib-section-icon">🛠️</span>
-      <div>
-        <div class="lib-section-title">Study &amp; Research Tools</div>
-        <div class="lib-section-subtitle">Commentaries, encyclopedias, maps, and reference tools</div>
-      </div>
+      <span class="lib-section-icon">🏛️</span>
+      <span class="lib-section-title">Historical Documents &amp; Sources</span>
+      <span class="lib-section-count">3 resources</span>
     </div>
-    <div class="resource-grid" id="grid-tools"></div>
+    <div class="resource-grid">
+
+      <div class="resource-card card-historical" data-keywords="josephus jewish antiquities wars of the jews history temple destruction essene pharisee first century">
+        <div class="resource-card-title">Josephus — Jewish Antiquities &amp; Wars</div>
+        <div class="resource-card-meta">Historical · 1st Century AD</div>
+        <div class="resource-card-desc">Flavius Josephus was a first-century Jewish historian who recorded the destruction of the Temple, the Essene community, Pharisee practices, and Roman-Jewish history. Referenced for calendar history, the high priesthood, and Yoma 9a (high priest mortality).</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">Temple</span><span class="res-tag">Essenes</span><span class="res-tag">Pharisees</span><span class="res-tag">1st Century</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://penelope.uchicago.edu/josephus/" target="_blank">Read Josephus Online →</a>
+        </div>
+      </div>
+
+      <div class="resource-card card-historical" data-keywords="eusebius church history ecclesiastical history early church constantine nicaea calendar">
+        <div class="resource-card-title">Eusebius — Ecclesiastical History</div>
+        <div class="resource-card-meta">Historical · ~313 AD</div>
+        <div class="resource-card-desc">The earliest comprehensive history of the Christian church, covering the apostolic era through Constantine. Useful for understanding how early church calendars developed and diverged from Jewish tradition.</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">Early Church</span><span class="res-tag">Constantine</span><span class="res-tag">Calendar History</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://www.newadvent.org/fathers/2501.htm" target="_blank">Read Online →</a>
+        </div>
+      </div>
+
+      <div class="resource-card card-historical" data-keywords="ken johnson dead sea scrolls ancient calendar essene 364 day prophecy daniel 70 weeks">
+        <div class="resource-card-title">Ken Johnson — Dead Sea Scroll Research</div>
+        <div class="resource-card-meta">Modern Commentary · Calendar &amp; Prophecy</div>
+        <div class="resource-card-desc">Ken Johnson's research on the Dead Sea Scrolls — including the Essene 364-day solar calendar, Daniel's 70 Weeks, and prophetic timeline calculations — has been a key source for the calendar modules in Theme 2 of this study.</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">DSS</span><span class="res-tag">364-Day Calendar</span><span class="res-tag">Daniel</span><span class="res-tag">Prophecy</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://www.amazon.com/s?k=ken+johnson+dead+sea+scrolls" target="_blank">Ken Johnson Books →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 4 — COMMENTARIES -->
+  <div class="lib-section" data-section="commentary">
+    <div class="lib-section-header">
+      <span class="lib-section-icon">📚</span>
+      <span class="lib-section-title">Commentaries &amp; Study Tools</span>
+      <span class="lib-section-count">3 resources</span>
+    </div>
+    <div class="resource-grid">
+
+      <div class="resource-card card-commentary" data-keywords="got questions bible questions answers theology doctrine eschatology rapture end times antichrist daniel revelation">
+        <div class="resource-card-title">GotQuestions.org</div>
+        <div class="resource-card-meta">Online Commentary · General Theology</div>
+        <div class="resource-card-desc">Reliable, accessible answers to thousands of biblical questions. Especially useful for eschatology topics — rapture views, Daniel, Revelation, the Antichrist. Cross-references Scripture throughout.</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">Eschatology</span><span class="res-tag">Doctrine</span><span class="res-tag">Q&amp;A</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://www.gotquestions.org/" target="_blank">Open GotQuestions →</a>
+        </div>
+      </div>
+
+      <div class="resource-card card-commentary" data-keywords="ron rhodes end times chronological order tribulation rapture antichrist second coming seal trumpet revelation commentary">
+        <div class="resource-card-title">Ron Rhodes — End Times in Chronological Order</div>
+        <div class="resource-card-meta">Book · Prophecy Commentary</div>
+        <div class="resource-card-desc">Ron Rhodes lays out the end-times sequence from a pre-tribulation, premillennial view. Referenced in Sermon Log #6 for seal and trumpet judgments (Rev 6–8) and the Two Witnesses (Rev 11).</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">Tribulation</span><span class="res-tag">Revelation</span><span class="res-tag">Pre-trib</span><span class="res-tag">Premillennial</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://www.amazon.com/End-Times-Chronological-Order-Comprehensive/dp/0736937838" target="_blank">View on Amazon →</a>
+        </div>
+      </div>
+
+      <div class="resource-card card-commentary" data-keywords="rapture ready prophecy news current events end times signs israel tribulation antichrist">
+        <div class="resource-card-title">Rapture Ready — Prophecy News</div>
+        <div class="resource-card-meta">Online · Current Events &amp; Prophecy</div>
+        <div class="resource-card-desc">Tracks current events through the lens of biblical prophecy. Useful for watching for signs of the times and comparing headlines to the study modules. Use discerningly — not all commentary is equally grounded in Scripture.</div>
+        <div class="resource-card-tags">
+          <span class="res-tag">Signs of the Times</span><span class="res-tag">Current Events</span><span class="res-tag">Israel</span>
+        </div>
+        <div class="resource-card-links">
+          <a class="res-link primary" href="https://www.raptureready.com/" target="_blank">Open Rapture Ready →</a>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <!-- NOTES -->
   <div class="notes-box">
-    <div class="label">✏️ Library notes — resources to add, links to track down, recommendations:</div>
-    <textarea class="notes-input" id="n-ref-library"
-      placeholder="Resources you want to add, links to track down, notes on sources you've used…"></textarea>
+    <div class="label">✏️ Resources to add — notes &amp; observations:</div>
+    <textarea class="notes-input" id="n-reference-library" placeholder="Note any resources you want to add, books you're reading, websites you've found useful..."></textarea>
   </div>
 
 </div>
 </div>
 
 <script>
-// ── RESOURCE DATA ─────────────────────────────────────────────────
-const RESOURCES = [
+const RESOURCES = [];
 
-  // SCRIPTURE
-  {
-    id: 'biblegateway', section: 'scripture',
-    name: 'Bible Gateway', badge: 'Online',
-    badgeClass: 'badge-scripture', rcBadgeStyle: 'background:#1F3864;color:#fff',
-    desc: 'Read and search the Bible in dozens of translations including NLT, NIV, ESV, KJV, and NASB. Best for quick verse lookups and side-by-side translation comparison.',
-    tags: ['NLT','NIV','ESV','KJV','NASB','Translation Comparison','Verse Search'],
-    link: 'https://www.biblegateway.com', linkLabel: 'Open →', linkClass: ''
-  },
-  {
-    id: 'blueletterbible', section: 'scripture',
-    name: 'Blue Letter Bible', badge: 'Online',
-    badgeClass: 'badge-scripture', rcBadgeStyle: 'background:#1F3864;color:#fff',
-    desc: "Deep-dive Bible study tool with Strong's concordance, Hebrew and Greek lexicons, commentaries, and interlinear text. Essential for word studies.",
-    tags: ["Strong's Concordance",'Hebrew','Greek','Lexicon','Interlinear','Commentaries'],
-    link: 'https://www.blueletterbible.org', linkLabel: 'Open →', linkClass: ''
-  },
-  {
-    id: 'biblehub', section: 'scripture',
-    name: 'Bible Hub', badge: 'Online',
-    badgeClass: 'badge-scripture', rcBadgeStyle: 'background:#1F3864;color:#fff',
-    desc: "Parallel Bible with 20+ translations on one page, plus Strong's numbers, commentaries, and cross-references. Excellent for seeing how a verse reads across translations at once.",
-    tags: ['Parallel Bible','Cross-References',"Strong's",'Commentaries','Translation Comparison'],
-    link: 'https://biblehub.com', linkLabel: 'Open →', linkClass: ''
-  },
-  {
-    id: 'esv', section: 'scripture',
-    name: 'ESV Bible Online', badge: 'Online',
-    badgeClass: 'badge-scripture', rcBadgeStyle: 'background:#1F3864;color:#fff',
-    desc: 'The full English Standard Version with search, reading plans, and audio. Clean and reliable for reading through entire books of the Bible.',
-    tags: ['ESV','Reading Plans','Audio Bible','Search'],
-    link: 'https://www.esv.org', linkLabel: 'Open →', linkClass: ''
-  },
-  {
-    id: 'stepbible', section: 'scripture',
-    name: 'STEP Bible', badge: 'Online',
-    badgeClass: 'badge-scripture', rcBadgeStyle: 'background:#1F3864;color:#fff',
-    desc: 'Academic-grade Scripture tool from Tyndale House. Interlinear Hebrew/Greek, morphology, word frequency, and original language search — excellent for serious word studies.',
-    tags: ['Hebrew','Greek','Interlinear','Morphology','Tyndale','Academic'],
-    link: 'https://www.stepbible.org', linkLabel: 'Open →', linkClass: ''
-  },
+function indexResources() {
+  document.querySelectorAll('.resource-card').forEach(card => {
+    const keywords = (card.dataset.keywords || '').toLowerCase();
+    const title = card.querySelector('.resource-card-title')?.textContent || '';
+    const desc  = card.querySelector('.resource-card-desc')?.textContent || '';
+    const tags  = Array.from(card.querySelectorAll('.res-tag')).map(t => t.textContent).join(' ');
+    const link  = card.querySelector('.res-link.primary');
 
-  // APOCRYPHAL & HISTORICAL
-  {
-    id: 'bookofjubilees', section: 'apocryphal',
-    name: 'Book of Jubilees', badge: 'Text',
-    badgeClass: 'badge-text', rcBadgeStyle: 'background:#6B8E3A;color:#fff',
-    desc: 'A retelling of Genesis through Exodus from the perspective of a 364-day solar calendar. Foundational to the Essene community and directly referenced in Theme 2, Module 3. The Qumran community treated it as authoritative Scripture.',
-    tags: ['Essene','Calendar','Genesis','Exodus','364-Day Solar','Qumran','Dead Sea Scrolls'],
-    link: 'https://www.sacred-texts.com/bib/jub/index.htm', linkLabel: 'Read Online →', linkClass: 'green'
-  },
-  {
-    id: 'bookofenoch', section: 'apocryphal',
-    name: 'Book of Enoch (1 Enoch)', badge: 'Text',
-    badgeClass: 'badge-text', rcBadgeStyle: 'background:#6B8E3A;color:#fff',
-    desc: 'Ancient Jewish text attributed to Enoch, grandson of Adam. The Astronomical Book (chapters 72–82) details the 364-day solar calendar. Referenced in Jude 1:14–15. Multiple copies found at Qumran.',
-    tags: ['Enoch','Calendar','364-Day Solar','Astronomical Book','Angels','Watchers','Jude 1:14','Dead Sea Scrolls'],
-    link: 'https://www.sacred-texts.com/bib/boe/index.htm', linkLabel: 'Read Online →', linkClass: 'green'
-  },
-  {
-    id: 'damascusdoc', section: 'apocryphal',
-    name: 'Damascus Document', badge: 'Historical',
-    badgeClass: 'badge-historical', rcBadgeStyle: 'background:#7A4F00;color:#fff',
-    desc: "One of the most important Dead Sea Scrolls — a foundational Essene/Qumran text covering the community's founding, the Teacher of Righteousness, calendar rules, and laws. Also called the Zadokite Fragments.",
-    tags: ['Dead Sea Scrolls','Essene','Qumran','Calendar','Zadokites','Teacher of Righteousness'],
-    link: 'https://www.deadseascrolls.org.il', linkLabel: 'Dead Sea Scrolls Site →', linkClass: 'brown'
-  },
-  {
-    id: 'josephus', section: 'apocryphal',
-    name: 'Josephus — Antiquities & Jewish War', badge: 'Historical',
-    badgeClass: 'badge-historical', rcBadgeStyle: 'background:#7A4F00;color:#fff',
-    desc: 'Flavius Josephus (37–100 AD) documented the Second Temple period, the Essenes, the Pharisees, the Zadokites, and the destruction of Jerusalem (70 AD). Invaluable background for end-times prophecy and Temple studies.',
-    tags: ['Second Temple','Essenes','Pharisees','Zadokites','Temple Destruction','70 AD','Jewish History'],
-    link: 'https://penelope.uchicago.edu/josephus/', linkLabel: 'Read Online →', linkClass: 'brown'
-  },
-  {
-    id: 'deadseascrolls', section: 'apocryphal',
-    name: 'Dead Sea Scrolls — Israel Antiquities Authority', badge: 'Archive',
-    badgeClass: 'badge-historical', rcBadgeStyle: 'background:#7A4F00;color:#fff',
-    desc: "Official digital archive with high-resolution images and English translations of the calendar texts (4Q318, 4Q394), the Community Rule, the War Scroll, and more.",
-    tags: ['Dead Sea Scrolls','Qumran','Calendar Texts','4Q318','4Q394','Community Rule','War Scroll'],
-    link: 'https://www.deadseascrolls.org.il', linkLabel: 'Open Archive →', linkClass: 'brown'
-  },
+    let tagType = 'scripture';
+    if (card.classList.contains('card-apocryphal')) tagType = 'apocryphal';
+    if (card.classList.contains('card-historical')) tagType = 'historical';
+    if (card.classList.contains('card-commentary')) tagType = 'commentary';
+    if (card.classList.contains('card-external'))   tagType = 'external';
 
-  // STUDY TOOLS
-  {
-    id: 'bibleatlas', section: 'tools',
-    name: 'Bible Atlas', badge: 'Tool',
-    badgeClass: 'badge-tool', rcBadgeStyle: 'background:#8E44AD;color:#fff',
-    desc: 'Interactive Bible maps showing ancient Near East geography, tribal territories, Paul\'s journeys, and the location of prophetic events like Armageddon and Gog-Magog.',
-    tags: ['Maps','Geography','Israel','Ancient Near East','Prophecy','Armageddon','Gog-Magog'],
-    link: 'https://www.bibleatlas.org', linkLabel: 'Open →', linkClass: 'purple'
-  },
-  {
-    id: 'logos', section: 'tools',
-    name: 'Logos Bible Software (Free Tier)', badge: 'Tool',
-    badgeClass: 'badge-tool', rcBadgeStyle: 'background:#8E44AD;color:#fff',
-    desc: 'Professional-grade Bible study software with a free online version. Commentaries, encyclopedias, lexicons, and cross-reference tools. Useful for deep dives on a passage or topic.',
-    tags: ['Commentaries','Lexicons','Encyclopedias','Cross-References','Academic','Professional'],
-    link: 'https://www.logos.com/app', linkLabel: 'Open →', linkClass: 'purple'
-  },
-  {
-    id: 'interlinearbible', section: 'tools',
-    name: 'Interlinear Bible', badge: 'Tool',
-    badgeClass: 'badge-tool', rcBadgeStyle: 'background:#8E44AD;color:#fff',
-    desc: 'Word-for-word interlinear display of Hebrew (OT) and Greek (NT) with English underneath. Great when you want to see exactly what a word means without software complexity.',
-    tags: ['Interlinear','Hebrew','Greek','Word Study','Old Testament','New Testament'],
-    link: 'https://interlinearbible.org', linkLabel: 'Open →', linkClass: 'purple'
-  },
-  {
-    id: 'gotquestions', section: 'tools',
-    name: 'Got Questions', badge: 'Tool',
-    badgeClass: 'badge-tool', rcBadgeStyle: 'background:#8E44AD;color:#fff',
-    desc: 'Evangelical Q&A covering thousands of biblical topics. Good first stop when a module raises a question you want a quick, reliable overview of — eschatology, prophecy, theology, and background.',
-    tags: ['Q&A','Theology','Eschatology','Prophecy','Background','Evangelical'],
-    link: 'https://www.gotquestions.org', linkLabel: 'Open →', linkClass: 'purple'
-  }
-];
-
-// ── RENDER CARDS ──────────────────────────────────────────────────
-function renderCard(r) {
-  const tagsHtml = r.tags.map(t => `<span class="rc-tag">${t}</span>`).join('');
-  return `
-    <div class="resource-card" data-id="${r.id}">
-      <div class="rc-top">
-        <div class="rc-name">${r.name}</div>
-        <span class="rc-badge" style="${r.rcBadgeStyle}">${r.badge}</span>
-      </div>
-      <div class="rc-desc">${r.desc}</div>
-      <div class="rc-tags">${tagsHtml}</div>
-      <a href="${r.link}" target="_blank" rel="noopener" class="rc-link ${r.linkClass}">${r.linkLabel}</a>
-    </div>`;
-}
-
-function renderAll() {
-  ['scripture','apocryphal','tools'].forEach(section => {
-    const grid = document.getElementById('grid-' + section);
-    if (!grid) return;
-    grid.innerHTML = RESOURCES.filter(r => r.section === section).map(renderCard).join('');
+    RESOURCES.push({
+      title, desc, tags, tagType,
+      searchable: (title + ' ' + desc + ' ' + tags + ' ' + keywords).toLowerCase(),
+      href: link ? link.href : null,
+      linkLabel: link ? link.textContent.trim() : 'View'
+    });
   });
 }
 
-// ── SEARCH ────────────────────────────────────────────────────────
 function runSearch() {
-  const q = document.getElementById('lib-search').value.trim().toLowerCase();
-  const resultsDiv = document.getElementById('search-results');
-  const resultsList = document.getElementById('results-list');
-  const resultsTitle = document.getElementById('results-title');
-  if (!q) { clearSearch(); return; }
-
-  const matches = RESOURCES.filter(r =>
-    r.name.toLowerCase().includes(q) ||
-    r.desc.toLowerCase().includes(q) ||
-    r.tags.some(t => t.toLowerCase().includes(q))
-  );
-
-  resultsTitle.textContent = matches.length
-    ? `${matches.length} result${matches.length !== 1 ? 's' : ''} for "${q}"`
-    : `No results for "${q}"`;
-
-  resultsList.innerHTML = matches.length
-    ? matches.map(r => `
-        <div class="result-item">
-          <span class="result-badge ${r.badgeClass}">${r.badge}</span>
-          <div class="result-content">
-            <div class="result-name">${r.name}</div>
-            <div class="result-desc">${r.desc}</div>
-            <a href="${r.link}" target="_blank" rel="noopener" class="result-link">${r.linkLabel}</a>
-          </div>
-        </div>`).join('')
-    : `<div class="result-item no-match">No resources matched your search. Try a different keyword — book name, topic, or tool type.</div>`;
-
-  resultsDiv.classList.add('active');
-  resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const query = document.getElementById('lib-search').value.trim().toLowerCase();
+  if (!query) { clearSearch(); return; }
+  const terms = query.split(/\s+/);
+  const matches = RESOURCES.filter(r => terms.every(t => r.searchable.includes(t)));
+  const panel = document.getElementById('search-results');
+  const title = document.getElementById('results-title');
+  const body  = document.getElementById('results-body');
+  panel.classList.add('active');
+  title.textContent = matches.length
+    ? matches.length + ' result' + (matches.length > 1 ? 's' : '') + ' for "' + query + '"'
+    : 'No results for "' + query + '"';
+  if (!matches.length) {
+    body.innerHTML = '<div class="no-results">Try broader terms — e.g. "calendar", "Daniel", "rapture", "Essene"</div>';
+    return;
+  }
+  body.innerHTML = matches.map(r =>
+    '<div class="result-item">' +
+      '<span class="result-tag tag-' + r.tagType + '">' + r.tagType + '</span>' +
+      '<div class="result-body">' +
+        '<div class="result-name">' + r.title + '</div>' +
+        '<div class="result-desc">' + r.desc.substring(0, 130) + '…</div>' +
+        (r.href ? '<a class="result-link" href="' + r.href + '" target="_blank">' + r.linkLabel + ' →</a>' : '') +
+      '</div>' +
+    '</div>'
+  ).join('');
 }
 
 function clearSearch() {
   document.getElementById('lib-search').value = '';
   document.getElementById('search-results').classList.remove('active');
-  document.getElementById('results-list').innerHTML = '';
+  document.getElementById('results-body').innerHTML = '';
 }
 
-renderAll();
+window.addEventListener('DOMContentLoaded', indexResources);
 </script>
 
-<script>window.PAGE_NOTE_IDS = ['n-ref-library'];</script>
+<script>window.PAGE_NOTE_IDS = ['n-reference-library'];</script>
 <script src="assets/js/nav.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
