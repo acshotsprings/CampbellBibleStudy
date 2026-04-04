@@ -1,6 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Shared JavaScript — v3.1 Multi-Page + Shared Notes
+   Shared JavaScript — v3.2 Multi-Page + Shared Notes + Universal Timestamp
    ============================================================ */
 
 const OWNER = 'acshotsprings';
@@ -129,9 +129,7 @@ async function saveNotesJson(token) {
     const key = localStorage.key(i);
     if (!key || !key.startsWith('cbsg-')) continue;
     const shortKey = key.replace('cbsg-', '');
-    // Skip excluded keys — tokens, API keys, nav states
     if (EXCLUDED_KEYS.includes(shortKey)) continue;
-    // Skip any key that looks like a nav collapse state
     if (shortKey.startsWith('nav-')) continue;
     const value = localStorage.getItem(key);
     if (value && value.trim()) notes[shortKey] = value;
@@ -157,6 +155,7 @@ async function saveNotesJson(token) {
       'n-m14': 'Module 14 — Matt 24 vs Revelation: my notes',
       'n-m15': 'Module 15 — Armageddon: my notes',
       'n-t2m1': 'Theme 2 Module 1 — Calendar History: my notes',
+      'n-t2m2': 'Theme 2 Module 2 — Calendar Timeline: my notes',
       'n-t2m3': 'Theme 2 Module 3 — Book of Jubilees: my notes',
       'n-journal-new': 'Personal Journal entries',
       'n-sermons': 'Sermon log overflow notes',
@@ -242,18 +241,43 @@ function markActivePage() {
   });
 }
 
-// ── JOURNAL TIMESTAMP ─────────────────────────────────────
+// ── UNIVERSAL TIMESTAMP ───────────────────────────────────
+// Works in ANY focused textarea on the page.
+// If no textarea has focus, falls back to the first textarea found.
+
+let lastFocusedTextarea = null;
+
+function trackFocus() {
+  document.addEventListener('focusin', (e) => {
+    if (e.target && e.target.tagName === 'TEXTAREA') {
+      lastFocusedTextarea = e.target;
+    }
+  });
+}
 
 function insertTimestamp() {
-  const el = document.getElementById('n-journal-new');
+  // Use last focused textarea, or fall back to first textarea on page
+  const el = lastFocusedTextarea || document.querySelector('textarea');
   if (!el) return;
-  const now   = new Date();
-  const date  = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  const time  = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-  const divider = '─'.repeat(40);
-  el.value += `\n${divider}\n${date} at ${time}\n${divider}\n`;
+
+  const now  = new Date();
+  const date = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  const stamp = `\n── ${date} at ${time} ──\n`;
+
+  // Insert at cursor position if possible, otherwise append
+  const start = el.selectionStart;
+  const end   = el.selectionEnd;
+  if (typeof start === 'number') {
+    el.value = el.value.substring(0, start) + stamp + el.value.substring(end);
+    el.selectionStart = el.selectionEnd = start + stamp.length;
+  } else {
+    el.value += stamp;
+  }
+
   el.focus();
-  el.scrollTop = el.scrollHeight;
+  // Trigger auto-save
+  el.dispatchEvent(new Event('input'));
 }
 
 // ── INIT ──────────────────────────────────────────────────
@@ -262,4 +286,5 @@ document.addEventListener('DOMContentLoaded', () => {
   loadNotes();
   wireAutoSave();
   markActivePage();
+  trackFocus();
 });

@@ -1,6 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v4.1 Collapsible Themes
+   Sidebar Navigation Builder — v4.2 Collapsible Themes + Timestamp Button
    ============================================================ */
 
 const NAV_STRUCTURE = [
@@ -45,7 +45,7 @@ const NAV_STRUCTURE = [
       { label: 'Theme 2 Overview',                  href: '/theme2/index.html' },
       { label: '↳ Module 1 — Calendar History',     href: '/theme2/module1.html', sub: true },
       { label: '↳ Module 2 — Calendar Timeline',    href: '/theme2/module2.html', sub: true },
-      { label: '↳ Module 3 — Book of Jubilees',      href: '/theme2/module3.html', sub: true },
+      { label: '↳ Module 3 — Book of Jubilees',     href: '/theme2/module3.html', sub: true },
     ]
   },
   {
@@ -102,10 +102,33 @@ function buildSidebar(root) {
     localStorage.setItem('cbsg-nav-' + key, val ? 'true' : 'false');
   }
 
+  // ── Build the top GitHub bar (includes timestamp button) ──
+  const bar = document.getElementById('github-bar');
+  if (bar) {
+    // Only inject if the timestamp button isn't already present
+    if (!document.getElementById('btn-timestamp')) {
+      const tsBtn = document.createElement('button');
+      tsBtn.id        = 'btn-timestamp';
+      tsBtn.className = 'btn-timestamp';
+      tsBtn.title     = 'Insert timestamp at cursor in your notes';
+      tsBtn.textContent = '🕐 Timestamp';
+      tsBtn.onclick   = insertTimestamp;
+
+      // Insert after the Load from GitHub button
+      const loadBtn = bar.querySelector('.btn-load');
+      if (loadBtn && loadBtn.nextSibling) {
+        bar.insertBefore(tsBtn, loadBtn.nextSibling);
+      } else {
+        bar.appendChild(tsBtn);
+      }
+    }
+  }
+
+  // ── Build sidebar HTML ──
   let html = `
     <div id="sidebar-header">
       <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 3, 2026</p>
+      <p id="sidebar-version">Version: April 4, 2026</p>
     </div>
     <div id="sidebar-nav">
   `;
