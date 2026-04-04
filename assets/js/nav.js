@@ -88,7 +88,8 @@ function buildSidebar(root) {
     return section.items.some(item => {
       const fullHref = base + item.href;
       return currentPath === fullHref ||
-             currentPath.endsWith(item.href.split('/').pop());
+             currentPath === item.href ||
+             currentPath.endsWith(item.href.replace(/^\//, ''));
     });
   }
 
@@ -157,7 +158,8 @@ function buildSidebar(root) {
       section.items.forEach(item => {
         const fullHref = base + item.href;
         const active = currentPath === fullHref ||
-                       currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
+                       currentPath === item.href ||
+                       currentPath.endsWith(item.href.replace(/^\//, '')) ? ' active' : '';
         const sub = item.sub ? ' sub' : '';
         html += `<a class="nav-item${sub}${active}" href="${root + item.href}">${item.label}</a>`;
       });
@@ -178,7 +180,8 @@ function buildSidebar(root) {
       section.items.forEach(item => {
         const fullHref = base + item.href;
         const active = currentPath === fullHref ||
-                       currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
+                       currentPath === item.href ||
+                       currentPath.endsWith(item.href.replace(/^\//, '')) ? ' active' : '';
         const sub = item.sub ? ' sub' : '';
         html += `<a class="nav-item${sub}${active}" href="${root + item.href}">${item.label}</a>`;
       });
