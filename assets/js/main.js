@@ -311,8 +311,35 @@ async function saveToGitHub() {
   const filePath = rawPath || 'index.html';
 
   setStatus('📡 Saving...', 'info');
+
+  // ── SCRUB ALL SENSITIVE FIELDS BEFORE CAPTURING HTML ──────
+  // Clear token, Gemini key, and any password fields so they
+  // are never baked into the saved HTML on GitHub.
+  // We restore them immediately after capturing the HTML string.
+  const sensitiveIds = ['gh-token', 'gemini-key'];
+  const savedValues  = {};
+  sensitiveIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { savedValues[id] = el.value; el.value = ''; }
+  });
+  // Also scrub any other password-type inputs on the page
+  document.querySelectorAll('input[type="password"]').forEach(el => {
+    if (el.id && !savedValues[el.id]) {
+      savedValues[el.id] = el.value;
+      el.value = '';
+    }
+  });
+
+  const html = document.documentElement.outerHTML;
+
+  // Restore all sensitive fields immediately after capture
+  Object.entries(savedValues).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  });
+
   try {
-    await putFile(token, filePath, document.documentElement.outerHTML);
+    await putFile(token, filePath, html);
     await saveNotesJson(token);
     setStatus('✅ Saved! Live in ~30 seconds.', 'ok');
     updateVersionTimestamp();
