@@ -157,12 +157,7 @@
 
   /* GUEST SUBMISSION BOX */
 /* ADMIN PASSWORD MODAL */
-  #admin-modal { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.5); z-index:500; align-items:center; justify-content:center; }
-  #admin-modal.show { display:flex; }
-  #admin-modal-box { background:#fff; border-radius:10px; padding:28px 32px; width:320px; box-shadow:0 8px 32px rgba(0,0,0,0.3); font-family:Arial,sans-serif; }
-  #admin-modal-box h3 { font-size:16px; color:#1F3864; margin-bottom:6px; }
-  #admin-modal-box p { font-size:12px; color:#888; margin-bottom:16px; }
-  #admin-pw-input { width:100%; border:1px solid #ccc; border-radius:4px; padding:9px 12px; font-size:14px; margin-bottom:12px; }
+#admin-pw-input { width:100%; border:1px solid #ccc; border-radius:4px; padding:9px 12px; font-size:14px; margin-bottom:12px; }
   #admin-pw-input:focus { outline:none; border-color:#1F3864; }
   #admin-pw-error { font-size:12px; color:#cc0000; margin-bottom:8px; display:none; }
   .modal-btn-row { display:flex; gap:10px; justify-content:flex-end; }
@@ -314,17 +309,6 @@
 <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <!-- ADMIN PASSWORD MODAL -->
-<div id="admin-modal">
-  <div id="admin-modal-box">
-    <h3>🔒 Admin Access</h3>
-    <p>Enter your admin password to enable editing.</p>
-    <input id="admin-pw-input" type="password" placeholder="Password..." onkeydown="if(event.key==='Enter')checkAdminPw()">
-    <div id="admin-pw-error">Incorrect password. Try again.</div>
-    <div class="modal-btn-row">
-      <button class="modal-btn-cancel" onclick="closeAdminModal()">Cancel</button>
-      <button class="modal-btn-primary" onclick="checkAdminPw()">Unlock</button>
-    </div>
-  </div>
 </div>
 
 <div id="app" style="margin-top:48px;">
@@ -1792,50 +1776,6 @@ Questions to sit with:
 <script>
 // ── EMAILJS ──────────────────────────────────────────────────────────────
 // ── ADMIN PASSWORD ────────────────────────────────────────────────────────
-const ADMIN_PASSWORD = 'Campbell2026';
-let adminUnlocked = false;
-
-function toggleAdminMode() {
-  if (adminUnlocked) {
-    // Lock
-    adminUnlocked = false;
-    document.body.classList.remove('admin-mode');
-    document.body.classList.add('readonly');
-    document.getElementById('btn-admin').textContent = '🔒 Admin';
-    document.getElementById('btn-save').style.display = 'none';
-    document.getElementById('btn-load').style.display = 'none';
-    document.getElementById('btn-timestamp').style.display = 'none';
-    document.getElementById('gh-token').style.display = 'none';
-  } else {
-    document.getElementById('admin-modal').classList.add('show');
-    setTimeout(() => document.getElementById('admin-pw-input').focus(), 100);
-  }
-}
-
-function checkAdminPw() {
-  const pw = document.getElementById('admin-pw-input').value;
-  if (pw === ADMIN_PASSWORD) {
-    adminUnlocked = true;
-    document.body.classList.add('admin-mode');
-    document.body.classList.remove('readonly');
-    document.getElementById('btn-admin').textContent = '🔓 Admin ON';
-    document.getElementById('btn-save').style.display = 'inline-block';
-    document.getElementById('btn-load').style.display = 'inline-block';
-    document.getElementById('btn-timestamp').style.display = 'inline-block';
-    document.getElementById('gh-token').style.display = 'inline-block';
-    closeAdminModal();
-  } else {
-    document.getElementById('admin-pw-error').style.display = 'block';
-    document.getElementById('admin-pw-input').value = '';
-    document.getElementById('admin-pw-input').focus();
-  }
-}
-
-function closeAdminModal() {
-  document.getElementById('admin-modal').classList.remove('show');
-  document.getElementById('admin-pw-input').value = '';
-  document.getElementById('admin-pw-error').style.display = 'none';
-}
 
 // ── MODULE TIMER & COMPLETION ─────────────────────────────────────────────
 const MODULE_IDS = ['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','m11','m12','m13'];
@@ -2100,7 +2040,7 @@ function loadNotes() {
 
 noteIds.forEach(id => {
   const el = document.getElementById(id);
-  if (el) el.addEventListener('input', () => { if(adminUnlocked) saveNote(id); });
+  if (el) el.addEventListener('input', () => { saveNote(id); });
 });
 
 loadNotes();
@@ -2115,8 +2055,6 @@ loadNotes();
 })();
 
 // ── GITHUB TOKEN ──────────────────────────────────────────────────────────
-// ── INIT: START IN READONLY MODE ──────────────────────────────────────────
-document.body.classList.add('readonly');
 loadCompletions();
 
 // ── LOAD FROM GITHUB ─────────────────────────────────────────────────────
