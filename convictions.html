@@ -216,7 +216,7 @@ async function askAboutMyNotes() {
     if (!geminiKey) { out.textContent = 'Please paste your Gemini API key above.'; box.classList.add('visible'); btn.disabled=false; text.textContent='✨ Ask'; return; }
     localStorage.setItem('cbsg-gemini-key', geminiKey);
     const fullPrompt = `You are a spiritual reflection assistant for the Campbell Family Master Biblical Study Guide. Reflect back ONLY what the user has written in their notes. Be warm and specific. Never preachy. 2–4 paragraphs max.\n\nUser's notes:\n\n${notesContext}\n\n---\n\nQuestion: ${prompt}`;
-    const apiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${geminiKey}`,{
+    const apiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${geminiKey}`,{
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ contents:[{parts:[{text:fullPrompt}]}], generationConfig:{maxOutputTokens:1000,temperature:0.7} })
     });
