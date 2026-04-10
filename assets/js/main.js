@@ -189,8 +189,8 @@ function injectBarExtras() {
       <span style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;font-family:Arial,sans-serif;">Page Total</span>
       <span id="bar-total-time" style="font-size:12px;color:rgba(255,255,255,0.8);font-family:Arial,sans-serif;font-weight:bold;">${formatTime(stored)}</span>
     </div>
-    <button onclick="logStudyTime()" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.25);border-radius:4px;padding:4px 10px;font-size:11px;font-family:Arial,sans-serif;cursor:pointer;white-space:nowrap;" title="Log this study session to your journal">📋 Log Study</button>
-    <button onclick="insertTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:4px 10px;font-size:11px;font-family:Arial,sans-serif;font-weight:bold;cursor:pointer;white-space:nowrap;" title="Insert a timestamp into your notes">📅 Timestamp</button>
+    <button onclick="logStudyTime()" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.25);border-radius:4px;padding:4px 10px;font-size:11px;font-family:Arial,sans-serif;cursor:pointer;white-space:nowrap;" title="Log this study session to your journal">
+    <button onclick="logAndStamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:4px 10px;font-size:11px;font-family:Arial,sans-serif;font-weight:bold;cursor:pointer;white-space:nowrap;" title="Stamp current notes + log session time">📅 Log &amp; Stamp</button>
   `;
 
   const barRight = bar.querySelector('.bar-right');
@@ -261,6 +261,42 @@ function insertTimestamp() {
       localStorage.setItem('cbsg-' + ids[0], el.value);
     }
   }
+}
+
+
+// ── LOG AND STAMP (combined button) ──────────────────────
+function logAndStamp() {
+  const now     = new Date();
+  const date    = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const time    = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  const label   = getPageLabel();
+  const total   = getStoredSeconds() + sessionSeconds;
+  const divider = '─'.repeat(40);
+  const stamp    = `\n${divider}\n${date} at ${time}\n${divider}\n`;
+  const logEntry = `\n${divider}\n📚 ${date} at ${time}\nPage: ${label}\nSession: ${formatTime(sessionSeconds)} | Total: ${formatTime(total)}\n${divider}\n`;
+
+  // Stamp into active textarea or first notes field on the page
+  const active = document.activeElement;
+  if (active && active.tagName === 'TEXTAREA' && active.id) {
+    active.value += stamp;
+    active.scrollTop = active.scrollHeight;
+    localStorage.setItem('cbsg-' + active.id, active.value);
+  } else {
+    const ids = window.PAGE_NOTE_IDS || [];
+    if (ids.length > 0) {
+      const el = document.getElementById(ids[0]);
+      if (el) { el.value += stamp; el.scrollTop = el.scrollHeight; localStorage.setItem('cbsg-' + ids[0], el.value); }
+    }
+  }
+
+  // Also log session time to journal textarea if present
+  const journalEl = document.getElementById('n-journal-new');
+  if (journalEl) {
+    journalEl.value += logEntry;
+    localStorage.setItem('cbsg-n-journal-new', journalEl.value);
+  }
+
+  setStatus('📅 Stamped & logged!', 'ok');
 }
 
 // ── GITHUB FILE OPS ───────────────────────────────────────
