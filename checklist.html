@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>End Times Prophecy Checklist — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .checklist-phase {
+      margin: 28px 0 8px;
+    }
+    .phase-header {
+      background: #1F3864;
+      color: #FFD700;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 10px 16px;
+      border-radius: 6px 6px 0 0;
+      margin-bottom: 0;
+    }
+    .phase-body {
+      border: 1px solid #d0dce8;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      overflow: hidden;
+    }
+    .theme-header {
+      background: #e8edf5;
+      color: #1F3864;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 7px 16px;
+      border-bottom: 1px solid #d0dce8;
+    }
+    .checklist-item {
+      border-bottom: 1px solid #eef1f5;
+    }
+    .checklist-item:last-child {
+      border-bottom: none;
+    }
+    .item-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 11px 16px;
+      cursor: pointer;
+      transition: background 0.15s;
+      user-select: none;
+    }
+    .item-header:hover {
+      background: #f7f9fc;
+    }
+    .item-check {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .item-check input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: #1F3864;
+    }
+    .item-text {
+      flex: 1;
+    }
+    .item-title {
+      font-family: Georgia, serif;
+      font-size: 13.5px;
+      color: #1F3864;
+      line-height: 1.5;
+      margin-bottom: 2px;
+    }
+    .item-scripture {
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      color: #888;
+    }
+    .item-status {
+      flex-shrink: 0;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      border-radius: 10px;
+      margin-top: 2px;
+    }
+    .status-notyet {
+      background: #f0f0f0;
+      color: #999;
+    }
+    .status-forming {
+      background: #fff3cd;
+      color: #856404;
+    }
+    .status-fulfilled {
+      background: #d4edda;
+      color: #155724;
+    }
+    .item-toggle {
+      flex-shrink: 0;
+      color: #aaa;
+      font-size: 11px;
+      margin-top: 4px;
+      transition: transform 0.2s;
+    }
+    .item-toggle.open {
+      transform: rotate(180deg);
+    }
+    .item-notes {
+      display: none;
+      padding: 0 16px 14px 44px;
+      background: #fafbfd;
+      border-top: 1px solid #eef1f5;
+    }
+    .item-notes.visible {
+      display: block;
+    }
+    .notes-label {
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 6px;
+      margin-top: 10px;
+    }
+    .notes-textarea {
+      width: 100%;
+      min-height: 80px;
+      border: 1px solid #d0dce8;
+      border-radius: 4px;
+      padding: 8px 10px;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      color: #222;
+      background: white;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+    .notes-textarea:focus {
+      outline: none;
+      border-color: #1F3864;
+    }
+    .timestamp-btn {
+      background: rgba(31,56,100,0.08);
+      color: #1F3864;
+      border: 1px solid rgba(31,56,100,0.2);
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 6px;
+      font-family: Arial, sans-serif;
+    }
+    .timestamp-btn:hover {
+      background: rgba(31,56,100,0.15);
+    }
+    .current-events-badge {
+      display: inline-block;
+      background: #dc3545;
+      color: white;
+      font-size: 9px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 6px;
+      border-radius: 8px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 12px 0 24px;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: April 9, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version">Version: April 9, 2026</span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <span class="page-tag">Master Reference — Theme 1: End Times</span>
+  <h1 class="page-title">End Times Prophecy Checklist</h1>
+  <p class="body">A living timeline of prophesied events — organized by phase and theme. Click any item to expand it, add notes, and log what you are learning from teachings, sermons, and current events. Use the timestamp button to date your entries. Check items off as they are fulfilled.</p>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#f0f0f0;border:1px solid #ccc;"></div> Not Yet</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#fff3cd;border:1px solid #ffc107;"></div> Forming / In Progress</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d4edda;border:1px solid #28a745;"></div> Fulfilled</div>
+    <div class="legend-item" style="color:#dc3545;font-weight:bold;">● LIVE — Current news connection</div>
+  </div>
+
+  <div class="info-box">
+    <div class="title">How to use this checklist</div>
+    <div class="line">Click any row to open the notes section. Use the timestamp button to log the date, source, and what you learned. Update the status dropdown as events develop. This page saves to GitHub just like all other pages — paste your token and click Save.</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════
+       PHASE 1 — PRE-RAPTURE SIGNS
+  ═══════════════════════════════════════════════ -->
+  <div class="checklist-phase">
+    <div class="phase-header">Phase 1 — Pre-Rapture Signs (Now)</div>
+    <div class="phase-body">
+
+      <div class="theme-header">🌍 Geopolitical Signs</div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p1-1')">
+          <div class="item-check"><input type="checkbox" id="chk-p1-1" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Russia (Magog) rises as an authoritarian northern power<span class="current-events-badge">Live</span></div>
+            <div class="item-scripture">Ezekiel 38:2–3, 15 — "Gog, of the land of Magog... from the remote parts of the north"</div>
+          </div>
+          <div class="item-status status-forming">Forming</div>
+          <div class="item-toggle" id="toggle-p1-1">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p1-1">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p1-1" placeholder="e.g. April 9, 2026 — Rosenberg (Ezekiel Option Ch.7): Gog is a title like Tsar, not a personal name. Five evidence streams point to Russia: geographic (farthest north of Israel), Voltaire hostile witness, Genesis 10 Table of Nations, 1846 pre-modern scholarship, Putin's contemporary profile..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p1-1')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p1-2')">
+          <div class="item-check"><input type="checkbox" id="chk-p1-2" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Russia–Iran military alliance forms<span class="current-events-badge">Live</span></div>
+            <div class="item-scripture">Ezekiel 38:5 — Persia (Iran) listed as coalition member under Gog</div>
+          </div>
+          <div class="item-status status-forming">Forming</div>
+          <div class="item-toggle" id="toggle-p1-2">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p1-2">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p1-2" placeholder="e.g. April 9, 2026 — Current news search: Russia providing Iran satellite intelligence on 55 Israeli energy targets. Iran FM confirmed military cooperation is 'not something new.' Russia-Iran cyber collaboration active. Russia supplying Verba air defense systems 2027–2029..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p1-2')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p1-3')">
+          <div class="item-check"><input type="checkbox" id="chk-p1-3" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Turkey (Gomer / Beth-togarmah) aligns with Russia-Iran axis<span class="current-events-badge">Live</span></div>
+            <div class="item-scripture">Ezekiel 38:6 — Gomer and Beth-togarmah from the remote parts of the north</div>
+          </div>
+          <div class="item-status status-forming">Forming</div>
+          <div class="item-toggle" id="toggle-p1-3">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p1-3">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p1-3" placeholder="Log teachings and news on Turkey's geopolitical alignment..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p1-3')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p1-4')">
+          <div class="item-check"><input type="checkbox" id="chk-p1-4" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Sudan / Ethiopia (Cush) and Libya (Put) drawn into coalition</div>
+            <div class="item-scripture">Ezekiel 38:5 — Cush and Put listed as Gog coalition members</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p1-4">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p1-4">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p1-4" placeholder="Log teachings and news on African nations' alignment..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p1-4')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="theme-header">🇮🇱 Israel Signs</div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p1-5')">
+          <div class="item-check"><input type="checkbox" id="chk-p1-5" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Israel re-established as a nation — Jews regathered to the land</div>
+            <div class="item-scripture">Ezekiel 37:21–22; Isaiah 11:11–12 — "I will bring them back to their own land"</div>
+          </div>
+          <div class="item-status status-fulfilled">Fulfilled</div>
+          <div class="item-toggle" id="toggle-p1-5">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p1-5">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p1-5" placeholder="Fulfilled — May 14, 1948. Log any additional teachings on this..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p1-5')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p1-6')">
+          <div class="item-check"><input type="checkbox" id="chk-p1-6" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Israel living in perceived safety — precondition for Gog-Magog invasion</div>
+            <div class="item-scripture">Ezekiel 38:11 — "I will invade a land of unwalled villages... living without walls, bars or gates"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p1-6">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p1-6">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p1-6" placeholder="Log thoughts on what this perceived safety looks like and when it might occur..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p1-6')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p1-7')">
+          <div class="item-check"><input type="checkbox" id="chk-p1-7" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Discovery of natural resources in Israel (gas, oil) — motivating invasion</div>
+            <div class="item-scripture">Ezekiel 38:12–13 — invaders come to "seize plunder... silver, gold, livestock and goods"</div>
+          </div>
+          <div class="item-status status-forming">Forming</div>
+          <div class="item-toggle" id="toggle-p1-7">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p1-7">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p1-7" placeholder="Log teachings on Israel's offshore gas fields and natural resources discovered in recent decades..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p1-7')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="theme-header">⚠️ General Signs of the Times</div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p1-8')">
+          <div class="item-check"><input type="checkbox" id="chk-p1-8" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Wars and rumors of wars — nation against nation, kingdom against kingdom</div>
+            <div class="item-scripture">Matthew 24:6–7 — "You will hear of wars and rumors of wars... nation will rise against nation"</div>
+          </div>
+          <div class="item-status status-forming">Forming</div>
+          <div class="item-toggle" id="toggle-p1-8">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p1-8">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p1-8" placeholder="Log current conflicts and what teachings say about birth pains..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p1-8')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p1-9')">
+          <div class="item-check"><input type="checkbox" id="chk-p1-9" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">False christs and false prophets performing signs and wonders</div>
+            <div class="item-scripture">Matthew 24:24 — "False christs and false prophets will arise and perform great signs and wonders"</div>
+          </div>
+          <div class="item-status status-forming">Forming</div>
+          <div class="item-toggle" id="toggle-p1-9">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p1-9">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p1-9" placeholder="Log teachings and examples from current events..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p1-9')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════
+       PHASE 2 — THE RAPTURE
+  ═══════════════════════════════════════════════ -->
+  <div class="checklist-phase">
+    <div class="phase-header">Phase 2 — The Rapture</div>
+    <div class="phase-body">
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p2-1')">
+          <div class="item-check"><input type="checkbox" id="chk-p2-1" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">The Rapture — believers caught up to meet Christ in the air</div>
+            <div class="item-scripture">1 Thessalonians 4:16–17; 1 Corinthians 15:51–52 — "caught up together with them in the clouds"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p2-1">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p2-1">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p2-1" placeholder="Log your current position on timing (pre-trib, mid-trib, pre-wrath, post-trib) and why..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p2-1')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p2-2')">
+          <div class="item-check"><input type="checkbox" id="chk-p2-2" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Bema Seat — believers' works judged; rewards given</div>
+            <div class="item-scripture">2 Corinthians 5:10; 1 Corinthians 3:11–15 — "each one may receive what is due"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p2-2">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p2-2">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p2-2" placeholder="Log teachings on the Bema Seat judgment..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p2-2')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p2-3')">
+          <div class="item-check"><input type="checkbox" id="chk-p2-3" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Marriage Supper of the Lamb</div>
+            <div class="item-scripture">Revelation 19:7–9; John 14:1–3 — "Blessed are those invited to the wedding supper of the Lamb"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p2-3">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p2-3">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p2-3" placeholder="Log teachings on the Marriage Supper..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p2-3')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════
+       PHASE 3 — GOG-MAGOG WAR (PRE-TRIB)
+  ═══════════════════════════════════════════════ -->
+  <div class="checklist-phase">
+    <div class="phase-header">Phase 3 — Gog-Magog War (Pre-Tribulation — Most Common View)</div>
+    <div class="phase-body">
+
+      <div class="theme-header">⚔️ The Invasion</div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p3-1')">
+          <div class="item-check"><input type="checkbox" id="chk-p3-1" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Russia-led coalition invades Israel from the north</div>
+            <div class="item-scripture">Ezekiel 38:15 — "You will come from your place in the far north, you and many nations with you"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p3-1">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p3-1">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p3-1" placeholder="Log teachings on the invasion itself..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p3-1')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="theme-header">🔥 God's Supernatural Defense</div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p3-2')">
+          <div class="item-check"><input type="checkbox" id="chk-p3-2" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">God sends great earthquake across Israel</div>
+            <div class="item-scripture">Ezekiel 38:19 — "There will be a great earthquake in the land of Israel"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p3-2">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p3-2">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p3-2" placeholder="Log teachings on the earthquake judgment..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p3-2')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p3-3')">
+          <div class="item-check"><input type="checkbox" id="chk-p3-3" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">God rains fire, brimstone, flooding rain, and hailstones on the armies</div>
+            <div class="item-scripture">Ezekiel 38:22 — "I will pour down torrents of rain, hailstones and burning sulfur"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p3-3">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p3-3">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p3-3" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p3-3')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p3-4')">
+          <div class="item-check"><input type="checkbox" id="chk-p3-4" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Coalition armies turn on each other in confusion</div>
+            <div class="item-scripture">Ezekiel 38:21 — "Every man's sword will be against his brother"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p3-4">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p3-4">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p3-4" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p3-4')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p3-5')">
+          <div class="item-check"><input type="checkbox" id="chk-p3-5" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Five-sixths of invading army destroyed on mountains of Israel</div>
+            <div class="item-scripture">Ezekiel 39:2–4 — "I will turn you around and drag you along... on the mountains of Israel"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p3-5">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p3-5">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p3-5" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p3-5')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p3-6')">
+          <div class="item-check"><input type="checkbox" id="chk-p3-6" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Seven months burying the dead; seven years burning weapons</div>
+            <div class="item-scripture">Ezekiel 39:9–10, 12 — "For seven years they will use them for fuel... seven months burying"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p3-6">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p3-6">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p3-6" placeholder="Log teachings on how the 7-year weapon burning ties to the Tribulation period..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p3-6')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p3-7')">
+          <div class="item-check"><input type="checkbox" id="chk-p3-7" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">God's name glorified — Israel begins to know the Lord</div>
+            <div class="item-scripture">Ezekiel 39:21–22 — "I will display my glory among the nations... Israel will know that I am the LORD"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p3-7">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p3-7">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p3-7" placeholder="Log teachings on God's redemptive purpose in the Gog-Magog war..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p3-7')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════
+       PHASE 4 — THE TRIBULATION
+  ═══════════════════════════════════════════════ -->
+  <div class="checklist-phase">
+    <div class="phase-header">Phase 4 — The Tribulation (7 Years)</div>
+    <div class="phase-body">
+
+      <div class="theme-header">📜 The Antichrist Rises</div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p4-1')">
+          <div class="item-check"><input type="checkbox" id="chk-p4-1" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Antichrist confirms a 7-year peace covenant with Israel</div>
+            <div class="item-scripture">Daniel 9:27 — "He will confirm a covenant with many for one 'seven'"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p4-1">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p4-1">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p4-1" placeholder="Log teachings on Daniel's 70th week and how this covenant starts the Tribulation clock..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p4-1')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p4-2')">
+          <div class="item-check"><input type="checkbox" id="chk-p4-2" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Seal Judgments — Conquest, war, famine, death (Seals 1–4)</div>
+            <div class="item-scripture">Revelation 6:1–8 — Four horsemen: white (conquest), red (war), black (famine), pale (death)</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p4-2">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p4-2">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p4-2" placeholder="Log teachings on the seal judgments and their Matthew 24 parallels..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p4-2')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p4-3')">
+          <div class="item-check"><input type="checkbox" id="chk-p4-3" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Martyrdom of Tribulation believers (Seal 5)</div>
+            <div class="item-scripture">Revelation 6:9–10; Matthew 24:9 — "Souls under the altar... slain for the word of God"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p4-3">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p4-3">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p4-3" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p4-3')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p4-4')">
+          <div class="item-check"><input type="checkbox" id="chk-p4-4" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Cosmic signs — sun darkened, moon like blood, stars fall (Seal 6)</div>
+            <div class="item-scripture">Revelation 6:12–17; Matthew 24:29 — "The sun will be darkened, and the moon will not give its light"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p4-4">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p4-4">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p4-4" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p4-4')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="theme-header">🏛️ The Abomination — Midpoint of Tribulation</div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p4-5')">
+          <div class="item-check"><input type="checkbox" id="chk-p4-5" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Antichrist breaks covenant — sets up Abomination of Desolation in the Temple</div>
+            <div class="item-scripture">Matthew 24:15; Daniel 9:27; Revelation 13:14–17 — "standing in the holy place"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p4-5">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p4-5">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p4-5" placeholder="Log teachings on the Abomination and what exactly occurs at the midpoint..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p4-5')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p4-6')">
+          <div class="item-check"><input type="checkbox" id="chk-p4-6" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Israel flees to the wilderness — Great Tribulation begins</div>
+            <div class="item-scripture">Matthew 24:16–21; Revelation 12:6 — "let those in Judea flee to the mountains"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p4-6">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p4-6">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p4-6" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p4-6')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p4-7')">
+          <div class="item-check"><input type="checkbox" id="chk-p4-7" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Mark of the Beast enforced — no buying or selling without it</div>
+            <div class="item-scripture">Revelation 13:16–17 — "It also forced all people... to receive a mark on their right hands or foreheads"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p4-7">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p4-7">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p4-7" placeholder="Log teachings on the mark and current technology trends..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p4-7')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════
+       PHASE 5 — ARMAGEDDON CAMPAIGN
+  ═══════════════════════════════════════════════ -->
+  <div class="checklist-phase">
+    <div class="phase-header">Phase 5 — The Armageddon Campaign</div>
+    <div class="phase-body">
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p5-1')">
+          <div class="item-check"><input type="checkbox" id="chk-p5-1" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Euphrates River dried up — kings of the East march toward Israel</div>
+            <div class="item-scripture">Revelation 16:12 — "The sixth angel poured out his bowl on the great river Euphrates, and its water was dried up"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p5-1">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p5-1">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p5-1" placeholder="Log teachings on the Euphrates judgment and the kings of the East..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p5-1')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p5-2')">
+          <div class="item-check"><input type="checkbox" id="chk-p5-2" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">World armies assembled at Armageddon (Valley of Megiddo) by demonic deception</div>
+            <div class="item-scripture">Revelation 16:13–16 — "three impure spirits... gathered the kings together to the place called Armageddon"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p5-2">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p5-2">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p5-2" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p5-2')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p5-3')">
+          <div class="item-check"><input type="checkbox" id="chk-p5-3" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Fall of Babylon — world economic/religious system destroyed in one hour</div>
+            <div class="item-scripture">Revelation 17–18 — "In one hour your doom has come"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p5-3">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p5-3">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p5-3" placeholder="Log teachings on Babylon — literal rebuilt city or symbolic world system..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p5-3')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p5-4')">
+          <div class="item-check"><input type="checkbox" id="chk-p5-4" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Antichrist attacks and captures Jerusalem — Israel's darkest hour</div>
+            <div class="item-scripture">Zechariah 14:1–2; Joel 3:2 — "The city will be captured, the houses ransacked"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p5-4">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p5-4">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p5-4" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p5-4')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p5-5')">
+          <div class="item-check"><input type="checkbox" id="chk-p5-5" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Israel's national cry for Messiah — national repentance triggers Christ's return</div>
+            <div class="item-scripture">Zechariah 12:10; Matthew 23:39; Romans 11:26 — "They will look on me, the one they have pierced"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p5-5">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p5-5">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p5-5" placeholder="Log thoughts on Israel's national repentance and how this connects to how you pray for Israel..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p5-5')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════
+       PHASE 6 — SECOND COMING
+  ═══════════════════════════════════════════════ -->
+  <div class="checklist-phase">
+    <div class="phase-header">Phase 6 — The Second Coming of Christ</div>
+    <div class="phase-body">
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p6-1')">
+          <div class="item-check"><input type="checkbox" id="chk-p6-1" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Christ returns visibly on a white horse — every eye will see Him</div>
+            <div class="item-scripture">Revelation 19:11–14; Matthew 24:27, 30 — "coming on the clouds of heaven with power and great glory"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p6-1">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p6-1">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p6-1" placeholder="Log teachings on the Second Coming..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p6-1')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p6-2')">
+          <div class="item-check"><input type="checkbox" id="chk-p6-2" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Christ's feet touch the Mount of Olives — it splits in two</div>
+            <div class="item-scripture">Zechariah 14:3–5 — "On that day his feet will stand on the Mount of Olives... and it will be split in two"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p6-2">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p6-2">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p6-2" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p6-2')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p6-3')">
+          <div class="item-check"><input type="checkbox" id="chk-p6-3" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Antichrist and False Prophet thrown alive into the lake of fire</div>
+            <div class="item-scripture">Revelation 19:20; 2 Thessalonians 2:8 — "thrown alive into the fiery lake of burning sulfur"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p6-3">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p6-3">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p6-3" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p6-3')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p6-4')">
+          <div class="item-check"><input type="checkbox" id="chk-p6-4" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Satan bound and cast into the Abyss for 1,000 years</div>
+            <div class="item-scripture">Revelation 20:1–3 — "He seized the dragon... and bound him for a thousand years"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p6-4">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p6-4">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p6-4" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p6-4')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════
+       PHASE 7 — THE MILLENNIUM
+  ═══════════════════════════════════════════════ -->
+  <div class="checklist-phase">
+    <div class="phase-header">Phase 7 — The Millennium (1,000-Year Reign of Christ)</div>
+    <div class="phase-body">
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p7-1')">
+          <div class="item-check"><input type="checkbox" id="chk-p7-1" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Christ reigns from Jerusalem for 1,000 years</div>
+            <div class="item-scripture">Revelation 20:4–6; Zechariah 14:9 — "The LORD will be king over the whole earth"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p7-1">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p7-1">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p7-1" placeholder="Log teachings on the Millennium..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p7-1')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p7-2')">
+          <div class="item-check"><input type="checkbox" id="chk-p7-2" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Satan released — final rebellion of Gog and Magog (post-Millennial)</div>
+            <div class="item-scripture">Revelation 20:7–9 — "Satan will be released from his prison and will go out to deceive the nations"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p7-2">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p7-2">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p7-2" placeholder="Log teachings on how this second 'Gog and Magog' differs from Ezekiel 38–39 — this one uses the name symbolically for end-of-Millennium rebellion, not the same event..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p7-2')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p7-3')">
+          <div class="item-check"><input type="checkbox" id="chk-p7-3" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Satan cast into the lake of fire — final defeat</div>
+            <div class="item-scripture">Revelation 20:10 — "The devil, who deceived them, was thrown into the lake of burning sulfur"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p7-3">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p7-3">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p7-3" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p7-3')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════
+       PHASE 8 — ETERNITY
+  ═══════════════════════════════════════════════ -->
+  <div class="checklist-phase">
+    <div class="phase-header">Phase 8 — Eternity</div>
+    <div class="phase-body">
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p8-1')">
+          <div class="item-check"><input type="checkbox" id="chk-p8-1" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">Great White Throne Judgment — unbelievers judged by their works</div>
+            <div class="item-scripture">Revelation 20:11–15 — "Anyone whose name was not found written in the book of life was thrown into the lake of fire"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p8-1">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p8-1">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p8-1" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p8-1')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p8-2')">
+          <div class="item-check"><input type="checkbox" id="chk-p8-2" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">New Heaven and New Earth created — the old passes away</div>
+            <div class="item-scripture">Revelation 21:1; Isaiah 65:17 — "Then I saw a new heaven and a new earth"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p8-2">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p8-2">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p8-2" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p8-2')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p8-3')">
+          <div class="item-check"><input type="checkbox" id="chk-p8-3" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">New Jerusalem descends — God dwells with His people forever</div>
+            <div class="item-scripture">Revelation 21:2–4 — "God's dwelling place is now among the people... no more death or mourning or crying or pain"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p8-3">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p8-3">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p8-3" placeholder="Log teachings on the New Jerusalem — 1,400-mile cube of glory..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p8-3')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p8-4')">
+          <div class="item-check"><input type="checkbox" id="chk-p8-4" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">River of life and tree of life — healing for the nations</div>
+            <div class="item-scripture">Revelation 22:1–2 — "the tree of life, bearing twelve crops of fruit... for the healing of the nations"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p8-4">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p8-4">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p8-4" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p8-4')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('p8-5')">
+          <div class="item-check"><input type="checkbox" id="chk-p8-5" onclick="event.stopPropagation()"></div>
+          <div class="item-text">
+            <div class="item-title">No temple — God and the Lamb are its temple. No sun — God's glory is the light.</div>
+            <div class="item-scripture">Revelation 21:22–23 — "I did not see a temple in the city... for the glory of God gives it light"</div>
+          </div>
+          <div class="item-status status-notyet">Not Yet</div>
+          <div class="item-toggle" id="toggle-p8-5">▼</div>
+        </div>
+        <div class="item-notes" id="notes-p8-5">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-p8-5" placeholder="Log teachings..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-p8-5')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── GENERAL NOTES ── -->
+  <div class="divider"></div>
+  <h2 class="section-title">📝 General Notes &amp; Cross-References</h2>
+  <div class="notes-box">
+    <div class="label">Log additional sources, teachings, books, and sermons that inform this checklist:</div>
+    <textarea class="notes-input" id="n-cl-general" placeholder="e.g. April 9, 2026 — Rosenberg, Epicenter: Key argument is that Russia, Iran, Turkey, Sudan/Libya align as Ezekiel's coalition in modern geopolitics...&#10;&#10;Module 9 cross-refs: Ezek 38:11 (Israel's perceived safety precondition), Dan 9:27 (peace covenant), Rev 20:7-9 (different post-Millennial Gog-Magog event)..." style="min-height:160px;"></textarea>
+  </div>
+
+  <div class="cross-ref-box">
+    <div class="title">🔗 Cross-References</div>
+    <div class="line">• Module 9 — Full Gog-Magog War detail including the Russia identification evidence</div>
+    <div class="line">• Module 13 — Second Coming and Eternity checklists (source for Phases 6–8)</div>
+    <div class="line">• Module 14 — Matthew 24 ↔ Revelation parallel (source for Seal Judgments in Phase 4)</div>
+    <div class="line">• Module 15 — The Seven Phases of the Armageddon Campaign (source for Phase 5)</div>
+    <div class="line">• Convictions page — Study Session Log (April 9, 2026) for Gog-Magog session summary</div>
+  </div>
+
+</div>
+</div>
+
+<!-- PAGE NOTE IDS -->
+<script>
+window.PAGE_NOTE_IDS = [
+  'n-cl-p1-1','n-cl-p1-2','n-cl-p1-3','n-cl-p1-4','n-cl-p1-5','n-cl-p1-6','n-cl-p1-7','n-cl-p1-8','n-cl-p1-9',
+  'n-cl-p2-1','n-cl-p2-2','n-cl-p2-3',
+  'n-cl-p3-1','n-cl-p3-2','n-cl-p3-3','n-cl-p3-4','n-cl-p3-5','n-cl-p3-6','n-cl-p3-7',
+  'n-cl-p4-1','n-cl-p4-2','n-cl-p4-3','n-cl-p4-4','n-cl-p4-5','n-cl-p4-6','n-cl-p4-7',
+  'n-cl-p5-1','n-cl-p5-2','n-cl-p5-3','n-cl-p5-4','n-cl-p5-5',
+  'n-cl-p6-1','n-cl-p6-2','n-cl-p6-3','n-cl-p6-4',
+  'n-cl-p7-1','n-cl-p7-2','n-cl-p7-3',
+  'n-cl-p8-1','n-cl-p8-2','n-cl-p8-3','n-cl-p8-4','n-cl-p8-5',
+  'n-cl-general'
+];
+</script>
+
+<!-- SCRIPTS -->
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+<script>
+function toggleItem(id) {
+  const notes  = document.getElementById('notes-' + id);
+  const toggle = document.getElementById('toggle-' + id);
+  if (!notes) return;
+  const isOpen = notes.classList.contains('visible');
+  notes.classList.toggle('visible', !isOpen);
+  if (toggle) toggle.classList.toggle('open', !isOpen);
+}
+
+function stampNote(textareaId) {
+  const el = document.getElementById(textareaId);
+  if (!el) return;
+  const now    = new Date();
+  const date   = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const time   = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  const stamp  = `\n── ${date} at ${time} ──\n`;
+  el.value += stamp;
+  el.focus();
+  el.scrollTop = el.scrollHeight;
+}
+</script>
+
+</body>
+</html>
