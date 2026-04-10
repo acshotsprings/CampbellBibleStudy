@@ -6,170 +6,139 @@
   <title>Reference Library — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
-    .library-section-label {
-      font-size: 10px;
-      font-weight: bold;
-      color: #1F3864;
-      font-family: Arial, sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin: 28px 0 10px;
-      padding-left: 2px;
-    }
-    .book-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-    .book-card {
-      background: white;
-      border: 1px solid #d0dce8;
-      border-radius: 8px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .book-card:hover {
-      border-color: #2E75B6;
-      box-shadow: 0 2px 8px rgba(31,56,100,0.1);
-    }
-    .book-author-tag {
-      font-size: 9px;
-      font-weight: bold;
-      font-family: Arial, sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: white;
-      background: #1F3864;
-      padding: 2px 8px;
-      border-radius: 10px;
-      display: inline-block;
-      margin-bottom: 4px;
-    }
-    .book-title {
-      font-size: 14px;
-      font-weight: bold;
-      color: #1F3864;
-      font-family: Georgia, serif;
-      line-height: 1.4;
-    }
-    .book-year {
-      font-size: 11px;
-      color: #888;
-      font-family: Arial, sans-serif;
-    }
-    .book-desc {
-      font-size: 12px;
-      color: #555;
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-    }
-    .book-modules {
-      font-size: 11px;
-      color: #2E75B6;
-      font-family: Arial, sans-serif;
-      font-style: italic;
-      margin-top: 4px;
-    }
-    .book-type {
-      font-size: 9px;
-      font-weight: bold;
-      font-family: Arial, sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 2px 7px;
-      border-radius: 8px;
-      display: inline-block;
-    }
-    .type-nonfiction { background: #EBF4FC; color: #1F3864; }
-    .type-fiction    { background: #F4F8EE; color: #3B5E1A; }
-    .type-devotional { background: #FFFDF0; color: #7A6600; }
 
-    .bible-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-    .bible-card {
-      background: #FFFDF0;
-      border: 1px solid #C8A800;
-      border-radius: 8px;
-      padding: 14px 16px;
-    }
-    .bible-abbr {
-      font-size: 22px;
-      font-weight: bold;
-      color: #1F3864;
-      font-family: Georgia, serif;
-    }
-    .bible-name {
-      font-size: 12px;
-      color: #7A6600;
-      font-family: Arial, sans-serif;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
-    .bible-desc {
-      font-size: 12px;
-      color: #555;
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-    }
-    .bible-use {
-      font-size: 11px;
-      color: #2E75B6;
-      font-family: Arial, sans-serif;
-      font-style: italic;
-      margin-top: 6px;
-    }
-    .default-badge {
-      font-size: 9px;
-      font-weight: bold;
-      background: #FFD700;
-      color: #1F3864;
-      padding: 2px 7px;
-      border-radius: 8px;
-      font-family: Arial, sans-serif;
-      display: inline-block;
-      margin-left: 6px;
-      vertical-align: middle;
-    }
-    .author-header {
-      background: linear-gradient(135deg, #1F3864, #2E4F8A);
-      border-radius: 8px;
-      padding: 16px 20px;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-    }
-    .author-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: rgba(255,215,0,0.2);
-      border: 2px solid #FFD700;
+    /* ── AUTHOR BLOCK ─────────────────────────────── */
+    .author-block { margin: 20px 0; border: 1px solid #d0dce8; border-radius: 8px; overflow: hidden; }
+
+    .author-toggle {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
+      gap: 14px;
+      padding: 14px 18px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
     }
-    .author-info h3 {
-      color: #FFD700;
-      font-size: 15px;
-      font-family: Georgia, serif;
-      margin-bottom: 4px;
+    .author-toggle:hover { background: rgba(31,56,100,0.04); }
+
+    .author-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+      border: 2px solid currentColor;
     }
-    .author-info p {
-      color: rgba(255,255,255,0.75);
-      font-size: 12px;
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
+    .author-meta { flex: 1; }
+    .author-name  { font-size: 15px; font-weight: bold; font-family: Georgia, serif; }
+    .author-sub   { font-size: 11px; font-family: Arial, sans-serif; margin-top: 2px; opacity: 0.7; }
+    .author-count { font-size: 10px; font-family: Arial, sans-serif; opacity: 0.5; margin-top: 1px; }
+    .author-arrow { font-size: 11px; color: #aaa; transition: transform 0.2s; flex-shrink: 0; }
+    .author-arrow.open { transform: rotate(90deg); color: #FFD700; }
+
+    .author-body { display: none; border-top: 1px solid #eef1f5; }
+    .author-body.open { display: block; }
+
+    .author-desc {
+      padding: 12px 18px;
+      font-size: 13px; color: #555; font-family: Arial, sans-serif;
+      line-height: 1.7; background: #f9fbfd;
+      border-bottom: 1px solid #eef1f5;
     }
+
+    /* ── BOOK SUB-SECTION ─────────────────────────── */
+    .books-section-label {
+      font-size: 9px; font-weight: bold; font-family: Arial, sans-serif;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 10px 18px 4px; color: #888;
+      background: #f9fbfd; border-bottom: 1px solid #eef1f5;
+    }
+
+    .book-item { border-bottom: 1px solid #eef1f5; }
+    .book-item:last-child { border-bottom: none; }
+
+    .book-toggle {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 18px; cursor: pointer;
+      transition: background 0.15s; user-select: none;
+    }
+    .book-toggle:hover { background: #f7f9fc; }
+
+    .book-icon { font-size: 16px; flex-shrink: 0; }
+    .book-info { flex: 1; }
+    .book-title { font-size: 13px; font-weight: bold; color: #1F3864; font-family: Georgia, serif; }
+    .book-year-type { font-size: 11px; color: #888; font-family: Arial, sans-serif; margin-top: 1px; }
+    .book-modules-inline { font-size: 11px; color: #2E75B6; font-family: Arial, sans-serif; font-style: italic; }
+    .book-arrow { font-size: 10px; color: #ccc; transition: transform 0.2s; flex-shrink: 0; }
+    .book-arrow.open { transform: rotate(90deg); color: #2E75B6; }
+
+    .book-body { display: none; padding: 0 18px 14px 46px; background: #fafbfd; }
+    .book-body.open { display: block; }
+
+    .book-desc {
+      font-size: 12px; color: #555; font-family: Arial, sans-serif;
+      line-height: 1.7; margin: 10px 0 8px;
+    }
+
+    /* ── CHAPTER LIST ─────────────────────────────── */
+    .chapter-list { margin: 8px 0; }
+    .chapter-label {
+      font-size: 9px; font-weight: bold; font-family: Arial, sans-serif;
+      text-transform: uppercase; letter-spacing: 0.07em; color: #aaa;
+      margin-bottom: 6px;
+    }
+    .chapter-item {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 12px; font-family: Arial, sans-serif;
+      color: #444; padding: 3px 0; border-bottom: 1px dotted #e8edf5;
+      line-height: 1.5;
+    }
+    .chapter-item:last-child { border-bottom: none; }
+    .chapter-num { color: #2E75B6; font-weight: bold; flex-shrink: 0; min-width: 24px; }
+    .chapter-active { color: #1F3864; font-weight: bold; }
+    .chapter-badge {
+      font-size: 9px; font-weight: bold; background: #FFD700;
+      color: #1F3864; padding: 1px 6px; border-radius: 8px;
+      font-family: Arial, sans-serif; margin-left: 4px; white-space: nowrap;
+    }
+
+    /* ── PDF LINK ─────────────────────────────────── */
+    .pdf-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #1F3864; color: #FFD700; text-decoration: none;
+      padding: 6px 14px; border-radius: 4px; font-size: 12px;
+      font-family: Arial, sans-serif; font-weight: bold;
+      margin-top: 8px; transition: background 0.15s;
+    }
+    .pdf-link:hover { background: #2E4F8A; }
+
+    /* ── ANCIENT TEXTS ────────────────────────────── */
+    .ancient-card {
+      background: #FFFDF0; border: 1px solid #C8A800;
+      border-radius: 8px; padding: 16px; margin-bottom: 12px;
+    }
+    .ancient-title { font-size: 15px; font-weight: bold; color: #1F3864; font-family: Georgia, serif; margin-bottom: 4px; }
+    .ancient-meta  { font-size: 11px; color: #7A6600; font-family: Arial, sans-serif; margin-bottom: 8px; }
+    .ancient-desc  { font-size: 12px; color: #555; font-family: Arial, sans-serif; line-height: 1.7; margin-bottom: 10px; }
+    .ancient-modules { font-size: 11px; color: #2E75B6; font-family: Arial, sans-serif; font-style: italic; margin-bottom: 10px; }
+
+    /* ── BIBLE TRANSLATIONS ───────────────────────── */
+    .bible-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 12px; margin-bottom: 20px;
+    }
+    .bible-card {
+      background: #f9fbfd; border: 1px solid #d0dce8;
+      border-radius: 8px; padding: 14px;
+    }
+    .bible-abbr  { font-size: 20px; font-weight: bold; color: #1F3864; font-family: Georgia, serif; }
+    .bible-name  { font-size: 11px; color: #888; font-family: Arial, sans-serif; font-weight: bold; margin-bottom: 6px; }
+    .bible-desc  { font-size: 12px; color: #555; font-family: Arial, sans-serif; line-height: 1.6; }
+    .bible-use   { font-size: 11px; color: #2E75B6; font-family: Arial, sans-serif; font-style: italic; margin-top: 6px; }
+    .default-badge {
+      font-size: 9px; font-weight: bold; background: #FFD700; color: #1F3864;
+      padding: 2px 6px; border-radius: 8px; font-family: Arial, sans-serif;
+      display: inline-block; margin-left: 4px; vertical-align: middle;
+    }
+
   </style>
 </head>
 <body>
@@ -195,195 +164,356 @@
 
   <span class="page-tag">My Study</span>
   <h1 class="page-title">Reference Library</h1>
-  <p class="body">A growing catalog of books, authors, and Bible translations that are shaping this study. Add to this page as new resources are discovered. Each entry notes which modules it connects to so you can return to the source easily.</p>
-
-  <div class="info-box">
-    <div class="title">How to use this page</div>
-    <div class="line">Use the notes field at the bottom to log when you started or finished a book, what stood out, or questions it raised. Add new books to the appropriate author section as you discover them.</div>
-  </div>
+  <p class="body">Books, ancient texts, Bible translations, and study tools. Click any author or book to expand. Add new resources using the notes fields at the bottom.</p>
 
   <!-- ═══════════════════════════════════════════
-       JOEL C. ROSENBERG
+       AUTHORS
   ═══════════════════════════════════════════ -->
   <h2 class="section-title">Authors</h2>
 
-  <div class="author-header">
-    <div class="author-avatar">✍️</div>
-    <div class="author-info">
-      <h3>Joel C. Rosenberg</h3>
-      <p>Former communications advisor to Benjamin Netanyahu and other Israeli and U.S. leaders. Bestselling author of both prophetic fiction and non-fiction. Has spent decades studying the Russia-Iran-Middle East axis through the lens of Ezekiel 38–39 and other End Times prophecy. His non-fiction work is heavily sourced in your study — particularly Modules 9 (Gog-Magog) and the Epicenter material in the Sermon Log.</p>
+  <!-- ── JOEL C. ROSENBERG ── -->
+  <div class="author-block">
+    <div class="author-toggle" onclick="toggleBlock('rosenberg')" style="background:linear-gradient(135deg,#1F3864,#2E4F8A);">
+      <div class="author-avatar" style="color:#FFD700;border-color:#FFD700;">✍️</div>
+      <div class="author-meta">
+        <div class="author-name" style="color:#FFD700;">Joel C. Rosenberg</div>
+        <div class="author-sub" style="color:rgba(255,255,255,0.7);">Non-Fiction · Prophetic Fiction</div>
+        <div class="author-count" style="color:rgba(255,255,255,0.4);">14 books · Click to expand</div>
+      </div>
+      <div class="author-arrow" id="arrow-rosenberg" style="color:rgba(255,255,255,0.4);">▶</div>
+    </div>
+    <div class="author-body" id="block-rosenberg">
+      <div class="author-desc">Former communications advisor to Benjamin Netanyahu and other Israeli and U.S. leaders. His non-fiction traces Ezekiel 38–39 onto modern geopolitics — Russia, Iran, Turkey, and the coalition forming against Israel. His prophetic fiction consistently anticipated real geopolitical events before they occurred. Core source for Module 9 and the Gog-Magog coalition tracking in the Prophecy Checklist.</div>
+
+      <!-- NON-FICTION -->
+      <div class="books-section-label">Non-Fiction</div>
+
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('epicenter')">
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Epicenter</div>
+            <div class="book-year-type">2006 · Non-Fiction</div>
+            <div class="book-modules-inline">→ Module 9, Sermon Log #12</div>
+          </div>
+          <div class="book-arrow" id="arrow-epicenter">▶</div>
+        </div>
+        <div class="book-body" id="book-epicenter">
+          <div class="book-desc">Why the current rumblings in the Middle East will change your future. Rosenberg traces how Ezekiel 38–39 maps onto modern geopolitics — Russia's strategic interests, Iran's nuclear ambitions, and the coalition forming against Israel. Foundational text for this study.</div>
+          <div class="chapter-list">
+            <div class="chapter-label">Key Chapters</div>
+            <div class="chapter-item"><span class="chapter-num">1</span> The Last War of the Middle East — Ezekiel's vision introduced</div>
+            <div class="chapter-item"><span class="chapter-num">3</span> Oil, Islam &amp; the New Axis of Evil — Russia-Iran alignment</div>
+            <div class="chapter-item"><span class="chapter-num">5</span> The Ezekiel Option — Who are Gog &amp; Magog?</div>
+            <div class="chapter-item"><span class="chapter-num">7</span><span class="chapter-active"> Identifying Russia as Magog</span><span class="chapter-badge">In Module 9.4</span></div>
+            <div class="chapter-item"><span class="chapter-num">9</span> The Coalition — Persia, Cush, Put, Gomer</div>
+            <div class="chapter-item"><span class="chapter-num">11</span> God's Supernatural Defense of Israel</div>
+            <div class="chapter-item"><span class="chapter-num">13</span> After the War — prophetic implications</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('ezekiel-option-nf')">
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">The Ezekiel Option (Non-Fiction)</div>
+            <div class="book-year-type">2005 · Non-Fiction</div>
+            <div class="book-modules-inline">→ Module 9.4, Sermon Log #13</div>
+          </div>
+          <div class="book-arrow" id="arrow-ezekiel-option-nf">▶</div>
+        </div>
+        <div class="book-body" id="book-ezekiel-option-nf">
+          <div class="book-desc">Rosenberg's deep dive into Ezekiel 38–39. The five-step evidence case for Russia as Magog, Voltaire as hostile witness, the Table of Nations identification, and the contemporary Putin profile. Chapter 7 was the direct source for Module 9.4 in this guide.</div>
+          <div class="chapter-list">
+            <div class="chapter-label">Key Chapters</div>
+            <div class="chapter-item"><span class="chapter-num">1</span> What Does Ezekiel Really Say? — The text itself</div>
+            <div class="chapter-item"><span class="chapter-num">3</span> Gog Is a Title, Not a Name</div>
+            <div class="chapter-item"><span class="chapter-num">5</span> Geographic Identification — Due North of Israel</div>
+            <div class="chapter-item"><span class="chapter-num">7</span><span class="chapter-active"> Voltaire, Genesis 10, &amp; Pre-Modern Scholars</span><span class="chapter-badge">Studied Apr 9</span></div>
+            <div class="chapter-item"><span class="chapter-num">9</span> Putin's Rise — Hooks in His Jaws</div>
+            <div class="chapter-item"><span class="chapter-num">11</span> Iran: Persia's Role in the Coalition</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('israel-at-war')">
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Israel at War</div>
+            <div class="book-year-type">2012 · Non-Fiction</div>
+            <div class="book-modules-inline">→ Checklist Phase 1 (Iran coalition)</div>
+          </div>
+          <div class="book-arrow" id="arrow-israel-at-war">▶</div>
+        </div>
+        <div class="book-body" id="book-israel-at-war">
+          <div class="book-desc">Inside the nuclear showdown with Iran. Documents the behind-the-scenes diplomacy, intelligence, and prophetic significance of Israel's confrontation with Iran's nuclear program. Directly relevant to the current Russia-Iran alignment.</div>
+        </div>
+      </div>
+
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('implosion')">
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Implosion</div>
+            <div class="book-year-type">2012 · Non-Fiction</div>
+            <div class="book-modules-inline">→ Module 10 (Signs of the Times)</div>
+          </div>
+          <div class="book-arrow" id="arrow-implosion">▶</div>
+        </div>
+        <div class="book-body" id="book-implosion">
+          <div class="book-desc">Can America recover from its economic and spiritual challenges? Examines whether the U.S. is headed for collapse or revival, framed in biblical prophecy and national repentance. Addresses America's role — or absence — in End Times prophecy.</div>
+        </div>
+      </div>
+
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('enemies-allies')">
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Enemies &amp; Allies</div>
+            <div class="book-year-type">2021 · Non-Fiction</div>
+            <div class="book-modules-inline">→ Module 9 preconditions, Checklist Phase 1</div>
+          </div>
+          <div class="book-arrow" id="arrow-enemies-allies">▶</div>
+        </div>
+        <div class="book-body" id="book-enemies-allies">
+          <div class="book-desc">Rosenberg's account of personal meetings with Arab leaders and Israeli officials across the Abraham Accords era. Examines whether Israel-Arab normalization is prophetically significant and what it means for the coming coalition.</div>
+        </div>
+      </div>
+
+      <!-- FICTION -->
+      <div class="books-section-label">Prophetic Fiction — Marcus Ryker &amp; Political Thriller Series</div>
+
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('persian-gamble')">
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Persian Gamble</div>
+            <div class="book-year-type">2019 · Fiction — Marcus Ryker Series</div>
+            <div class="book-modules-inline">→ Checklist Phase 1 (Iran), current events</div>
+          </div>
+          <div class="book-arrow" id="arrow-persian-gamble">▶</div>
+        </div>
+        <div class="book-body" id="book-persian-gamble">
+          <div class="book-desc">Iran on the brink of nuclear war. Rosenberg's most current fictional treatment of the Iran threat. Eerily relevant to the 2026 U.S.-Israel-Iran conflict unfolding right now. Read alongside current news for prophetic context.</div>
+        </div>
+      </div>
+
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('jerusalem-assassin')">
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Jerusalem Assassin</div>
+            <div class="book-year-type">2020 · Fiction — Marcus Ryker Series</div>
+            <div class="book-modules-inline">→ Module 7 (Antichrist), Module 1 (Daniel's 70 Weeks)</div>
+          </div>
+          <div class="book-arrow" id="arrow-jerusalem-assassin">▶</div>
+        </div>
+        <div class="book-body" id="book-jerusalem-assassin">
+          <div class="book-desc">A plot to assassinate the U.S. President during a historic peace summit in Jerusalem. Engages the Israel-peace-covenant theme relevant to Daniel 9:27 and the Antichrist's future peace deal.</div>
+        </div>
+      </div>
+
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('beirut-protocol')">
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Beirut Protocol</div>
+            <div class="book-year-type">2021 · Fiction — Marcus Ryker Series</div>
+            <div class="book-modules-inline">→ Module 9 (Gog-Magog coalition)</div>
+          </div>
+          <div class="book-arrow" id="arrow-beirut-protocol">▶</div>
+        </div>
+        <div class="book-body" id="book-beirut-protocol">
+          <div class="book-desc">Kidnapping at the Lebanese border draws America and Israel toward war with Iran and Hezbollah. Engages northern coalition territory (Lebanon, Syria) from Ezekiel 38.</div>
+        </div>
+      </div>
+
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('libyan-diversion')">
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Libyan Diversion</div>
+            <div class="book-year-type">2022 · Fiction — Marcus Ryker Series</div>
+            <div class="book-modules-inline">→ Module 9 (Put/Libya coalition member)</div>
+          </div>
+          <div class="book-arrow" id="arrow-libyan-diversion">▶</div>
+        </div>
+        <div class="book-body" id="book-libyan-diversion">
+          <div class="book-desc">Libya (Put in Ezekiel's coalition) takes center stage. Puts narrative flesh on one of the less-discussed coalition members in Ezekiel 38.</div>
+        </div>
+      </div>
+
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('last-jihad')">
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Last Jihad</div>
+            <div class="book-year-type">2002 · Fiction — Political Thriller Series</div>
+            <div class="book-modules-inline">→ Background: prophetic geopolitics</div>
+          </div>
+          <div class="book-arrow" id="arrow-last-jihad">▶</div>
+        </div>
+        <div class="book-body" id="book-last-jihad">
+          <div class="book-desc">Written before 9/11, published weeks after. Depicts a suicide attack on America and a U.S.-Iraq war. Rosenberg's fiction is notable for tracking real geopolitical events before they happen.</div>
+        </div>
+      </div>
+
+      <!-- Reading Log for Rosenberg -->
+      <div style="padding:12px 18px 16px;">
+        <div class="notes-box" style="margin:0;">
+          <div class="label">✏️ My Rosenberg reading log:</div>
+          <textarea class="notes-input" id="n-lib-rosenberg" placeholder="e.g. April 9, 2026 — Listened to Ezekiel Option Ch. 7 (audio via SummaryAI). Key: Gog = title, Voltaire hostile witness, five evidence streams for Russia...&#10;April 6, 2026 — Epicenter material via sermon #12..." style="min-height:80px;"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="library-section-label">Joel C. Rosenberg — Non-Fiction</div>
-  <div class="book-grid">
-
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-nonfiction">Non-Fiction</span></div>
-      <div class="book-title">Epicenter</div>
-      <div class="book-year">2006</div>
-      <div class="book-desc">Why the current rumblings in the Middle East will change your future. Rosenberg traces how Ezekiel 38–39 maps onto modern geopolitics — Russia's strategic interests, Iran's nuclear ambitions, and the coalition forming against Israel. One of the foundational texts for this study.</div>
-      <div class="book-modules">→ Module 9 (Gog-Magog), Sermon Log #12</div>
+  <!-- ── RON RHODES ── -->
+  <div class="author-block">
+    <div class="author-toggle" onclick="toggleBlock('rhodes')" style="background:linear-gradient(135deg,#2E6B0E,#3A8A12);">
+      <div class="author-avatar" style="color:#C8DBA8;border-color:#C8DBA8;">✍️</div>
+      <div class="author-meta">
+        <div class="author-name" style="color:#C8DBA8;">Ron Rhodes</div>
+        <div class="author-sub" style="color:rgba(255,255,255,0.7);">Non-Fiction · Bible Prophecy &amp; Apologetics</div>
+        <div class="author-count" style="color:rgba(255,255,255,0.4);">3 books · Click to expand</div>
+      </div>
+      <div class="author-arrow" id="arrow-rhodes" style="color:rgba(255,255,255,0.4);">▶</div>
     </div>
+    <div class="author-body" id="block-rhodes">
+      <div class="author-desc">Founder of Reasoning from the Scriptures Ministries. Prolific author on Bible prophecy, apologetics, and theology. His End Times Chronological series is one of the most detailed systematic treatments of Revelation available. Already in your sermon log from the March 31, 2026 entry.</div>
 
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-nonfiction">Non-Fiction</span></div>
-      <div class="book-title">The Ezekiel Option</div>
-      <div class="book-year">2005</div>
-      <div class="book-desc">Rosenberg's deep dive into Ezekiel 38–39 specifically — the five-step evidence case for Russia as Magog, Voltaire as hostile witness, the Table of Nations identification, and the contemporary Putin profile. Chapter 7 was the source for Module 9.4 in this guide.</div>
-      <div class="book-modules">→ Module 9.4 (Identifying Gog), Sermon Log #13</div>
-    </div>
+      <div class="books-section-label">Non-Fiction</div>
 
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-nonfiction">Non-Fiction</span></div>
-      <div class="book-title">Israel at War</div>
-      <div class="book-year">2012</div>
-      <div class="book-desc">Inside the nuclear showdown with Iran. Documents the behind-the-scenes diplomacy, intelligence, and prophetic significance of Israel's confrontation with Iran's nuclear program. Directly relevant to the current Russia-Iran alignment being tracked in the Prophecy Checklist.</div>
-      <div class="book-modules">→ Checklist Phase 1 (Russia-Iran coalition)</div>
-    </div>
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('end-times-chrono')">
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">The End Times in Chronological Order</div>
+            <div class="book-year-type">2012 · Non-Fiction</div>
+            <div class="book-modules-inline">→ Modules 3, 6, 7, 13, 15 — Sermon Log #6</div>
+          </div>
+          <div class="book-arrow" id="arrow-end-times-chrono">▶</div>
+        </div>
+        <div class="book-body" id="book-end-times-chrono">
+          <div class="book-desc">Comprehensive guide to End Times events arranged in sequence. Covers the Rapture, Tribulation seal and trumpet judgments, the Two Witnesses, the Antichrist, the Second Coming, and the Millennium. Already sourced in your Sermon Log #6.</div>
+          <div class="chapter-list">
+            <div class="chapter-label">Key Chapters</div>
+            <div class="chapter-item"><span class="chapter-num">1</span> Setting the Stage — Signs of the End</div>
+            <div class="chapter-item"><span class="chapter-num">3</span> The Rapture — Pre-Trib Evidence</div>
+            <div class="chapter-item"><span class="chapter-num">5</span><span class="chapter-active"> Seal &amp; Trumpet Judgments</span><span class="chapter-badge">Sermon #6</span></div>
+            <div class="chapter-item"><span class="chapter-num">7</span> The Two Witnesses</div>
+            <div class="chapter-item"><span class="chapter-num">9</span> The Antichrist &amp; False Prophet</div>
+            <div class="chapter-item"><span class="chapter-num">11</span> The Second Coming &amp; Armageddon</div>
+            <div class="chapter-item"><span class="chapter-num">13</span> The Millennium &amp; Eternal State</div>
+          </div>
+        </div>
+      </div>
 
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-nonfiction">Non-Fiction</span></div>
-      <div class="book-title">Implosion</div>
-      <div class="book-year">2012</div>
-      <div class="book-desc">Can America recover from its economic and spiritual challenges? Rosenberg examines whether the U.S. is headed for collapse or revival, framed in the context of biblical prophecy and national repentance. Touches on America's role (or absence) in End Times prophecy.</div>
-      <div class="book-modules">→ Signs of the Times (Module 10)</div>
-    </div>
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('40-days-revelation')">
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">40 Days Through Revelation</div>
+            <div class="book-year-type">2013 · Non-Fiction · Devotional</div>
+            <div class="book-modules-inline">→ Modules 3, 6, 7, 9, 13, 14, 15</div>
+          </div>
+          <div class="book-arrow" id="arrow-40-days-revelation">▶</div>
+        </div>
+        <div class="book-body" id="book-40-days-revelation">
+          <div class="book-desc">A daily devotional walk through the entire book of Revelation — one passage per day with commentary and reflection questions. Ideal for the small-piece absorption style of this study.</div>
+        </div>
+      </div>
 
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-nonfiction">Non-Fiction</span></div>
-      <div class="book-title">Enemies & Allies</div>
-      <div class="book-year">2021</div>
-      <div class="book-desc">Rosenberg's account of his personal meetings with Arab leaders and Israeli officials across the Abraham Accords era. Examines whether normalization between Israel and Arab states is prophetically significant and what it means for the coming coalition.</div>
-      <div class="book-modules">→ Module 9 (preconditions for Gog-Magog), Checklist Phase 1</div>
-    </div>
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('prophecy-answer-book')">
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Bible Prophecy Answer Book</div>
+            <div class="book-year-type">2017 · Non-Fiction</div>
+            <div class="book-modules-inline">→ All Theme 1 modules — general reference</div>
+          </div>
+          <div class="book-arrow" id="arrow-prophecy-answer-book">▶</div>
+        </div>
+        <div class="book-body" id="book-prophecy-answer-book">
+          <div class="book-desc">Q&amp;A format covering the most common prophetic questions. Covers Israel, the Rapture, the Antichrist, heaven, hell, and the afterlife. Great reference when studying specific topics.</div>
+        </div>
+      </div>
 
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-nonfiction">Non-Fiction</span></div>
-      <div class="book-title">Epicenter 2.0</div>
-      <div class="book-year">2008</div>
-      <div class="book-desc">Updated edition of Epicenter with a study guide included. Adds new material on the accelerating prophetic alignment after 2006. Good companion to the original for deeper study.</div>
-      <div class="book-modules">→ Module 9, Sermon Log</div>
-    </div>
-
-  </div>
-
-  <div class="library-section-label">Joel C. Rosenberg — Prophetic Fiction (The Last Jihad Series)</div>
-  <div class="book-grid">
-
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-fiction">Fiction</span></div>
-      <div class="book-title">The Last Jihad</div>
-      <div class="book-year">2002</div>
-      <div class="book-desc">Written before 9/11, published weeks after — depicts a suicide attack on America and a U.S.-Iraq war. First in the Political Thriller series. Rosenberg's fiction is notable for how closely it tracks real geopolitical events before they happen.</div>
-      <div class="book-modules">→ Background: prophetic geopolitics</div>
-    </div>
-
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-fiction">Fiction</span></div>
-      <div class="book-title">The Last Days</div>
-      <div class="book-year">2003</div>
-      <div class="book-desc">Second in the series. Continues the geopolitical thriller narrative with Middle East peace negotiations, terrorism, and prophetic undertones.</div>
-      <div class="book-modules">→ Background: prophetic geopolitics</div>
-    </div>
-
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-fiction">Fiction</span></div>
-      <div class="book-title">The Ezekiel Option (Novel)</div>
-      <div class="book-year">2005</div>
-      <div class="book-desc">Fiction version of the Gog-Magog scenario — Russia and Iran forming a military alliance and invading Israel. Written the same year as the non-fiction of the same name. Read the non-fiction first for the theological foundation.</div>
-      <div class="book-modules">→ Module 9 (Gog-Magog War)</div>
-    </div>
-
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-fiction">Fiction</span></div>
-      <div class="book-title">The Persian Gamble</div>
-      <div class="book-year">2019</div>
-      <div class="book-desc">Part of the Marcus Ryker series. Iran on the brink of nuclear war. Rosenberg's most current fictional treatment of the Iran threat. Eerily relevant to the 2026 U.S.-Israel-Iran conflict unfolding right now.</div>
-      <div class="book-modules">→ Checklist Phase 1 (Iran coalition), current events</div>
-    </div>
-
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-fiction">Fiction</span></div>
-      <div class="book-title">The Jerusalem Assassin</div>
-      <div class="book-year">2020</div>
-      <div class="book-desc">Marcus Ryker series. A plot to assassinate the U.S. President during a historic peace summit in Jerusalem. Directly engages the Israel-peace-covenant theme relevant to Daniel 9:27 and the Antichrist's future peace deal.</div>
-      <div class="book-modules">→ Module 7 (Antichrist), Module 1 (Daniel's 70 Weeks)</div>
-    </div>
-
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-fiction">Fiction</span></div>
-      <div class="book-title">The Beirut Protocol</div>
-      <div class="book-year">2021</div>
-      <div class="book-desc">Marcus Ryker series. Kidnapping at the Lebanese border draws America and Israel toward war with Iran and Hezbollah. Engages the northern coalition territory (Lebanon, Syria) relevant to Ezekiel 38.</div>
-      <div class="book-modules">→ Module 9 (Gog-Magog coalition)</div>
-    </div>
-
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-fiction">Fiction</span></div>
-      <div class="book-title">The Libyan Diversion</div>
-      <div class="book-year">2022</div>
-      <div class="book-desc">Marcus Ryker series. Libya (Put in Ezekiel's coalition) takes center stage. As you study the Gog-Magog coalition, this novel puts narrative flesh on one of the less-discussed coalition members.</div>
-      <div class="book-modules">→ Module 9 (Put/Libya coalition member)</div>
-    </div>
-
-    <div class="book-card">
-      <div><span class="book-author-tag">Rosenberg</span> <span class="book-type type-fiction">Fiction</span></div>
-      <div class="book-title">Without Warning</div>
-      <div class="book-year">2017</div>
-      <div class="book-desc">J.B. Collins series. ISIS attacks on Washington, D.C. and New York. Rosenberg's treatment of radical Islamic terrorism as a geopolitical and prophetic force.</div>
-      <div class="book-modules">→ Signs of the Times (Module 10)</div>
-    </div>
-
-  </div>
-
-  <!-- ═══════════════════════════════════════════
-       RON RHODES
-  ═══════════════════════════════════════════ -->
-
-  <div class="author-header" style="background:linear-gradient(135deg,#3B5E1A,#4A7A20);">
-    <div class="author-avatar">✍️</div>
-    <div class="author-info">
-      <h3>Ron Rhodes</h3>
-      <p>Founder and president of Reasoning from the Scriptures Ministries. Prolific author on Bible prophecy, apologetics, and theology. His End Times Chronological series is one of the most detailed systematic treatments of Revelation and prophetic Scripture available. Already in your sermon log from the March 31, 2026 entry.</p>
+      <div style="padding:12px 18px 16px;">
+        <div class="notes-box" style="margin:0;">
+          <div class="label">✏️ My Rhodes reading log:</div>
+          <textarea class="notes-input" id="n-lib-rhodes" placeholder="e.g. March 31, 2026 — End Times in Chronological Order: seal &amp; trumpet judgments. Two Witnesses. God sovereign in judgment..." style="min-height:80px;"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="library-section-label">Ron Rhodes — Non-Fiction</div>
-  <div class="book-grid">
-
-    <div class="book-card">
-      <div><span class="book-author-tag" style="background:#3B5E1A;">Rhodes</span> <span class="book-type type-nonfiction">Non-Fiction</span></div>
-      <div class="book-title">The End Times in Chronological Order</div>
-      <div class="book-year">2012</div>
-      <div class="book-desc">A comprehensive, accessible guide to End Times events arranged in sequence. Covers the Rapture, Tribulation seal and trumpet judgments, the Two Witnesses, the Antichrist, the Second Coming, and the Millennium. Already sourced in your Sermon Log #6.</div>
-      <div class="book-modules">→ Modules 3, 6, 7, 13, 15 — Sermon Log #6</div>
-    </div>
-
-    <div class="book-card">
-      <div><span class="book-author-tag" style="background:#3B5E1A;">Rhodes</span> <span class="book-type type-nonfiction">Non-Fiction</span></div>
-      <div class="book-title">40 Days Through Revelation</div>
-      <div class="book-year">2013</div>
-      <div class="book-desc">A daily devotional walk through the entire book of Revelation. Ideal for the small-piece absorption style of this study — one passage per day with commentary and reflection questions.</div>
-      <div class="book-modules">→ Modules 3, 4, 6, 7, 9, 13, 14, 15</div>
-    </div>
-
-    <div class="book-card">
-      <div><span class="book-author-tag" style="background:#3B5E1A;">Rhodes</span> <span class="book-type type-nonfiction">Non-Fiction</span></div>
-      <div class="book-title">Bible Prophecy Answer Book</div>
-      <div class="book-year">2017</div>
-      <div class="book-desc">Q&amp;A format covering the most common prophetic questions — great as a reference when studying specific topics. Covers Israel, the Rapture, the Antichrist, heaven, hell, and the afterlife.</div>
-      <div class="book-modules">→ All Theme 1 modules — good general reference</div>
-    </div>
-
-  </div>
-
-  <!-- ═══════════════════════════════════════════
-       ADD NEW AUTHORS
-  ═══════════════════════════════════════════ -->
-  <div class="notes-box" style="margin-top:8px;">
+  <!-- ── ADD NEW AUTHOR ── -->
+  <div class="notes-box">
     <div class="label">✏️ Authors &amp; books to add — running list:</div>
-    <textarea class="notes-input" id="n-lib-authors" placeholder="e.g. Hal Lindsey — The Late Great Planet Earth&#10;Tim LaHaye — Left Behind series&#10;John Walvoord — The Revelation of Jesus Christ&#10;Mark Hitchcock — 101 Answers on the Book of Revelation..."></textarea>
+    <textarea class="notes-input" id="n-lib-authors" placeholder="e.g. Hal Lindsey — The Late Great Planet Earth&#10;Tim LaHaye — Left Behind series&#10;John Walvoord — The Revelation of Jesus Christ&#10;Mark Hitchcock — 101 Answers on the Book of Revelation&#10;David Jeremiah — The Book of Signs"></textarea>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       ANCIENT TEXTS (PDFs)
+  ═══════════════════════════════════════════ -->
+  <h2 class="section-title">Ancient Texts</h2>
+  <p class="body">Second Temple and inter-testamental texts that provide historical and prophetic context. These are not Scripture but are valuable for understanding the world in which the biblical authors wrote. PDFs are stored in your resources folder.</p>
+
+  <div class="ancient-card">
+    <div class="ancient-title">📜 The Book of Enoch</div>
+    <div class="ancient-meta">1 Enoch — Standard English Version, translated by Jay Winter · ~2nd–1st century BC · Second Temple Jewish text</div>
+    <div class="ancient-desc">An ancient Jewish apocalyptic text attributed to Enoch (Genesis 5:24). Predates the New Testament and was widely read in the Second Temple period — fragments found among the Dead Sea Scrolls. Contains visions of fallen angels (the Watchers), the coming judgment, the Messiah figure ("the Son of Man"), and detailed astronomical/calendar material relevant to Theme 2. Quoted directly in the New Testament (Jude 1:14–15). Not canonical but illuminating for prophetic background.</div>
+    <div class="ancient-modules">→ Theme 2 (Biblical Calendar — 364-day solar year), Module 9 (angelic warfare background), Jude 1:14–15</div>
+    <div>
+      <a class="pdf-link" href="resources/The%20Complete%20Book%20of%20Enoch%2C%20Standard%20English%20Version%20-%20Jay%20Winter.pdf" target="_blank">📄 Open Enoch PDF</a>
+    </div>
+    <div style="margin-top:12px;">
+      <div class="chapter-list">
+        <div class="chapter-label">Key Sections</div>
+        <div class="chapter-item"><span class="chapter-num">1–5</span> Introduction — The Coming Judgment</div>
+        <div class="chapter-item"><span class="chapter-num">6–16</span> The Book of the Watchers — Fallen Angels</div>
+        <div class="chapter-item"><span class="chapter-num">37–71</span> The Book of Parables — The Son of Man figure</div>
+        <div class="chapter-item"><span class="chapter-num">72–82</span><span class="chapter-active"> The Astronomical Book — 364-day solar calendar</span><span class="chapter-badge">Theme 2 relevant</span></div>
+        <div class="chapter-item"><span class="chapter-num">83–90</span> The Animal Apocalypse — History &amp; future in symbolic vision</div>
+        <div class="chapter-item"><span class="chapter-num">91–105</span> The Epistle of Enoch — Final exhortations</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ancient-card">
+    <div class="ancient-title">📜 The Book of Jubilees</div>
+    <div class="ancient-meta">R.H. Charles translation · ~2nd century BC · Second Temple Jewish text · Found in Dead Sea Scrolls</div>
+    <div class="ancient-desc">A retelling of Genesis and Exodus organized around a 49-year jubilee cycle. Presents history as unfolding in precise divine time units — weeks of years, jubilees of jubilees. Insists on a 364-day solar calendar and condemns the lunar calendar as corrupting God's appointed times. Fragments found in the Dead Sea Scrolls. Foundational for understanding the Essene calendar conviction and its prophetic implications. Not canonical but historically significant — the Qumran community treated it as authoritative.</div>
+    <div class="ancient-modules">→ Theme 2 Module 3 (Book of Jubilees dedicated module), Daniel's 70 Weeks (Module 1), Theme 2 Module 1 (Calendar History)</div>
+    <div>
+      <a class="pdf-link" href="resources/r-h-charles_book-of-jubilees.pdf" target="_blank">📄 Open Jubilees PDF</a>
+    </div>
+    <div style="margin-top:12px;">
+      <div class="chapter-list">
+        <div class="chapter-label">Key Sections</div>
+        <div class="chapter-item"><span class="chapter-num">1</span> God's charge to Moses — the framework</div>
+        <div class="chapter-item"><span class="chapter-num">2</span><span class="chapter-active"> The 364-day solar calendar established at Creation</span><span class="chapter-badge">Theme 2 core</span></div>
+        <div class="chapter-item"><span class="chapter-num">6</span><span class="chapter-active"> The Covenant with Noah — calendar warning</span><span class="chapter-badge">Theme 2 core</span></div>
+        <div class="chapter-item"><span class="chapter-num">15</span> Abraham and the covenant of circumcision</div>
+        <div class="chapter-item"><span class="chapter-num">23</span> Prophecy of the End Times — increasing wickedness</div>
+        <div class="chapter-item"><span class="chapter-num">50</span> The Sabbath laws — closing exhortation</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ancient-card" style="background:#EBF4FC;border-color:#2E75B6;">
+    <div class="ancient-title" style="color:#1F3864;">📖 Strong's Exhaustive Concordance</div>
+    <div class="ancient-meta" style="color:#2E75B6;">James Strong · 1890 · The definitive biblical word index</div>
+    <div class="ancient-desc">The definitive index to every word in the Bible, with Hebrew and Greek definitions and Strong's reference numbers. Essential for word-level study — especially for tracing key prophetic words like "Rosh," "Magog," and "abomination" across the Old and New Testaments.</div>
+    <div class="ancient-modules" style="color:#2E75B6;">→ Use alongside BlueLetter Bible for any word study in Daniel, Ezekiel, and Revelation</div>
+    <div>
+      <a class="pdf-link" href="resources/strongs-exhaustive-concordance.pdf" target="_blank" style="background:#1F3864;">📄 Open Strong's PDF</a>
+    </div>
   </div>
 
   <div class="divider"></div>
@@ -392,125 +522,91 @@
        BIBLE TRANSLATIONS
   ═══════════════════════════════════════════ -->
   <h2 class="section-title">Bible Translations</h2>
-  <p class="body">Each translation has a different purpose. Knowing when to reach for which one sharpens your study. The NLT is the default for this guide.</p>
+  <p class="body">Each translation serves a different purpose. The NLT is the default for this guide.</p>
 
   <div class="bible-grid">
-
-    <div class="bible-card">
+    <div class="bible-card" style="border-color:#C8A800;background:#FFFDF0;">
       <div class="bible-abbr">NLT <span class="default-badge">Default</span></div>
       <div class="bible-name">New Living Translation</div>
-      <div class="bible-desc">Thought-for-thought translation in modern English. Prioritizes clarity and readability while staying faithful to the original meaning. Excellent for reading large passages and for devotional study.</div>
-      <div class="bible-use">Used throughout this study guide as the default Scripture translation.</div>
+      <div class="bible-desc">Thought-for-thought in modern English. Prioritizes clarity and readability. Excellent for large passages and devotional reading.</div>
+      <div class="bible-use">Used throughout this study guide as the default.</div>
     </div>
-
     <div class="bible-card">
       <div class="bible-abbr">ESV</div>
       <div class="bible-name">English Standard Version</div>
-      <div class="bible-desc">Word-for-word translation that balances accuracy with readability. More literal than NLT. Widely trusted for in-depth study, memorization, and theological precision. Good for cross-checking key prophetic passages.</div>
-      <div class="bible-use">Best for: Comparing key prophetic words and phrases against the NLT.</div>
+      <div class="bible-desc">Word-for-word, balancing accuracy with readability. Widely trusted for in-depth study. Good for cross-checking key prophetic passages.</div>
+      <div class="bible-use">Best for: Comparing key prophetic words against the NLT.</div>
     </div>
-
     <div class="bible-card">
       <div class="bible-abbr">KJV</div>
       <div class="bible-name">King James Version</div>
-      <div class="bible-desc">The 1611 Authorized Version. Highly literal, formal, and poetic. Many classic prophecy teachers (Walvoord, Lindsey, Scofield) quote KJV. Useful for tracing how traditional prophetic interpretation was built.</div>
-      <div class="bible-use">Best for: Cross-referencing classic commentaries and traditional prophetic teaching.</div>
+      <div class="bible-desc">The 1611 Authorized Version. Highly literal and poetic. Classic prophecy teachers (Walvoord, Lindsey, Scofield) quote KJV.</div>
+      <div class="bible-use">Best for: Cross-referencing classic commentaries.</div>
     </div>
-
     <div class="bible-card">
       <div class="bible-abbr">NASB</div>
       <div class="bible-name">New American Standard Bible</div>
-      <div class="bible-desc">One of the most literal word-for-word translations available. Preferred by serious students and seminaries for its precision. Can feel stiff to read but excellent for word studies.</div>
-      <div class="bible-use">Best for: Word-level accuracy when studying Daniel, Ezekiel, and Revelation passages.</div>
+      <div class="bible-desc">One of the most literal translations available. Preferred by seminaries for precision. Excellent for word studies.</div>
+      <div class="bible-use">Best for: Word-level accuracy in Daniel, Ezekiel, Revelation.</div>
     </div>
-
     <div class="bible-card">
       <div class="bible-abbr">NIV</div>
       <div class="bible-name">New International Version</div>
-      <div class="bible-desc">A balance of accuracy and readability. One of the most widely read modern translations. The 2011 revision updated some gendered language. Broadly accessible and widely quoted in contemporary teaching.</div>
-      <div class="bible-use">Best for: General reading and contemporary teaching cross-reference.</div>
+      <div class="bible-desc">Balance of accuracy and readability. One of the most widely read modern translations. Broadly accessible.</div>
+      <div class="bible-use">Best for: General reading and contemporary teaching.</div>
     </div>
-
-    <div class="bible-card">
-      <div class="bible-abbr">MSG</div>
-      <div class="bible-name">The Message</div>
-      <div class="bible-desc">A paraphrase by Eugene Peterson — not a formal translation. Renders Scripture in very contemporary, conversational language. Not recommended for detailed doctrinal study but can bring fresh perspective to familiar passages.</div>
-      <div class="bible-use">Best for: Devotional reading — not for doctrinal or prophetic precision.</div>
-    </div>
-
     <div class="bible-card">
       <div class="bible-abbr">AMP</div>
       <div class="bible-name">Amplified Bible</div>
-      <div class="bible-desc">Expands on key words and phrases using brackets to show the full range of meanings in the original Hebrew and Greek. Useful for seeing how much is packed into a single word in prophecy passages.</div>
-      <div class="bible-use">Best for: Understanding the depth of specific prophetic words and phrases.</div>
+      <div class="bible-desc">Expands key words using brackets to show the full range of Hebrew and Greek meaning. Useful for prophetic word depth.</div>
+      <div class="bible-use">Best for: Understanding depth in specific prophetic words.</div>
     </div>
-
     <div class="bible-card">
       <div class="bible-abbr">LXX</div>
       <div class="bible-name">Septuagint (Greek OT)</div>
-      <div class="bible-desc">The Greek translation of the Hebrew Old Testament used by the early church and quoted extensively in the New Testament. Important for understanding how Ezekiel's prophecies were read in the first century — including by the apostles.</div>
-      <div class="bible-use">Best for: Tracing OT prophecy as understood by NT writers and early church.</div>
+      <div class="bible-desc">Greek translation of the Hebrew OT used by the early church and quoted in the New Testament. Important for how Ezekiel was read in the first century.</div>
+      <div class="bible-use">Best for: Tracing OT prophecy as read by NT writers.</div>
     </div>
-
   </div>
 
   <div class="notes-box">
-    <div class="label">✏️ Translation notes — observations from comparing versions:</div>
-    <textarea class="notes-input" id="n-lib-translations" placeholder="e.g. Ezekiel 38:2 — NLT says 'the land of Magog' while KJV says 'the chief prince of Meshech and Tubal' — the word 'Rosh' is treated differently across translations..."></textarea>
+    <div class="label">✏️ Translation comparison notes:</div>
+    <textarea class="notes-input" id="n-lib-translations" placeholder="e.g. Ezek 38:2 — NLT says 'the land of Magog' while KJV says 'the chief prince of Meshech and Tubal' — the word Rosh is treated differently..."></textarea>
   </div>
 
   <div class="divider"></div>
 
   <!-- ═══════════════════════════════════════════
-       STUDY TOOLS & RESOURCES
+       STUDY TOOLS
   ═══════════════════════════════════════════ -->
-  <h2 class="section-title">Study Tools &amp; Resources</h2>
+  <h2 class="section-title">Online Study Tools</h2>
 
-  <div class="book-grid">
-
-    <div class="book-card">
-      <div><span class="book-author-tag" style="background:#5A3E8A;">Online Tool</span></div>
-      <div class="book-title">BibleGateway.com</div>
-      <div class="book-desc">Search any verse across 60+ translations simultaneously. Excellent for side-by-side translation comparisons. Has audio Bible, reading plans, and commentaries.</div>
-      <div class="book-modules">→ Use for translation comparison on key prophecy passages</div>
+  <div class="views-box">
+    <div class="view-item">
+      <div class="view-title">BibleGateway.com</div>
+      <div class="view-body">Search any verse across 60+ translations. Side-by-side comparison, audio Bible, reading plans, and commentaries.</div>
+      <div class="view-key"><a href="https://www.biblegateway.com" target="_blank" style="color:#2E75B6;">biblegateway.com →</a></div>
     </div>
-
-    <div class="book-card">
-      <div><span class="book-author-tag" style="background:#5A3E8A;">Online Tool</span></div>
-      <div class="book-title">BlueLetter Bible (blueletterbible.org)</div>
-      <div class="book-desc">Free tool for original language word studies — look up Hebrew and Greek words, Strong's numbers, interlinear text. Essential when you want to go deeper on a specific word in Daniel or Ezekiel.</div>
-      <div class="book-modules">→ Use for Hebrew word studies in Ezekiel 38 (Rosh, Magog, Gog)</div>
+    <div class="view-item">
+      <div class="view-title">Blue Letter Bible</div>
+      <div class="view-body">Free Hebrew and Greek word studies, Strong's numbers, interlinear text. Essential for going deeper on specific words in Daniel or Ezekiel — especially "Rosh," "Magog," and prophetic key terms.</div>
+      <div class="view-key"><a href="https://www.blueletterbible.org" target="_blank" style="color:#2E75B6;">blueletterbible.org →</a></div>
     </div>
-
-    <div class="book-card">
-      <div><span class="book-author-tag" style="background:#5A3E8A;">Online Tool</span></div>
-      <div class="book-title">AllIsrael.com / Joel Rosenberg's Blog</div>
-      <div class="book-desc">Rosenberg's ongoing news and commentary site. Tracks current events in Israel and the Middle East through a prophetic lens. Directly relevant to tracking the Gog-Magog coalition forming in real time.</div>
-      <div class="book-modules">→ Live source for Checklist Phase 1 current events</div>
+    <div class="view-item">
+      <div class="view-title">AllIsrael.com — Joel Rosenberg's News &amp; Commentary</div>
+      <div class="view-body">Rosenberg's ongoing site tracking current events in Israel and the Middle East through a prophetic lens. Live source for Checklist Phase 1 coalition tracking.</div>
+      <div class="view-key"><a href="https://allisrael.com" target="_blank" style="color:#2E75B6;">allisrael.com →</a></div>
     </div>
-
-    <div class="book-card">
-      <div><span class="book-author-tag" style="background:#5A3E8A;">Reference</span></div>
-      <div class="book-title">Strong's Exhaustive Concordance</div>
-      <div class="book-desc">The definitive index to every word in the Bible with Hebrew and Greek definitions. Available free online or as a physical book. Foundational for word-level Bible study.</div>
-      <div class="book-modules">→ Use alongside BlueLetter Bible for word studies</div>
+    <div class="view-item">
+      <div class="view-title">Strong's Concordance (Online)</div>
+      <div class="view-body">Available free online via Blue Letter Bible or BibleHub. The PDF is also in your resources folder above.</div>
+      <div class="view-key"><a href="https://biblehub.com/strongs.htm" target="_blank" style="color:#2E75B6;">biblehub.com/strongs →</a></div>
     </div>
-
   </div>
 
   <div class="notes-box">
-    <div class="label">✏️ Resources to add — running list:</div>
-    <textarea class="notes-input" id="n-lib-resources" placeholder="Add websites, podcasts, commentaries, study tools as you discover them..."></textarea>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- GENERAL LIBRARY NOTES -->
-  <h2 class="section-title">My Reading Log</h2>
-  <p class="body">Track what you've started, finished, and what stood out. Date your entries.</p>
-  <div class="notes-box">
-    <div class="label">📖 Reading log — started, finished, key takeaways:</div>
-    <textarea class="notes-input" id="n-lib-log" style="min-height:180px;" placeholder="e.g. April 9, 2026 — Started The Ezekiel Option Ch. 7 (audio). Key takeaway: Gog is a title not a name. Voltaire hostile witness argument is compelling...&#10;&#10;April 6, 2026 — Listened to Epicenter material (Sermon #12). Coalition formation feels very current given Russia-Iran news..."></textarea>
+    <div class="label">✏️ Resources to add:</div>
+    <textarea class="notes-input" id="n-lib-resources" placeholder="Add websites, podcasts, commentaries, and study tools as you discover them..."></textarea>
   </div>
 
 </div>
@@ -519,16 +615,32 @@
 <!-- PAGE NOTE IDS -->
 <script>
 window.PAGE_NOTE_IDS = [
-  'n-lib-authors',
-  'n-lib-translations',
-  'n-lib-resources',
-  'n-lib-log'
+  'n-lib-rosenberg', 'n-lib-rhodes', 'n-lib-authors',
+  'n-lib-translations', 'n-lib-resources'
 ];
 </script>
 
 <script src="assets/js/nav.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
+
+<script>
+function toggleBlock(id) {
+  const body  = document.getElementById('block-' + id);
+  const arrow = document.getElementById('arrow-' + id);
+  if (!body || !arrow) return;
+  const open = body.classList.toggle('open');
+  arrow.classList.toggle('open', open);
+}
+
+function toggleBook(id) {
+  const body  = document.getElementById('book-' + id);
+  const arrow = document.getElementById('arrow-' + id);
+  if (!body || !arrow) return;
+  const open = body.classList.toggle('open');
+  arrow.classList.toggle('open', open);
+}
+</script>
 
 </body>
 </html>
