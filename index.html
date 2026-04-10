@@ -156,15 +156,7 @@
   body.admin-mode .study-q-input { pointer-events: auto; }
 
   /* GUEST SUBMISSION BOX */
-  .guest-box { background: #F0F7FF; border: 1px solid #2E75B6; border-left: 4px solid #FFD700; border-radius: 6px; padding: 16px 18px; margin: 24px 0 8px; }
-  .guest-box .guest-title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 10px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
-  .guest-box input.guest-input { width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 8px 10px; font-size: 13px; font-family: Arial, sans-serif; margin-bottom: 8px; }
-  .guest-box textarea.guest-textarea { width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 8px 10px; font-size: 13px; font-family: Georgia, serif; min-height: 80px; resize: vertical; line-height: 1.6; }
-  .guest-box .guest-submit { background: #1F3864; color: #fff; border: none; border-radius: 4px; padding: 8px 18px; font-size: 12px; font-weight: bold; cursor: pointer; font-family: Arial, sans-serif; margin-top: 8px; }
-  .guest-box .guest-submit:hover { background: #2E4F8A; }
-  .guest-box .guest-status { font-size: 12px; color: #2E75B6; margin-top: 6px; font-family: Arial, sans-serif; font-style: italic; }
-
-  /* ADMIN PASSWORD MODAL */
+/* ADMIN PASSWORD MODAL */
   #admin-modal { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.5); z-index:500; align-items:center; justify-content:center; }
   #admin-modal.show { display:flex; }
   #admin-modal-box { background:#fff; border-radius:10px; padding:28px 32px; width:320px; box-shadow:0 8px 32px rgba(0,0,0,0.3); font-family:Arial,sans-serif; }
@@ -416,15 +408,7 @@
     <textarea class="notes-input" id="n-intro" placeholder="Write your thoughts here..."></textarea>
   </div>
   <button class="btn-print" onclick="window.print()">🖨️ Print this page</button>
-
-  <div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-intro" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-intro" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-intro" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Introduction', 'intro')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-intro"></div>
-  </div>
+</div>
 </div>
 
 <!-- INDEX -->
@@ -540,14 +524,7 @@
     <button class="btn-complete" id="btn-complete-m1" onclick="markComplete('m1', 'Module 1')">✓ Mark Complete</button>
     <span class="completion-stamp" id="stamp-m1"></span>
   </div>
-<div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-m1" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-m1" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-m1" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 1 — Daniel&#39;s 70 Weeks', 'm1')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-m1"></div>
-  </div>
+</div>
 </div>
 
 <!-- MODULE 2 -->
@@ -603,14 +580,7 @@
     <button class="btn-complete" id="btn-complete-m2" onclick="markComplete('m2', 'Module 2')">✓ Mark Complete</button>
     <span class="completion-stamp" id="stamp-m2"></span>
   </div>
-<div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-m2" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-m2" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-m2" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 2 — Israel in Prophecy', 'm2')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-m2"></div>
-  </div>
+</div>
 </div>
 
 <!-- MODULE 3 -->
@@ -663,14 +633,7 @@
     <button class="btn-complete" id="btn-complete-m3" onclick="markComplete('m3', 'Module 3')">✓ Mark Complete</button>
     <span class="completion-stamp" id="stamp-m3"></span>
   </div>
-<div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-m3" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-m3" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-m3" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 3 — Day of the Lord', 'm3')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-m3"></div>
-  </div>
+</div>
 </div>
 
 <!-- MODULE 4 -->
@@ -726,14 +689,7 @@
     <button class="btn-complete" id="btn-complete-m4" onclick="markComplete('m4', 'Module 4')">✓ Mark Complete</button>
     <span class="completion-stamp" id="stamp-m4"></span>
   </div>
-<div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-m4" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-m4" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-m4" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 4 — The Watchman', 'm4')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-m4"></div>
-  </div>
+</div>
 </div>
 
 <!-- MODULE 5 -->
@@ -786,14 +742,7 @@
     <button class="btn-complete" id="btn-complete-m5" onclick="markComplete('m5', 'Module 5')">✓ Mark Complete</button>
     <span class="completion-stamp" id="stamp-m5"></span>
   </div>
-<div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-m5" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-m5" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-m5" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 5 — The New Covenant', 'm5')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-m5"></div>
-  </div>
+</div>
 </div>
 
 <!-- MODULE 6 -->
@@ -859,14 +808,7 @@
     <button class="btn-complete" id="btn-complete-m6" onclick="markComplete('m6', 'Module 6')">✓ Mark Complete</button>
     <span class="completion-stamp" id="stamp-m6"></span>
   </div>
-<div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-m6" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-m6" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-m6" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 6 — The Rapture', 'm6')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-m6"></div>
-  </div>
+</div>
 </div>
 
 <!-- MODULE 7 -->
@@ -920,14 +862,7 @@
     <button class="btn-complete" id="btn-complete-m7" onclick="markComplete('m7', 'Module 7')">✓ Mark Complete</button>
     <span class="completion-stamp" id="stamp-m7"></span>
   </div>
-<div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-m7" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-m7" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-m7" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 7 — The Antichrist', 'm7')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-m7"></div>
-  </div>
+</div>
 </div>
 
 <!-- MODULE 8 -->
@@ -983,14 +918,7 @@
     <button class="btn-complete" id="btn-complete-m8" onclick="markComplete('m8', 'Module 8')">✓ Mark Complete</button>
     <span class="completion-stamp" id="stamp-m8"></span>
   </div>
-<div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-m8" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-m8" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-m8" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 8 — The Rebuilt Temple', 'm8')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-m8"></div>
-  </div>
+</div>
 </div>
 
 <!-- MODULE 9 -->
@@ -1089,14 +1017,7 @@
     <button class="btn-complete" id="btn-complete-m9" onclick="markComplete('m9', 'Module 9')">✓ Mark Complete</button>
     <span class="completion-stamp" id="stamp-m9"></span>
   </div>
-<div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-m9" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-m9" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-m9" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 9 — Gog-Magog War', 'm9')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-m9"></div>
-  </div>
+</div>
 </div>
 
 <!-- MODULE 10 -->
@@ -1158,14 +1079,7 @@
     <button class="btn-complete" id="btn-complete-m10" onclick="markComplete('m10', 'Module 10')">✓ Mark Complete</button>
     <span class="completion-stamp" id="stamp-m10"></span>
   </div>
-<div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-m10" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-m10" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-m10" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 10 — Signs of the Times', 'm10')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-m10"></div>
-  </div>
+</div>
 </div>
 
 <!-- MODULE 11 -->
@@ -1228,14 +1142,7 @@
     <button class="btn-complete" id="btn-complete-m11" onclick="markComplete('m11', 'Module 11')">✓ Mark Complete</button>
     <span class="completion-stamp" id="stamp-m11"></span>
   </div>
-<div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-m11" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-m11" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-m11" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 11 — False Prophets', 'm11')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-m11"></div>
-  </div>
+</div>
 </div>
 
 <!-- MODULE 12 -->
@@ -1292,14 +1199,7 @@
     <button class="btn-complete" id="btn-complete-m12" onclick="markComplete('m12', 'Module 12')">✓ Mark Complete</button>
     <span class="completion-stamp" id="stamp-m12"></span>
   </div>
-<div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-m12" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-m12" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-m12" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 12 — The Millennium', 'm12')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-m12"></div>
-  </div>
+</div>
 </div>
 
 <!-- MODULE 13 -->
@@ -1371,14 +1271,7 @@
     <button class="btn-complete" id="btn-complete-m13" onclick="markComplete('m13', 'Module 13')">✓ Mark Complete</button>
     <span class="completion-stamp" id="stamp-m13"></span>
   </div>
-<div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-m13" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-m13" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-m13" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 13 — Second Coming', 'm13')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-m13"></div>
-  </div>
+</div>
 </div>
 
 <!-- THEME 2 -->
@@ -1553,15 +1446,7 @@ Questions to sit with:
 •
 •"></textarea>
   </div>
-
-  <div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-journal" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-journal" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-journal" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Personal Journal', 'journal')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-journal"></div>
-  </div>
+</div>
 </div>
 
 <!-- CONVICTIONS -->
@@ -1593,15 +1478,7 @@ Questions to sit with:
     <div class="label">✏️ On what all this means for how I live — Dated: ___________</div>
     <textarea class="notes-input" id="c-live" placeholder="Write your convictions here..."></textarea>
   </div>
-
-  <div class="guest-box">
-    <div class="guest-title">💬 Submit a Note to Chris</div>
-    <input class="guest-input" id="guest-name-convictions" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-convictions" placeholder="Your email (optional — if you'd like a reply)">
-    <textarea class="guest-textarea" id="guest-msg-convictions" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('My Growing Convictions', 'convictions')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-convictions"></div>
-  </div>
+</div>
 </div>
 
 <!-- RESOURCES -->
@@ -1907,25 +1784,13 @@ Questions to sit with:
     <div class="label">✏️ Books to add / notes on resources:</div>
     <textarea class="notes-input" id="n-resources" placeholder="Add books, resources, or notes here..."></textarea>
   </div>
-
-  <div class="guest-box">
-    <div class="guest-title">💬 Recommend a Book to Chris</div>
-    <input class="guest-input" id="guest-name-resources" placeholder="Your name (required)">
-    <input class="guest-input" id="guest-email-resources" placeholder="Your email (optional)">
-    <textarea class="guest-textarea" id="guest-msg-resources" placeholder="Book title, author, and why you recommend it..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Resource Library', 'resources')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-resources"></div>
-  </div>
+</div>
 </div>
 
 </div><!-- end #main -->
 </div><!-- end #app -->
-
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 // ── EMAILJS ──────────────────────────────────────────────────────────────
-emailjs.init('2duGE838Bx6BcJXTF');
-
 // ── ADMIN PASSWORD ────────────────────────────────────────────────────────
 const ADMIN_PASSWORD = 'Campbell2026';
 let adminUnlocked = false;
@@ -2240,46 +2105,7 @@ noteIds.forEach(id => {
 
 loadNotes();
 
-// ── GUEST SUBMISSION ──────────────────────────────────────────────────────
-function submitGuest(pageName, boxId) {
-  const nameEl = document.getElementById('guest-name-' + boxId);
-  const emailEl = document.getElementById('guest-email-' + boxId);
-  const msgEl = document.getElementById('guest-msg-' + boxId);
-  const statusEl = document.getElementById('guest-status-' + boxId);
-
-  const name = nameEl.value.trim();
-  const email = emailEl.value.trim();
-  const message = msgEl.value.trim();
-
-  if (!name || !message) {
-    statusEl.textContent = 'Please enter your name and a message.';
-    statusEl.style.color = '#cc0000';
-    return;
-  }
-
-  statusEl.textContent = 'Sending...';
-  statusEl.style.color = '#2E75B6';
-
-  emailjs.send('service_6mi6r6r', 'template_275v5hl', {
-    from_name: name,
-    from_email: email || '(not provided)',
-    page_name: pageName,
-    message: message
-  }).then(() => {
-    statusEl.textContent = '✓ Submitted! Chris will review your note. Thank you.';
-    statusEl.style.color = '#2E6B0E';
-    nameEl.value = '';
-    emailEl.value = '';
-    msgEl.value = '';
-  }).catch((err) => {
-    const errMsg = err && err.text ? err.text : (err && err.message ? err.message : JSON.stringify(err));
-    statusEl.textContent = 'Error: ' + errMsg;
-    statusEl.style.color = '#cc0000';
-    console.error(err);
-  });
-}
-
-// ── VERSION STAMP WITH TIME ───────────────────────────────────────────────
+// ── GUEST SUBMISSION ──────────────────────────────────────────────────────// ── VERSION STAMP WITH TIME ───────────────────────────────────────────────
 (function() {
   const now = new Date();
   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true };
@@ -2289,12 +2115,6 @@ function submitGuest(pageName, boxId) {
 })();
 
 // ── GITHUB TOKEN ──────────────────────────────────────────────────────────
-const savedToken = localStorage.getItem('cbsg-gh-token');
-if (savedToken) document.getElementById('gh-token').value = savedToken;
-document.getElementById('gh-token').addEventListener('input', function() {
-  localStorage.setItem('cbsg-gh-token', this.value);
-});
-
 // ── INIT: START IN READONLY MODE ──────────────────────────────────────────
 document.body.classList.add('readonly');
 loadCompletions();
