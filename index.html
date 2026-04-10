@@ -185,7 +185,9 @@
   .complete-bar { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:20px 0 8px; padding:14px 16px; background:#F4F8EE; border:1px solid #6B8E3A; border-radius:8px; }
   .btn-complete { background:#3B5E1A; color:#fff; border:none; border-radius:6px; padding:9px 20px; font-size:13px; font-weight:bold; cursor:pointer; font-family:Arial,sans-serif; }
   .btn-complete:hover { background:#2E4A12; }
-  .btn-complete.done { background:#2E6B0E; cursor:default; }
+  .btn-complete.done { background:#2E6B0E; cursor:pointer; }
+  .btn-complete.done:hover { background:#cc3300; }
+  .btn-complete.done:hover::after { content:' — Click to Undo'; font-size:11px; }
   .completion-stamp { font-size:12px; color:#3B5E1A; font-family:Arial,sans-serif; font-weight:bold; }
   .nav-item.completed { color:#4CAF50 !important; }
   .nav-item.completed.active { color:#4CAF50 !important; border-left-color:#4CAF50 !important; }
@@ -1505,7 +1507,7 @@
   </div>
 
   <div class="journal-box">
-    <div class="journal-date">April 10, 2026</div>
+    <div class="journal-date">April 10, 2026 — 11:00 AM</div>
     <div class="journal-topic">Topic: The Firmament, the Waters Above, &amp; the Catastrophic Flood</div>
     <div class="journal-cat">Category: Creation / Biblical Cosmology / Conversation with Natalie</div>
     <div class="journal-p">Had a conversation with Natalie today that opened up something worth sitting with. The discussion was about the firmament — the raqiya — described in Genesis 1:6–8 as a separation between the waters below and the waters above. The question we were wrestling with: what exactly were the "waters above the firmament," and where did they go?</div>
@@ -1999,30 +2001,36 @@ function updateTimerDisplay(mid, sessionSecs) {
 }
 
 function markComplete(mid, label) {
-  const now = new Date();
-  const stamp = now.toLocaleString('en-US', {month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit', hour12:true});
-  
-  // Save completion
-  localStorage.setItem('cbsg-complete-' + mid, stamp);
-
-  // Update button
   const btn = document.getElementById('btn-complete-' + mid);
-  if (btn) { btn.textContent = '✓ Completed'; btn.classList.add('done'); btn.disabled = true; }
-
-  // Update stamp at bottom
   const stampEl = document.getElementById('stamp-' + mid);
-  if (stampEl) stampEl.textContent = 'Completed: ' + stamp;
-
-  // Update stamp in meta bar at top
   const metaStamp = document.getElementById('completed-stamp-' + mid);
-  if (metaStamp) { metaStamp.textContent = stamp; metaStamp.style.color = '#4CAF50'; metaStamp.style.fontSize = '11px'; }
+  const alreadyDone = localStorage.getItem('cbsg-complete-' + mid);
 
-  // Turn nav item green
-  document.querySelectorAll('.nav-item').forEach(item => {
-    if (item.getAttribute('onclick') && item.getAttribute('onclick').includes("'" + mid + "'")) {
-      item.classList.add('completed');
-    }
-  });
+  if (alreadyDone) {
+    // UNCOMPLETE
+    localStorage.removeItem('cbsg-complete-' + mid);
+    if (btn) { btn.textContent = '✓ Mark Complete'; btn.classList.remove('done'); btn.disabled = false; }
+    if (stampEl) stampEl.textContent = '';
+    if (metaStamp) { metaStamp.textContent = ''; metaStamp.style.color = ''; }
+    document.querySelectorAll('.nav-item').forEach(item => {
+      if (item.getAttribute('onclick') && item.getAttribute('onclick').includes("'" + mid + "'")) {
+        item.classList.remove('completed');
+      }
+    });
+  } else {
+    // COMPLETE
+    const now = new Date();
+    const stamp = now.toLocaleString('en-US', {month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit', hour12:true});
+    localStorage.setItem('cbsg-complete-' + mid, stamp);
+    if (btn) { btn.textContent = '✓ Completed'; btn.classList.add('done'); btn.disabled = false; }
+    if (stampEl) stampEl.textContent = 'Completed: ' + stamp;
+    if (metaStamp) { metaStamp.textContent = stamp; metaStamp.style.color = '#4CAF50'; metaStamp.style.fontSize = '11px'; }
+    document.querySelectorAll('.nav-item').forEach(item => {
+      if (item.getAttribute('onclick') && item.getAttribute('onclick').includes("'" + mid + "'")) {
+        item.classList.add('completed');
+      }
+    });
+  }
 }
 
 function loadCompletions() {
@@ -2031,7 +2039,7 @@ function loadCompletions() {
     if (stamp) {
       // Button
       const btn = document.getElementById('btn-complete-' + mid);
-      if (btn) { btn.textContent = '✓ Completed'; btn.classList.add('done'); btn.disabled = true; }
+      if (btn) { btn.textContent = '✓ Completed'; btn.classList.add('done'); btn.disabled = false; }
       // Bottom stamp
       const stampEl = document.getElementById('stamp-' + mid);
       if (stampEl) stampEl.textContent = 'Completed: ' + stamp;
