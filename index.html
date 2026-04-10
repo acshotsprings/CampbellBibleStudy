@@ -1,4 +1,6 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Campbell Family Master Biblical Study Guide</title>
@@ -13,48 +15,17 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
+  <span id="gh-status"></span>
   <div class="bar-right">
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 4, 2026</span>
+    <span id="gh-bar-version">Version: April 9, 2026</span>
   </div>
 </div>
 
 <!-- SIDEBAR -->
-<div id="sidebar">
-    <div id="sidebar-header">
-      <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 3, 2026</p>
-    </div>
-    <div id="sidebar-nav">
-  <div class="nav-section">Getting Started</div><a class="nav-item active" href="./index.html">Introduction</a><a class="nav-item" href="./index.html#index">Thematic Index</a>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme1')" id="nav-header-theme1">
-          <span>Theme 1 — End Times</span>
-          <span class="nav-arrow " id="nav-arrow-theme1">▶</span>
-        </div>
-        <div class="nav-section-items collapsed" id="nav-items-theme1">
-      <a class="nav-item" href="./theme1/module1.html">Module 1 — Daniel's 70 Weeks</a><a class="nav-item" href="./theme1/module2.html">Module 2 — Israel in Prophecy</a><a class="nav-item" href="./theme1/module3.html">Module 3 — Day of the Lord</a><a class="nav-item" href="./theme1/module4.html">Module 4 — The Watchman</a><a class="nav-item" href="./theme1/module5.html">Module 5 — The New Covenant</a><a class="nav-item" href="./theme1/module6.html">Module 6 — The Rapture</a><a class="nav-item" href="./theme1/module7.html">Module 7 — The Antichrist</a><a class="nav-item" href="./theme1/module8.html">Module 8 — The Rebuilt Temple</a><a class="nav-item" href="./theme1/module9.html">Module 9 — Gog-Magog War</a><a class="nav-item" href="./theme1/module10.html">Module 10 — Signs of the Times</a><a class="nav-item" href="./theme1/module11.html">Module 11 — False Prophets</a><a class="nav-item" href="./theme1/module12.html">Module 12 — The Millennium</a><a class="nav-item" href="./theme1/module13.html">Module 13 — Second Coming</a><a class="nav-item" href="./theme1/module14.html">Module 14 — Matt 24 ↔ Revelation</a><a class="nav-item" href="./theme1/module15.html">Module 15 — Armageddon</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme2')" id="nav-header-theme2">
-          <span>Theme 2 — Biblical Calendar</span>
-          <span class="nav-arrow open" id="nav-arrow-theme2">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme2">
-      <a class="nav-item active" href="./theme2/index.html">Theme 2 Overview</a><a class="nav-item sub" href="./theme2/module1.html">↳ Module 1 — Calendar History</a><a class="nav-item sub" href="./theme2/module2.html">↳ Module 2 — Calendar Timeline</a><a class="nav-item sub" href="./theme2/module3.html">↳ Module 3 — Book of Jubilees</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme3')" id="nav-header-theme3">
-          <span>Theme 3 — Judgment &amp; Mercy</span>
-          <span class="nav-arrow open" id="nav-arrow-theme3">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme3">
-      <a class="nav-item active" href="./theme3/index.html">Theme 3 Overview</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('themes48')" id="nav-header-themes48">
-          <span>Themes 4–8</span>
-          <span class="nav-arrow open" id="nav-arrow-themes48">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-themes48">
-      <a class="nav-item" href="./index.html#themes48">Themes 4–8 (Coming Soon)</a></div><div class="nav-section">My Study</div><a class="nav-item" href="./sermons.html">Sermon &amp; Teaching Log</a><a class="nav-item" href="./journal.html">Personal Journal</a><a class="nav-item" href="./convictions.html">My Growing Convictions</a></div></div>
-<div class="nav-section">Deep Studies</div>
-<a class="nav-item" href="./DeepDives.html" style="color:#FFD700;">&#9670; Deep Dive Studies &#8594;</a>
+<div id="sidebar"></div>
+
 <!-- MAIN -->
 <div id="app">
 <div id="main">
@@ -129,53 +100,125 @@
 
     <!-- ── QUICK-START CARD GRID ── -->
     <h2 class="section-title">Quick Start — Jump to a Module</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:16px 0;">
+    <p class="body" style="margin-bottom:16px;">Jump directly to any module or study tool. Cards are added here each time a new module or theme is built.</p>
+
+    <!-- THEME 1 LABEL -->
+    <div style="font-size:10px;font-weight:bold;color:#1F3864;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.08em;margin:18px 0 8px;padding-left:2px;">Theme 1 — End Times</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px;">
 
       <a href="theme1/module1.html" style="text-decoration:none;">
-        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Theme 1 · Module 1</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4">Daniel's 70 Weeks</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif">The master prophetic timeline</div>
+        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 1 · Module 1</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Daniel's 70 Weeks</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">The master prophetic timeline</div>
         </div>
       </a>
 
       <a href="theme1/module6.html" style="text-decoration:none;">
-        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Theme 1 · Module 6</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4">The Rapture</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif">Scripture &amp; honest inquiry</div>
+        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 1 · Module 6</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4;">The Rapture</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Scripture &amp; honest inquiry</div>
+        </div>
+      </a>
+
+      <a href="theme1/module9.html" style="text-decoration:none;">
+        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 1 · Module 9</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Gog-Magog War</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Russia, Iran &amp; Ezekiel 38–39</div>
         </div>
       </a>
 
       <a href="theme1/module12.html" style="text-decoration:none;">
-        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Theme 1 · Module 12</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4">The Millennium</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif">Christ's 1,000-year reign</div>
+        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 1 · Module 12</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4;">The Millennium</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Christ's 1,000-year reign</div>
         </div>
       </a>
 
       <a href="theme1/module14.html" style="text-decoration:none;">
-        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Theme 1 · Module 14</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4">Matt 24 ↔ Revelation</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif">Side-by-side parallel study</div>
+        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 1 · Module 14</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Matt 24 ↔ Revelation</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Side-by-side parallel study</div>
         </div>
       </a>
 
+      <a href="theme1/module15.html" style="text-decoration:none;">
+        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 1 · Module 15</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Armageddon Campaign</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">The seven phases of the final battle</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- THEME 2 LABEL -->
+    <div style="font-size:10px;font-weight:bold;color:#2E6B0E;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.08em;margin:18px 0 8px;padding-left:2px;">Theme 2 — Biblical Calendar</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px;">
+
       <a href="theme2/module1.html" style="text-decoration:none;">
-        <div style="background:#2E6B0E;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#3A8A12'" onmouseout="this.style.background='#2E6B0E'">
-          <div style="font-size:10px;color:#C8DBA8;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Theme 2 · Module 1</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4">Calendar History</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif">From creation to the Dead Sea Scrolls</div>
+        <div style="background:#2E6B0E;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#3A8A12'" onmouseout="this.style.background='#2E6B0E'">
+          <div style="font-size:10px;color:#C8DBA8;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 2 · Module 1</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Calendar History</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">From creation to the Dead Sea Scrolls</div>
+        </div>
+      </a>
+
+      <a href="theme2/module2.html" style="text-decoration:none;">
+        <div style="background:#2E6B0E;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#3A8A12'" onmouseout="this.style.background='#2E6B0E'">
+          <div style="font-size:10px;color:#C8DBA8;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 2 · Module 2</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Calendar Timeline</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Visual timeline from Creation to Millennium</div>
+        </div>
+      </a>
+
+      <a href="theme2/module3.html" style="text-decoration:none;">
+        <div style="background:#2E6B0E;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#3A8A12'" onmouseout="this.style.background='#2E6B0E'">
+          <div style="font-size:10px;color:#C8DBA8;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 2 · Module 3</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Book of Jubilees</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">364-day solar year &amp; prophetic structure</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- MY STUDY LABEL -->
+    <div style="font-size:10px;font-weight:bold;color:#7A6600;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.08em;margin:18px 0 8px;padding-left:2px;">My Study Tools</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px;">
+
+      <a href="checklist.html" style="text-decoration:none;">
+        <div style="background:#7A6600;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#9A8200'" onmouseout="this.style.background='#7A6600'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">My Study</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Prophecy Checklist</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Living timeline — what has &amp; hasn't happened</div>
+        </div>
+      </a>
+
+      <a href="sermons.html" style="text-decoration:none;">
+        <div style="background:#7A6600;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#9A8200'" onmouseout="this.style.background='#7A6600'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">My Study</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Sermon &amp; Teaching Log</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Rosenberg, Burton &amp; others</div>
         </div>
       </a>
 
       <a href="journal.html" style="text-decoration:none;">
-        <div style="background:#7A6600;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#9A8200'" onmouseout="this.style.background='#7A6600'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">My Study</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4">Personal Journal</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif">Reflections &amp; observations</div>
+        <div style="background:#7A6600;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#9A8200'" onmouseout="this.style.background='#7A6600'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">My Study</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Personal Journal</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Reflections &amp; observations</div>
+        </div>
+      </a>
+
+      <a href="convictions.html" style="text-decoration:none;">
+        <div style="background:#7A6600;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#9A8200'" onmouseout="this.style.background='#7A6600'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">My Study</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4;">My Convictions</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Where I've landed &amp; what I'm still wrestling</div>
         </div>
       </a>
 
@@ -194,10 +237,7 @@
 <!-- SCRIPTS -->
 <script src="assets/js/nav.js"></script>
 <script src="assets/js/main.js"></script>
-<script>
-  buildSidebar('.');
-</script>
+<script>buildSidebar('.');</script>
 
-
-
-</body></html>
+</body>
+</html>
