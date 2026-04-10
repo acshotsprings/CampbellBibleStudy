@@ -1,17 +1,119 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Shared JavaScript — v4.0 Uniform Bar + Study Timers
+   Shared JavaScript — v4.1 Uniform Bar + Timers + Completion
    ============================================================ */
 
 const OWNER = 'acshotsprings';
 const REPO  = 'CampbellBibleStudy';
 
+// ── COMPLETION KEY MAP ────────────────────────────────────
+// Maps URL path fragments to their completion storage key
+const COMPLETION_KEYS = {
+  'theme1/module1':  'complete-t1m1',
+  'theme1/module2':  'complete-t1m2',
+  'theme1/module3':  'complete-t1m3',
+  'theme1/module4':  'complete-t1m4',
+  'theme1/module5':  'complete-t1m5',
+  'theme1/module6':  'complete-t1m6',
+  'theme1/module7':  'complete-t1m7',
+  'theme1/module8':  'complete-t1m8',
+  'theme1/module9':  'complete-t1m9',
+  'theme1/module10': 'complete-t1m10',
+  'theme1/module11': 'complete-t1m11',
+  'theme1/module12': 'complete-t1m12',
+  'theme1/module13': 'complete-t1m13',
+  'theme1/module14': 'complete-t1m14',
+  'theme1/module15': 'complete-t1m15',
+  'theme2/module1':  'complete-t2m1',
+  'theme2/module2':  'complete-t2m2',
+  'theme2/module3':  'complete-t2m3',
+};
+
+function getCompleteKey() {
+  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\//, '').replace(/\.html$/, '');
+  return COMPLETION_KEYS[path] || null;
+}
+
+function isCurrentPageComplete() {
+  const key = getCompleteKey();
+  return key ? localStorage.getItem('cbsg-' + key) === 'true' : false;
+}
+
+function toggleCompletion() {
+  const key = getCompleteKey();
+  if (!key) return;
+  const wasComplete = localStorage.getItem('cbsg-' + key) === 'true';
+  const nowComplete = !wasComplete;
+  localStorage.setItem('cbsg-' + key, nowComplete ? 'true' : 'false');
+
+  // Update button appearance
+  const btn     = document.getElementById('complete-btn');
+  const btnText = document.getElementById('complete-btn-text');
+  if (btn && btnText) {
+    btnText.textContent = nowComplete ? '✓ Completed — Click to Undo' : '☐ Mark as Complete';
+    btn.style.background    = nowComplete ? '#2E6B0E' : 'transparent';
+    btn.style.borderColor   = nowComplete ? '#90EE90'  : 'rgba(255,255,255,0.3)';
+    btn.style.color         = nowComplete ? '#90EE90'  : 'rgba(255,255,255,0.7)';
+  }
+
+  // Rebuild sidebar to reflect new state immediately
+  if (typeof buildSidebar === 'function') {
+    const root = window.location.pathname.includes('/theme') ? '..' : '.';
+    buildSidebar(root);
+  }
+
+  setStatus(nowComplete ? '✅ Module marked complete!' : '↩️ Marked incomplete.', 'ok');
+}
+
+// ── COMPLETION BUTTON INJECTION ───────────────────────────
+function injectCompleteButton() {
+  const key = getCompleteKey();
+  if (!key) return; // Not a completable page
+
+  // Find the bottom nav (prev/next buttons div) to insert before it
+  const bottomNav = document.querySelector('#main > div[style*="justify-content:space-between"]');
+  const main      = document.getElementById('main');
+  if (!main) return;
+
+  const isDone    = localStorage.getItem('cbsg-' + key) === 'true';
+  const wrapper   = document.createElement('div');
+  wrapper.style.cssText = 'margin:32px 0 8px;text-align:center;';
+  wrapper.innerHTML = `
+    <div style="border-top:1px solid #ddd;padding-top:28px;margin-bottom:8px;">
+      <p style="font-size:13px;color:#888;font-family:Arial,sans-serif;margin-bottom:14px;">
+        Finished studying this module? Mark it complete to track your progress in the sidebar.
+      </p>
+      <button id="complete-btn" onclick="toggleCompletion()" style="
+        background:${isDone ? '#2E6B0E' : 'transparent'};
+        color:${isDone ? '#90EE90' : 'rgba(255,255,255,0.7)'};
+        border:2px solid ${isDone ? '#90EE90' : 'rgba(255,255,255,0.3)'};
+        border-radius:6px;
+        padding:10px 28px;
+        font-size:13px;
+        font-family:Arial,sans-serif;
+        font-weight:bold;
+        cursor:pointer;
+        transition:all 0.2s;
+        background-color:${isDone ? '#2E6B0E' : '#1F3864'};
+      ">
+        <span id="complete-btn-text">${isDone ? '✓ Completed — Click to Undo' : '☐ Mark as Complete'}</span>
+      </button>
+    </div>
+  `;
+
+  if (bottomNav) {
+    main.insertBefore(wrapper, bottomNav);
+  } else {
+    main.appendChild(wrapper);
+  }
+}
+
 // ── PAGE IDENTITY ─────────────────────────────────────────
-// Derives a stable key from the URL for per-page timer storage
 function getPageKey() {
-  const path = window.location.pathname;
-  const parts = path.replace(/^\/CampbellBibleStudy\/?/, '').replace(/\.html$/, '');
-  return 'timer-' + (parts || 'index');
+  const path = window.location.pathname
+    .replace(/^\/CampbellBibleStudy\/?/, '')
+    .replace(/\.html$/, '');
+  return 'timer-' + (path || 'index');
 }
 
 function getPageLabel() {
@@ -45,10 +147,10 @@ function startTimer() {
   sessionStart   = Date.now();
   sessionSeconds = 0;
   timerInterval  = setInterval(() => {
-    sessionSeconds = Math.floor((Date.now() - sessionStart) / 1000);
-    const total    = getStoredSeconds() + sessionSeconds;
-    const sessionEl = document.getElementById('bar-session-time');
-    const totalEl   = document.getElementById('bar-total-time');
+    sessionSeconds      = Math.floor((Date.now() - sessionStart) / 1000);
+    const total         = getStoredSeconds() + sessionSeconds;
+    const sessionEl     = document.getElementById('bar-session-time');
+    const totalEl       = document.getElementById('bar-total-time');
     if (sessionEl) sessionEl.textContent = formatTime(sessionSeconds);
     if (totalEl)   totalEl.textContent   = formatTime(total);
   }, 1000);
@@ -59,39 +161,31 @@ function stopTimer() {
   if (sessionSeconds > 2) addStoredSeconds(sessionSeconds);
 }
 
-// Save time when leaving the page
 window.addEventListener('beforeunload', stopTimer);
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
     stopTimer();
   } else {
-    // Resume when tab becomes visible again
-    sessionStart = Date.now() - (sessionSeconds * 1000);
+    sessionStart  = Date.now() - (sessionSeconds * 1000);
     if (!timerInterval) startTimer();
   }
 });
 
 // ── UNIFORM GITHUB BAR INJECTION ─────────────────────────
-// Adds timer display + Log Study Time button to the bar on every page
 function injectBarExtras() {
   const bar = document.getElementById('github-bar');
-  if (!bar) return;
+  if (!bar || document.getElementById('bar-session-time')) return;
 
-  // Don't double-inject
-  if (document.getElementById('bar-session-time')) return;
-
-  const stored = getStoredSeconds();
-
-  // Build the extras HTML
-  const extras = document.createElement('div');
-  extras.id = 'bar-extras';
+  const stored  = getStoredSeconds();
+  const extras  = document.createElement('div');
+  extras.id     = 'bar-extras';
   extras.style.cssText = 'display:flex;align-items:center;gap:10px;margin-left:8px;';
   extras.innerHTML = `
-    <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:3px 10px;min-width:90px;">
+    <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:3px 10px;min-width:80px;">
       <span style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;font-family:Arial,sans-serif;">This Session</span>
       <span id="bar-session-time" style="font-size:12px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;">0s</span>
     </div>
-    <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:3px 10px;min-width:90px;">
+    <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:3px 10px;min-width:80px;">
       <span style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;font-family:Arial,sans-serif;">Page Total</span>
       <span id="bar-total-time" style="font-size:12px;color:rgba(255,255,255,0.8);font-family:Arial,sans-serif;font-weight:bold;">${formatTime(stored)}</span>
     </div>
@@ -99,27 +193,21 @@ function injectBarExtras() {
     <button onclick="insertTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:4px 10px;font-size:11px;font-family:Arial,sans-serif;font-weight:bold;cursor:pointer;white-space:nowrap;" title="Insert a timestamp into your notes">📅 Timestamp</button>
   `;
 
-  // Insert before bar-right if it exists, otherwise append
   const barRight = bar.querySelector('.bar-right');
-  if (barRight) {
-    bar.insertBefore(extras, barRight);
-  } else {
-    bar.appendChild(extras);
-  }
+  if (barRight) bar.insertBefore(extras, barRight);
+  else bar.appendChild(extras);
 }
 
 // ── LOG STUDY TIME ────────────────────────────────────────
 function logStudyTime() {
-  const now       = new Date();
-  const date      = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  const time      = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-  const label     = getPageLabel();
-  const pageKey   = getPageKey();
-  const total     = getStoredSeconds() + sessionSeconds;
-  const divider   = '─'.repeat(40);
-  const entry     = `\n${divider}\n📚 ${date} at ${time}\nPage: ${label}\nThis session: ${formatTime(sessionSeconds)} | Page total: ${formatTime(total)}\n${divider}\n`;
+  const now     = new Date();
+  const date    = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const time    = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  const label   = getPageLabel();
+  const total   = getStoredSeconds() + sessionSeconds;
+  const divider = '─'.repeat(40);
+  const entry   = `\n${divider}\n📚 ${date} at ${time}\nPage: ${label}\nThis session: ${formatTime(sessionSeconds)} | Page total: ${formatTime(total)}\n${divider}\n`;
 
-  // Try to write to journal textarea first, then any visible notes textarea
   const journalEl = document.getElementById('n-journal-new');
   if (journalEl) {
     journalEl.value += entry;
@@ -127,8 +215,6 @@ function logStudyTime() {
     setStatus('📋 Logged to journal!', 'ok');
     return;
   }
-
-  // Fall back to first available notes textarea on this page
   const ids = window.PAGE_NOTE_IDS || [];
   if (ids.length > 0) {
     const el = document.getElementById(ids[0]);
@@ -139,12 +225,10 @@ function logStudyTime() {
       return;
     }
   }
-
-  setStatus('📋 Session: ' + formatTime(sessionSeconds) + ' | Total: ' + formatTime(total), 'ok');
+  setStatus('Session: ' + formatTime(sessionSeconds) + ' | Total: ' + formatTime(total), 'ok');
 }
 
 // ── TIMESTAMP INSERT ──────────────────────────────────────
-// Works on any page — finds the best textarea to stamp
 function insertTimestamp() {
   const now     = new Date();
   const date    = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
@@ -152,15 +236,13 @@ function insertTimestamp() {
   const divider = '─'.repeat(40);
   const stamp   = `\n${divider}\n${date} at ${time}\n${divider}\n`;
 
-  // Priority: focused element, then journal, then first page note
   const active = document.activeElement;
-  if (active && (active.tagName === 'TEXTAREA' || active.tagName === 'INPUT') && active.id) {
+  if (active && (active.tagName === 'TEXTAREA') && active.id) {
     active.value += stamp;
     active.scrollTop = active.scrollHeight;
     localStorage.setItem('cbsg-' + active.id, active.value);
     return;
   }
-
   const journalEl = document.getElementById('n-journal-new');
   if (journalEl) {
     journalEl.value += stamp;
@@ -169,7 +251,6 @@ function insertTimestamp() {
     localStorage.setItem('cbsg-n-journal-new', journalEl.value);
     return;
   }
-
   const ids = window.PAGE_NOTE_IDS || [];
   if (ids.length > 0) {
     const el = document.getElementById(ids[0]);
@@ -192,7 +273,7 @@ async function putFile(token, filePath, content) {
   if (!getRes.ok) throw new Error(`Could not fetch ${filePath} (${getRes.status})`);
   const { sha } = await getRes.json();
   const encoded = btoa(unescape(encodeURIComponent(content)));
-  const putRes = await fetch(
+  const putRes  = await fetch(
     `https://api.github.com/repos/${OWNER}/${REPO}/contents/${filePath}`,
     {
       method: 'PUT',
@@ -211,9 +292,9 @@ async function putFileNew(token, filePath, content) {
     if (r.ok) sha = (await r.json()).sha;
   } catch(e) {}
   const encoded = btoa(unescape(encodeURIComponent(content)));
-  const body = { message: `Update ${filePath} — ${new Date().toLocaleDateString()}`, content: encoded };
+  const body    = { message: `Update ${filePath} — ${new Date().toLocaleDateString()}`, content: encoded };
   if (sha) body.sha = sha;
-  const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${filePath}`,
+  const putRes  = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${filePath}`,
     { method: 'PUT', headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   if (!putRes.ok) { const e = await putRes.json(); throw new Error(e.message || 'Notes save failed'); }
 }
@@ -230,7 +311,6 @@ async function saveToGitHub() {
   const filePath = rawPath || 'index.html';
 
   setStatus('📡 Saving...', 'info');
-
   try {
     await putFile(token, filePath, document.documentElement.outerHTML);
     await saveNotesJson(token);
@@ -247,7 +327,6 @@ async function loadFromGitHub() {
   const token = document.getElementById('gh-token').value.trim();
   if (!token) { setStatus('⚠️ Paste your GitHub token first.', 'warn'); return; }
   localStorage.setItem('cbsg-gh-token', token);
-
   setStatus('📡 Loading your notes...', 'info');
 
   try {
@@ -255,53 +334,55 @@ async function loadFromGitHub() {
       `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/my-notes.json?t=${Date.now()}`,
       { cache: 'no-store' }
     );
-
     if (!res.ok) {
-      if (res.status === 404) {
-        setStatus('⚠️ No saved notes found yet. Save first from any device.', 'warn');
-      } else {
-        setStatus(`❌ Could not load notes (${res.status})`, 'error');
-      }
+      setStatus(res.status === 404 ? '⚠️ No saved notes found yet.' : `❌ Could not load (${res.status})`, 'warn');
       return;
     }
-
     const data  = await res.json();
     const notes = data.notes || {};
-
-    if (Object.keys(notes).length === 0) {
-      setStatus('⚠️ Notes file is empty — nothing to load yet.', 'warn');
-      return;
-    }
+    if (Object.keys(notes).length === 0) { setStatus('⚠️ Notes file is empty.', 'warn'); return; }
 
     let loaded = 0;
     for (const [key, value] of Object.entries(notes)) {
-      if (value && value.trim()) {
-        localStorage.setItem('cbsg-' + key, value);
-        loaded++;
-      }
+      if (value && value.trim()) { localStorage.setItem('cbsg-' + key, value); loaded++; }
     }
-
     loadNotes();
-    setStatus(`✅ Loaded ${loaded} notes from GitHub.`, 'ok');
 
+    // Re-render sidebar and complete button after loading completion state
+    const root = window.location.pathname.includes('/theme') ? '..' : '.';
+    if (typeof buildSidebar === 'function') buildSidebar(root);
+    refreshCompleteButton();
+
+    setStatus(`✅ Loaded ${loaded} notes from GitHub.`, 'ok');
   } catch(e) {
     setStatus('❌ ' + e.message, 'error');
   }
 }
 
+function refreshCompleteButton() {
+  const key     = getCompleteKey();
+  const btn     = document.getElementById('complete-btn');
+  const btnText = document.getElementById('complete-btn-text');
+  if (!key || !btn || !btnText) return;
+  const isDone = localStorage.getItem('cbsg-' + key) === 'true';
+  btnText.textContent      = isDone ? '✓ Completed — Click to Undo' : '☐ Mark as Complete';
+  btn.style.background     = isDone ? '#2E6B0E' : '#1F3864';
+  btn.style.borderColor    = isDone ? '#90EE90'  : 'rgba(255,255,255,0.3)';
+  btn.style.color          = isDone ? '#90EE90'  : 'rgba(255,255,255,0.7)';
+}
+
 // ── SHARED NOTES JSON ─────────────────────────────────────
 
 async function saveNotesJson(token) {
-  const notes = {};
-
-  // Collect everything from localStorage EXCEPT sensitive keys and nav state
+  const notes    = {};
   const excluded = new Set(['cbsg-gh-token', 'cbsg-gemini-key']);
+
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
     if (!key || !key.startsWith('cbsg-')) continue;
     if (excluded.has(key)) continue;
-    if (key.startsWith('cbsg-nav-')) continue;   // nav collapse state — not notes
-    if (key.startsWith('cbsg-timer-')) continue;  // per-page timers — keep local only
+    if (key.startsWith('cbsg-nav-'))   continue;
+    if (key.startsWith('cbsg-timer-')) continue;
     const value = localStorage.getItem(key);
     if (value && value.trim()) notes[key.replace('cbsg-', '')] = value;
   }
@@ -310,37 +391,56 @@ async function saveNotesJson(token) {
     lastUpdated: new Date().toISOString(),
     originDate:  'March 30, 2026',
     noteLabels: {
-      'n-intro':   'Introduction — What I currently believe & hope to discover',
-      'n-m1':      'Module 1 — Daniel\'s 70 Weeks: my convictions',
-      'n-m2':      'Module 2 — Israel in Prophecy: my convictions',
-      'n-m3':      'Module 3 — Day of the Lord: my notes',
-      'n-m4':      'Module 4 — Watchman Principle: what it means for my life',
-      'n-m5':      'Module 5 — New Covenant: what it means for my life',
-      'n-m6':      'Module 6 — Rapture: my position, reasons, questions',
-      'n-m7':      'Module 7 — Antichrist: my notes',
-      'n-m8':      'Module 8 — Rebuilt Temple: my notes',
-      'n-m9':      'Module 9 — Gog-Magog: my convictions',
-      'n-m10':     'Module 10 — Signs of the Times: my notes',
-      'n-m11':     'Module 11 — False Prophets: my notes',
-      'n-m12':     'Module 12 — Millennium: my view and why',
-      'n-m13':     'Module 13 — Second Coming: how this is changing how I live',
-      'n-m14':     'Module 14 — Matt 24 vs Revelation: my notes',
-      'n-m15':     'Module 15 — Armageddon: my notes',
-      'n-t2m1':    'Theme 2 Module 1 — Calendar History: my notes',
-      'n-t2m2':    'Theme 2 Module 2 — Calendar Timeline: my notes',
-      'n-t2m3':    'Theme 2 Module 3 — Book of Jubilees: my notes',
-      'n-journal-new': 'Personal Journal entries',
-      'n-sermons': 'Sermon log overflow notes',
-      'c-prophecy':  'Conviction — On prophecy and how to interpret it',
-      'c-israel':    'Conviction — On Israel\'s role in prophecy',
-      'c-rapture':   'Conviction — On the Rapture',
-      'c-millennium':'Conviction — On the Millennium',
-      'c-calendar':  'Conviction — On God\'s original calendar',
-      'c-grace':     'Conviction — On grace, holiness and readiness',
-      'c-live':      'Conviction — How this study is changing how I live',
-      'c-snapshots': 'Conviction snapshots over time',
+      'n-intro':    'Introduction — What I currently believe & hope to discover',
+      'n-m1':       'Module 1 — Daniel\'s 70 Weeks',
+      'n-m2':       'Module 2 — Israel in Prophecy',
+      'n-m3':       'Module 3 — Day of the Lord',
+      'n-m4':       'Module 4 — Watchman Principle',
+      'n-m5':       'Module 5 — New Covenant',
+      'n-m6':       'Module 6 — Rapture',
+      'n-m7':       'Module 7 — Antichrist',
+      'n-m8':       'Module 8 — Rebuilt Temple',
+      'n-m9':       'Module 9 — Gog-Magog',
+      'n-m10':      'Module 10 — Signs of the Times',
+      'n-m11':      'Module 11 — False Prophets',
+      'n-m12':      'Module 12 — Millennium',
+      'n-m13':      'Module 13 — Second Coming',
+      'n-m14':      'Module 14 — Matt 24 vs Revelation',
+      'n-m15':      'Module 15 — Armageddon',
+      'n-t2m1':     'Theme 2 Module 1 — Calendar History',
+      'n-t2m2':     'Theme 2 Module 2 — Calendar Timeline',
+      'n-t2m3':     'Theme 2 Module 3 — Book of Jubilees',
+      'n-journal-new': 'Personal Journal',
+      'n-sermons':  'Sermon log notes',
+      'c-prophecy': 'Conviction — Prophecy',
+      'c-israel':   'Conviction — Israel',
+      'c-rapture':  'Conviction — Rapture',
+      'c-millennium':'Conviction — Millennium',
+      'c-calendar': 'Conviction — Calendar',
+      'c-grace':    'Conviction — Grace & holiness',
+      'c-live':     'Conviction — How study changes my life',
+      'c-snapshots':'Conviction snapshots',
       'c-gog-session-apr9': 'Study Session — Gog-Magog April 9 2026',
-      'n-cl-general': 'Prophecy Checklist — General notes',
+      'n-cl-general':'Prophecy Checklist — General notes',
+      // Completion states
+      'complete-t1m1':  'Completion — Module 1',
+      'complete-t1m2':  'Completion — Module 2',
+      'complete-t1m3':  'Completion — Module 3',
+      'complete-t1m4':  'Completion — Module 4',
+      'complete-t1m5':  'Completion — Module 5',
+      'complete-t1m6':  'Completion — Module 6',
+      'complete-t1m7':  'Completion — Module 7',
+      'complete-t1m8':  'Completion — Module 8',
+      'complete-t1m9':  'Completion — Module 9',
+      'complete-t1m10': 'Completion — Module 10',
+      'complete-t1m11': 'Completion — Module 11',
+      'complete-t1m12': 'Completion — Module 12',
+      'complete-t1m13': 'Completion — Module 13',
+      'complete-t1m14': 'Completion — Module 14',
+      'complete-t1m15': 'Completion — Module 15',
+      'complete-t2m1':  'Completion — Theme 2 Module 1',
+      'complete-t2m2':  'Completion — Theme 2 Module 2',
+      'complete-t2m3':  'Completion — Theme 2 Module 3',
     },
     notes
   };
@@ -362,9 +462,9 @@ function setStatus(msg, type) {
 
 function updateVersionTimestamp() {
   const label = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  const vEl = document.getElementById('gh-bar-version');
+  const vEl   = document.getElementById('gh-bar-version');
   if (vEl) vEl.textContent = 'Version: ' + label;
-  const sEl = document.getElementById('sidebar-version');
+  const sEl   = document.getElementById('sidebar-version');
   if (sEl) sEl.textContent = 'Version: ' + label;
 }
 
@@ -391,7 +491,7 @@ function wireAutoSave() {
     if (el) el.addEventListener('input', () => localStorage.setItem('cbsg-' + id, el.value));
   });
 
-  // Also wire up any checklist note textareas not in PAGE_NOTE_IDS
+  // Also wire checklist note textareas
   document.querySelectorAll('textarea.notes-textarea').forEach(el => {
     if (el.id && !el.id.startsWith('ai-')) {
       el.addEventListener('input', () => localStorage.setItem('cbsg-' + el.id, el.value));
@@ -402,10 +502,7 @@ function wireAutoSave() {
 
   // Restore saved GitHub token
   const savedToken = localStorage.getItem('cbsg-gh-token');
-  if (savedToken) {
-    const t = document.getElementById('gh-token');
-    if (t) t.value = savedToken;
-  }
+  if (savedToken) { const t = document.getElementById('gh-token'); if (t) t.value = savedToken; }
 }
 
 // ── SIDEBAR ACTIVE STATE ──────────────────────────────────
@@ -427,5 +524,6 @@ document.addEventListener('DOMContentLoaded', () => {
   wireAutoSave();
   markActivePage();
   injectBarExtras();
+  injectCompleteButton();
   startTimer();
 });
