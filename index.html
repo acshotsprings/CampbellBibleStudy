@@ -168,6 +168,8 @@
   .modal-btn-cancel { background:#fff; color:#666; border:1px solid #ccc; border-radius:4px; padding:8px 16px; font-size:13px; cursor:pointer; }
 
 
+  body.admin-mode #hamburger { top: 96px; }
+
   @media print {
     #sidebar { display: none; }
     #main { margin-left: 0; padding: 20px; }
@@ -204,6 +206,25 @@
       width: 100%;
     }
 
+    /* Admin bar on mobile — stacks into two rows when unlocked */
+    #github-bar {
+      flex-wrap: wrap;
+      padding: 6px 12px;
+      gap: 6px;
+    }
+    #github-bar .bar-title { order: 1; }
+    #github-bar .bar-sep { order: 2; }
+    #github-bar #btn-admin { order: 3; }
+    #github-bar #version-stamp { order: 4; margin-left: auto; }
+    /* Token field and save button drop to second row */
+    #github-bar #gh-token {
+      order: 10;
+      width: 100% !important;
+      flex-basis: 100%;
+    }
+    #github-bar #btn-save { order: 11; }
+    #github-bar #gh-status { order: 12; }
+
     /* Larger text for comfortable mobile reading */
     p.body { font-size: 16px; line-height: 1.9; }
     .scripture-box .text { font-size: 16px; line-height: 1.9; }
@@ -231,8 +252,8 @@
 </head>
 <body>
 <div id="github-bar" style="position:fixed;top:0;left:0;right:0;background:#1F3864;color:white;z-index:200;padding:8px 20px;display:flex;align-items:center;gap:12px;font-family:Arial,sans-serif;font-size:13px;border-bottom:2px solid #FFD700;">
-  <span style="font-weight:bold;color:#FFD700;">Campbell Bible Study</span>
-  <span style="color:rgba(255,255,255,0.4)">|</span>
+  <span class="bar-title" style="font-weight:bold;color:#FFD700;">Campbell Bible Study</span>
+  <span class="bar-sep" style="color:rgba(255,255,255,0.4)">|</span>
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display:none;padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
   <button onclick="saveToGitHub()" id="btn-save" style="display:none;background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
   <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);"></span>
