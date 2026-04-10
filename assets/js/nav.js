@@ -1,6 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v4.2 Completion Tracking
+   Sidebar Navigation Builder — v4.2 No-Jump + Completion
    ============================================================ */
 
 const NAV_STRUCTURE = [
@@ -71,10 +71,10 @@ const NAV_STRUCTURE = [
     label: 'My Study',
     collapsible: false,
     items: [
-      { label: 'Prophecy Checklist',     href: '/checklist.html'    },
-      { label: 'Sermon & Teaching Log',  href: '/sermons.html'      },
-      { label: 'Personal Journal',       href: '/journal.html'      },
-      { label: 'My Growing Convictions', href: '/convictions.html'  },
+      { label: 'Prophecy Checklist',     href: '/checklist.html'   },
+      { label: 'Sermon & Teaching Log',  href: '/sermons.html'     },
+      { label: 'Personal Journal',       href: '/journal.html'     },
+      { label: 'My Growing Convictions', href: '/convictions.html' },
     ]
   }
 ];
@@ -87,6 +87,14 @@ function buildSidebar(root) {
   root = root || '.';
   const base        = '/CampbellBibleStudy';
   const currentPath = window.location.pathname;
+  const sidebar     = document.getElementById('sidebar');
+  if (!sidebar) return;
+
+  // ── PRESERVE SCROLL POSITION ──────────────────────────
+  // This is the fix for the jump-to-top bug.
+  // We save the sidebar's scroll position before rebuilding
+  // and restore it immediately after setting innerHTML.
+  const savedScrollTop = sidebar.scrollTop;
 
   function isActiveSection(section) {
     if (!section.items) return false;
@@ -125,14 +133,13 @@ function buildSidebar(root) {
         const sub      = item.sub ? ' sub' : '';
         html += `<a class="nav-item${sub}${active}" href="${root + item.href}">${item.label}</a>`;
       });
-
     } else {
-      const key            = section.key;
-      const hasActivePage  = isActiveSection(section);
+      const key           = section.key;
+      const hasActivePage = isActiveSection(section);
       if (hasActivePage) setCollapsed(key, false);
-      const collapsed      = isCollapsed(key);
+      const collapsed     = isCollapsed(key);
 
-      // Progress counter for collapsible sections that have completable items
+      // Progress counter
       const completable    = section.items.filter(i => i.completable);
       const completedCount = completable.filter(i => isModuleComplete(i.completeKey)).length;
       const allDone        = completable.length > 0 && completedCount === completable.length;
@@ -149,15 +156,12 @@ function buildSidebar(root) {
       `;
 
       section.items.forEach(item => {
-        const fullHref = base + item.href;
-        const active   = currentPath === fullHref ||
-                         currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
-        const sub      = item.sub ? ' sub' : '';
-        const done     = item.completable && isModuleComplete(item.completeKey);
-
-        const doneStyle = done
-          ? ' style="color:#90EE90 !important;border-left-color:#90EE90;"'
-          : '';
+        const fullHref  = base + item.href;
+        const active    = currentPath === fullHref ||
+                          currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
+        const sub       = item.sub ? ' sub' : '';
+        const done      = item.completable && isModuleComplete(item.completeKey);
+        const doneStyle = done ? ' style="color:#90EE90;border-left-color:#90EE90;"' : '';
         const doneIcon  = done ? ' <span style="color:#90EE90;font-size:11px;">✓</span>' : '';
 
         html += `<a class="nav-item${sub}${active}"${doneStyle} href="${root + item.href}">${item.label}${doneIcon}</a>`;
@@ -169,8 +173,9 @@ function buildSidebar(root) {
 
   html += `</div>`;
 
-  const sidebar = document.getElementById('sidebar');
-  if (sidebar) sidebar.innerHTML = html;
+  // Set HTML then immediately restore scroll — no visible jump
+  sidebar.innerHTML = html;
+  sidebar.scrollTop = savedScrollTop;
 }
 
 function toggleNavSection(key) {
