@@ -96,11 +96,14 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status"></span>
+  <button id="btn-timestamp" class="btn-timestamp" title="Insert timestamp at cursor in your notes" onclick="insertTimestamp()">🕐 Timestamp</button>
+  <button id="btn-log-time" class="btn-timestamp" title="Insert study time summary at cursor in your notes" onclick="insertStudyTime()">📚 Log Study Time</button>
+  <span id="study-timer-display" class="study-timer-display"></span>
+  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);"></span>
   <div class="bar-right">
-    <span class="bar-originated">Originated: April 9, 2026</span>
+    <span class="bar-originated">Originated: March 27, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 9, 2026</span>
+    <span id="gh-bar-version">Version: April 10, 2026</span>
   </div>
 </div>
 
@@ -373,6 +376,166 @@
         </div>
       </div>
 
+      <div class="books-section-label">Prophetic Fiction — Last Jihad Series</div>
+
+      <!-- THE LAST JIHAD -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('last-jihad')">
+          <div class="book-read-wrap" id="wrap-rl-last-jihad" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-last-jihad" onchange="saveReadState('last-jihad')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Last Jihad</div>
+            <div class="book-year-type">2002 · Fiction — Last Jihad #1</div>
+            <div class="book-modules-inline">→ Module 9.4 (Israel oil/wealth), Sermon Log #8</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Last-Jihad-Audiobook/B002V5BV7I" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-last-jihad">▶</div>
+        </div>
+        <div class="book-body" id="book-last-jihad">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-last-jihad" placeholder="" onchange="saveDateState('last-jihad','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-last-jihad" placeholder="" onchange="saveDateState('last-jihad','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Rosenberg's debut novel — a kamikaze attack on Air Force One opens a war against Saddam Hussein and a hunt for weapons of mass destruction. Written and submitted to publishers on September 9, 2001 — two days before 9/11. The book that a Zion Oil investor picked up at Ben Gurion Airport in 2005, read on the plane, and immediately emailed CEO Jim Soltero about — directly connecting Rosenberg's fiction to the real-world Israel oil discovery story (Sermon Log #8, Module 9.4).</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Last-Jihad-Audiobook/B002V5BV7I" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- THE LAST DAYS -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('last-days')">
+          <div class="book-read-wrap" id="wrap-rl-last-days" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-last-days" onchange="saveReadState('last-days')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Last Days</div>
+            <div class="book-year-type">2003 · Fiction — Last Jihad #2</div>
+            <div class="book-modules-inline">→ Module 9 (Gog-Magog), Module 9.4 (Israel wealth)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Last-Days-Audiobook/B002V5GYAY" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-last-days">▶</div>
+        </div>
+        <div class="book-body" id="book-last-days">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-last-days" placeholder="" onchange="saveDateState('last-days','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-last-days" placeholder="" onchange="saveDateState('last-days','end',this.value)"></div>
+          </div>
+          <div class="book-desc">A Palestinian leader is assassinated just as peace talks begin. A CIA operative races to prevent all-out war. Was being published at the exact time the Zion Oil/Luskin oil discovery news broke in 2004 — mentioned by name in the April 7, 2026 audio teaching (Sermon Log #8).</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Last-Days-Audiobook/B002V5GYAY" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- THE EZEKIEL OPTION (FICTION) -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('ezekiel-fiction')">
+          <div class="book-read-wrap" id="wrap-rl-ezekiel-fiction" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-ezekiel-fiction" onchange="saveReadState('ezekiel-fiction')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Ezekiel Option <span style="font-size:10px;color:#888;">(Fiction)</span></div>
+            <div class="book-year-type">2005 · Fiction — Last Jihad #3</div>
+            <div class="book-modules-inline">→ Module 9 (Gog-Magog War — full narrative treatment)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Ezekiel-Option-Audiobook/B002V8KH78" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-ezekiel-fiction">▶</div>
+        </div>
+        <div class="book-body" id="book-ezekiel-fiction">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-ezekiel-fiction" placeholder="" onchange="saveDateState('ezekiel-fiction','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-ezekiel-fiction" placeholder="" onchange="saveDateState('ezekiel-fiction','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Russia and Iran form a military alliance and prepare to invade Israel — a fictional dramatization of Ezekiel 38–39. Rosenberg wrote this before such an alliance existed; within a year of publication, Russia and Iran signed their first major defense cooperation agreement. The most direct fictional treatment of the Gog-Magog War in this study guide.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Ezekiel-Option-Audiobook/B002V8KH78" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- THE COPPER SCROLL -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('copper-scroll')">
+          <div class="book-read-wrap" id="wrap-rl-copper-scroll" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-copper-scroll" onchange="saveReadState('copper-scroll')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Copper Scroll</div>
+            <div class="book-year-type">2006 · Fiction — Last Jihad #4</div>
+            <div class="book-modules-inline">→ Theme 2 (Dead Sea Scrolls), Module 8 (Temple treasure)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Copper-Scroll-Audiobook/B002V0QUGO" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-copper-scroll">▶</div>
+        </div>
+        <div class="book-body" id="book-copper-scroll">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-copper-scroll" placeholder="" onchange="saveDateState('copper-scroll','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-copper-scroll" placeholder="" onchange="saveDateState('copper-scroll','end',this.value)"></div>
+          </div>
+          <div class="book-desc">A real Dead Sea Scroll — the Copper Scroll — claims to reveal the hiding place of the Temple treasure from Solomon's era. A hunt for that treasure leads to a catastrophic terrorist attack. Connects to Theme 2 (Dead Sea Scrolls) and Module 8 (Temple preparations).</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Copper-Scroll-Audiobook/B002V0QUGO" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- DEAD HEAT -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('dead-heat')">
+          <div class="book-read-wrap" id="wrap-rl-dead-heat" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-dead-heat" onchange="saveReadState('dead-heat')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">Dead Heat</div>
+            <div class="book-year-type">2008 · Fiction — Last Jihad #5</div>
+            <div class="book-modules-inline">→ Module 6 (Rapture), Module 3 (Day of the Lord)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/Dead-Heat-Audiobook/B002V5BTGE" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-dead-heat">▶</div>
+        </div>
+        <div class="book-body" id="book-dead-heat">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-dead-heat" placeholder="" onchange="saveDateState('dead-heat','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-dead-heat" placeholder="" onchange="saveDateState('dead-heat','end',this.value)"></div>
+          </div>
+          <div class="book-desc">A U.S. Presidential election on the brink of apocalypse — nuclear threats, terrorism, and the Rapture itself. The most eschatologically explicit of the Last Jihad series, bringing the Rapture and Tribulation into the narrative directly.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/Dead-Heat-Audiobook/B002V5BTGE" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <div class="books-section-label">Prophetic Fiction — Other Novels</div>
+
+      <!-- THE AUSCHWITZ ESCAPE -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('auschwitz-escape')">
+          <div class="book-read-wrap" id="wrap-rl-auschwitz-escape" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-auschwitz-escape" onchange="saveReadState('auschwitz-escape')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Auschwitz Escape</div>
+            <div class="book-year-type">2014 · Fiction — Standalone Historical</div>
+            <div class="book-modules-inline">→ Module 2 (Israel in Prophecy — Holocaust context)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Auschwitz-Escape-Audiobook/B00JNZQBP4" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-auschwitz-escape">▶</div>
+        </div>
+        <div class="book-body" id="book-auschwitz-escape">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-auschwitz-escape" placeholder="" onchange="saveDateState('auschwitz-escape','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-auschwitz-escape" placeholder="" onchange="saveDateState('auschwitz-escape','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Historical fiction based on the true story of Rudolf Vrba and Alfred Wetzler — two Jewish prisoners who escaped Auschwitz in 1944 to warn the world. Provides powerful historical grounding for understanding why Israel's existence is a fulfillment of prophecy after near-annihilation.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Auschwitz-Escape-Audiobook/B00JNZQBP4" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
       <div style="padding:12px 18px 16px;">
         <div class="notes-box" style="margin:0;">
           <div class="label">✏️ My Rosenberg reading log:</div>
@@ -492,6 +655,84 @@
         </div>
       </div>
 
+      <!-- WORLD WAR III AND THE END TIMES -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('rhodes-wwiii')">
+          <div class="book-read-wrap" id="wrap-rl-rhodes-wwiii" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-rhodes-wwiii" onchange="saveReadState('rhodes-wwiii')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">World War III and the End Times</div>
+            <div class="book-year-type">2023 · Non-Fiction</div>
+            <div class="book-modules-inline">→ Module 9 (Gog-Magog), Module 10 (Signs of Times), Checklist Phase 1</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=World+War+III+End+Times+Ron+Rhodes" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-rhodes-wwiii">▶</div>
+        </div>
+        <div class="book-body" id="book-rhodes-wwiii">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-rhodes-wwiii" placeholder="" onchange="saveDateState('rhodes-wwiii','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-rhodes-wwiii" placeholder="" onchange="saveDateState('rhodes-wwiii','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Rhodes examines how current global conflicts — Russia-Ukraine, China-Taiwan, Middle East tensions — align with End Times prophecy. Connects present events to the Gog-Magog coalition and the Tribulation timeline. Directly relevant to 2026 current events.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=World+War+III+End+Times+Ron+Rhodes" target="_blank">🎧 Search on Audible</a>
+        </div>
+      </div>
+
+      <!-- JESUS AND THE END TIMES -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('rhodes-jesus-endtimes')">
+          <div class="book-read-wrap" id="wrap-rl-rhodes-jesus-endtimes" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-rhodes-jesus-endtimes" onchange="saveReadState('rhodes-jesus-endtimes')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Jesus and the End Times</div>
+            <div class="book-year-type">2018 · Non-Fiction</div>
+            <div class="book-modules-inline">→ Module 13 (Second Coming), Module 14 (Matt 24 ↔ Revelation)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Jesus+End+Times+Ron+Rhodes" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-rhodes-jesus-endtimes">▶</div>
+        </div>
+        <div class="book-body" id="book-rhodes-jesus-endtimes">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-rhodes-jesus-endtimes" placeholder="" onchange="saveDateState('rhodes-jesus-endtimes','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-rhodes-jesus-endtimes" placeholder="" onchange="saveDateState('rhodes-jesus-endtimes','end',this.value)"></div>
+          </div>
+          <div class="book-desc">What did Jesus actually teach about the end times? Rhodes walks through the Olivet Discourse (Matthew 24–25) systematically, examining every prophetic statement Jesus made. Essential companion to Module 14's Matthew 24 ↔ Revelation parallel table.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=Jesus+End+Times+Ron+Rhodes" target="_blank">🎧 Search on Audible</a>
+        </div>
+      </div>
+
+      <!-- THE POPULAR DICTIONARY OF BIBLE PROPHECY -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('rhodes-dictionary')">
+          <div class="book-read-wrap" id="wrap-rl-rhodes-dictionary" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-rhodes-dictionary" onchange="saveReadState('rhodes-dictionary')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">The Popular Dictionary of Bible Prophecy</div>
+            <div class="book-year-type">2010 · Non-Fiction · Reference</div>
+            <div class="book-modules-inline">→ All modules — general reference</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Popular+Dictionary+Bible+Prophecy+Rhodes" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-rhodes-dictionary">▶</div>
+        </div>
+        <div class="book-body" id="book-rhodes-dictionary">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-rhodes-dictionary" placeholder="" onchange="saveDateState('rhodes-dictionary','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-rhodes-dictionary" placeholder="" onchange="saveDateState('rhodes-dictionary','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Alphabetical reference covering every major term, person, place, and event in Bible prophecy. Use alongside this study guide to quickly look up any prophetic term — from Abomination of Desolation to Zion.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=Popular+Dictionary+Bible+Prophecy+Rhodes" target="_blank">🎧 Search on Audible</a>
+        </div>
+      </div>
+
       <div style="padding:12px 18px 16px;">
         <div class="notes-box" style="margin:0;">
           <div class="label">✏️ My Rhodes reading log:</div>
@@ -587,13 +828,304 @@
           <a class="audible-btn" href="https://www.amazon.com/Ancient-Dead-Sea-Scroll-Calendar/dp/B087LGY8N8" target="_blank">🎧 Listen on Audible</a>
         </div>
       </div>
+
+      <!-- ANCIENT BOOK OF ENOCH -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('johnson-enoch')">
+          <div class="book-read-wrap" id="wrap-rl-johnson-enoch" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-johnson-enoch" onchange="saveReadState('johnson-enoch')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Ancient Book of Enoch</div>
+            <div class="book-year-type">2012 · Non-Fiction</div>
+            <div class="book-modules-inline">→ Theme 2 (364-day calendar), Module 9 (angelic warfare)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Ancient+Book+Enoch+Ken+Johnson" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-johnson-enoch">▶</div>
+        </div>
+        <div class="book-body" id="book-johnson-enoch">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-johnson-enoch" placeholder="" onchange="saveDateState('johnson-enoch','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-johnson-enoch" placeholder="" onchange="saveDateState('johnson-enoch','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Johnson's commentary on the Book of Enoch — covering its astronomical and calendar sections (the 364-day solar year), the Watchers and fallen angels, the Son of Man figure, and its direct relationship to the Dead Sea Scrolls. Companion to the Enoch PDF in this library and to Theme 2.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=Ancient+Book+Enoch+Ken+Johnson" target="_blank">🎧 Search on Audible</a>
+        </div>
+      </div>
+
+      <!-- ANCIENT BOOK OF JUBILEES -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('johnson-jubilees')">
+          <div class="book-read-wrap" id="wrap-rl-johnson-jubilees" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-johnson-jubilees" onchange="saveReadState('johnson-jubilees')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Ancient Book of Jubilees</div>
+            <div class="book-year-type">2012 · Non-Fiction</div>
+            <div class="book-modules-inline">→ Theme 2 Module 3 (Book of Jubilees), Module 1 (Daniel's 70 Weeks)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Ancient+Book+Jubilees+Ken+Johnson" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-johnson-jubilees">▶</div>
+        </div>
+        <div class="book-body" id="book-johnson-jubilees">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-johnson-jubilees" placeholder="" onchange="saveDateState('johnson-jubilees','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-johnson-jubilees" placeholder="" onchange="saveDateState('johnson-jubilees','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Johnson's commentary on the Book of Jubilees — the 364-day solar calendar, the jubilee nested-seven system and its connection to Daniel's 70 Weeks, and the calendar warnings from Noah in Jubilees 6. Directly ties to Theme 2 Module 3 in this study guide.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=Ancient+Book+Jubilees+Ken+Johnson" target="_blank">🎧 Search on Audible</a>
+        </div>
+      </div>
+
+      <!-- ANCIENT PROPHECIES REVEALED -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('johnson-prophecies')">
+          <div class="book-read-wrap" id="wrap-rl-johnson-prophecies" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-johnson-prophecies" onchange="saveReadState('johnson-prophecies')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Ancient Prophecies Revealed</div>
+            <div class="book-year-type">2008 · Non-Fiction</div>
+            <div class="book-modules-inline">→ All Theme 1 modules — prophecy background</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Ancient+Prophecies+Revealed+Ken+Johnson" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-johnson-prophecies">▶</div>
+        </div>
+        <div class="book-body" id="book-johnson-prophecies">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-johnson-prophecies" placeholder="" onchange="saveDateState('johnson-prophecies','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-johnson-prophecies" placeholder="" onchange="saveDateState('johnson-prophecies','end',this.value)"></div>
+          </div>
+          <div class="book-desc">500 prophecies from the Old Testament with their New Testament or historical fulfillments. Useful reference for tracing any prophetic theme across the full canon — especially useful alongside Module 1 (Daniel) and Module 2 (Israel).</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=Ancient+Prophecies+Revealed+Ken+Johnson" target="_blank">🎧 Search on Audible</a>
+        </div>
+      </div>
+
+      <!-- ANCIENT CHURCH FATHERS -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('johnson-church-fathers')">
+          <div class="book-read-wrap" id="wrap-rl-johnson-church-fathers" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-johnson-church-fathers" onchange="saveReadState('johnson-church-fathers')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Ancient Church Fathers</div>
+            <div class="book-year-type">2010 · Non-Fiction</div>
+            <div class="book-modules-inline">→ Module 6 (Rapture history), Module 12 (Millennium views)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Ancient+Church+Fathers+Ken+Johnson" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-johnson-church-fathers">▶</div>
+        </div>
+        <div class="book-body" id="book-johnson-church-fathers">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-johnson-church-fathers" placeholder="" onchange="saveDateState('johnson-church-fathers','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-johnson-church-fathers" placeholder="" onchange="saveDateState('johnson-church-fathers','end',this.value)"></div>
+          </div>
+          <div class="book-desc">What did the earliest church fathers actually believe about prophecy, the Rapture, and the Millennium? Johnson surveys the writings of Polycarp, Irenaeus, Clement, Tertullian, and others to show what pre-Nicene Christianity taught about the end times — relevant to the debate over whether pre-trib theology is a modern invention.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=Ancient+Church+Fathers+Ken+Johnson" target="_blank">🎧 Search on Audible</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── TIM LAHAYE ── -->
+  <div class="author-block">
+    <div class="author-toggle" onclick="toggleBlock('lahaye')" style="background:linear-gradient(135deg,#8B1A1A,#B22222);">
+      <div class="author-avatar" style="color:#FFD0D0;border-color:#FFD0D0;">✍️</div>
+      <div class="author-meta">
+        <div class="author-name" style="color:#FFD0D0;">Tim LaHaye</div>
+        <div class="author-sub" style="color:rgba(255,255,255,0.7);">Non-Fiction &amp; Fiction · Bible Prophecy · Left Behind Series</div>
+        <div class="author-count" style="color:rgba(255,255,255,0.4);">Click to expand · Non-fiction &amp; fiction</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        <a class="audible-author-btn" href="https://www.audible.com/author/Tim-LaHaye/B000AQ3RJS" target="_blank" onclick="event.stopPropagation()">🎧 All on Audible</a>
+        <div class="author-arrow" id="arrow-lahaye" style="color:rgba(255,255,255,0.4);">▶</div>
+      </div>
+    </div>
+    <div class="author-body" id="block-lahaye">
+      <div class="author-desc">Co-founder of the Pre-Trib Research Center and one of the most influential prophecy teachers of the 20th century. His non-fiction studies of Ezekiel 38–39 predicted Israel's oil wealth as a precondition for the Gog-Magog invasion years before the 2003–2005 oil discoveries proved him right (Sermon Log #8, Module 9.4). His Left Behind fiction series (co-written with Jerry Jenkins) sold 65 million copies and directly inspired Joel Rosenberg to write his own prophetic fiction — including The Last Jihad.</div>
+
+      <div class="books-section-label">Non-Fiction</div>
+
+      <!-- ARE WE LIVING IN THE END TIMES -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('lahaye-endtimes')">
+          <div class="book-read-wrap" id="wrap-rl-lahaye-endtimes" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-lahaye-endtimes" onchange="saveReadState('lahaye-endtimes')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Are We Living in the End Times?</div>
+            <div class="book-year-type">1999 · Non-Fiction · with Jerry Jenkins</div>
+            <div class="book-modules-inline">→ Module 9.4 (Israel oil wealth prediction), Module 10 (Signs of Times)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Are+We+Living+End+Times+LaHaye" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-lahaye-endtimes">▶</div>
+        </div>
+        <div class="book-body" id="book-lahaye-endtimes">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-lahaye-endtimes" placeholder="" onchange="saveDateState('lahaye-endtimes','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-lahaye-endtimes" placeholder="" onchange="saveDateState('lahaye-endtimes','end',this.value)"></div>
+          </div>
+          <div class="book-desc">LaHaye's systematic case that the signs of the times are aligning with biblical prophecy. Contains his famous prediction: if an oil pool greater than Iran's were discovered under Israel, it would fund energy independence, solve economic problems, and make Israel wealthy enough to attract the Gog-Magog invasion of Ezekiel 38 — written years before the 2003–2005 discoveries proved him right (Sermon Log #8, Module 9.4).</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=Are+We+Living+End+Times+LaHaye" target="_blank">🎧 Search on Audible</a>
+        </div>
+      </div>
+
+      <!-- REVELATION UNVEILED -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('lahaye-rev')">
+          <div class="book-read-wrap" id="wrap-rl-lahaye-rev" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-lahaye-rev" onchange="saveReadState('lahaye-rev')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Revelation Unveiled</div>
+            <div class="book-year-type">1999 · Non-Fiction · Verse-by-verse commentary</div>
+            <div class="book-modules-inline">→ Modules 6, 7, 12, 13, 14</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Revelation+Unveiled+LaHaye" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-lahaye-rev">▶</div>
+        </div>
+        <div class="book-body" id="book-lahaye-rev">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-lahaye-rev" placeholder="" onchange="saveDateState('lahaye-rev','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-lahaye-rev" placeholder="" onchange="saveDateState('lahaye-rev','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Verse-by-verse pre-trib commentary on Revelation. LaHaye's most detailed treatment of the Tribulation timeline, seal and trumpet judgments, and the Second Coming. Essential theological background to the Left Behind series.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=Revelation+Unveiled+LaHaye" target="_blank">🎧 Search on Audible</a>
+        </div>
+      </div>
+
+      <!-- THE RAPTURE -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('lahaye-rapture-nf')">
+          <div class="book-read-wrap" id="wrap-rl-lahaye-rapture-nf" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-lahaye-rapture-nf" onchange="saveReadState('lahaye-rapture-nf')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">The Rapture</div>
+            <div class="book-year-type">2002 · Non-Fiction</div>
+            <div class="book-modules-inline">→ Module 6 (Rapture)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=The+Rapture+LaHaye+nonfiction" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-lahaye-rapture-nf">▶</div>
+        </div>
+        <div class="book-body" id="book-lahaye-rapture-nf">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-lahaye-rapture-nf" placeholder="" onchange="saveDateState('lahaye-rapture-nf','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-lahaye-rapture-nf" placeholder="" onchange="saveDateState('lahaye-rapture-nf','end',this.value)"></div>
+          </div>
+          <div class="book-desc">LaHaye's full defense of the pre-tribulation Rapture — covering every major objection and the biblical case for the Church's removal before the 70th Week. A thorough treatment of Module 6's central question.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=The+Rapture+LaHaye+nonfiction" target="_blank">🎧 Search on Audible</a>
+        </div>
+      </div>
+
+      <div class="books-section-label">Fiction — Left Behind Series (with Jerry Jenkins)</div>
+
+      <!-- LEFT BEHIND -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('left-behind-1')">
+          <div class="book-read-wrap" id="wrap-rl-left-behind-1" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-left-behind-1" onchange="saveReadState('left-behind-1')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">Left Behind</div>
+            <div class="book-year-type">1995 · Fiction — Left Behind #1</div>
+            <div class="book-modules-inline">→ Module 6 (Rapture), Module 7 (Antichrist)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/Left-Behind-Audiobook/B002VA9SYO" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-left-behind-1">▶</div>
+        </div>
+        <div class="book-body" id="book-left-behind-1">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-left-behind-1" placeholder="" onchange="saveDateState('left-behind-1','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-left-behind-1" placeholder="" onchange="saveDateState('left-behind-1','end',this.value)"></div>
+          </div>
+          <div class="book-desc">The Rapture occurs and the world is thrown into chaos. Airline pilot Rayford Steele and journalist Buck Williams begin to piece together what happened. The book that launched the 16-volume series and sold 65 million copies — and directly inspired Joel Rosenberg to write The Last Jihad.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/Left-Behind-Audiobook/B002VA9SYO" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- TRIBULATION FORCE -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('tribulation-force')">
+          <div class="book-read-wrap" id="wrap-rl-tribulation-force" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-tribulation-force" onchange="saveReadState('tribulation-force')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">Tribulation Force</div>
+            <div class="book-year-type">1996 · Fiction — Left Behind #2</div>
+            <div class="book-modules-inline">→ Module 7 (Antichrist rises), Module 3 (Day of the Lord)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/Tribulation-Force-Audiobook/B002V5HGKO" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-tribulation-force">▶</div>
+        </div>
+        <div class="book-body" id="book-tribulation-force">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-tribulation-force" placeholder="" onchange="saveDateState('tribulation-force','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-tribulation-force" placeholder="" onchange="saveDateState('tribulation-force','end',this.value)"></div>
+          </div>
+          <div class="book-desc">The Tribulation Force forms as the Antichrist Nicolae Carpathia consolidates global power. A fictional dramatization of the early Tribulation period — Daniel 9:27's covenant, the rise of the one-world government, and the two witnesses of Revelation 11.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/Tribulation-Force-Audiobook/B002V5HGKO" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- NICOLAE -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('nicolae')">
+          <div class="book-read-wrap" id="wrap-rl-nicolae" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-nicolae" onchange="saveReadState('nicolae')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">Nicolae: The Rise of the Antichrist</div>
+            <div class="book-year-type">1997 · Fiction — Left Behind #3</div>
+            <div class="book-modules-inline">→ Module 7 (Antichrist profile), Module 15 (Armageddon)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/Nicolae-Audiobook/B002V8LCWQ" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-nicolae">▶</div>
+        </div>
+        <div class="book-body" id="book-nicolae">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-nicolae" placeholder="" onchange="saveDateState('nicolae','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-nicolae" placeholder="" onchange="saveDateState('nicolae','end',this.value)"></div>
+          </div>
+          <div class="book-desc">War engulfs the globe as Carpathia directs a world war. A fictional treatment of the seal judgments of Revelation 6 and the Antichrist's growing military dominance in the first half of the Tribulation.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/Nicolae-Audiobook/B002V8LCWQ" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <div style="padding:12px 18px 16px;">
+        <div class="notes-box" style="margin:0;">
+          <div class="label">✏️ My LaHaye reading log:</div>
+          <textarea class="notes-input" id="n-lib-lahaye" placeholder="e.g. April 7, 2026 — Heard about LaHaye's oil prediction in Sermon #8. He wrote that if Israel found oil greater than Iran's it would change history and fulfill Ezekiel 38. Tovia Luskin proved him right in 2004..." style="min-height:70px;"></textarea>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- ADD NEW AUTHORS -->
   <div class="notes-box">
     <div class="label">✏️ Authors &amp; books to add — running list:</div>
-    <textarea class="notes-input" id="n-lib-authors" placeholder="e.g. Hal Lindsey — The Late Great Planet Earth&#10;Tim LaHaye — Left Behind series&#10;John Walvoord — The Revelation of Jesus Christ&#10;Mark Hitchcock — 101 Answers on the Book of Revelation&#10;David Jeremiah — The Book of Signs"></textarea>
+    <textarea class="notes-input" id="n-lib-authors" placeholder="e.g. Hal Lindsey — The Late Great Planet Earth&#10;John Walvoord — The Revelation of Jesus Christ&#10;Mark Hitchcock — 101 Answers on the Book of Revelation&#10;David Jeremiah — The Book of Signs"></textarea>
   </div>
 
   <div class="divider"></div>
@@ -733,7 +1265,7 @@
 <!-- PAGE NOTE IDS -->
 <script>
 window.PAGE_NOTE_IDS = [
-  'n-lib-rosenberg','n-lib-rhodes','n-lib-authors',
+  'n-lib-rosenberg','n-lib-rhodes','n-lib-lahaye','n-lib-authors',
   'n-lib-translations','n-lib-resources'
 ];
 </script>
@@ -779,8 +1311,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const books = [
     'epicenter','ezekiel-nf','israel-war','enemies-allies',
     'persian-gamble','jerusalem-assassin','beirut-protocol','libyan-diversion',
-    'end-times-chrono','40-days-rev','prophecy-answer',
-    'usa-end-times','dead-sea-calendar'
+    'last-jihad','last-days','ezekiel-fiction','copper-scroll','dead-heat','auschwitz-escape',
+    'end-times-chrono','40-days-rev','prophecy-answer','rhodes-wwiii','rhodes-jesus-endtimes','rhodes-dictionary',
+    'usa-end-times',
+    'dead-sea-calendar','johnson-enoch','johnson-jubilees','johnson-prophecies','johnson-church-fathers',
+    'lahaye-endtimes','lahaye-rev','lahaye-rapture-nf','left-behind-1','tribulation-force','nicolae'
   ];
 
   books.forEach(id => {
