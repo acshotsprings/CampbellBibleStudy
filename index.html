@@ -250,15 +250,15 @@
   }
 </style>
 </head>
-<body>
+<body class="admin-mode readonly">
 <div id="github-bar" style="position:fixed;top:0;left:0;right:0;background:#1F3864;color:white;z-index:200;padding:8px 20px;display:flex;align-items:center;gap:12px;font-family:Arial,sans-serif;font-size:13px;border-bottom:2px solid #FFD700;">
   <span class="bar-title" style="font-weight:bold;color:#FFD700;">Campbell Bible Study</span>
   <span class="bar-sep" style="color:rgba(255,255,255,0.4)">|</span>
-  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display:none;padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
-  <button onclick="saveToGitHub()" id="btn-save" style="display:none;background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
-  <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);"></span>
-  <button onclick="toggleAdminMode()" id="btn-admin" style="background:rgba(255,255,255,0.1);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 12px;font-size:11px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">🔒 Admin</button>
-  <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);" id="version-stamp">Version: April 10, 2026</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block; padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.3); font-size: 12px; width: 280px; background: rgba(255, 255, 255, 0.1); color: white;">
+  <button onclick="saveToGitHub()" id="btn-save" style="display: inline-block; background: rgb(255, 215, 0); color: rgb(31, 56, 100); border: none; border-radius: 4px; padding: 6px 16px; font-size: 12px; font-weight: bold; cursor: pointer;">Save to GitHub</button>
+  <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);">Saving...</span>
+  <button onclick="toggleAdminMode()" id="btn-admin" style="background:rgba(255,255,255,0.1);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 12px;font-size:11px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">🔓 Admin ON</button>
+  <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);" id="version-stamp">Version: April 10, 2026 at 3:48 PM</span>
 </div>
 
 <!-- HAMBURGER BUTTON -->
@@ -268,12 +268,12 @@
 <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <!-- ADMIN PASSWORD MODAL -->
-<div id="admin-modal">
+<div id="admin-modal" class="">
   <div id="admin-modal-box">
     <h3>🔒 Admin Access</h3>
     <p>Enter your admin password to enable editing.</p>
     <input id="admin-pw-input" type="password" placeholder="Password..." onkeydown="if(event.key==='Enter')checkAdminPw()">
-    <div id="admin-pw-error">Incorrect password. Try again.</div>
+    <div id="admin-pw-error" style="display: none;">Incorrect password. Try again.</div>
     <div class="modal-btn-row">
       <button class="modal-btn-cancel" onclick="closeAdminModal()">Cancel</button>
       <button class="modal-btn-primary" onclick="checkAdminPw()">Unlock</button>
@@ -287,7 +287,7 @@
 <div id="sidebar">
   <div id="sidebar-header">
     <h1>Campbell Family<br>Biblical Study Guide</h1>
-    <p>Version: April 10, 2026</p>
+    <p>Version: April 10, 2026 at 3:48 PM</p>
   </div>
   <div id="sidebar-nav">
     <div class="nav-section">Getting Started</div>
@@ -454,7 +454,7 @@
     <input class="guest-input" id="guest-name-m1" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m1" placeholder="Your email (optional — if you'd like a reply)">
     <textarea class="guest-textarea" id="guest-msg-m1" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 1 — Daniel&#39;s 70 Weeks', 'm1')">Submit to Chris</button>
+    <br><button class="guest-submit" onclick="submitGuest('Module 1 — Daniel's 70 Weeks', 'm1')">Submit to Chris</button>
     <div class="guest-status" id="guest-status-m1"></div>
   </div>
 </div>
@@ -1389,6 +1389,7 @@ async function saveToGitHub() {
 }
 
 </script>
+
 
 
 
