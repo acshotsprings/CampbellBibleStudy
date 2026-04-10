@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Campbell Deep Dive Studies</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #7a9fbf;
+      --gold-light: #a8c4d8;
+      --gold-dim: #4a6d85;
+      --bg-deep: #0e0f11;
+      --bg-card: #141518;
+      --bg-section: #1b1d21;
+      --text-primary: #e8eaed;
+      --text-muted: #9aa3ad;
+      --text-dim: #4a5260;
+      --red-accent: #1e3a52;
+      --red-light: #5b8fa8;
+      --border: rgba(120,160,190,0.15);
+      --border-strong: rgba(120,160,190,0.35);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.75;
+      min-height: 100vh;
+    }
+
+    /* Parchment texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(80,120,160,0.04) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(60,90,120,0.03) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      text-align: center;
+      padding: 60px 24px 48px;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .header-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    header h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(22px, 5vw, 42px);
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      text-shadow: 0 0 40px rgba(201,168,76,0.3);
+    }
+
+    .header-sub {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 540px;
+      margin: 0 auto 28px;
+    }
+
+    .header-ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: var(--gold-dim);
+      font-size: 18px;
+    }
+    .header-ornament span { display: block; width: 80px; height: 1px; background: var(--border-strong); }
+
+    /* ── NAV BAR ── */
+    .nav-bar {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(13,11,8,0.8);
+    }
+
+    .nav-bar a {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .nav-bar a:hover { color: var(--gold); border-color: var(--gold-dim); }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── SECTION HEADERS ── */
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── DEEP DIVE CARD ── */
+    .deep-dive-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold-dim);
+      margin-bottom: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .deep-dive-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .card-header {
+      padding: 32px 36px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .dive-number {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 36px;
+      color: var(--gold-dim);
+      line-height: 1;
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+
+    .card-title-area { flex: 1; }
+
+    .dive-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--red-light);
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(16px, 3vw, 22px);
+      color: var(--gold-light);
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .card-meta {
+      font-style: italic;
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+
+    .card-body { padding: 32px 36px; }
+
+    /* ── CONTENT SECTIONS ── */
+    .content-section {
+      margin-bottom: 36px;
+    }
+
+    .content-section h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .content-section p {
+      color: var(--text-primary);
+      margin-bottom: 14px;
+    }
+
+    /* ── SCRIPTURE BOX ── */
+    .scripture-box {
+      background: var(--bg-section);
+      border-left: 3px solid var(--gold);
+      padding: 20px 24px;
+      margin: 20px 0;
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 17px;
+    }
+    .scripture-box .ref {
+      display: block;
+      font-style: normal;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--gold-dim);
+      margin-top: 10px;
+    }
+
+    /* ── ARGUMENT GRID ── */
+    .argument-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    @media (max-width: 600px) { .argument-grid { grid-template-columns: 1fr; } }
+
+    .arg-box {
+      padding: 20px;
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+    }
+    .arg-box.for { border-top: 2px solid #2e7d32; }
+    .arg-box.against { border-top: 2px solid var(--red-accent); }
+
+    .arg-box h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .arg-box.for h4 { color: #4caf50; }
+    .arg-box.against h4 { color: #e57373; }
+
+    .arg-box ul {
+      list-style: none;
+      padding: 0;
+    }
+    .arg-box ul li {
+      font-size: 15px;
+      color: var(--text-muted);
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      padding-left: 16px;
+      position: relative;
+    }
+    .arg-box.for ul li::before { content: '✦'; position: absolute; left: 0; color: #4caf50; font-size: 10px; top: 9px; }
+    .arg-box.against ul li::before { content: '✦'; position: absolute; left: 0; color: #e57373; font-size: 10px; top: 9px; }
+
+    /* ── SOURCES ── */
+    .sources-list {
+      list-style: none;
+      padding: 0;
+    }
+    .sources-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 15px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 12px;
+    }
+    .sources-list li::before {
+      content: '›';
+      color: var(--gold-dim);
+      font-size: 18px;
+      line-height: 1.2;
+      flex-shrink: 0;
+    }
+    .sources-list a { color: var(--gold-dim); text-decoration: none; }
+    .sources-list a:hover { color: var(--gold); }
+
+    /* ── KEY QUESTIONS ── */
+    .questions-list {
+      list-style: none;
+      counter-reset: q;
+      padding: 0;
+    }
+    .questions-list li {
+      counter-increment: q;
+      padding: 12px 0 12px 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-style: italic;
+      color: var(--text-muted);
+      position: relative;
+      font-size: 17px;
+    }
+    .questions-list li::before {
+      content: counter(q);
+      position: absolute;
+      left: 0;
+      font-family: 'Cinzel', serif;
+      font-style: normal;
+      font-size: 13px;
+      color: var(--gold-dim);
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 12px;
+    }
+
+    /* ── CONCLUSION BOX ── */
+    .conclusion-box {
+      background: linear-gradient(135deg, rgba(80,120,160,0.07), rgba(30,58,82,0.07));
+      border: 1px solid var(--border-strong);
+      padding: 24px 28px;
+      margin-top: 24px;
+    }
+    .conclusion-box h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .conclusion-box p {
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 17px;
+    }
+
+    /* ── PLACEHOLDER CARD ── */
+    .placeholder-card {
+      background: var(--bg-card);
+      border: 1px dashed var(--border);
+      padding: 40px 36px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .placeholder-card .ph-icon {
+      font-size: 28px;
+      color: var(--border-strong);
+      margin-bottom: 12px;
+    }
+    .placeholder-card p {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+    }
+    footer::before {
+      content: '';
+      display: block;
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+      margin: 0 auto 24px;
+    }
+    footer p {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    footer a {
+      color: var(--gold-dim);
+      text-decoration: none;
+    }
+    footer a:hover { color: var(--gold); }
+
+    /* ── SAVE BUTTON ── */
+    .save-bar {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      padding: 16px 24px;
+      background: rgba(13,11,8,0.95);
+      border-top: 1px solid var(--border);
+    }
+    #saveBtn {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--bg-deep);
+      background: var(--gold);
+      border: none;
+      padding: 12px 36px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #saveBtn:hover { background: var(--gold-light); }
+    #saveStatus {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      margin-left: 20px;
+      align-self: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <p class="header-eyebrow">Campbell Family Scripture & Prophecy Studies</p>
+  <h1>Deep Dive Studies</h1>
+  <p class="header-sub">Focused investigations where Scripture, scholarship, and current events converge</p>
+  <div class="header-ornament">
+    <span></span>
+    ✦
+    <span></span>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav-bar">
+  <a href="https://acshotsprings.github.io/CampbellBibleStudy/CampbellBibleStudy.html">← Main Study Guide</a>
+  <a href="#dd-001">Deep Dive #001 — Putin & Gog</a>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+  <p class="section-label">Active Deep Dives</p>
+
+  <!-- ══════════════════════════════════
+       DEEP DIVE #001 — PUTIN & GOG
+  ══════════════════════════════════ -->
+  <article class="deep-dive-card" id="dd-001">
+    <div class="card-header">
+      <div class="dive-number">001</div>
+      <div class="card-title-area">
+        <p class="dive-tag">Eschatology · Geopolitics · Ezekiel 38–39</p>
+        <h2 class="card-title">Is Vladimir Putin the Fulfillment of the Gog Prophecy in Ezekiel 38?</h2>
+        <p class="card-meta">Opened April 9, 2026 &nbsp;·&nbsp; Triggered by transcript: Putin power centralization study</p>
+      </div>
+    </div>
+
+    <div class="card-body">
+
+      <!-- THE QUESTION -->
+      <div class="content-section">
+        <h3>The Central Question</h3>
+        <p>
+          Vladimir Putin's ongoing consolidation of authoritarian power — centralizing Russia's political system, eliminating direct democratic elections, and repositioning Russia as a military great power — raises a serious question for end-times students: Could Putin himself be the figure Scripture calls "Gog," the prince who leads the great northern invasion against Israel described in Ezekiel 38–39?
+        </p>
+        <p>
+          This is not a fringe question. Respected scholars and prophecy teachers have wrestled with the Russia-Gog connection for decades. The question is worth examining carefully — with both intellectual honesty about the evidence and appropriate caution about assigning prophetic roles to living individuals.
+        </p>
+      </div>
+
+      <!-- SCRIPTURE FOUNDATION -->
+      <div class="content-section">
+        <h3>Scripture Foundation — Ezekiel 38–39</h3>
+
+        <div class="scripture-box">
+          "Son of man, set your face toward Gog, of the land of Magog, the prince of Rosh, Meshech and Tubal, and prophesy against him and say, 'Thus says the Lord GOD: Behold, I am against you, O Gog, prince of Rosh, Meshech and Tubal.'"
+          <span class="ref">Ezekiel 38:2–3 (NASB)</span>
+        </div>
+
+        <div class="scripture-box">
+          "It will come about on that day, that thoughts will come into your mind and you will devise an evil plan, and you will say, 'I will go up against the land of unwalled villages. I will go against those who are at rest, that live securely, all of them living without walls and having no bars or gates, to capture spoil and to seize plunder...'"
+          <span class="ref">Ezekiel 38:10–12 (NASB)</span>
+        </div>
+
+        <div class="scripture-box">
+          "You will come from your place out of the remote parts of the north, you and many peoples with you, all of them riding on horses, a great assembly and a mighty army; and you will come up against My people Israel like a cloud to cover the land. It shall come about in the last days that I will bring you against My land, so that the nations may know Me when I am sanctified through you before their eyes, O Gog."
+          <span class="ref">Ezekiel 38:15–16 (NASB)</span>
+        </div>
+
+        <p>
+          Key prophetic markers about Gog from the text: (1) He comes from "the remote parts of the north" — geographically north of Israel; (2) He leads a coalition of nations including Persia (Iran), Cush (Ethiopia/Africa), Put (Libya), Gomer, and Beth-togarmah (Turkey region); (3) His motive is greed — plunder and spoil; (4) God puts "hooks in his jaws" to draw him — meaning God sovereignly compels this invasion even if Gog doesn't consciously intend to fulfill prophecy; (5) The invasion ends in supernatural divine judgment, not human military victory.
+        </p>
+      </div>
+
+      <!-- THE RUSSIA CONNECTION -->
+      <div class="content-section">
+        <h3>The Russia-as-Magog Interpretation</h3>
+        <p>
+          The identification of Magog with Russia rests primarily on three arguments: geography, linguistics, and coalition alignment.
+        </p>
+        <p>
+          <strong>Geography:</strong> Russia lies directly north of Israel on a north-south meridian, making it the most literal candidate for "the remote parts of the north" (Ezek. 38:15). No other major power sits further due north of the land of Israel.
+        </p>
+        <p>
+          <strong>Linguistics (debated):</strong> Some scholars — including Hal Lindsey and Thomas Ice — argue that "Rosh" in Ezekiel 38:2 is a proper noun identifying a nation, not merely an adjective meaning "chief." They connect "Rosh" etymologically to Russia, "Meshech" to Moscow, and "Tubal" to the Siberian city of Tobolsk. This interpretation is contested — many other scholars, including Gesenius, dispute the Russia-Rosh connection — but it remains a serious position in dispensational scholarship.
+        </p>
+        <p>
+          <strong>Coalition alignment:</strong> Ron Rhodes, in <em>The End Times in Chronological Order</em>, notes that Russia currently has military and political alliances with Iran (Persia), Libya (Put), and has a developing relationship with Turkey — the exact nations Ezekiel identifies as Gog's coalition partners. This convergence of alliances in real time is what scholars like Rhodes call the "Convergence Factor."
+        </p>
+      </div>
+
+      <!-- FOR AND AGAINST -->
+      <div class="content-section">
+        <h3>Does Putin Fit the Profile?</h3>
+
+        <div class="argument-grid">
+          <div class="arg-box for">
+            <h4>Evidence Supporting the Connection</h4>
+            <ul>
+              <li>Russia is geographically "the remote north" of Israel</li>
+              <li>Putin has consolidated unprecedented personal authoritarian power — fits the "prince" profile</li>
+              <li>Russia's alliances with Iran, Libya, and Turkey match Ezekiel's coalition nations</li>
+              <li>Putin has demonstrated willingness to use military force for territorial gain (Ukraine, Georgia, Syria)</li>
+              <li>Russia under Putin positions itself as a global military counterweight — the "powerhouse" that guards the coalition (Ezek. 38:7)</li>
+              <li>Putin's recent power centralization removes democratic checks — one man with unilateral military authority</li>
+              <li>Ron Rhodes notes the Russia-Iran-Turkey alliance is unprecedented and exactly what Ezekiel described</li>
+            </ul>
+          </div>
+
+          <div class="arg-box against">
+            <h4>Reasons for Caution</h4>
+            <ul>
+              <li>Scripture never names a living person — assigning prophetic roles to individuals has historically been wrong</li>
+              <li>Gog may be a title or office, not a specific individual — a future leader, not necessarily Putin</li>
+              <li>The Russia-Rosh linguistic link is disputed by many mainstream scholars</li>
+              <li>Gog invades when Israel "lives securely" — current Middle East tension arguably doesn't qualify</li>
+              <li>Putin's military position has been weakened by the Ukraine war — Gog leads a "mighty army"</li>
+              <li>Some scholars (amillennial, preterist) place the Gog-Magog war in the past or far future, not our era</li>
+              <li>We're called to watch and study — not to definitively name prophetic figures before fulfillment</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCHOLARLY VIEWS -->
+      <div class="content-section">
+        <h3>What the Scholars Say</h3>
+        <p>
+          <strong>Ron Rhodes</strong> (<em>The End Times in Chronological Order</em>): Argues Russia is Magog, that the Gog-Magog war occurs before the Tribulation begins (or at its outset when the Antichrist's covenant provides Israel's "peace and security"), and that the current Russia-Iran-Turkey alliance is a direct prophetic stage-setting. Rhodes stops short of naming Putin specifically, but emphasizes we are in the "season" of this war's approach.
+        </p>
+        <p>
+          <strong>Hal Lindsey</strong> (<em>The Late Great Planet Earth</em>): Was one of the first modern scholars to identify Russia as Gog, connecting Rosh to Russia. Written in 1970, his Russia-Gog framework has influenced almost all subsequent popular prophecy teaching.
+        </p>
+        <p>
+          <strong>Thomas Ice</strong>: Argues "Rosh" is definitively a proper noun and a geographic region identifying Russia, citing the Hebrew scholar Gesenius's own lexicon. Supports Russia-Magog identification.
+        </p>
+        <p>
+          <strong>Kim Riddlebarger & Reformed/Amillennial scholars</strong>: Dispute the Russia identification entirely, arguing that Gog and Magog represent a theological archetype of God's enemies — fulfilled spiritually or at the end of the millennium per Revelation 20, not in modern Russia.
+        </p>
+        <p>
+          <strong>Joel Rosenberg</strong> (<em>Epicenter</em>): Strongly supports Russia-Magog, and like Rhodes, points to the Russia-Iran-Turkey alliance as remarkable prophetic convergence. Also avoids naming Putin specifically as Gog.
+        </p>
+      </div>
+
+      <!-- CURRENT EVENTS -->
+      <div class="content-section">
+        <h3>Current Geopolitical Context (2026)</h3>
+        <p>
+          Putin's Russia in 2026 presents a complex picture for prophecy students. On one hand, Russia has deepened its alliances with Iran and maintains military partnerships across the Gog-Magog coalition nations. Putin has restructured Russia's political system to remove democratic checks on executive power, creating conditions for one man to make a unilateral military decision — exactly the kind of move Ezekiel describes.
+        </p>
+        <p>
+          On the other hand, Russia's military has been significantly degraded by the Ukraine conflict. Analysts at RUSI describe 2026 as a year of "desperate" hybrid escalation from a Russia that is "losing" — not a resurgent military superpower. Gog leads a "great assembly and a mighty army" (Ezek. 38:15). A weakened Russia may not yet fit that description — or it may require a period of rebuilding before the Gog-Magog scenario unfolds.
+        </p>
+        <p>
+          Worth noting: Ezekiel says God puts "hooks in the jaws" of Gog to draw him — meaning the invasion happens at God's sovereign timing, not when Gog is at his strongest. A desperate, cornered Russia with nuclear capability could arguably be drawn into a catastrophic conflict even without full conventional strength.
+        </p>
+      </div>
+
+      <!-- KEY QUESTIONS -->
+      <div class="content-section">
+        <h3>Key Questions for Further Study</h3>
+        <ol class="questions-list">
+          <li>Does "Rosh" in Ezekiel 38:2 refer to Russia as a proper noun, or is it simply the Hebrew word for "chief/prince"? What does the best Hebrew scholarship say?</li>
+          <li>When does Israel dwell in "unwalled villages" in "security"? Is this pre-Tribulation, during the Tribulation (under Antichrist's covenant), or post-millennial?</li>
+          <li>Is Gog a title (like Pharaoh or Caesar) that could apply to multiple leaders across history, or a specific individual?</li>
+          <li>How does the Gog-Magog war in Ezekiel 38–39 relate to the "Gog and Magog" reference in Revelation 20:8? Are these the same event or two different wars?</li>
+          <li>If Russia is weakened in 2026, what would need to happen geopolitically for the Gog scenario to become imminent?</li>
+          <li>What role does Israel's recent oil and gas discoveries (Leviathan field, potential shale reserves) play in Gog's motive of "plunder and spoil"?</li>
+        </ol>
+      </div>
+
+      <!-- SOURCES -->
+      <div class="content-section">
+        <h3>Study Sources</h3>
+        <ul class="sources-list">
+          <li><strong>Scripture:</strong> Ezekiel 38–39; Revelation 20:7–9; Daniel 11; Genesis 10 (table of nations)</li>
+          <li><strong>Book:</strong> Ron Rhodes — <em>The End Times in Chronological Order</em> (Harvest House, 2012)</li>
+          <li><strong>Book:</strong> Joel Rosenberg — <em>Epicenter: Why the Current Rumblings in the Middle East Will Change Your Future</em></li>
+          <li><strong>Book:</strong> Hal Lindsey — <em>The Late Great Planet Earth</em> (1970)</li>
+          <li><strong>Article:</strong> <a href="https://christinprophecyblog.org/2020/09/ron-rhodes-on-end-times-chronology-timing-of-the-gog-magog-war/" target="_blank">Ron Rhodes on Timing of the Gog-Magog War — Christ in Prophecy Journal</a></li>
+          <li><strong>Article:</strong> <a href="https://www.foi.org/2021/12/10/the-battle-of-gog-and-magog/" target="_blank">The Battle of Gog and Magog — Friends of Israel Gospel Ministry</a></li>
+          <li><strong>Article:</strong> <a href="https://enduringword.com/bible-commentary/ezekiel-38/" target="_blank">Ezekiel 38 Commentary — Enduring Word (David Guzik)</a></li>
+          <li><strong>Web:</strong> <a href="https://my.rusi.org/resource/russia-is-losing-time-for-putins-2026-hybrid-escalation.html" target="_blank">Russia Is Losing: 2026 Hybrid Escalation — RUSI</a></li>
+          <li><strong>Study Guide:</strong> <a href="https://acshotsprings.github.io/CampbellBibleStudy/CampbellBibleStudy.html" target="_blank">Campbell Family Master Biblical Study Guide — Module 9 (Gog-Magog War)</a></li>
+        </ul>
+      </div>
+
+      <!-- CONCLUSION -->
+      <div class="conclusion-box">
+        <h4>Preliminary Assessment</h4>
+        <p>
+          The evidence is suggestive but not conclusive. Russia's geography, its coalition alignments, and Putin's consolidation of authoritarian power all fit the prophetic profile in striking ways — and Ron Rhodes is right that the convergence of these factors is unprecedented. However, Scripture calls us to watch with discernment, not to definitively name living individuals as prophetic figures before fulfillment. The wisest posture: study deeply, hold the identification loosely, stay watchful, and let events continue to clarify. This study remains open.
+        </p>
+      </div>
+
+    </div><!-- /card-body -->
+  </article>
+
+  <!-- PLACEHOLDER CARDS FOR FUTURE DIVES -->
+  <p class="section-label">Future Deep Dives</p>
+
+  <div class="placeholder-card">
+    <p class="ph-icon">✦</p>
+    <p>Deep Dive #002 — Coming Soon</p>
+  </div>
+
+  <div class="placeholder-card">
+    <p class="ph-icon">✦</p>
+    <p>Deep Dive #003 — Coming Soon</p>
+  </div>
+
+</main>
+
+<!-- SAVE BAR -->
+<div class="save-bar">
+  <button id="saveBtn" onclick="saveToGitHub()">Save to GitHub</button>
+  <span id="saveStatus"></span>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Campbell Family Deep Dive Studies &nbsp;·&nbsp; <a href="https://acshotsprings.github.io/CampbellBibleStudy/CampbellBibleStudy.html">Return to Main Guide</a></p>
+</footer>
+
+<script>
+  async function saveToGitHub() {
+    const btn = document.getElementById('saveBtn');
+    const status = document.getElementById('saveStatus');
+    const token = prompt('Enter your GitHub Personal Access Token:');
+    if (!token) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+    status.textContent = '';
+
+    try {
+      const owner = 'acshotsprings';
+      const repo = 'CampbellBibleStudy';
+      const path = 'DeepDives.html';
+
+      // Get current SHA if file exists
+      let sha = '';
+      try {
+        const check = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+          headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+        });
+        if (check.ok) {
+          const data = await check.json();
+          sha = data.sha;
+        }
+      } catch(e) {}
+
+      const content = btoa(unescape(encodeURIComponent(document.documentElement.outerHTML)));
+      const body = { message: 'Update DeepDives.html', content, branch: 'main' };
+      if (sha) body.sha = sha;
+
+      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (res.ok) {
+        status.textContent = '✦ Saved successfully';
+        status.style.color = '#4caf50';
+      } else {
+        const err = await res.json();
+        status.textContent = 'Error: ' + (err.message || 'Unknown error');
+        status.style.color = '#e57373';
+      }
+    } catch(e) {
+      status.textContent = 'Error: ' + e.message;
+      status.style.color = '#e57373';
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Save to GitHub';
+  }
+</script>
+
+</body>
+</html>
