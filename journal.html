@@ -1,4 +1,6 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Personal Journal — Campbell Bible Study</title>
@@ -12,80 +14,80 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
+  <span id="gh-status"></span>
   <div class="bar-right">
-    <button onclick="insertTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;">New Entry</button>
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 3, 2026</span>
+    <span id="gh-bar-version">Version: April 9, 2026</span>
   </div>
 </div>
 
-<div id="sidebar">
-    <div id="sidebar-header">
-      <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 2, 2026</p>
-    </div>
-    <div id="sidebar-nav">
-  <div class="nav-section">Getting Started</div><a class="nav-item" href="./index.html">Introduction</a><a class="nav-item" href="./index.html#index">Thematic Index</a>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme1')" id="nav-header-theme1">
-          <span>Theme 1 — End Times</span>
-          <span class="nav-arrow " id="nav-arrow-theme1">▶</span>
-        </div>
-        <div class="nav-section-items collapsed" id="nav-items-theme1">
-      <a class="nav-item" href="./theme1/module1.html">Module 1 — Daniel's 70 Weeks</a><a class="nav-item" href="./theme1/module2.html">Module 2 — Israel in Prophecy</a><a class="nav-item" href="./theme1/module3.html">Module 3 — Day of the Lord</a><a class="nav-item" href="./theme1/module4.html">Module 4 — The Watchman</a><a class="nav-item" href="./theme1/module5.html">Module 5 — The New Covenant</a><a class="nav-item" href="./theme1/module6.html">Module 6 — The Rapture</a><a class="nav-item" href="./theme1/module7.html">Module 7 — The Antichrist</a><a class="nav-item" href="./theme1/module8.html">Module 8 — The Rebuilt Temple</a><a class="nav-item" href="./theme1/module9.html">Module 9 — Gog-Magog War</a><a class="nav-item" href="./theme1/module10.html">Module 10 — Signs of the Times</a><a class="nav-item" href="./theme1/module11.html">Module 11 — False Prophets</a><a class="nav-item" href="./theme1/module12.html">Module 12 — The Millennium</a><a class="nav-item" href="./theme1/module13.html">Module 13 — Second Coming</a><a class="nav-item" href="./theme1/module14.html">Module 14 — Matt 24 ↔ Revelation</a><a class="nav-item" href="./theme1/module15.html">Module 15 — Armageddon</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme2')" id="nav-header-theme2">
-          <span>Theme 2 — Biblical Calendar</span>
-          <span class="nav-arrow open" id="nav-arrow-theme2">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme2">
-      <a class="nav-item" href="./theme2/index.html">Theme 2 Overview</a><a class="nav-item sub" href="./theme2/module1.html">↳ Module 1 — Calendar History</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme3')" id="nav-header-theme3">
-          <span>Theme 3 — Judgment &amp; Mercy</span>
-          <span class="nav-arrow open" id="nav-arrow-theme3">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme3">
-      <a class="nav-item" href="./theme3/index.html">Theme 3 Overview</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('themes48')" id="nav-header-themes48">
-          <span>Themes 4–8</span>
-          <span class="nav-arrow " id="nav-arrow-themes48">▶</span>
-        </div>
-        <div class="nav-section-items collapsed" id="nav-items-themes48">
-      <a class="nav-item" href="./index.html#themes48">Themes 4–8 (Coming Soon)</a></div><div class="nav-section">My Study</div><a class="nav-item" href="./sermons.html">Sermon &amp; Teaching Log</a><a class="nav-item active" href="./journal.html">Personal Journal</a><a class="nav-item" href="./convictions.html">My Growing Convictions</a></div></div>
+<div id="sidebar"></div>
 
 <div id="app">
 <div id="main">
 
   <span class="page-tag">My Study</span>
   <h1 class="page-title">Personal Reflections &amp; Journal</h1>
-  <p class="body">A space to record observations, convictions, and spiritual insight as they emerge through study and everyday life. Date each entry.</p>
+  <p class="body">A space to record observations, convictions, and spiritual insight as they emerge through study and everyday life. Date each entry. Use the AI tool below to search and reflect on what you've written over time.</p>
 
-  <!-- New entry textarea always at top -->
+  <!-- ── CROSS-REFERENCES ── -->
+  <div class="cross-ref-box">
+    <div class="title">🔗 Cross-References — My Study Pages</div>
+    <div class="line">• <a href="convictions.html" style="color:#2E75B6;">My Growing Convictions</a> — where journal observations harden into theological positions</div>
+    <div class="line">• <a href="sermons.html" style="color:#2E75B6;">Sermon &amp; Teaching Log</a> — teachings that prompted journal entries (Burton, Rosenberg, Rhodes)</div>
+    <div class="line">• <a href="checklist.html" style="color:#2E75B6;">Prophecy Checklist</a> — current events observed in journal that connect to prophesied signs</div>
+    <div class="line">• <a href="reference-library.html" style="color:#2E75B6;">Reference Library</a> — books and texts referenced in journal entries</div>
+    <div class="line">• Module 10 — Signs of the Times · Module 11 — False Prophets · Module 4 — The Watchman · Module 9 — Gog-Magog</div>
+  </div>
+
+  <!-- ── AI REFLECTION TOOL ── -->
+  <div style="background:linear-gradient(135deg,#1F3864,#2E4F8A);border-radius:8px;padding:20px;margin:16px 0 24px;">
+    <div style="font-size:13px;font-weight:bold;color:#FFD700;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">
+      ✨ Reflect on My Own Journal
+    </div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:14px;font-family:Arial,sans-serif;">
+      This tool reads <strong>everything you have written</strong> across all your notes, journal entries, conviction fields, and module notes. Ask it anything about your own journey and beliefs.
+    </p>
+    <div style="font-size:12px;color:rgba(255,255,255,0.55);font-family:Arial,sans-serif;margin-bottom:12px;">
+      Try: "How have my beliefs changed since I started?" &nbsp;·&nbsp; "What themes keep showing up in my journal?" &nbsp;·&nbsp; "What am I still wrestling with?" &nbsp;·&nbsp; "Summarize what I believe about spiritual deception"
+    </div>
+    <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center;">
+      <input id="gemini-key" type="password"
+        placeholder="Paste Gemini API key here (saved locally, never shared)"
+        style="flex:1;padding:6px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:white;font-size:12px;font-family:Arial,sans-serif;">
+      <button onclick="saveGeminiKey()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 12px;font-size:11px;font-weight:bold;cursor:pointer;white-space:nowrap;">Save Key</button>
+    </div>
+    <div id="key-status" style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:Arial,sans-serif;display:none;"></div>
+    <div class="ai-input-row">
+      <textarea class="ai-prompt-input" id="ai-prompt" placeholder="Ask something about your journal and notes..." rows="2"></textarea>
+      <button class="ai-btn" id="ai-btn" onclick="askAboutMyNotes()">
+        <span id="ai-btn-text">✨ Ask</span>
+      </button>
+    </div>
+    <div style="margin-top:8px;">
+      <button onclick="listAvailableModels()" style="background:transparent;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:4px 10px;font-size:10px;cursor:pointer;font-family:Arial,sans-serif;">🔍 Check available models</button>
+    </div>
+    <div id="model-list" style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:6px;font-family:monospace;display:none;max-height:120px;overflow-y:auto;background:rgba(0,0,0,0.2);padding:8px;border-radius:4px;"></div>
+  </div>
+
+  <div class="ai-response-box" id="ai-response">
+    <div class="ai-label">Based on your own words across all your notes and journal:</div>
+    <div id="ai-response-text"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── NEW ENTRY ── -->
   <div class="notes-box">
-    <div class="label">✏️ New entry — click "New Entry" above to insert today's date and time:</div>
-    <textarea class="notes-input" id="n-journal-new" placeholder="Click 'New Entry' in the top bar to stamp the date and time, then write your entry here..." style="min-height:220px;"></textarea>
+    <div class="label">✏️ New entry — use the 📅 Timestamp button in the top bar to insert today's date and time, then write here:</div>
+    <textarea class="notes-input" id="n-journal-new" placeholder="Click 'Timestamp' in the top bar to stamp the date and time, then write your entry here..." style="min-height:220px;"></textarea>
   </div>
 
   <div style="display:flex;align-items:center;gap:12px;margin:28px 0;">
     <div style="flex:1;height:2px;background:linear-gradient(to right,#C8A800,transparent);"></div>
     <div style="font-size:11px;font-weight:bold;color:#7A6600;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;">Past Entries</div>
     <div style="flex:1;height:2px;background:linear-gradient(to left,#C8A800,transparent);"></div>
-  </div>
-
-  <!-- ── APRIL 3, 2026 ── -->
-  <div class="journal-box">
-    <div class="journal-date">April 3, 2026</div>
-    <div class="journal-topic">Topic: The Mount of Olives — Where He Left, Where He Returns</div>
-    <div class="journal-cat">Category: Second Coming / Fulfilled Prophecy / Teaching Notes (Josh Howerton)</div>
-    <div class="journal-p">Josh Howerton shared something tonight he said he's been trying to fit into a sermon for six years. Jesus ascended from the Mount of Olives (Acts 1), and the angels declared He would return in the exact same way. Zechariah 14:4 says His feet will stand on the Mount of Olives and it will split in two from east to west. In 1964, a geological survey for a proposed hotel discovered an east-to-west fault line running directly beneath the summit of the Mount of Olives. The mountain is literally pre-cracked for the moment of His return.</div>
-    <div class="journal-p">The East Gate detail is staggering. Ezekiel 44:2 says the gate facing east is to remain shut because the Lord will enter through it. In 1517, Sultan Suleiman — an Islamic ruler who feared this exact prophecy — bricked up the East Gate to prevent it from being fulfilled. He is still there on the Mount of Olives, buried in front of the gate he sealed, apparently believing that putting a cemetery in front of it would further prevent a Jewish Messiah from passing through. Every attempt to stop the prophecy has only set the stage more perfectly.</div>
-    <div class="journal-p">What strikes me most is the convergence: the ascension site, the fault line, the sealed gate — three completely independent threads pointing at the same moment. This is not interpretation. This is geography, geology, and history lining up with the text.</div>
-    <div class="journal-qs">
-      <div class="journal-qs-title">Questions to sit with:</div>
-      <div class="journal-q">• When I read Zechariah 14:4 now, does it feel abstract or viscerally real? What changes when prophecy has physical evidence behind it?</div>
-      <div class="journal-q">• Suleiman tried to stop the prophecy and may have fulfilled it. What does that say about God's sovereignty over even those who oppose Him?</div>
-      <div class="journal-q">• The mountain is literally cracked and waiting. How does that image change the way I think about "readiness"?</div>
-    </div>
   </div>
 
   <!-- ── APRIL 1, 2026 ── -->
@@ -96,7 +98,13 @@
     <div class="journal-p">Came across the Jaden Ivey situation today — the NBA player waived by the Chicago Bulls after publicly calling out the league's Pride Month promotion as "unrighteous." He's clearly sincere in his faith and the biblical convictions he holds are real. Scripture is clear on the subject: Leviticus 18:22, Romans 1:26–27, 1 Corinthians 6:9. The question this raises isn't whether the conviction is biblical — it is — but whether the expression of that conviction was the most effective witness in that moment.</div>
     <div class="journal-p">Jesus was full of both grace AND truth (John 1:14). Neither one at the expense of the other. He called sin what it was, but he also ate with sinners, healed them, and spoke to them with love before and after correction. The Pharisees had truth without grace. The culture today often pushes grace without truth. Both are distortions.</div>
     <div class="journal-p">What strikes me most is the cost. This young man lost his career — or at least accelerated its end — over a public statement of faith. That's not nothing. And yet this is exactly what Jesus said would happen: "You will be hated by all for my name's sake." (Matt 10:22)</div>
-    <div class="journal-p"><strong>Key scriptures:</strong> John 1:14, Matthew 10:22, Romans 1:16, Colossians 4:5–6. Cross-reference with Module 11 (False Prophets) and Module 4 (The Watchman).</div>
+    <div class="journal-p"><strong>Key scriptures:</strong> John 1:14, Matthew 10:22, Romans 1:16, Colossians 4:5–6.</div>
+    <div class="cross-ref-box" style="margin-top:10px;">
+      <div class="title">🔗 Cross-References</div>
+      <div class="line">• Module 11 — False Prophets (deception, cultural pressure on truth)</div>
+      <div class="line">• Module 4 — The Watchman (cost of faithful witness)</div>
+      <div class="line">• Convictions page — On grace, holiness, and what it means to be ready</div>
+    </div>
     <div class="journal-qs">
       <div class="journal-qs-title">Questions to sit with:</div>
       <div class="journal-q">• Where in my own life am I tempted to choose comfort over honest witness?</div>
@@ -113,7 +121,14 @@
     <div class="journal-p">Came across a powerful Facebook post from Pastor Larry Burton today that addresses something increasingly relevant in the end times context — the misuse of grace as a license to continue in sin. His central argument is compelling: Grace isn't a lowered bar — it's a higher one, backed by better resources (the Holy Spirit, the new covenant, Christ's indwelling). Using grace as a license to sin inverts its entire purpose.</div>
     <div class="journal-p">This connects directly to the end-times framework. Jesus himself warns in Matthew 7:21–23 that He will say to many who did ministry in His name: "I never knew you; depart from me, you workers of iniquity." A church full of people who claim grace but live in sin is completely unprepared for the deception to come. The Antichrist's deception will be most effective against people whose faith is cultural and surface-level rather than genuine and transformed.</div>
     <div class="journal-p">Pastor Burton's definition of repentance is worth noting: not just feeling sorry, but a change of attitude, behavior, direction, affections, and relationships. Christ is coming for a pure Bride. Five of the seven churches in Revelation are told to repent.</div>
-    <div class="journal-p"><strong>Key scriptures:</strong> Heb 12:14 ("without holiness no man shall see God"), Ezek 18:24, Rom 6:1–2 ("Shall we continue in sin that grace may abound? God forbid!"), Rev 3:5.</div>
+    <div class="journal-p"><strong>Key scriptures:</strong> Heb 12:14, Ezek 18:24, Rom 6:1–2, Rev 3:5.</div>
+    <div class="cross-ref-box" style="margin-top:10px;">
+      <div class="title">🔗 Cross-References</div>
+      <div class="line">• Module 6 — The Rapture (who is the Bride that is ready?)</div>
+      <div class="line">• Module 11 — False Prophets (grace without truth as false teaching)</div>
+      <div class="line">• Sermon Log #1 — Pastor Matt (servanthood and humility)</div>
+      <div class="line">• Convictions page — On grace, holiness, and what it means to be ready</div>
+    </div>
     <div class="journal-qs">
       <div class="journal-qs-title">Questions to sit with:</div>
       <div class="journal-q">• Am I using grace as a covering for patterns in my life that I haven't genuinely surrendered?</div>
@@ -127,10 +142,17 @@
     <div class="journal-date">March 28, 2026</div>
     <div class="journal-topic">Topic: Spiritual Deception &amp; the Demonic Realm</div>
     <div class="journal-cat">Category: Signs of the Times / Spiritual Warfare</div>
-    <div class="journal-p">I came across something today that connected directly to what we've been studying. VP JD Vance made a public statement arguing that unexplained aerial phenomena — the UFO phenomenon that has been in the news for years — may not be extraterrestrial at all, but something from the spiritual realm. He specifically referenced the Christian understanding that evil is real and active, and quoted what felt like a paraphrase of a well-known idea: that one of the devil's greatest tricks is convincing the world he doesn't exist.</div>
+    <div class="journal-p">Came across something today that connected directly to what we've been studying. VP JD Vance made a public statement arguing that unexplained aerial phenomena — the UFO phenomenon that has been in the news for years — may not be extraterrestrial at all, but something from the spiritual realm. He specifically referenced the Christian understanding that evil is real and active, and quoted what felt like a paraphrase of a well-known idea: that one of the devil's greatest tricks is convincing the world he doesn't exist.</div>
     <div class="journal-p">This strikes me as deeply connected to what we've been studying about deception in the end times. Scripture is clear that the enemy doesn't announce himself — he masquerades. 2 Corinthians 11:14 says that Satan disguises himself as an angel of light. The idea that something supernatural could be repackaged as "extraterrestrial" or "scientific" fits exactly the kind of deception Jesus warned about in Matthew 24. The false signs and wonders of the Antichrist and the False Prophet won't look obviously evil — they will look convincing, maybe even miraculous.</div>
     <div class="journal-p">What stood out to me is how this connects to the broader cultural moment. If demonic activity can be reframed as a cosmic, non-threatening mystery — something humanity is meant to "discover" and "open up" to — that is exactly the kind of deception the end times framework warns about.</div>
-    <div class="journal-p"><strong>Key scriptures:</strong> 2 Corinthians 11:14, Matthew 24:24, Revelation 13:13–14, Ephesians 6:12. Cross-reference with Module 11 (False Prophets) and Module 10 (Signs of the Times).</div>
+    <div class="journal-p"><strong>Key scriptures:</strong> 2 Corinthians 11:14, Matthew 24:24, Revelation 13:13–14, Ephesians 6:12.</div>
+    <div class="cross-ref-box" style="margin-top:10px;">
+      <div class="title">🔗 Cross-References</div>
+      <div class="line">• Module 11 — False Prophets (signs and wonders used to deceive)</div>
+      <div class="line">• Module 10 — Signs of the Times (cultural and spiritual signs)</div>
+      <div class="line">• Module 7 — The Antichrist (the satanic trinity and deception)</div>
+      <div class="line">• Checklist Phase 1 — General Signs of the Times</div>
+    </div>
     <div class="journal-qs">
       <div class="journal-qs-title">Questions to sit with:</div>
       <div class="journal-q">• How does the enemy disguise evil as wonder or curiosity in our own culture today?</div>
@@ -147,5 +169,84 @@
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 
+<script>
+async function askAboutMyNotes() {
+  const prompt = document.getElementById('ai-prompt').value.trim();
+  if (!prompt) { alert('Please type a question first.'); return; }
+  const btn = document.getElementById('ai-btn');
+  const text = document.getElementById('ai-btn-text');
+  const box = document.getElementById('ai-response');
+  const out = document.getElementById('ai-response-text');
+  btn.disabled = true; text.textContent = '⏳ Thinking...';
+  box.classList.remove('visible'); out.textContent = '';
+  try {
+    const notesRes = await fetch('https://raw.githubusercontent.com/acshotsprings/CampbellBibleStudy/main/my-notes.json', { cache: 'no-store' });
+    let notesContext = '';
+    if (notesRes.ok) {
+      const notesData = await notesRes.json();
+      const labels = notesData.noteLabels || {};
+      const notes  = notesData.notes  || {};
+      const lines  = [];
+      for (const [key, value] of Object.entries(notes)) {
+        if (value && value.trim()) lines.push(`[${labels[key] || key}]\n${value.trim()}`);
+      }
+      notesContext = lines.length === 0 ? '(No personal notes saved yet.)' : lines.join('\n\n---\n\n');
+    } else {
+      notesContext = '(Could not load notes from GitHub.)';
+    }
+    const geminiKey = document.getElementById('gemini-key').value.trim() || localStorage.getItem('cbsg-gemini-key');
+    if (!geminiKey) { out.textContent = 'Please paste your Gemini API key above.'; box.classList.add('visible'); btn.disabled = false; text.textContent = '✨ Ask'; return; }
+    localStorage.setItem('cbsg-gemini-key', geminiKey);
+    const fullPrompt = `You are a thoughtful spiritual reflection assistant for the Campbell Family Master Biblical Study Guide. Your job is to reflect back ONLY what the user has written in their own notes and journal. Draw only from their words — never introduce ideas not present in their notes. Be warm, honest, and specific. Show how their thinking has developed over time when relevant. 2–4 paragraphs max unless they ask for more.\n\nUser's notes and journal:\n\n${notesContext}\n\n---\n\nQuestion: ${prompt}`;
+    const apiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: fullPrompt }] }], generationConfig: { maxOutputTokens: 1200, temperature: 0.7 } })
+    });
+    const apiData = await apiRes.json();
+    const responseText = apiData.candidates?.[0]?.content?.parts?.[0]?.text || apiData.error?.message || 'Something went wrong.';
+    out.innerHTML = responseText.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+    if (!out.innerHTML.startsWith('<p>')) out.innerHTML = '<p>' + out.innerHTML + '</p>';
+    box.classList.add('visible');
+  } catch(e) { out.textContent = 'Error: ' + e.message; box.classList.add('visible'); }
+  finally { btn.disabled = false; text.textContent = '✨ Ask'; }
+}
 
-</body></html>
+async function listAvailableModels() {
+  const key = document.getElementById('gemini-key').value.trim() || localStorage.getItem('cbsg-gemini-key');
+  const listEl = document.getElementById('model-list');
+  if (!key) { listEl.textContent = 'Save your API key first.'; listEl.style.display = 'block'; return; }
+  listEl.textContent = 'Fetching...'; listEl.style.display = 'block';
+  try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
+    const data = await res.json();
+    if (data.models) {
+      listEl.textContent = 'Available: ' + data.models.filter(m => m.supportedGenerationMethods?.includes('generateContent')).map(m => m.name.replace('models/', '')).join(', ');
+    } else { listEl.textContent = JSON.stringify(data); }
+  } catch(e) { listEl.textContent = 'Error: ' + e.message; }
+}
+
+function saveGeminiKey() {
+  const keyEl = document.getElementById('gemini-key');
+  const statusEl = document.getElementById('key-status');
+  const key = keyEl ? keyEl.value.trim() : '';
+  if (!key) { if (statusEl) { statusEl.textContent = '⚠️ No key entered.'; statusEl.style.display = 'block'; statusEl.style.color = '#FFD700'; } return; }
+  localStorage.setItem('cbsg-gemini-key', key);
+  if (statusEl) { statusEl.textContent = '✅ Key saved.'; statusEl.style.display = 'block'; statusEl.style.color = '#90EE90'; }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const savedKey = localStorage.getItem('cbsg-gemini-key');
+  const keyEl = document.getElementById('gemini-key');
+  const statusEl = document.getElementById('key-status');
+  if (savedKey && keyEl) { keyEl.value = savedKey; if (statusEl) { statusEl.textContent = '✅ Key loaded.'; statusEl.style.display = 'block'; statusEl.style.color = '#90EE90'; } }
+  if (keyEl) {
+    keyEl.addEventListener('input', () => { const v = keyEl.value.trim(); if (v) localStorage.setItem('cbsg-gemini-key', v); });
+    keyEl.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); saveGeminiKey(); } });
+  }
+  const input = document.getElementById('ai-prompt');
+  if (input) { input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); askAboutMyNotes(); } }); }
+});
+</script>
+
+</body>
+</html>
