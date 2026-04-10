@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Save History — Campbell Bible Study</title>
@@ -116,21 +114,61 @@
 </head>
 <body>
 
-<div id="github-bar">
+<div id="github-bar"><button id="hamburger-btn" title="Open navigation menu">☰</button>
   <span class="bar-title">Campbell Bible Study</span>
   <span class="bar-sep">|</span>
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status"></span>
-  <div class="bar-right">
+  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
+  <div id="bar-extras" style="display: flex; align-items: center; gap: 10px; margin-left: 8px;">
+    <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:3px 10px;min-width:72px;">
+      <span style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;font-family:Arial,sans-serif;">Session</span>
+      <span id="bar-session-time" style="font-size:12px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;">17s</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:3px 10px;min-width:72px;">
+      <span style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;font-family:Arial,sans-serif;">Total</span>
+      <span id="bar-total-time" style="font-size:12px;color:rgba(255,255,255,0.8);font-family:Arial,sans-serif;font-weight:bold;">17s</span>
+    </div>
+    <button onclick="logAndStamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:4px 12px;font-size:11px;font-family:Arial,sans-serif;font-weight:bold;cursor:pointer;white-space:nowrap;" title="Stamp current notes + log session time">📅 Log &amp; Stamp</button>
+  </div><div class="bar-right">
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
     <span id="gh-bar-version">Version: April 10, 2026</span>
   </div>
 </div>
 
-<div id="sidebar"></div>
+<div id="sidebar">
+    <div id="sidebar-header">
+      <h1>Campbell Family<br>Biblical Study Guide</h1>
+      <p id="sidebar-version">Version: April 10, 2026</p>
+    </div>
+    <div id="sidebar-nav">
+  <div class="nav-section">Getting Started</div><a class="nav-item" href="./index.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Introduction</a><a class="nav-item" href="./index.html#index" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Thematic Index</a>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('theme1')" id="nav-header-theme1">
+          <span>Theme 1 — End Times<span style="font-size:9px;margin-left:6px;color:rgba(255,255,255,0.3);">0/15</span></span>
+          <span class="nav-arrow " id="nav-arrow-theme1">▶</span>
+        </div>
+        <div class="nav-section-items collapsed" id="nav-items-theme1">
+      <a class="nav-item" href="./theme1/module1.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 1 — Daniel's 70 Weeks</a><a class="nav-item" href="./theme1/module2.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 2 — Israel in Prophecy</a><a class="nav-item" href="./theme1/module3.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 3 — Day of the Lord</a><a class="nav-item" href="./theme1/module4.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 4 — The Watchman</a><a class="nav-item" href="./theme1/module5.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 5 — The New Covenant</a><a class="nav-item" href="./theme1/module6.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 6 — The Rapture</a><a class="nav-item" href="./theme1/module7.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 7 — The Antichrist</a><a class="nav-item" href="./theme1/module8.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 8 — The Rebuilt Temple</a><a class="nav-item" href="./theme1/module9.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 9 — Gog-Magog War</a><a class="nav-item" href="./theme1/module10.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 10 — Signs of the Times</a><a class="nav-item" href="./theme1/module11.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 11 — False Prophets</a><a class="nav-item" href="./theme1/module12.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 12 — The Millennium</a><a class="nav-item" href="./theme1/module13.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 13 — Second Coming</a><a class="nav-item" href="./theme1/module14.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 14 — Matt 24 ↔ Revelation</a><a class="nav-item" href="./theme1/module15.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Module 15 — Armageddon</a></div>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('theme2')" id="nav-header-theme2">
+          <span>Theme 2 — Biblical Calendar<span style="font-size:9px;margin-left:6px;color:#90EE90;">3/3</span></span>
+          <span class="nav-arrow " id="nav-arrow-theme2">▶</span>
+        </div>
+        <div class="nav-section-items collapsed" id="nav-items-theme2">
+      <a class="nav-item" href="./theme2/index.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Theme 2 Overview</a><a class="nav-item sub" style="color:#90EE90;border-left-color:#90EE90;" href="./theme2/module1.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">↳ Module 1 — Calendar History <span style="color:#90EE90;font-size:11px;">✓</span></a><a class="nav-item sub" style="color:#90EE90;border-left-color:#90EE90;" href="./theme2/module2.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">↳ Module 2 — Calendar Timeline <span style="color:#90EE90;font-size:11px;">✓</span></a><a class="nav-item sub" style="color:#90EE90;border-left-color:#90EE90;" href="./theme2/module3.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">↳ Module 3 — Book of Jubilees <span style="color:#90EE90;font-size:11px;">✓</span></a></div>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('theme3')" id="nav-header-theme3">
+          <span>Theme 3 — Judgment &amp; Mercy</span>
+          <span class="nav-arrow " id="nav-arrow-theme3">▶</span>
+        </div>
+        <div class="nav-section-items collapsed" id="nav-items-theme3">
+      <a class="nav-item" href="./theme3/index.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Theme 3 Overview</a></div>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('themes48')" id="nav-header-themes48">
+          <span>Themes 4–8</span>
+          <span class="nav-arrow " id="nav-arrow-themes48">▶</span>
+        </div>
+        <div class="nav-section-items collapsed" id="nav-items-themes48">
+      <a class="nav-item" href="./index.html#themes48" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Themes 4–8 (Coming Soon)</a></div><div class="nav-section">My Study</div><a class="nav-item" href="./checklist.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Prophecy Checklist</a><a class="nav-item" href="./resources.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Resource Library</a><a class="nav-item" href="./sermons.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Sermon &amp; Teaching Log</a><a class="nav-item" href="./journal.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">Personal Journal</a><a class="nav-item" href="./convictions.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">My Growing Convictions</a><a class="nav-item active" href="./history.html" onclick="if(window.innerWidth&lt;=768)closeSidebar()">📋 Save History</a></div></div>
 
 <div id="app">
 <div id="main">
@@ -139,22 +177,21 @@
   <h1 class="page-title">📋 Save History</h1>
   <p class="body">A timestamped record of every time you saved to GitHub. Each entry captures what changed — which pages had new notes, what was updated — so you can trace the growth of this guide over time.</p>
 
-  <div class="history-meta" id="history-meta">
-    Loading history from GitHub…
-  </div>
+  <div class="history-meta" id="history-meta">1 save recorded · Last saved: April 10, 2026 at 2:11 PM</div>
 
   <div class="history-filter-bar">
     <input type="text" id="history-search" placeholder="🔍 Search history entries…" oninput="filterHistory()">
-    <span class="history-count" id="history-count"></span>
+    <span class="history-count" id="history-count">1 entry</span>
   </div>
 
   <div id="history-list">
-    <div class="history-empty">
-      <span class="icon">📡</span>
-      Loading save history…<br>
-      <small style="font-size:12px;color:#aaa;display:block;margin-top:8px;">Load from GitHub to see your history, or save once to start tracking.</small>
-    </div>
-  </div>
+        <div class="history-entry">
+          <div class="history-number">Save #1</div>
+          <div class="history-timestamp">📅 April 10, 2026 at 2:11 PM</div>
+          <div class="history-summary">No note changes detected — page HTML saved.</div>
+          
+        </div>
+      </div>
 
 </div>
 </div>
@@ -254,5 +291,6 @@
     loadHistory();
   });
 </script>
-</body>
-</html>
+
+
+<div id="sidebar-overlay" style="display: none;"></div></body></html>
