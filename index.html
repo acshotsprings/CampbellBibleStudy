@@ -87,7 +87,12 @@
   .status-progress { color: #7A4F00; font-weight: bold; }
   .status-notyet { color: #999; }
 
-  .sermon-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; font-family: Arial, sans-serif; }
+  .sermon-table th.sortable { cursor: pointer; user-select: none; }
+  .sermon-table th.sortable:hover { background: #2E4F8A; }
+  .sermon-table th .sort-arrow { margin-left: 4px; opacity: 0.5; font-size: 10px; }
+  .sermon-table th.sort-asc .sort-arrow::after { content: '▲'; opacity: 1; }
+  .sermon-table th.sort-desc .sort-arrow::after { content: '▼'; opacity: 1; }
+  .sermon-table th:not(.sort-asc):not(.sort-desc) .sort-arrow::after { content: '⇅'; }
   .sermon-table th { background: #1F3864; color: #fff; padding: 10px 12px; text-align: left; font-weight: bold; font-size: 12px; }
   .sermon-table td { padding: 9px 12px; border-bottom: 1px solid #eee; color: #444; vertical-align: top; }
   .sermon-table tr:nth-child(even) td { background: #f9f9f9; }
@@ -269,7 +274,8 @@
     }
     #github-bar #btn-save { order: 11; }
     #github-bar #btn-load { order: 12; }
-    #github-bar #gh-status { order: 13; }
+    #github-bar #btn-timestamp { order: 13; }
+    #github-bar #gh-status { order: 14; }
 
     /* Larger text for comfortable mobile reading */
     p.body { font-size: 16px; line-height: 1.9; }
@@ -303,6 +309,7 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display:none;padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
   <button onclick="saveToGitHub()" id="btn-save" style="display:none;background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
   <button onclick="loadFromGitHub()" id="btn-load" style="display:none;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">Load from GitHub</button>
+  <button onclick="insertTimestamp()" id="btn-timestamp" style="display:none;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:4px;padding:6px 14px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">🕐 Timestamp</button>
   <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);"></span>
   <button onclick="toggleAdminMode()" id="btn-admin" style="background:rgba(255,255,255,0.1);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 12px;font-size:11px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">🔒 Admin</button>
   <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);" id="version-stamp">Version: April 10, 2026</span>
@@ -1437,19 +1444,29 @@
   <span class="page-tag">My Study</span>
   <h1 class="page-title">Sermon &amp; Teaching Log</h1>
   <p class="body">Record of all sermons and audio teachings that have shaped this study. Date each entry. Over time this becomes a personal theological library.</p>
-  <table class="sermon-table">
-    <tbody><tr><th style="width:5%">#</th><th style="width:12%">Date</th><th style="width:30%">Title / Source</th><th style="width:53%">Key Topic</th></tr>
-    <tr><td>1</td><td>3/22/26</td><td>Imitate Christ's Example — Pastor Matt</td><td>Servanthood and humility</td></tr>
-    <tr><td>2</td><td>3/25/26</td><td>Judgment Seat &amp; Marriage of the Lamb</td><td>Bema Seat, crowns, bride/bridegroom — Rom 14:8–10; 1 Cor 3:11–15; Rev 19:7–9; John 14:1–3</td></tr>
-    <tr><td>3</td><td>3/25/26</td><td>Ezekiel: Invasion &amp; End</td><td>Gog-Magog war (Ezek 38–39); coalition: Russia/Iran/Turkey/Sudan/Libya; Israel at rest precondition</td></tr>
-    <tr><td>4</td><td>3/26/26</td><td>Ezekiel 38–39 continued (partial)</td><td>Scholars debate whether invasion already occurred; nation identification</td></tr>
-    <tr><td>5</td><td>3/27/26</td><td>Antichrist &amp; End Times — Audio Teaching</td><td>Day of the Lord; Antichrist profile; not Muslim/not Gog; temple rebuild; signs of the times; false prophets</td></tr>
-    <tr><td>6</td><td>3/28/26</td><td>Triumphal Entry — Palm Sunday</td><td>Mark 11 / John 12 blend; Jesus' entry into Jerusalem; crowd response; fulfilled prophecy (Zech 9:9)</td></tr>
-    <tr><td>7</td><td>3/31/26</td><td>Tribulation &amp; Judgment</td><td>Seal/trumpet judgments; Two Witnesses (Rev 11); J.I. Packer on divine judgment</td></tr>
-    <tr><td>8</td><td>4/1/26</td><td>End-Times Tribulation</td><td>Seal judgments (Rev 6); seven thunders/little scroll (Rev 10); First Beast (Rev 13)</td></tr>
-    <tr><td>9</td><td>4/7/26</td><td>Israel's Oil &amp; Wealth</td><td>Ezek 36:11 &amp; 38:12–13; Tovia Luskin discovery; Zion Oil and Gas; offshore gas fields as economic precondition for Gog-Magog</td></tr>
-    <tr><td>10</td><td></td><td></td><td></td></tr>
-  </tbody></table>
+  <table class="sermon-table" id="sermon-table">
+    <thead>
+      <tr>
+        <th style="width:4%" class="sortable" onclick="sortSermons(0)"><span>#</span><span class="sort-arrow"></span></th>
+        <th style="width:10%" class="sortable" onclick="sortSermons(1)"><span>Date</span><span class="sort-arrow"></span></th>
+        <th style="width:25%" class="sortable" onclick="sortSermons(2)"><span>Title / Source</span><span class="sort-arrow"></span></th>
+        <th style="width:20%" class="sortable" onclick="sortSermons(3)"><span>Speaker / Teacher</span><span class="sort-arrow"></span></th>
+        <th style="width:41%"><span>Key Topic</span></th>
+      </tr>
+    </thead>
+    <tbody id="sermon-tbody">
+    <tr><td>1</td><td>3/22/26</td><td>Imitate Christ's Example</td><td>Pastor Matt</td><td>Servanthood and humility</td></tr>
+    <tr><td>2</td><td>3/25/26</td><td>Judgment Seat &amp; Marriage of the Lamb</td><td>Audio Teaching</td><td>Bema Seat, crowns, bride/bridegroom — Rom 14:8–10; 1 Cor 3:11–15; Rev 19:7–9; John 14:1–3</td></tr>
+    <tr><td>3</td><td>3/25/26</td><td>Ezekiel: Invasion &amp; End</td><td>Audio Teaching</td><td>Gog-Magog war (Ezek 38–39); coalition: Russia/Iran/Turkey/Sudan/Libya; Israel at rest precondition</td></tr>
+    <tr><td>4</td><td>3/26/26</td><td>Ezekiel 38–39 continued (partial)</td><td>Audio Teaching</td><td>Scholars debate whether invasion already occurred; nation identification</td></tr>
+    <tr><td>5</td><td>3/27/26</td><td>Antichrist &amp; End Times</td><td>Audio Teaching</td><td>Day of the Lord; Antichrist profile; not Muslim/not Gog; temple rebuild; signs of the times; false prophets</td></tr>
+    <tr><td>6</td><td>3/28/26</td><td>Triumphal Entry — Palm Sunday</td><td>Pastor Matt</td><td>Mark 11 / John 12 blend; Jesus' entry into Jerusalem; crowd response; fulfilled prophecy (Zech 9:9)</td></tr>
+    <tr><td>7</td><td>3/31/26</td><td>Tribulation &amp; Judgment</td><td>Audio Teaching</td><td>Seal/trumpet judgments; Two Witnesses (Rev 11); J.I. Packer on divine judgment</td></tr>
+    <tr><td>8</td><td>4/1/26</td><td>End-Times Tribulation</td><td>Audio Teaching</td><td>Seal judgments (Rev 6); seven thunders/little scroll (Rev 10); First Beast (Rev 13)</td></tr>
+    <tr><td>9</td><td>4/7/26</td><td>Israel's Oil &amp; Wealth</td><td>Audio Teaching</td><td>Ezek 36:11 &amp; 38:12–13; Tovia Luskin discovery; Zion Oil and Gas; offshore gas fields as economic precondition for Gog-Magog</td></tr>
+    <tr><td>10</td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
 </div>
 
 <!-- JOURNAL -->
@@ -1922,6 +1939,7 @@ function toggleAdminMode() {
     document.getElementById('btn-admin').textContent = '🔒 Admin';
     document.getElementById('btn-save').style.display = 'none';
     document.getElementById('btn-load').style.display = 'none';
+    document.getElementById('btn-timestamp').style.display = 'none';
     document.getElementById('gh-token').style.display = 'none';
   } else {
     document.getElementById('admin-modal').classList.add('show');
@@ -1938,6 +1956,7 @@ function checkAdminPw() {
     document.getElementById('btn-admin').textContent = '🔓 Admin ON';
     document.getElementById('btn-save').style.display = 'inline-block';
     document.getElementById('btn-load').style.display = 'inline-block';
+    document.getElementById('btn-timestamp').style.display = 'inline-block';
     document.getElementById('gh-token').style.display = 'inline-block';
     closeAdminModal();
   } else {
@@ -2067,6 +2086,62 @@ window.addEventListener('beforeunload', () => {
   }
 });
 
+
+// ── TIMESTAMP BUTTON ─────────────────────────────────────────────────────
+function insertTimestamp() {
+  const now = new Date();
+  const stamp = now.toLocaleString('en-US', {
+    month: 'long', day: 'numeric', year: 'numeric',
+    hour: 'numeric', minute: '2-digit', hour12: true
+  });
+  // Find the active page's first visible textarea
+  const activePage = document.querySelector('.page.active');
+  if (!activePage) return;
+  const textareas = activePage.querySelectorAll('textarea');
+  // Focus on journal-new first, otherwise first textarea
+  const journalTA = activePage.querySelector('#n-journal-new');
+  const target = journalTA || textareas[textareas.length - 1];
+  if (!target) return;
+  const pos = target.selectionStart || target.value.length;
+  const before = target.value.substring(0, pos);
+  const after = target.value.substring(pos);
+  target.value = before + '\n' + stamp + '\n' + after;
+  target.focus();
+  target.selectionStart = target.selectionEnd = pos + stamp.length + 2;
+  saveNote(target.id);
+}
+
+
+let sermonSortCol = -1;
+let sermonSortAsc = true;
+
+function sortSermons(col) {
+  const tbody = document.getElementById('sermon-tbody');
+  if (!tbody) return;
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+
+  if (sermonSortCol === col) {
+    sermonSortAsc = !sermonSortAsc;
+  } else {
+    sermonSortCol = col;
+    sermonSortAsc = true;
+  }
+
+  rows.sort((a, b) => {
+    const aText = a.cells[col] ? a.cells[col].textContent.trim() : '';
+    const bText = b.cells[col] ? b.cells[col].textContent.trim() : '';
+    if (!aText) return 1;
+    if (!bText) return -1;
+    return sermonSortAsc ? aText.localeCompare(bText) : bText.localeCompare(aText);
+  });
+
+  rows.forEach(r => tbody.appendChild(r));
+
+  document.querySelectorAll('#sermon-table th').forEach((th, i) => {
+    th.classList.remove('sort-asc', 'sort-desc');
+    if (i === col) th.classList.add(sermonSortAsc ? 'sort-asc' : 'sort-desc');
+  });
+}
 
 function toggleRes(header) {
   const card = header.closest('.res-card');
