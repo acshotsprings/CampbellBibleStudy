@@ -175,6 +175,26 @@
 
   body.admin-mode #hamburger { top: 96px; }
 
+  /* MODULE TIMER & COMPLETION */
+  .module-meta { display:flex; align-items:center; flex-wrap:wrap; gap:12px; background:#1F3864; color:#fff; border-radius:8px; padding:10px 16px; margin-bottom:16px; font-family:Arial,sans-serif; font-size:12px; }
+  .module-meta .meta-item { display:flex; flex-direction:column; align-items:center; min-width:80px; }
+  .module-meta .meta-label { font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(255,255,255,0.5); margin-bottom:2px; }
+  .module-meta .meta-value { font-size:15px; font-weight:bold; color:#FFD700; }
+  .module-meta .meta-divider { width:1px; height:36px; background:rgba(255,255,255,0.2); }
+  .module-meta .meta-born { font-size:11px; color:rgba(255,255,255,0.6); font-style:italic; }
+  .complete-bar { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:20px 0 8px; padding:14px 16px; background:#F4F8EE; border:1px solid #6B8E3A; border-radius:8px; }
+  .btn-complete { background:#3B5E1A; color:#fff; border:none; border-radius:6px; padding:9px 20px; font-size:13px; font-weight:bold; cursor:pointer; font-family:Arial,sans-serif; }
+  .btn-complete:hover { background:#2E4A12; }
+  .btn-complete.done { background:#2E6B0E; cursor:default; }
+  .completion-stamp { font-size:12px; color:#3B5E1A; font-family:Arial,sans-serif; font-weight:bold; }
+  .nav-item.completed { color:#4CAF50 !important; }
+  .nav-item.completed.active { color:#4CAF50 !important; border-left-color:#4CAF50 !important; }
+
+  @media (max-width:768px) {
+    .module-meta { gap:8px; padding:8px 12px; }
+    .module-meta .meta-value { font-size:13px; }
+  }
+
   /* RESOURCE CARDS */
   .res-card { border: 1px solid #ddd; border-radius: 8px; margin: 8px 0; overflow: hidden; background: #fff; }
   .res-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; cursor: pointer; background: #f9f9f9; border-bottom: 1px solid #eee; }
@@ -246,7 +266,8 @@
       flex-basis: 100%;
     }
     #github-bar #btn-save { order: 11; }
-    #github-bar #gh-status { order: 12; }
+    #github-bar #btn-load { order: 12; }
+    #github-bar #gh-status { order: 13; }
 
     /* Larger text for comfortable mobile reading */
     p.body { font-size: 16px; line-height: 1.9; }
@@ -279,6 +300,7 @@
   <span class="bar-sep" style="color:rgba(255,255,255,0.4)">|</span>
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display:none;padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
   <button onclick="saveToGitHub()" id="btn-save" style="display:none;background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
+  <button onclick="loadFromGitHub()" id="btn-load" style="display:none;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">Load from GitHub</button>
   <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);"></span>
   <button onclick="toggleAdminMode()" id="btn-admin" style="background:rgba(255,255,255,0.1);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 12px;font-size:11px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">🔒 Admin</button>
   <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);" id="version-stamp">Version: April 10, 2026</span>
@@ -428,6 +450,28 @@
 <div id="m1" class="page">
   <span class="page-tag">Module 1 — Theme 1: End Times</span>
   <h1 class="page-title">Daniel's 70 Weeks: The Master Timeline</h1>
+  <div class="module-meta" id="meta-m1">
+    <div class="meta-item">
+      <span class="meta-label">Time This Visit</span>
+      <span class="meta-value" id="timer-session-m1">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Total Time</span>
+      <span class="meta-value" id="timer-total-m1">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Guide Born</span>
+      <span class="meta-born">March 29, 2026</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Completed</span>
+      <span class="meta-value" id="completed-stamp-m1" style="font-size:11px;color:rgba(255,255,255,0.6);">—</span>
+    </div>
+  </div>
+
   <div class="info-box"><div class="title">Read first</div><div class="line">Daniel 9 in full (especially vv. 24–27), Deuteronomy 18:21–22, Isaiah 46:9–10, 2 Peter 1:20–21</div></div>
   <p class="body">Daniel 9:24–27 is the prophetic backbone of all end times Scripture. Everything — the Tribulation, the Antichrist, the Second Coming — is anchored here. The '70th Week' is a seven-year Tribulation period that has not yet begun.</p>
   <div class="info-box">
@@ -483,7 +527,11 @@
     <div class="line" style="margin-top:8px"><a href="DeepDives.html" style="color:#1F3864;font-weight:bold;text-decoration:underline;">→ Open Deep Dive: Prophetic Calendars</a></div>
   </div>
 
-  <div class="guest-box">
+    <div class="complete-bar">
+    <button class="btn-complete" id="btn-complete-m1" onclick="markComplete('m1', 'Module 1')">✓ Mark Complete</button>
+    <span class="completion-stamp" id="stamp-m1"></span>
+  </div>
+<div class="guest-box">
     <div class="guest-title">💬 Submit a Note to Chris</div>
     <input class="guest-input" id="guest-name-m1" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m1" placeholder="Your email (optional — if you'd like a reply)">
@@ -497,6 +545,28 @@
 <div id="m2" class="page">
   <span class="page-tag">Module 2 — Theme 1: End Times</span>
   <h1 class="page-title">Israel in Prophecy</h1>
+  <div class="module-meta" id="meta-m2">
+    <div class="meta-item">
+      <span class="meta-label">Time This Visit</span>
+      <span class="meta-value" id="timer-session-m2">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Total Time</span>
+      <span class="meta-value" id="timer-total-m2">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Guide Born</span>
+      <span class="meta-born">March 29, 2026</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Completed</span>
+      <span class="meta-value" id="completed-stamp-m2" style="font-size:11px;color:rgba(255,255,255,0.6);">—</span>
+    </div>
+  </div>
+
   <div class="info-box"><div class="title">Read first</div><div class="line">Ezekiel 36–37, Romans 9–11, Zechariah 12</div></div>
   <p class="body">More end-times prophecy centers on Israel than on any other nation. Understanding your theology of Israel will shape almost every other eschatological conviction you form.</p>
   <div class="info-box"><div class="title">The Central Question</div><div class="line">Has God's covenant with Israel been transferred to the Church, or is it still active? Your answer to this question will determine whether end-times prophecy about Israel is still future or was fulfilled spiritually in/through the Church.</div></div>
@@ -520,7 +590,11 @@
     <textarea class="notes-input" id="n-m2" placeholder="Write your convictions here... Date your entry."></textarea>
   </div>
 
-  <div class="guest-box">
+    <div class="complete-bar">
+    <button class="btn-complete" id="btn-complete-m2" onclick="markComplete('m2', 'Module 2')">✓ Mark Complete</button>
+    <span class="completion-stamp" id="stamp-m2"></span>
+  </div>
+<div class="guest-box">
     <div class="guest-title">💬 Submit a Note to Chris</div>
     <input class="guest-input" id="guest-name-m2" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m2" placeholder="Your email (optional — if you'd like a reply)">
@@ -534,6 +608,28 @@
 <div id="m3" class="page">
   <span class="page-tag">Module 3 — Theme 1: End Times</span>
   <h1 class="page-title">The Day of the Lord</h1>
+  <div class="module-meta" id="meta-m3">
+    <div class="meta-item">
+      <span class="meta-label">Time This Visit</span>
+      <span class="meta-value" id="timer-session-m3">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Total Time</span>
+      <span class="meta-value" id="timer-total-m3">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Guide Born</span>
+      <span class="meta-born">March 29, 2026</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Completed</span>
+      <span class="meta-value" id="completed-stamp-m3" style="font-size:11px;color:rgba(255,255,255,0.6);">—</span>
+    </div>
+  </div>
+
   <div class="info-box"><div class="title">Read first</div><div class="line">1 Thessalonians 5:1–11, Isaiah 34, Joel 3:1–16, Zechariah 14:1–3</div></div>
   <p class="body">The "Day of the Lord" refers to the entire Tribulation period — a time of sudden, inescapable divine judgment on the unbelieving world. It begins when the Antichrist signs the covenant with Israel. Christians are not appointed to this wrath — they are removed by the Rapture beforehand.</p>
   <div class="scripture-box"><div class="ref">1 Thessalonians 5:2–3 (NLT)</div><div class="text">You know quite well that the day of the Lord's return will come unexpectedly, like a thief in the night. When people are saying, "Everything is peaceful and secure," then disaster will fall on them as suddenly as a pregnant woman's labor pains begin. And there will be no escape.</div></div>
@@ -554,7 +650,11 @@
     <textarea class="notes-input" id="n-m3" placeholder="Write your thoughts here..."></textarea>
   </div>
 
-  <div class="guest-box">
+    <div class="complete-bar">
+    <button class="btn-complete" id="btn-complete-m3" onclick="markComplete('m3', 'Module 3')">✓ Mark Complete</button>
+    <span class="completion-stamp" id="stamp-m3"></span>
+  </div>
+<div class="guest-box">
     <div class="guest-title">💬 Submit a Note to Chris</div>
     <input class="guest-input" id="guest-name-m3" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m3" placeholder="Your email (optional — if you'd like a reply)">
@@ -568,6 +668,28 @@
 <div id="m4" class="page">
   <span class="page-tag">Module 4 — Theme 1: End Times</span>
   <h1 class="page-title">Ezekiel 33: The Watchman Principle</h1>
+  <div class="module-meta" id="meta-m4">
+    <div class="meta-item">
+      <span class="meta-label">Time This Visit</span>
+      <span class="meta-value" id="timer-session-m4">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Total Time</span>
+      <span class="meta-value" id="timer-total-m4">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Guide Born</span>
+      <span class="meta-born">March 29, 2026</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Completed</span>
+      <span class="meta-value" id="completed-stamp-m4" style="font-size:11px;color:rgba(255,255,255,0.6);">—</span>
+    </div>
+  </div>
+
   <div class="info-box"><div class="title">Read first</div><div class="line">Ezekiel 33 in full</div></div>
   <div class="scripture-box"><div class="ref">Ezekiel 33:6</div><div class="text">"But if the watchman sees the sword coming and does not blow the trumpet to warn the people and the sword comes and takes someone's life, that person's life will be taken because of their sin, but I will hold the watchman accountable for their blood."</div></div>
   <ul class="bullet-list">
@@ -591,7 +713,11 @@
     <textarea class="notes-input" id="n-m4" placeholder="Write your convictions here..."></textarea>
   </div>
 
-  <div class="guest-box">
+    <div class="complete-bar">
+    <button class="btn-complete" id="btn-complete-m4" onclick="markComplete('m4', 'Module 4')">✓ Mark Complete</button>
+    <span class="completion-stamp" id="stamp-m4"></span>
+  </div>
+<div class="guest-box">
     <div class="guest-title">💬 Submit a Note to Chris</div>
     <input class="guest-input" id="guest-name-m4" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m4" placeholder="Your email (optional — if you'd like a reply)">
@@ -605,6 +731,28 @@
 <div id="m5" class="page">
   <span class="page-tag">Module 5 — Theme 1: End Times</span>
   <h1 class="page-title">Ezekiel 36: The New Covenant</h1>
+  <div class="module-meta" id="meta-m5">
+    <div class="meta-item">
+      <span class="meta-label">Time This Visit</span>
+      <span class="meta-value" id="timer-session-m5">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Total Time</span>
+      <span class="meta-value" id="timer-total-m5">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Guide Born</span>
+      <span class="meta-born">March 29, 2026</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Completed</span>
+      <span class="meta-value" id="completed-stamp-m5" style="font-size:11px;color:rgba(255,255,255,0.6);">—</span>
+    </div>
+  </div>
+
   <div class="info-box"><div class="title">Read first</div><div class="line">Ezekiel 36:16–38, Jeremiah 31:31–34, John 3:1–8</div></div>
   <div class="scripture-box"><div class="ref">Ezekiel 36:22, 32</div><div class="text">"It is not for your sake, people of Israel, that I am going to do these things, but for the sake of my holy name... I want you to know that I am not doing this for your sake, declares the Sovereign LORD."</div></div>
   <p class="body">God says it TWICE in this passage: this is not because you deserve it. This is radical, sovereign grace. Your standing before God does not depend on your performance — it is rooted in God's own character and the honor of His name.</p>
@@ -625,7 +773,11 @@
     <textarea class="notes-input" id="n-m5" placeholder="Write your convictions here..."></textarea>
   </div>
 
-  <div class="guest-box">
+    <div class="complete-bar">
+    <button class="btn-complete" id="btn-complete-m5" onclick="markComplete('m5', 'Module 5')">✓ Mark Complete</button>
+    <span class="completion-stamp" id="stamp-m5"></span>
+  </div>
+<div class="guest-box">
     <div class="guest-title">💬 Submit a Note to Chris</div>
     <input class="guest-input" id="guest-name-m5" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m5" placeholder="Your email (optional — if you'd like a reply)">
@@ -639,6 +791,28 @@
 <div id="m6" class="page">
   <span class="page-tag">Module 6 — Theme 1: End Times</span>
   <h1 class="page-title">The Rapture: Scripture &amp; Honest Inquiry</h1>
+  <div class="module-meta" id="meta-m6">
+    <div class="meta-item">
+      <span class="meta-label">Time This Visit</span>
+      <span class="meta-value" id="timer-session-m6">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Total Time</span>
+      <span class="meta-value" id="timer-total-m6">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Guide Born</span>
+      <span class="meta-born">March 29, 2026</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Completed</span>
+      <span class="meta-value" id="completed-stamp-m6" style="font-size:11px;color:rgba(255,255,255,0.6);">—</span>
+    </div>
+  </div>
+
   <div class="info-box"><div class="title">Read first</div><div class="line">1 Thessalonians 4:13–18, 1 Corinthians 15:51–54, John 14:1–3, 2 Thessalonians 2:1–12 | <em>Important: The fact of Christ's return is non-negotiable. The TIMING relative to the tribulation is where sincere believers disagree. Come willing to be surprised.</em></div></div>
   <div class="scripture-box"><div class="ref">1 Thessalonians 4:15–17</div><div class="text">"According to the Lord's word, we tell you that we who are still alive, who are left until the coming of the Lord, will certainly not precede those who have fallen asleep. For the Lord himself will come down from heaven, with a loud command, with the voice of the archangel and with the trumpet call of God, and the dead in Christ will rise first. After that, we who are still alive and are left will be caught up together with them in the clouds to meet the Lord in the air."</div></div>
   <div class="scripture-box"><div class="ref">2 Thessalonians 2:6–7 (NLT)</div><div class="text">And you know what is holding him back, for he can be revealed only when his time comes. For this lawlessness is already at work secretly, and it will remain secret until the one who is holding it back steps out of the way.</div></div>
@@ -672,7 +846,11 @@
     <textarea class="notes-input" id="n-m6" placeholder="Write your convictions here... Date your entry."></textarea>
   </div>
 
-  <div class="guest-box">
+    <div class="complete-bar">
+    <button class="btn-complete" id="btn-complete-m6" onclick="markComplete('m6', 'Module 6')">✓ Mark Complete</button>
+    <span class="completion-stamp" id="stamp-m6"></span>
+  </div>
+<div class="guest-box">
     <div class="guest-title">💬 Submit a Note to Chris</div>
     <input class="guest-input" id="guest-name-m6" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m6" placeholder="Your email (optional — if you'd like a reply)">
@@ -686,6 +864,28 @@
 <div id="m7" class="page">
   <span class="page-tag">Module 7 — Theme 1: End Times</span>
   <h1 class="page-title">The Antichrist</h1>
+  <div class="module-meta" id="meta-m7">
+    <div class="meta-item">
+      <span class="meta-label">Time This Visit</span>
+      <span class="meta-value" id="timer-session-m7">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Total Time</span>
+      <span class="meta-value" id="timer-total-m7">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Guide Born</span>
+      <span class="meta-born">March 29, 2026</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Completed</span>
+      <span class="meta-value" id="completed-stamp-m7" style="font-size:11px;color:rgba(255,255,255,0.6);">—</span>
+    </div>
+  </div>
+
   <div class="info-box"><div class="title">Read first</div><div class="line">2 Thessalonians 2:1–12, Daniel 9:27, Revelation 13</div></div>
   <p class="body">The Antichrist is the 'man of lawlessness' described in 2 Thessalonians 2, the 'beast' of Revelation 13, and the 'prince who is to come' in Daniel 9. He will be a political, military, and economic genius who rises after the Rapture, makes a false peace with Israel, then turns to destroy her.</p>
   <div class="scripture-box"><div class="ref">2 Thessalonians 2:3–4 (NLT)</div><div class="text">Don't be fooled by what they say. For that day will not come until there is a great rebellion against God and the man of lawlessness is revealed, the one who brings destruction. He will exalt himself and defy everything that people call god and every object of worship. He will even sit in the temple of God, claiming that he himself is God.</div></div>
@@ -707,7 +907,11 @@
     <textarea class="notes-input" id="n-m7" placeholder="Write your thoughts here..."></textarea>
   </div>
 
-  <div class="guest-box">
+    <div class="complete-bar">
+    <button class="btn-complete" id="btn-complete-m7" onclick="markComplete('m7', 'Module 7')">✓ Mark Complete</button>
+    <span class="completion-stamp" id="stamp-m7"></span>
+  </div>
+<div class="guest-box">
     <div class="guest-title">💬 Submit a Note to Chris</div>
     <input class="guest-input" id="guest-name-m7" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m7" placeholder="Your email (optional — if you'd like a reply)">
@@ -721,6 +925,28 @@
 <div id="m8" class="page">
   <span class="page-tag">Module 8 — Theme 1: End Times</span>
   <h1 class="page-title">The Rebuilt Temple &amp; Abomination of Desolation</h1>
+  <div class="module-meta" id="meta-m8">
+    <div class="meta-item">
+      <span class="meta-label">Time This Visit</span>
+      <span class="meta-value" id="timer-session-m8">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Total Time</span>
+      <span class="meta-value" id="timer-total-m8">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Guide Born</span>
+      <span class="meta-born">March 29, 2026</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Completed</span>
+      <span class="meta-value" id="completed-stamp-m8" style="font-size:11px;color:rgba(255,255,255,0.6);">—</span>
+    </div>
+  </div>
+
   <p class="body">A third Jewish temple must be built in Jerusalem before the midpoint of the Tribulation. Animal sacrifices will resume. At the midpoint, the Antichrist enters the temple, stops the sacrifices, sets up his image, and declares himself God — the 'abomination of desolation.'</p>
   <h2 class="section-title">Temple History</h2>
   <ul class="bullet-list">
@@ -744,7 +970,11 @@
     <textarea class="notes-input" id="n-m8" placeholder="Write your thoughts here..."></textarea>
   </div>
 
-  <div class="guest-box">
+    <div class="complete-bar">
+    <button class="btn-complete" id="btn-complete-m8" onclick="markComplete('m8', 'Module 8')">✓ Mark Complete</button>
+    <span class="completion-stamp" id="stamp-m8"></span>
+  </div>
+<div class="guest-box">
     <div class="guest-title">💬 Submit a Note to Chris</div>
     <input class="guest-input" id="guest-name-m8" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m8" placeholder="Your email (optional — if you'd like a reply)">
@@ -758,6 +988,28 @@
 <div id="m9" class="page">
   <span class="page-tag">Module 9 — Theme 1: End Times</span>
   <h1 class="page-title">Ezekiel 38–39: The Gog-Magog War</h1>
+  <div class="module-meta" id="meta-m9">
+    <div class="meta-item">
+      <span class="meta-label">Time This Visit</span>
+      <span class="meta-value" id="timer-session-m9">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Total Time</span>
+      <span class="meta-value" id="timer-total-m9">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Guide Born</span>
+      <span class="meta-born">March 29, 2026</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Completed</span>
+      <span class="meta-value" id="completed-stamp-m9" style="font-size:11px;color:rgba(255,255,255,0.6);">—</span>
+    </div>
+  </div>
+
   <div class="info-box"><div class="title">Read first</div><div class="line">Ezekiel 38–39 in full. Read it like a news report — then read it again as Scripture.</div></div>
   <p class="body">The Gog-Magog War is a massive coalition invasion of Israel that God supernaturally destroys. It occurs after the Rapture but before the Tribulation begins. The precondition is Israel living in perceived safety.</p>
   <h2 class="section-title">The Coalition</h2>
@@ -824,7 +1076,11 @@
     <textarea class="notes-input" id="n-m9" placeholder="Write your convictions here..."></textarea>
   </div>
 
-  <div class="guest-box">
+    <div class="complete-bar">
+    <button class="btn-complete" id="btn-complete-m9" onclick="markComplete('m9', 'Module 9')">✓ Mark Complete</button>
+    <span class="completion-stamp" id="stamp-m9"></span>
+  </div>
+<div class="guest-box">
     <div class="guest-title">💬 Submit a Note to Chris</div>
     <input class="guest-input" id="guest-name-m9" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m9" placeholder="Your email (optional — if you'd like a reply)">
@@ -838,6 +1094,28 @@
 <div id="m10" class="page">
   <span class="page-tag">Module 10 — Theme 1: End Times</span>
   <h1 class="page-title">Signs of the Times</h1>
+  <div class="module-meta" id="meta-m10">
+    <div class="meta-item">
+      <span class="meta-label">Time This Visit</span>
+      <span class="meta-value" id="timer-session-m10">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Total Time</span>
+      <span class="meta-value" id="timer-total-m10">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Guide Born</span>
+      <span class="meta-born">March 29, 2026</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Completed</span>
+      <span class="meta-value" id="completed-stamp-m10" style="font-size:11px;color:rgba(255,255,255,0.6);">—</span>
+    </div>
+  </div>
+
   <div class="info-box"><div class="title">Read first</div><div class="line">Matthew 24:1–14, 2 Timothy 3:1–5, Daniel 12:4</div></div>
   <p class="body">Jesus told His disciples to recognize the signs of the times — events of prophetic significance that indicate the Tribulation is drawing near. These signs do not set dates, but they tell us the stage is being set.</p>
   <h2 class="section-title">Global Conditions — Birth Pains</h2>
@@ -867,7 +1145,11 @@
     <textarea class="notes-input" id="n-m10" placeholder="Write your thoughts here..."></textarea>
   </div>
 
-  <div class="guest-box">
+    <div class="complete-bar">
+    <button class="btn-complete" id="btn-complete-m10" onclick="markComplete('m10', 'Module 10')">✓ Mark Complete</button>
+    <span class="completion-stamp" id="stamp-m10"></span>
+  </div>
+<div class="guest-box">
     <div class="guest-title">💬 Submit a Note to Chris</div>
     <input class="guest-input" id="guest-name-m10" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m10" placeholder="Your email (optional — if you'd like a reply)">
@@ -881,6 +1163,28 @@
 <div id="m11" class="page">
   <span class="page-tag">Module 11 — Theme 1: End Times</span>
   <h1 class="page-title">Identifying False Prophets</h1>
+  <div class="module-meta" id="meta-m11">
+    <div class="meta-item">
+      <span class="meta-label">Time This Visit</span>
+      <span class="meta-value" id="timer-session-m11">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Total Time</span>
+      <span class="meta-value" id="timer-total-m11">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Guide Born</span>
+      <span class="meta-born">March 29, 2026</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Completed</span>
+      <span class="meta-value" id="completed-stamp-m11" style="font-size:11px;color:rgba(255,255,255,0.6);">—</span>
+    </div>
+  </div>
+
   <div class="info-box"><div class="title">Read first</div><div class="line">Matthew 7:15–23, 2 Timothy 4:3–4, 1 John 4:1–3</div></div>
   <p class="body">Scripture warns repeatedly that false prophets will be a defining feature of the last days — both in the world and within the Church. God gives us clear tests to identify them.</p>
   <h2 class="section-title">The Biblical Tests</h2>
@@ -911,7 +1215,11 @@
     <textarea class="notes-input" id="n-m11" placeholder="Write your thoughts here..."></textarea>
   </div>
 
-  <div class="guest-box">
+    <div class="complete-bar">
+    <button class="btn-complete" id="btn-complete-m11" onclick="markComplete('m11', 'Module 11')">✓ Mark Complete</button>
+    <span class="completion-stamp" id="stamp-m11"></span>
+  </div>
+<div class="guest-box">
     <div class="guest-title">💬 Submit a Note to Chris</div>
     <input class="guest-input" id="guest-name-m11" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m11" placeholder="Your email (optional — if you'd like a reply)">
@@ -925,6 +1233,28 @@
 <div id="m12" class="page">
   <span class="page-tag">Module 12 — Theme 1: End Times</span>
   <h1 class="page-title">The Millennial Kingdom</h1>
+  <div class="module-meta" id="meta-m12">
+    <div class="meta-item">
+      <span class="meta-label">Time This Visit</span>
+      <span class="meta-value" id="timer-session-m12">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Total Time</span>
+      <span class="meta-value" id="timer-total-m12">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Guide Born</span>
+      <span class="meta-born">March 29, 2026</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Completed</span>
+      <span class="meta-value" id="completed-stamp-m12" style="font-size:11px;color:rgba(255,255,255,0.6);">—</span>
+    </div>
+  </div>
+
   <div class="info-box"><div class="title">Read first</div><div class="line">Revelation 20:1–10, Isaiah 11:1–10, Ezekiel 40–48 (overview), Zechariah 14</div></div>
   <div class="scripture-box"><div class="ref">Revelation 20:4–6</div><div class="text">"They came to life and reigned with Christ a thousand years. (The rest of the dead did not come to life until the thousand years were ended.) This is the first resurrection. Blessed and holy are those who share in the first resurrection. The second death has no power over them, but they will be priests of God and of Christ and will reign with him for a thousand years."</div></div>
   <p class="body">The text states "a thousand years" six times in Revelation 20:2–7. The question is whether this is a literal 1,000-year period or a symbolic representation of a complete/full age.</p>
@@ -949,7 +1279,11 @@
     <textarea class="notes-input" id="n-m12" placeholder="Write your convictions here... Date your entry."></textarea>
   </div>
 
-  <div class="guest-box">
+    <div class="complete-bar">
+    <button class="btn-complete" id="btn-complete-m12" onclick="markComplete('m12', 'Module 12')">✓ Mark Complete</button>
+    <span class="completion-stamp" id="stamp-m12"></span>
+  </div>
+<div class="guest-box">
     <div class="guest-title">💬 Submit a Note to Chris</div>
     <input class="guest-input" id="guest-name-m12" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m12" placeholder="Your email (optional — if you'd like a reply)">
@@ -963,6 +1297,28 @@
 <div id="m13" class="page">
   <span class="page-tag">Module 13 — Theme 1: End Times</span>
   <h1 class="page-title">Second Coming, Eternity &amp; Living Now</h1>
+  <div class="module-meta" id="meta-m13">
+    <div class="meta-item">
+      <span class="meta-label">Time This Visit</span>
+      <span class="meta-value" id="timer-session-m13">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Total Time</span>
+      <span class="meta-value" id="timer-total-m13">0:00</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Guide Born</span>
+      <span class="meta-born">March 29, 2026</span>
+    </div>
+    <div class="meta-divider"></div>
+    <div class="meta-item">
+      <span class="meta-label">Completed</span>
+      <span class="meta-value" id="completed-stamp-m13" style="font-size:11px;color:rgba(255,255,255,0.6);">—</span>
+    </div>
+  </div>
+
   <div class="info-box"><div class="title">Read first</div><div class="line">Revelation 19:11–21, 21:1–22:5, 2 Peter 3:10–14, 1 John 3:2–3, Matthew 24:44–51, Luke 21:34–36</div></div>
   <p class="body">The Second Coming of Jesus Christ is the climax of all prophetic Scripture. He returns visibly, physically, and in glory to defeat the Antichrist, save Israel, establish His kingdom, and ultimately usher in the New Heaven and New Earth.</p>
   <h2 class="section-title">Second Coming Checklist</h2>
@@ -1002,7 +1358,11 @@
     <textarea class="notes-input" id="n-m13" placeholder="Write your convictions here... Date your entry."></textarea>
   </div>
 
-  <div class="guest-box">
+    <div class="complete-bar">
+    <button class="btn-complete" id="btn-complete-m13" onclick="markComplete('m13', 'Module 13')">✓ Mark Complete</button>
+    <span class="completion-stamp" id="stamp-m13"></span>
+  </div>
+<div class="guest-box">
     <div class="guest-title">💬 Submit a Note to Chris</div>
     <input class="guest-input" id="guest-name-m13" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m13" placeholder="Your email (optional — if you'd like a reply)">
@@ -1141,6 +1501,23 @@
       <div class="journal-q">• If God uses a 360-day prophetic year, does that mean the standard calendar calculations most prophecy teachers use are slightly off — or does it not matter at the scale of years?</div>
       <div class="journal-q">• The Jubilees calendar was used by the Qumran community (Dead Sea Scrolls). Does that community's use of it lend it prophetic weight, or was it simply their sectarian calendar?</div>
       <div class="journal-q">• How does the 360-day year affect the calculation of Daniel's 69 weeks (483 years) pointing to Christ's triumphal entry? Does it strengthen or complicate that argument?</div>
+    </div>
+  </div>
+
+  <div class="journal-box">
+    <div class="journal-date">April 10, 2026</div>
+    <div class="journal-topic">Topic: The Firmament, the Waters Above, &amp; the Catastrophic Flood</div>
+    <div class="journal-cat">Category: Creation / Biblical Cosmology / Conversation with Natalie</div>
+    <div class="journal-p">Had a conversation with Natalie today that opened up something worth sitting with. The discussion was about the firmament — the raqiya — described in Genesis 1:6–8 as a separation between the waters below and the waters above. The question we were wrestling with: what exactly were the "waters above the firmament," and where did they go?</div>
+    <div class="journal-p">The most compelling answer connects directly to Noah's Flood in Genesis 7. When God opens the "floodgates of the heavens" (Genesis 7:11), many creation scientists and biblical scholars argue this was a catastrophic collapse of a massive water vapor canopy that had surrounded the earth since creation — the same "waters above" that the firmament held in place. If this is correct, it means the pre-Flood world had a completely different atmospheric and hydrological condition: higher atmospheric pressure, filtered UV radiation, possibly explaining the extraordinary lifespans recorded in Genesis 5.</div>
+    <div class="journal-p">This connects directly to the 360-day calendar question we've been studying. If the earth's orbit, tilt, or atmospheric conditions were fundamentally different before the Flood, it's possible the pre-Flood year was actually 360 days — which would explain why Noah's Flood account uses 30-day months (5 months = 150 days, Genesis 7:11, 24; 8:3–4), and why the prophetic year in Daniel and Revelation uses 360 days rather than our current 365.25. The Flood may have been the event that shifted the calendar.</div>
+    <div class="journal-p"><strong>Key scriptures:</strong> Genesis 1:6–8 (the firmament), Genesis 7:11 (floodgates of heaven and springs of the deep), Genesis 7:24 &amp; 8:3–4 (150 days = 5 months → 30-day month), Job 38:8–11 (God's control over the waters), Psalm 148:4 (waters above the heavens still referenced post-Flood).</div>
+    <div class="journal-qs">
+      <div class="journal-qs-title">Questions to sit with:</div>
+      <div class="journal-q">• If the "waters above" collapsed at the Flood, does that change how I read the creation account in Genesis 1? What does it mean that God called this separation "good"?</div>
+      <div class="journal-q">• The pre-Flood patriarchs lived 700–900+ years. Could the canopy theory explain this biologically — or is it purely miraculous? Does it matter?</div>
+      <div class="journal-q">• If the Flood fundamentally altered the earth's calendar, what does that say about the precision of biblical prophecy — that God's prophetic reckoning (360 days) is anchored to creation, not to post-Flood astronomy?</div>
+      <div class="journal-q">• Natalie raised this question — worth pursuing together. What does she think the firmament was?</div>
     </div>
   </div>
 
@@ -1542,6 +1919,7 @@ function toggleAdminMode() {
     document.body.classList.add('readonly');
     document.getElementById('btn-admin').textContent = '🔒 Admin';
     document.getElementById('btn-save').style.display = 'none';
+    document.getElementById('btn-load').style.display = 'none';
     document.getElementById('gh-token').style.display = 'none';
   } else {
     document.getElementById('admin-modal').classList.add('show');
@@ -1557,6 +1935,7 @@ function checkAdminPw() {
     document.body.classList.remove('readonly');
     document.getElementById('btn-admin').textContent = '🔓 Admin ON';
     document.getElementById('btn-save').style.display = 'inline-block';
+    document.getElementById('btn-load').style.display = 'inline-block';
     document.getElementById('gh-token').style.display = 'inline-block';
     closeAdminModal();
   } else {
@@ -1572,7 +1951,115 @@ function closeAdminModal() {
   document.getElementById('admin-pw-error').style.display = 'none';
 }
 
-// ── RESOURCE CARDS ────────────────────────────────────────────────────────
+// ── MODULE TIMER & COMPLETION ─────────────────────────────────────────────
+const MODULE_IDS = ['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','m11','m12','m13'];
+let currentModule = null;
+let sessionStart = null;
+let timerInterval = null;
+
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return m + ':' + String(s).padStart(2, '0');
+}
+
+function getTotalSeconds(mid) {
+  return parseInt(localStorage.getItem('cbsg-time-' + mid) || '0');
+}
+
+function saveTotalSeconds(mid, secs) {
+  localStorage.setItem('cbsg-time-' + mid, secs);
+}
+
+function startModuleTimer(mid) {
+  // Stop any existing timer
+  if (timerInterval) clearInterval(timerInterval);
+  if (currentModule && sessionStart) {
+    // Save elapsed time for previous module
+    const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+    saveTotalSeconds(currentModule, getTotalSeconds(currentModule) + elapsed);
+  }
+  currentModule = mid;
+  sessionStart = Date.now();
+
+  // Update total display immediately
+  updateTimerDisplay(mid, 0);
+
+  timerInterval = setInterval(() => {
+    const sessionSecs = Math.floor((Date.now() - sessionStart) / 1000);
+    updateTimerDisplay(mid, sessionSecs);
+  }, 1000);
+}
+
+function updateTimerDisplay(mid, sessionSecs) {
+  const sessionEl = document.getElementById('timer-session-' + mid);
+  const totalEl = document.getElementById('timer-total-' + mid);
+  if (sessionEl) sessionEl.textContent = formatTime(sessionSecs);
+  if (totalEl) totalEl.textContent = formatTime(getTotalSeconds(mid) + sessionSecs);
+}
+
+function markComplete(mid, label) {
+  const now = new Date();
+  const stamp = now.toLocaleString('en-US', {month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit', hour12:true});
+  
+  // Save completion
+  localStorage.setItem('cbsg-complete-' + mid, stamp);
+
+  // Update button
+  const btn = document.getElementById('btn-complete-' + mid);
+  if (btn) { btn.textContent = '✓ Completed'; btn.classList.add('done'); btn.disabled = true; }
+
+  // Update stamp at bottom
+  const stampEl = document.getElementById('stamp-' + mid);
+  if (stampEl) stampEl.textContent = 'Completed: ' + stamp;
+
+  // Update stamp in meta bar at top
+  const metaStamp = document.getElementById('completed-stamp-' + mid);
+  if (metaStamp) { metaStamp.textContent = stamp; metaStamp.style.color = '#4CAF50'; metaStamp.style.fontSize = '11px'; }
+
+  // Turn nav item green
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('onclick') && item.getAttribute('onclick').includes("'" + mid + "'")) {
+      item.classList.add('completed');
+    }
+  });
+}
+
+function loadCompletions() {
+  MODULE_IDS.forEach(mid => {
+    const stamp = localStorage.getItem('cbsg-complete-' + mid);
+    if (stamp) {
+      // Button
+      const btn = document.getElementById('btn-complete-' + mid);
+      if (btn) { btn.textContent = '✓ Completed'; btn.classList.add('done'); btn.disabled = true; }
+      // Bottom stamp
+      const stampEl = document.getElementById('stamp-' + mid);
+      if (stampEl) stampEl.textContent = 'Completed: ' + stamp;
+      // Meta bar stamp
+      const metaStamp = document.getElementById('completed-stamp-' + mid);
+      if (metaStamp) { metaStamp.textContent = stamp; metaStamp.style.color = '#4CAF50'; metaStamp.style.fontSize = '11px'; }
+      // Nav green
+      document.querySelectorAll('.nav-item').forEach(item => {
+        if (item.getAttribute('onclick') && item.getAttribute('onclick').includes("'" + mid + "'")) {
+          item.classList.add('completed');
+        }
+      });
+    }
+    // Load total time display
+    const totalEl = document.getElementById('timer-total-' + mid);
+    if (totalEl) totalEl.textContent = formatTime(getTotalSeconds(mid));
+  });
+}
+
+// Save time when user leaves page
+window.addEventListener('beforeunload', () => {
+  if (currentModule && sessionStart) {
+    const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+    saveTotalSeconds(currentModule, getTotalSeconds(currentModule) + elapsed);
+  }
+});
+
+
 function toggleRes(header) {
   const card = header.closest('.res-card');
   card.classList.toggle('open');
@@ -1625,6 +2112,8 @@ function show(id, el) {
   document.getElementById('main').scrollTop = 0;
   window.scrollTo(0, 0);
   closeSidebar();
+  // Start timer if this is a module page
+  if (MODULE_IDS.includes(id)) startModuleTimer(id);
 }
 
 function toggleSidebar() {
@@ -1725,8 +2214,40 @@ document.getElementById('gh-token').addEventListener('input', function() {
 
 // ── INIT: START IN READONLY MODE ──────────────────────────────────────────
 document.body.classList.add('readonly');
+loadCompletions();
 
-// ── SAVE TO GITHUB ────────────────────────────────────────────────────────
+// ── LOAD FROM GITHUB ─────────────────────────────────────────────────────
+async function loadFromGitHub() {
+  const token = document.getElementById('gh-token').value.trim();
+  const status = document.getElementById('gh-status');
+  if (!token) {
+    status.textContent = 'Please enter your GitHub token first.';
+    status.style.color = '#FF6B6B';
+    return;
+  }
+  status.textContent = 'Loading...';
+  status.style.color = 'rgba(255,255,255,0.7)';
+
+  const owner = 'acshotsprings';
+  const repo = 'CampbellBibleStudy';
+  const path = 'index.html';
+
+  try {
+    const getResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
+      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const getData = await getResp.json();
+    const decoded = decodeURIComponent(escape(atob(getData.content.replace(/\n/g, ''))));
+    document.open();
+    document.write(decoded);
+    document.close();
+  } catch(e) {
+    status.textContent = 'Error loading: ' + e.message;
+    status.style.color = '#FF6B6B';
+  }
+}
+
+
 async function saveToGitHub() {
   const token = document.getElementById('gh-token').value.trim();
   const status = document.getElementById('gh-status');
