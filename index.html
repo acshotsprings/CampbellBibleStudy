@@ -17,7 +17,12 @@
   #sidebar-header { padding: 20px 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.15); }
   #sidebar-header h1 { font-size: 14px; font-weight: bold; line-height: 1.5; color: #FFD700; }
   #sidebar-header p { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; font-style: italic; }
-  .nav-section { padding: 12px 16px 4px; font-size: 9px; font-weight: bold; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.1em; }
+  .nav-section { padding: 12px 16px 4px; font-size: 9px; font-weight: bold; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .nav-section:hover { color: rgba(255,255,255,0.7); }
+  .nav-section .nav-arrow { font-size: 10px; transition: transform 0.2s; }
+  .nav-section.collapsed .nav-arrow { transform: rotate(-90deg); }
+  .nav-group { overflow: hidden; transition: max-height 0.25s ease; }
+  .nav-group.collapsed { max-height: 0 !important; }
   .nav-item { padding: 8px 16px; font-size: 12px; color: rgba(255,255,255,0.8); cursor: pointer; border-left: 3px solid transparent; line-height: 1.4; transition: all 0.15s; font-family: Arial, sans-serif; }
   .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
   .nav-item.active { background: rgba(255,255,255,0.12); color: #FFD700; border-left-color: #FFD700; font-weight: bold; }
@@ -170,6 +175,24 @@
 
   body.admin-mode #hamburger { top: 96px; }
 
+  /* RESOURCE CARDS */
+  .res-card { border: 1px solid #ddd; border-radius: 8px; margin: 8px 0; overflow: hidden; background: #fff; }
+  .res-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; cursor: pointer; background: #f9f9f9; border-bottom: 1px solid #eee; }
+  .res-header:hover { background: #f0f4ff; }
+  .res-title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .res-cat-tag { font-size: 10px; font-weight: bold; color: #fff; padding: 2px 8px; border-radius: 10px; font-family: Arial, sans-serif; white-space: nowrap; }
+  .res-title { font-size: 14px; font-weight: bold; color: #1F3864; font-family: Arial, sans-serif; }
+  .res-arrow { font-size: 14px; color: #888; transition: transform 0.2s; flex-shrink: 0; }
+  .res-card.open .res-arrow { transform: rotate(180deg); }
+  .res-body { display: none; padding: 14px 16px; }
+  .res-card.open .res-body { display: block; }
+  .res-desc { font-size: 13px; color: #444; line-height: 1.7; font-family: Arial, sans-serif; margin-bottom: 6px; }
+  .res-links { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 8px; }
+  .res-link-btn { color: #fff; border: none; border-radius: 4px; padding: 6px 14px; font-size: 12px; font-weight: bold; cursor: pointer; font-family: Arial, sans-serif; text-decoration: none; display: inline-block; }
+  .res-link-btn:hover { opacity: 0.85; }
+  .res-status { font-size: 11px; font-weight: bold; color: #3B5E1A; font-family: Arial, sans-serif; margin-top: 4px; }
+  .res-cat-btn.active { outline: 3px solid #FFD700; }
+
   @media print {
     #sidebar { display: none; }
     #main { margin-left: 0; padding: 20px; }
@@ -250,15 +273,15 @@
   }
 </style>
 </head>
-<body class="admin-mode readonly">
+<body>
 <div id="github-bar" style="position:fixed;top:0;left:0;right:0;background:#1F3864;color:white;z-index:200;padding:8px 20px;display:flex;align-items:center;gap:12px;font-family:Arial,sans-serif;font-size:13px;border-bottom:2px solid #FFD700;">
   <span class="bar-title" style="font-weight:bold;color:#FFD700;">Campbell Bible Study</span>
   <span class="bar-sep" style="color:rgba(255,255,255,0.4)">|</span>
-  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block; padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.3); font-size: 12px; width: 280px; background: rgba(255, 255, 255, 0.1); color: white;">
-  <button onclick="saveToGitHub()" id="btn-save" style="display: inline-block; background: rgb(255, 215, 0); color: rgb(31, 56, 100); border: none; border-radius: 4px; padding: 6px 16px; font-size: 12px; font-weight: bold; cursor: pointer;">Save to GitHub</button>
-  <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);">Saving...</span>
-  <button onclick="toggleAdminMode()" id="btn-admin" style="background:rgba(255,255,255,0.1);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 12px;font-size:11px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">🔓 Admin ON</button>
-  <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);" id="version-stamp">Version: April 10, 2026 at 3:54 PM</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display:none;padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
+  <button onclick="saveToGitHub()" id="btn-save" style="display:none;background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
+  <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);"></span>
+  <button onclick="toggleAdminMode()" id="btn-admin" style="background:rgba(255,255,255,0.1);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 12px;font-size:11px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">🔒 Admin</button>
+  <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);" id="version-stamp">Version: April 10, 2026</span>
 </div>
 
 <!-- HAMBURGER BUTTON -->
@@ -268,12 +291,12 @@
 <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <!-- ADMIN PASSWORD MODAL -->
-<div id="admin-modal" class="">
+<div id="admin-modal">
   <div id="admin-modal-box">
     <h3>🔒 Admin Access</h3>
     <p>Enter your admin password to enable editing.</p>
     <input id="admin-pw-input" type="password" placeholder="Password..." onkeydown="if(event.key==='Enter')checkAdminPw()">
-    <div id="admin-pw-error" style="display: none;">Incorrect password. Try again.</div>
+    <div id="admin-pw-error">Incorrect password. Try again.</div>
     <div class="modal-btn-row">
       <button class="modal-btn-cancel" onclick="closeAdminModal()">Cancel</button>
       <button class="modal-btn-primary" onclick="checkAdminPw()">Unlock</button>
@@ -287,36 +310,47 @@
 <div id="sidebar">
   <div id="sidebar-header">
     <h1>Campbell Family<br>Biblical Study Guide</h1>
-    <p>Version: April 10, 2026 at 3:54 PM</p>
+    <p>Version: April 10, 2026</p>
   </div>
   <div id="sidebar-nav">
-    <div class="nav-section">Getting Started</div>
-    <div class="nav-item active" onclick="show('intro', this)">Introduction</div>
-    <div class="nav-item" onclick="show('index', this)">Thematic Index</div>
-    <div class="nav-section">Theme 1 — End Times</div>
-    <div class="nav-item" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
-    <div class="nav-item" onclick="show('m2', this)">Module 2 — Israel in Prophecy</div>
-    <div class="nav-item" onclick="show('m3', this)">Module 3 — Day of the Lord</div>
-    <div class="nav-item" onclick="show('m4', this)">Module 4 — The Watchman</div>
-    <div class="nav-item" onclick="show('m5', this)">Module 5 — The New Covenant</div>
-    <div class="nav-item" onclick="show('m6', this)">Module 6 — The Rapture</div>
-    <div class="nav-item" onclick="show('m7', this)">Module 7 — The Antichrist</div>
-    <div class="nav-item" onclick="show('m8', this)">Module 8 — The Rebuilt Temple</div>
-    <div class="nav-item" onclick="show('m9', this)">Module 9 — Gog-Magog War</div>
-    <div class="nav-item" onclick="show('m10', this)">Module 10 — Signs of the Times</div>
-    <div class="nav-item" onclick="show('m11', this)">Module 11 — False Prophets</div>
-    <div class="nav-item" onclick="show('m12', this)">Module 12 — The Millennium</div>
-    <div class="nav-item" onclick="show('m13', this)">Module 13 — Second Coming</div>
-    <div class="nav-section">Themes 2–8</div>
-    <div class="nav-item" onclick="show('theme2', this)">Theme 2 — Creation &amp; the Fall</div>
-    <div class="nav-item" onclick="show('theme3', this)">Theme 3 — Judgment &amp; Mercy</div>
-    <div class="nav-item" onclick="show('themes48', this)">Themes 4–8 (Coming Soon)</div>
-    <div class="nav-section">My Study</div>
-    <div class="nav-item" onclick="show('sermons', this)">Sermon &amp; Teaching Log</div>
-    <div class="nav-item" onclick="show('journal', this)">Personal Journal</div>
-    <div class="nav-item" onclick="show('convictions', this)">My Growing Convictions</div>
-    <div class="nav-section">Resources</div>
-    <div class="nav-item" onclick="window.location.href='DeepDives.html'">🔬 Deep Dives</div>
+    <div class="nav-section" onclick="toggleNav('nav-start')">Getting Started <span class="nav-arrow">▾</span></div>
+    <div class="nav-group" id="nav-start">
+      <div class="nav-item active" onclick="show('intro', this)">Introduction</div>
+      <div class="nav-item" onclick="show('index', this)">Thematic Index</div>
+    </div>
+    <div class="nav-section" onclick="toggleNav('nav-endtimes')">Theme 1 — End Times <span class="nav-arrow">▾</span></div>
+    <div class="nav-group" id="nav-endtimes">
+      <div class="nav-item" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
+      <div class="nav-item" onclick="show('m2', this)">Module 2 — Israel in Prophecy</div>
+      <div class="nav-item" onclick="show('m3', this)">Module 3 — Day of the Lord</div>
+      <div class="nav-item" onclick="show('m4', this)">Module 4 — The Watchman</div>
+      <div class="nav-item" onclick="show('m5', this)">Module 5 — The New Covenant</div>
+      <div class="nav-item" onclick="show('m6', this)">Module 6 — The Rapture</div>
+      <div class="nav-item" onclick="show('m7', this)">Module 7 — The Antichrist</div>
+      <div class="nav-item" onclick="show('m8', this)">Module 8 — The Rebuilt Temple</div>
+      <div class="nav-item" onclick="show('m9', this)">Module 9 — Gog-Magog War</div>
+      <div class="nav-item" onclick="show('m10', this)">Module 10 — Signs of the Times</div>
+      <div class="nav-item" onclick="show('m11', this)">Module 11 — False Prophets</div>
+      <div class="nav-item" onclick="show('m12', this)">Module 12 — The Millennium</div>
+      <div class="nav-item" onclick="show('m13', this)">Module 13 — Second Coming</div>
+    </div>
+    <div class="nav-section" onclick="toggleNav('nav-themes')">Themes 2–8 <span class="nav-arrow">▾</span></div>
+    <div class="nav-group" id="nav-themes">
+      <div class="nav-item" onclick="show('theme2', this)">Theme 2 — Creation &amp; the Fall</div>
+      <div class="nav-item" onclick="show('theme3', this)">Theme 3 — Judgment &amp; Mercy</div>
+      <div class="nav-item" onclick="show('themes48', this)">Themes 4–8 (Coming Soon)</div>
+    </div>
+    <div class="nav-section" onclick="toggleNav('nav-mystudy')">My Study <span class="nav-arrow">▾</span></div>
+    <div class="nav-group" id="nav-mystudy">
+      <div class="nav-item" onclick="show('sermons', this)">Sermon &amp; Teaching Log</div>
+      <div class="nav-item" onclick="show('journal', this)">Personal Journal</div>
+      <div class="nav-item" onclick="show('convictions', this)">My Growing Convictions</div>
+    </div>
+    <div class="nav-section" onclick="toggleNav('nav-resources')">Resources <span class="nav-arrow">▾</span></div>
+    <div class="nav-group" id="nav-resources">
+      <div class="nav-item" onclick="show('resources', this)">📚 Resource Library</div>
+      <div class="nav-item" onclick="window.location.href='DeepDives.html'">🔬 Deep Dives</div>
+    </div>
   </div>
 </div>
 
@@ -358,7 +392,7 @@
     <input class="guest-input" id="guest-email-intro" placeholder="Your email (optional — if you'd like a reply)">
     <textarea class="guest-textarea" id="guest-msg-intro" placeholder="Your thought, question, or insight on this page..."></textarea>
     <br><button class="guest-submit" onclick="submitGuest('Introduction', 'intro')">Submit to Chris</button>
-    <div class="guest-status" id="guest-status-intro" style="color: rgb(204, 0, 0);">Error sending. Please try again.</div>
+    <div class="guest-status" id="guest-status-intro"></div>
   </div>
 </div>
 
@@ -454,7 +488,7 @@
     <input class="guest-input" id="guest-name-m1" placeholder="Your name (required)">
     <input class="guest-input" id="guest-email-m1" placeholder="Your email (optional — if you'd like a reply)">
     <textarea class="guest-textarea" id="guest-msg-m1" placeholder="Your thought, question, or insight on this page..."></textarea>
-    <br><button class="guest-submit" onclick="submitGuest('Module 1 — Daniel's 70 Weeks', 'm1')">Submit to Chris</button>
+    <br><button class="guest-submit" onclick="submitGuest('Module 1 — Daniel&#39;s 70 Weeks', 'm1')">Submit to Chris</button>
     <div class="guest-status" id="guest-status-m1"></div>
   </div>
 </div>
@@ -1174,6 +1208,320 @@ Questions to sit with:
   </div>
 </div>
 
+<!-- RESOURCES -->
+<div id="resources" class="page">
+  <span class="page-tag">Resources</span>
+  <h1 class="page-title">Resource Library</h1>
+  <p class="page-subtitle">Scripture, reference texts, study books, and tools used in building this guide. Click any book to expand.</p>
+
+  <!-- CATEGORY BUTTONS -->
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
+    <button onclick="filterBooks('all')" class="res-cat-btn active" id="cat-all" style="background:#1F3864;color:#FFD700;border:none;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">All</button>
+    <button onclick="filterBooks('scripture')" class="res-cat-btn" id="cat-scripture" style="background:#2E75B6;color:#fff;border:none;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">📖 Scripture</button>
+    <button onclick="filterBooks('prophecy')" class="res-cat-btn" id="cat-prophecy" style="background:#6B3A9E;color:#fff;border:none;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">🔯 Prophecy</button>
+    <button onclick="filterBooks('apocrypha')" class="res-cat-btn" id="cat-apocrypha" style="background:#7A4F00;color:#fff;border:none;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">📜 Second Temple</button>
+    <button onclick="filterBooks('living')" class="res-cat-btn" id="cat-living" style="background:#3B5E1A;color:#fff;border:none;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">✝️ Christian Living</button>
+    <button onclick="filterBooks('financial')" class="res-cat-btn" id="cat-financial" style="background:#1A5E3A;color:#fff;border:none;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">💰 Financial / IBC</button>
+    <button onclick="filterBooks('leadership')" class="res-cat-btn" id="cat-leadership" style="background:#8B1A1A;color:#fff;border:none;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">⚔️ Leadership</button>
+  </div>
+
+  <div id="resource-list">
+
+    <!-- SCRIPTURE -->
+    <div class="res-card" data-cat="scripture">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#2E75B6">📖 Scripture</span>
+          <span class="res-title">The Holy Bible — New Living Translation (NLT)</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">Primary translation used throughout this guide. Readable, clear narrative language. Best for first-pass reading of prophetic passages.</p>
+        <div class="res-status">✓ In Use</div>
+      </div>
+    </div>
+
+    <div class="res-card" data-cat="scripture">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#2E75B6">📖 Scripture</span>
+          <span class="res-title">The Holy Bible — English Standard Version (ESV)</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">Used for precision in doctrinal and prophetic passages. More literal than the NLT — important when exact wording matters.</p>
+        <div class="res-status">✓ In Use</div>
+      </div>
+    </div>
+
+    <div class="res-card" data-cat="scripture">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#2E75B6">📖 Scripture</span>
+          <span class="res-title">The Holy Bible — New King James Version (NKJV)</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">Classic translation. Useful for cross-referencing familiar prophetic passages and comparing with older commentaries.</p>
+        <div class="res-status">✓ In Use</div>
+      </div>
+    </div>
+
+    <!-- APOCRYPHA / SECOND TEMPLE -->
+    <div class="res-card" data-cat="apocrypha">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#7A4F00">📜 Second Temple</span>
+          <span class="res-title">The Book of Enoch (1 Enoch)</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">Ancient Jewish apocalyptic text quoted directly in Jude 1:14–15. Contains early traditions about the Watchers, fallen angels, and end-times judgment. Not canonical but highly relevant to understanding Second Temple Jewish eschatology and the background of New Testament apocalyptic imagery. The imagery in Revelation draws heavily from this tradition.</p>
+        <p class="res-desc" style="margin-top:8px"><strong>Author:</strong> Unknown (attributed to Enoch) | <strong>Date:</strong> ~300–100 BC</p>
+        <div class="res-links">
+          <a href="https://www.audible.com/search?keywords=book+of+enoch" target="_blank" class="res-link-btn" style="background:#F90;">🎧 Find on Audible</a>
+        </div>
+        <div class="res-status">📌 Reference</div>
+      </div>
+    </div>
+
+    <div class="res-card" data-cat="apocrypha">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#7A4F00">📜 Second Temple</span>
+          <span class="res-title">The Book of Jubilees</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">A retelling of Genesis through Numbers using the 364-day solar calendar. Highly valued by the Qumran community (Dead Sea Scrolls). Critical context for the Jubilees calendar debate and its relationship to the 360-day prophetic year in Daniel and Revelation.</p>
+        <p class="res-desc" style="margin-top:8px"><strong>Author:</strong> Unknown | <strong>Date:</strong> ~160–150 BC</p>
+        <div class="res-links">
+          <a href="https://www.audible.com/search?keywords=book+of+jubilees" target="_blank" class="res-link-btn" style="background:#F90;">🎧 Find on Audible</a>
+        </div>
+        <div class="res-status">📌 Reference — See Deep Dive 1</div>
+      </div>
+    </div>
+
+    <div class="res-card" data-cat="apocrypha">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#7A4F00">📜 Second Temple</span>
+          <span class="res-title">The Dead Sea Scrolls</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">Collection of Jewish texts discovered at Qumran (1947). Includes the earliest known manuscripts of the Hebrew Bible, prophetic commentary, and sectarian documents revealing how one Jewish community understood end-times prophecy ca. 200 BC – 68 AD.</p>
+        <div class="res-links">
+          <a href="https://www.audible.com/search?keywords=dead+sea+scrolls" target="_blank" class="res-link-btn" style="background:#F90;">🎧 Find on Audible</a>
+        </div>
+        <div class="res-status">📌 Reference</div>
+      </div>
+    </div>
+
+    <!-- PROPHECY -->
+    <div class="res-card" data-cat="prophecy">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#6B3A9E">🔯 Prophecy</span>
+          <span class="res-title">The End Times in Chronological Order — Ron Rhodes</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">The primary systematic reference for this entire study guide. Walks through every major end-times event in sequence, covering all major interpretive positions. Balanced, clear, and dispensational in framework. Essential reading for anyone serious about end-times study.</p>
+        <p class="res-desc" style="margin-top:8px"><strong>Author:</strong> Ron Rhodes | <strong>Publisher:</strong> Harvest House</p>
+        <div class="res-links">
+          <a href="https://www.audible.com/search?keywords=end+times+chronological+order+ron+rhodes" target="_blank" class="res-link-btn" style="background:#F90;">🎧 Audible</a>
+          <a href="https://www.amazon.com/s?k=end+times+chronological+order+ron+rhodes" target="_blank" class="res-link-btn" style="background:#1F3864;">📦 Amazon</a>
+        </div>
+        <div class="res-status">📖 Currently Reading</div>
+      </div>
+    </div>
+
+    <div class="res-card" data-cat="prophecy">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#6B3A9E">🔯 Prophecy</span>
+          <span class="res-title">The Coming Prince — Sir Robert Anderson</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">Foundational 1894 work demonstrating that Daniel's 69 weeks × 360 days points with precision to the date of Christ's triumphal entry. Established the 360-day prophetic year as the standard framework for dispensational prophecy. Available free online.</p>
+        <p class="res-desc" style="margin-top:8px"><strong>Author:</strong> Sir Robert Anderson | <strong>Date:</strong> 1894 | <strong>Available:</strong> Free online / Public Domain</p>
+        <div class="res-links">
+          <a href="https://www.audible.com/search?keywords=coming+prince+daniel+anderson" target="_blank" class="res-link-btn" style="background:#F90;">🎧 Audible</a>
+          <a href="https://www.amazon.com/s?k=coming+prince+robert+anderson" target="_blank" class="res-link-btn" style="background:#1F3864;">📦 Amazon</a>
+        </div>
+        <div class="res-status">📌 Reference — See Deep Dive 1</div>
+      </div>
+    </div>
+
+    <div class="res-card" data-cat="prophecy">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#6B3A9E">🔯 Prophecy</span>
+          <span class="res-title">The Ezekiel Option — Joel C. Rosenberg</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">Explores the Gog-Magog scenario with current geopolitical analysis. Rosenberg has been remarkably prescient about Russia-Iran-Israel dynamics. Written as fiction but grounded in serious prophetic research.</p>
+        <p class="res-desc" style="margin-top:8px"><strong>Author:</strong> Joel C. Rosenberg</p>
+        <div class="res-links">
+          <a href="https://www.audible.com/search?keywords=ezekiel+option+rosenberg" target="_blank" class="res-link-btn" style="background:#F90;">🎧 Audible</a>
+          <a href="https://www.amazon.com/s?k=ezekiel+option+rosenberg" target="_blank" class="res-link-btn" style="background:#1F3864;">📦 Amazon</a>
+        </div>
+        <div class="res-status">📌 Reference — Module 9</div>
+      </div>
+    </div>
+
+    <!-- CHRISTIAN LIVING -->
+    <div class="res-card" data-cat="living">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#3B5E1A">✝️ Christian Living</span>
+          <span class="res-title">Fearless — Eric Blehm</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">Biography of Navy SEAL Adam Brown of Hot Springs, Arkansas. One of the best books Chris has ever read. A portrait of faith, sacrifice, redemption, and what it means to live without fear. Personal connection — Adam Brown was a Hot Springs native.</p>
+        <p class="res-desc" style="margin-top:8px"><strong>Author:</strong> Eric Blehm</p>
+        <div class="res-links">
+          <a href="https://www.audible.com/search?keywords=fearless+adam+brown+eric+blehm" target="_blank" class="res-link-btn" style="background:#F90;">🎧 Audible</a>
+          <a href="https://www.amazon.com/s?k=fearless+eric+blehm" target="_blank" class="res-link-btn" style="background:#1F3864;">📦 Amazon</a>
+        </div>
+        <div class="res-status">✓ Completed</div>
+      </div>
+    </div>
+
+    <div class="res-card" data-cat="living">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#3B5E1A">✝️ Christian Living</span>
+          <span class="res-title">Unreasonable Hospitality — Will Guidara</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">How radical generosity and attention to others transforms relationships and organizations. Deeply applicable to ministry, sales, and how we treat people in every context.</p>
+        <p class="res-desc" style="margin-top:8px"><strong>Author:</strong> Will Guidara</p>
+        <div class="res-links">
+          <a href="https://www.audible.com/search?keywords=unreasonable+hospitality+guidara" target="_blank" class="res-link-btn" style="background:#F90;">🎧 Audible</a>
+          <a href="https://www.amazon.com/s?k=unreasonable+hospitality+guidara" target="_blank" class="res-link-btn" style="background:#1F3864;">📦 Amazon</a>
+        </div>
+        <div class="res-status">✓ Completed</div>
+      </div>
+    </div>
+
+    <!-- LEADERSHIP -->
+    <div class="res-card" data-cat="leadership">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#8B1A1A">⚔️ Leadership</span>
+          <span class="res-title">Extreme Ownership — Jocko Willink &amp; Leif Babin</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">Leadership principles from Navy SEAL combat experience. Radical accountability — own everything, blame nothing. Applied to business, sales, and life.</p>
+        <p class="res-desc" style="margin-top:8px"><strong>Authors:</strong> Jocko Willink &amp; Leif Babin</p>
+        <div class="res-links">
+          <a href="https://www.audible.com/search?keywords=extreme+ownership+jocko+willink" target="_blank" class="res-link-btn" style="background:#F90;">🎧 Audible</a>
+          <a href="https://www.amazon.com/s?k=extreme+ownership+jocko+willink" target="_blank" class="res-link-btn" style="background:#1F3864;">📦 Amazon</a>
+        </div>
+        <div class="res-status">✓ Completed</div>
+      </div>
+    </div>
+
+    <!-- FINANCIAL / IBC -->
+    <div class="res-card" data-cat="financial">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#1A5E3A">💰 Financial / IBC</span>
+          <span class="res-title">Becoming Your Own Banker — R. Nelson Nash</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">The foundational text of the Infinite Banking Concept. Explains how whole life insurance can be used as a personal banking system to recapture interest and build generational wealth. Core reading for the Campbell Family Banking System.</p>
+        <p class="res-desc" style="margin-top:8px"><strong>Author:</strong> R. Nelson Nash</p>
+        <div class="res-links">
+          <a href="https://www.audible.com/search?keywords=becoming+your+own+banker+nelson+nash" target="_blank" class="res-link-btn" style="background:#F90;">🎧 Audible</a>
+          <a href="https://www.amazon.com/s?k=becoming+your+own+banker+nelson+nash" target="_blank" class="res-link-btn" style="background:#1F3864;">📦 Amazon</a>
+        </div>
+        <div class="res-status">📌 IBC Reference</div>
+      </div>
+    </div>
+
+    <div class="res-card" data-cat="financial">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#1A5E3A">💰 Financial / IBC</span>
+          <span class="res-title">What Would the Rockefellers Do? — Garrett Gunderson</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">How wealthy families use whole life insurance and other vehicles to build multi-generational wealth. The Rockefeller Model that underlies the Campbell IBC strategy.</p>
+        <p class="res-desc" style="margin-top:8px"><strong>Author:</strong> Garrett Gunderson</p>
+        <div class="res-links">
+          <a href="https://www.audible.com/search?keywords=what+would+rockefellers+do+gunderson" target="_blank" class="res-link-btn" style="background:#F90;">🎧 Audible</a>
+          <a href="https://www.amazon.com/s?k=what+would+rockefellers+do+gunderson" target="_blank" class="res-link-btn" style="background:#1F3864;">📦 Amazon</a>
+        </div>
+        <div class="res-status">✓ Completed</div>
+      </div>
+    </div>
+
+    <div class="res-card" data-cat="financial">
+      <div class="res-header" onclick="toggleRes(this)">
+        <div class="res-title-row">
+          <span class="res-cat-tag" style="background:#1A5E3A">💰 Financial / IBC</span>
+          <span class="res-title">The Money Multiplier — Brent &amp; Hannah Kessler</span>
+        </div>
+        <span class="res-arrow">▾</span>
+      </div>
+      <div class="res-body">
+        <p class="res-desc">Practical IBC implementation guide and coaching resource from Brent and Hannah Kessler. Used alongside Nelson Nash's foundational work for building the Campbell Family Banking System.</p>
+        <p class="res-desc" style="margin-top:8px"><strong>Authors:</strong> Brent &amp; Hannah Kessler</p>
+        <div class="res-links">
+          <a href="https://www.audible.com/search?keywords=money+multiplier+kessler" target="_blank" class="res-link-btn" style="background:#F90;">🎧 Audible</a>
+          <a href="https://www.amazon.com/s?k=money+multiplier+kessler+IBC" target="_blank" class="res-link-btn" style="background:#1F3864;">📦 Amazon</a>
+        </div>
+        <div class="res-status">📌 IBC Reference</div>
+      </div>
+    </div>
+
+  </div><!-- end resource-list -->
+
+  <div class="info-box" style="margin-top:20px">
+    <div class="title">📖 20-Book Annual Reading Goal</div>
+    <div class="line">Chris maintains a goal of reading 20 books per year across theology, leadership, biography, and financial strategy.</div>
+    <div class="line" style="margin-top:6px"><strong>Currently Reading:</strong> The End Times in Chronological Order — Ron Rhodes</div>
+  </div>
+
+  <div class="notes-box">
+    <div class="label">✏️ Books to add / notes on resources:</div>
+    <textarea class="notes-input" id="n-resources" placeholder="Add books, resources, or notes here..."></textarea>
+  </div>
+
+  <div class="guest-box">
+    <div class="guest-title">💬 Recommend a Book to Chris</div>
+    <input class="guest-input" id="guest-name-resources" placeholder="Your name (required)">
+    <input class="guest-input" id="guest-email-resources" placeholder="Your email (optional)">
+    <textarea class="guest-textarea" id="guest-msg-resources" placeholder="Book title, author, and why you recommend it..."></textarea>
+    <br><button class="guest-submit" onclick="submitGuest('Resource Library', 'resources')">Submit to Chris</button>
+    <div class="guest-status" id="guest-status-resources"></div>
+  </div>
+</div>
+
 </div><!-- end #main -->
 </div><!-- end #app -->
 
@@ -1224,7 +1572,50 @@ function closeAdminModal() {
   document.getElementById('admin-pw-error').style.display = 'none';
 }
 
-// ── NAVIGATION ────────────────────────────────────────────────────────────
+// ── RESOURCE CARDS ────────────────────────────────────────────────────────
+function toggleRes(header) {
+  const card = header.closest('.res-card');
+  card.classList.toggle('open');
+}
+
+function filterBooks(cat) {
+  document.querySelectorAll('.res-cat-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('cat-' + cat).classList.add('active');
+  document.querySelectorAll('.res-card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+
+function toggleNav(groupId) {
+  const group = document.getElementById(groupId);
+  const section = group.previousElementSibling;
+  if (!group) return;
+  if (group.classList.contains('collapsed')) {
+    group.style.maxHeight = group.scrollHeight + 'px';
+    group.classList.remove('collapsed');
+    section.classList.remove('collapsed');
+  } else {
+    group.style.maxHeight = group.scrollHeight + 'px';
+    requestAnimationFrame(() => {
+      group.classList.add('collapsed');
+      section.classList.add('collapsed');
+    });
+  }
+}
+
+// Set initial max-heights for animation to work
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.nav-group').forEach(g => {
+    g.style.maxHeight = g.scrollHeight + 'px';
+  });
+});
+
+
 function show(id, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1254,7 +1645,7 @@ const noteIds = [
   'q-m3-1','q-m3-2',
   'q-m6-1','q-m6-2','q-m6-3','q-m6-4',
   'q-m11-1','q-m11-2','q-m11-3','q-m11-4',
-  'c-prophecy','c-israel','c-rapture','c-millennium','c-grace','c-live'
+  'c-prophecy','c-israel','c-rapture','c-millennium','c-grace','c-live','n-resources'
 ];
 
 function saveNote(id) {
@@ -1309,7 +1700,8 @@ function submitGuest(pageName, boxId) {
     emailEl.value = '';
     msgEl.value = '';
   }).catch((err) => {
-    statusEl.textContent = 'Error sending. Please try again.';
+    const errMsg = err && err.text ? err.text : (err && err.message ? err.message : JSON.stringify(err));
+    statusEl.textContent = 'Error: ' + errMsg;
     statusEl.style.color = '#cc0000';
     console.error(err);
   });
@@ -1389,7 +1781,6 @@ async function saveToGitHub() {
 }
 
 </script>
-
 
 
 
