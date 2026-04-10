@@ -233,10 +233,10 @@
 <div id="github-bar" style="position:fixed;top:0;left:0;right:0;background:#1F3864;color:white;z-index:200;padding:8px 20px;display:flex;align-items:center;gap:12px;font-family:Arial,sans-serif;font-size:13px;border-bottom:2px solid #FFD700;">
   <span style="font-weight:bold;color:#FFD700;">Campbell Bible Study</span>
   <span style="color:rgba(255,255,255,0.4)">|</span>
-  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display:none;padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
   <button onclick="saveToGitHub()" id="btn-save" style="display:none;background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
   <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);"></span>
-  <button onclick="toggleAdminMode()" id="btn-admin" style="margin-left:8px;background:rgba(255,255,255,0.1);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 12px;font-size:11px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">🔒 Admin</button>
+  <button onclick="toggleAdminMode()" id="btn-admin" style="background:rgba(255,255,255,0.1);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 12px;font-size:11px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">🔒 Admin</button>
   <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);" id="version-stamp">Version: April 10, 2026</span>
 </div>
 
@@ -1310,7 +1310,6 @@ document.getElementById('gh-token').addEventListener('input', function() {
 
 // ── INIT: START IN READONLY MODE ──────────────────────────────────────────
 document.body.classList.add('readonly');
-document.getElementById('gh-token').style.display = 'none';
 
 // ── SAVE TO GITHUB ────────────────────────────────────────────────────────
 async function saveToGitHub() {
