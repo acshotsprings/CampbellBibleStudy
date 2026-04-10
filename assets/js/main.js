@@ -248,7 +248,7 @@ function silentEmailGuest() {
     const pageName = document.title.replace(' — Campbell Bible Study', '').trim()
                    || window.location.pathname;
     emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      from_name:  name,
+      name:       name,
       from_email: '(not provided)',
       page_name:  pageName,
       message:    notes,
