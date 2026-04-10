@@ -1,4 +1,6 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Personal Journal — Campbell Bible Study</title>
@@ -12,56 +14,15 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
-  <div id="bar-extras" style="display: flex; align-items: center; gap: 10px; margin-left: 8px;">
-    <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:3px 10px;min-width:80px;">
-      <span style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;font-family:Arial,sans-serif;">This Session</span>
-      <span id="bar-session-time" style="font-size:12px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;">8s</span>
-    </div>
-    <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:3px 10px;min-width:80px;">
-      <span style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;font-family:Arial,sans-serif;">Page Total</span>
-      <span id="bar-total-time" style="font-size:12px;color:rgba(255,255,255,0.8);font-family:Arial,sans-serif;font-weight:bold;">5m 58s</span>
-    </div>
-    <button onclick="logStudyTime()" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.25);border-radius:4px;padding:4px 10px;font-size:11px;font-family:Arial,sans-serif;cursor:pointer;white-space:nowrap;" title="Log this study session to your journal">📋 Log Study</button>
-    <button onclick="insertTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:4px 10px;font-size:11px;font-family:Arial,sans-serif;font-weight:bold;cursor:pointer;white-space:nowrap;" title="Insert a timestamp into your notes">📅 Timestamp</button>
-  </div><div class="bar-right">
+  <span id="gh-status"></span>
+  <div class="bar-right">
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 9, 2026</span>
+    <span id="gh-bar-version">Version: April 10, 2026</span>
   </div>
 </div>
 
-<div id="sidebar">
-    <div id="sidebar-header">
-      <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 9, 2026</p>
-    </div>
-    <div id="sidebar-nav">
-  <div class="nav-section">Getting Started</div><a class="nav-item" href="./index.html">Introduction</a><a class="nav-item" href="./index.html#index">Thematic Index</a>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme1')" id="nav-header-theme1">
-          <span>Theme 1 — End Times<span style="font-size:9px;margin-left:6px;color:rgba(255,255,255,0.3);">0/15</span></span>
-          <span class="nav-arrow " id="nav-arrow-theme1">▶</span>
-        </div>
-        <div class="nav-section-items collapsed" id="nav-items-theme1">
-      <a class="nav-item" href="./theme1/module1.html">Module 1 — Daniel's 70 Weeks</a><a class="nav-item" href="./theme1/module2.html">Module 2 — Israel in Prophecy</a><a class="nav-item" href="./theme1/module3.html">Module 3 — Day of the Lord</a><a class="nav-item" href="./theme1/module4.html">Module 4 — The Watchman</a><a class="nav-item" href="./theme1/module5.html">Module 5 — The New Covenant</a><a class="nav-item" href="./theme1/module6.html">Module 6 — The Rapture</a><a class="nav-item" href="./theme1/module7.html">Module 7 — The Antichrist</a><a class="nav-item" href="./theme1/module8.html">Module 8 — The Rebuilt Temple</a><a class="nav-item" href="./theme1/module9.html">Module 9 — Gog-Magog War</a><a class="nav-item" href="./theme1/module10.html">Module 10 — Signs of the Times</a><a class="nav-item" href="./theme1/module11.html">Module 11 — False Prophets</a><a class="nav-item" href="./theme1/module12.html">Module 12 — The Millennium</a><a class="nav-item" href="./theme1/module13.html">Module 13 — Second Coming</a><a class="nav-item" href="./theme1/module14.html">Module 14 — Matt 24 ↔ Revelation</a><a class="nav-item" href="./theme1/module15.html">Module 15 — Armageddon</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme2')" id="nav-header-theme2">
-          <span>Theme 2 — Biblical Calendar<span style="font-size:9px;margin-left:6px;color:rgba(255,255,255,0.3);">2/3</span></span>
-          <span class="nav-arrow open" id="nav-arrow-theme2">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme2">
-      <a class="nav-item" href="./theme2/index.html">Theme 2 Overview</a><a class="nav-item sub" style="color:#90EE90;border-left-color:#90EE90;" href="./theme2/module1.html">↳ Module 1 — Calendar History <span style="color:#90EE90;font-size:11px;">✓</span></a><a class="nav-item sub" style="color:#90EE90;border-left-color:#90EE90;" href="./theme2/module2.html">↳ Module 2 — Calendar Timeline <span style="color:#90EE90;font-size:11px;">✓</span></a><a class="nav-item sub" href="./theme2/module3.html">↳ Module 3 — Book of Jubilees</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme3')" id="nav-header-theme3">
-          <span>Theme 3 — Judgment &amp; Mercy</span>
-          <span class="nav-arrow open" id="nav-arrow-theme3">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme3">
-      <a class="nav-item" href="./theme3/index.html">Theme 3 Overview</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('themes48')" id="nav-header-themes48">
-          <span>Themes 4–8</span>
-          <span class="nav-arrow " id="nav-arrow-themes48">▶</span>
-        </div>
-        <div class="nav-section-items collapsed" id="nav-items-themes48">
-      <a class="nav-item" href="./index.html#themes48">Themes 4–8 (Coming Soon)</a></div><div class="nav-section">My Study</div><a class="nav-item" href="./checklist.html">Prophecy Checklist</a><a class="nav-item" href="./reference-library.html">Reference Library</a><a class="nav-item" href="./sermons.html">Sermon &amp; Teaching Log</a><a class="nav-item active" href="./journal.html">Personal Journal</a><a class="nav-item" href="./convictions.html">My Growing Convictions</a></div></div>
+<div id="sidebar"></div>
 
 <div id="app">
 <div id="main">
@@ -70,37 +31,28 @@
   <h1 class="page-title">Personal Reflections &amp; Journal</h1>
   <p class="body">A space to record observations, convictions, and spiritual insight as they emerge through study and everyday life. Date each entry. Use the AI tool below to search and reflect on what you've written over time.</p>
 
-  <!-- ── CROSS-REFERENCES ── -->
   <div class="cross-ref-box">
     <div class="title">🔗 Cross-References — My Study Pages</div>
     <div class="line">• <a href="convictions.html" style="color:#2E75B6;">My Growing Convictions</a> — where journal observations harden into theological positions</div>
-    <div class="line">• <a href="sermons.html" style="color:#2E75B6;">Sermon &amp; Teaching Log</a> — teachings that prompted journal entries (Burton, Rosenberg, Rhodes)</div>
+    <div class="line">• <a href="sermons.html" style="color:#2E75B6;">Sermon &amp; Teaching Log</a> — teachings that prompted journal entries</div>
     <div class="line">• <a href="checklist.html" style="color:#2E75B6;">Prophecy Checklist</a> — current events observed in journal that connect to prophesied signs</div>
     <div class="line">• <a href="reference-library.html" style="color:#2E75B6;">Reference Library</a> — books and texts referenced in journal entries</div>
-    <div class="line">• Module 10 — Signs of the Times · Module 11 — False Prophets · Module 4 — The Watchman · Module 9 — Gog-Magog</div>
+    <div class="line">• Module 10 — Signs of the Times · Module 11 — False Prophets · Module 4 — The Watchman · Module 9 — Gog-Magog · Module 2 — Israel in Prophecy</div>
   </div>
 
   <!-- ── AI REFLECTION TOOL ── -->
   <div style="background:linear-gradient(135deg,#1F3864,#2E4F8A);border-radius:8px;padding:20px;margin:16px 0 24px;">
-    <div style="font-size:13px;font-weight:bold;color:#FFD700;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">
-      ✨ Reflect on My Own Journal
-    </div>
-    <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:14px;font-family:Arial,sans-serif;">
-      This tool reads <strong>everything you have written</strong> across all your notes, journal entries, conviction fields, and module notes. Ask it anything about your own journey and beliefs.
-    </p>
-    <div style="font-size:12px;color:rgba(255,255,255,0.55);font-family:Arial,sans-serif;margin-bottom:12px;">
-      Try: "How have my beliefs changed since I started?" &nbsp;·&nbsp; "What themes keep showing up in my journal?" &nbsp;·&nbsp; "What am I still wrestling with?" &nbsp;·&nbsp; "Summarize what I believe about spiritual deception"
-    </div>
+    <div style="font-size:13px;font-weight:bold;color:#FFD700;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">✨ Reflect on My Own Journal</div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:14px;font-family:Arial,sans-serif;">This tool reads <strong>everything you have written</strong> across all your notes, journal entries, conviction fields, and module notes.</p>
+    <div style="font-size:12px;color:rgba(255,255,255,0.55);font-family:Arial,sans-serif;margin-bottom:12px;">Try: "How have my beliefs changed since I started?" &nbsp;·&nbsp; "What themes keep showing up?" &nbsp;·&nbsp; "Summarize what I believe about Israel"</div>
     <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center;">
       <input id="gemini-key" type="password" placeholder="Paste Gemini API key here (saved locally, never shared)" style="flex:1;padding:6px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:white;font-size:12px;font-family:Arial,sans-serif;">
       <button onclick="saveGeminiKey()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 12px;font-size:11px;font-weight:bold;cursor:pointer;white-space:nowrap;">Save Key</button>
     </div>
-    <div id="key-status" style="font-size: 11px; color: rgb(144, 238, 144); margin-bottom: 8px; font-family: Arial, sans-serif; display: block;">✅ Key loaded.</div>
+    <div id="key-status" style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:Arial,sans-serif;display:none;"></div>
     <div class="ai-input-row">
       <textarea class="ai-prompt-input" id="ai-prompt" placeholder="Ask something about your journal and notes..." rows="2"></textarea>
-      <button class="ai-btn" id="ai-btn" onclick="askAboutMyNotes()">
-        <span id="ai-btn-text">✨ Ask</span>
-      </button>
+      <button class="ai-btn" id="ai-btn" onclick="askAboutMyNotes()"><span id="ai-btn-text">✨ Ask</span></button>
     </div>
     <div style="margin-top:8px;">
       <button onclick="listAvailableModels()" style="background:transparent;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:4px 10px;font-size:10px;cursor:pointer;font-family:Arial,sans-serif;">🔍 Check available models</button>
@@ -115,9 +67,8 @@
 
   <div class="divider"></div>
 
-  <!-- ── NEW ENTRY ── -->
   <div class="notes-box">
-    <div class="label">✏️ New entry — use the 📅 Timestamp button in the top bar to insert today's date and time, then write here:</div>
+    <div class="label">✏️ New entry — use the 📅 Timestamp button in the top bar, then write here:</div>
     <textarea class="notes-input" id="n-journal-new" placeholder="Click 'Timestamp' in the top bar to stamp the date and time, then write your entry here..." style="min-height:220px;"></textarea>
   </div>
 
@@ -125,6 +76,45 @@
     <div style="flex:1;height:2px;background:linear-gradient(to right,#C8A800,transparent);"></div>
     <div style="font-size:11px;font-weight:bold;color:#7A6600;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;">Past Entries</div>
     <div style="flex:1;height:2px;background:linear-gradient(to left,#C8A800,transparent);"></div>
+  </div>
+
+  <!-- ── APRIL 10, 2026 ── -->
+  <div class="journal-box">
+    <div class="journal-date">April 10, 2026</div>
+    <div class="journal-topic">Topic: A Conversation with Natalie — The Firmament, Israel &amp; Teaching Your Kids What You're Learning</div>
+    <div class="journal-cat">Category: Family / Creation &amp; Cosmology / Israel in Prophecy / End Times Readiness</div>
+
+    <div class="journal-p">Had a really meaningful conversation today with Natalie — my daughter, Toopie's twin, living in Kansas City. She had been reading about the firmament and had already talked to Pastor Matt about it, which made the conversation even richer. She brought it to me wanting to dig deeper, and the three of us — her, me, and Claude — worked through it together. That made me smile, especially given what came next.</div>
+
+    <div class="journal-p">Natalie does not like AI. She is convinced it is taking jobs from people and she's not shy about saying so. The irony of using it to answer her Bible question was not lost on either of us. But I'll say this — when the tool helps you understand Scripture better and brings a father and daughter closer over the Word of God, it's hard to argue with the result. We had a good laugh about it.</div>
+
+    <div class="journal-p"><strong>On the Firmament (Genesis 1:6–8):</strong> The Hebrew word is rakia — literally "something beaten out" or "spread out," like hammering metal into a sheet. On Day 2 of creation, God separated the waters — some below (our oceans) and some above (held back by this firmament-dome). The sky we see is that expanse. When the firmament "opened" in Genesis 7 during the flood, the waters above came down — which is why Scripture describes the flood as coming from both above and below simultaneously. It was cosmic-scale catastrophe, not just heavy rain. There is also a direct connection to End Times prophecy — Revelation 6:14 describes the sky "splitting like a scroll," which many scholars connect back to this same cosmic boundary language from Genesis. What God established at creation, He will one day undo and remake entirely. This is exactly where Theme 3 of this study guide is heading — God's pattern of establishing order, warning, judgment, and rescue from Genesis to Revelation.</div>
+
+    <div class="journal-p"><strong>On Israel and Palestine:</strong> Natalie came into the conversation with a question that a lot of sincere believers struggle with: if Israel is God's chosen people, why are they killing others? It's the right question to ask and it deserves an honest answer. I walked her through the timeline — October 7, 2023, Hamas launching the largest massacre of Jewish people since the Holocaust, over 1,200 killed in a single day, hostages taken including children and the elderly. Israel's military response was not aggression — it was a response to an act of war launched by a terrorist organization that uses civilians as human shields and has stated openly that its goal is the complete destruction of the Jewish state. That context changes everything.</div>
+
+    <div class="journal-p">But the deeper point I wanted her to grasp is the prophetic one. These things are not random. They are not simply geopolitical conflict. Scripture is clear that in the last days all nations will be gathered against Jerusalem (Zechariah 14:2). The pressure on Israel will increase, not decrease. The world's hostility toward God's covenant people is itself a sign. And Israel's national repentance — their eventual cry for the Messiah they rejected — is what triggers the Second Coming (Zechariah 12:10; Matthew 23:39). You cannot understand what is happening in the Middle East right now without understanding the prophetic framework. And you cannot understand the prophetic framework without loving and praying for Israel.</div>
+
+    <div class="journal-p">By the end of the conversation Natalie had a different perspective. She still cares deeply about the suffering of civilians — and she should, and so do I — but she now understands that caring for the innocent and standing with Israel are not mutually exclusive. And she understands that what we are watching unfold is not a surprise to God. It was written 2,500 years ago.</div>
+
+    <div class="journal-p">This is exactly why I am building this study guide. Not just for me — but so I have something to hand to my kids when these questions come up. So that conversations like this one have roots to grow from.</div>
+
+    <div class="cross-ref-box" style="margin-top:10px;">
+      <div class="title">🔗 Cross-References</div>
+      <div class="line">• Theme 3 — Judgment &amp; Mercy (firmament, flood, God's pattern of warning and rescue — coming soon)</div>
+      <div class="line">• Module 2 — Israel in Prophecy (God's covenant with Israel; why they remain central to prophecy)</div>
+      <div class="line">• Module 9 — Gog-Magog War (nations gathering against Israel; Russia-Iran coalition)</div>
+      <div class="line">• Module 13 — Second Coming (Israel's national cry triggers Christ's return — Zech 12:10)</div>
+      <div class="line">• Checklist Phase 1 — Pre-Rapture Signs (nations aligning against Israel)</div>
+      <div class="line">• Convictions page — Study Session Log April 9 (Gog-Magog deep dive with similar Israel themes)</div>
+    </div>
+
+    <div class="journal-qs">
+      <div class="journal-qs-title">Questions to sit with:</div>
+      <div class="journal-q">• How do I hold genuine compassion for all people suffering in conflict while also standing firmly on God's covenant promises to Israel? These are not opposites — but how do I articulate that clearly to others?</div>
+      <div class="journal-q">• Natalie had already talked to Pastor Matt before coming to me. That tells me she is actively seeking answers to hard questions. How do I keep that conversation going and keep feeding it well?</div>
+      <div class="journal-q">• The firmament connects creation to flood to Revelation in one continuous thread. What does that tell me about the consistency of God's character across all of Scripture?</div>
+      <div class="journal-q">• My daughter doesn't trust AI but trusted her dad enough to have this conversation. That is not nothing. Am I investing enough in being a source of truth for my kids on the things that matter most?</div>
+    </div>
   </div>
 
   <!-- ── APRIL 1, 2026 ── -->
@@ -156,7 +146,7 @@
     <div class="journal-topic">Topic: Grace, Holiness &amp; the Danger of Carnal Christianity</div>
     <div class="journal-cat">Category: Christian Living / Church Health / End Times Readiness</div>
     <div class="journal-p">Came across a powerful Facebook post from Pastor Larry Burton today that addresses something increasingly relevant in the end times context — the misuse of grace as a license to continue in sin. His central argument is compelling: Grace isn't a lowered bar — it's a higher one, backed by better resources (the Holy Spirit, the new covenant, Christ's indwelling). Using grace as a license to sin inverts its entire purpose.</div>
-    <div class="journal-p">This connects directly to the end-times framework. Jesus himself warns in Matthew 7:21–23 that He will say to many who did ministry in His name: "I never knew you; depart from me, you workers of iniquity." A church full of people who claim grace but live in sin is completely unprepared for the deception to come. The Antichrist's deception will be most effective against people whose faith is cultural and surface-level rather than genuine and transformed.</div>
+    <div class="journal-p">This connects directly to the end-times framework. Jesus himself warns in Matthew 7:21–23 that He will say to many who did ministry in His name: "I never knew you; depart from me, you workers of iniquity." A church full of people who claim grace but live in sin is completely unprepared for the deception to come.</div>
     <div class="journal-p">Pastor Burton's definition of repentance is worth noting: not just feeling sorry, but a change of attitude, behavior, direction, affections, and relationships. Christ is coming for a pure Bride. Five of the seven churches in Revelation are told to repent.</div>
     <div class="journal-p"><strong>Key scriptures:</strong> Heb 12:14, Ezek 18:24, Rom 6:1–2, Rev 3:5.</div>
     <div class="cross-ref-box" style="margin-top:10px;">
@@ -164,12 +154,11 @@
       <div class="line">• Module 6 — The Rapture (who is the Bride that is ready?)</div>
       <div class="line">• Module 11 — False Prophets (grace without truth as false teaching)</div>
       <div class="line">• Sermon Log #1 — Pastor Matt (servanthood and humility)</div>
-      <div class="line">• Convictions page — On grace, holiness, and what it means to be ready</div>
     </div>
     <div class="journal-qs">
       <div class="journal-qs-title">Questions to sit with:</div>
       <div class="journal-q">• Am I using grace as a covering for patterns in my life that I haven't genuinely surrendered?</div>
-      <div class="journal-q">• Ezekiel 18:24 raises the hard question: can a righteous person forfeit their standing through willful, unrepented sin? How do I hold this passage honestly?</div>
+      <div class="journal-q">• Ezekiel 18:24 — can a righteous person forfeit their standing through willful, unrepented sin? How do I hold this passage honestly?</div>
       <div class="journal-q">• What would it look like for our family to be genuinely prepared — spiritually discerning, holy, and watchful — when Christ returns?</div>
     </div>
   </div>
@@ -179,9 +168,8 @@
     <div class="journal-date">March 28, 2026</div>
     <div class="journal-topic">Topic: Spiritual Deception &amp; the Demonic Realm</div>
     <div class="journal-cat">Category: Signs of the Times / Spiritual Warfare</div>
-    <div class="journal-p">Came across something today that connected directly to what we've been studying. VP JD Vance made a public statement arguing that unexplained aerial phenomena — the UFO phenomenon that has been in the news for years — may not be extraterrestrial at all, but something from the spiritual realm. He specifically referenced the Christian understanding that evil is real and active, and quoted what felt like a paraphrase of a well-known idea: that one of the devil's greatest tricks is convincing the world he doesn't exist.</div>
-    <div class="journal-p">This strikes me as deeply connected to what we've been studying about deception in the end times. Scripture is clear that the enemy doesn't announce himself — he masquerades. 2 Corinthians 11:14 says that Satan disguises himself as an angel of light. The idea that something supernatural could be repackaged as "extraterrestrial" or "scientific" fits exactly the kind of deception Jesus warned about in Matthew 24. The false signs and wonders of the Antichrist and the False Prophet won't look obviously evil — they will look convincing, maybe even miraculous.</div>
-    <div class="journal-p">What stood out to me is how this connects to the broader cultural moment. If demonic activity can be reframed as a cosmic, non-threatening mystery — something humanity is meant to "discover" and "open up" to — that is exactly the kind of deception the end times framework warns about.</div>
+    <div class="journal-p">Came across something today that connected directly to what we've been studying. VP JD Vance made a public statement arguing that unexplained aerial phenomena may not be extraterrestrial at all, but something from the spiritual realm. He specifically referenced the Christian understanding that evil is real and active — that one of the devil's greatest tricks is convincing the world he doesn't exist.</div>
+    <div class="journal-p">This strikes me as deeply connected to what we've been studying about deception in the end times. Scripture is clear that the enemy doesn't announce himself — he masquerades. 2 Corinthians 11:14 says that Satan disguises himself as an angel of light. If demonic activity can be reframed as a cosmic, non-threatening mystery — something humanity is meant to "discover" — that is exactly the kind of deception Jesus warned about in Matthew 24.</div>
     <div class="journal-p"><strong>Key scriptures:</strong> 2 Corinthians 11:14, Matthew 24:24, Revelation 13:13–14, Ephesians 6:12.</div>
     <div class="cross-ref-box" style="margin-top:10px;">
       <div class="title">🔗 Cross-References</div>
@@ -228,13 +216,11 @@ async function askAboutMyNotes() {
         if (value && value.trim()) lines.push(`[${labels[key] || key}]\n${value.trim()}`);
       }
       notesContext = lines.length === 0 ? '(No personal notes saved yet.)' : lines.join('\n\n---\n\n');
-    } else {
-      notesContext = '(Could not load notes from GitHub.)';
-    }
+    } else { notesContext = '(Could not load notes.)'; }
     const geminiKey = document.getElementById('gemini-key').value.trim() || localStorage.getItem('cbsg-gemini-key');
     if (!geminiKey) { out.textContent = 'Please paste your Gemini API key above.'; box.classList.add('visible'); btn.disabled = false; text.textContent = '✨ Ask'; return; }
     localStorage.setItem('cbsg-gemini-key', geminiKey);
-    const fullPrompt = `You are a thoughtful spiritual reflection assistant for the Campbell Family Master Biblical Study Guide. Your job is to reflect back ONLY what the user has written in their own notes and journal. Draw only from their words — never introduce ideas not present in their notes. Be warm, honest, and specific. Show how their thinking has developed over time when relevant. 2–4 paragraphs max unless they ask for more.\n\nUser's notes and journal:\n\n${notesContext}\n\n---\n\nQuestion: ${prompt}`;
+    const fullPrompt = `You are a thoughtful spiritual reflection assistant for the Campbell Family Master Biblical Study Guide. Reflect back ONLY what the user has written in their own notes and journal. Be warm, honest, specific. 2–4 paragraphs max.\n\nUser's notes:\n\n${notesContext}\n\n---\n\nQuestion: ${prompt}`;
     const apiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents: [{ parts: [{ text: fullPrompt }] }], generationConfig: { maxOutputTokens: 1200, temperature: 0.7 } })
@@ -285,6 +271,5 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-
-
-</body></html>
+</body>
+</html>
