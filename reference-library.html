@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reference Library — Campbell Bible Study</title>
@@ -96,15 +94,56 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status"></span>
-  <div class="bar-right">
+  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
+  <div id="bar-extras" style="display: flex; align-items: center; gap: 10px; margin-left: 8px;">
+    <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:3px 10px;min-width:80px;">
+      <span style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;font-family:Arial,sans-serif;">This Session</span>
+      <span id="bar-session-time" style="font-size:12px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;">20s</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:3px 10px;min-width:80px;">
+      <span style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;font-family:Arial,sans-serif;">Page Total</span>
+      <span id="bar-total-time" style="font-size:12px;color:rgba(255,255,255,0.8);font-family:Arial,sans-serif;font-weight:bold;">1h 3m 5s</span>
+    </div>
+    <button onclick="logStudyTime()" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.25);border-radius:4px;padding:4px 10px;font-size:11px;font-family:Arial,sans-serif;cursor:pointer;white-space:nowrap;" title="Log this study session to your journal">📋 Log Study</button>
+    <button onclick="insertTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:4px 10px;font-size:11px;font-family:Arial,sans-serif;font-weight:bold;cursor:pointer;white-space:nowrap;" title="Insert a timestamp into your notes">📅 Timestamp</button>
+  </div><div class="bar-right">
     <span class="bar-originated">Originated: April 9, 2026</span>
     <span class="bar-sep">|</span>
     <span id="gh-bar-version">Version: April 9, 2026</span>
   </div>
 </div>
 
-<div id="sidebar"></div>
+<div id="sidebar">
+    <div id="sidebar-header">
+      <h1>Campbell Family<br>Biblical Study Guide</h1>
+      <p id="sidebar-version">Version: April 9, 2026</p>
+    </div>
+    <div id="sidebar-nav">
+  <div class="nav-section">Getting Started</div><a class="nav-item" href="./index.html">Introduction</a><a class="nav-item" href="./index.html#index">Thematic Index</a>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('theme1')" id="nav-header-theme1">
+          <span>Theme 1 — End Times<span style="font-size:9px;margin-left:6px;color:rgba(255,255,255,0.3);">0/15</span></span>
+          <span class="nav-arrow " id="nav-arrow-theme1">▶</span>
+        </div>
+        <div class="nav-section-items collapsed" id="nav-items-theme1">
+      <a class="nav-item" href="./theme1/module1.html">Module 1 — Daniel's 70 Weeks</a><a class="nav-item" href="./theme1/module2.html">Module 2 — Israel in Prophecy</a><a class="nav-item" href="./theme1/module3.html">Module 3 — Day of the Lord</a><a class="nav-item" href="./theme1/module4.html">Module 4 — The Watchman</a><a class="nav-item" href="./theme1/module5.html">Module 5 — The New Covenant</a><a class="nav-item" href="./theme1/module6.html">Module 6 — The Rapture</a><a class="nav-item" href="./theme1/module7.html">Module 7 — The Antichrist</a><a class="nav-item" href="./theme1/module8.html">Module 8 — The Rebuilt Temple</a><a class="nav-item" href="./theme1/module9.html">Module 9 — Gog-Magog War</a><a class="nav-item" href="./theme1/module10.html">Module 10 — Signs of the Times</a><a class="nav-item" href="./theme1/module11.html">Module 11 — False Prophets</a><a class="nav-item" href="./theme1/module12.html">Module 12 — The Millennium</a><a class="nav-item" href="./theme1/module13.html">Module 13 — Second Coming</a><a class="nav-item" href="./theme1/module14.html">Module 14 — Matt 24 ↔ Revelation</a><a class="nav-item" href="./theme1/module15.html">Module 15 — Armageddon</a></div>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('theme2')" id="nav-header-theme2">
+          <span>Theme 2 — Biblical Calendar<span style="font-size:9px;margin-left:6px;color:rgba(255,255,255,0.3);">2/3</span></span>
+          <span class="nav-arrow open" id="nav-arrow-theme2">▶</span>
+        </div>
+        <div class="nav-section-items " id="nav-items-theme2">
+      <a class="nav-item" href="./theme2/index.html">Theme 2 Overview</a><a class="nav-item sub" style="color:#90EE90;border-left-color:#90EE90;" href="./theme2/module1.html">↳ Module 1 — Calendar History <span style="color:#90EE90;font-size:11px;">✓</span></a><a class="nav-item sub" style="color:#90EE90;border-left-color:#90EE90;" href="./theme2/module2.html">↳ Module 2 — Calendar Timeline <span style="color:#90EE90;font-size:11px;">✓</span></a><a class="nav-item sub" href="./theme2/module3.html">↳ Module 3 — Book of Jubilees</a></div>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('theme3')" id="nav-header-theme3">
+          <span>Theme 3 — Judgment &amp; Mercy</span>
+          <span class="nav-arrow open" id="nav-arrow-theme3">▶</span>
+        </div>
+        <div class="nav-section-items " id="nav-items-theme3">
+      <a class="nav-item" href="./theme3/index.html">Theme 3 Overview</a></div>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('themes48')" id="nav-header-themes48">
+          <span>Themes 4–8</span>
+          <span class="nav-arrow " id="nav-arrow-themes48">▶</span>
+        </div>
+        <div class="nav-section-items collapsed" id="nav-items-themes48">
+      <a class="nav-item" href="./index.html#themes48">Themes 4–8 (Coming Soon)</a></div><div class="nav-section">My Study</div><a class="nav-item" href="./checklist.html">Prophecy Checklist</a><a class="nav-item active" href="./reference-library.html">Reference Library</a><a class="nav-item" href="./sermons.html">Sermon &amp; Teaching Log</a><a class="nav-item" href="./journal.html">Personal Journal</a><a class="nav-item" href="./convictions.html">My Growing Convictions</a></div></div>
 
 <div id="app">
 <div id="main">
@@ -137,10 +176,10 @@
       </div>
       <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
         <a class="audible-author-btn" href="https://www.audible.com/author/Joel-C-Rosenberg/B001IODPM2" target="_blank" onclick="event.stopPropagation()">🎧 All on Audible</a>
-        <div class="author-arrow" id="arrow-rosenberg" style="color:rgba(255,255,255,0.4);">▶</div>
+        <div class="author-arrow open" id="arrow-rosenberg" style="color:rgba(255,255,255,0.4);">▶</div>
       </div>
     </div>
-    <div class="author-body" id="block-rosenberg">
+    <div class="author-body open" id="block-rosenberg">
       <div class="author-desc">Former communications advisor to Benjamin Netanyahu and other Israeli and U.S. leaders. His non-fiction traces Ezekiel 38–39 onto modern geopolitics — Russia, Iran, Turkey, and the coalition forming against Israel. His prophetic fiction has repeatedly anticipated real geopolitical events before they occurred. Core source for Module 9 and the Gog-Magog coalition in the Prophecy Checklist.</div>
 
       <div class="books-section-label">Non-Fiction</div>
@@ -393,10 +432,10 @@
       </div>
       <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
         <a class="audible-author-btn" href="https://www.audible.com/author/Ron-Rhodes/B001HCZ24O" target="_blank" onclick="event.stopPropagation()">🎧 All on Audible</a>
-        <div class="author-arrow" id="arrow-rhodes" style="color:rgba(255,255,255,0.4);">▶</div>
+        <div class="author-arrow open" id="arrow-rhodes" style="color:rgba(255,255,255,0.4);">▶</div>
       </div>
     </div>
-    <div class="author-body" id="block-rhodes">
+    <div class="author-body open" id="block-rhodes">
       <div class="author-desc">Founder of Reasoning from the Scriptures Ministries. Prolific author on Bible prophecy, apologetics, and theology. His End Times Chronological series is one of the most detailed systematic treatments of Revelation available. Already in your reading log — completed April 2, 2026.</div>
 
       <div class="books-section-label">Non-Fiction</div>
@@ -404,7 +443,7 @@
       <!-- END TIMES IN CHRONOLOGICAL ORDER -->
       <div class="book-item">
         <div class="book-toggle" onclick="toggleBook('end-times-chrono')">
-          <div class="book-read-wrap" id="wrap-rl-end-times-chrono" onclick="event.stopPropagation()">
+          <div class="book-read-wrap done" id="wrap-rl-end-times-chrono" onclick="event.stopPropagation()">
             <input type="checkbox" id="rl-end-times-chrono" onchange="saveReadState('end-times-chrono')">
             <span class="rl">Read</span>
           </div>
@@ -495,7 +534,7 @@
       <div style="padding:12px 18px 16px;">
         <div class="notes-box" style="margin:0;">
           <div class="label">✏️ My Rhodes reading log:</div>
-          <textarea class="notes-input" id="n-lib-rhodes" placeholder="e.g. 3/23/2026 – 4/2/2026 — End Times in Chronological Order: awesome but confusing. Seal & trumpet judgments. Two Witnesses. Generating study guide with Claude..." style="min-height:70px;"></textarea>
+          <textarea class="notes-input" id="n-lib-rhodes" placeholder="e.g. 3/23/2026 – 4/2/2026 — End Times in Chronological Order: awesome but confusing. Seal &amp; trumpet judgments. Two Witnesses. Generating study guide with Claude..." style="min-height:70px;"></textarea>
         </div>
       </div>
     </div>
@@ -510,17 +549,17 @@
         <div class="author-sub" style="color:rgba(255,255,255,0.7);">Non-Fiction · End Times Bible Prophecy</div>
         <div class="author-count" style="color:rgba(255,255,255,0.4);">Completed March 2026 · Click to expand</div>
       </div>
-      <div class="author-arrow" id="arrow-bristow" style="color:rgba(255,255,255,0.4);">▶</div>
+      <div class="author-arrow open" id="arrow-bristow" style="color:rgba(255,255,255,0.4);">▶</div>
     </div>
-    <div class="author-body" id="block-bristow">
+    <div class="author-body open" id="block-bristow">
       <div class="author-desc">Author of End Times Bible Prophecy material. Read and completed March 2026 as part of your 20-book reading goal. Covered USA's role in End Times prophecy.</div>
 
       <div class="books-section-label">Non-Fiction</div>
 
       <div class="book-item">
         <div class="book-toggle" onclick="toggleBook('usa-end-times')">
-          <div class="book-read-wrap" id="wrap-rl-usa-end-times" onclick="event.stopPropagation()">
-            <input type="checkbox" id="rl-usa-end-times" onchange="saveReadState('usa-end-times')" checked>
+          <div class="book-read-wrap done" id="wrap-rl-usa-end-times" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-usa-end-times" onchange="saveReadState('usa-end-times')" checked="">
             <span class="rl">Read</span>
           </div>
           <div class="book-icon">📘</div>
@@ -555,16 +594,16 @@
         <div class="author-sub" style="color:rgba(255,255,255,0.7);">Non-Fiction · Dead Sea Scrolls · Ancient Church</div>
         <div class="author-count" style="color:rgba(255,255,255,0.4);">In Progress — Started 4/2/2026 · Click to expand</div>
       </div>
-      <div class="author-arrow" id="arrow-johnson" style="color:rgba(255,255,255,0.4);">▶</div>
+      <div class="author-arrow open" id="arrow-johnson" style="color:rgba(255,255,255,0.4);">▶</div>
     </div>
-    <div class="author-body" id="block-johnson">
+    <div class="author-body open" id="block-johnson">
       <div class="author-desc">Expert on the Dead Sea Scrolls and ancient church writings. His work on the Ancient Dead Sea Scroll Calendar is directly relevant to Theme 2 — the 364-day solar calendar and its prophetic implications.</div>
 
       <div class="books-section-label">Non-Fiction</div>
 
       <div class="book-item">
         <div class="book-toggle" onclick="toggleBook('dead-sea-calendar')">
-          <div class="book-read-wrap" id="wrap-rl-dead-sea-calendar" onclick="event.stopPropagation()">
+          <div class="book-read-wrap done" id="wrap-rl-dead-sea-calendar" onclick="event.stopPropagation()">
             <input type="checkbox" id="rl-dead-sea-calendar" onchange="saveReadState('dead-sea-calendar')">
             <span class="rl">Read</span>
           </div>
@@ -575,9 +614,9 @@
             <div class="book-modules-inline">→ Theme 2 Module 3 (Book of Jubilees), Theme 2 Module 1 (Calendar History)</div>
           </div>
           <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Ancient+Dead+Sea+Scroll+Calendar+Ken+Johnson" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
-          <div class="book-arrow" id="arrow-dead-sea-calendar">▶</div>
+          <div class="book-arrow open" id="arrow-dead-sea-calendar">▶</div>
         </div>
-        <div class="book-body" id="book-dead-sea-calendar">
+        <div class="book-body open" id="book-dead-sea-calendar">
           <div class="book-dates">
             <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-dead-sea-calendar" value="4/2/2026" onchange="saveDateState('dead-sea-calendar','start',this.value)"></div>
             <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-dead-sea-calendar" placeholder="In progress..." onchange="saveDateState('dead-sea-calendar','end',this.value)"></div>
@@ -592,7 +631,11 @@
   <!-- ADD NEW AUTHORS -->
   <div class="notes-box">
     <div class="label">✏️ Authors &amp; books to add — running list:</div>
-    <textarea class="notes-input" id="n-lib-authors" placeholder="e.g. Hal Lindsey — The Late Great Planet Earth&#10;Tim LaHaye — Left Behind series&#10;John Walvoord — The Revelation of Jesus Christ&#10;Mark Hitchcock — 101 Answers on the Book of Revelation&#10;David Jeremiah — The Book of Signs"></textarea>
+    <textarea class="notes-input" id="n-lib-authors" placeholder="e.g. Hal Lindsey — The Late Great Planet Earth
+Tim LaHaye — Left Behind series
+John Walvoord — The Revelation of Jesus Christ
+Mark Hitchcock — 101 Answers on the Book of Revelation
+David Jeremiah — The Book of Signs"></textarea>
   </div>
 
   <div class="divider"></div>
@@ -819,5 +862,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-</body>
-</html>
+
+
+</body></html>
