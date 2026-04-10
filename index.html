@@ -1,290 +1,1059 @@
 <html lang="en"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Campbell Family Master Biblical Study Guide</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campbell Family Master Biblical Study Guide</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, serif; background: #f8f6f0; color: #222; }
+  #app { display: flex; min-height: 100vh; }
+
+  /* SIDEBAR */
+  #sidebar {
+    width: 260px; min-width: 260px; background: #1F3864; color: #fff;
+    position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto;
+    z-index: 100; display: flex; flex-direction: column;
+    transition: transform 0.25s ease;
+  }
+  #sidebar-header { padding: 20px 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+  #sidebar-header h1 { font-size: 14px; font-weight: bold; line-height: 1.5; color: #FFD700; }
+  #sidebar-header p { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; font-style: italic; }
+  .nav-section { padding: 12px 16px 4px; font-size: 9px; font-weight: bold; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.1em; }
+  .nav-item { padding: 8px 16px; font-size: 12px; color: rgba(255,255,255,0.8); cursor: pointer; border-left: 3px solid transparent; line-height: 1.4; transition: all 0.15s; font-family: Arial, sans-serif; }
+  .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .nav-item.active { background: rgba(255,255,255,0.12); color: #FFD700; border-left-color: #FFD700; font-weight: bold; }
+
+  /* MAIN */
+  #main { margin-left: 260px; flex: 1; padding: 40px 48px; max-width: 960px; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* TYPOGRAPHY */
+  .page-tag { display: inline-block; background: #1F3864; color: #FFD700; font-size: 10px; font-weight: bold; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; font-family: Arial, sans-serif; letter-spacing: 0.05em; text-transform: uppercase; }
+  h1.page-title { font-size: 28px; color: #1F3864; margin-bottom: 6px; font-weight: bold; }
+  .page-subtitle { font-size: 13px; color: #888; margin-bottom: 20px; font-style: italic; font-family: Arial, sans-serif; }
+  h2.section-title { font-size: 18px; color: #1F3864; margin: 28px 0 10px; font-weight: bold; border-bottom: 2px solid #2E75B6; padding-bottom: 6px; }
+  h3.sub-title { font-size: 15px; color: #2E75B6; margin: 18px 0 8px; font-weight: bold; font-family: Arial, sans-serif; }
+  p.body { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 12px; }
+  .divider { height: 1px; background: #ddd; margin: 28px 0; }
+
+  /* BOXES */
+  .scripture-box { background: #FFFDF0; border: 1px solid #C8A800; border-left: 4px solid #C8A800; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
+  .scripture-box .ref { font-size: 12px; font-weight: bold; color: #7A6600; margin-bottom: 6px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+  .scripture-box .text { font-size: 14px; color: #444; font-style: italic; line-height: 1.8; }
+
+  .info-box { background: #EBF4FC; border: 1px solid #2E75B6; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
+  .info-box .title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+  .info-box .line { font-size: 13px; color: #333; line-height: 1.7; padding: 3px 0; font-family: Arial, sans-serif; }
+
+  .reflection-box { background: #F4F8EE; border: 1px solid #6B8E3A; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
+  .reflection-box .title { font-size: 12px; font-weight: bold; color: #3B5E1A; margin-bottom: 10px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+  .reflection-item { font-size: 13px; color: #444; line-height: 1.7; padding: 6px 0; border-bottom: 1px solid #C8DBA8; font-family: Arial, sans-serif; }
+  .reflection-item:last-child { border-bottom: none; }
+
+  .notes-box { background: #FFFBF0; border: 1px solid #C8A800; border-radius: 6px; padding: 14px 16px; margin: 14px 0; }
+  .notes-box .label { font-size: 12px; font-weight: bold; color: #7A6600; margin-bottom: 8px; font-family: Arial, sans-serif; }
+  textarea.notes-input { width: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 10px 12px; font-size: 13px; color: #333; background: #fff; font-family: Georgia, serif; resize: vertical; min-height: 100px; line-height: 1.7; margin-top: 4px; }
+  textarea.notes-input:focus { outline: none; border-color: #1F3864; box-shadow: 0 0 0 2px rgba(31,56,100,0.1); }
+
+  .study-q-box { background: #F5F5F5; border: 1px solid #ddd; border-radius: 6px; padding: 16px 18px; margin: 12px 0; }
+  .study-q { font-size: 13px; color: #333; line-height: 1.7; margin-bottom: 6px; font-family: Arial, sans-serif; font-weight: bold; }
+  .study-q-input { width: 100%; border: none; border-bottom: 1px solid #bbb; padding: 6px 0; font-size: 13px; color: #222; background: transparent; font-family: Georgia, serif; margin-bottom: 16px; }
+  .study-q-input:focus { outline: none; border-bottom-color: #1F3864; }
+
+  .views-box { border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin: 12px 0; }
+  .view-item { padding: 12px 16px; border-bottom: 1px solid #eee; }
+  .view-item:last-child { border-bottom: none; }
+  .view-item:nth-child(even) { background: #fafafa; }
+  .view-title { font-size: 14px; font-weight: bold; color: #1F3864; margin-bottom: 4px; font-family: Arial, sans-serif; }
+  .view-body { font-size: 13px; color: #555; line-height: 1.7; }
+  .view-key { font-size: 12px; color: #2E75B6; margin-top: 4px; font-style: italic; font-family: Arial, sans-serif; }
+
+  .cross-ref-box { background: #EBF4FC; border: 1px solid #2E75B6; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
+  .cross-ref-box .title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; }
+  .cross-ref-box .line { font-size: 13px; color: #333; line-height: 1.7; padding: 3px 0; font-family: Arial, sans-serif; }
+
+  /* TABLES */
+  .checklist-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; font-family: Arial, sans-serif; }
+  .checklist-table th { background: #1F3864; color: #fff; padding: 10px 12px; text-align: left; font-weight: bold; font-size: 12px; }
+  .checklist-table td { padding: 9px 12px; border-bottom: 1px solid #eee; color: #444; vertical-align: top; }
+  .checklist-table tr:nth-child(even) td { background: #f9f9f9; }
+  .checklist-table td:last-child { min-width: 120px; }
+  .status-fulfilled { color: #2E6B0E; font-weight: bold; }
+  .status-progress { color: #7A4F00; font-weight: bold; }
+  .status-notyet { color: #999; }
+
+  .sermon-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; font-family: Arial, sans-serif; }
+  .sermon-table th { background: #1F3864; color: #fff; padding: 10px 12px; text-align: left; font-weight: bold; font-size: 12px; }
+  .sermon-table td { padding: 9px 12px; border-bottom: 1px solid #eee; color: #444; vertical-align: top; }
+  .sermon-table tr:nth-child(even) td { background: #f9f9f9; }
+
+  /* JOURNAL */
+  .journal-box { background: #FFF8EE; border: 1px solid #C8A800; border-radius: 8px; padding: 20px; margin: 16px 0; }
+  .journal-date { font-size: 16px; font-weight: bold; color: #1F3864; margin-bottom: 3px; }
+  .journal-topic { font-size: 13px; color: #7A6600; font-weight: bold; margin-bottom: 2px; font-family: Arial, sans-serif; }
+  .journal-cat { font-size: 12px; color: #3B5E1A; font-style: italic; margin-bottom: 14px; font-family: Arial, sans-serif; }
+  .journal-p { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 10px; }
+  .journal-qs { margin-top: 12px; padding-top: 12px; border-top: 1px solid #E5C875; }
+  .journal-qs-title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; }
+  .journal-q { font-size: 13px; color: #555; line-height: 1.7; padding: 4px 0 4px 12px; border-left: 3px solid #C8A800; margin-bottom: 6px; font-family: Arial, sans-serif; }
+
+  /* BUTTONS */
+  .btn-primary { background: #1F3864; color: #fff; border: none; border-radius: 6px; padding: 10px 20px; font-size: 13px; cursor: pointer; font-family: Arial, sans-serif; font-weight: bold; display: inline-block; margin-top: 16px; }
+  .btn-primary:hover { background: #2E4F8A; }
+  .btn-print { background: #fff; color: #1F3864; border: 1px solid #1F3864; border-radius: 6px; padding: 8px 16px; font-size: 12px; cursor: pointer; font-family: Arial, sans-serif; margin-left: 10px; }
+  .btn-print:hover { background: #f0f4ff; }
+
+  /* COMING SOON */
+  .coming-soon { background: #f9f9f9; border: 2px dashed #ccc; border-radius: 8px; padding: 48px 24px; text-align: center; margin: 20px 0; }
+  .coming-soon p { font-size: 15px; color: #999; font-family: Arial, sans-serif; }
+
+  /* BULLET LISTS */
+  ul.bullet-list { margin: 8px 0 12px 20px; }
+  ul.bullet-list li { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 4px; font-family: Arial, sans-serif; }
+
+  /* HAMBURGER BUTTON — hidden on desktop */
+  #hamburger {
+    display: none;
+    position: fixed;
+    top: 56px;
+    left: 12px;
+    z-index: 300;
+    background: #1F3864;
+    color: #FFD700;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 11px;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  /* OVERLAY — mobile only */
+  #sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 99;
+  }
+
+  /* PRINT */
+  @media print {
+    #sidebar { display: none; }
+    #main { margin-left: 0; padding: 20px; }
+    .btn-primary, .btn-print { display: none; }
+    .page { display: block !important; page-break-before: always; }
+    .page:first-of-type { page-break-before: avoid; }
+    textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
+    #hamburger { display: none; }
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    /* Sidebar slides off-screen by default on mobile */
+    #sidebar {
+      width: 280px;
+      min-width: 280px;
+      transform: translateX(-100%);
+      top: 48px;
+      height: calc(100vh - 48px);
+      z-index: 100;
+    }
+    #sidebar.open {
+      transform: translateX(0);
+    }
+    #sidebar-overlay.open {
+      display: block;
+    }
+    #hamburger {
+      display: block;
+    }
+    #main {
+      margin-left: 0;
+      padding: 70px 16px 32px;
+      width: 100%;
+    }
+
+    /* Larger text for comfortable mobile reading */
+    p.body { font-size: 16px; line-height: 1.9; }
+    .scripture-box .text { font-size: 16px; line-height: 1.9; }
+    .info-box .line { font-size: 15px; line-height: 1.8; }
+    .reflection-item { font-size: 15px; line-height: 1.8; }
+    .cross-ref-box .line { font-size: 15px; line-height: 1.8; }
+    .view-body { font-size: 15px; line-height: 1.8; }
+    .view-title { font-size: 15px; }
+    .study-q { font-size: 15px; line-height: 1.8; }
+    .study-q-input { font-size: 15px; }
+    textarea.notes-input { font-size: 15px; line-height: 1.8; }
+    ul.bullet-list li { font-size: 15px; line-height: 1.9; }
+    .journal-p { font-size: 16px; line-height: 1.9; }
+    .journal-q { font-size: 15px; line-height: 1.8; }
+    h1.page-title { font-size: 22px; }
+    h2.section-title { font-size: 17px; }
+    .checklist-table { font-size: 13px; }
+    .sermon-table { font-size: 13px; }
+
+    /* Nav items larger on mobile for easy tapping */
+    .nav-item { font-size: 14px; padding: 11px 16px; }
+    .nav-section { font-size: 10px; }
+  }
+</style>
 </head>
 <body>
-
-<!-- GITHUB BAR -->
-<div id="github-bar">
-  <span class="bar-title">Campbell Bible Study</span>
-  <span class="bar-sep">|</span>
-  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
-  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
-  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
-  <div id="bar-extras" style="display: flex; align-items: center; gap: 10px; margin-left: 8px;">
-    <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:3px 10px;min-width:72px;">
-      <span style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;font-family:Arial,sans-serif;">Session</span>
-      <span id="bar-session-time" style="font-size:12px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;">7m 11s</span>
-    </div>
-    <div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:3px 10px;min-width:72px;">
-      <span style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;font-family:Arial,sans-serif;">Total</span>
-      <span id="bar-total-time" style="font-size:12px;color:rgba(255,255,255,0.8);font-family:Arial,sans-serif;font-weight:bold;">29m 29s</span>
-    </div>
-    <button onclick="logAndStamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:4px 12px;font-size:11px;font-family:Arial,sans-serif;font-weight:bold;cursor:pointer;white-space:nowrap;" title="Stamp current notes + log session time">📅 Log &amp; Stamp</button>
-  </div><div class="bar-right">
-    <span class="bar-originated">Originated: March 30, 2026</span>
-    <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 9, 2026</span>
-  </div>
+<div id="github-bar" style="position:fixed;top:0;left:0;right:0;background:#1F3864;color:white;z-index:200;padding:8px 20px;display:flex;align-items:center;gap:12px;font-family:Arial,sans-serif;font-size:13px;border-bottom:2px solid #FFD700;">
+  <span style="font-weight:bold;color:#FFD700;">Campbell Bible Study</span>
+  <span style="color:rgba(255,255,255,0.4)">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
+  <button onclick="saveToGitHub()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
+  <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);"></span>
+  <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: April 10, 2026</span>
 </div>
+
+<!-- HAMBURGER BUTTON -->
+<button id="hamburger" onclick="toggleSidebar()" aria-label="Open navigation">☰</button>
+
+<!-- SIDEBAR OVERLAY -->
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<div id="app" style="margin-top:48px;">
 
 <!-- SIDEBAR -->
 <div id="sidebar">
-    <div id="sidebar-header">
-      <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 9, 2026</p>
-    </div>
-    <div id="sidebar-nav">
-  <div class="nav-section">Getting Started</div><a class="nav-item active" href="./index.html">Introduction</a><a class="nav-item" href="./index.html#index">Thematic Index</a>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme1')" id="nav-header-theme1">
-          <span>Theme 1 — End Times<span style="font-size:9px;margin-left:6px;color:rgba(255,255,255,0.3);">0/15</span></span>
-          <span class="nav-arrow open" id="nav-arrow-theme1">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme1">
-      <a class="nav-item" href="./theme1/module1.html">Module 1 — Daniel's 70 Weeks</a><a class="nav-item" href="./theme1/module2.html">Module 2 — Israel in Prophecy</a><a class="nav-item" href="./theme1/module3.html">Module 3 — Day of the Lord</a><a class="nav-item" href="./theme1/module4.html">Module 4 — The Watchman</a><a class="nav-item" href="./theme1/module5.html">Module 5 — The New Covenant</a><a class="nav-item" href="./theme1/module6.html">Module 6 — The Rapture</a><a class="nav-item" href="./theme1/module7.html">Module 7 — The Antichrist</a><a class="nav-item" href="./theme1/module8.html">Module 8 — The Rebuilt Temple</a><a class="nav-item" href="./theme1/module9.html">Module 9 — Gog-Magog War</a><a class="nav-item" href="./theme1/module10.html">Module 10 — Signs of the Times</a><a class="nav-item" href="./theme1/module11.html">Module 11 — False Prophets</a><a class="nav-item" href="./theme1/module12.html">Module 12 — The Millennium</a><a class="nav-item" href="./theme1/module13.html">Module 13 — Second Coming</a><a class="nav-item" href="./theme1/module14.html">Module 14 — Matt 24 ↔ Revelation</a><a class="nav-item" href="./theme1/module15.html">Module 15 — Armageddon</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme2')" id="nav-header-theme2">
-          <span>Theme 2 — Biblical Calendar<span style="font-size:9px;margin-left:6px;color:rgba(255,255,255,0.3);">2/3</span></span>
-          <span class="nav-arrow open" id="nav-arrow-theme2">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme2">
-      <a class="nav-item active" href="./theme2/index.html">Theme 2 Overview</a><a class="nav-item sub" style="color:#90EE90;border-left-color:#90EE90;" href="./theme2/module1.html">↳ Module 1 — Calendar History <span style="color:#90EE90;font-size:11px;">✓</span></a><a class="nav-item sub" style="color:#90EE90;border-left-color:#90EE90;" href="./theme2/module2.html">↳ Module 2 — Calendar Timeline <span style="color:#90EE90;font-size:11px;">✓</span></a><a class="nav-item sub" href="./theme2/module3.html">↳ Module 3 — Book of Jubilees</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme3')" id="nav-header-theme3">
-          <span>Theme 3 — Judgment &amp; Mercy</span>
-          <span class="nav-arrow open" id="nav-arrow-theme3">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme3">
-      <a class="nav-item active" href="./theme3/index.html">Theme 3 Overview</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('themes48')" id="nav-header-themes48">
-          <span>Themes 4–8</span>
-          <span class="nav-arrow " id="nav-arrow-themes48">▶</span>
-        </div>
-        <div class="nav-section-items collapsed" id="nav-items-themes48">
-      <a class="nav-item" href="./index.html#themes48">Themes 4–8 (Coming Soon)</a></div><div class="nav-section">My Study</div><a class="nav-item" href="./checklist.html">Prophecy Checklist</a><a class="nav-item" href="./reference-library.html">Reference Library</a><a class="nav-item" href="./sermons.html">Sermon &amp; Teaching Log</a><a class="nav-item" href="./journal.html">Personal Journal</a><a class="nav-item" href="./convictions.html">My Growing Convictions</a></div></div>
+  <div id="sidebar-header">
+    <h1>Campbell Family<br>Biblical Study Guide</h1>
+    <p>Version: April 10, 2026</p>
+  </div>
+  <div id="sidebar-nav">
+    <div class="nav-section">Getting Started</div>
+    <div class="nav-item active" onclick="show('intro', this)">Introduction</div>
+    <div class="nav-item" onclick="show('index', this)">Thematic Index</div>
+    <div class="nav-section">Theme 1 — End Times</div>
+    <div class="nav-item" onclick="show('m1', this)">Module 1 — Daniel's 70 Weeks</div>
+    <div class="nav-item" onclick="show('m2', this)">Module 2 — Israel in Prophecy</div>
+    <div class="nav-item" onclick="show('m3', this)">Module 3 — Day of the Lord</div>
+    <div class="nav-item" onclick="show('m4', this)">Module 4 — The Watchman</div>
+    <div class="nav-item" onclick="show('m5', this)">Module 5 — The New Covenant</div>
+    <div class="nav-item" onclick="show('m6', this)">Module 6 — The Rapture</div>
+    <div class="nav-item" onclick="show('m7', this)">Module 7 — The Antichrist</div>
+    <div class="nav-item" onclick="show('m8', this)">Module 8 — The Rebuilt Temple</div>
+    <div class="nav-item" onclick="show('m9', this)">Module 9 — Gog-Magog War</div>
+    <div class="nav-item" onclick="show('m10', this)">Module 10 — Signs of the Times</div>
+    <div class="nav-item" onclick="show('m11', this)">Module 11 — False Prophets</div>
+    <div class="nav-item" onclick="show('m12', this)">Module 12 — The Millennium</div>
+    <div class="nav-item" onclick="show('m13', this)">Module 13 — Second Coming</div>
+    <div class="nav-section">Themes 2–8</div>
+    <div class="nav-item" onclick="show('theme2', this)">Theme 2 — Creation &amp; the Fall</div>
+    <div class="nav-item" onclick="show('theme3', this)">Theme 3 — Judgment &amp; Mercy</div>
+    <div class="nav-item" onclick="show('themes48', this)">Themes 4–8 (Coming Soon)</div>
+    <div class="nav-section">My Study</div>
+    <div class="nav-item" onclick="show('sermons', this)">Sermon &amp; Teaching Log</div>
+    <div class="nav-item" onclick="show('journal', this)">Personal Journal</div>
+    <div class="nav-item" onclick="show('convictions', this)">My Growing Convictions</div>
+  </div>
+</div>
 
-<!-- MAIN -->
-<div id="app">
+<!-- MAIN CONTENT -->
 <div id="main">
 
-  <!-- ── INTRODUCTION ─────────────────────────────────── -->
-  <div id="intro">
-    <span class="page-tag">Introduction</span>
-    <h1 class="page-title">Campbell Family Master Biblical Study Guide</h1>
-    <p class="page-subtitle">"The secret things belong to the LORD our God, but the things revealed belong to us and to our children forever." — Deuteronomy 29:29</p>
+<!-- INTRO -->
+<div id="intro" class="page active">
+  <span class="page-tag">Introduction</span>
+  <h1 class="page-title">Campbell Family Master Biblical Study Guide</h1>
+  <p class="page-subtitle">"The secret things belong to the LORD our God, but the things revealed belong to us and to our children forever." — Deuteronomy 29:29</p>
+  <p class="body">This is not a theological textbook. It is a living, growing personal study companion with one purpose: to help you sit with the Holy Spirit and grow in your knowledge of — and likeness to — Jesus Christ.</p>
+  <p class="body">It is organized by biblical theme and narrative arc rather than by book order. Many themes weave through the entire Bible — from Genesis to Revelation — and this guide is designed to show those threads. Scriptures from different books cross-reference each other so you can see how God's story holds together as one coherent whole.</p>
+  <p class="body">This document is meant to grow. Every time a new theme is studied, a sermon is worth noting, a pastor says something worth keeping, or the Holy Spirit speaks something into your heart — it gets added here. Date your entries. Your convictions will develop over time, and that is healthy.</p>
+  <div class="info-box">
+    <div class="title">📖 How to use each study module</div>
+    <div class="line"><strong>1. READ</strong> the scripture passage directly in your Bible before reading the study content below it.</div>
+    <div class="line"><strong>2. OBSERVE</strong> what the text actually says — not what you've heard about it. Look for repeated words, contrasts, commands, promises.</div>
+    <div class="line"><strong>3. STUDY</strong> the content in this guide — background, context, cross-references, interpretive views.</div>
+    <div class="line"><strong>4. PRAY</strong> through the reflection questions. Don't rush this step. Ask the Holy Spirit to give you clarity and discernment.</div>
+    <div class="line"><strong>5. WRITE</strong> your own convictions in the notes section. Date your entries. Your views may develop over time — that's healthy.</div>
+    <div class="line"><strong>6. HOLD</strong> your convictions humbly. The non-negotiables are Christ's lordship, His death and resurrection, and God's final victory.</div>
+  </div>
+  <div class="info-box" style="margin-top:14px">
+    <div class="title">A note on the purpose of this guide</div>
+    <div class="line">The goal is not to become a Bible scholar. The goal is to <strong>know Christ better</strong> — because you cannot be like someone you do not know. Everything in this guide exists in service of one thing: a deeper, more honest, more Spirit-informed relationship with Jesus.</div>
+  </div>
+  <div class="divider"></div>
+  <h2 class="section-title">Before you begin</h2>
+  <div class="notes-box">
+    <div class="label">✏️ What do I currently believe? What am I hoping to discover?</div>
+    <textarea class="notes-input" id="n-intro" placeholder="Write your thoughts here..."></textarea>
+  </div>
+  <button class="btn-print" onclick="window.print()">🖨️ Print this page</button>
+</div>
 
-    <p class="body">This is not a theological textbook. It is a living, growing personal study companion with one purpose: to help you sit with the Holy Spirit and grow in your knowledge of — and likeness to — Jesus Christ.</p>
-    <p class="body">It is organized by biblical theme and narrative arc rather than by book order. Many themes weave through the entire Bible — from Genesis to Revelation — and this guide is designed to show those threads. Scriptures from different books cross-reference each other so you can see how God's story holds together as one coherent whole.</p>
-    <p class="body">This document is meant to grow. Every time a new theme is studied, a sermon is worth noting, a pastor says something worth keeping, or the Holy Spirit speaks something into your heart — it gets added here. Date your entries. Your convictions will develop over time, and that is healthy.</p>
+<!-- INDEX -->
+<div id="index" class="page">
+  <span class="page-tag">Thematic Index</span>
+  <h1 class="page-title">How This Guide Is Organized</h1>
+  <p class="body">This guide grows theme by theme. Each major theme has its own section with multiple modules inside it. Cross-references between themes are noted throughout so you can see how Scripture ties together across books and centuries.</p>
+  <div class="info-box">
+    <div class="title">📚 Current themes in this guide</div>
+    <div class="line"><strong>THEME 1: THE END TIMES</strong> — Prophecy, the Tribulation, the Rapture, Israel, the Millennium, and how to live now — Modules 1–13</div>
+    <div class="line"><strong>THEME 2: COMING SOON</strong> — Creation &amp; the Fall — Genesis, origins, Adam &amp; Eve, the entrance of sin, God's first promise of redemption</div>
+    <div class="line"><strong>THEME 3: COMING SOON</strong> — Judgment &amp; Mercy — Noah's Ark, the Flood, God's pattern of warning, grace, and rescue</div>
+    <div class="line"><strong>THEME 4: COMING SOON</strong> — Covenant — God's binding promises through Noah, Abraham, Moses, David, and Jesus</div>
+    <div class="line"><strong>THEME 5: COMING SOON</strong> — The Messiah — All the threads of Scripture that point to Christ, fulfilled and yet to come</div>
+    <div class="line"><strong>THEME 6: COMING SOON</strong> — The Holy Spirit — His identity, work, indwelling, and role in your life today</div>
+    <div class="line"><strong>THEME 7: COMING SOON</strong> — Kingdom of God — What it is, where it is, and how to live inside it now</div>
+    <div class="line"><strong>THEME 8: COMING SOON</strong> — Prayer &amp; Intimacy with God — The biblical theology of prayer, with examples and reflection</div>
+    <div class="line" style="margin-top:8px;color:#888;font-style:italic">ADD AS YOU GO: This list grows as you discover new areas to study. There is no rush. Let the Spirit lead.</div>
+  </div>
+  <div class="cross-ref-box">
+    <div class="title">🔗 Key cross-theme connections</div>
+    <div class="line">The Serpent in Genesis 3 ↔ The Dragon in Revelation 12 &amp; 20 — same enemy, bookended by Scripture</div>
+    <div class="line">Noah's Ark as salvation through judgment ↔ The Rapture / God's rescue before the Tribulation</div>
+    <div class="line">God's covenant with Abraham (Gen 15) ↔ Israel's future in Romans 9–11 ↔ End Times prophecy</div>
+    <div class="line">The Garden of Eden lost (Gen 3) ↔ The New Jerusalem restored (Rev 21–22) — the whole Bible in two gardens</div>
+    <div class="line">The Holy Spirit in Ezekiel 36:27 ↔ Pentecost (Acts 2) ↔ The Restrainer (2 Thess 2) — one Spirit, many works</div>
+    <div class="line">The Messiah promised (Isa 7:14; 9:6; 53) ↔ Fulfilled in the Gospels ↔ Coming again in Revelation 19</div>
+  </div>
+</div>
 
-    <div class="info-box">
-      <div class="title">📖 How to use each study module</div>
-      <div class="line"><strong>1. READ</strong> the scripture passage directly in your Bible before reading the study content below it.</div>
-      <div class="line"><strong>2. OBSERVE</strong> what the text actually says — not what you've heard about it. Look for repeated words, contrasts, commands, promises.</div>
-      <div class="line"><strong>3. STUDY</strong> the content in this guide — background, context, cross-references, interpretive views.</div>
-      <div class="line"><strong>4. PRAY</strong> through the reflection questions. Don't rush this step. Ask the Holy Spirit to give you clarity and discernment.</div>
-      <div class="line"><strong>5. WRITE</strong> your own convictions in the notes section. Date your entries. Your views may develop over time — that's healthy.</div>
-      <div class="line"><strong>6. HOLD</strong> your convictions humbly. The non-negotiables are Christ's lordship, His death and resurrection, and God's final victory.</div>
-    </div>
+<!-- MODULE 1 -->
+<div id="m1" class="page">
+  <span class="page-tag">Module 1 — Theme 1: End Times</span>
+  <h1 class="page-title">Daniel's 70 Weeks: The Master Timeline</h1>
+  <div class="info-box"><div class="title">Read first</div><div class="line">Daniel 9 in full (especially vv. 24–27), Deuteronomy 18:21–22, Isaiah 46:9–10, 2 Peter 1:20–21</div></div>
+  <p class="body">Daniel 9:24–27 is the prophetic backbone of all end times Scripture. Everything — the Tribulation, the Antichrist, the Second Coming — is anchored here. The '70th Week' is a seven-year Tribulation period that has not yet begun.</p>
+  <div class="info-box">
+    <div class="title">70 Weeks = 490 Years (each "week" = 7 years)</div>
+    <div class="line"><strong>Weeks 1–69 (483 years):</strong> Decree to rebuild Jerusalem → Messiah's triumphal entry — FULFILLED</div>
+    <div class="line"><strong>The Gap (Church Age):</strong> Messiah cut off (crucifixion); Temple destroyed 70 AD; Church Age begins — IN PROGRESS</div>
+    <div class="line"><strong>Week 70 begins:</strong> Antichrist signs 7-year covenant with Israel — starts the Day of the Lord</div>
+    <div class="line"><strong>Midpoint (3.5 years):</strong> Antichrist breaks covenant; sets up abomination of desolation in the temple</div>
+    <div class="line"><strong>Week 70 ends:</strong> Second Coming of Christ; Israel saved; Antichrist destroyed</div>
+  </div>
+  <div class="scripture-box"><div class="ref">Daniel 9:26 (NLT)</div><div class="text">After this period of sixty-two sets of seven, the Anointed One will be killed, appearing to have accomplished nothing, and a ruler will arise whose armies will destroy the city and the Temple. The end will come with a flood, and war and its miseries are decreed from that time to the very end.</div></div>
+  <div class="scripture-box"><div class="ref">Daniel 9:27 (NLT)</div><div class="text">The ruler will make a treaty with the people for a period of one set of seven, but after half this time, he will put an end to the sacrifices and offerings. And as a climax to all his terrible deeds, he will set up a sacrilegious object that causes desecration, until the fate decreed for this defiler is finally poured out on him.</div></div>
+  <h2 class="section-title">The Double Fulfillment Principle</h2>
+  <p class="body">Many prophecies have both a near fulfillment AND a far fulfillment. This is one of the most important interpretive keys in end-times study. The "abomination of desolation" was fulfilled by Antiochus Epiphanes in 168 BC AND will have a future Antichrist fulfillment.</p>
+  <h2 class="section-title">Literal vs. Symbolic Interpretation</h2>
+  <div class="views-box">
+    <div class="view-item"><div class="view-title">Literal / Plain Reading</div><div class="view-body">Take prophecy at face value unless the context demands otherwise. Numbers are numbers, places are places. The default for dispensationalism.</div><div class="view-key">Key texts: Rev 20:1–6; Ezek 40–48</div></div>
+    <div class="view-item"><div class="view-title">Symbolic / Typological Reading</div><div class="view-body">Apocalyptic literature uses symbolic imagery by design. Numbers represent completeness/fullness, not precise quantities. The default for amillennialism.</div><div class="view-key">Key texts: Rev 1:1; Ezek 37</div></div>
+    <div class="view-item"><div class="view-title">Balanced Approach</div><div class="view-body">Use genre, context, and NT usage to decide. Some passages are clearly symbolic (Rev 12's dragon); others clearly literal (Zech 14's geographic details). Let Scripture interpret Scripture.</div><div class="view-key">Key texts: Dan 7; Zech 14:4</div></div>
+  </div>
+  <h2 class="section-title">Study Questions</h2>
+  <div class="study-q-box">
+    <div class="study-q">Q1. In Daniel 9:26, what two events does God predict — one that has already been fulfilled, and one that is still future?</div>
+    <input class="study-q-input" id="q-m1-1" placeholder="Your answer...">
+    <div class="study-q">Q2. What does it tell you about God's sovereignty that He predicted the exact timing of the Messiah's death centuries in advance?</div>
+    <input class="study-q-input" id="q-m1-2" placeholder="Your answer...">
+    <div class="study-q">Q3. What does the 'gap' between the 69th and 70th week represent, and why do you think God paused the prophetic clock during the Church Age?</div>
+    <input class="study-q-input" id="q-m1-3" placeholder="Your answer...">
+    <div class="study-q">Q4. How does understanding Daniel's 70 Weeks change the way you read the Book of Revelation?</div>
+    <input class="study-q-input" id="q-m1-4" placeholder="Your answer...">
+  </div>
+  <div class="reflection-box">
+    <div class="title">🙏 Personal Reflection &amp; Prayer</div>
+    <div class="reflection-item">When I read prophetic language like "a thousand years" or "a great red dragon," what is my instinct — to read it literally or symbolically? Why?</div>
+    <div class="reflection-item">Have I ever assumed an interpretation of a prophecy without personally studying what the text actually says? Which ones?</div>
+    <div class="reflection-item">If Daniel predicted the timing of the Messiah's arrival with this level of precision, what does that say about the reliability of the yet-unfulfilled portions?</div>
+    <div class="reflection-item">Holy Spirit, what do you want to establish in me as a foundation before I go deeper into these prophecies?</div>
+  </div>
+  <div class="notes-box">
+    <div class="label">✏️ Module 1 — My convictions on Daniel's 70 Weeks and how to read prophecy:</div>
+    <textarea class="notes-input" id="n-m1" placeholder="Write your convictions here... Date your entry."></textarea>
+  </div>
+  <div class="cross-ref-box">
+    <div class="title">🔗 Cross-References</div>
+    <div class="line">• 2 Peter 1:20–21 — No prophecy is a matter of one's own interpretation — it came from God through the Spirit</div>
+    <div class="line">• Isaiah 46:9–10 — God declares the end from the beginning — the very basis for prophetic reliability</div>
+    <div class="line">• Matthew 24:15 — Jesus references Daniel's "abomination of desolation" as still future in His day</div>
+    <div class="line">• Theme 5: The Messiah — The double-fulfillment principle is most clearly seen in Messianic prophecy</div>
+  </div>
+</div>
 
-    <div class="info-box" style="margin-top:14px">
-      <div class="title">A note on the purpose of this guide</div>
-      <div class="line">The goal is not to become a Bible scholar. The goal is to <strong>know Christ better</strong> — because you cannot be like someone you do not know. Everything in this guide exists in service of one thing: a deeper, more honest, more Spirit-informed relationship with Jesus.</div>
-    </div>
+<!-- MODULE 2 -->
+<div id="m2" class="page">
+  <span class="page-tag">Module 2 — Theme 1: End Times</span>
+  <h1 class="page-title">Israel in Prophecy</h1>
+  <div class="info-box"><div class="title">Read first</div><div class="line">Ezekiel 36–37, Romans 9–11, Zechariah 12</div></div>
+  <p class="body">More end-times prophecy centers on Israel than on any other nation. Understanding your theology of Israel will shape almost every other eschatological conviction you form.</p>
+  <div class="info-box"><div class="title">The Central Question</div><div class="line">Has God's covenant with Israel been transferred to the Church, or is it still active? Your answer to this question will determine whether end-times prophecy about Israel is still future or was fulfilled spiritually in/through the Church.</div></div>
+  <h2 class="section-title">Israel Signs — Fulfilled Checklist</h2>
+  <table class="checklist-table">
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tr><td>Jewish people regathered from all nations to the land</td><td>Ezek 36:24; 37:21</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
+    <tr><td>Israel reborn as a nation — May 14, 1948</td><td>Isa 66:8</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
+    <tr><td>Hebrew language restored</td><td>Zeph 3:9</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
+    <tr><td>Jerusalem back under Jewish control — 1967</td><td>Luke 21:24</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
+    <tr><td>Desert land of Israel blossoming and fruitful again</td><td>Isa 35:1; Ezek 36:35</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
+  </tbody></table>
+  <div class="scripture-box"><div class="ref">Romans 11:25–27</div><div class="text">"I do not want you to be ignorant of this mystery, brothers and sisters, so that you may not be conceited: Israel has experienced a hardening in part until the full number of the Gentiles has come in, and in this way all Israel will be saved."</div></div>
+  <div class="views-box">
+    <div class="view-item"><div class="view-title">Dispensational View</div><div class="view-body">The 1948 and 1967 events are literal, partial fulfillments of OT prophecy. Full fulfillment comes at the Second Coming when all Israel is saved and Christ reigns from Jerusalem.</div><div class="view-key">Key texts: Ezek 36–37; Isa 11:11–12; Rom 11:25–27</div></div>
+    <div class="view-item"><div class="view-title">Covenant / Replacement Theology View</div><div class="view-body">The Church is the "new Israel" — the true seed of Abraham (Gal 3:29). OT promises to national Israel are fulfilled spiritually in the Church. The 1948 establishment has no prophetic significance.</div><div class="view-key">Key texts: Gal 3:29; 6:16; Rom 2:28–29; Matt 21:43</div></div>
+    <div class="view-item"><div class="view-title">Progressive Covenantalism View</div><div class="view-body">Neither pure replacement nor strict dispensationalism. The Church fulfills many Abrahamic promises, but there remains a future for ethnic Israel as part of the one new man in Christ.</div><div class="view-key">Key texts: Rom 11:11–15, 25–27; Eph 2:11–22</div></div>
+  </div>
+  <div class="notes-box">
+    <div class="label">✏️ Module 2 — My convictions on Israel in prophecy:</div>
+    <textarea class="notes-input" id="n-m2" placeholder="Write your convictions here... Date your entry."></textarea>
+  </div>
+</div>
 
-    <div class="divider"></div>
+<!-- MODULE 3 -->
+<div id="m3" class="page">
+  <span class="page-tag">Module 3 — Theme 1: End Times</span>
+  <h1 class="page-title">The Day of the Lord</h1>
+  <div class="info-box"><div class="title">Read first</div><div class="line">1 Thessalonians 5:1–11, Isaiah 34, Joel 3:1–16, Zechariah 14:1–3</div></div>
+  <p class="body">The "Day of the Lord" refers to the entire Tribulation period — a time of sudden, inescapable divine judgment on the unbelieving world. It begins when the Antichrist signs the covenant with Israel. Christians are not appointed to this wrath — they are removed by the Rapture beforehand.</p>
+  <div class="scripture-box"><div class="ref">1 Thessalonians 5:2–3 (NLT)</div><div class="text">You know quite well that the day of the Lord's return will come unexpectedly, like a thief in the night. When people are saying, "Everything is peaceful and secure," then disaster will fall on them as suddenly as a pregnant woman's labor pains begin. And there will be no escape.</div></div>
+  <ul class="bullet-list">
+    <li>The Day of the Lord is described in Isaiah 34, Joel 3:1–16, Zechariah 14:1–3, and 1 Thessalonians 5:1–11</li>
+    <li>It brings sudden, inescapable destruction on those who reject God</li>
+    <li>It begins with the Antichrist's signing of the covenant with Israel (Daniel 9:27)</li>
+    <li>Christians escape this day because of the Rapture — we are not appointed to wrath (1 Thess 5:9)</li>
+  </ul>
+  <div class="study-q-box">
+    <div class="study-q">Q1. Paul says the Day of the Lord comes 'as a thief in the night.' What does this mean for unbelievers? What does it mean for believers?</div>
+    <input class="study-q-input" id="q-m3-1" placeholder="Your answer...">
+    <div class="study-q">Q2. How does knowing Christians will not face the Day of the Lord affect your personal sense of urgency about sharing the gospel?</div>
+    <input class="study-q-input" id="q-m3-2" placeholder="Your answer...">
+  </div>
+  <div class="notes-box">
+    <div class="label">✏️ Module 3 — My notes on the Day of the Lord:</div>
+    <textarea class="notes-input" id="n-m3" placeholder="Write your thoughts here..."></textarea>
+  </div>
+</div>
 
-    <h2 class="section-title">Before you begin</h2>
-    <div class="notes-box">
-      <div class="label">✏️ What do I currently believe? What am I hoping to discover?</div>
-      <textarea class="notes-input" id="n-intro" placeholder="Write your thoughts here..."></textarea>
-    </div>
+<!-- MODULE 4 -->
+<div id="m4" class="page">
+  <span class="page-tag">Module 4 — Theme 1: End Times</span>
+  <h1 class="page-title">Ezekiel 33: The Watchman Principle</h1>
+  <div class="info-box"><div class="title">Read first</div><div class="line">Ezekiel 33 in full</div></div>
+  <div class="scripture-box"><div class="ref">Ezekiel 33:6</div><div class="text">"But if the watchman sees the sword coming and does not blow the trumpet to warn the people and the sword comes and takes someone's life, that person's life will be taken because of their sin, but I will hold the watchman accountable for their blood."</div></div>
+  <ul class="bullet-list">
+    <li>The watchman principle separates OUTCOME from FAITHFULNESS</li>
+    <li>If you warn and they don't listen: their blood is on their own head</li>
+    <li>If you don't warn: their blood is on YOUR head</li>
+    <li>God is not measuring results — He is measuring faithfulness to the call</li>
+    <li>This is simultaneously freeing (outcomes are not your burden) and sobering (silence IS a choice with consequences)</li>
+  </ul>
+  <div class="scripture-box"><div class="ref">Ezekiel 33:11</div><div class="text">"As surely as I live, declares the Sovereign LORD, I take no pleasure in the death of the wicked, but rather that they turn from their ways and live. Turn! Turn from your evil ways! Why will you die, people of Israel?"</div></div>
+  <p class="body">This verse is the theological center of the entire chapter — and in many ways, the theological center of end-times prophecy. All the judgments, all the seals and trumpets and bowls — they exist in service of this one desire: that people would TURN and LIVE. God is not eager to judge. He is anguished by the necessity of it.</p>
+  <div class="reflection-box">
+    <div class="title">🙏 Personal Reflection &amp; Prayer</div>
+    <div class="reflection-item">Is there anyone in my life God has placed me near as a watchman — someone who needs to hear what I know? Am I warning them, or staying silent to avoid discomfort?</div>
+    <div class="reflection-item">What is my honest reaction to "God takes no pleasure in the death of the wicked"? Does that match how I think about people who are far from God?</div>
+    <div class="reflection-item">Am I consuming end-times content for entertainment or for transformation? What is the evidence either way?</div>
+    <div class="reflection-item">What specific thing does the Holy Spirit want me to DO with what I'm learning — not just know?</div>
+  </div>
+  <div class="notes-box">
+    <div class="label">✏️ Module 4 — What the watchman principle means for MY life:</div>
+    <textarea class="notes-input" id="n-m4" placeholder="Write your convictions here..."></textarea>
+  </div>
+</div>
 
-    <button class="btn-print" onclick="window.print()">🖨️ Print this page</button>
+<!-- MODULE 5 -->
+<div id="m5" class="page">
+  <span class="page-tag">Module 5 — Theme 1: End Times</span>
+  <h1 class="page-title">Ezekiel 36: The New Covenant</h1>
+  <div class="info-box"><div class="title">Read first</div><div class="line">Ezekiel 36:16–38, Jeremiah 31:31–34, John 3:1–8</div></div>
+  <div class="scripture-box"><div class="ref">Ezekiel 36:22, 32</div><div class="text">"It is not for your sake, people of Israel, that I am going to do these things, but for the sake of my holy name... I want you to know that I am not doing this for your sake, declares the Sovereign LORD."</div></div>
+  <p class="body">God says it TWICE in this passage: this is not because you deserve it. This is radical, sovereign grace. Your standing before God does not depend on your performance — it is rooted in God's own character and the honor of His name.</p>
+  <div class="info-box">
+    <div class="title">The Three-Part New Covenant — Ezekiel 36:25–27</div>
+    <div class="line"><strong>Step 1 — CLEANSING (v. 25):</strong> "I will sprinkle clean water on you, and you will be clean." Forgiveness and purification. This is <em>justification</em>.</div>
+    <div class="line"><strong>Step 2 — TRANSFORMATION (v. 26):</strong> "I will give you a new heart and put a new spirit in you." Not behavior modification — a new NATURE. This is <em>regeneration</em>.</div>
+    <div class="line"><strong>Step 3 — INDWELLING (v. 27):</strong> "And I will put my Spirit in you and move you to follow my decrees." The Spirit within producing obedience from the inside out. This is <em>sanctification</em>.</div>
+  </div>
+  <div class="reflection-box">
+    <div class="title">🙏 Personal Reflection &amp; Prayer</div>
+    <div class="reflection-item">Read Ezekiel 36:26 slowly: "I will remove from you your heart of stone and give you a heart of flesh." In what areas of my life is there still stone — resistance, hardness, unwillingness?</div>
+    <div class="reflection-item">Do I experience the Spirit "moving me to follow God's decrees" (v. 27)? What does that feel like in practice?</div>
+    <div class="reflection-item">What does it mean that the same Spirit who will one day bring national Israel to repentance is living inside me right now?</div>
+  </div>
+  <div class="notes-box">
+    <div class="label">✏️ Module 5 — What the New Covenant means for my life today:</div>
+    <textarea class="notes-input" id="n-m5" placeholder="Write your convictions here..."></textarea>
+  </div>
+</div>
+
+<!-- MODULE 6 -->
+<div id="m6" class="page">
+  <span class="page-tag">Module 6 — Theme 1: End Times</span>
+  <h1 class="page-title">The Rapture: Scripture &amp; Honest Inquiry</h1>
+  <div class="info-box"><div class="title">Read first</div><div class="line">1 Thessalonians 4:13–18, 1 Corinthians 15:51–54, John 14:1–3, 2 Thessalonians 2:1–12 | <em>Important: The fact of Christ's return is non-negotiable. The TIMING relative to the tribulation is where sincere believers disagree. Come willing to be surprised.</em></div></div>
+  <div class="scripture-box"><div class="ref">1 Thessalonians 4:15–17</div><div class="text">"According to the Lord's word, we tell you that we who are still alive, who are left until the coming of the Lord, will certainly not precede those who have fallen asleep. For the Lord himself will come down from heaven, with a loud command, with the voice of the archangel and with the trumpet call of God, and the dead in Christ will rise first. After that, we who are still alive and are left will be caught up together with them in the clouds to meet the Lord in the air."</div></div>
+  <div class="scripture-box"><div class="ref">2 Thessalonians 2:6–7 (NLT)</div><div class="text">And you know what is holding him back, for he can be revealed only when his time comes. For this lawlessness is already at work secretly, and it will remain secret until the one who is holding it back steps out of the way.</div></div>
+  <h2 class="section-title">The Four Main Positions</h2>
+  <div class="views-box">
+    <div class="view-item"><div class="view-title">Pre-Tribulation Rapture</div><div class="view-body">The Church is removed before the 70th week begins. The tribulation is specifically the time of Jacob's trouble — judgment on Israel and the world, not the Church. "God did not appoint us to wrath" (1 Thess 5:9). The restrainer removed in 2 Thess 2 = Holy Spirit in/with the Church.</div><div class="view-key">Key texts: 1 Thess 4:13–18; 5:9; Rev 3:10; 2 Thess 2:6–7; John 14:1–3</div></div>
+    <div class="view-item"><div class="view-title">Mid-Tribulation Rapture</div><div class="view-body">The Church goes through the first 3.5 years (the "beginning of sorrows"), then is raptured at the 7th trumpet blast at the midpoint.</div><div class="view-key">Key texts: Rev 11:15; 1 Cor 15:52; Dan 7:25</div></div>
+    <div class="view-item"><div class="view-title">Pre-Wrath Rapture</div><div class="view-body">The Church is raptured after the seal and trumpet judgments (which are Satan's wrath and man's wrath) but before the bowl judgments (God's wrath).</div><div class="view-key">Key texts: Matt 24:29–31; Rev 6:12–7:17; 1 Thess 5:9</div></div>
+    <div class="view-item"><div class="view-title">Post-Tribulation Rapture</div><div class="view-body">The Church goes through the entire 7-year period (protected but present), is caught up to meet Christ in the air at the Second Coming, and immediately returns with Him to earth. Historical position of most of church history.</div><div class="view-key">Key texts: Matt 24:29–31; Rev 19:14; 20:4–6; John 17:15</div></div>
+  </div>
+  <h2 class="section-title">The Restrainer: Identity &amp; Significance (2 Thessalonians 2:6–7)</h2>
+  <div class="info-box">
+    <div class="title">The Holy Spirit View — Key Arguments</div>
+    <div class="line">Only God is sufficient to restrain Satan. No human institution has the power to hold back a being of Satan's nature and influence.</div>
+    <div class="line">The Greek word <em>katechon</em> shifts from neuter in v. 6 ("what restrains") to masculine in v. 7 ("he who restrains") — pointing toward a person, consistent with the Holy Spirit.</div>
+    <div class="line">Logical sequence: (1) Rapture removes the Spirit-indwelt Church → (2) Restrainer taken out of the way → (3) Antichrist revealed → (4) Tribulation begins.</div>
+    <div class="line">Note: The removal of the restrainer does not mean the Holy Spirit is entirely absent during the tribulation — He clearly works in the lives of tribulation saints (Rev 7). It means His unique restraining ministry through the indwelt Church is withdrawn.</div>
+  </div>
+  <div class="study-q-box">
+    <div class="study-q">Q1. What is the connection between the Rapture and the removal of the Restrainer in 2 Thessalonians 2:6–7? How do these two events relate?</div>
+    <input class="study-q-input" id="q-m6-1" placeholder="Your answer...">
+    <div class="study-q">Q2. Some argue the Church goes through the Tribulation. How would you respond based on 1 Thessalonians 5:9 and Revelation 3:10?</div>
+    <input class="study-q-input" id="q-m6-2" placeholder="Your answer...">
+    <div class="study-q">Q3. The post-trib argument that the pre-trib position was unknown before 1830 is significant. How do you weigh church history against the argument from Scripture?</div>
+    <input class="study-q-input" id="q-m6-3" placeholder="Your answer...">
+    <div class="study-q">Q4. If I am a Spirit-indwelt believer, what does it mean that I am actively part of what is holding back lawlessness in the world right now?</div>
+    <input class="study-q-input" id="q-m6-4" placeholder="Your answer...">
+  </div>
+  <div class="notes-box">
+    <div class="label">✏️ Module 6 — My current rapture position, my strongest reasons, and my remaining questions:</div>
+    <textarea class="notes-input" id="n-m6" placeholder="Write your convictions here... Date your entry."></textarea>
+  </div>
+</div>
+
+<!-- MODULE 7 -->
+<div id="m7" class="page">
+  <span class="page-tag">Module 7 — Theme 1: End Times</span>
+  <h1 class="page-title">The Antichrist</h1>
+  <div class="info-box"><div class="title">Read first</div><div class="line">2 Thessalonians 2:1–12, Daniel 9:27, Revelation 13</div></div>
+  <p class="body">The Antichrist is the 'man of lawlessness' described in 2 Thessalonians 2, the 'beast' of Revelation 13, and the 'prince who is to come' in Daniel 9. He will be a political, military, and economic genius who rises after the Rapture, makes a false peace with Israel, then turns to destroy her.</p>
+  <div class="scripture-box"><div class="ref">2 Thessalonians 2:3–4 (NLT)</div><div class="text">Don't be fooled by what they say. For that day will not come until there is a great rebellion against God and the man of lawlessness is revealed, the one who brings destruction. He will exalt himself and defy everything that people call god and every object of worship. He will even sit in the temple of God, claiming that he himself is God.</div></div>
+  <h2 class="section-title">His Profile</h2>
+  <ul class="bullet-list">
+    <li>Titles: Man of Lawlessness, Son of Perdition, The Beast (2 Thess 2:3; Rev 13:1)</li>
+    <li>Origin: Rises from revived Roman Empire (Dan 7:7–8; Rev 17:8–9)</li>
+    <li>Currently held back by the Holy Spirit; revealed after the Rapture (2 Thess 2:6–7)</li>
+    <li>Genius in commerce (Dan 11:43; Rev 13:16–17), war (Rev 6:2; 13:7), and politics (Rev 17:8–9, 12)</li>
+    <li>Performs signs and wonders by Satan's power (2 Thess 2:9–10)</li>
+    <li>Exalts himself above every god; claims to be God; sits in the rebuilt temple (2 Thess 2:4; Dan 11:36)</li>
+    <li>Signs a 7-year covenant with Israel (Dan 9:27), then breaks it at the midpoint</li>
+    <li>Defeated and thrown into the lake of fire at Christ's Second Coming (Rev 19:20)</li>
+  </ul>
+  <div class="info-box"><div class="title">NOT Muslim</div><div class="line">Claiming to be God is absolute blasphemy (shirk) under Islam — the gravest sin in Islamic theology. No true Muslim would accept a man claiming to be God. A Muslim leader would never sign a covenant protecting Israel. The theology, the covenant, and the self-deification all rule this out completely.</div></div>
+  <div class="info-box" style="margin-top:10px"><div class="title">NOT Gog</div><div class="line">Gog (Ezekiel 38–39) leads a coalition that invades Israel as a direct challenge TO the Antichrist's authority. They are distinct figures — Gog is defeated supernaturally by God before the Tribulation; the Antichrist is defeated by Christ at the Second Coming.</div></div>
+  <div class="notes-box">
+    <div class="label">✏️ Module 7 — My notes on the Antichrist:</div>
+    <textarea class="notes-input" id="n-m7" placeholder="Write your thoughts here..."></textarea>
+  </div>
+</div>
+
+<!-- MODULE 8 -->
+<div id="m8" class="page">
+  <span class="page-tag">Module 8 — Theme 1: End Times</span>
+  <h1 class="page-title">The Rebuilt Temple &amp; Abomination of Desolation</h1>
+  <p class="body">A third Jewish temple must be built in Jerusalem before the midpoint of the Tribulation. Animal sacrifices will resume. At the midpoint, the Antichrist enters the temple, stops the sacrifices, sets up his image, and declares himself God — the 'abomination of desolation.'</p>
+  <h2 class="section-title">Temple History</h2>
+  <ul class="bullet-list">
+    <li>Solomon's Temple (First Temple): Built ≈ 957 BC; destroyed by Babylon 586 BC</li>
+    <li>Zerubbabel's/Herod's Temple (Second Temple): Built 516 BC; destroyed by Rome in 70 AD (exactly as Jesus predicted in Matt 24:1–2)</li>
+    <li>Third (Tribulation) Temple: Must be built before the Antichrist's midpoint betrayal</li>
+  </ul>
+  <div class="scripture-box"><div class="ref">Matthew 24:15–16 (NLT)</div><div class="text">The day is coming when you will see what Daniel the prophet spoke about, the sacrilegious object that causes desecration standing in the Holy Place (reader, pay attention!). Then those in Judea must flee to the hills.</div></div>
+  <h2 class="section-title">Temple Prophecy Checklist</h2>
+  <table class="checklist-table">
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tr><td>Third temple built in Jerusalem</td><td>Matt 24:15; Dan 9:27; Rev 11:1–2</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Animal sacrifices resumed in the temple</td><td>Dan 9:27; 12:11</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Temple Institute preparations in Jerusalem</td><td>Dan 9:27 (context)</td><td class="status-progress">~ In Progress</td><td></td></tr>
+    <tr><td>Antichrist stops sacrifices at midpoint</td><td>Dan 9:27b; 12:11</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Antichrist sets up image of himself in the holy place</td><td>Matt 24:15; 2 Thess 2:4</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Jews in Judea flee to the mountains</td><td>Matt 24:16–20</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+  </tbody></table>
+  <div class="notes-box">
+    <div class="label">✏️ Module 8 — My notes on the Rebuilt Temple:</div>
+    <textarea class="notes-input" id="n-m8" placeholder="Write your thoughts here..."></textarea>
+  </div>
+</div>
+
+<!-- MODULE 9 -->
+<div id="m9" class="page">
+  <span class="page-tag">Module 9 — Theme 1: End Times</span>
+  <h1 class="page-title">Ezekiel 38–39: The Gog-Magog War</h1>
+  <div class="info-box"><div class="title">Read first</div><div class="line">Ezekiel 38–39 in full. Read it like a news report — then read it again as Scripture.</div></div>
+  <p class="body">The Gog-Magog War is a massive coalition invasion of Israel that God supernaturally destroys. It occurs after the Rapture but before the Tribulation begins. The precondition is Israel living in perceived safety.</p>
+  <h2 class="section-title">The Coalition</h2>
+  <table class="checklist-table">
+    <tbody><tr><th style="width:30%">Ancient Name</th><th style="width:25%">Modern ID</th><th style="width:20%">Scripture</th><th style="width:15%">Status</th><th style="width:10%">Notes</th></tr>
+    <tr><td>Rosh / Magog</td><td>Russia / Central Asia</td><td>Ezek 38:1–3</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Persia</td><td>Iran</td><td>Ezek 38:5</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Cush</td><td>Sudan / Ethiopia</td><td>Ezek 38:5</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Put</td><td>Libya</td><td>Ezek 38:5</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Gomer / Beth-togarmah</td><td>Turkey / Central Asia</td><td>Ezek 38:6</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+  </tbody></table>
+  <div class="scripture-box"><div class="ref">Ezekiel 38:23</div><div class="text">"And so I will show my greatness and my holiness, and I will make myself known in the sight of many nations. Then they will know that I am the LORD."</div></div>
+  <h2 class="section-title">God's Supernatural Defense Checklist</h2>
+  <table class="checklist-table">
+    <tbody><tr><th style="width:50%">Prophecy / Event</th><th style="width:20%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tr><td>Coalition invades Israel from the north</td><td>Ezek 38:15</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>God sends great earthquake across Israel</td><td>Ezek 38:19</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>God rains fire, brimstone, flooding rain, and hailstones</td><td>Ezek 38:22</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Coalition armies turn on each other in confusion</td><td>Ezek 38:21</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>5/6 of the invading army destroyed on mountains of Israel</td><td>Ezek 39:2–4</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Seven months burying the dead; seven years burning weapons</td><td>Ezek 39:9–10, 12</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>God's name glorified; Israel begins to know the Lord</td><td>Ezek 39:21–22</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+  </tbody></table>
+
+  <h2 class="section-title">9.4 — Israel's Wealth as an Economic Precondition</h2>
+  <div class="info-box">
+    <div class="title">Ezekiel 38:12–13 — Why Gog Invades</div>
+    <div class="line">Ezekiel 38:12 says Gog comes "to seize spoil and carry off plunder" from a people who have "acquired livestock and goods" and live at the center of the earth. Verse 13 names the nations that question the invasion's motive: "Have you come to seize spoil? Have you assembled your horde to carry off plunder, to carry away silver and gold, to take away livestock and goods, to seize great spoil?"</div>
+    <div class="line" style="margin-top:8px">This is not symbolic language — it describes real economic wealth that makes Israel worth invading. For most of history, Israel had no such wealth. That is rapidly changing.</div>
+  </div>
+  <div class="scripture-box">
+    <div class="ref">Ezekiel 36:11 (ESV)</div>
+    <div class="text">"And I will multiply on you man and beast, and they shall multiply and be fruitful. And I will cause you to be inhabited as in your former times, and will do more good to you than ever before. Then you will know that I am the LORD."</div>
+  </div>
+  <p class="body">God promised to make Israel more prosperous than at any prior point in its history — a precondition that must be in place before Gog has a motive to invade. The following recent developments are worth noting as potential fulfillments in progress:</p>
+  <div class="info-box">
+    <div class="title">Recent Geological Discoveries — Key Facts (as of 2025–2026)</div>
+    <div class="line"><strong>Tovia Luskin discovery (2010):</strong> Israeli geologist Tovia Luskin identified what became the Leviathan gas field — one of the largest deepwater natural gas discoveries in history, with an estimated 22 trillion cubic feet of natural gas. Located offshore in the Mediterranean.</div>
+    <div class="line"><strong>Zion Oil and Gas:</strong> A Christian Zionist-founded company actively exploring onshore oil in the Jezreel Valley and Megiddo Basin based on biblical passages including Deuteronomy 33:24 ("Let Asher... dip his foot in oil"). Has been drilling exploratory wells in northern Israel.</div>
+    <div class="line"><strong>Offshore gas fields:</strong> Beyond Leviathan, Israel's Tamar field and others have made Israel a net energy exporter. Israel now supplies natural gas to Egypt and Jordan, transforming its geopolitical standing in the region.</div>
+    <div class="line"><strong>Significance for Ezekiel 38:</strong> For the first time in modern history, Israel possesses resources — energy wealth, agricultural technology, military capability, and strategic location — that would make it a credible target for the exact kind of plunder-motivated coalition invasion Ezekiel describes.</div>
+  </div>
+  <div class="cross-ref-box">
+    <div class="title">🔗 Cross-References</div>
+    <div class="line">• Ezekiel 36:11 — God promises to make Israel more prosperous than ever before — a precondition for Gog's motive</div>
+    <div class="line">• Ezekiel 38:12–13 — The invasion is explicitly economically motivated: "to seize spoil and carry off plunder"</div>
+    <div class="line">• Deuteronomy 33:24 — "Let Asher... dip his foot in oil" — the passage Zion Oil and Gas founders used as their basis</div>
+    <div class="line">• Module 2 (Israel in Prophecy) — Israel's restoration to the land was a precondition; Israel's wealth is the next layer</div>
+  </div>
+  <div class="reflection-box">
+    <div class="title">🙏 Personal Reflection</div>
+    <div class="reflection-item">When I read that Gog's coalition is motivated by plunder, does that change how I think about current geopolitical tensions in the Middle East?</div>
+    <div class="reflection-item">Israel's transformation from a barren, resource-poor land to an energy-exporting nation happened within one lifetime. What does that tell me about the pace at which God's prophetic plans can unfold?</div>
+    <div class="reflection-item">How should awareness of Israel's growing wealth — as a fulfillment of Ezekiel 36:11 — affect how I pray for Israel and for the nations that surround her?</div>
   </div>
 
-  <div class="divider"></div>
+  <div class="views-box">
+    <div class="view-item"><div class="view-title">Pre-Tribulation (most common)</div><div class="view-body">The war happens before the tribulation begins. Israel's victory leads to a false sense of security that enables the Antichrist's peace covenant. The 7-year weapon-burning aligns with the tribulation period.</div><div class="view-key">Key texts: Dan 9:27; Ezek 39:9</div></div>
+    <div class="view-item"><div class="view-title">Mid-Tribulation</div><div class="view-body">The war occurs at the midpoint, possibly connected to the Antichrist breaking the covenant and the abomination of desolation.</div><div class="view-key">Key texts: Dan 11:40–45; 2 Thess 2:4</div></div>
+    <div class="view-item"><div class="view-title">Post-Millennial</div><div class="view-body">Revelation 20:8 also uses "Gog and Magog" — most scholars consider Rev 20 a different event using the same name symbolically.</div><div class="view-key">Key texts: Rev 20:7–9</div></div>
+  </div>
+  <div class="notes-box">
+    <div class="label">✏️ Module 9 — My convictions on Gog/Magog, current events, and how to pray:</div>
+    <textarea class="notes-input" id="n-m9" placeholder="Write your convictions here..."></textarea>
+  </div>
+</div>
 
-  <!-- ── THEMATIC INDEX ────────────────────────────────── -->
-  <div id="index">
-    <span class="page-tag">Thematic Index</span>
-    <h1 class="page-title">How This Guide Is Organized</h1>
-    <p class="body">This guide grows theme by theme. Each major theme has its own section with multiple modules inside it. Cross-references between themes are noted throughout so you can see how Scripture ties together across books and centuries.</p>
+<!-- MODULE 10 -->
+<div id="m10" class="page">
+  <span class="page-tag">Module 10 — Theme 1: End Times</span>
+  <h1 class="page-title">Signs of the Times</h1>
+  <div class="info-box"><div class="title">Read first</div><div class="line">Matthew 24:1–14, 2 Timothy 3:1–5, Daniel 12:4</div></div>
+  <p class="body">Jesus told His disciples to recognize the signs of the times — events of prophetic significance that indicate the Tribulation is drawing near. These signs do not set dates, but they tell us the stage is being set.</p>
+  <h2 class="section-title">Global Conditions — Birth Pains</h2>
+  <table class="checklist-table">
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tr><td>Wars and rumors of wars increasing</td><td>Matt 24:6</td><td class="status-progress">~ In Progress</td><td></td></tr>
+    <tr><td>Nation rising against nation, kingdom against kingdom</td><td>Matt 24:7</td><td class="status-progress">~ In Progress</td><td></td></tr>
+    <tr><td>Famines, pestilences, earthquakes in various places</td><td>Matt 24:7–8</td><td class="status-progress">~ In Progress</td><td></td></tr>
+    <tr><td>Gospel preached to every nation</td><td>Matt 24:14</td><td class="status-progress">~ In Progress</td><td></td></tr>
+    <tr><td>Lawlessness increasing; love of many growing cold</td><td>Matt 24:12</td><td class="status-progress">~ In Progress</td><td></td></tr>
+    <tr><td>Scoffers mocking the promise of Christ's return</td><td>2 Pet 3:3–4</td><td class="status-progress">~ In Progress</td><td></td></tr>
+    <tr><td>Technology capable of global surveillance and mark enforcement</td><td>Rev 13:16–17</td><td class="status-progress">~ In Progress</td><td></td></tr>
+    <tr><td>Explosion of knowledge and global travel</td><td>Dan 12:4</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
+  </tbody></table>
+  <h2 class="section-title">Moral &amp; Spiritual Signs</h2>
+  <table class="checklist-table">
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tr><td>Lovers of self, money, and pleasure more than God</td><td>2 Tim 3:1–5</td><td class="status-progress">~ In Progress</td><td></td></tr>
+    <tr><td>Disobedient to parents, ungrateful, unholy, unloving</td><td>2 Tim 3:2–3</td><td class="status-progress">~ In Progress</td><td></td></tr>
+    <tr><td>Form of godliness but denying its power</td><td>2 Tim 3:5</td><td class="status-progress">~ In Progress</td><td></td></tr>
+    <tr><td>Doctrines of demons spreading; departure from the faith</td><td>1 Tim 4:1–2</td><td class="status-progress">~ In Progress</td><td></td></tr>
+    <tr><td>Rise of false prophets and false Christs</td><td>Matt 24:11, 24</td><td class="status-progress">~ In Progress</td><td></td></tr>
+    <tr><td>UFO / occult phenomena — demonic deception as 'alien contact'</td><td>1 Tim 4:1–2; Rev 12:9</td><td class="status-progress">~ In Progress</td><td></td></tr>
+  </tbody></table>
+  <div class="notes-box">
+    <div class="label">✏️ Module 10 — My notes on Signs of the Times:</div>
+    <textarea class="notes-input" id="n-m10" placeholder="Write your thoughts here..."></textarea>
+  </div>
+</div>
 
-    <div class="info-box">
-      <div class="title">📚 Current themes in this guide</div>
-      <div class="line"><strong>THEME 1: THE END TIMES</strong> — Prophecy, the Tribulation, the Rapture, Israel, the Millennium, and how to live now — <a href="theme1/module1.html" style="color:#2E75B6">Modules 1–15</a></div>
-      <div class="line"><strong>THEME 2: BIBLICAL CALENDAR &amp; PROPHECY</strong> — God's original solar calendar, the Essene/Pharisee debate, the Dead Sea Scrolls, and why it matters for prophecy — <a href="theme2/index.html" style="color:#2E75B6">Theme 2 →</a></div>
-      <div class="line"><strong>THEME 3: COMING SOON</strong> — Judgment &amp; Mercy — Noah's Ark, the Flood, God's pattern of warning, grace, and rescue</div>
-      <div class="line"><strong>THEME 4: COMING SOON</strong> — Covenant — God's binding promises through Noah, Abraham, Moses, David, and Jesus</div>
-      <div class="line"><strong>THEME 5: COMING SOON</strong> — The Messiah — All the threads of Scripture that point to Christ, fulfilled and yet to come</div>
-      <div class="line"><strong>THEME 6: COMING SOON</strong> — The Holy Spirit — His identity, work, indwelling, and role in your life today</div>
-      <div class="line"><strong>THEME 7: COMING SOON</strong> — Kingdom of God — What it is, where it is, and how to live inside it now</div>
-      <div class="line"><strong>THEME 8: COMING SOON</strong> — Prayer &amp; Intimacy with God — The biblical theology of prayer, with examples and reflection</div>
-      <div class="line" style="margin-top:8px;color:#888;font-style:italic">ADD AS YOU GO: This list grows as you discover new areas to study. There is no rush. Let the Spirit lead.</div>
+<!-- MODULE 11 -->
+<div id="m11" class="page">
+  <span class="page-tag">Module 11 — Theme 1: End Times</span>
+  <h1 class="page-title">Identifying False Prophets</h1>
+  <div class="info-box"><div class="title">Read first</div><div class="line">Matthew 7:15–23, 2 Timothy 4:3–4, 1 John 4:1–3</div></div>
+  <p class="body">Scripture warns repeatedly that false prophets will be a defining feature of the last days — both in the world and within the Church. God gives us clear tests to identify them.</p>
+  <h2 class="section-title">The Biblical Tests</h2>
+  <ul class="bullet-list">
+    <li>Their prophecies do not come true (Deut 18:22)</li>
+    <li>They lead people to follow false gods or idols (Exod 20:1–3)</li>
+    <li>They deny the deity of Jesus Christ (1 John 4:1–3)</li>
+    <li>They deny the humanity of Jesus Christ — docetism (1 John 4:1–2)</li>
+    <li>They promote sexual immorality as acceptable (Jude 4–7)</li>
+    <li>They spread 'doctrines of demons' — seducing spirits (1 Tim 4:1–2)</li>
+    <li>They tell people what they want to hear rather than the truth (2 Tim 4:3–4)</li>
+    <li>They come from within the Church — wolves in sheep's clothing (Acts 20:28–30)</li>
+  </ul>
+  <div class="scripture-box"><div class="ref">2 Timothy 4:3–4 (NLT)</div><div class="text">For a time is coming when people will no longer listen to sound and wholesome teaching. They will follow their own desires and will look for teachers who will tell them whatever their itching ears want to hear. They will reject the truth and chase after myths.</div></div>
+  <div class="scripture-box"><div class="ref">1 John 4:1 (NLT)</div><div class="text">Dear friends, do not believe everyone who claims to speak by the Spirit. You must test them to see if the spirit they have comes from God. For there are many false prophets in the world.</div></div>
+  <div class="study-q-box">
+    <div class="study-q">Q1. Jesus said false prophets come in 'sheep's clothing' (Matt 7:15). What does this tell us about how deceptive they will appear? What is the antidote?</div>
+    <input class="study-q-input" id="q-m11-1" placeholder="Your answer...">
+    <div class="study-q">Q2. Of the biblical tests listed above, which ones do you think the Church today most consistently fails to apply? Why?</div>
+    <input class="study-q-input" id="q-m11-2" placeholder="Your answer...">
+    <div class="study-q">Q3. How do you personally test teaching you receive — from sermons, books, podcasts, or social media — against Scripture?</div>
+    <input class="study-q-input" id="q-m11-3" placeholder="Your answer...">
+    <div class="study-q">Q4. The end times False Prophet will perform signs and wonders to make people worship the Antichrist (Rev 13:13–14). How does this warn us not to use miracles alone as a test of true prophecy?</div>
+    <input class="study-q-input" id="q-m11-4" placeholder="Your answer...">
+  </div>
+  <div class="notes-box">
+    <div class="label">✏️ Module 11 — My notes on False Prophets:</div>
+    <textarea class="notes-input" id="n-m11" placeholder="Write your thoughts here..."></textarea>
+  </div>
+</div>
+
+<!-- MODULE 12 -->
+<div id="m12" class="page">
+  <span class="page-tag">Module 12 — Theme 1: End Times</span>
+  <h1 class="page-title">The Millennial Kingdom</h1>
+  <div class="info-box"><div class="title">Read first</div><div class="line">Revelation 20:1–10, Isaiah 11:1–10, Ezekiel 40–48 (overview), Zechariah 14</div></div>
+  <div class="scripture-box"><div class="ref">Revelation 20:4–6</div><div class="text">"They came to life and reigned with Christ a thousand years. (The rest of the dead did not come to life until the thousand years were ended.) This is the first resurrection. Blessed and holy are those who share in the first resurrection. The second death has no power over them, but they will be priests of God and of Christ and will reign with him for a thousand years."</div></div>
+  <p class="body">The text states "a thousand years" six times in Revelation 20:2–7. The question is whether this is a literal 1,000-year period or a symbolic representation of a complete/full age.</p>
+  <div class="views-box">
+    <div class="view-item"><div class="view-title">Premillennialism</div><div class="view-body">Christ returns BEFORE the millennium. He physically establishes and reigns over a literal 1,000-year kingdom on earth from Jerusalem. Satan is literally bound. Resurrected saints rule with Christ. This is the oldest view, held by most of the early church fathers.</div><div class="view-key">Key texts: Rev 20:1–6; Isa 11; Ezek 40–48; Zech 14; Matt 19:28</div></div>
+    <div class="view-item"><div class="view-title">Amillennialism</div><div class="view-body">The "millennium" is not a future literal period — it is the current Church Age. Christ reigns NOW through His church. Satan is "bound" in the sense that he cannot prevent the gospel from going to all nations. Dominant view in Reformed/covenant theology.</div><div class="view-key">Key texts: Rev 20 (symbolic reading); John 12:31; 2 Cor 4:4; Col 2:15</div></div>
+    <div class="view-item"><div class="view-title">Postmillennialism</div><div class="view-body">The Church will gradually Christianize the world through gospel preaching, resulting in a golden age of righteousness. Christ returns AFTER this millennium.</div><div class="view-key">Key texts: Matt 28:18–20; Ps 72; Isa 2:2–4; 1 Cor 15:25</div></div>
+  </div>
+  <h2 class="section-title">Millennium Checklist</h2>
+  <table class="checklist-table">
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tr><td>Satan bound in the abyss for 1,000 years</td><td>Rev 20:1–3</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Christ reigns from Jerusalem for 1,000 years</td><td>Rev 20:4–6; Zech 14:9</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Ezekiel's millennial temple built in Jerusalem</td><td>Ezek 40–48</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>River flows from the temple; heals the Dead Sea</td><td>Ezek 47:1–12</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Nature transformed — animals at peace; lifespans extended</td><td>Isa 11:6–9; 65:20</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Satan released; final rebellion crushed by fire from heaven</td><td>Rev 20:7–9</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Satan cast into lake of fire forever</td><td>Rev 20:10</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+  </tbody></table>
+  <div class="notes-box">
+    <div class="label">✏️ Module 12 — My view of the Millennium and why:</div>
+    <textarea class="notes-input" id="n-m12" placeholder="Write your convictions here... Date your entry."></textarea>
+  </div>
+</div>
+
+<!-- MODULE 13 -->
+<div id="m13" class="page">
+  <span class="page-tag">Module 13 — Theme 1: End Times</span>
+  <h1 class="page-title">Second Coming, Eternity &amp; Living Now</h1>
+  <div class="info-box"><div class="title">Read first</div><div class="line">Revelation 19:11–21, 21:1–22:5, 2 Peter 3:10–14, 1 John 3:2–3, Matthew 24:44–51, Luke 21:34–36</div></div>
+  <p class="body">The Second Coming of Jesus Christ is the climax of all prophetic Scripture. He returns visibly, physically, and in glory to defeat the Antichrist, save Israel, establish His kingdom, and ultimately usher in the New Heaven and New Earth.</p>
+  <h2 class="section-title">Second Coming Checklist</h2>
+  <table class="checklist-table">
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tr><td>Nations gathered against Jerusalem — Armageddon</td><td>Rev 16:16; Zech 14:1–2</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Jesus returns on a white horse with the armies of heaven</td><td>Rev 19:11–14</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Antichrist and False Prophet thrown into lake of fire</td><td>Rev 19:20</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Israel looks on the One they pierced — national repentance</td><td>Zech 12:10; Rom 11:26</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Mount of Olives splits; living waters flow east and west</td><td>Zech 14:4, 8</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Bema Seat — believers' works judged; crowns awarded</td><td>2 Cor 5:10; 1 Cor 3:11–15</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>Marriage Supper of the Lamb</td><td>Rev 19:7–9; John 14:1–3</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+  </tbody></table>
+  <h2 class="section-title">Eternity Checklist</h2>
+  <table class="checklist-table">
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tr><td>Great White Throne Judgment — unbelievers judged by works</td><td>Rev 20:11–15</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>New Heaven and New Earth created</td><td>Rev 21:1; Isa 65:17</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>New Jerusalem descends — 1,400-mile cube of glory</td><td>Rev 21:2, 16</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>God dwells with His people; no more death or pain</td><td>Rev 21:3–4</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>River of life and tree of life — healing for the nations</td><td>Rev 22:1–2</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>No temple — God and the Lamb are its temple</td><td>Rev 21:22</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+    <tr><td>No sun needed — God's glory is the light</td><td>Rev 21:23</td><td class="status-notyet">○ Not Yet</td><td></td></tr>
+  </tbody></table>
+  <div class="info-box">
+    <div class="title">The Practical Posture of the Watchman-Believer</div>
+    <div class="line"><strong>WATCH</strong> — Pay attention to what God is doing in the world. Study prophecy. Notice the signs.</div>
+    <div class="line"><strong>WARN</strong> — Live and speak as one who knows time is short. Not with anxiety — with urgency and love.</div>
+    <div class="line"><strong>WORK</strong> — "Occupy until I come." Do not disengage from life, family, or calling because Christ is returning.</div>
+    <div class="line"><strong>WORSHIP</strong> — Let the certainty of Christ's return drive you to deeper awe. Maranatha — Come, Lord Jesus.</div>
+    <div class="line"><strong>WAIT with hope</strong> — Hold what is temporal loosely. Hold what is eternal with both hands.</div>
+  </div>
+  <p style="text-align:center;font-style:italic;color:#666;margin:28px 0 6px;font-size:15px">"He who testifies to these things says, 'Yes, I am coming soon.'"</p>
+  <p style="text-align:center;font-weight:bold;color:#1F3864;font-size:20px;margin-bottom:28px">"Amen. Come, Lord Jesus." — Revelation 22:20</p>
+  <div class="notes-box">
+    <div class="label">✏️ Module 13 — How this study is changing how I live:</div>
+    <textarea class="notes-input" id="n-m13" placeholder="Write your convictions here... Date your entry."></textarea>
+  </div>
+</div>
+
+<!-- THEME 2 -->
+<div id="theme2" class="page">
+  <span class="page-tag">Theme 2 — Coming Soon</span>
+  <h1 class="page-title">Creation &amp; the Fall</h1>
+  <p class="page-subtitle">Genesis · The Garden · Adam &amp; Eve · The Fall · God's First Promise</p>
+  <div class="coming-soon"><p>This theme is coming soon. Content will be added as you study. Let the Spirit lead.</p></div>
+  <div class="info-box">
+    <div class="title">What this theme will cover</div>
+    <div class="line">The creation account (Genesis 1–2): Who is God? Who are we? What was the world meant to be?</div>
+    <div class="line">The Fall (Genesis 3): What went wrong, and why does it matter for everything that follows?</div>
+    <div class="line">The Protoevangelium — Genesis 3:15: The first promise of a Redeemer</div>
+    <div class="line">The Serpent in Genesis 3 ↔ The Dragon in Revelation 12 &amp; 20 — the same enemy across the whole Bible</div>
+  </div>
+  <div class="notes-box">
+    <div class="label">✏️ Theme 2 Notes — What I want to explore when we build this out:</div>
+    <textarea class="notes-input" id="n-theme2" placeholder="Write your thoughts here..."></textarea>
+  </div>
+</div>
+
+<!-- THEME 3 -->
+<div id="theme3" class="page">
+  <span class="page-tag">Theme 3 — Coming Soon</span>
+  <h1 class="page-title">Judgment &amp; Mercy: Noah's Ark</h1>
+  <p class="page-subtitle">Genesis 6–9 · The Flood · God's Pattern of Warning, Grace &amp; Rescue</p>
+  <div class="coming-soon"><p>This theme is coming soon.</p></div>
+  <div class="info-box">
+    <div class="title">What this theme will cover</div>
+    <div class="line">Why God sent the flood — the nature of the wickedness in Genesis 6</div>
+    <div class="line">Noah as a "preacher of righteousness" (2 Peter 2:5) — the watchman principle in the pre-flood world</div>
+    <div class="line">The Ark as a type (symbol) of Christ — salvation through judgment, not from judgment</div>
+    <div class="line">The Flood as a type of baptism (1 Peter 3:20–21)</div>
+    <div class="line">Jesus' comparison of the days of Noah to the end times (Matthew 24:37–39)</div>
+  </div>
+  <div class="cross-ref-box">
+    <div class="title">🔗 Key Connection to Theme 1 (End Times)</div>
+    <div class="line">Matthew 24:37–39 — "As it was in the days of Noah, so it will be at the coming of the Son of Man." The flood is Jesus' own illustration of the end times.</div>
+  </div>
+  <div class="notes-box">
+    <div class="label">✏️ Theme 3 Notes — What I want to explore when we build this out:</div>
+    <textarea class="notes-input" id="n-theme3" placeholder="Write your thoughts here..."></textarea>
+  </div>
+</div>
+
+<!-- THEMES 4-8 -->
+<div id="themes48" class="page">
+  <span class="page-tag">Themes 4–8 — Coming Soon</span>
+  <h1 class="page-title">Future Themes</h1>
+  <div class="coming-soon"><p>These themes will be built out over time as you study. There is no rush. Let the Spirit lead.</p></div>
+  <div class="info-box">
+    <div class="title">Themes on the horizon</div>
+    <div class="line"><strong>Theme 4: Covenant</strong> — God's binding promises through Noah, Abraham, Moses, David, and Jesus</div>
+    <div class="line"><strong>Theme 5: The Messiah</strong> — All the threads of Scripture that point to Christ, fulfilled and yet to come</div>
+    <div class="line"><strong>Theme 6: The Holy Spirit</strong> — His identity, work, indwelling, and role in your life today</div>
+    <div class="line"><strong>Theme 7: Kingdom of God</strong> — What it is, where it is, and how to live inside it now</div>
+    <div class="line"><strong>Theme 8: Prayer &amp; Intimacy with God</strong> — The biblical theology of prayer, with examples and reflection</div>
+  </div>
+</div>
+
+<!-- SERMONS -->
+<div id="sermons" class="page">
+  <span class="page-tag">My Study</span>
+  <h1 class="page-title">Sermon &amp; Teaching Log</h1>
+  <p class="body">Record of all sermons and audio teachings that have shaped this study. Date each entry. Over time this becomes a personal theological library.</p>
+  <table class="sermon-table">
+    <tbody><tr><th style="width:5%">#</th><th style="width:12%">Date</th><th style="width:30%">Title / Source</th><th style="width:53%">Key Topic</th></tr>
+    <tr><td>1</td><td>3/22/26</td><td>Imitate Christ's Example — Pastor Matt</td><td>Servanthood and humility</td></tr>
+    <tr><td>2</td><td>3/25/26</td><td>Judgment Seat &amp; Marriage of the Lamb</td><td>Bema Seat, crowns, bride/bridegroom — Rom 14:8–10; 1 Cor 3:11–15; Rev 19:7–9; John 14:1–3</td></tr>
+    <tr><td>3</td><td>3/25/26</td><td>Ezekiel: Invasion &amp; End</td><td>Gog-Magog war (Ezek 38–39); coalition: Russia/Iran/Turkey/Sudan/Libya; Israel at rest precondition</td></tr>
+    <tr><td>4</td><td>3/26/26</td><td>Ezekiel 38–39 continued (partial)</td><td>Scholars debate whether invasion already occurred; nation identification</td></tr>
+    <tr><td>5</td><td>3/27/26</td><td>Antichrist &amp; End Times — Audio Teaching</td><td>Day of the Lord; Antichrist profile; not Muslim/not Gog; temple rebuild; signs of the times; false prophets</td></tr>
+    <tr><td>6</td><td>3/28/26</td><td>Triumphal Entry — Palm Sunday</td><td>Mark 11 / John 12 blend; Jesus' entry into Jerusalem; crowd response; fulfilled prophecy (Zech 9:9)</td></tr>
+    <tr><td>7</td><td>3/31/26</td><td>Tribulation &amp; Judgment</td><td>Seal/trumpet judgments; Two Witnesses (Rev 11); J.I. Packer on divine judgment</td></tr>
+    <tr><td>8</td><td>4/1/26</td><td>End-Times Tribulation</td><td>Seal judgments (Rev 6); seven thunders/little scroll (Rev 10); First Beast (Rev 13)</td></tr>
+    <tr><td>9</td><td>4/7/26</td><td>Israel's Oil &amp; Wealth</td><td>Ezek 36:11 &amp; 38:12–13; Tovia Luskin discovery; Zion Oil and Gas; offshore gas fields as economic precondition for Gog-Magog</td></tr>
+    <tr><td>10</td><td></td><td></td><td></td></tr>
+  </tbody></table>
+</div>
+
+<!-- JOURNAL -->
+<div id="journal" class="page">
+  <span class="page-tag">My Study</span>
+  <h1 class="page-title">Personal Reflections &amp; Journal</h1>
+  <p class="body">A space to record observations, convictions, and spiritual insight as they emerge through study and everyday life. Date each entry.</p>
+
+  <div class="journal-box">
+    <div class="journal-date">March 28, 2026</div>
+    <div class="journal-topic">Topic: Spiritual Deception &amp; the Demonic Realm</div>
+    <div class="journal-cat">Category: Signs of the Times / Spiritual Warfare</div>
+    <div class="journal-p">I came across something today that connected directly to what we've been studying. VP JD Vance made a public statement arguing that unexplained aerial phenomena — the UFO phenomenon that has been in the news for years — may not be extraterrestrial at all, but something from the spiritual realm. He specifically referenced the Christian understanding that evil is real and active, and quoted what felt like a paraphrase of a well-known idea: that one of the devil's greatest tricks is convincing the world he doesn't exist.</div>
+    <div class="journal-p">This strikes me as deeply connected to what we've been studying about deception in the end times. Scripture is clear that the enemy doesn't announce himself — he masquerades. 2 Corinthians 11:14 says that Satan disguises himself as an angel of light. The idea that something supernatural could be repackaged as "extraterrestrial" or "scientific" fits exactly the kind of deception Jesus warned about in Matthew 24. The false signs and wonders of the Antichrist and the False Prophet won't look obviously evil — they will look convincing, maybe even miraculous.</div>
+    <div class="journal-p">What stood out to me is how this connects to the broader cultural moment. If demonic activity can be reframed as a cosmic, non-threatening mystery — something humanity is meant to "discover" and "open up" to — that is exactly the kind of deception the end times framework warns about.</div>
+    <div class="journal-p"><strong>Key scriptures:</strong> 2 Corinthians 11:14, Matthew 24:24, Revelation 13:13–14, Ephesians 6:12. Cross-reference with Module 11 (False Prophets) and Module 10 (Signs of the Times).</div>
+    <div class="journal-qs">
+      <div class="journal-qs-title">Questions to sit with:</div>
+      <div class="journal-q">• How does the enemy disguise evil as wonder or curiosity in our own culture today?</div>
+      <div class="journal-q">• What is the difference between healthy curiosity about the unknown and dangerous spiritual openness?</div>
+      <div class="journal-q">• How do we teach our kids to recognize spiritual deception when it comes dressed as something appealing?</div>
     </div>
+  </div>
 
-    <div class="cross-ref-box">
-      <div class="title">🔗 Key cross-theme connections</div>
-      <div class="line">The Serpent in Genesis 3 ↔ The Dragon in Revelation 12 &amp; 20 — same enemy, bookended by Scripture</div>
-      <div class="line">Noah's Ark as salvation through judgment ↔ The Rapture / God's rescue before the Tribulation</div>
-      <div class="line">God's covenant with Abraham (Gen 15) ↔ Israel's future in Romans 9–11 ↔ End Times prophecy</div>
-      <div class="line">The Garden of Eden lost (Gen 3) ↔ The New Jerusalem restored (Rev 21–22) — the whole Bible in two gardens</div>
-      <div class="line">The Holy Spirit in Ezekiel 36:27 ↔ Pentecost (Acts 2) ↔ The Restrainer (2 Thess 2) — one Spirit, many works</div>
-      <div class="line">The Messiah promised (Isa 7:14; 9:6; 53) ↔ Fulfilled in the Gospels ↔ Coming again in Revelation 19</div>
-      <div class="line">God's original calendar (Exod 12:2; Jubilees) ↔ The Feasts of Israel ↔ Millennial worship (Isa 66:23)</div>
+  <div class="journal-box">
+    <div class="journal-date">March 29, 2026</div>
+    <div class="journal-topic">Topic: Grace, Holiness &amp; the Danger of Carnal Christianity</div>
+    <div class="journal-cat">Category: Christian Living / Church Health / End Times Readiness</div>
+    <div class="journal-p">Came across a powerful Facebook post from Pastor Larry Burton today that addresses something increasingly relevant in the end times context — the misuse of grace as a license to continue in sin. His central argument is compelling: Grace isn't a lowered bar — it's a higher one, backed by better resources (the Holy Spirit, the new covenant, Christ's indwelling). Using grace as a license to sin inverts its entire purpose.</div>
+    <div class="journal-p">This connects directly to the end times framework. Jesus himself warns in Matthew 7:21–23 that He will say to many who did ministry in His name: "I never knew you; depart from me, you workers of iniquity." A church full of people who claim grace but live in sin is completely unprepared for the deception to come. The Antichrist's deception will be most effective against people whose faith is cultural and surface-level rather than genuine and transformed.</div>
+    <div class="journal-p">Pastor Burton's definition of repentance is worth noting: not just feeling sorry, but a change of attitude, behavior, direction, affections, and relationships. Christ is coming for a pure Bride. Five of the seven churches in Revelation are told to repent.</div>
+    <div class="journal-p"><strong>Key scriptures:</strong> Heb 12:14 ("without holiness no man shall see God"), Ezek 18:24, Rom 6:1–2 ("Shall we continue in sin that grace may abound? God forbid!"), Rev 3:5.</div>
+    <div class="journal-qs">
+      <div class="journal-qs-title">Questions to sit with:</div>
+      <div class="journal-q">• Am I using grace as a covering for patterns in my life that I haven't genuinely surrendered?</div>
+      <div class="journal-q">• Ezekiel 18:24 raises the hard question: can a righteous person forfeit their standing through willful, unrepented sin? How do I hold this passage honestly?</div>
+      <div class="journal-q">• What would it look like for our family to be genuinely prepared — spiritually discerning, holy, and watchful — when Christ returns?</div>
     </div>
+  </div>
 
-    <!-- ── QUICK-START CARD GRID ── -->
-    <h2 class="section-title">Quick Start — Jump to a Module</h2>
-    <p class="body" style="margin-bottom:16px;">Jump directly to any module or study tool. Cards are added here each time a new module or theme is built.</p>
+  <div class="notes-box" style="margin-top:20px">
+    <div class="label">✏️ Add new journal entries below — date each one:</div>
+    <textarea class="notes-input" id="n-journal-new" style="min-height:200px" placeholder="Date: ___________
+Topic: ___________
+Category: ___________
 
-    <!-- THEME 1 LABEL -->
-    <div style="font-size:10px;font-weight:bold;color:#1F3864;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.08em;margin:18px 0 8px;padding-left:2px;">Theme 1 — End Times</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px;">
+Write your reflection here...
 
-      <a href="theme1/module1.html" style="text-decoration:none;">
-        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 1 · Module 1</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Daniel's 70 Weeks</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">The master prophetic timeline</div>
-        </div>
-      </a>
+Questions to sit with:
+•
+•
+•"></textarea>
+  </div>
+</div>
 
-      <a href="theme1/module6.html" style="text-decoration:none;">
-        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 1 · Module 6</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">The Rapture</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Scripture &amp; honest inquiry</div>
-        </div>
-      </a>
+<!-- CONVICTIONS -->
+<div id="convictions" class="page">
+  <span class="page-tag">My Study</span>
+  <h1 class="page-title">My Growing Convictions</h1>
+  <p class="body">This is your running record of what you believe and why — updated as you study. Date each entry so you can track how your understanding develops over time. These are your convictions, held with both confidence and humility.</p>
+  <div class="notes-box">
+    <div class="label">✏️ On the nature of biblical prophecy — Dated: ___________</div>
+    <textarea class="notes-input" id="c-prophecy" placeholder="Write your convictions here..."></textarea>
+  </div>
+  <div class="notes-box" style="margin-top:14px">
+    <div class="label">✏️ On Israel's role in prophecy — Dated: ___________</div>
+    <textarea class="notes-input" id="c-israel" placeholder="Write your convictions here..."></textarea>
+  </div>
+  <div class="notes-box" style="margin-top:14px">
+    <div class="label">✏️ On the Rapture — Dated: ___________</div>
+    <textarea class="notes-input" id="c-rapture" placeholder="Write your convictions here..."></textarea>
+  </div>
+  <div class="notes-box" style="margin-top:14px">
+    <div class="label">✏️ On the Millennium — Dated: ___________</div>
+    <textarea class="notes-input" id="c-millennium" placeholder="Write your convictions here..."></textarea>
+  </div>
+  <div class="notes-box" style="margin-top:14px">
+    <div class="label">✏️ On grace, holiness &amp; end-times readiness — Dated: ___________</div>
+    <textarea class="notes-input" id="c-grace" placeholder="Write your convictions here..."></textarea>
+  </div>
+  <div class="notes-box" style="margin-top:14px">
+    <div class="label">✏️ On what all this means for how I live — Dated: ___________</div>
+    <textarea class="notes-input" id="c-live" placeholder="Write your convictions here..."></textarea>
+  </div>
+</div>
 
-      <a href="theme1/module9.html" style="text-decoration:none;">
-        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 1 · Module 9</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Gog-Magog War</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Russia, Iran &amp; Ezekiel 38–39</div>
-        </div>
-      </a>
+</div><!-- end #main -->
+</div><!-- end #app -->
 
-      <a href="theme1/module12.html" style="text-decoration:none;">
-        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 1 · Module 12</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">The Millennium</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Christ's 1,000-year reign</div>
-        </div>
-      </a>
-
-      <a href="theme1/module14.html" style="text-decoration:none;">
-        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 1 · Module 14</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Matt 24 ↔ Revelation</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Side-by-side parallel study</div>
-        </div>
-      </a>
-
-      <a href="theme1/module15.html" style="text-decoration:none;">
-        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 1 · Module 15</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Armageddon Campaign</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">The seven phases of the final battle</div>
-        </div>
-      </a>
-
-    </div>
-
-    <!-- THEME 2 LABEL -->
-    <div style="font-size:10px;font-weight:bold;color:#2E6B0E;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.08em;margin:18px 0 8px;padding-left:2px;">Theme 2 — Biblical Calendar</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px;">
-
-      <a href="theme2/module1.html" style="text-decoration:none;">
-        <div style="background:#2E6B0E;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#3A8A12'" onmouseout="this.style.background='#2E6B0E'">
-          <div style="font-size:10px;color:#C8DBA8;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 2 · Module 1</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Calendar History</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">From creation to the Dead Sea Scrolls</div>
-        </div>
-      </a>
-
-      <a href="theme2/module2.html" style="text-decoration:none;">
-        <div style="background:#2E6B0E;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#3A8A12'" onmouseout="this.style.background='#2E6B0E'">
-          <div style="font-size:10px;color:#C8DBA8;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 2 · Module 2</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Calendar Timeline</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Visual timeline from Creation to Millennium</div>
-        </div>
-      </a>
-
-      <a href="theme2/module3.html" style="text-decoration:none;">
-        <div style="background:#2E6B0E;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#3A8A12'" onmouseout="this.style.background='#2E6B0E'">
-          <div style="font-size:10px;color:#C8DBA8;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Theme 2 · Module 3</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Book of Jubilees</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">364-day solar year &amp; prophetic structure</div>
-        </div>
-      </a>
-
-    </div>
-
-    <!-- MY STUDY LABEL -->
-    <div style="font-size:10px;font-weight:bold;color:#7A6600;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.08em;margin:18px 0 8px;padding-left:2px;">My Study Tools</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px;">
-
-      <a href="checklist.html" style="text-decoration:none;">
-        <div style="background:#7A6600;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#9A8200'" onmouseout="this.style.background='#7A6600'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">My Study</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Prophecy Checklist</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Living timeline — what has &amp; hasn't happened</div>
-        </div>
-      </a>
-
-      <a href="reference-library.html" style="text-decoration:none;">
-        <div style="background:#7A6600;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#9A8200'" onmouseout="this.style.background='#7A6600'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">My Study</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Reference Library</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Rosenberg, Rhodes, Bible translations &amp; tools</div>
-        </div>
-      </a>
-
-      <a href="sermons.html" style="text-decoration:none;">
-        <div style="background:#7A6600;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#9A8200'" onmouseout="this.style.background='#7A6600'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">My Study</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Sermon &amp; Teaching Log</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Rosenberg, Burton &amp; others</div>
-        </div>
-      </a>
-
-      <a href="journal.html" style="text-decoration:none;">
-        <div style="background:#7A6600;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#9A8200'" onmouseout="this.style.background='#7A6600'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">My Study</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">Personal Journal</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Reflections &amp; observations</div>
-        </div>
-      </a>
-
-      <a href="convictions.html" style="text-decoration:none;">
-        <div style="background:#7A6600;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;height:100%;box-sizing:border-box;" onmouseover="this.style.background='#9A8200'" onmouseout="this.style.background='#7A6600'">
-          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">My Study</div>
-          <div style="font-size:14px;font-weight:bold;line-height:1.4;">My Convictions</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif;">Where I've landed &amp; what I'm still wrestling</div>
-        </div>
-      </a>
-
-    </div>
-
-  </div><!-- /#index -->
-
-</div><!-- /#main -->
-</div><!-- /#app -->
-
-<!-- PAGE NOTE IDS -->
 <script>
-  window.PAGE_NOTE_IDS = ['n-intro'];
+function show(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const page = document.getElementById(id);
+  if (page) page.classList.add('active');
+  if (el) el.classList.add('active');
+  document.getElementById('main').scrollTop = 0;
+  window.scrollTo(0, 0);
+  closeSidebar();
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('open');
+}
+
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar.classList.remove('open');
+  overlay.classList.remove('open');
+}
+
+const noteIds = [
+  'n-intro','n-m1','n-m2','n-m3','n-m4','n-m5','n-m6','n-m7','n-m8','n-m9','n-m10','n-m11','n-m12','n-m13',
+  'n-theme2','n-theme3','n-journal-new',
+  'q-m1-1','q-m1-2','q-m1-3','q-m1-4',
+  'q-m3-1','q-m3-2',
+  'q-m6-1','q-m6-2','q-m6-3','q-m6-4',
+  'q-m11-1','q-m11-2','q-m11-3','q-m11-4',
+  'c-prophecy','c-israel','c-rapture','c-millennium','c-grace','c-live'
+];
+
+function saveNote(id) {
+  const el = document.getElementById(id);
+  if (el) localStorage.setItem('cbsg-' + id, el.value);
+}
+
+function loadNotes() {
+  noteIds.forEach(id => {
+    const el = document.getElementById(id);
+    const saved = localStorage.getItem('cbsg-' + id);
+    if (el && saved) el.value = saved;
+  });
+}
+
+noteIds.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => saveNote(id));
+});
+
+loadNotes();
+
+  const savedToken = localStorage.getItem('cbsg-gh-token');
+  if (savedToken) document.getElementById('gh-token').value = savedToken;
+  document.getElementById('gh-token').addEventListener('input', function() {
+    localStorage.setItem('cbsg-gh-token', this.value);
+  });
+
+  async function saveToGitHub() {
+    const token = document.getElementById('gh-token').value.trim();
+    const status = document.getElementById('gh-status');
+    if (!token) {
+      status.textContent = 'Please enter your GitHub token first.';
+      status.style.color = '#FF6B6B';
+      return;
+    }
+    status.textContent = 'Saving...';
+    status.style.color = 'rgba(255,255,255,0.7)';
+
+    const owner = 'acshotsprings';
+    const repo = 'cbs';
+    const path = 'index.html';
+
+    try {
+      const getResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
+        headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+      });
+      const getData = await getResp.json();
+      const sha = getData.sha;
+
+      const htmlContent = document.documentElement.outerHTML;
+      const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
+
+      const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
+        method: 'PUT',
+        headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: 'Update Campbell Bible Study Guide', content: encoded, sha: sha })
+      });
+
+      if (putResp.ok) {
+        status.textContent = 'Saved to GitHub successfully!';
+        status.style.color = '#90EE90';
+        setTimeout(() => { status.textContent = ''; }, 4000);
+      } else {
+        const err = await putResp.json();
+        status.textContent = 'Error: ' + (err.message || 'Unknown error');
+        status.style.color = '#FF6B6B';
+      }
+    } catch(e) {
+      status.textContent = 'Error: ' + e.message;
+      status.style.color = '#FF6B6B';
+    }
+  }
+
 </script>
-
-<!-- SCRIPTS -->
-<script src="assets/js/nav.js"></script>
-<script src="assets/js/main.js"></script>
-<script>buildSidebar('.');</script>
-
 
 
 </body></html>
