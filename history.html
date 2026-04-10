@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Save History — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .history-entry {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .history-entry:hover {
+      border-color: #2E75B6;
+      box-shadow: 0 2px 8px rgba(46,117,182,0.08);
+    }
+    .history-timestamp {
+      font-size: 13px;
+      font-weight: bold;
+      color: #1F3864;
+      font-family: Arial, sans-serif;
+      margin-bottom: 4px;
+    }
+    .history-summary {
+      font-size: 13px;
+      color: #444;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+    .history-pages {
+      font-size: 11px;
+      color: #888;
+      font-family: Arial, sans-serif;
+    }
+    .history-pages span {
+      display: inline-block;
+      background: #f0f4fa;
+      border: 1px solid #d0daea;
+      border-radius: 3px;
+      padding: 1px 7px;
+      margin: 2px 3px 2px 0;
+      color: #2E75B6;
+    }
+    .history-number {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      font-size: 11px;
+      color: #bbb;
+      font-family: Arial, sans-serif;
+    }
+    .history-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #888;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+    .history-empty .icon {
+      font-size: 48px;
+      display: block;
+      margin-bottom: 16px;
+    }
+    .history-meta {
+      font-size: 12px;
+      color: #888;
+      font-family: Arial, sans-serif;
+      margin-bottom: 20px;
+      padding: 10px 14px;
+      background: #f8f9fa;
+      border-radius: 4px;
+      border-left: 3px solid #2E75B6;
+    }
+    .history-filter-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .history-filter-bar input {
+      flex: 1;
+      min-width: 200px;
+      padding: 7px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+    }
+    .history-filter-bar input:focus {
+      outline: none;
+      border-color: #2E75B6;
+    }
+    .history-count {
+      font-size: 12px;
+      color: #888;
+      font-family: Arial, sans-serif;
+      white-space: nowrap;
+    }
+    #history-list { }
+    .load-error {
+      background: #fff8f0;
+      border: 1px solid #f0c080;
+      border-radius: 6px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #996600;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: March 30, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version">Version: April 10, 2026</span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <span class="page-tag">My Study</span>
+  <h1 class="page-title">📋 Save History</h1>
+  <p class="body">A timestamped record of every time you saved to GitHub. Each entry captures what changed — which pages had new notes, what was updated — so you can trace the growth of this guide over time.</p>
+
+  <div class="history-meta" id="history-meta">
+    Loading history from GitHub…
+  </div>
+
+  <div class="history-filter-bar">
+    <input type="text" id="history-search" placeholder="🔍 Search history entries…" oninput="filterHistory()">
+    <span class="history-count" id="history-count"></span>
+  </div>
+
+  <div id="history-list">
+    <div class="history-empty">
+      <span class="icon">📡</span>
+      Loading save history…<br>
+      <small style="font-size:12px;color:#aaa;display:block;margin-top:8px;">Load from GitHub to see your history, or save once to start tracking.</small>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+  window.PAGE_NOTE_IDS = [];
+
+  // ── LOAD AND RENDER HISTORY ───────────────────────────
+  let allEntries = [];
+
+  async function loadHistory() {
+    const metaEl = document.getElementById('history-meta');
+    try {
+      const res = await fetch(
+        `https://raw.githubusercontent.com/acshotsprings/CampbellBibleStudy/main/my-notes.json?t=${Date.now()}`,
+        { cache: 'no-store' }
+      );
+      if (!res.ok) {
+        metaEl.textContent = res.status === 404
+          ? 'No saved notes found yet — save to GitHub from any page to start tracking history.'
+          : `Could not load history (${res.status}).`;
+        document.getElementById('history-list').innerHTML = '<div class="history-empty"><span class="icon">📂</span>No history yet.<br><small style="color:#aaa;font-size:12px;display:block;margin-top:8px;">Hit "Save to GitHub" on any study page to begin.</small></div>';
+        return;
+      }
+
+      const data = await res.json();
+      const history = data.saveHistory || [];
+      const lastUpdated = data.lastUpdated
+        ? new Date(data.lastUpdated).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true })
+        : 'Unknown';
+
+      metaEl.textContent = `${history.length} save${history.length !== 1 ? 's' : ''} recorded · Last saved: ${lastUpdated}`;
+
+      if (history.length === 0) {
+        document.getElementById('history-list').innerHTML = '<div class="history-empty"><span class="icon">📂</span>No history yet.<br><small style="color:#aaa;font-size:12px;display:block;margin-top:8px;">Hit "Save to GitHub" on any study page to begin tracking.</small></div>';
+        return;
+      }
+
+      // Newest first
+      allEntries = [...history].reverse();
+      renderHistory(allEntries);
+
+    } catch(e) {
+      metaEl.textContent = 'Could not load history: ' + e.message;
+      document.getElementById('history-list').innerHTML = `<div class="load-error">⚠️ ${e.message}</div>`;
+    }
+  }
+
+  function renderHistory(entries) {
+    const countEl = document.getElementById('history-count');
+    countEl.textContent = `${entries.length} entr${entries.length !== 1 ? 'ies' : 'y'}`;
+
+    if (entries.length === 0) {
+      document.getElementById('history-list').innerHTML = '<div class="history-empty"><span class="icon">🔍</span>No entries match your search.</div>';
+      return;
+    }
+
+    const html = entries.map((entry, idx) => {
+      const num = allEntries.length - idx;
+      const pages = entry.pagesChanged && entry.pagesChanged.length > 0
+        ? `<div class="history-pages">Pages touched: ${entry.pagesChanged.map(p => `<span>${p}</span>`).join('')}</div>`
+        : '';
+      const summary = entry.summary || 'Notes saved.';
+      return `
+        <div class="history-entry">
+          <div class="history-number">Save #${num}</div>
+          <div class="history-timestamp">📅 ${entry.timestamp}</div>
+          <div class="history-summary">${escapeHtml(summary)}</div>
+          ${pages}
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('history-list').innerHTML = html;
+  }
+
+  function filterHistory() {
+    const q = document.getElementById('history-search').value.toLowerCase().trim();
+    if (!q) { renderHistory(allEntries); return; }
+    const filtered = allEntries.filter(e =>
+      (e.timestamp || '').toLowerCase().includes(q) ||
+      (e.summary   || '').toLowerCase().includes(q) ||
+      (e.pagesChanged || []).some(p => p.toLowerCase().includes(q))
+    );
+    renderHistory(filtered);
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const root = '.';
+    buildSidebar(root);
+    loadHistory();
+  });
+</script>
+</body>
+</html>

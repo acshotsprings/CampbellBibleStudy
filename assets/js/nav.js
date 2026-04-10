@@ -1,6 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v4.2 No-Jump + Completion
+   Sidebar Navigation Builder — v4.3 No-Jump + Completion + History
    ============================================================ */
 
 const NAV_STRUCTURE = [
@@ -76,6 +76,7 @@ const NAV_STRUCTURE = [
       { label: 'Sermon & Teaching Log',  href: '/sermons.html'             },
       { label: 'Personal Journal',       href: '/journal.html'             },
       { label: 'My Growing Convictions', href: '/convictions.html'         },
+      { label: '📋 Save History',        href: '/history.html'             },
     ]
   }
 ];
@@ -116,7 +117,7 @@ function buildSidebar(root) {
   let html = `
     <div id="sidebar-header">
       <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 9, 2026</p>
+      <p id="sidebar-version">Version: April 10, 2026</p>
     </div>
     <div id="sidebar-nav">
   `;
@@ -129,7 +130,7 @@ function buildSidebar(root) {
         const active   = currentPath === fullHref ||
                          currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
         const sub      = item.sub ? ' sub' : '';
-        html += `<a class="nav-item${sub}${active}" href="${root + item.href}">${item.label}</a>`;
+        html += `<a class="nav-item${sub}${active}" href="${root + item.href}" onclick="if(window.innerWidth<=768)closeSidebar()">${item.label}</a>`;
       });
     } else {
       const key           = section.key;
@@ -160,7 +161,7 @@ function buildSidebar(root) {
         const done      = item.completable && isModuleComplete(item.completeKey);
         const doneStyle = done ? ' style="color:#90EE90;border-left-color:#90EE90;"' : '';
         const doneIcon  = done ? ' <span style="color:#90EE90;font-size:11px;">✓</span>' : '';
-        html += `<a class="nav-item${sub}${active}"${doneStyle} href="${root + item.href}">${item.label}${doneIcon}</a>`;
+        html += `<a class="nav-item${sub}${active}"${doneStyle} href="${root + item.href}" onclick="if(window.innerWidth<=768)closeSidebar()">${item.label}${doneIcon}</a>`;
       });
 
       html += `</div>`;

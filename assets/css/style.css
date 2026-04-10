@@ -1,6 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Shared Stylesheet — v2.0 Multi-Page
+   Shared Stylesheet — v3.0 Mobile-Responsive
    ============================================================ */
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,11 +22,6 @@ body {
   max-width: 960px;
 }
 
-@media (max-width: 768px) {
-  #sidebar { width: 200px; min-width: 200px; }
-  #main { margin-left: 200px; padding: 24px 20px; }
-}
-
 /* ── SIDEBAR ─────────────────────────────────────────────── */
 
 #sidebar {
@@ -42,6 +37,7 @@ body {
   z-index: 100;
   display: flex;
   flex-direction: column;
+  transition: transform 0.3s ease;
 }
 
 #sidebar-header {
@@ -109,6 +105,34 @@ body {
 .nav-item.sub:hover { color: #fff; }
 .nav-item.sub.active { color: #FFD700; }
 
+/* ── SIDEBAR OVERLAY (mobile) ────────────────────────────── */
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+#sidebar-overlay.visible {
+  opacity: 1;
+}
+
+/* ── HAMBURGER BUTTON ────────────────────────────────────── */
+#hamburger-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #FFD700;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 2px 6px;
+  line-height: 1;
+  margin-right: 2px;
+  flex-shrink: 0;
+}
+
 /* ── GITHUB BAR ──────────────────────────────────────────── */
 
 #github-bar {
@@ -129,6 +153,7 @@ body {
 #github-bar .bar-title {
   font-weight: bold;
   color: #FFD700;
+  white-space: nowrap;
 }
 
 #github-bar .bar-sep {
@@ -156,6 +181,7 @@ body {
   font-size: 12px;
   font-weight: bold;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .btn-save:hover { background: #e6c200; }
@@ -175,6 +201,7 @@ body {
 #gh-bar-version {
   font-size: 11px;
   color: rgba(255,255,255,0.4);
+  white-space: nowrap;
 }
 
 /* Shift main content below fixed bar */
@@ -582,7 +609,7 @@ ul.bullet-list li {
 /* ── PRINT ───────────────────────────────────────────────── */
 
 @media print {
-  #sidebar, #github-bar { display: none; }
+  #sidebar, #github-bar, #hamburger-btn, #sidebar-overlay { display: none; }
   #main { margin-left: 0; padding: 20px; }
   .btn-primary, .btn-print { display: none; }
   textarea.notes-input { border: 1px solid #ccc; min-height: 60px; }
@@ -716,6 +743,7 @@ ul.bullet-list li {
   cursor: pointer;
   font-family: Arial, sans-serif;
   transition: background 0.15s;
+  white-space: nowrap;
 }
 .btn-load:hover { background: rgba(255,215,0,0.12); }
 
@@ -745,4 +773,136 @@ ul.bullet-list li {
   margin-left: 8px;
   white-space: nowrap;
   align-self: center;
+}
+
+/* ══════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE — breakpoint 768px
+   ══════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* ── Show hamburger, hide token input and bar extras ── */
+  #hamburger-btn { display: block; }
+
+  #gh-token { display: none; }
+
+  /* Show a compact token button instead on mobile */
+  #mobile-token-btn {
+    display: inline-block !important;
+  }
+
+  /* Hide bar extras (session/total timers) on small screens */
+  #bar-extras { display: none !important; }
+
+  /* Hide bar separator and originated text on mobile */
+  .bar-originated,
+  #github-bar .bar-sep:not(:first-of-type) { display: none; }
+
+  /* Compact bar right */
+  .bar-right { gap: 6px; }
+
+  #gh-bar-version { font-size: 10px; }
+
+  /* ── Sidebar: hidden off-screen by default ── */
+  #sidebar {
+    transform: translateX(-100%);
+    z-index: 300;
+    width: 280px;
+    min-width: 280px;
+    /* Slightly wider on mobile for easier tapping */
+    top: 0;
+  }
+
+  #sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* Overlay shown when sidebar open */
+  #sidebar-overlay {
+    display: block;
+    pointer-events: none;
+  }
+  #sidebar-overlay.visible {
+    pointer-events: auto;
+  }
+
+  /* ── Main content: full width, no left margin ── */
+  #main {
+    margin-left: 0 !important;
+    padding: 20px 16px 40px;
+    max-width: 100%;
+  }
+
+  /* ── Typography adjustments ── */
+  h1.page-title { font-size: 22px; }
+  h2.section-title { font-size: 16px; }
+  h3.sub-title { font-size: 14px; }
+  p.body { font-size: 14px; }
+
+  /* ── Tables: make scrollable horizontally ── */
+  .checklist-table,
+  .sermon-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+
+  /* ── Nav items: bigger tap targets on mobile ── */
+  .nav-item {
+    padding: 11px 16px;
+    font-size: 13px;
+  }
+
+  .nav-item.sub {
+    padding: 10px 16px 10px 28px;
+    font-size: 12px;
+  }
+
+  /* ── Github bar: tighter on mobile ── */
+  #github-bar {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  /* ── AI input row: stack on mobile ── */
+  .ai-input-row {
+    flex-direction: column;
+  }
+
+  .ai-btn { width: 100%; justify-content: center; }
+
+  /* ── Notes textarea: taller on mobile for comfort ── */
+  textarea.notes-input { min-height: 120px; font-size: 15px; }
+
+  /* ── Journal boxes ── */
+  .journal-box { padding: 14px; }
+  .journal-p { font-size: 14px; }
+
+  /* ── Scripture/info boxes ── */
+  .scripture-box, .info-box, .reflection-box,
+  .notes-box, .cross-ref-box { padding: 12px 14px; }
+
+  /* ── Save/load buttons: slightly smaller ── */
+  .btn-save, .btn-load {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  /* ── Bar title: shorter on very small screens ── */
+  #github-bar .bar-title { font-size: 12px; }
+
+  /* ── Module nav prev/next: stack if needed ── */
+  #main > div[style*="justify-content:space-between"] {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  #github-bar .bar-title { display: none; }
+  #github-bar .bar-sep:first-of-type { display: none; }
+  #gh-bar-version { font-size: 9px; }
+  #main { padding: 16px 12px 40px; }
+  h1.page-title { font-size: 20px; }
 }

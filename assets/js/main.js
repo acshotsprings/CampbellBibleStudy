@@ -1,6 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Shared JavaScript — v4.1 Uniform Bar + Timers + Completion
+   Shared JavaScript — v4.2 Uniform Bar + Timers + Completion + History
    ============================================================ */
 
 const OWNER = 'acshotsprings';
@@ -192,9 +192,53 @@ function injectBarExtras() {
     <button onclick="logAndStamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:4px 12px;font-size:11px;font-family:Arial,sans-serif;font-weight:bold;cursor:pointer;white-space:nowrap;" title="Stamp current notes + log session time">📅 Log &amp; Stamp</button>
   `;
 
+  // Hamburger button for mobile
+  if (!document.getElementById('hamburger-btn')) {
+    const hbtn = document.createElement('button');
+    hbtn.id = 'hamburger-btn';
+    hbtn.innerHTML = '&#9776;';
+    hbtn.title = 'Open navigation menu';
+    hbtn.addEventListener('click', openSidebar);
+    bar.insertBefore(hbtn, bar.firstChild);
+  }
+
   const barRight = bar.querySelector('.bar-right');
   if (barRight) bar.insertBefore(extras, barRight);
   else bar.appendChild(extras);
+}
+
+
+// ── MOBILE SIDEBAR ────────────────────────────────────────
+
+function openSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (sidebar) sidebar.classList.add('open');
+  if (overlay) {
+    overlay.style.display = 'block';
+    requestAnimationFrame(() => overlay.classList.add('visible'));
+  }
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (sidebar) sidebar.classList.remove('open');
+  if (overlay) {
+    overlay.classList.remove('visible');
+    setTimeout(() => { overlay.style.display = 'none'; }, 300);
+  }
+  document.body.style.overflow = '';
+}
+
+function injectMobileOverlay() {
+  if (document.getElementById('sidebar-overlay')) return;
+  const overlay = document.createElement('div');
+  overlay.id = 'sidebar-overlay';
+  overlay.style.display = 'none';
+  overlay.addEventListener('click', closeSidebar);
+  document.body.appendChild(overlay);
 }
 
 // ── LOG STUDY TIME ────────────────────────────────────────
@@ -348,16 +392,12 @@ async function saveToGitHub() {
   setStatus('📡 Saving...', 'info');
 
   // ── SCRUB ALL SENSITIVE FIELDS BEFORE CAPTURING HTML ──────
-  // Clear token, Gemini key, and any password fields so they
-  // are never baked into the saved HTML on GitHub.
-  // We restore them immediately after capturing the HTML string.
   const sensitiveIds = ['gh-token', 'gemini-key'];
   const savedValues  = {};
   sensitiveIds.forEach(id => {
     const el = document.getElementById(id);
     if (el) { savedValues[id] = el.value; el.value = ''; }
   });
-  // Also scrub any other password-type inputs on the page
   document.querySelectorAll('input[type="password"]').forEach(el => {
     if (el.id && !savedValues[el.id]) {
       savedValues[el.id] = el.value;
@@ -433,6 +473,80 @@ function refreshCompleteButton() {
   btn.style.color          = isDone ? '#90EE90'  : 'rgba(255,255,255,0.7)';
 }
 
+// ── CHANGE SUMMARY BUILDER ────────────────────────────────
+// Compares current localStorage notes against what's saved in GitHub
+// to produce a human-readable summary of what changed.
+
+function buildChangeSummary(previousNotes, currentNotes) {
+  const NOTE_LABELS = {
+    'n-intro':       'Introduction notes',
+    'n-journal-new': 'Personal Journal',
+    'n-sermons':     'Sermon log',
+    'c-prophecy':    'Conviction — Prophecy',
+    'c-israel':      'Conviction — Israel',
+    'c-rapture':     'Conviction — Rapture',
+    'c-millennium':  'Conviction — Millennium',
+    'c-calendar':    'Conviction — Calendar',
+    'c-grace':       'Conviction — Grace & Holiness',
+    'c-live':        'Conviction — How study changes my life',
+    'c-snapshots':   'Conviction Snapshots',
+    'n-cl-general':  'Prophecy Checklist notes',
+  };
+  // Module note labels
+  for (let i = 1; i <= 15; i++) {
+    NOTE_LABELS[`n-m${i}`] = `Theme 1 Module ${i} notes`;
+  }
+  for (let i = 1; i <= 3; i++) {
+    NOTE_LABELS[`n-t2m${i}`] = `Theme 2 Module ${i} notes`;
+  }
+
+  const changed = [];
+  const pagesChanged = new Set();
+
+  for (const [key, newVal] of Object.entries(currentNotes)) {
+    // Skip completion states and sensitive/nav keys
+    if (key.startsWith('complete-') || key.startsWith('nav-') || key.startsWith('timer-')) continue;
+    const oldVal = previousNotes[key] || '';
+    if (newVal !== oldVal) {
+      const label = NOTE_LABELS[key] || key;
+      changed.push(label);
+      // Map key to page name
+      if (key.startsWith('n-m') || key.startsWith('c-') || key === 'n-journal-new') {
+        if (key === 'n-journal-new') pagesChanged.add('Journal');
+        else if (key.startsWith('c-')) pagesChanged.add('Convictions');
+        else pagesChanged.add('Modules');
+      } else if (key === 'n-sermons') {
+        pagesChanged.add('Sermons');
+      } else if (key.startsWith('n-t2')) {
+        pagesChanged.add('Theme 2 Modules');
+      } else {
+        pagesChanged.add('Study Guide');
+      }
+    }
+  }
+
+  // Also check for newly added keys
+  for (const key of Object.keys(currentNotes)) {
+    if (!previousNotes.hasOwnProperty(key) && !key.startsWith('complete-') && !key.startsWith('nav-') && !key.startsWith('timer-')) {
+      const label = NOTE_LABELS[key] || key;
+      if (!changed.includes(label)) changed.push(label + ' (new)');
+    }
+  }
+
+  let summary = '';
+  if (changed.length === 0) {
+    summary = 'No note changes detected — page HTML saved.';
+  } else if (changed.length === 1) {
+    summary = `Updated: ${changed[0]}.`;
+  } else if (changed.length <= 4) {
+    summary = `Updated: ${changed.join(', ')}.`;
+  } else {
+    summary = `Updated ${changed.length} note fields including ${changed.slice(0, 3).join(', ')}, and more.`;
+  }
+
+  return { summary, pagesChanged: Array.from(pagesChanged) };
+}
+
 // ── SHARED NOTES JSON ─────────────────────────────────────
 
 async function saveNotesJson(token) {
@@ -449,9 +563,44 @@ async function saveNotesJson(token) {
     if (value && value.trim()) notes[key.replace('cbsg-', '')] = value;
   }
 
+  // ── LOAD PREVIOUS NOTES TO DIFF ──────────────────────────
+  let previousNotes = {};
+  let existingHistory = [];
+  let existingOriginDate = 'March 30, 2026';
+  try {
+    const prevRes = await fetch(
+      `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/my-notes.json?t=${Date.now()}`,
+      { cache: 'no-store' }
+    );
+    if (prevRes.ok) {
+      const prevData = await prevRes.json();
+      previousNotes   = prevData.notes || {};
+      existingHistory = prevData.saveHistory || [];
+      existingOriginDate = prevData.originDate || existingOriginDate;
+    }
+  } catch(e) { /* First save — no previous data */ }
+
+  // ── BUILD CHANGE SUMMARY ──────────────────────────────────
+  const now = new Date();
+  const timestamp = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) +
+    ' at ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+  const { summary, pagesChanged } = buildChangeSummary(previousNotes, notes);
+
+  const newEntry = {
+    timestamp,
+    summary,
+    pagesChanged,
+    isoTime: now.toISOString()
+  };
+
+  // Keep history — cap at 500 entries to prevent unbounded growth
+  const updatedHistory = [...existingHistory, newEntry].slice(-500);
+
   const payload = {
-    lastUpdated: new Date().toISOString(),
-    originDate:  'March 30, 2026',
+    lastUpdated: now.toISOString(),
+    originDate:  existingOriginDate,
+    saveHistory: updatedHistory,
     noteLabels: {
       'n-intro':    'Introduction — What I currently believe & hope to discover',
       'n-m1':       'Module 1 — Daniel\'s 70 Weeks',
@@ -584,6 +733,7 @@ function markActivePage() {
 document.addEventListener('DOMContentLoaded', () => {
   loadNotes();
   wireAutoSave();
+  injectMobileOverlay();
   markActivePage();
   injectBarExtras();
   injectCompleteButton();
