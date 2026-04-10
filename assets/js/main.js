@@ -47,9 +47,10 @@ function isAdminUnlocked() {
 
 function applyAdminUI() {
   const unlocked   = isAdminUnlocked();
+  // Support both id= (index.html) and class= (module pages) selectors
   const btnAdmin   = document.getElementById('btn-admin');
-  const btnSave    = document.getElementById('btn-save');
-  const btnLoad    = document.getElementById('btn-load');
+  const btnSave    = document.getElementById('btn-save')    || document.querySelector('.btn-save');
+  const btnLoad    = document.getElementById('btn-load')    || document.querySelector('.btn-load');
   const btnStamp   = document.getElementById('btn-timestamp');
   const tokenInput = document.getElementById('gh-token');
 
@@ -521,6 +522,20 @@ function injectBarExtras() {
   const barRight = bar.querySelector('.bar-right');
   if (barRight) bar.insertBefore(extras, barRight);
   else          bar.appendChild(extras);
+
+  // Inject 🔒 Admin button if not already in the bar (module pages don't have it)
+  if (!document.getElementById('btn-admin')) {
+    const adminBtn = document.createElement('button');
+    adminBtn.id = 'btn-admin';
+    adminBtn.textContent = '🔒 Admin';
+    adminBtn.onclick = toggleAdminMode;
+    adminBtn.style.cssText = 'background:rgba(255,255,255,0.1);color:#FFD700;' +
+      'border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 12px;' +
+      'font-size:11px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;';
+    // Insert before bar-right or extras
+    if (barRight) bar.insertBefore(adminBtn, barRight);
+    else bar.insertBefore(adminBtn, extras);
+  }
 
   // Restore admin state from sessionStorage immediately
   applyAdminUI();
