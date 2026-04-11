@@ -936,7 +936,7 @@ async function saveNotesJson(token) {
 
   let previousNotes      = {};
   let existingHistory    = [];
-  let existingOriginDate = 'March 30, 2026';
+  let existingOriginDate = 'March 27, 2026';
   try {
     const prevRes = await fetch(
       `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/my-notes.json?t=${Date.now()}`,
@@ -1087,6 +1087,11 @@ document.addEventListener('DOMContentLoaded', () => {
   injectCompleteButton();
   startTimer();
   updateVersionTimestamp();
+
+  // Force originated date to the true creation date on every page
+  document.querySelectorAll('.bar-originated').forEach(el => {
+    el.textContent = 'Originated: March 27, 2026';
+  });
 
   // Guest welcome + panel — only for non-admin visitors
   // Small delay so page is fully rendered first

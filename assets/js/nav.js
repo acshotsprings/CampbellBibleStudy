@@ -119,7 +119,7 @@ function buildSidebar(root) {
   let html = `
     <div id="sidebar-header">
       <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 10, 2026</p>
+      <p id="sidebar-version">Version: March 27, 2026</p>
     </div>
     <div id="sidebar-nav">
   `;
