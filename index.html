@@ -1777,6 +1777,107 @@ Questions to sit with:
 // ── EMAILJS ──────────────────────────────────────────────────────────────
 // ── ADMIN PASSWORD ────────────────────────────────────────────────────────
 
+// ── ADMIN (SESSION-PERSISTENT) ────────────────────────────────────────────
+const ADMIN_PASSWORD = 'Campbell2026';
+
+function toggleAdminMode() {
+  if (sessionStorage.getItem('cbsg-admin') === 'true') {
+    sessionStorage.removeItem('cbsg-admin');
+    applyAdminUI(false);
+  } else {
+    openAdminModal();
+  }
+}
+
+function applyAdminUI(unlocked) {
+  const btnAdmin   = document.getElementById('btn-admin');
+  const btnSave    = document.getElementById('btn-save');
+  const btnLoad    = document.getElementById('btn-load');
+  const btnStamp   = document.getElementById('btn-timestamp');
+  const tokenInput = document.getElementById('gh-token');
+  if (btnAdmin)   btnAdmin.textContent     = unlocked ? '🔓 Admin ON' : '🔒 Admin';
+  if (btnSave)    btnSave.style.display    = unlocked ? 'inline-block' : 'none';
+  if (btnLoad)    btnLoad.style.display    = unlocked ? 'inline-block' : 'none';
+  if (btnStamp)   btnStamp.style.display   = unlocked ? 'inline-block' : 'none';
+  if (tokenInput) tokenInput.style.display = unlocked ? 'inline-block' : 'none';
+  if (unlocked) {
+    document.body.classList.add('admin-mode');
+    document.body.classList.remove('readonly');
+    const saved = localStorage.getItem('cbsg-gh-token');
+    if (saved && tokenInput) tokenInput.value = saved;
+    const gp = document.getElementById('cbsg-guest-panel');
+    if (gp) gp.style.display = 'none';
+    const wm = document.getElementById('cbsg-welcome-modal');
+    if (wm) wm.remove();
+  } else {
+    document.body.classList.remove('admin-mode');
+    document.body.classList.add('readonly');
+    if (tokenInput) tokenInput.value = '';
+  }
+}
+
+function openAdminModal() {
+  injectAdminModal();
+  const modal = document.getElementById('cbsg-admin-modal');
+  if (modal) {
+    modal.style.display = 'flex';
+    setTimeout(() => { const inp = document.getElementById('cbsg-admin-pw'); if (inp) inp.focus(); }, 80);
+  }
+}
+
+function closeAdminModal() {
+  const modal = document.getElementById('cbsg-admin-modal');
+  if (modal) modal.style.display = 'none';
+  const inp = document.getElementById('cbsg-admin-pw');
+  const err = document.getElementById('cbsg-admin-err');
+  if (inp) inp.value = '';
+  if (err) err.style.display = 'none';
+}
+
+function checkAdminPw() {
+  const inp = document.getElementById('cbsg-admin-pw');
+  const err = document.getElementById('cbsg-admin-err');
+  if (!inp) return;
+  if (inp.value === ADMIN_PASSWORD) {
+    sessionStorage.setItem('cbsg-admin', 'true');
+    closeAdminModal();
+    applyAdminUI(true);
+  } else {
+    if (err) err.style.display = 'block';
+    inp.value = '';
+    inp.focus();
+  }
+}
+
+function injectAdminModal() {
+  if (document.getElementById('cbsg-admin-modal')) return;
+  const modal = document.createElement('div');
+  modal.id = 'cbsg-admin-modal';
+  modal.style.cssText = 'display:none;position:fixed;top:0;left:0;right:0;bottom:0;' +
+    'background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;font-family:Arial,sans-serif;';
+  modal.innerHTML = `
+    <div style="background:#fff;border-radius:10px;padding:28px 32px;width:300px;box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+      <h3 style="margin:0 0 6px;font-size:16px;color:#1F3864;">🔒 Admin Access</h3>
+      <p style="margin:0 0 16px;font-size:12px;color:#888;">Enter your password to enable editing and GitHub sync.</p>
+      <input id="cbsg-admin-pw" type="password" placeholder="Password..."
+        onkeydown="if(event.key==='Enter')checkAdminPw()"
+        style="width:100%;box-sizing:border-box;border:1px solid #ccc;border-radius:4px;padding:9px 12px;font-size:14px;margin-bottom:10px;">
+      <div id="cbsg-admin-err" style="display:none;font-size:12px;color:#cc0000;margin-bottom:10px;">Incorrect password. Try again.</div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;">
+        <button onclick="closeAdminModal()" style="background:#f0f0f0;color:#444;border:none;border-radius:4px;padding:8px 16px;font-size:13px;cursor:pointer;">Cancel</button>
+        <button onclick="checkAdminPw()" style="background:#1F3864;color:#FFD700;border:none;border-radius:4px;padding:8px 18px;font-size:13px;font-weight:bold;cursor:pointer;">Unlock</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeAdminModal(); });
+}
+
+// Apply admin state on page load (restores session)
+(function() {
+  const unlocked = sessionStorage.getItem('cbsg-admin') === 'true';
+  applyAdminUI(unlocked);
+})();
+
 // ── MODULE TIMER & COMPLETION ─────────────────────────────────────────────
 const MODULE_IDS = ['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','m11','m12','m13'];
 let currentModule = null;
@@ -2045,7 +2146,158 @@ noteIds.forEach(id => {
 
 loadNotes();
 
-// ── GUEST SUBMISSION ──────────────────────────────────────────────────────// ── VERSION STAMP WITH TIME ───────────────────────────────────────────────
+// ── GUEST WELCOME + NOTES + SILENT EMAILJS ───────────────────────────────
+
+const EMAILJS_PUBLIC_KEY  = '2duGE838Bx6BcJXTF';
+const EMAILJS_SERVICE_ID  = 'service_6mi6r6r';
+const EMAILJS_TEMPLATE_ID = 'template_275v5hl';
+
+function getGuestPageKey() { return 'cbsg-guest-index'; }
+function getGuestName() { return localStorage.getItem('cbsg-guest-name') || ''; }
+
+function silentEmailGuest() {
+  try {
+    if (typeof emailjs === 'undefined') return;
+    const notesEl  = document.getElementById('cbsg-guest-textarea');
+    if (!notesEl) return;
+    const notes = notesEl.value.trim();
+    if (notes.length < 5) return;
+    const name = getGuestName() || 'Guest';
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      name:       name,
+      from_email: '(not provided)',
+      page_name:  'Campbell Bible Study — Home',
+      message:    notes,
+    }).catch(() => {});
+  } catch(e) {}
+}
+
+function saveGuestNotes() {
+  const notesEl = document.getElementById('cbsg-guest-textarea');
+  const nameEl  = document.getElementById('cbsg-guest-name');
+  if (!notesEl) return;
+  localStorage.setItem(getGuestPageKey(), notesEl.value);
+  if (nameEl && nameEl.value.trim()) localStorage.setItem('cbsg-guest-name', nameEl.value.trim());
+  const btn = document.getElementById('cbsg-guest-save-btn');
+  if (btn) {
+    btn.textContent = '✓ Saved';
+    btn.style.background = '#2E6B0E';
+    btn.style.color = 'white';
+    setTimeout(() => { btn.textContent = 'Save My Notes'; btn.style.background = '#FFD700'; btn.style.color = '#1F3864'; }, 1800);
+  }
+  silentEmailGuest();
+}
+
+function injectGuestPanel() {
+  if (document.getElementById('cbsg-guest-panel')) return;
+  const savedNotes = localStorage.getItem(getGuestPageKey()) || '';
+  const savedName  = getGuestName();
+  const safeName   = savedName.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+  const safeNotes  = savedNotes.replace(/</g,'&lt;').replace(/&/g,'&amp;');
+  const panel = document.createElement('div');
+  panel.id = 'cbsg-guest-panel';
+  panel.style.cssText = 'position:fixed;bottom:0;right:0;width:310px;background:#1F3864;' +
+    'border-top:2px solid #FFD700;border-left:2px solid #FFD700;border-radius:8px 0 0 0;' +
+    'font-family:Arial,sans-serif;z-index:1000;box-shadow:-4px -4px 16px rgba(0,0,0,0.3);';
+  panel.innerHTML = `
+    <div onclick="toggleGuestPanel()" style="display:flex;align-items:center;justify-content:space-between;
+      padding:8px 14px;cursor:pointer;user-select:none;">
+      <span style="font-size:12px;font-weight:bold;color:#FFD700;">📝 My Notes</span>
+      <span id="cbsg-guest-chevron" style="font-size:10px;color:rgba(255,255,255,0.5);">▲</span>
+    </div>
+    <div id="cbsg-guest-body" style="padding:0 12px 12px;">
+      <input id="cbsg-guest-name" type="text" placeholder="Your name (optional)" value="${safeName}"
+        style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.1);color:white;
+               border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:5px 8px;
+               font-size:11px;margin-bottom:6px;font-family:Arial,sans-serif;"
+        oninput="localStorage.setItem('cbsg-guest-name',this.value)">
+      <textarea id="cbsg-guest-textarea"
+        placeholder="Add your thoughts, questions, or reflections..."
+        style="width:100%;box-sizing:border-box;height:110px;resize:vertical;
+               background:rgba(255,255,255,0.08);color:white;
+               border:1px solid rgba(255,255,255,0.2);border-radius:4px;
+               padding:7px 8px;font-size:12px;font-family:Arial,sans-serif;
+               line-height:1.5;margin-bottom:8px;"
+        oninput="localStorage.setItem('cbsg-guest-index',this.value)"
+      >${safeNotes}</textarea>
+      <button id="cbsg-guest-save-btn" onclick="saveGuestNotes()"
+        style="width:100%;background:#FFD700;color:#1F3864;border:none;border-radius:4px;
+               padding:7px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">
+        Save My Notes
+      </button>
+    </div>`;
+  document.body.appendChild(panel);
+}
+
+let guestPanelOpen = true;
+function toggleGuestPanel() {
+  const body    = document.getElementById('cbsg-guest-body');
+  const chevron = document.getElementById('cbsg-guest-chevron');
+  guestPanelOpen = !guestPanelOpen;
+  if (body)    body.style.display  = guestPanelOpen ? 'block' : 'none';
+  if (chevron) chevron.textContent = guestPanelOpen ? '▲' : '▼';
+}
+
+function showWelcomeModal() {
+  if (document.getElementById('cbsg-welcome-modal')) return;
+  const modal = document.createElement('div');
+  modal.id = 'cbsg-welcome-modal';
+  modal.style.cssText = 'display:flex;position:fixed;top:0;left:0;right:0;bottom:0;' +
+    'background:rgba(0,0,0,0.65);z-index:9998;align-items:center;justify-content:center;' +
+    'font-family:Arial,sans-serif;';
+  modal.innerHTML = `
+    <div style="background:#fff;border-radius:12px;padding:32px 36px;width:340px;
+                box-shadow:0 12px 40px rgba(0,0,0,0.35);text-align:center;">
+      <div style="font-size:36px;margin-bottom:10px;">✝️</div>
+      <h2 style="margin:0 0 8px;font-size:20px;color:#1F3864;">Welcome!</h2>
+      <p style="margin:0 0 20px;font-size:13px;color:#555;line-height:1.6;">
+        This is the Campbell Family Biblical Study Guide — a personal resource for growing in the knowledge of Christ.<br><br>
+        What's your name? We'd love to know who's studying with us.
+      </p>
+      <input id="cbsg-welcome-name" type="text" placeholder="Your name..."
+        onkeydown="if(event.key==='Enter')saveWelcomeName()"
+        style="width:100%;box-sizing:border-box;border:2px solid #1F3864;border-radius:6px;
+               padding:10px 14px;font-size:15px;margin-bottom:16px;text-align:center;
+               font-family:Arial,sans-serif;">
+      <button onclick="saveWelcomeName()"
+        style="width:100%;background:#1F3864;color:#FFD700;border:none;border-radius:6px;
+               padding:11px;font-size:14px;font-weight:bold;cursor:pointer;
+               font-family:Arial,sans-serif;">
+        Let's Study ✝
+      </button>
+      <p style="margin:12px 0 0;font-size:11px;color:#aaa;">You can leave this blank — just press the button.</p>
+    </div>`;
+  document.body.appendChild(modal);
+  setTimeout(() => { const inp = document.getElementById('cbsg-welcome-name'); if (inp) inp.focus(); }, 150);
+}
+
+function saveWelcomeName() {
+  const inp  = document.getElementById('cbsg-welcome-name');
+  const name = inp ? inp.value.trim() : '';
+  localStorage.setItem('cbsg-guest-name', name || 'Guest');
+  localStorage.setItem('cbsg-guest-welcomed', 'true');
+  const modal = document.getElementById('cbsg-welcome-modal');
+  if (modal) modal.remove();
+  injectGuestPanel();
+}
+
+function checkFirstVisit() {
+  if (localStorage.getItem('cbsg-guest-welcomed')) {
+    injectGuestPanel();
+  } else {
+    showWelcomeModal();
+  }
+}
+
+// Load EmailJS silently
+(function() {
+  const s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+  s.onload = () => { try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) {} };
+  document.head.appendChild(s);
+})();
+
+// ── VERSION STAMP WITH TIME ───────────────────────────────────────────────
 (function() {
   const now = new Date();
   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true };
@@ -2056,6 +2308,11 @@ loadNotes();
 
 // ── GITHUB TOKEN ──────────────────────────────────────────────────────────
 loadCompletions();
+// Show welcome modal or guest panel for non-admin visitors
+setTimeout(() => {
+  const isAdmin = sessionStorage.getItem('cbsg-admin') === 'true';
+  if (!isAdmin) checkFirstVisit();
+}, 400);
 
 // ── LOAD FROM GITHUB ─────────────────────────────────────────────────────
 async function loadFromGitHub() {
