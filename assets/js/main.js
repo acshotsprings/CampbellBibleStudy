@@ -1014,11 +1014,10 @@ function updateVersionTimestamp() {
   const now   = new Date();
   const date  = now.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
   const time  = now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
-  const label = date + ' — Loaded ' + time;
   const vEl   = document.getElementById('gh-bar-version');
-  if (vEl) vEl.textContent = 'Version: ' + label;
+  if (vEl) vEl.innerHTML = '<span style="font-size:11px;">Version: ' + date + '</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded ' + time + '</span>';
   const sEl   = document.getElementById('sidebar-version');
-  if (sEl) sEl.textContent = 'Version: ' + label;
+  if (sEl) sEl.textContent = 'Version: ' + date;
 }
 
 // ── LOCAL STORAGE NOTES (admin) ───────────────────────────
