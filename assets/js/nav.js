@@ -63,7 +63,7 @@ const NAV_STRUCTURE = [
     collapsible: true,
     key: 'themes48',
     items: [
-      { label: 'Themes 4–8 (Coming Soon)', href: 'index.html#themes48' },
+      { label: 'Themes 4–8 (Coming Soon)', href: 'index.html#index' },
     ]
   },
   {
