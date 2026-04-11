@@ -112,20 +112,20 @@
       font-family: Arial, sans-serif;
     }
   </style>
-</head>
-<body>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script></head>
+<body class="admin-mode">
 
 <div id="github-bar">
   <span class="bar-title">Campbell Bible Study</span>
   <span class="bar-sep">|</span>
-  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
-  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
-  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status"></span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  <span id="gh-status" style=""></span>
   <div class="bar-right">
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 10, 2026</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: April 11, 2026</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded 8:54 AM</span></span>
   </div>
 </div>
 
@@ -138,14 +138,35 @@
   <h1 class="page-title">📋 Save History</h1>
   <p class="body">A timestamped record of every time you saved to GitHub. Each entry captures what changed — which pages had new notes, what was updated — so you can trace the growth of this guide over time.</p>
 
-  <div class="history-meta" id="history-meta">1 save recorded · Last saved: April 10, 2026 at 2:11 PM</div>
+  <div class="history-meta" id="history-meta">4 saves recorded · Last saved: April 10, 2026 at 9:15 PM</div>
 
   <div class="history-filter-bar">
     <input type="text" id="history-search" placeholder="🔍 Search history entries…" oninput="filterHistory()">
-    <span class="history-count" id="history-count">1 entry</span>
+    <span class="history-count" id="history-count">4 entries</span>
   </div>
 
   <div id="history-list">
+        <div class="history-entry">
+          <div class="history-number">Save #4</div>
+          <div class="history-timestamp">📅 April 10, 2026 at 9:15 PM</div>
+          <div class="history-summary">Updated: Theme 1 Module 9 notes.</div>
+          <div class="history-pages">Pages touched: <span>Modules</span></div>
+        </div>
+      
+        <div class="history-entry">
+          <div class="history-number">Save #3</div>
+          <div class="history-timestamp">📅 April 10, 2026 at 8:56 PM</div>
+          <div class="history-summary">Updated 13 note fields including time-m11, time-m10, time-m9, and more.</div>
+          <div class="history-pages">Pages touched: <span>Study Guide</span></div>
+        </div>
+      
+        <div class="history-entry">
+          <div class="history-number">Save #2</div>
+          <div class="history-timestamp">📅 April 10, 2026 at 5:32 PM</div>
+          <div class="history-summary">Updated 5 note fields including time-m3, time-m2, time-m1, and more.</div>
+          <div class="history-pages">Pages touched: <span>Study Guide</span><span>Journal</span><span>Theme 2 Modules</span></div>
+        </div>
+      
         <div class="history-entry">
           <div class="history-number">Save #1</div>
           <div class="history-timestamp">📅 April 10, 2026 at 2:11 PM</div>
