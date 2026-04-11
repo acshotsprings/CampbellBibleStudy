@@ -193,9 +193,10 @@ async function askAboutMyNotes() {
   const text = document.getElementById('ai-btn-text');
   const box = document.getElementById('ai-response');
   const out = document.getElementById('ai-response-text');
-  btn.disabled = true; text.textContent = '⏳ Thinking...';
+  btn.disabled = true; text.textContent = '⏳ Searching notes & study content...';
   box.classList.remove('visible'); out.textContent = '';
   try {
+    // 1. Fetch personal notes
     const notesRes = await fetch('https://raw.githubusercontent.com/acshotsprings/CampbellBibleStudy/main/my-notes.json',{ cache:'no-store' });
     let notesContext = '';
     if (notesRes.ok) {
@@ -203,19 +204,80 @@ async function askAboutMyNotes() {
       const labels = notesData.noteLabels || {}; const notes = notesData.notes || {};
       const lines = [];
       for (const [key, value] of Object.entries(notes)) {
-        if (value && value.trim()) lines.push(`[${labels[key]||key}]\n${value.trim()}`);
+        if (value && value.trim() && !key.startsWith('time-') && !key.startsWith('rl-') && !key.startsWith('complete-'))
+          lines.push('[' + (labels[key]||key) + ']\n' + value.trim());
       }
       notesContext = lines.length === 0 ? '(No personal notes saved yet.)' : lines.join('\n\n---\n\n');
     } else {
       notesContext = '(Could not load notes from GitHub.)';
     }
+
+    // 2. Fetch study content from relevant module pages
+    const STUDY_PAGES = {
+      'daniel 70 weeks timeline': 'theme1/module1.html',
+      'israel prophecy nation': 'theme1/module2.html',
+      'day of the lord': 'theme1/module3.html',
+      'watchman ezekiel 33': 'theme1/module4.html',
+      'new covenant ezekiel 36': 'theme1/module5.html',
+      'rapture caught up': 'theme1/module6.html',
+      'antichrist beast': 'theme1/module7.html',
+      'temple rebuilt abomination': 'theme1/module8.html',
+      'gog magog war russia iran ezekiel 38 39 coalition': 'theme1/module9.html',
+      'signs times birth pains': 'theme1/module10.html',
+      'false prophets teachers': 'theme1/module11.html',
+      'millennium kingdom 1000': 'theme1/module12.html',
+      'second coming return': 'theme1/module13.html',
+      'matthew 24 revelation olivet': 'theme1/module14.html',
+      'armageddon battle campaign': 'theme1/module15.html',
+      'calendar essene jubilees': 'theme2/module1.html',
+      'calendar timeline creation': 'theme2/module2.html',
+      'jubilees book enoch': 'theme2/module3.html',
+      'sermon teaching log pastor': 'sermons.html',
+      'journal personal reflection': 'journal.html'
+    };
+    const queryLower = prompt.toLowerCase();
+    const matchedPages = [];
+    for (const [keywords, path] of Object.entries(STUDY_PAGES)) {
+      const kw = keywords.split(' ');
+      if (kw.some(w => queryLower.includes(w) || w.includes(queryLower))) {
+        matchedPages.push(path);
+      }
+    }
+    // Always include journal and sermons for broader context
+    if (!matchedPages.includes('journal.html')) matchedPages.push('journal.html');
+
+    let studyContent = '';
+    const baseUrl = 'https://raw.githubusercontent.com/acshotsprings/CampbellBibleStudy/main/';
+    text.textContent = '⏳ Reading ' + matchedPages.length + ' study pages...';
+    for (const page of matchedPages.slice(0, 5)) { // max 5 pages
+      try {
+        const r = await fetch(baseUrl + page, { cache: 'no-store' });
+        if (r.ok) {
+          let html = await r.text();
+          // Strip scripts, styles, sidebar, bar, textareas
+          html = html.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+          html = html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
+          html = html.replace(/<textarea[^>]*>[\s\S]*?<\/textarea>/gi, '');
+          html = html.replace(/<[^>]+>/g, ' ');
+          html = html.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#39;/g,"'").replace(/&quot;/g,'"').replace(/&nbsp;/g,' ');
+          html = html.replace(/\s+/g, ' ').trim();
+          if (html.length > 4000) html = html.substring(0, 4000) + '...';
+          studyContent += '\n\n=== STUDY CONTENT: ' + page + ' ===\n' + html;
+        }
+      } catch(e) { /* skip failed fetches */ }
+    }
+
+    text.textContent = '⏳ Asking Gemini...';
+
     const geminiKey = document.getElementById('gemini-key').value.trim() || localStorage.getItem('cbsg-gemini-key');
     if (!geminiKey) { out.textContent = 'Please paste your Gemini API key above.'; box.classList.add('visible'); btn.disabled=false; text.textContent='✨ Ask'; return; }
     localStorage.setItem('cbsg-gemini-key', geminiKey);
-    const fullPrompt = `You are a spiritual reflection assistant for the Campbell Family Master Biblical Study Guide. The user is asking a SPECIFIC QUESTION. Answer THAT question directly using ONLY what appears in their personal notes below. Focus your entire response on the topic they asked about. Do not summarize all notes. Only reference notes relevant to their question. Be warm, specific, and direct. 2-4 paragraphs max.\n\nUser personal study notes:\n\n${notesContext}\n\n---\n\nThe user specific question is: ${prompt}\n\nAnswer ONLY about this topic using their notes.`;
-    const apiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${geminiKey}`,{
+
+    const fullPrompt = 'You are a biblical study assistant for the Campbell Family Master Biblical Study Guide. The user is asking a SPECIFIC QUESTION. Answer it thoroughly using BOTH their personal notes AND the study guide content provided below. Focus entirely on the topic they asked about. Be warm, specific, and substantive. Reference specific scriptures, findings, and details from the study content. 3-5 paragraphs.\n\n== PERSONAL NOTES ==\n' + notesContext + '\n\n== STUDY GUIDE CONTENT ==' + studyContent + '\n\n---\n\nQuestion: ' + prompt + '\n\nGive a thorough, focused answer about this specific topic.';
+
+    const apiRes = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=' + geminiKey, {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ contents:[{parts:[{text:fullPrompt}]}], generationConfig:{maxOutputTokens:1000,temperature:0.7} })
+      body: JSON.stringify({ contents:[{parts:[{text:fullPrompt}]}], generationConfig:{maxOutputTokens:1500,temperature:0.5} })
     });
     const apiData = await apiRes.json();
     const responseText = apiData.candidates?.[0]?.content?.parts?.[0]?.text || apiData.error?.message || 'Something went wrong.';
