@@ -1,413 +1,201 @@
+<!DOCTYPE html>
 <html lang="en"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Campbell Bible Study — Deep Dives</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Georgia, serif; background: #f8f6f0; color: #222; }
-  #app { display: flex; min-height: 100vh; }
-
-  /* SIDEBAR */
-  #sidebar {
-    width: 260px; min-width: 260px; background: #1F3864; color: #fff;
-    position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto;
-    z-index: 100; display: flex; flex-direction: column;
-    transition: transform 0.25s ease;
-  }
-  #sidebar-header { padding: 20px 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.15); }
-  #sidebar-header h1 { font-size: 14px; font-weight: bold; line-height: 1.5; color: #FFD700; }
-  #sidebar-header p { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; font-style: italic; }
-  .nav-section { padding: 12px 16px 4px; font-size: 9px; font-weight: bold; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.1em; }
-  .nav-item { padding: 8px 16px; font-size: 12px; color: rgba(255,255,255,0.8); cursor: pointer; border-left: 3px solid transparent; line-height: 1.4; transition: all 0.15s; font-family: Arial, sans-serif; }
-  .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
-  .nav-item.active { background: rgba(255,255,255,0.12); color: #FFD700; border-left-color: #FFD700; font-weight: bold; }
-
-  /* MAIN */
-  #main { margin-left: 260px; flex: 1; padding: 40px 48px; max-width: 960px; }
-  .page { display: none; }
-  .page.active { display: block; }
-
-  /* TYPOGRAPHY */
-  .page-tag { display: inline-block; background: #3B5E1A; color: #fff; font-size: 10px; font-weight: bold; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; font-family: Arial, sans-serif; letter-spacing: 0.05em; text-transform: uppercase; }
-  h1.page-title { font-size: 28px; color: #1F3864; margin-bottom: 6px; font-weight: bold; }
-  .page-subtitle { font-size: 13px; color: #888; margin-bottom: 20px; font-style: italic; font-family: Arial, sans-serif; }
-  h2.section-title { font-size: 18px; color: #1F3864; margin: 28px 0 10px; font-weight: bold; border-bottom: 2px solid #2E75B6; padding-bottom: 6px; }
-  h3.sub-title { font-size: 15px; color: #2E75B6; margin: 18px 0 8px; font-weight: bold; font-family: Arial, sans-serif; }
-  p.body { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 12px; }
-  .divider { height: 1px; background: #ddd; margin: 28px 0; }
-
-  /* BOXES */
-  .scripture-box { background: #FFFDF0; border: 1px solid #C8A800; border-left: 4px solid #C8A800; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
-  .scripture-box .ref { font-size: 12px; font-weight: bold; color: #7A6600; margin-bottom: 6px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
-  .scripture-box .text { font-size: 14px; color: #444; font-style: italic; line-height: 1.8; }
-
-  .info-box { background: #EBF4FC; border: 1px solid #2E75B6; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
-  .info-box .title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
-  .info-box .line { font-size: 13px; color: #333; line-height: 1.7; padding: 3px 0; font-family: Arial, sans-serif; }
-
-  .alert-box { background: #FFF8EE; border: 1px solid #C8A800; border-left: 4px solid #C8A800; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
-  .alert-box .title { font-size: 12px; font-weight: bold; color: #7A6600; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; }
-  .alert-box .line { font-size: 13px; color: #444; line-height: 1.7; padding: 3px 0; font-family: Arial, sans-serif; }
-
-  .reflection-box { background: #F4F8EE; border: 1px solid #6B8E3A; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
-  .reflection-box .title { font-size: 12px; font-weight: bold; color: #3B5E1A; margin-bottom: 10px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
-  .reflection-item { font-size: 13px; color: #444; line-height: 1.7; padding: 6px 0; border-bottom: 1px solid #C8DBA8; font-family: Arial, sans-serif; }
-  .reflection-item:last-child { border-bottom: none; }
-
-  .notes-box { background: #FFFBF0; border: 1px solid #C8A800; border-radius: 6px; padding: 14px 16px; margin: 14px 0; }
-  .notes-box .label { font-size: 12px; font-weight: bold; color: #7A6600; margin-bottom: 8px; font-family: Arial, sans-serif; }
-  textarea.notes-input { width: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 10px 12px; font-size: 13px; color: #333; background: #fff; font-family: Georgia, serif; resize: vertical; min-height: 100px; line-height: 1.7; margin-top: 4px; }
-  textarea.notes-input:focus { outline: none; border-color: #1F3864; box-shadow: 0 0 0 2px rgba(31,56,100,0.1); }
-
-  .views-box { border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin: 12px 0; }
-  .view-item { padding: 12px 16px; border-bottom: 1px solid #eee; }
-  .view-item:last-child { border-bottom: none; }
-  .view-item:nth-child(even) { background: #fafafa; }
-  .view-title { font-size: 14px; font-weight: bold; color: #1F3864; margin-bottom: 4px; font-family: Arial, sans-serif; }
-  .view-body { font-size: 13px; color: #555; line-height: 1.7; }
-  .view-key { font-size: 12px; color: #2E75B6; margin-top: 4px; font-style: italic; font-family: Arial, sans-serif; }
-
-  .cross-ref-box { background: #EBF4FC; border: 1px solid #2E75B6; border-radius: 6px; padding: 14px 16px; margin: 12px 0; }
-  .cross-ref-box .title { font-size: 12px; font-weight: bold; color: #1F3864; margin-bottom: 8px; font-family: Arial, sans-serif; text-transform: uppercase; }
-  .cross-ref-box .line { font-size: 13px; color: #333; line-height: 1.7; padding: 3px 0; font-family: Arial, sans-serif; }
-
-  /* TABLES */
-  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; font-family: Arial, sans-serif; }
-  .data-table th { background: #1F3864; color: #fff; padding: 10px 12px; text-align: left; font-weight: bold; font-size: 12px; }
-  .data-table td { padding: 9px 12px; border-bottom: 1px solid #eee; color: #444; vertical-align: top; }
-  .data-table tr:nth-child(even) td { background: #f9f9f9; }
-
-  ul.bullet-list { margin: 8px 0 12px 20px; }
-  ul.bullet-list li { font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 4px; font-family: Arial, sans-serif; }
-
-  .study-q-box { background: #F5F5F5; border: 1px solid #ddd; border-radius: 6px; padding: 16px 18px; margin: 12px 0; }
-  .study-q { font-size: 13px; color: #333; line-height: 1.7; margin-bottom: 6px; font-family: Arial, sans-serif; font-weight: bold; }
-  .study-q-input { width: 100%; border: none; border-bottom: 1px solid #bbb; padding: 6px 0; font-size: 13px; color: #222; background: transparent; font-family: Georgia, serif; margin-bottom: 16px; }
-  .study-q-input:focus { outline: none; border-bottom-color: #1F3864; }
-
-  /* BACK LINK */
-  .back-link { display: inline-block; color: #1F3864; font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; text-decoration: none; margin-bottom: 20px; }
-  .back-link:hover { text-decoration: underline; }
-
-  /* HAMBURGER */
-  #hamburger {
-    display: none; position: fixed; top: 56px; left: 12px; z-index: 300;
-    background: #1F3864; color: #FFD700; border: none; border-radius: 6px;
-    padding: 8px 11px; font-size: 20px; line-height: 1; cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-  #sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.45); z-index: 99; }
-
-  @media print {
-    #sidebar, #hamburger { display: none; }
-    #main { margin-left: 0; padding: 20px; }
-    .page { display: block !important; page-break-before: always; }
-    .page:first-of-type { page-break-before: avoid; }
-  }
-
-  @media (max-width: 768px) {
-    #sidebar { width: 280px; min-width: 280px; transform: translateX(-100%); top: 48px; height: calc(100vh - 48px); }
-    #sidebar.open { transform: translateX(0); }
-    #sidebar-overlay.open { display: block; }
-    #hamburger { display: block; }
-    #main { margin-left: 0; padding: 70px 16px 32px; width: 100%; }
-    p.body { font-size: 16px; line-height: 1.9; }
-    .scripture-box .text { font-size: 16px; line-height: 1.9; }
-    .info-box .line { font-size: 15px; line-height: 1.8; }
-    .alert-box .line { font-size: 15px; line-height: 1.8; }
-    .reflection-item { font-size: 15px; line-height: 1.8; }
-    .view-body { font-size: 15px; line-height: 1.8; }
-    ul.bullet-list li { font-size: 15px; line-height: 1.9; }
-    h1.page-title { font-size: 22px; }
-    h2.section-title { font-size: 17px; }
-    .nav-item { font-size: 14px; padding: 11px 16px; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deep Dives — Campbell Bible Study</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-<div id="github-bar" style="position:fixed;top:0;left:0;right:0;background:#1F3864;color:white;z-index:200;padding:8px 20px;display:flex;align-items:center;gap:12px;font-family:Arial,sans-serif;font-size:13px;border-bottom:2px solid #FFD700;">
-  <span style="font-weight:bold;color:#FFD700;">Campbell Bible Study — Deep Dives</span>
-  <span style="color:rgba(255,255,255,0.4)">|</span>
-  <input id="gh-token" type="password" placeholder="Paste GitHub token to save" style="padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:260px;background:rgba(255,255,255,0.1);color:white;">
-  <button onclick="saveToGitHub()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:bold;cursor:pointer;">Save to GitHub</button>
-  <span id="gh-status" style="font-size:12px;color:rgba(255,255,255,0.7);"></span>
-  <span style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4);">Version: April 10, 2026</span>
-</div>
 
-<button id="hamburger" onclick="toggleSidebar()" aria-label="Open navigation">☰</button>
-<div id="sidebar-overlay" onclick="closeSidebar()"></div>
-
-<div id="app" style="margin-top:48px;">
-
-<!-- SIDEBAR -->
-<div id="sidebar">
-  <div id="sidebar-header">
-    <h1>Campbell Family<br>Deep Dives</h1>
-    <p>Focused study on complex topics</p>
-  </div>
-  <div id="sidebar-nav">
-    <div class="nav-section">Navigation</div>
-    <div class="nav-item" onclick="window.location.href='index.html'">← Back to Study Guide</div>
-    <div class="nav-section">Deep Dives</div>
-    <div class="nav-item active" onclick="show('dd1', this)">DD1 — Prophetic Calendars</div>
-    <div class="nav-section">Coming Soon</div>
-    <div class="nav-item" style="opacity:0.5;cursor:default;">DD2 — The Restrainer Identity</div>
-    <div class="nav-item" style="opacity:0.5;cursor:default;">DD3 — Gog vs. Antichrist</div>
-    <div class="nav-item" style="opacity:0.5;cursor:default;">DD4 — The Dead Sea Scrolls</div>
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <button id="btn-timestamp" onclick="stampTimestamp()" style="display:none;">🕐 Timestamp</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: March 27, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version">Version: April 11, 2026</span>
   </div>
 </div>
 
-<!-- MAIN -->
+<div id="sidebar"></div>
+
+<div id="app">
 <div id="main">
 
-<!-- DEEP DIVE 1 -->
-<div id="dd1" class="page active">
-  <a class="back-link" href="index.html">← Back to Campbell Bible Study Guide</a>
-  <span class="page-tag">Deep Dive 1</span>
-  <h1 class="page-title">Prophetic Calendars: The 360-Day Year vs. the 364-Day Jubilees Calendar</h1>
-  <p class="page-subtitle">Daniel · Revelation · Genesis · Dead Sea Scrolls · What calendar does God use in prophecy?</p>
+  <span class="page-tag">Theme 2: Biblical Calendar &amp; Prophecy</span>
+  <h1 class="page-title">🔬 Deep Dives</h1>
+  <p class="page-subtitle">Extended research on subjects that require more space than a single module allows</p>
 
-  <div class="alert-box">
-    <div class="title">⚠️ Why This Matters</div>
-    <div class="line">Every end-times timeline you read — the 70 Weeks of Daniel, the 1,260 days of Revelation, the 42 months of the Tribulation — depends on what kind of year you're counting with. If the prophetic year is 360 days (not 365 and not 364), then the math changes. So does your understanding of when these events begin and end.</div>
-  </div>
-
-  <h2 class="section-title">The Three Calendars in Play</h2>
-  <table class="data-table">
-    <tr><th style="width:25%">Calendar</th><th style="width:20%">Year Length</th><th style="width:55%">Notes</th></tr>
-    <tr><td><strong>Modern Solar</strong></td><td>365.25 days</td><td>Our standard calendar. Not used in biblical prophecy calculations.</td></tr>
-    <tr><td><strong>Jewish Lunar</strong></td><td>~354 days (12 months × 29.5)</td><td>Traditional Hebrew calendar. Adds a 13th month (Adar II) every few years to realign with the sun.</td></tr>
-    <tr><td><strong>Jubilees / Enoch Calendar</strong></td><td>364 days (52 weeks exactly)</td><td>Used by the Dead Sea Scrolls community (Qumran). Always begins on a Wednesday. Feasts always fall on the same day of the week.</td></tr>
-    <tr><td><strong>Prophetic Year</strong></td><td>360 days (12 months × 30)</td><td>Used in Daniel, Revelation, and implicitly in Genesis's Flood. The calendar God appears to use for end-times reckoning.</td></tr>
-  </table>
-
-  <h2 class="section-title">The Key Problem: 1,260 Days</h2>
-  <p class="body">The number 1,260 appears multiple times in Daniel and Revelation as the length of the second half of the Tribulation. Scripture also expresses this same period three different ways:</p>
-
-  <div class="info-box">
-    <div class="title">Three Ways Scripture Says the Same Thing</div>
-    <div class="line"><strong>1,260 days</strong> — Revelation 11:3; 12:6</div>
-    <div class="line"><strong>42 months</strong> — Revelation 11:2; 13:5</div>
-    <div class="line"><strong>"A time, times, and half a time"</strong> — Daniel 7:25; 12:7; Revelation 12:14 (= 1 + 2 + 0.5 = 3.5 years)</div>
-    <div class="line" style="margin-top:8px;font-style:italic;color:#666;">These three expressions all point to the same 3.5-year period. The math only works cleanly with a 360-day year: 3.5 × 360 = 1,260. And 1,260 ÷ 42 = 30 days/month.</div>
-  </div>
-
-  <div class="alert-box">
-    <div class="title">The Jubilees Calendar Doesn't Work Here</div>
-    <div class="line">1,260 ÷ 364 = 3.4615... (not a clean number)</div>
-    <div class="line">1,260 ÷ 365.25 = 3.449... (not a clean number)</div>
-    <div class="line">1,260 ÷ 360 = 3.5 exactly ✓</div>
-    <div class="line" style="margin-top:8px">Only the 360-day prophetic year produces a clean result. This strongly suggests Scripture is not using the Jubilees calendar or the modern solar calendar for its prophetic timelines.</div>
-  </div>
-
-  <h2 class="section-title">The Evidence for a 360-Day Prophetic Year</h2>
-
-  <h3 class="sub-title">1. Genesis — The Flood Account</h3>
-  <div class="scripture-box">
-    <div class="ref">Genesis 7:11, 24 &amp; 8:3–4</div>
-    <div class="text">The flood began on the 17th day of the 2nd month and the waters receded on the 17th day of the 7th month — exactly 5 months. Genesis 7:24 says the waters prevailed for 150 days. Therefore: 5 months = 150 days → 1 month = 30 days → 1 year = 360 days.</div>
-  </div>
-  <p class="body">This is the earliest evidence in Scripture of a 30-day month. God's own narration of the Flood uses this calendar — and it predates both the Jewish lunar calendar and the Jubilees calendar.</p>
-
-  <h3 class="sub-title">2. Daniel — The 70 Weeks</h3>
-  <p class="body">Sir Robert Anderson's landmark 1894 calculation in <em>The Coming Prince</em> demonstrated that Daniel's 69 weeks (483 prophetic years) — calculated at 360 days per year — pointed with remarkable precision to the day of Christ's triumphal entry into Jerusalem. Using a 365.25-day year produces a result that misses by years. Using 360 days lands within the correct week.</p>
-  <div class="info-box">
-    <div class="title">Anderson's Calculation (Simplified)</div>
-    <div class="line">69 weeks × 7 years/week = 483 prophetic years</div>
-    <div class="line">483 × 360 days = 173,880 days</div>
-    <div class="line">From the decree of Artaxerxes (Nisan 1, 445 BC) + 173,880 days = Nisan 10, 32 AD — the date of the Triumphal Entry</div>
-    <div class="line" style="margin-top:8px;font-style:italic;color:#555">Note: Scholars debate the exact starting date. But the 360-day year produces a far more precise result than any other calendar.</div>
-  </div>
-
-  <h3 class="sub-title">3. Revelation — Consistent Use Throughout</h3>
-  <div class="scripture-box">
-    <div class="ref">Revelation 11:2–3</div>
-    <div class="text">"...they will trample the holy city for 42 months. And I will appoint my two witnesses, and they will prophesy for 1,260 days..."</div>
-  </div>
-  <p class="body">In back-to-back verses, Revelation uses both "42 months" and "1,260 days" for what appears to be the same period. 42 × 30 = 1,260. This is only consistent if months are 30 days — the 360-day year. John appears to use these interchangeably as a deliberate signal that the prophetic calendar operates on 30-day months.</p>
-
-  <h2 class="section-title">The Jubilees Calendar — What It Is and Why It Matters</h2>
-  <p class="body">The Book of Jubilees (also called "Lesser Genesis") was a Second Temple Jewish text highly prized by the Qumran community, the group responsible for the Dead Sea Scrolls. It retells Genesis through Numbers using a strict 364-day solar calendar: 4 seasons × 13 weeks × 7 days = 364 days. Every year begins on a Wednesday (the day God created the sun and moon in Genesis 1).</p>
-
-  <div class="views-box">
-    <div class="view-item">
-      <div class="view-title">Why the Jubilees Calendar Is Significant</div>
-      <div class="view-body">364 days = exactly 52 weeks, meaning every feast day falls on the same day of the week every year. Proponents argue this was God's original intended calendar — perfect, orderly, and tied to creation week. The Qumran community believed the Jerusalem temple priesthood had adopted the wrong (lunar) calendar, corrupting the feast schedule.</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Why It Does Not Appear to Be the Prophetic Calendar</div>
-      <div class="view-body">Despite its elegance, the 364-day calendar does not produce clean results when applied to Daniel's 1,260 days or the 70 Weeks. It also drifts from the actual solar year by 1.25 days/year — meaning it would fall out of alignment with the seasons over time without intercalation.</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">The Relationship Between the Two</div>
-      <div class="view-body">Some scholars (including scholars of the Dead Sea Scrolls) suggest the 364-day calendar and the 360-day prophetic year are related but serve different purposes: the 364-day calendar as Israel's sacred/festival calendar during certain periods; the 360-day year as God's divine reckoning for prophetic timelines. They are not in conflict — they serve different functions.</div>
-    </div>
-  </div>
-
-  <h2 class="section-title">Scholarly Positions</h2>
-  <div class="views-box">
-    <div class="view-item">
-      <div class="view-title">Sir Robert Anderson (1894) — The Coming Prince</div>
-      <div class="view-body">Foundational work demonstrating that 69 weeks of Daniel × 360 days = the precise date of Christ's triumphal entry. Established the 360-day prophetic year as the standard framework for dispensational prophecy. Still widely cited today.</div>
-      <div class="view-key">Key text: Daniel 9:24–27; Luke 19:41–44</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Harold Hoehner — Chronological Aspects of the Life of Christ</div>
-      <div class="view-body">Updated Anderson's work with refined dating. Confirmed the 360-day year framework produces a historically defensible result for the 69 weeks calculation, though with slightly adjusted calendar endpoints.</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Ron Rhodes — The End Times in Chronological Order</div>
-      <div class="view-body">Accepts the 360-day prophetic year as the standard for reading Tribulation timelines. Treats 1,260 days = 42 months = 3.5 years as a consistent framework throughout Daniel and Revelation.</div>
-      <div class="view-key">Relevant to your current reading</div>
-    </div>
-    <div class="view-item">
-      <div class="view-title">Dead Sea Scrolls Scholars (e.g., VanderKam, Wise)</div>
-      <div class="view-body">Document the Jubilees/Enoch calendar as the calendar used at Qumran. Argue it may represent an ancient priestly calendar predating the lunar calendar. Do not specifically address whether this calendar applies to prophetic timelines.</div>
-    </div>
-  </div>
-
-  <h2 class="section-title">Open Questions for Further Study</h2>
-  <div class="reflection-box">
-    <div class="title">🔬 Questions This Deep Dive Raises</div>
-    <div class="reflection-item">If the 360-day prophetic year is correct, does it affect how we calculate the start and end of the Tribulation in actual calendar terms? Could we — or should we — try to calculate approximate dates?</div>
-    <div class="reflection-item">The Flood account in Genesis uses a 30-day month. Does this mean the pre-Flood world operated on a different calendar than today — possibly before the Earth's orbit or rotation shifted? Some creation scientists argue this.</div>
-    <div class="reflection-item">The Book of Jubilees is not canonical Scripture. But it was clearly valued at Qumran and may reflect a genuine ancient priestly tradition. How much weight should non-canonical Second Temple literature carry in our interpretive framework?</div>
-    <div class="reflection-item">Does Sir Robert Anderson's calculation — pointing to the Triumphal Entry — constitute proof that the 360-day year is God's intended prophetic calendar? Or is it a remarkably precise approximation that works out close enough to be compelling without being definitive?</div>
-    <div class="reflection-item">If the Jubilees calendar was intended for feast scheduling and the 360-day year for prophetic reckoning, what calendar should we use for our own liturgical and devotional life? Does it matter?</div>
-  </div>
-
-  <h2 class="section-title">Key Scripture Index</h2>
   <div class="cross-ref-box">
-    <div class="title">🔗 All Relevant Passages</div>
-    <div class="line">• <strong>Genesis 7:11, 24; 8:3–4</strong> — Flood account: 5 months = 150 days → 30-day month</div>
-    <div class="line">• <strong>Daniel 9:24–27</strong> — The 70 Weeks; basis for 360-day year calculation</div>
-    <div class="line">• <strong>Daniel 7:25; 12:7</strong> — "A time, times, and half a time" = 3.5 years</div>
-    <div class="line">• <strong>Daniel 12:11</strong> — 1,290 days (midpoint to end, with 30-day extension — still 30-day months)</div>
-    <div class="line">• <strong>Revelation 11:2–3</strong> — 42 months and 1,260 days used in back-to-back verses</div>
-    <div class="line">• <strong>Revelation 12:6, 14</strong> — 1,260 days and "time, times, and half a time" for the same period</div>
-    <div class="line">• <strong>Revelation 13:5</strong> — The Beast given authority for 42 months</div>
-    <div class="line">• <strong>Book of Jubilees 6:23–38</strong> — The 364-day calendar mandate (non-canonical; Second Temple literature)</div>
+    <div class="title">🔗 Cross-References</div>
+    <div class="line">• <a href="module1.html" style="color:#2E75B6;">Module 1 — Calendar History</a> — foundation for all calendar deep dives</div>
+    <div class="line">• <a href="module2.html" style="color:#2E75B6;">Module 2 — Calendar Timeline</a> — visual timeline from Creation to Millennium</div>
+    <div class="line">• <a href="module3.html" style="color:#2E75B6;">Module 3 — Book of Jubilees</a> — 364-day solar year and nested-seven system</div>
+    <div class="line">• <a href="../theme1/module1.html" style="color:#2E75B6;">Theme 1 Module 1 — Daniel's 70 Weeks</a> — prophetic time calculation</div>
   </div>
 
-  <div class="notes-box">
-    <div class="label">✏️ My notes and convictions on prophetic calendars — Dated: ___________</div>
-    <textarea class="notes-input" id="n-dd1" placeholder="Write your thoughts here... Date your entry.&#10;&#10;Questions I still have:&#10;&#10;What I currently believe:"></textarea>
+  <!-- ═══════════════════════════════
+       DEEP DIVE 1 — PROPHETIC CALENDARS
+  ═══════════════════════════════ -->
+  <h2 class="section-title" id="prophetic-calendars">Deep Dive 1 — Prophetic Calendars: Does the Calendar Affect Prophecy?</h2>
+  <p class="body">One of the most provocative questions in your study so far: if God designed a specific 364-day solar calendar — and that calendar was replaced by a corrupted lunar calendar around 170 BC — does that mean prophetic events tied to God's feast appointments could be systematically miscalculated by modern scholarship? This deep dive works through the evidence.</p>
+
+  <div class="info-box">
+    <div class="title">The Core Question</div>
+    <div class="line">The modern Jewish calendar (Hillel II, 4th century AD) is a modified lunar/solar calendar. The Essene calendar found at Qumran used a strict 364-day solar year. If God's prophetic appointments were pegged to the <em>original</em> calendar, are modern date calculations off?</div>
   </div>
 
-  <div class="info-box" style="margin-top:20px">
-    <div class="title">📚 Recommended Next Steps</div>
-    <div class="line"><strong>Read:</strong> Sir Robert Anderson, <em>The Coming Prince</em> (1894) — available free online. Chapter 6 walks through the 360-day calculation in detail.</div>
-    <div class="line"><strong>Read:</strong> Ron Rhodes, <em>The End Times in Chronological Order</em> — Chapter on Daniel's 70 Weeks applies this framework practically.</div>
-    <div class="line"><strong>Study:</strong> Genesis 7–8 slowly with a calculator. Count the days yourself. The 30-day month is embedded directly in the text.</div>
-    <div class="line"><strong>Cross-reference:</strong> Return to Module 1 (Daniel's 70 Weeks) in the main study guide with this calendar framework in mind.</div>
+  <h2 class="section-title">The Two Calendars Side by Side</h2>
+  <div class="info-box">
+    <div class="title">Modern Jewish Calendar (Hillel II, ~359 AD)</div>
+    <div class="line"><strong>Type:</strong> Lunisolar — 12 lunar months with a 13th month added 7 times every 19 years</div>
+    <div class="line"><strong>Year length:</strong> 354 days (lunar) adjusted to ~365.25 solar days over time</div>
+    <div class="line"><strong>New Year:</strong> Starts in the fall — Tishrei (Rosh Hashanah)</div>
+    <div class="line"><strong>Holy days:</strong> Calculated mathematically — adjusted to avoid falling on certain days of the week</div>
+    <div class="line"><strong>Key problem:</strong> Hillel II's adjustments move feasts off their original dates. The calendar is a human calculation, not direct observation or original design.</div>
   </div>
 
-  <div style="margin-top:28px;padding-top:20px;border-top:1px solid #ddd;">
-    <a class="back-link" href="index.html">← Return to Campbell Family Master Biblical Study Guide</a>
+  <div class="info-box" style="border-color:#3B5E1A;background:#F4F8EE;">
+    <div class="title" style="color:#3B5E1A;">Dead Sea Scroll / Essene Calendar (364-Day Solar Year)</div>
+    <div class="line"><strong>Type:</strong> Pure solar — 364 days exactly, divided into 4 seasons of 91 days each</div>
+    <div class="line"><strong>Year length:</strong> 364 days — divisible perfectly by 7. Every feast falls on the same day of the week every year, forever.</div>
+    <div class="line"><strong>New Year:</strong> Starts in the spring — 1st of Nisan, aligned with the spring equinox</div>
+    <div class="line"><strong>Holy days:</strong> Fixed — Passover always on the same day of the week, Pentecost always on Sunday, Trumpets always on the same day</div>
+    <div class="line"><strong>Key strength:</strong> Mathematically perfect. The seven-day week runs continuously unbroken from Creation. No adjustments needed.</div>
+    <div class="line"><strong>Sources:</strong> Book of Jubilees, Book of Enoch (Astronomical Book), Dead Sea Scrolls (4QMMT, Temple Scroll)</div>
   </div>
+
+  <h2 class="section-title">Why This Matters for Daniel's 70 Weeks</h2>
+  <p class="body">Daniel 9:24–27 gives a prophecy of "70 weeks" — 490 years — from the decree to rebuild Jerusalem to the coming of Messiah. Scholars have debated the precise start date and calendar used for centuries. Here is why the calendar question directly affects the calculation:</p>
+
+  <div class="info-box">
+    <div class="title">The Calendar Problem in Daniel 9</div>
+    <div class="line"><strong>360-day prophetic year theory:</strong> Many scholars (Sir Robert Anderson, Harold Hoehner) use a 360-day "prophetic year" — 483 years × 360 days = 173,880 days — which they calculate lands on Jesus's triumphal entry into Jerusalem in 32–33 AD.</div>
+    <div class="line"><strong>Why 360 days?</strong> Revelation defines the Tribulation's 3.5 years as both 42 months AND 1,260 days (Rev 11:3, 12:6, 13:5). 1,260 ÷ 42 = 30 days per month. 12 months × 30 = 360 days.</div>
+    <div class="line"><strong>The Essene challenge:</strong> Ken Johnson argues the original calendar was 364-day solar. If Daniel was using a 364-day year, the calculation shifts. The question is whether Daniel's "weeks" were calculated using the corrupted calendar or God's original design.</div>
+    <div class="line"><strong>Key tension:</strong> The 364-day calendar is historically earlier and arguably more original. The 360-day "prophetic year" is a modern scholarly construct. Which one did Gabriel intend?</div>
+  </div>
+
+  <h2 class="section-title">The Feast Calendar as Prophetic Precision</h2>
+  <p class="body">Your growing conviction — supported by Barney Kasdan, Ken Johnson, and your Theme 2 study — is that God's feast calendar is a system of precision prophetic appointments, not floating observances. Here is how the evidence lines up:</p>
+
+  <div class="info-box">
+    <div class="title">Feasts Already Fulfilled — First Coming Precision</div>
+    <div class="line"><strong>Passover (14 Nisan):</strong> Jesus crucified on Passover — exact day ✓</div>
+    <div class="line"><strong>Unleavened Bread (15 Nisan):</strong> Jesus in the tomb — the sinless one "buried" ✓</div>
+    <div class="line"><strong>Firstfruits (day after Sabbath after Passover):</strong> Jesus resurrected — "firstfruits of those who have fallen asleep" (1 Cor 15:20) ✓</div>
+    <div class="line"><strong>Shavuot / Pentecost (50 days after Firstfruits):</strong> Holy Spirit poured out — Acts 2 ✓</div>
+  </div>
+
+  <div class="info-box" style="border-color:#8B4513;background:#FFF8F0;">
+    <div class="title" style="color:#8B4513;">Feasts Yet to Be Fulfilled — Second Coming</div>
+    <div class="line"><strong>Trumpets (1 Tishrei):</strong> The Rapture? — "the last trumpet" (1 Cor 15:52), "trump of God" (1 Thess 4:16)</div>
+    <div class="line"><strong>Day of Atonement (10 Tishrei):</strong> Israel's national repentance and salvation — Zechariah 12:10, Romans 11:26</div>
+    <div class="line"><strong>Tabernacles (15–22 Tishrei):</strong> The Millennium — God dwelling with His people (Rev 21:3)</div>
+    <div class="line" style="color:#666;font-style:italic;">The pattern of precise fulfillment in the spring feasts strongly implies precise fulfillment in the fall feasts. This is not coincidence — it is design.</div>
+  </div>
+
+  <h2 class="section-title">The Hidden Summer Feasts</h2>
+  <p class="body">Ken Johnson's research on the Dead Sea Scroll Calendar reveals two feasts found in the Essene calendar that were deliberately hidden from mainstream Judaism — feasts not observed today but embedded in the original 364-day structure:</p>
+
+  <div class="info-box" style="border-color:#2E75B6;background:#EBF4FC;">
+    <div class="title" style="color:#1F3864;">Festival of New Wine (3 Av — approximately July/August)</div>
+    <div class="line">The Essenes observed a festival of new wine 50 days after Firstfruits of wheat (Shavuot). Johnson argues this may connect to the Age of Grace — the Church Age — a period the fall feasts will close out.</div>
+    <div class="line"><strong>Possible connection:</strong> Acts 2:13 — mockers accused the disciples of being "full of new wine" at Pentecost. Was this a feast day connection the early disciples would have recognized?</div>
+  </div>
+
+  <div class="info-box" style="border-color:#2E75B6;background:#EBF4FC;">
+    <div class="title" style="color:#1F3864;">Festival of New Oil (22 Elul — approximately September)</div>
+    <div class="line">50 days after New Wine. Oil in Scripture consistently points to the Holy Spirit (Ps 23:5, Matt 25 — the ten virgins). Johnson sees this as prophetically pointing to a future outpouring.</div>
+    <div class="line"><strong>Worth studying:</strong> If these hidden feasts point to the Church Age and the Spirit's work, their rediscovery may have prophetic significance for understanding where we are on God's timeline.</div>
+  </div>
+
+  <h2 class="section-title">Key Open Questions — For Further Study</h2>
+  <div class="info-box">
+    <div class="line">1. Did Daniel calculate his 70 weeks using a 360-day, 364-day, or 365.25-day year — and how do we know?</div>
+    <div class="line">2. If the modern Jewish calendar is off from the original, are the fall feasts being observed on the wrong dates — and does that affect prophetic fulfillment timing?</div>
+    <div class="line">3. What is the significance of the Festival of New Wine and Festival of New Oil for the Church Age and end times timeline?</div>
+    <div class="line">4. Was Jesus's last supper on the Essene Passover date (Tuesday/Wednesday) rather than the Pharisee Passover date (Friday) — and does this resolve the "three days and three nights" problem?</div>
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ My deep dive notes — Prophetic Calendars:</div>
+    <textarea class="notes-input" id="n-deepdive-calendars" placeholder="e.g. The precision of the spring feasts is undeniable. If the fall feasts are equally precise, then Trumpets = Rapture is not speculation — it's pattern recognition built into the calendar by God himself..." style="min-height:120px;"></textarea>
+  </div>
+
+  <!-- ═══════════════════════════════
+       DEEP DIVE 2 — SHABUA / DANIEL'S WEEKS
+  ═══════════════════════════════ -->
+  <h2 class="section-title" id="shabua" style="margin-top:40px;">Deep Dive 2 — H7620: What Does "Weeks" Really Mean in Daniel 9?</h2>
+  <p class="body">From your study session on April 11, 2026 — a deep dive into the Hebrew word <em>shabua</em> (Strong's H7620) and why "weeks" in Daniel 9 means years, not seven-day weeks. This question came directly from studying Epicenter (Rosenberg, Chapter 13) and the Day-Year principle.</p>
+
+  <div class="info-box">
+    <div class="title">Strong's H7620 — shabua (שָׁבוּעַ)</div>
+    <div class="line"><strong>Pronunciation:</strong> shaw-BOO-ah</div>
+    <div class="line"><strong>Literal meaning:</strong> "sevened" — a unit of seven. Not automatically days. Context determines what it is seven <em>of</em>.</div>
+    <div class="line"><strong>KJV translation:</strong> "seven" or "week"</div>
+    <div class="line"><strong>Strong's definition:</strong> "properly passive participle of H7650 as a denominative of H7651; literally sevened, that is, a week (specifically of years)"</div>
+    <div class="line"><strong>Found on:</strong> Page 293 of the Complete KJV Strong's Hebrew Concordance in your Resource Library</div>
+  </div>
+
+  <div class="info-box" style="border-color:#3B5E1A;background:#F4F8EE;">
+    <div class="title" style="color:#3B5E1A;">The Key Proof — Daniel 10:2–3 vs Daniel 9:24</div>
+    <div class="line"><strong>Daniel 10:2–3:</strong> Daniel mourns for "three full weeks" — in Hebrew: <em>shavuim yamim</em> — "weeks of DAYS." He adds the word <em>yamim</em> (days) to make it unambiguous.</div>
+    <div class="line"><strong>Daniel 9:24:</strong> "Seventy weeks are decreed" — in Hebrew: <em>shivim shabuim</em> — NO word for days. The word "yamim" is completely absent.</div>
+    <div class="line"><strong>Conclusion:</strong> Daniel knew exactly how to specify seven-day weeks when he meant them. In chapter 9 he deliberately left "days" out. That's not accident — it signals a different unit of seven.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="title">The Day-Year Principle — Two Explicit Biblical Foundations</div>
+    <div class="line"><strong>Numbers 14:34:</strong> God tells Israel they will wander 40 years — "one year for each of the 40 days" the spies explored Canaan. Day = Year.</div>
+    <div class="line"><strong>Ezekiel 4:6:</strong> God tells Ezekiel to lie on his side — "I have assigned you one day for each year." Day = Year.</div>
+    <div class="line">These are not interpretive suggestions — they are explicit divine statements. The principle is built into Scripture by God himself.</div>
+  </div>
+
+  <div class="info-box" style="border-color:#8B4513;background:#FFF8F0;">
+    <div class="title" style="color:#8B4513;">The Mathematical Proof</div>
+    <div class="line"><strong>If weeks = literal 7-day weeks:</strong> 70 × 7 = 490 days = just over 1 year. Impossible to fit the rebuilding of Jerusalem, the arrival of Messiah, and the destruction of the Temple into one year.</div>
+    <div class="line"><strong>If weeks = 7-year periods:</strong> 70 × 7 = 490 years. Starting from Artaxerxes' decree (444 BC), 483 years (69 weeks) = AD 33 — Jesus's triumphal entry into Jerusalem. Fulfilled to the year.</div>
+    <div class="line"><strong>The 70th week:</strong> The final 7-year period = the Tribulation. Still future. The "gap" between week 69 and week 70 = the Church Age.</div>
+  </div>
+
+  <div class="info-box" style="border-color:#2E75B6;background:#EBF4FC;">
+    <div class="title" style="color:#1F3864;">Grammar Clue — The Masculine Plural</div>
+    <div class="line">Normally the plural of "week" in Hebrew is <em>shavuot</em> (feminine ending). In Daniel 9, it uses the masculine plural <em>shabuim</em> — the same ending used for <em>shanim</em> (years).</div>
+    <div class="line">This grammatical signal — unique to Daniel 9 in all of the Old Testament — points a Hebrew reader to years, not days. It is one of four converging lines of evidence.</div>
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ My deep dive notes — H7620 / Daniel's Weeks:</div>
+    <textarea class="notes-input" id="n-deepdive-shabua" placeholder="e.g. The four lines of evidence — no 'yamim' in Dan 9, masculine plural ending, Day-Year principle in Numbers and Ezekiel, mathematical impossibility of literal weeks — all converge. This isn't interpretation. This is the Hebrew text itself..." style="min-height:120px;"></textarea>
+  </div>
+
+  <!-- ═══════════════════════════════
+       ADD MORE DEEP DIVES
+  ═══════════════════════════════ -->
+  <h2 class="section-title" style="margin-top:40px;">More Deep Dives — Coming</h2>
+  <div class="info-box">
+    <div class="line">• Deep Dive 3 — The 100-Pound Hailstones: Revelation 16:21 and the 7th Bowl Judgment</div>
+    <div class="line">• Deep Dive 4 — Gog & Magog: The Five Evidence Streams for Russia</div>
+    <div class="line">• Deep Dive 5 — The Abomination of Desolation: Matthew 24:15 vs Revelation 13</div>
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ Deep dives to add — running list:</div>
+    <textarea class="notes-input" id="n-deepdive-list" placeholder="Add topics for future deep dives here..." style="min-height:70px;"></textarea>
+  </div>
+
+</div>
 </div>
 
-</div><!-- end #main -->
-</div><!-- end #app -->
-
-<script>
-function show(id, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const page = document.getElementById(id);
-  if (page) page.classList.add('active');
-  if (el) el.classList.add('active');
-  window.scrollTo(0, 0);
-  closeSidebar();
-}
-
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebar-overlay').classList.toggle('open');
-}
-
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('open');
-}
-
-const noteIds = ['n-dd1'];
-function saveNote(id) {
-  const el = document.getElementById(id);
-  if (el) localStorage.setItem('cbsg-dd-' + id, el.value);
-}
-function loadNotes() {
-  noteIds.forEach(id => {
-    const el = document.getElementById(id);
-    const saved = localStorage.getItem('cbsg-dd-' + id);
-    if (el && saved) el.value = saved;
-  });
-}
-noteIds.forEach(id => {
-  const el = document.getElementById(id);
-  if (el) el.addEventListener('input', () => saveNote(id));
-});
-loadNotes();
-
-const savedToken = localStorage.getItem('cbsg-gh-token');
-if (savedToken) document.getElementById('gh-token').value = savedToken;
-document.getElementById('gh-token').addEventListener('input', function() {
-  localStorage.setItem('cbsg-gh-token', this.value);
-});
-
-async function saveToGitHub() {
-  const token = document.getElementById('gh-token').value.trim();
-  const status = document.getElementById('gh-status');
-  if (!token) {
-    status.textContent = 'Please enter your GitHub token first.';
-    status.style.color = '#FF6B6B';
-    return;
-  }
-  status.textContent = 'Saving...';
-  status.style.color = 'rgba(255,255,255,0.7)';
-
-  const owner = 'acshotsprings';
-  const repo = 'CampbellBibleStudy';
-  const path = 'DeepDives.html';
-
-  try {
-    let sha = null;
-    try {
-      const getResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
-        headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
-      });
-      if (getResp.ok) {
-        const getData = await getResp.json();
-        sha = getData.sha;
-      }
-    } catch(e) {}
-
-    const htmlContent = document.documentElement.outerHTML;
-    const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
-
-    const body = { message: 'Update Deep Dive', content: encoded };
-    if (sha) body.sha = sha;
-
-    const putResp = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
-      method: 'PUT',
-      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-
-    if (putResp.ok) {
-      status.textContent = 'Saved to GitHub successfully!';
-      status.style.color = '#90EE90';
-      setTimeout(() => { status.textContent = ''; }, 4000);
-    } else {
-      const err = await putResp.json();
-      status.textContent = 'Error: ' + (err.message || 'Unknown error');
-      status.style.color = '#FF6B6B';
-    }
-  } catch(e) {
-    status.textContent = 'Error: ' + e.message;
-    status.style.color = '#FF6B6B';
-  }
-}
-</script>
-
-</body></html>
+<script>window.PAGE_NOTE_IDS = ['n-deepdive-calendars','n-deepdive-shabua','n-deepdive-list'];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+</body>
+</html>

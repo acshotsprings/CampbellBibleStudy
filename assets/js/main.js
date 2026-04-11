@@ -74,7 +74,10 @@ function applyAdminUI() {
     if (tokenInput) tokenInput.value = '';
   }
   // Rebuild sidebar so admin-only nav items appear/disappear
-  if (typeof buildSidebar === 'function') buildSidebar();
+  if (typeof buildSidebar === 'function') {
+    const root = window.location.pathname.includes('/theme') ? '..' : '.';
+    buildSidebar(root);
+  }
 }
 
 function toggleAdminMode() {
