@@ -9,8 +9,8 @@ const NAV_STRUCTURE = [
     label: 'Getting Started',
     collapsible: false,
     items: [
-      { label: 'Introduction',   href: 'index.html' },
-      { label: 'Thematic Index', href: 'index.html#index' },
+      { label: 'Introduction',   href: '/index.html' },
+      { label: 'Thematic Index', href: '/index.html#index' },
     ]
   },
   {
@@ -19,21 +19,21 @@ const NAV_STRUCTURE = [
     collapsible: true,
     key: 'theme1',
     items: [
-      { label: 'Module 1 — Daniel\'s 70 Weeks',     href: 'theme1/module1.html',  completable: true, completeKey: 'complete-t1m1'  },
-      { label: 'Module 2 — Israel in Prophecy',     href: 'theme1/module2.html',  completable: true, completeKey: 'complete-t1m2'  },
-      { label: 'Module 3 — Day of the Lord',        href: 'theme1/module3.html',  completable: true, completeKey: 'complete-t1m3'  },
-      { label: 'Module 4 — The Watchman',           href: 'theme1/module4.html',  completable: true, completeKey: 'complete-t1m4'  },
-      { label: 'Module 5 — The New Covenant',       href: 'theme1/module5.html',  completable: true, completeKey: 'complete-t1m5'  },
-      { label: 'Module 6 — The Rapture',            href: 'theme1/module6.html',  completable: true, completeKey: 'complete-t1m6'  },
-      { label: 'Module 7 — The Antichrist',         href: 'theme1/module7.html',  completable: true, completeKey: 'complete-t1m7'  },
-      { label: 'Module 8 — The Rebuilt Temple',     href: 'theme1/module8.html',  completable: true, completeKey: 'complete-t1m8'  },
-      { label: 'Module 9 — Gog-Magog War',          href: 'theme1/module9.html',  completable: true, completeKey: 'complete-t1m9'  },
-      { label: 'Module 10 — Signs of the Times',    href: 'theme1/module10.html', completable: true, completeKey: 'complete-t1m10' },
-      { label: 'Module 11 — False Prophets',        href: 'theme1/module11.html', completable: true, completeKey: 'complete-t1m11' },
-      { label: 'Module 12 — The Millennium',        href: 'theme1/module12.html', completable: true, completeKey: 'complete-t1m12' },
-      { label: 'Module 13 — Second Coming',         href: 'theme1/module13.html', completable: true, completeKey: 'complete-t1m13' },
-      { label: 'Module 14 — Matt 24 ↔ Revelation',  href: 'theme1/module14.html', completable: true, completeKey: 'complete-t1m14' },
-      { label: 'Module 15 — Armageddon',            href: 'theme1/module15.html', completable: true, completeKey: 'complete-t1m15' },
+      { label: 'Module 1 — Daniel\'s 70 Weeks',     href: '/theme1/module1.html',  completable: true, completeKey: 'complete-t1m1'  },
+      { label: 'Module 2 — Israel in Prophecy',     href: '/theme1/module2.html',  completable: true, completeKey: 'complete-t1m2'  },
+      { label: 'Module 3 — Day of the Lord',        href: '/theme1/module3.html',  completable: true, completeKey: 'complete-t1m3'  },
+      { label: 'Module 4 — The Watchman',           href: '/theme1/module4.html',  completable: true, completeKey: 'complete-t1m4'  },
+      { label: 'Module 5 — The New Covenant',       href: '/theme1/module5.html',  completable: true, completeKey: 'complete-t1m5'  },
+      { label: 'Module 6 — The Rapture',            href: '/theme1/module6.html',  completable: true, completeKey: 'complete-t1m6'  },
+      { label: 'Module 7 — The Antichrist',         href: '/theme1/module7.html',  completable: true, completeKey: 'complete-t1m7'  },
+      { label: 'Module 8 — The Rebuilt Temple',     href: '/theme1/module8.html',  completable: true, completeKey: 'complete-t1m8'  },
+      { label: 'Module 9 — Gog-Magog War',          href: '/theme1/module9.html',  completable: true, completeKey: 'complete-t1m9'  },
+      { label: 'Module 10 — Signs of the Times',    href: '/theme1/module10.html', completable: true, completeKey: 'complete-t1m10' },
+      { label: 'Module 11 — False Prophets',        href: '/theme1/module11.html', completable: true, completeKey: 'complete-t1m11' },
+      { label: 'Module 12 — The Millennium',        href: '/theme1/module12.html', completable: true, completeKey: 'complete-t1m12' },
+      { label: 'Module 13 — Second Coming',         href: '/theme1/module13.html', completable: true, completeKey: 'complete-t1m13' },
+      { label: 'Module 14 — Matt 24 ↔ Revelation',  href: '/theme1/module14.html', completable: true, completeKey: 'complete-t1m14' },
+      { label: 'Module 15 — Armageddon',            href: '/theme1/module15.html', completable: true, completeKey: 'complete-t1m15' },
     ]
   },
   {
@@ -42,10 +42,10 @@ const NAV_STRUCTURE = [
     collapsible: true,
     key: 'theme2',
     items: [
-      { label: 'Theme 2 Overview',               href: 'theme2/index.html' },
-      { label: '↳ Module 1 — Calendar History',  href: 'theme2/module1.html', sub: true, completable: true, completeKey: 'complete-t2m1' },
-      { label: '↳ Module 2 — Calendar Timeline', href: 'theme2/module2.html', sub: true, completable: true, completeKey: 'complete-t2m2' },
-      { label: '↳ Module 3 — Book of Jubilees',  href: 'theme2/module3.html', sub: true, completable: true, completeKey: 'complete-t2m3' },
+      { label: 'Theme 2 Overview',               href: '/theme2/index.html' },
+      { label: '↳ Module 1 — Calendar History',  href: '/theme2/module1.html', sub: true, completable: true, completeKey: 'complete-t2m1' },
+      { label: '↳ Module 2 — Calendar Timeline', href: '/theme2/module2.html', sub: true, completable: true, completeKey: 'complete-t2m2' },
+      { label: '↳ Module 3 — Book of Jubilees',  href: '/theme2/module3.html', sub: true, completable: true, completeKey: 'complete-t2m3' },
     ]
   },
   {
@@ -54,7 +54,7 @@ const NAV_STRUCTURE = [
     collapsible: true,
     key: 'theme3',
     items: [
-      { label: 'Theme 3 Overview', href: 'theme3/index.html' },
+      { label: 'Theme 3 Overview', href: '/theme3/index.html' },
     ]
   },
   {
@@ -71,12 +71,12 @@ const NAV_STRUCTURE = [
     label: 'My Study',
     collapsible: false,
     items: [
-      { label: 'Prophecy Checklist',     href: 'checklist.html'           },
-      { label: 'Resource Library',        href: 'resources.html'           },
-      { label: 'Sermon & Teaching Log',  href: 'sermons.html'             },
-      { label: 'Personal Journal',       href: 'journal.html'             },
-      { label: 'My Growing Convictions', href: 'convictions.html'         },
-      { label: '📋 Save History',        href: 'history.html'             },
+      { label: 'Prophecy Checklist',     href: '/checklist.html'           },
+      { label: 'Resource Library',        href: '/resources.html'           },
+      { label: 'Sermon & Teaching Log',  href: '/sermons.html'             },
+      { label: 'Personal Journal',       href: '/journal.html'             },
+      { label: 'My Growing Convictions', href: '/convictions.html'         },
+      { label: '📋 Save History',        href: '/history.html'             },
     ]
   }
 ];
