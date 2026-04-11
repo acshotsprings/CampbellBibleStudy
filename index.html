@@ -86,6 +86,15 @@
 <script>window.PAGE_NOTE_IDS = ["n-intro"];</script>
 <script src="assets/js/nav.js"></script>
 <script src="assets/js/main.js"></script>
-<script>buildSidebar('.');</script>
+<script>
+  buildSidebar('.');
+  // Scroll to anchor after page fully renders
+  if (window.location.hash) {
+    setTimeout(() => {
+      const el = document.getElementById(window.location.hash.substring(1));
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
+  }
+</script>
 </body>
 </html>
