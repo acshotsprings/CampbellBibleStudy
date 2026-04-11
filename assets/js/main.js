@@ -239,21 +239,38 @@ function getGuestPageKey() {
 
 function silentEmailGuest() {
   try {
-    if (typeof emailjs === 'undefined') return;
     const notesEl = document.getElementById('cbsg-guest-textarea');
     const nameEl  = document.getElementById('cbsg-guest-name');
     if (!notesEl) return;
     const notes = notesEl.value.trim();
     if (notes.length < 5) return;
-    const name     = (nameEl ? nameEl.value.trim() : '') || 'Guest';
+    const name     = (nameEl ? nameEl.value.trim() : '') || getGuestName() || 'Guest';
     const pageName = document.title.replace(' — Campbell Bible Study', '').trim()
                    || window.location.pathname;
-    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      name:       name,
-      from_email: '(not provided)',
-      page_name:  pageName,
-      message:    notes,
-    }).catch(() => {});
+    const doSend = () => {
+      try {
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          name:       name,
+          from_email: '(not provided)',
+          page_name:  pageName,
+          message:    notes,
+        }).catch(() => {});
+      } catch(e) {}
+    };
+    if (typeof emailjs !== 'undefined') {
+      doSend();
+    } else {
+      let attempts = 0;
+      const retry = setInterval(() => {
+        attempts++;
+        if (typeof emailjs !== 'undefined') {
+          clearInterval(retry);
+          doSend();
+        } else if (attempts > 10) {
+          clearInterval(retry);
+        }
+      }, 500);
+    }
   } catch(e) {}
 }
 

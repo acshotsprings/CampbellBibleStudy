@@ -2157,18 +2157,36 @@ function getGuestName() { return localStorage.getItem('cbsg-guest-name') || ''; 
 
 function silentEmailGuest() {
   try {
-    if (typeof emailjs === 'undefined') return;
     const notesEl  = document.getElementById('cbsg-guest-textarea');
     if (!notesEl) return;
     const notes = notesEl.value.trim();
     if (notes.length < 5) return;
     const name = getGuestName() || 'Guest';
-    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      name:       name,
-      from_email: '(not provided)',
-      page_name:  'Campbell Bible Study — Home',
-      message:    notes,
-    }).catch(() => {});
+    const doSend = () => {
+      try {
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          name:       name,
+          from_email: '(not provided)',
+          page_name:  'Campbell Bible Study — Home',
+          message:    notes,
+        }).catch(() => {});
+      } catch(e) {}
+    };
+    if (typeof emailjs !== 'undefined') {
+      doSend();
+    } else {
+      // EmailJS not loaded yet — wait up to 5 seconds
+      let attempts = 0;
+      const retry = setInterval(() => {
+        attempts++;
+        if (typeof emailjs !== 'undefined') {
+          clearInterval(retry);
+          doSend();
+        } else if (attempts > 10) {
+          clearInterval(retry);
+        }
+      }, 500);
+    }
   } catch(e) {}
 }
 
