@@ -200,10 +200,14 @@ body {
 .bar-right {
   margin-left: auto;
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
   flex-shrink: 0;
+  line-height: 1.3;
 }
+
+.bar-right .bar-sep { display: none; }
 
 #gh-bar-version {
   font-size: 9px;
@@ -626,9 +630,11 @@ ul.bullet-list li {
 
 /* ── ORIGINATED DATE ─────────────────────────────────────── */
 .bar-originated {
-  font-size: 11px;
-  color: rgba(255,255,255,0.55);
+  font-size: 9px;
+  color: rgba(255,255,255,0.4);
   font-style: italic;
+  text-align: right;
+  line-height: 1.3;
 }
 
 /* ── AI BUTTON & RESPONSE ────────────────────────────────── */
