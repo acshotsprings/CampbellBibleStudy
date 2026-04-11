@@ -88,7 +88,7 @@ function isModuleComplete(key) {
 function buildSidebar(root) {
   root = root || './';
   if (!root.endsWith('/')) root += '/';
-  const base        = '/CampbellBibleStudy';
+  const base        = '/CampbellBibleStudy/';
   const currentPath = window.location.pathname;
   const sidebar     = document.getElementById('sidebar');
   if (!sidebar) return;
@@ -99,7 +99,7 @@ function buildSidebar(root) {
   function isActiveSection(section) {
     if (!section.items) return false;
     return section.items.some(item => {
-      const fullHref = base + '/' + item.href;
+      const fullHref = base + item.href;
       return currentPath === fullHref ||
              currentPath.endsWith(item.href.split('/').pop());
     });
@@ -127,11 +127,11 @@ function buildSidebar(root) {
     if (!section.collapsible) {
       html += `<div class="nav-section">${section.label}</div>`;
       section.items.forEach(item => {
-        const fullHref = base + '/' + item.href;
+        const fullHref = base + item.href;
         const active   = currentPath === fullHref ||
                          currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
         const sub      = item.sub ? ' sub' : '';
-        html += `<a class="nav-item${sub}${active}" href="${root + '/' + item.href}" onclick="if(window.innerWidth<=768)closeSidebar()">${item.label}</a>`;
+        html += `<a class="nav-item${sub}${active}" href="${root + item.href}" onclick="if(window.innerWidth<=768)closeSidebar()">${item.label}</a>`;
       });
     } else {
       const key           = section.key;
@@ -162,7 +162,7 @@ function buildSidebar(root) {
         const done      = item.completable && isModuleComplete(item.completeKey);
         const doneStyle = done ? ' style="color:#90EE90;border-left-color:#90EE90;"' : '';
         const doneIcon  = done ? ' <span style="color:#90EE90;font-size:11px;">✓</span>' : '';
-        html += `<a class="nav-item${sub}${active}"${doneStyle} href="${root + '/' + item.href}" onclick="if(window.innerWidth<=768)closeSidebar()">${item.label}${doneIcon}</a>`;
+        html += `<a class="nav-item${sub}${active}"${doneStyle} href="${root + item.href}" onclick="if(window.innerWidth<=768)closeSidebar()">${item.label}${doneIcon}</a>`;
       });
 
       html += `</div>`;
