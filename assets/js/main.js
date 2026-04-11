@@ -393,7 +393,7 @@ function toggleCompletion() {
   const btnText = document.getElementById('complete-btn-text');
   if (btn && btnText) {
     btnText.textContent    = nowComplete ? '✓ Completed — Click to Undo' : '☐ Mark as Complete';
-    btn.style.background   = nowComplete ? '#2E6B0E' : 'transparent';
+    btn.style.background   = nowComplete ? '#2E6B0E' : '#1F3864';
     btn.style.borderColor  = nowComplete ? '#90EE90'  : 'rgba(255,255,255,0.3)';
     btn.style.color        = nowComplete ? '#90EE90'  : 'rgba(255,255,255,0.7)';
   }
