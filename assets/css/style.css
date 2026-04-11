@@ -141,13 +141,18 @@ body {
   background: #1F3864;
   color: white;
   z-index: 200;
-  padding: 8px 20px;
+  padding: 6px 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   font-family: Arial, sans-serif;
   font-size: 13px;
   border-bottom: 2px solid #FFD700;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  height: 48px;
+  box-sizing: border-box;
+  white-space: nowrap;
 }
 
 #github-bar .bar-title {
@@ -165,7 +170,7 @@ body {
   border-radius: 4px;
   border: 1px solid rgba(255,255,255,0.3);
   font-size: 12px;
-  width: 280px;
+  width: 180px;
   background: rgba(255,255,255,0.1);
   color: white;
 }
@@ -177,11 +182,12 @@ body {
   color: #1F3864;
   border: none;
   border-radius: 4px;
-  padding: 6px 16px;
-  font-size: 12px;
+  padding: 5px 12px;
+  font-size: 11px;
   font-weight: bold;
   cursor: pointer;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .btn-save:hover { background: #e6c200; }
@@ -195,11 +201,12 @@ body {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 #gh-bar-version {
-  font-size: 11px;
+  font-size: 10px;
   color: rgba(255,255,255,0.4);
   white-space: nowrap;
 }
