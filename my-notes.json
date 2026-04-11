@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-11T01:56:20.926Z",
+  "lastUpdated": "2026-04-11T02:15:04.101Z",
   "originDate": "March 30, 2026",
   "saveHistory": [
     {
@@ -25,6 +25,14 @@
         "Study Guide"
       ],
       "isoTime": "2026-04-11T01:56:20.926Z"
+    },
+    {
+      "timestamp": "April 10, 2026 at 9:15 PM",
+      "summary": "Updated: Theme 1 Module 9 notes.",
+      "pagesChanged": [
+        "Modules"
+      ],
+      "isoTime": "2026-04-11T02:15:04.101Z"
     }
   ],
   "noteLabels": {
@@ -91,6 +99,7 @@
     "time-m1": "1781",
     "time-m7": "0",
     "time-m5": "63",
+    "n-m9": "Gog is a person...a czar and Magog seems to be Russia...Hmmmm\n────────────────────────────────────────\nApril 10, 2026 at 9:14 PM\n────────────────────────────────────────\nGog is a person...a czar and Magog seems to be Russia...Hmmmm",
     "time-m12": "0",
     "rl-read-end-times-chrono": "true",
     "time-m6": "0",
