@@ -761,6 +761,14 @@ async function saveToGitHub() {
     if (el) { stripped.push({ parent: el.parentNode, el: el, next: el.nextSibling }); el.remove(); }
   });
 
+  // Clear AI response text so stale answers don't get baked in
+  const aiOut = document.getElementById('ai-response-text');
+  const aiOutBackup = aiOut ? aiOut.innerHTML : '';
+  if (aiOut) aiOut.innerHTML = '';
+  const aiBox = document.getElementById('ai-response');
+  const aiBoxHadVisible = aiBox ? aiBox.classList.contains('visible') : false;
+  if (aiBox) aiBox.classList.remove('visible');
+
   // Strip dynamically-injected admin button
   const adminBtn = document.getElementById('btn-admin');
   if (adminBtn) { stripped.push({ parent: adminBtn.parentNode, el: adminBtn, next: adminBtn.nextSibling }); adminBtn.remove(); }
@@ -792,6 +800,8 @@ async function saveToGitHub() {
   });
   if (sidebar) sidebar.innerHTML = sidebarBackup;
   if (ghStatus) ghStatus.innerHTML = statusBackup;
+  if (aiOut) aiOut.innerHTML = aiOutBackup;
+  if (aiBox && aiBoxHadVisible) aiBox.classList.add('visible');
   stripped.reverse().forEach(({ parent, el, next }) => {
     if (parent) parent.insertBefore(el, next);
   });
