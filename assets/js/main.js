@@ -73,6 +73,8 @@ function applyAdminUI() {
     document.body.classList.add('readonly');
     if (tokenInput) tokenInput.value = '';
   }
+  // Rebuild sidebar so admin-only nav items appear/disappear
+  if (typeof buildSidebar === 'function') buildSidebar();
 }
 
 function toggleAdminMode() {

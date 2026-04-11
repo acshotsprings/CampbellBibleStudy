@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listening Notes — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .ln-toolbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .ln-source-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .ln-source-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 7px 12px;
+      border: 1px solid #d0dce8;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #1a1a2e;
+    }
+    .ln-source-input:focus { outline: none; border-color: #2E75B6; }
+    .ln-stamp-btn {
+      background: #1F3864;
+      color: #FFD700;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: Arial, sans-serif;
+    }
+    .ln-stamp-btn:hover { background: #2E4F8A; }
+    .ln-new-btn {
+      background: #2E6B0E;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: Arial, sans-serif;
+    }
+    .ln-new-btn:hover { background: #3A8A12; }
+    .ln-entry {
+      background: #fff;
+      border: 1px solid #d0dce8;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+    .ln-entry-header {
+      background: linear-gradient(135deg, #1F3864, #2E4F8A);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .ln-entry-source {
+      font-size: 13px;
+      font-weight: bold;
+      color: #FFD700;
+      font-family: Arial, sans-serif;
+      flex: 1;
+    }
+    .ln-entry-ts {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      font-family: Arial, sans-serif;
+    }
+    .ln-entry-delete {
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.3);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0 4px;
+      line-height: 1;
+    }
+    .ln-entry-delete:hover { color: #ff6b6b; }
+    .ln-entry-body textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 12px 14px;
+      border: none;
+      border-top: 1px solid #e8eef4;
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      color: #1a1a2e;
+      background: #fff;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+    .ln-entry-body textarea:focus { outline: none; background: #f9fbff; }
+    .ln-empty {
+      text-align: center;
+      color: #999;
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+      padding: 40px 20px;
+      font-style: italic;
+    }
+    .ln-admin-notice {
+      background: linear-gradient(135deg, #3D1A0A, #5A2800);
+      border: 1px solid #8B4513;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: rgba(255,200,150,0.85);
+      font-family: Arial, sans-serif;
+      margin-bottom: 18px;
+      display: none;
+    }
+    body.readonly .ln-admin-notice { display: block; }
+    body.readonly .ln-toolbar,
+    body.readonly .ln-source-row,
+    body.readonly .ln-entry-body textarea { pointer-events: none; opacity: 0.5; }
+  </style>
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <button id="btn-timestamp" onclick="stampTimestamp()" style="display:none;">🕐 Timestamp</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: April 11, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version">Version: April 11, 2026</span>
+  </div>
+  <button id="btn-admin" onclick="toggleAdminMode()" style="margin-left:auto;">🔒 Admin</button>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <span class="page-tag">Admin — My Study</span>
+  <h1 class="page-title">🎧 Listening Notes</h1>
+  <p class="body">Raw notes taken while listening to audio teachings, audiobooks, or podcasts. Each entry is stamped with the date and source. Use these notes to update the Sermon Log, Resource Library, or module notes — or paste them to Claude to sort into the right places.</p>
+
+  <div class="ln-admin-notice">🔒 Admin access required to add or edit listening notes.</div>
+
+  <div class="cross-ref-box">
+    <div class="title">🔗 Cross-References</div>
+    <div class="line">• <a href="sermons.html" style="color:#2E75B6;">Sermon &amp; Teaching Log</a> — transfer completed notes here by teacher &amp; date</div>
+    <div class="line">• <a href="resources.html" style="color:#2E75B6;">Resource Library</a> — update book reading logs from these notes</div>
+    <div class="line">• <a href="convictions.html" style="color:#2E75B6;">My Growing Convictions</a> — observations that harden into theological positions</div>
+  </div>
+
+  <!-- ── TOOLBAR ── -->
+  <div class="ln-source-row">
+    <input class="ln-source-input" id="ln-source-field" type="text" placeholder="Teacher / Book / Source (e.g. Ken Johnson — Ancient Dead Sea Scroll Calendar, Ch. 4)">
+    <button class="ln-stamp-btn" onclick="addEntry()">🕐 New Entry with Timestamp</button>
+  </div>
+
+  <!-- ── ENTRIES CONTAINER ── -->
+  <div id="ln-entries"></div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ General listening notes (overflow):</div>
+    <textarea class="notes-input" id="n-listening-general" placeholder="Quick overflow notes not tied to a specific entry..."></textarea>
+  </div>
+
+</div>
+</div>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/nav.js"></script>
+<script>
+  window.PAGE_NOTE_IDS = ['n-listening-general'];
+
+  // ── Entry storage ──
+  const ENTRY_KEY = 'cbsg-listening-entries';
+
+  function loadEntries() {
+    try {
+      const raw = localStorage.getItem(ENTRY_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch(e) { return []; }
+  }
+
+  function saveEntries(entries) {
+    localStorage.setItem(ENTRY_KEY, JSON.stringify(entries));
+  }
+
+  function renderEntries() {
+    const entries = loadEntries();
+    const container = document.getElementById('ln-entries');
+    if (!entries.length) {
+      container.innerHTML = '<div class="ln-empty">No listening notes yet. Add a source above and click "New Entry with Timestamp" to begin.</div>';
+      return;
+    }
+    container.innerHTML = entries.map((e, i) => `
+      <div class="ln-entry" id="ln-entry-${i}">
+        <div class="ln-entry-header">
+          <div class="ln-entry-source">${e.source || 'Untitled Session'}</div>
+          <div class="ln-entry-ts">${e.timestamp}</div>
+          <button class="ln-entry-delete" onclick="deleteEntry(${i})" title="Delete entry">✕</button>
+        </div>
+        <div class="ln-entry-body">
+          <textarea id="ln-note-${i}" onchange="updateEntry(${i}, this.value)" placeholder="Type notes here as you listen...">${e.note || ''}</textarea>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function addEntry() {
+    const source = document.getElementById('ln-source-field').value.trim() || 'Untitled Session';
+    const now = new Date();
+    const ts = now.toLocaleDateString('en-US', { month:'numeric', day:'numeric', year:'2-digit' })
+             + ' ' + now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
+    const entries = loadEntries();
+    entries.unshift({ source, timestamp: ts, note: '' });
+    saveEntries(entries);
+    renderEntries();
+    // Focus the new textarea
+    const ta = document.getElementById('ln-note-0');
+    if (ta) ta.focus();
+  }
+
+  function updateEntry(index, value) {
+    const entries = loadEntries();
+    if (entries[index]) {
+      entries[index].note = value;
+      saveEntries(entries);
+    }
+  }
+
+  function deleteEntry(index) {
+    if (!confirm('Delete this listening note entry?')) return;
+    const entries = loadEntries();
+    entries.splice(index, 1);
+    saveEntries(entries);
+    renderEntries();
+  }
+
+  // ── Timestamp button in top bar inserts timestamp into focused textarea ──
+  function stampTimestamp() {
+    const active = document.activeElement;
+    const now = new Date();
+    const ts = '[' + now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true }) + '] ';
+    if (active && (active.tagName === 'TEXTAREA' || active.tagName === 'INPUT') && active.id !== 'gh-token') {
+      const start = active.selectionStart;
+      const end   = active.selectionEnd;
+      active.value = active.value.substring(0, start) + ts + active.value.substring(end);
+      active.selectionStart = active.selectionEnd = start + ts.length;
+      active.dispatchEvent(new Event('change'));
+    }
+  }
+
+  // ── GitHub sync — include entry data in save ──
+  // Entries are stored in localStorage; we piggyback them on the notes JSON
+  const _origCollect = window.collectNotesForSave;
+  document.addEventListener('DOMContentLoaded', () => {
+    renderEntries();
+    buildSidebar('./');
+    applyAdminUI();
+  });
+</script>
+</body>
+</html>

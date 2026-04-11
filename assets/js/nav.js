@@ -77,6 +77,7 @@ const NAV_STRUCTURE = [
       { label: 'Personal Journal',       href: 'journal.html'             },
       { label: 'My Growing Convictions', href: 'convictions.html'         },
       { label: '📋 Save History',        href: 'history.html'             },
+      { label: '🎧 Listening Notes',     href: 'listening-notes.html',    adminOnly: true },
     ]
   }
 ];
@@ -123,10 +124,13 @@ function buildSidebar(root) {
     <div id="sidebar-nav">
   `;
 
+  const adminUnlocked = sessionStorage.getItem('cbsg-admin') === 'true';
+
   NAV_STRUCTURE.forEach(section => {
     if (!section.collapsible) {
       html += `<div class="nav-section">${section.label}</div>`;
       section.items.forEach(item => {
+        if (item.adminOnly && !adminUnlocked) return;
         const fullHref = base + item.href;
         const active   = currentPath === fullHref ||
                          currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
