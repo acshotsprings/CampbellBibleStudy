@@ -4,21 +4,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Growing Convictions — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script></head>
+<body class="admin-mode">
 
 <div id="github-bar">
   <span class="bar-title">Campbell Bible Study</span>
   <span class="bar-sep">|</span>
-  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
-  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
-  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status"></span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  <span id="gh-status" style=""></span>
   <button onclick="insertConvictionTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;">New Entry</button>
   <div class="bar-right">
-    <span class="bar-originated">Originated: March 30, 2026</span>
+    <span class="bar-originated">Originated: March 27, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 9, 2026</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: April 11, 2026</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded 10:31 AM</span></span>
   </div>
 </div>
 
@@ -269,4 +269,4 @@ function insertConvictionTimestamp() {
 
 
 
-</body></html>
+<div id="sidebar-overlay" style="display: none;"></div></body></html>
