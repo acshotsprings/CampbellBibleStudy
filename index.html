@@ -244,11 +244,11 @@
       width: 100%;
     }
 
-    /* Admin bar on mobile — stacks into two rows when unlocked */
+    /* Admin bar on mobile */
     #github-bar {
-      flex-wrap: wrap;
       padding: 6px 12px;
       gap: 6px;
+      height: auto;
     }
     #github-bar .bar-title { order: 1; }
     #github-bar .bar-sep { order: 2; }
@@ -291,7 +291,7 @@
 </style>
 </head>
 <body>
-<div id="github-bar" style="position:fixed;top:0;left:0;right:0;background:#1F3864;color:white;z-index:200;padding:8px 20px;display:flex;align-items:center;gap:12px;font-family:Arial,sans-serif;font-size:13px;border-bottom:2px solid #FFD700;">
+<div id="github-bar" style="position:fixed;top:0;left:0;right:0;background:#1F3864;color:white;z-index:200;padding:6px 16px;display:flex;align-items:center;gap:8px;font-family:Arial,sans-serif;font-size:13px;border-bottom:2px solid #FFD700;flex-wrap:nowrap;overflow:hidden;height:48px;box-sizing:border-box;white-space:nowrap;">
   <span class="bar-title" style="font-weight:bold;color:#FFD700;">Campbell Bible Study</span>
   <span class="bar-sep" style="color:rgba(255,255,255,0.4)">|</span>
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display:none;padding:5px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.3);font-size:12px;width:280px;background:rgba(255,255,255,0.1);color:white;">
@@ -300,13 +300,7 @@
   <button onclick="insertTimestamp()" id="btn-timestamp" style="display:none;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:4px;padding:6px 14px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">🕐 Timestamp</button>
   <span id="gh-status" style="font-size: 12px; color: rgba(255, 255, 255, 0.7);"></span>
   <button onclick="toggleAdminMode()" id="btn-admin" style="background:rgba(255,255,255,0.1);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 12px;font-size:11px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">🔒 Admin</button>
-  <div class="bar-right" style="margin-left:auto;display:flex;align-items:center;gap:12px;font-size:11px;color:rgba(255,255,255,0.4);">
-    <span>Originated: March 30, 2026</span>
-    <span>|</span>
-    <span id="version-stamp">Version: April 10, 2026</span>
-  </div>
-</div>
-
+  <div class="bar-right" style="margin-left:auto;display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,0.4);flex-shrink:0;"><span>Originated: March 30, 2026</span><span>|</span><span id="version-stamp">Version: April 10, 2026</span></div>
 <!-- HAMBURGER BUTTON -->
 <button id="hamburger" onclick="toggleSidebar()" aria-label="Open navigation">☰</button>
 
