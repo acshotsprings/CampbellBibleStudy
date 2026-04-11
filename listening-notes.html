@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listening Notes — Campbell Bible Study</title>
@@ -133,23 +132,23 @@
     body.readonly .ln-source-row,
     body.readonly .ln-entry-body textarea { pointer-events: none; opacity: 0.5; }
   </style>
-</head>
-<body>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script></head>
+<body class="admin-mode">
 
 <div id="github-bar">
   <span class="bar-title">Campbell Bible Study</span>
   <span class="bar-sep">|</span>
-  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
-  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
-  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <button id="btn-timestamp" onclick="stampTimestamp()" style="display:none;">🕐 Timestamp</button>
-  <span id="gh-status"></span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  
+  <span id="gh-status" style=""></span>
   <div class="bar-right">
     <span class="bar-originated">Originated: March 27, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 11, 2026</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: April 11, 2026</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded 9:49 AM</span></span>
   </div>
-  <button id="btn-admin" onclick="toggleAdminMode()" style="margin-left:auto;">🔒 Admin</button>
+  
 </div>
 
 <div id="sidebar"></div>
@@ -177,7 +176,20 @@
   </div>
 
   <!-- ── ENTRIES CONTAINER ── -->
-  <div id="ln-entries"></div>
+  <div id="ln-entries">
+      <div class="ln-entry" id="ln-entry-0">
+        <div class="ln-entry-header">
+          <div class="ln-entry-source">Untitled Session</div>
+          <div class="ln-entry-ts">4/11/26 9:33 AM</div>
+          <button class="ln-entry-delete" onclick="deleteEntry(0)" title="Delete entry">✕</button>
+        </div>
+        <div class="ln-entry-body">
+          <textarea id="ln-note-0" onchange="updateEntry(0, this.value)" placeholder="Type notes here as you listen...">This is Epicenter by Joel C Rosenberg
+Chapter 13 - It was RIVETING to hear how Adolf Hitler HATED the Jews....Great details! 
+</textarea>
+        </div>
+      </div>
+    </div>
 
   <div class="notes-box" style="margin-top:24px;">
     <div class="label">✏️ General listening notes (overflow):</div>
@@ -280,5 +292,6 @@
     applyAdminUI();
   });
 </script>
-</body>
-</html>
+
+
+<div id="sidebar-overlay" style="display: none;"></div></body></html>
