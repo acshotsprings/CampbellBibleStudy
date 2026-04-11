@@ -1011,7 +1011,10 @@ function setStatus(msg, type) {
 }
 
 function updateVersionTimestamp() {
-  const label = new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  const now   = new Date();
+  const date  = now.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  const time  = now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
+  const label = date + ' — Loaded ' + time;
   const vEl   = document.getElementById('gh-bar-version');
   if (vEl) vEl.textContent = 'Version: ' + label;
   const sEl   = document.getElementById('sidebar-version');
@@ -1072,6 +1075,7 @@ document.addEventListener('DOMContentLoaded', () => {
   injectBarExtras();     // restores admin UI state from sessionStorage
   injectCompleteButton();
   startTimer();
+  updateVersionTimestamp();
 
   // Guest welcome + panel — only for non-admin visitors
   // Small delay so page is fully rendered first
