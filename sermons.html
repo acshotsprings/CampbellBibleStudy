@@ -54,20 +54,20 @@
 ```
 
   </style>
-</head>
-<body>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script></head>
+<body class="admin-mode">
 
 <div id="github-bar">
   <span class="bar-title">Campbell Bible Study</span>
   <span class="bar-sep">|</span>
-  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
-  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
-  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button><button id="btn-log-time" class="btn-timestamp" title="Insert study time summary at cursor in your notes" onclick="insertStudyTime()">📚 Log Study Time</button><span id="study-timer-display" class="study-timer-display">⏱ 1m 4s (total: 7m 16s)</span>
-  <span id="gh-status"></span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button><button id="btn-log-time" class="btn-timestamp" title="Insert study time summary at cursor in your notes" onclick="insertStudyTime()">📚 Log Study Time</button><span id="study-timer-display" class="study-timer-display">⏱ 1m 4s (total: 7m 16s)</span>
+  <span id="gh-status" style=""></span>
   <div class="bar-right">
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 6, 2026</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: April 11, 2026</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded 9:09 AM</span></span>
   </div>
 </div>
 
@@ -83,13 +83,19 @@
 
   <div class="sort-controls">
     <label>Sort:</label>
-    <button class="sort-btn active" onclick="sortTable(0,'num')">Entry # ↑</button>
+    <button class="sort-btn" onclick="sortTable(0,'num')">Entry # ↑</button>
     <button class="sort-btn" onclick="sortTable(0,'num-desc')">Entry # ↓</button>
-    <button class="sort-btn" onclick="sortTable(1,'date')">Date ↑</button>
+    <button class="sort-btn active" onclick="sortTable(1,'date')">Date ↑</button>
     <button class="sort-btn" onclick="sortTable(1,'date-desc')">Date ↓</button>
     <button class="sort-btn" onclick="sortTable(2,'alpha')">Title A–Z</button>
     <button class="sort-btn" onclick="sortTable(3,'alpha')">Teacher A–Z</button>
   </div>
+
+  
+
+```
+
+```
 
   <table class="sermon-table" id="sermon-table">
     <thead>
@@ -102,9 +108,7 @@
       </tr>
     </thead>
     <tbody id="sermon-tbody">
-
-```
-<tr>
+  <tr>
     <td>1</td>
     <td>3/22/26</td>
     <td>Imitate Christ's Example</td>
@@ -114,19 +118,19 @@
     <td>2</td>
     <td>3/25/26</td>
     <td>Judgment Seat &amp; Marriage of the Lamb</td>
-    <td>Ron Rhodes (Summary AI)</td>
+    <td></td>
     <td>Bema Seat, crowns, bride/bridegroom — Rom 14:8–10; 1 Cor 3:11–15; Rev 19:7–9; John 14:1–3</td>
   </tr><tr>
     <td>3</td>
     <td>3/25/26</td>
     <td>Ezekiel: Invasion &amp; End</td>
-    <td>Ron Rhodes (Summary AI)</td>
+    <td></td>
     <td>Gog-Magog war (Ezek 38–39); coalition: Russia/Iran/Turkey/Sudan/Libya; Israel at rest precondition</td>
   </tr><tr>
     <td>4</td>
     <td>3/26/26</td>
     <td>Ezekiel 38–39 continued (partial)</td>
-    <td>Ron Rhodes (Summary AI)</td>
+    <td></td>
     <td>Scholars debate whether invasion already occurred; nation identification</td>
   </tr><tr>
     <td>5</td>
@@ -144,14 +148,20 @@
     <td>7</td>
     <td>4/1/26</td>
     <td>End-Times Tribulation</td>
-    <td>Ron Rhodes (Summary AI)</td>
+    <td>Audio Teaching (Summary AI)</td>
     <td>Tribulation judgment, seal sequence, Rev 10 little scroll, Beast (Rev 13), false teachers — plus Matt 24 ↔ Rev parallel developed. Key: Rev 7:14; Jer 30:7; Rev 6:1–17; Rev 10:4–10; Rev 13:1–4; Acts 4:12</td>
   </tr><tr>
     <td>8</td>
     <td>4/2/26</td>
     <td>Jewish &amp; Essene Calendar History</td>
-    <td>Ken Johnson (Summary AI)</td>
+    <td>Audio Teaching Series (Summary AI)</td>
     <td>Jewish calendar development; Hillel II's 4th-century modifications; Pharisee observation-based calendar; Essene 364-day solar calendar; Dead Sea Scrolls evidence; Sons of Light vs. Sons of Darkness; high priest crisis (Yoma 9a); Seleucid Greek calendar; Birkat Hachama 28-year cycle; seven-day week unbroken from creation — integrated into Theme 2, Module 1. Key: Exod 12:1–2; Jubilees 6:36–38; Enoch 72:32; Isa 66:23; Ezek 46:1</td>
+  </tr><tr>
+    <td>10</td>
+    <td>4/3/26</td>
+    <td>Essene Calendar Debate</td>
+    <td>Audio Teaching (Summary AI)</td>
+    <td>Calendar integrity across 6,000 years; Noah's Flood and orbital stability; Joshua's long day &amp; Hezekiah's sundial — atmospheric not orbital explanations; Essene 364-day solar calendar (Enoch 72:32; Jubilees); tropical year 365.2422 days; seven-day week unbroken from creation through Julian (46 BC) to Gregorian (1582 AD); Julian→Gregorian transition preserved weekly cycle (US example: Wed Sep 2 → Thu Sep 14, 1752); Sabbath continuity confirmed; Isa 66:23; Ezek 46:1 — millennial observance of same cycles. Theme 2 cross-reference.</td>
   </tr><tr>
     <td>9</td>
     <td>4/3/26</td>
@@ -159,16 +169,10 @@
     <td>Josh Howerton</td>
     <td>Christ's return to the Mount of Olives (Acts 1:11; Zech 14:3–5); East Gate bricked up by Sultan Suleiman in 1517 (Ezek 44:2); geological fault line running east-west beneath the Mount discovered 1964; three independent lines of evidence — ascension site, sealed gate, fault line — converging on one prophetic event</td>
   </tr><tr>
-    <td>10</td>
-    <td>4/3/26</td>
-    <td>Essene Calendar Debate</td>
-    <td>Ken Johnson (Summary AI)</td>
-    <td>Calendar integrity across 6,000 years; Noah's Flood and orbital stability; Joshua's long day &amp; Hezekiah's sundial — atmospheric not orbital explanations; Essene 364-day solar calendar (Enoch 72:32; Jubilees); tropical year 365.2422 days; seven-day week unbroken from creation through Julian (46 BC) to Gregorian (1582 AD); Julian→Gregorian transition preserved weekly cycle (US example: Wed Sep 2 → Thu Sep 14, 1752); Sabbath continuity confirmed; Isa 66:23; Ezek 46:1 — millennial observance of same cycles. Theme 2 cross-reference.</td>
-  </tr><tr>
     <td>11</td>
     <td>4/6/26</td>
     <td>Feast of Tabernacles &amp; DSS Calendar</td>
-    <td>Ken Johnson (Summary AI)</td>
+    <td>Audio Teaching (Summary AI)</td>
     <td>Yom Kippur two-goat ceremony (Lev 16) — Azazel as proper name, Mishnah Yoma detail, red thread turning white ~AD 30; Sukkot structure — second tithe feast, Seventy Nations burnt offerings (Num 29), millennial observance (Zech 14:16); Four Species (Lev 23:40) — etrog, lulav, myrtle, willow; symbolic theology of each species; willow as "least" yet bound with all; DSS 364-day solar calendar and feast precision appointments. Special study: willow in Scripture (Ps 137; Isa 44:3–4; Ezek 17:5; Job 40:22) — dedicated to Hazlee Willow. Theme 2, Module 4.</td>
   </tr><tr>
     <td>12</td>
@@ -176,17 +180,13 @@
     <td>Epicenter — Netanyahu, Russia-Iran Axis &amp; Ezekiel Scenario</td>
     <td>Joel C. Rosenberg (Summary AI)</td>
     <td>Memoir excerpt: Rosenberg's service as communications advisor to Netanyahu (2001); how his research into the Russia-Iran-Middle East geopolitical axis led him to write prophetically-themed fiction based on Ezekiel 38–39; Moscow's strategic interest in the Middle East traced from Afghanistan (1979) through post-Cold War scenarios; Saddam Hussein as complicating factor in Ezekiel coalition; state-sponsored terrorism and nuclear threat analysis. Cross-reference: Theme 1, Module 9 (Gog-Magog War).</td>
-  </tr>
-  <tr>
+  </tr><tr>
     <td>13</td>
     <td>4/9/26</td>
     <td>Ezekiel 38 &amp; Russia — Identifying Gog</td>
     <td>Joel C. Rosenberg, <em>The Ezekiel Option</em> Ch. 7 (Summary AI)</td>
     <td>Historical &amp; etymological case for Russia as Magog/Rosh: Gog as a title (like Tsar/Pharaoh), not a personal name; geographic argument — Russia lies farthest due north of Israel (Ezek 38:6, 15); Voltaire's independent conclusion (hostile witness — pre-dated Russia as a world power by 150 years); Genesis 10 Table of Nations — Magog as son of Japheth; 19th-century pre-modern scholars reaching same conclusion before Soviet era; Rosenberg's firsthand Moscow observations of Putin's rise (Sept 2004 — political opponents jailed, media suppressed, 71% election). Cross-reference: Theme 1, Module 9.4.</td>
-  </tr></tbody>
-```
-
-  </table>
+  </tr></tbody></table>
 
   <div class="notes-box" style="margin-top:32px;">
     <div class="label">✏️ Teaching notes — overflow &amp; observations:</div>
@@ -288,4 +288,4 @@
 
 <script>buildSidebar('.');</script>
 
-</body></html>
+<div id="sidebar-overlay" style="display: none;"></div></body></html>
