@@ -747,11 +747,53 @@ async function saveToGitHub() {
     if (el.id && !savedValues[el.id]) { savedValues[el.id] = el.value; el.value = ''; }
   });
 
-  const html = document.documentElement.outerHTML;
+  // Strip dynamically-injected elements before capturing HTML
+  const elementsToStrip = [
+    'bar-extras',
+    'cbsg-admin-modal',
+    'cbsg-welcome-modal',
+    'cbsg-guest-panel',
+    'complete-wrapper'
+  ];
+  const stripped = [];
+  elementsToStrip.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { stripped.push({ parent: el.parentNode, el: el, next: el.nextSibling }); el.remove(); }
+  });
 
+  // Strip dynamically-injected admin button
+  const adminBtn = document.getElementById('btn-admin');
+  if (adminBtn) { stripped.push({ parent: adminBtn.parentNode, el: adminBtn, next: adminBtn.nextSibling }); adminBtn.remove(); }
+
+  // Strip dynamically-injected hamburger button
+  const hbtn = document.getElementById('hamburger-btn');
+  if (hbtn) { stripped.push({ parent: hbtn.parentNode, el: hbtn, next: hbtn.nextSibling }); hbtn.remove(); }
+
+  // Strip dynamically-injected timestamp button
+  const tsBtn = document.getElementById('btn-timestamp');
+  if (tsBtn) { stripped.push({ parent: tsBtn.parentNode, el: tsBtn, next: tsBtn.nextSibling }); tsBtn.remove(); }
+
+  // Reset sidebar to empty (nav.js rebuilds it on load)
+  const sidebar = document.getElementById('sidebar');
+  const sidebarBackup = sidebar ? sidebar.innerHTML : '';
+  if (sidebar) sidebar.innerHTML = '';
+
+  // Reset gh-status to empty
+  const ghStatus = document.getElementById('gh-status');
+  const statusBackup = ghStatus ? ghStatus.innerHTML : '';
+  if (ghStatus) { ghStatus.innerHTML = ''; ghStatus.removeAttribute('style'); }
+
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  // Restore everything back to DOM after capturing
   Object.entries(savedValues).forEach(([id, val]) => {
     const el = document.getElementById(id);
     if (el) el.value = val;
+  });
+  if (sidebar) sidebar.innerHTML = sidebarBackup;
+  if (ghStatus) ghStatus.innerHTML = statusBackup;
+  stripped.reverse().forEach(({ parent, el, next }) => {
+    if (parent) parent.insertBefore(el, next);
   });
 
   try {

@@ -1,142 +1,14 @@
+<!DOCTYPE html>
 <html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calendar Timeline — Campbell Bible Study</title>
+  <title>Israel in Prophecy — Campbell Bible Study</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <style>
-    /* ── TIMELINE ── */
-    .timeline {
-      position: relative;
-      margin: 32px 0;
-      padding-left: 0;
-    }
-    .timeline-spine {
-      position: absolute;
-      left: 180px;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      background: linear-gradient(to bottom, #1F3864, #2E75B6, #6B8E3A, #C8A800, #1F3864);
-      border-radius: 2px;
-    }
-    .timeline-entry {
-      display: flex;
-      align-items: flex-start;
-      gap: 0;
-      margin-bottom: 36px;
-      position: relative;
-    }
-    .timeline-date {
-      width: 168px;
-      min-width: 168px;
-      text-align: right;
-      padding-right: 24px;
-      padding-top: 6px;
-      font-size: 12px;
-      font-weight: bold;
-      color: #1F3864;
-      font-family: Arial, sans-serif;
-      line-height: 1.4;
-    }
-    .timeline-dot {
-      width: 18px;
-      min-width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 3px solid #fff;
-      margin-top: 4px;
-      position: relative;
-      z-index: 2;
-      flex-shrink: 0;
-      margin-left: -7px;
-    }
-    .dot-creation   { background: #1F3864; box-shadow: 0 0 0 2px #1F3864; }
-    .dot-essene     { background: #2E75B6; box-shadow: 0 0 0 2px #2E75B6; }
-    .dot-crisis     { background: #C0392B; box-shadow: 0 0 0 2px #C0392B; }
-    .dot-reform     { background: #6B8E3A; box-shadow: 0 0 0 2px #6B8E3A; }
-    .dot-pharisee   { background: #7A4F00; box-shadow: 0 0 0 2px #7A4F00; }
-    .dot-roman      { background: #8E44AD; box-shadow: 0 0 0 2px #8E44AD; }
-    .dot-hillel     { background: #C8A800; box-shadow: 0 0 0 2px #C8A800; }
-    .dot-gregorian  { background: #2E75B6; box-shadow: 0 0 0 2px #2E75B6; }
-    .dot-millennial { background: #1F3864; box-shadow: 0 0 0 2px #1F3864; }
-
-    .timeline-card {
-      margin-left: 24px;
-      flex: 1;
-      border-radius: 8px;
-      padding: 14px 18px;
-      border-left: 4px solid #ccc;
-    }
-    .card-creation   { background: #EBF4FC; border-left-color: #1F3864; }
-    .card-essene     { background: #EBF4FC; border-left-color: #2E75B6; }
-    .card-crisis     { background: #FEF0EE; border-left-color: #C0392B; }
-    .card-reform     { background: #F4F8EE; border-left-color: #6B8E3A; }
-    .card-pharisee   { background: #FFF8EE; border-left-color: #7A4F00; }
-    .card-roman      { background: #F5EEF8; border-left-color: #8E44AD; }
-    .card-hillel     { background: #FFFDF0; border-left-color: #C8A800; }
-    .card-gregorian  { background: #EBF4FC; border-left-color: #2E75B6; }
-    .card-millennial { background: #F4F8EE; border-left-color: #1F3864; }
-
-    .card-title {
-      font-size: 15px;
-      font-weight: bold;
-      color: #1F3864;
-      margin-bottom: 4px;
-      font-family: Arial, sans-serif;
-    }
-    .card-subtitle {
-      font-size: 11px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 8px;
-      font-family: Arial, sans-serif;
-    }
-    .sub-creation   { color: #1F3864; }
-    .sub-essene     { color: #2E75B6; }
-    .sub-crisis     { color: #C0392B; }
-    .sub-reform     { color: #6B8E3A; }
-    .sub-pharisee   { color: #7A4F00; }
-    .sub-roman      { color: #8E44AD; }
-    .sub-hillel     { color: #C8A800; }
-    .sub-gregorian  { color: #2E75B6; }
-    .sub-millennial { color: #3B5E1A; }
-
-    .card-body {
-      font-size: 13px;
-      color: #444;
-      line-height: 1.7;
-      font-family: Arial, sans-serif;
-    }
-    .card-tag {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: bold;
-      padding: 2px 8px;
-      border-radius: 10px;
-      margin-top: 8px;
-      font-family: Arial, sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .tag-solar    { background: #2E75B6; color: #fff; }
-    .tag-lunar    { background: #7A4F00; color: #fff; }
-    .tag-hybrid   { background: #8E44AD; color: #fff; }
-    .tag-corrupt  { background: #C0392B; color: #fff; }
-    .tag-restored { background: #6B8E3A; color: #fff; }
-    .tag-future   { background: #1F3864; color: #FFD700; }
-
-    /* ── COMPARISON TABLE ── */
-    .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; font-family: Arial, sans-serif; }
-    .compare-table th { background: #1F3864; color: #fff; padding: 10px 12px; text-align: left; font-size: 12px; }
-    .compare-table td { padding: 9px 12px; border-bottom: 1px solid #eee; color: #444; vertical-align: top; }
-    .compare-table tr:nth-child(even) td { background: #f9f9f9; }
-    .highlight-row td { background: #FFFDF0 !important; font-weight: bold; color: #1F3864; }
-
-    /* ── LEGEND ── */
-    .legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 24px; }
-    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-family: Arial, sans-serif; color: #555; }
-    .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .study-q-box { background:#F5F5F5; border:1px solid #ddd; border-radius:6px; padding:16px 18px; margin:12px 0; }
+    .study-q { font-size:13px; color:#333; line-height:1.7; margin-bottom:6px; font-family:Arial,sans-serif; font-weight:bold; }
+    .study-q-input { width:100%; border:none; border-bottom:1px solid #bbb; padding:6px 0; font-size:13px; color:#222; background:transparent; font-family:Georgia,serif; margin-bottom:16px; }
+    .study-q-input:focus { outline:none; border-bottom-color:#1F3864; }
   </style>
 </head>
 <body>
@@ -146,289 +18,71 @@
   <span class="bar-sep">|</span>
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
-  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button><button id="btn-timestamp" class="btn-timestamp" title="Insert timestamp at cursor in your notes" onclick="insertTimestamp()">🕐 Timestamp</button><button id="btn-log-time" class="btn-timestamp" title="Insert study time summary at cursor in your notes" onclick="insertStudyTime()">📚 Log Study Time</button><span id="study-timer-display" class="study-timer-display">⏱ 19s (total: 42m 44s)</span>
-  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status"></span>
   <div class="bar-right">
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 3, 2026</span>
+    <span id="gh-bar-version">Version: April 2, 2026</span>
   </div>
 </div>
 
-<div id="sidebar">
-    <div id="sidebar-header">
-      <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 4, 2026</p>
-    </div>
-    <div id="sidebar-nav">
-  <div class="nav-section">Getting Started</div><a class="nav-item" href="../index.html">Introduction</a><a class="nav-item" href="../index.html#index">Thematic Index</a>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme1')" id="nav-header-theme1">
-          <span>Theme 1 — End Times</span>
-          <span class="nav-arrow " id="nav-arrow-theme1">▶</span>
-        </div>
-        <div class="nav-section-items collapsed" id="nav-items-theme1">
-      <a class="nav-item" href="../theme1/module1.html">Module 1 — Daniel's 70 Weeks</a><a class="nav-item" href="../theme1/module2.html">Module 2 — Israel in Prophecy</a><a class="nav-item" href="../theme1/module3.html">Module 3 — Day of the Lord</a><a class="nav-item" href="../theme1/module4.html">Module 4 — The Watchman</a><a class="nav-item" href="../theme1/module5.html">Module 5 — The New Covenant</a><a class="nav-item" href="../theme1/module6.html">Module 6 — The Rapture</a><a class="nav-item" href="../theme1/module7.html">Module 7 — The Antichrist</a><a class="nav-item" href="../theme1/module8.html">Module 8 — The Rebuilt Temple</a><a class="nav-item" href="../theme1/module9.html">Module 9 — Gog-Magog War</a><a class="nav-item" href="../theme1/module10.html">Module 10 — Signs of the Times</a><a class="nav-item" href="../theme1/module11.html">Module 11 — False Prophets</a><a class="nav-item" href="../theme1/module12.html">Module 12 — The Millennium</a><a class="nav-item" href="../theme1/module13.html">Module 13 — Second Coming</a><a class="nav-item" href="../theme1/module14.html">Module 14 — Matt 24 ↔ Revelation</a><a class="nav-item" href="../theme1/module15.html">Module 15 — Armageddon</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme2')" id="nav-header-theme2">
-          <span>Theme 2 — Biblical Calendar</span>
-          <span class="nav-arrow open" id="nav-arrow-theme2">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme2">
-      <a class="nav-item" href="../theme2/index.html">Theme 2 Overview</a><a class="nav-item sub" href="../theme2/module1.html">↳ Module 1 — Calendar History</a><a class="nav-item sub active" href="../theme2/module2.html">↳ Module 2 — Calendar Timeline</a><a class="nav-item sub" href="../theme2/module3.html">↳ Module 3 — Book of Jubilees</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme3')" id="nav-header-theme3">
-          <span>Theme 3 — Judgment &amp; Mercy</span>
-          <span class="nav-arrow open" id="nav-arrow-theme3">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme3">
-      <a class="nav-item" href="../theme3/index.html">Theme 3 Overview</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('themes48')" id="nav-header-themes48">
-          <span>Themes 4–8</span>
-          <span class="nav-arrow open" id="nav-arrow-themes48">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-themes48">
-      <a class="nav-item" href="../index.html#themes48">Themes 4–8 (Coming Soon)</a></div><div class="nav-section">My Study</div><a class="nav-item" href="../sermons.html">Sermon &amp; Teaching Log</a><a class="nav-item" href="../journal.html">Personal Journal</a><a class="nav-item" href="../convictions.html">My Growing Convictions</a></div></div>
+<div id="sidebar"></div>
 
 <div id="app">
 <div id="main">
 
-  <span class="page-tag">Module 2 — Theme 2: Biblical Calendar &amp; Prophecy</span>
-  <h1 class="page-title">Calendar Timeline: Visual Reference</h1>
-  <p class="page-subtitle">A chronological overview of every major calendar system from Creation to the Millennium</p>
 
-  <div class="info-box">
-    <div class="title">How to use this page</div>
-    <div class="line">This is a visual reference companion to Module 1 (Calendar History). Use it to see the big picture at a glance — how calendars changed over time, who changed them, why, and what was lost or preserved at each step.</div>
-  </div>
-
-  <!-- LEGEND -->
-  <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#2E75B6"></div> Solar Calendar</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#7A4F00"></div> Lunar Calendar</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#8E44AD"></div> Hybrid / Civil Calendar</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#C0392B"></div> Corruption / Crisis</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#6B8E3A"></div> Reform / Preservation</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#1F3864"></div> God's Design / Millennial</div>
-  </div>
-
-  <!-- TIMELINE -->
-  <div class="timeline">
-    <div class="timeline-spine"></div>
-
-    <!-- CREATION -->
-    <div class="timeline-entry">
-      <div class="timeline-date">Creation<br>~4000 BC</div>
-      <div class="timeline-dot dot-creation"></div>
-      <div class="timeline-card card-creation">
-        <div class="card-title">God's Original Calendar — The 364-Day Solar Year</div>
-        <div class="card-subtitle sub-creation">God's Design · Genesis 1–2</div>
-        <div class="card-body">God created the sun, moon, and stars on Day 4 specifically "for signs, seasons, days, and years" (Gen 1:14). The Essenes, the Book of Enoch, and the Book of Jubilees all agree: the original year was exactly 364 days — 52 complete weeks. Every feast, every Sabbath fell on the same day of the week, every year. The year began at the spring equinox. The Essenes believed this calendar was observed unbroken from Adam through David.</div>
-        <div><span class="card-tag tag-solar">364-Day Solar</span> <span class="card-tag tag-restored">God-Given</span></div>
-      </div>
-    </div>
-
-    <!-- NOAH -->
-    <div class="timeline-entry">
-      <div class="timeline-date">Noah's Flood<br>~2348 BC</div>
-      <div class="timeline-dot dot-essene"></div>
-      <div class="timeline-card card-essene">
-        <div class="card-title">Calendar Integrity Maintained Through the Flood</div>
-        <div class="card-subtitle sub-essene">Jubilees 6:36–38 · Enoch 72:32</div>
-        <div class="card-body">The Essenes addressed the obvious question: did the Flood alter the Earth's orbit and break the calendar? Their answer was no — the tropical year (365.2422 days) remained unchanged before and after the Flood. The Dead Sea Scrolls record that Noah commanded his children to observe the solstices and equinoxes as days of remembrance. The 364-day calendar continued, with Noah himself using it.</div>
-        <div><span class="card-tag tag-solar">364-Day Solar</span></div>
-      </div>
-    </div>
-
-    <!-- EXODUS -->
-    <div class="timeline-entry">
-      <div class="timeline-date">The Exodus<br>~1446 BC</div>
-      <div class="timeline-dot dot-reform"></div>
-      <div class="timeline-card card-reform">
-        <div class="card-title">God Resets the New Year — Nisan as Month 1</div>
-        <div class="card-subtitle sub-reform">Exodus 12:1–2 · Leviticus 23</div>
-        <div class="card-body">At the moment of redemption from Egypt, God told Moses: "This month shall be the first month of the year for you." The spring month of Nisan — the month of Passover — became the anchor of the covenantal calendar. Leviticus 23 then established all seven appointed feasts (moedim) tied to this structure. The original solar calendar and the new covenantal framework were unified.</div>
-        <div><span class="card-tag tag-solar">Solar Foundation</span> <span class="card-tag tag-restored">Covenantal Reset</span></div>
-      </div>
-    </div>
-
-    <!-- SELEUCID -->
-    <div class="timeline-entry">
-      <div class="timeline-date">Seleucid Invasion<br>~175–164 BC</div>
-      <div class="timeline-dot dot-crisis"></div>
-      <div class="timeline-card card-crisis">
-        <div class="card-title">Antiochus Epiphanes Forces the Seleucid Greek Calendar</div>
-        <div class="card-subtitle sub-crisis">The First Calendar Corruption</div>
-        <div class="card-body">Antiochus Epiphanes imposed the Seleucid Greek lunar calendar on the Jewish people — changing New Year's Day from spring (Nisan) to fall (Tishrei), and calculating months by the crescent moon rather than the solstices and equinoxes. This is the calendar that directly conflicted with what the Zadokite priests had preserved. The Essenes identified this as the beginning of a catastrophic corruption.
-          <br><br>
-          <strong>📌 Who were the Zadokite priests?</strong> The Zadokites (also called the <em>Sons of Zadok</em>) were the priestly family that had held the Jerusalem high priesthood in an unbroken line since Solomon appointed Zadok as his chief priest (~950 BC). For roughly 800 years, every high priest in the Temple descended from this one family. They guarded not just the Temple rituals but the sacred 364-day solar calendar, which they believed had been revealed by God and maintained by angels. When Antiochus IV came to power in 175 BC, he removed the legitimate Zadokite high priest (Onias III) — first by installing Onias's own brother Jason in exchange for a bribe, then by replacing Jason with Menelaus, who was not even a Zadokite. Onias III was eventually assassinated. The Zadokite priests who refused to accept the new lunar calendar and the corrupt priestly succession withdrew to the Judean desert at Qumran — and the scrolls they took with them became the Dead Sea Scrolls.</div>
-        <div><span class="card-tag tag-lunar">354-Day Lunar</span> <span class="card-tag tag-corrupt">Forced Corruption</span></div>
-      </div>
-    </div>
-
-    <!-- MACCABEAN -->
-    <div class="timeline-entry">
-      <div class="timeline-date">Maccabean Revolt<br>164 BC</div>
-      <div class="timeline-dot dot-crisis"></div>
-      <div class="timeline-card card-crisis">
-        <div class="card-title">The Maccabees Win — But Keep the Greek Calendar</div>
-        <div class="card-subtitle sub-crisis">The Unfinished Restoration</div>
-        <div class="card-body">The Maccabees drove out the Greeks and rededicated the Temple (Hanukkah). They reinstated Mosaic law — but they never reinstated the original solar calendar. As part of their political settlement they retained the Seleucid-influenced lunar calendar. The Zadokite priests who refused this compromise withdrew to Qumran, taking the Temple library with them. This is the origin of the Dead Sea Scrolls community — and the Pharisee/Essene split.</div>
-        <div><span class="card-tag tag-corrupt">Compromise</span> <span class="card-tag tag-lunar">Lunar Calendar Kept</span></div>
-      </div>
-    </div>
-
-    <!-- ESSENE QUMRAN -->
-    <div class="timeline-entry">
-      <div class="timeline-date">Qumran Community<br>~150 BC – 68 AD</div>
-      <div class="timeline-dot dot-essene"></div>
-      <div class="timeline-card card-essene">
-        <div class="card-title">The Essenes Preserve the Original Calendar at Qumran</div>
-        <div class="card-subtitle sub-essene">Dead Sea Scrolls · Sons of Light vs. Sons of Darkness</div>
-        <div class="card-body">The Essenes — calling themselves the Sons of Light — preserved the original 364-day solar calendar in their community at Qumran. They called the Pharisees the "Sons of Darkness" for following the lunar calendar. The Dead Sea Scrolls contain numerous calendar texts: 4Q318, 4Q394, the Damascus Document, the Community Rule. They believed that high priests performing Yom Kippur on the wrong day (under the corrupt calendar) were dying in God's presence — the Talmud (Yoma 9a) records over 300 high priests in 420 years died within a year of taking office.</div>
-        <div><span class="card-tag tag-solar">364-Day Solar Preserved</span></div>
-      </div>
-    </div>
-
-    <!-- JULIUS CAESAR -->
-    <div class="timeline-entry">
-      <div class="timeline-date">Julius Caesar<br>46 BC</div>
-      <div class="timeline-dot dot-roman"></div>
-      <div class="timeline-card card-roman">
-        <div class="card-title">The Julian Calendar — 365-Day Solar with Leap Year</div>
-        <div class="card-subtitle sub-roman">Civil / Roman Calendar</div>
-        <div class="card-body">Julius Caesar reformed the Roman calendar in 46 BC, creating the Julian calendar — a 365-day solar year with a leap day every four years. This calendar restored the 7-day week structure that Rome had briefly abandoned for an 8-day cycle. The Essenes noted that the Julian calendar at least preserved the same seven-day week they used. Josephus wrote that the Romans referred to the Jews as keeping their own "Saturnalia" (day of rest) every Saturday — confirming the Sabbath was Saturday in the 1st century.</div>
-        <div><span class="card-tag tag-hybrid">365-Day Solar Civil</span></div>
-      </div>
-    </div>
-
-    <!-- HILLEL II -->
-    <div class="timeline-entry">
-      <div class="timeline-date">Hillel II<br>~358–359 AD</div>
-      <div class="timeline-dot dot-hillel"></div>
-      <div class="timeline-card card-hillel">
-        <div class="card-title">Rabbi Hillel II Standardizes the Modern Jewish Calendar</div>
-        <div class="card-subtitle sub-hillel">The Calendar the Church Has Used Ever Since</div>
-        <div class="card-body">After the destruction of Jerusalem (70 AD) scattered Jewish communities across the world, it became impossible to coordinate the calendar by observation of the crescent moon from Jerusalem. Around 358–359 AD, Rabbi Hillel II codified a standardized mathematical formula — the Jewish calendar still in use today. His rules moved certain holy days to avoid falling on Sabbaths. This is a modification of the Pharisee lunar calendar, not the original solar calendar — and even by strict Pharisee standards it is not entirely accurate.</div>
-        <div><span class="card-tag tag-lunar">354-Day Lunar (Modified)</span></div>
-      </div>
-    </div>
-
-    <!-- GREGORIAN -->
-    <div class="timeline-entry">
-      <div class="timeline-date">Gregorian Reform<br>1582 AD</div>
-      <div class="timeline-dot dot-gregorian"></div>
-      <div class="timeline-card card-gregorian">
-        <div class="card-title">The Gregorian Calendar — Julian Corrected for Leap Year Drift</div>
-        <div class="card-subtitle sub-gregorian">Current Civil Calendar</div>
-        <div class="card-body">By the Middle Ages the Julian calendar's leap year calculation had caused the spring equinox to drift 11 days. Pope Gregory XIII authorized the Gregorian calendar in 1582, correcting the leap year formula while preserving the identical seven-day week structure. When countries adopted it, they skipped days but deliberately preserved the weekly cycle. In America (1752): Wednesday September 2 was followed by Thursday September 14 — Saturday remained Saturday. The seven-day week has been unbroken from creation.</div>
-        <div><span class="card-tag tag-hybrid">365-Day Solar Civil</span> <span class="card-tag tag-restored">7-Day Week Preserved</span></div>
-      </div>
-    </div>
-
-    <!-- MILLENNIAL -->
-    <div class="timeline-entry">
-      <div class="timeline-date">The Millennium<br>Future</div>
-      <div class="timeline-dot dot-millennial"></div>
-      <div class="timeline-card card-millennial">
-        <div class="card-title">Christ's Reign — The Original Calendar Restored</div>
-        <div class="card-subtitle sub-millennial">Isaiah 66:23 · Ezekiel 46:1 · Revelation 20</div>
-        <div class="card-body">Both Isaiah and Ezekiel prophesy that in the Millennial Kingdom, all humanity will observe the same Sabbaths and new moons in worship before God. The Enoch calendar states that these cycles do not change until the new heaven and new earth (Enoch 72:1). The calendar God designed at creation is the calendar that will structure worship during Christ's 1,000-year reign from Jerusalem. The original design was never abandoned by God — only by man.</div>
-        <div><span class="card-tag tag-future">Millennial Restoration</span> <span class="card-tag tag-solar">Original Cycles Restored</span></div>
-      </div>
-    </div>
-
-  </div><!-- end timeline -->
-
-  <div class="divider"></div>
-
-  <!-- COMPARISON TABLE -->
-  <h2 class="section-title">Calendar Comparison at a Glance</h2>
-  <table class="compare-table">
-    <tbody><tr>
-      <th style="width:22%">Calendar</th>
-      <th style="width:10%">Days/Year</th>
-      <th style="width:13%">Type</th>
-      <th style="width:15%">New Year</th>
-      <th style="width:15%">Authority</th>
-      <th style="width:25%">Key Note</th>
-    </tr>
-    <tr class="highlight-row">
-      <td>Essene / Enoch (Original)</td>
-      <td>364</td>
-      <td>Solar</td>
-      <td>Spring Equinox</td>
-      <td>God / Zadokite priests</td>
-      <td>Every feast same weekday every year; Essenes called it God's perfect design</td>
-    </tr>
-    <tr>
-      <td>Seleucid Greek</td>
-      <td>354</td>
-      <td>Lunar</td>
-      <td>Fall (Oct)</td>
-      <td>Antiochus Epiphanes</td>
-      <td>Forced on Jews; start of the corruption the Essenes resisted</td>
-    </tr>
-    <tr>
-      <td>Pharisee / Observation</td>
-      <td>354 + leap month</td>
-      <td>Lunar</td>
-      <td>Fall (Tishrei)</td>
-      <td>Jerusalem priestly committee</td>
-      <td>Crescent moon sighting; required messengers across Israel</td>
-    </tr>
-    <tr>
-      <td>Julian (Roman)</td>
-      <td>365.25</td>
-      <td>Solar Civil</td>
-      <td>January 1</td>
-      <td>Julius Caesar, 46 BC</td>
-      <td>Restored 7-day week; matched Essene weekday structure</td>
-    </tr>
-    <tr>
-      <td>Hillel II (Modern Jewish)</td>
-      <td>354 + leap month</td>
-      <td>Lunar</td>
-      <td>Fall (Tishrei)</td>
-      <td>Rabbi Hillel II, ~358 AD</td>
-      <td>Mathematical formula; still in use today; modified Pharisee calendar</td>
-    </tr>
-    <tr>
-      <td>Gregorian (Current Civil)</td>
-      <td>365.2425</td>
-      <td>Solar Civil</td>
-      <td>January 1</td>
-      <td>Pope Gregory XIII, 1582</td>
-      <td>Corrected Julian drift; 7-day week preserved unbroken</td>
-    </tr>
-    <tr class="highlight-row">
-      <td>Millennial (Prophesied)</td>
-      <td>Original cycles</td>
-      <td>Solar</td>
-      <td>Spring</td>
-      <td>Christ from Jerusalem</td>
-      <td>Isa 66:23; Ezek 46:1 — Sabbaths and new moons restored in worship</td>
-    </tr>
+  <span class="page-tag">Module 2 — Theme 1: End Times</span>
+  <h1 class="page-title">Israel in Prophecy</h1>
+  <div class="info-box"><div class="title">Read first</div><div class="line">Ezekiel 36–37, Romans 9–11, Zechariah 12</div></div>
+  <p class="body">More end-times prophecy centers on Israel than on any other nation. Understanding your theology of Israel will shape almost every other eschatological conviction you form.</p>
+  <div class="info-box"><div class="title">The Central Question</div><div class="line">Has God's covenant with Israel been transferred to the Church, or is it still active? Your answer will determine whether end-times prophecy about Israel is still future or was fulfilled spiritually in/through the Church.</div></div>
+  <h2 class="section-title">Israel Signs — Fulfilled Checklist</h2>
+  <table class="checklist-table">
+    <tbody><tr><th style="width:45%">Prophecy / Event</th><th style="width:25%">Scripture</th><th style="width:15%">Status</th><th style="width:15%">My Notes</th></tr>
+    <tr><td>Jewish people regathered from all nations to the land</td><td>Ezek 36:24; 37:21</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
+    <tr><td>Israel reborn as a nation — May 14, 1948</td><td>Isa 66:8</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
+    <tr><td>Hebrew language restored</td><td>Zeph 3:9</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
+    <tr><td>Jerusalem back under Jewish control — 1967</td><td>Luke 21:24</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
+    <tr><td>Desert land of Israel blossoming and fruitful again</td><td>Isa 35:1; Ezek 36:35</td><td class="status-fulfilled">✓ Fulfilled</td><td></td></tr>
   </tbody></table>
-
+  <div class="scripture-box"><div class="ref">Romans 11:25–27 (NLT)</div><div class="text">I want you to understand this mystery, dear brothers and sisters, so that you will not feel proud about yourselves. Some of the people of Israel have hard hearts, but this will last only until the full number of Gentiles comes to Christ. And so all Israel will be saved.</div></div>
+  <div class="views-box">
+    <div class="view-item"><div class="view-title">Dispensational View</div><div class="view-body">The 1948 and 1967 events are literal, partial fulfillments of OT prophecy. Full fulfillment comes at the Second Coming when all Israel is saved and Christ reigns from Jerusalem.</div><div class="view-key">Key texts: Ezek 36–37; Isa 11:11–12; Rom 11:25–27</div></div>
+    <div class="view-item"><div class="view-title">Covenant / Replacement Theology View</div><div class="view-body">The Church is the "new Israel" — the true seed of Abraham (Gal 3:29). OT promises to national Israel are fulfilled spiritually in the Church. The 1948 establishment has no prophetic significance.</div><div class="view-key">Key texts: Gal 3:29; 6:16; Rom 2:28–29; Matt 21:43</div></div>
+    <div class="view-item"><div class="view-title">Progressive Covenantalism View</div><div class="view-body">Neither pure replacement nor strict dispensationalism. The Church fulfills many Abrahamic promises, but there remains a future for ethnic Israel as part of the one new man in Christ.</div><div class="view-key">Key texts: Rom 11:11–15, 25–27; Eph 2:11–22</div></div>
+  </div>
+  <div class="reflection-box">
+    <div class="title">🙏 Reflection &amp; Prayer</div>
+    <div class="reflection-item">What do I actually believe about whether God's covenant with Israel is still active? Have I studied this, or inherited someone else's view?</div>
+    <div class="reflection-item">Romans 11:25 speaks of a "mystery" — the partial hardening of Israel until the full number of Gentiles comes in. Does this change how I think about sharing the gospel with Jewish people?</div>
+    <div class="reflection-item">How does the rebirth of Israel in 1948 affect my confidence in the reliability of unfulfilled prophecy?</div>
+  </div>
+  <div class="notes-box">
+    <div class="label">✏️ Module 2 — My convictions on Israel in prophecy:</div>
+    <textarea class="notes-input" id="n-m2" placeholder="Write your convictions here... Date your entry."></textarea>
+  </div>
   <div class="cross-ref-box">
     <div class="title">🔗 Cross-References</div>
-    <div class="line">• Theme 2, Module 1 — Full narrative history behind this timeline</div>
-    <div class="line">• Theme 1, Module 1 (Daniel's 70 Weeks) — Calendar accuracy directly affects prophetic timeline calculations</div>
-    <div class="line">• Theme 1, Module 12 (The Millennium) — The restoration of original worship cycles in Christ's reign</div>
-    <div class="line">• Genesis 1:14 — God's original design: lights for "signs, seasons, days, and years"</div>
-    <div class="line">• Isaiah 66:23 / Ezekiel 46:1 — Millennial calendar continuity prophesied</div>
+    <div class="line">• Genesis 12:1–3 — The Abrahamic covenant: "I will bless those who bless you"</div>
+    <div class="line">• Zechariah 12:10 — Israel will mourn for the One they pierced — national repentance at the Second Coming</div>
+    <div class="line">• Module 9 (Gog-Magog) — The Gog-Magog war and its effect on Israel's spiritual awakening</div>
+    <div class="line">• Module 13 (Second Coming) — The moment all Israel is saved (Rom 11:26; Zech 12:10)</div>
   </div>
+
 
   <div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid #ddd;">
-    <a href="module1.html" class="btn-primary" style="font-size:12px;">← Module 1: Calendar History</a>
-    <span></span>
+    <a href="module1.html" class="btn-primary" style="font-size:12px;">← Previous Module</a>
+    <a href="module3.html" class="btn-primary" style="font-size:12px;">Next Module →</a>
   </div>
 
 </div>
 </div>
 
+<script>window.PAGE_NOTE_IDS = ["n-m2"];</script>
 <script src="../assets/js/nav.js"></script>
 <script src="../assets/js/main.js"></script>
 <script>buildSidebar('..');</script>
-
-
 
 </body></html>
