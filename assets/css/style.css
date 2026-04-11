@@ -212,7 +212,7 @@ body {
 #gh-bar-version {
   font-size: 9px;
   color: rgba(255,255,255,0.4);
-  white-space: nowrap;
+  white-space: normal;
   text-align: right;
   line-height: 1.3;
 }
