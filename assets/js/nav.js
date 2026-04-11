@@ -77,6 +77,7 @@ const NAV_STRUCTURE = [
       { label: 'Personal Journal',       href: 'journal.html'             },
       { label: 'My Growing Convictions', href: 'convictions.html'         },
       { label: '📋 Save History',        href: 'history.html'             },
+      { label: '🔬 Deep Dives',          href: 'theme2/DeepDives.html'    },
       { label: '🎧 Listening Notes',     href: 'listening-notes.html',    adminOnly: true },
     ]
   }
