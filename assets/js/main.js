@@ -345,7 +345,7 @@ function injectGuestPanel() {
                line-height:1.5;margin-bottom:8px;"
         oninput="localStorage.setItem('${getGuestPageKey()}',this.value)"
       >${safeNotes}</textarea>
-      <button id="cbsg-guest-save-btn" onclick="saveGuestNotes()"
+      <button id="cbsg-guest-save-btn"
         style="width:100%;background:#FFD700;color:#1F3864;border:none;border-radius:4px;
                padding:7px;font-size:12px;font-weight:bold;cursor:pointer;
                font-family:Arial,sans-serif;">
@@ -354,6 +354,7 @@ function injectGuestPanel() {
     </div>`;
 
   document.body.appendChild(panel);
+  document.getElementById('cbsg-guest-save-btn').addEventListener('click', saveGuestNotes);
 }
 
 let guestPanelOpen = true;
