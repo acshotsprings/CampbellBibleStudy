@@ -4,6 +4,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Deep Dives — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .dd-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin-top:20px; }
+    .dd-card { background:#fff; border:1px solid #d0dce8; border-radius:10px; padding:20px; cursor:pointer; transition:border-color 0.15s; text-decoration:none; display:block; }
+    .dd-card:hover { border-color:#2E75B6; }
+    .dd-card-icon { font-size:28px; margin-bottom:10px; }
+    .dd-card-title { font-size:15px; font-weight:bold; color:#1F3864; font-family:Georgia,serif; margin-bottom:6px; }
+    .dd-card-desc { font-size:13px; color:#555; line-height:1.6; font-family:Arial,sans-serif; }
+    .dd-card-tag { display:inline-block; margin-top:10px; font-size:11px; background:#EBF4FC; color:#1F3864; padding:3px 9px; border-radius:4px; font-family:Arial,sans-serif; }
+    .dd-coming { opacity:0.5; cursor:default; pointer-events:none; }
+  </style>
 </head>
 <body>
 
@@ -13,7 +23,6 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <button id="btn-timestamp" onclick="stampTimestamp()" style="display:none;">🕐 Timestamp</button>
   <span id="gh-status"></span>
   <div class="bar-right">
     <span class="bar-originated">Originated: March 27, 2026</span>
@@ -27,227 +36,65 @@
 <div id="app">
 <div id="main">
 
-  <span class="page-tag">Theme 2: Biblical Calendar &amp; Prophecy</span>
+  <span class="page-tag">My Study</span>
   <h1 class="page-title">🔬 Deep Dives</h1>
-  <p class="page-subtitle">Extended research on subjects that require more space than a single module allows</p>
+  <p class="body">Extended research on subjects that deserve more space than a single module allows. Each deep dive is a standalone study. Click any subject below to open it — new dives are added as subjects emerge from teaching, study, and personal reflection.</p>
 
-  <div class="cross-ref-box">
-    <div class="title">🔗 Cross-References</div>
-    <div class="line">• <a href="theme2/module1.html" style="color:#2E75B6;">Module 1 — Calendar History</a> — foundation for all calendar deep dives</div>
-    <div class="line">• <a href="theme2/module2.html" style="color:#2E75B6;">Module 2 — Calendar Timeline</a> — visual timeline from Creation to Millennium</div>
-    <div class="line">• <a href="theme2/module3.html" style="color:#2E75B6;">Module 3 — Book of Jubilees</a> — 364-day solar year and nested-seven system</div>
-    <div class="line">• <a href="theme1/module1.html" style="color:#2E75B6;">Theme 1 Module 1 — Daniel's 70 Weeks</a> — prophetic time calculation</div>
+  <div class="dd-grid">
+
+    <a href="DeepDive-Calendars.html" class="dd-card">
+      <div class="dd-card-icon">📅</div>
+      <div class="dd-card-title">Prophetic Calendars</div>
+      <div class="dd-card-desc">Does the calendar affect prophecy? The 364-day solar year vs the modern Jewish calendar, feast precision, the hidden summer feasts, and what it means for Daniel's timeline.</div>
+      <span class="dd-card-tag">Theme 2 · Daniel · Revelation</span>
+    </a>
+
+    <a href="DeepDive-Shabua.html" class="dd-card">
+      <div class="dd-card-icon">📖</div>
+      <div class="dd-card-title">H7620 — What Does "Weeks" Mean in Daniel 9?</div>
+      <div class="dd-card-desc">A full Hebrew word study on <em>shabua</em> — why the "weeks" of Daniel 9 mean years, not days. Four converging lines of evidence from grammar, context, and mathematics.</div>
+      <span class="dd-card-tag">Daniel 9 · Strong's H7620 · 70 Weeks</span>
+    </a>
+
+    <a href="DeepDive-Willow.html" class="dd-card">
+      <div class="dd-card-icon">🌿</div>
+      <div class="dd-card-title">The Willow in Scripture</div>
+      <div class="dd-card-desc">From the Four Species of Sukkot to the rivers of Babylon — what the willow reveals about exile, suspended praise, Spirit-filled revival, and God's covenant care. Dedicated to Hazlee Willow.</div>
+      <span class="dd-card-tag">Psalm 137 · Isaiah 44 · Ezekiel 17 · Job 40</span>
+    </a>
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">⚡</div>
+      <div class="dd-card-title">The 100-Pound Hailstones</div>
+      <div class="dd-card-desc">Revelation 16:21 and the 7th Bowl Judgment — what a talent weighed in the ancient world and what this judgment means in the Tribulation sequence.</div>
+      <span class="dd-card-tag">Coming Soon · Revelation 16</span>
+    </div>
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">🗺️</div>
+      <div class="dd-card-title">Gog & Magog — Five Evidence Streams for Russia</div>
+      <div class="dd-card-desc">The historical, etymological, geographical, and prophetic case for Russia as Magog. Walvoord, Rosenberg, and the Genesis 10 Table of Nations.</div>
+      <span class="dd-card-tag">Coming Soon · Ezekiel 38–39</span>
+    </div>
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">🏛️</div>
+      <div class="dd-card-title">The Abomination of Desolation</div>
+      <div class="dd-card-desc">Matthew 24:15 vs Revelation 13 — are these the same event? A precision analysis of the distinctions between the temple event and global worship enforcement.</div>
+      <span class="dd-card-tag">Coming Soon · Matthew 24 · Revelation 13</span>
+    </div>
+
   </div>
 
-  <!-- ═══════════════════════════════
-       DEEP DIVE 1 — PROPHETIC CALENDARS
-  ═══════════════════════════════ -->
-  <h2 class="section-title" id="prophetic-calendars">Deep Dive 1 — Prophetic Calendars: Does the Calendar Affect Prophecy?</h2>
-  <p class="body">One of the most provocative questions in your study so far: if God designed a specific 364-day solar calendar — and that calendar was replaced by a corrupted lunar calendar around 170 BC — does that mean prophetic events tied to God's feast appointments could be systematically miscalculated by modern scholarship? This deep dive works through the evidence.</p>
-
-  <div class="info-box">
-    <div class="title">The Core Question</div>
-    <div class="line">The modern Jewish calendar (Hillel II, 4th century AD) is a modified lunar/solar calendar. The Essene calendar found at Qumran used a strict 364-day solar year. If God's prophetic appointments were pegged to the <em>original</em> calendar, are modern date calculations off?</div>
-  </div>
-
-  <h2 class="section-title">The Two Calendars Side by Side</h2>
-  <div class="info-box">
-    <div class="title">Modern Jewish Calendar (Hillel II, ~359 AD)</div>
-    <div class="line"><strong>Type:</strong> Lunisolar — 12 lunar months with a 13th month added 7 times every 19 years</div>
-    <div class="line"><strong>Year length:</strong> 354 days (lunar) adjusted to ~365.25 solar days over time</div>
-    <div class="line"><strong>New Year:</strong> Starts in the fall — Tishrei (Rosh Hashanah)</div>
-    <div class="line"><strong>Holy days:</strong> Calculated mathematically — adjusted to avoid falling on certain days of the week</div>
-    <div class="line"><strong>Key problem:</strong> Hillel II's adjustments move feasts off their original dates. The calendar is a human calculation, not direct observation or original design.</div>
-  </div>
-
-  <div class="info-box" style="border-color:#3B5E1A;background:#F4F8EE;">
-    <div class="title" style="color:#3B5E1A;">Dead Sea Scroll / Essene Calendar (364-Day Solar Year)</div>
-    <div class="line"><strong>Type:</strong> Pure solar — 364 days exactly, divided into 4 seasons of 91 days each</div>
-    <div class="line"><strong>Year length:</strong> 364 days — divisible perfectly by 7. Every feast falls on the same day of the week every year, forever.</div>
-    <div class="line"><strong>New Year:</strong> Starts in the spring — 1st of Nisan, aligned with the spring equinox</div>
-    <div class="line"><strong>Holy days:</strong> Fixed — Passover always on the same day of the week, Pentecost always on Sunday, Trumpets always on the same day</div>
-    <div class="line"><strong>Key strength:</strong> Mathematically perfect. The seven-day week runs continuously unbroken from Creation. No adjustments needed.</div>
-    <div class="line"><strong>Sources:</strong> Book of Jubilees, Book of Enoch (Astronomical Book), Dead Sea Scrolls (4QMMT, Temple Scroll)</div>
-  </div>
-
-  <h2 class="section-title">Why This Matters for Daniel's 70 Weeks</h2>
-  <p class="body">Daniel 9:24–27 gives a prophecy of "70 weeks" — 490 years — from the decree to rebuild Jerusalem to the coming of Messiah. Scholars have debated the precise start date and calendar used for centuries. Here is why the calendar question directly affects the calculation:</p>
-
-  <div class="info-box">
-    <div class="title">The Calendar Problem in Daniel 9</div>
-    <div class="line"><strong>360-day prophetic year theory:</strong> Many scholars (Sir Robert Anderson, Harold Hoehner) use a 360-day "prophetic year" — 483 years × 360 days = 173,880 days — which they calculate lands on Jesus's triumphal entry into Jerusalem in 32–33 AD.</div>
-    <div class="line"><strong>Why 360 days?</strong> Revelation defines the Tribulation's 3.5 years as both 42 months AND 1,260 days (Rev 11:3, 12:6, 13:5). 1,260 ÷ 42 = 30 days per month. 12 months × 30 = 360 days.</div>
-    <div class="line"><strong>The Essene challenge:</strong> Ken Johnson argues the original calendar was 364-day solar. If Daniel was using a 364-day year, the calculation shifts. The question is whether Daniel's "weeks" were calculated using the corrupted calendar or God's original design.</div>
-    <div class="line"><strong>Key tension:</strong> The 364-day calendar is historically earlier and arguably more original. The 360-day "prophetic year" is a modern scholarly construct. Which one did Gabriel intend?</div>
-  </div>
-
-  <h2 class="section-title">The Feast Calendar as Prophetic Precision</h2>
-  <p class="body">Your growing conviction — supported by Barney Kasdan, Ken Johnson, and your Theme 2 study — is that God's feast calendar is a system of precision prophetic appointments, not floating observances. Here is how the evidence lines up:</p>
-
-  <div class="info-box">
-    <div class="title">Feasts Already Fulfilled — First Coming Precision</div>
-    <div class="line"><strong>Passover (14 Nisan):</strong> Jesus crucified on Passover — exact day ✓</div>
-    <div class="line"><strong>Unleavened Bread (15 Nisan):</strong> Jesus in the tomb — the sinless one "buried" ✓</div>
-    <div class="line"><strong>Firstfruits (day after Sabbath after Passover):</strong> Jesus resurrected — "firstfruits of those who have fallen asleep" (1 Cor 15:20) ✓</div>
-    <div class="line"><strong>Shavuot / Pentecost (50 days after Firstfruits):</strong> Holy Spirit poured out — Acts 2 ✓</div>
-  </div>
-
-  <div class="info-box" style="border-color:#8B4513;background:#FFF8F0;">
-    <div class="title" style="color:#8B4513;">Feasts Yet to Be Fulfilled — Second Coming</div>
-    <div class="line"><strong>Trumpets (1 Tishrei):</strong> The Rapture? — "the last trumpet" (1 Cor 15:52), "trump of God" (1 Thess 4:16)</div>
-    <div class="line"><strong>Day of Atonement (10 Tishrei):</strong> Israel's national repentance and salvation — Zechariah 12:10, Romans 11:26</div>
-    <div class="line"><strong>Tabernacles (15–22 Tishrei):</strong> The Millennium — God dwelling with His people (Rev 21:3)</div>
-    <div class="line" style="color:#666;font-style:italic;">The pattern of precise fulfillment in the spring feasts strongly implies precise fulfillment in the fall feasts. This is not coincidence — it is design.</div>
-  </div>
-
-  <h2 class="section-title">The Hidden Summer Feasts</h2>
-  <p class="body">Ken Johnson's research on the Dead Sea Scroll Calendar reveals two feasts found in the Essene calendar that were deliberately hidden from mainstream Judaism — feasts not observed today but embedded in the original 364-day structure:</p>
-
-  <div class="info-box" style="border-color:#2E75B6;background:#EBF4FC;">
-    <div class="title" style="color:#1F3864;">Festival of New Wine (3 Av — approximately July/August)</div>
-    <div class="line">The Essenes observed a festival of new wine 50 days after Firstfruits of wheat (Shavuot). Johnson argues this may connect to the Age of Grace — the Church Age — a period the fall feasts will close out.</div>
-    <div class="line"><strong>Possible connection:</strong> Acts 2:13 — mockers accused the disciples of being "full of new wine" at Pentecost. Was this a feast day connection the early disciples would have recognized?</div>
-  </div>
-
-  <div class="info-box" style="border-color:#2E75B6;background:#EBF4FC;">
-    <div class="title" style="color:#1F3864;">Festival of New Oil (22 Elul — approximately September)</div>
-    <div class="line">50 days after New Wine. Oil in Scripture consistently points to the Holy Spirit (Ps 23:5, Matt 25 — the ten virgins). Johnson sees this as prophetically pointing to a future outpouring.</div>
-    <div class="line"><strong>Worth studying:</strong> If these hidden feasts point to the Church Age and the Spirit's work, their rediscovery may have prophetic significance for understanding where we are on God's timeline.</div>
-  </div>
-
-  <h2 class="section-title">Key Open Questions — For Further Study</h2>
-  <div class="info-box">
-    <div class="line">1. Did Daniel calculate his 70 weeks using a 360-day, 364-day, or 365.25-day year — and how do we know?</div>
-    <div class="line">2. If the modern Jewish calendar is off from the original, are the fall feasts being observed on the wrong dates — and does that affect prophetic fulfillment timing?</div>
-    <div class="line">3. What is the significance of the Festival of New Wine and Festival of New Oil for the Church Age and end times timeline?</div>
-    <div class="line">4. Was Jesus's last supper on the Essene Passover date (Tuesday/Wednesday) rather than the Pharisee Passover date (Friday) — and does this resolve the "three days and three nights" problem?</div>
-  </div>
-
-  <div class="notes-box" style="margin-top:24px;">
-    <div class="label">✏️ My deep dive notes — Prophetic Calendars:</div>
-    <textarea class="notes-input" id="n-deepdive-calendars" placeholder="e.g. The precision of the spring feasts is undeniable. If the fall feasts are equally precise, then Trumpets = Rapture is not speculation — it's pattern recognition built into the calendar by God himself..." style="min-height:120px;"></textarea>
-  </div>
-
-  <!-- ═══════════════════════════════
-       DEEP DIVE 2 — SHABUA / DANIEL'S WEEKS
-  ═══════════════════════════════ -->
-  <h2 class="section-title" id="shabua" style="margin-top:40px;">Deep Dive 2 — H7620: What Does "Weeks" Really Mean in Daniel 9?</h2>
-  <p class="body">From your study session on April 11, 2026 — a deep dive into the Hebrew word <em>shabua</em> (Strong's H7620) and why "weeks" in Daniel 9 means years, not seven-day weeks. This question came directly from studying Epicenter (Rosenberg, Chapter 13) and the Day-Year principle.</p>
-
-  <div class="info-box">
-    <div class="title">Strong's H7620 — shabua (שָׁבוּעַ)</div>
-    <div class="line"><strong>Pronunciation:</strong> shaw-BOO-ah</div>
-    <div class="line"><strong>Literal meaning:</strong> "sevened" — a unit of seven. Not automatically days. Context determines what it is seven <em>of</em>.</div>
-    <div class="line"><strong>KJV translation:</strong> "seven" or "week"</div>
-    <div class="line"><strong>Strong's definition:</strong> "properly passive participle of H7650 as a denominative of H7651; literally sevened, that is, a week (specifically of years)"</div>
-    <div class="line"><strong>Found on:</strong> Page 293 of the Complete KJV Strong's Hebrew Concordance in your Resource Library</div>
-  </div>
-
-  <div class="info-box" style="border-color:#3B5E1A;background:#F4F8EE;">
-    <div class="title" style="color:#3B5E1A;">The Key Proof — Daniel 10:2–3 vs Daniel 9:24</div>
-    <div class="line"><strong>Daniel 10:2–3:</strong> Daniel mourns for "three full weeks" — in Hebrew: <em>shavuim yamim</em> — "weeks of DAYS." He adds the word <em>yamim</em> (days) to make it unambiguous.</div>
-    <div class="line"><strong>Daniel 9:24:</strong> "Seventy weeks are decreed" — in Hebrew: <em>shivim shabuim</em> — NO word for days. The word "yamim" is completely absent.</div>
-    <div class="line"><strong>Conclusion:</strong> Daniel knew exactly how to specify seven-day weeks when he meant them. In chapter 9 he deliberately left "days" out. That's not accident — it signals a different unit of seven.</div>
-  </div>
-
-  <div class="info-box">
-    <div class="title">The Day-Year Principle — Two Explicit Biblical Foundations</div>
-    <div class="line"><strong>Numbers 14:34:</strong> God tells Israel they will wander 40 years — "one year for each of the 40 days" the spies explored Canaan. Day = Year.</div>
-    <div class="line"><strong>Ezekiel 4:6:</strong> God tells Ezekiel to lie on his side — "I have assigned you one day for each year." Day = Year.</div>
-    <div class="line">These are not interpretive suggestions — they are explicit divine statements. The principle is built into Scripture by God himself.</div>
-  </div>
-
-  <div class="info-box" style="border-color:#8B4513;background:#FFF8F0;">
-    <div class="title" style="color:#8B4513;">The Mathematical Proof</div>
-    <div class="line"><strong>If weeks = literal 7-day weeks:</strong> 70 × 7 = 490 days = just over 1 year. Impossible to fit the rebuilding of Jerusalem, the arrival of Messiah, and the destruction of the Temple into one year.</div>
-    <div class="line"><strong>If weeks = 7-year periods:</strong> 70 × 7 = 490 years. Starting from Artaxerxes' decree (444 BC), 483 years (69 weeks) = AD 33 — Jesus's triumphal entry into Jerusalem. Fulfilled to the year.</div>
-    <div class="line"><strong>The 70th week:</strong> The final 7-year period = the Tribulation. Still future. The "gap" between week 69 and week 70 = the Church Age.</div>
-  </div>
-
-  <div class="info-box" style="border-color:#2E75B6;background:#EBF4FC;">
-    <div class="title" style="color:#1F3864;">Grammar Clue — The Masculine Plural</div>
-    <div class="line">Normally the plural of "week" in Hebrew is <em>shavuot</em> (feminine ending). In Daniel 9, it uses the masculine plural <em>shabuim</em> — the same ending used for <em>shanim</em> (years).</div>
-    <div class="line">This grammatical signal — unique to Daniel 9 in all of the Old Testament — points a Hebrew reader to years, not days. It is one of four converging lines of evidence.</div>
-  </div>
-
-  <div class="notes-box" style="margin-top:24px;">
-    <div class="label">✏️ My deep dive notes — H7620 / Daniel's Weeks:</div>
-    <textarea class="notes-input" id="n-deepdive-shabua" placeholder="e.g. The four lines of evidence — no 'yamim' in Dan 9, masculine plural ending, Day-Year principle in Numbers and Ezekiel, mathematical impossibility of literal weeks — all converge. This isn't interpretation. This is the Hebrew text itself..." style="min-height:120px;"></textarea>
-  </div>
-
-  <!-- ═══════════════════════════════
-       ADD MORE DEEP DIVES
-  ═══════════════════════════════ -->
-  <!-- ═══════════════════════════════
-       DEEP DIVE 3 — THE WILLOW IN SCRIPTURE
-  ═══════════════════════════════ -->
-  <h2 class="section-title" id="willow" style="margin-top:40px;">Deep Dive 3 — The Willow in Scripture</h2>
-  <p class="body" style="font-style:italic;color:#888;">Dedicated to Hazlee Willow Campbell — whose name carried her father into a deeper study of God's Word.</p>
-  <p class="body">During the study of the Feast of Tabernacles and the Four Species (Sermon Log #11, April 6, 2026), the willow emerged as the most unexpected of the four plants. In Jewish tradition the willow has no taste and no fragrance — representing a person with neither Torah knowledge nor good deeds. Yet it is bound together with the other three on Sukkot, and the bundle is incomplete without it. That observation opened a much deeper question: what does Scripture actually say about the willow — and why does God keep returning to it?</p>
-
-  <div class="info-box">
-    <div class="title">The Four Species — Sukkot (Leviticus 23:40)</div>
-    <div class="line"><strong>Etrog (citron):</strong> Has taste AND fragrance → one with Torah knowledge AND good deeds</div>
-    <div class="line"><strong>Lulav (palm branch):</strong> Has taste but no fragrance → Torah knowledge without good deeds</div>
-    <div class="line"><strong>Myrtle:</strong> Has fragrance but no taste → good deeds without Torah knowledge</div>
-    <div class="line"><strong>Willow (aravah):</strong> No taste, no fragrance → neither Torah knowledge nor good deeds</div>
-    <div class="line" style="color:#1F3864;font-weight:bold;margin-top:8px;">Yet all four are bound together. The bundle is only complete when the willow is included. The least becomes essential to the whole.</div>
-  </div>
-
-  <div class="info-box" style="border-color:#3B5E1A;background:#F4F8EE;">
-    <div class="title" style="color:#3B5E1A;">Psalm 137:1–2 — The Willow of Exile</div>
-    <div class="line"><em>"By the rivers of Babylon we sat and wept when we remembered Zion. There on the poplars (willows) we hung our harps."</em></div>
-    <div class="line" style="margin-top:8px;">The willow here is the tree of grief, of longing, of songs silenced by captivity. Israel hung their harps — their worship — on the willows because they could not sing in a foreign land. The willow becomes the keeper of suspended praise. It holds what cannot yet be expressed. In the last days, Israel's full worship will be restored. The harps will come down from the willows.</div>
-  </div>
-
-  <div class="info-box" style="border-color:#2E75B6;background:#EBF4FC;">
-    <div class="title" style="color:#1F3864;">Isaiah 44:3–4 — The Willow of Spiritual Renewal</div>
-    <div class="line"><em>"For I will pour water on the thirsty land, and streams on the dry ground; I will pour my Spirit upon your offspring... They shall spring up among the grass like willows by flowing streams."</em></div>
-    <div class="line" style="margin-top:8px;">Here the willow is the picture of revival. Willows grow faster than almost any tree when water is present. God uses the willow to describe what His Spirit does in a dry and thirsty generation — explosive, visible, unstoppable growth. The outpouring of the Spirit in the last days (Joel 2:28–29, Acts 2:17) is described in willow language.</div>
-  </div>
-
-  <div class="info-box">
-    <div class="title">Ezekiel 17:5 — The Willow of Covenant</div>
-    <div class="line"><em>"He took of the seed of the land and planted it in fertile soil. He placed it beside abundant waters. He set it like a willow twig."</em></div>
-    <div class="line" style="margin-top:8px;">In Ezekiel's parable of two eagles and a vine, God plants Israel like a willow cutting beside abundant waters — representing His covenant commitment to sustain and grow His people even in captivity. The willow twig is not impressive. It is small, easily overlooked. But planted beside water by God's hand, it becomes something that cannot be stopped.</div>
-  </div>
-
-  <div class="info-box" style="border-color:#8B4513;background:#FFF8F0;">
-    <div class="title" style="color:#8B4513;">Job 40:22 — The Willow of Creation Order</div>
-    <div class="line"><em>"The lotus trees cover it for shade; the willows of the brook surround it."</em></div>
-    <div class="line" style="margin-top:8px;">God describes Behemoth — His most powerful creature — resting in the shade of willows. The willow frames the natural order God created. Even the mightiest creature in creation rests beneath it. The willow is not fragile — it is the canopy of the strong.</div>
-  </div>
-
-  <div class="info-box" style="border-color:#6B8E3A;background:#F4F8EE;">
-    <div class="title" style="color:#3B5E1A;">What the Willow Tells Us</div>
-    <div class="line"><strong>1. God includes the least.</strong> In Sukkot, the willow with nothing to offer is still required. The bundle is incomplete without it. God does not build His kingdom only from the gifted and the notable.</div>
-    <div class="line" style="margin-top:6px;"><strong>2. The willow holds suspended praise.</strong> Psalm 137 — the harps on willows are not gone. They are waiting. There is a season of silence and grief, but the worship will return.</div>
-    <div class="line" style="margin-top:6px;"><strong>3. The willow is the picture of Spirit-filled growth.</strong> Isaiah 44 — where the Spirit is poured out, people spring up like willows by water. Fast, visible, unstoppable.</div>
-    <div class="line" style="margin-top:6px;"><strong>4. The willow survives what other trees cannot.</strong> Willows grow in flood plains, in wet soil, in places other trees die. They bend without breaking. Planted by rivers on purpose — not despite the water, but because of it.</div>
-    <div class="line" style="margin-top:10px;color:#1F3864;font-weight:bold;">A name given to a child by parents who didn't know all this — and yet God wove it through His Word from Leviticus to Revelation. That is not coincidence. That is the fingerprint of a Father who names His children before they know their own name.</div>
-  </div>
-
-  <div class="notes-box" style="margin-top:24px;">
-    <div class="label">✏️ My notes — The Willow (for Hazlee):</div>
-    <textarea class="notes-input" id="n-deepdive-willow" placeholder="Dedicated to Hazlee Willow — what stands out to you as you read this?" style="min-height:120px;"></textarea>
-  </div>
-
-  <h2 class="section-title" style="margin-top:40px;">More Deep Dives — Coming</h2>
-  <div class="info-box">
-    <div class="line">• Deep Dive 4 — The 100-Pound Hailstones: Revelation 16:21 and the 7th Bowl Judgment</div>
-    <div class="line">• Deep Dive 5 — Gog &amp; Magog: The Five Evidence Streams for Russia</div>
-    <div class="line">• Deep Dive 6 — The Abomination of Desolation: Matthew 24:15 vs Revelation 13</div>
-  </div>
-
-  <div class="notes-box" style="margin-top:24px;">
-    <div class="label">✏️ Deep dives to add — running list:</div>
-    <textarea class="notes-input" id="n-deepdive-list" placeholder="Add topics for future deep dives here..." style="min-height:70px;"></textarea>
+  <div class="notes-box" style="margin-top:32px;">
+    <div class="label">✏️ Deep dive subjects to add — running list:</div>
+    <textarea class="notes-input" id="n-deepdives-index" placeholder="e.g. The Restrainer — who or what is holding back the Antichrist (2 Thess 2:6–7)?" style="min-height:80px;"></textarea>
   </div>
 
 </div>
 </div>
 
-<script>window.PAGE_NOTE_IDS = ['n-deepdive-calendars','n-deepdive-shabua','n-deepdive-willow','n-deepdive-list'];</script>
+<script>window.PAGE_NOTE_IDS = ['n-deepdives-index'];</script>
 <script src="assets/js/nav.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
