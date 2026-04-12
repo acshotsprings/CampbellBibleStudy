@@ -42,8 +42,11 @@ const NAV_STRUCTURE = [
     collapsible: true,
     key: 'theme2',
     items: [
-      { label: 'Theme 2 Overview',              href: '/theme2/index.html' },
-      { label: '↳ Module 1 — Calendar History', href: '/theme2/module1.html', sub: true },
+      { label: 'Theme 2 Overview',                                       href: '/theme2/index.html' },
+      { label: '↳ Module 1 — Calendar History',                          href: '/theme2/module1.html', sub: true },
+      { label: '↳ Module 2 — Israel in Prophecy',                        href: '/theme2/module2.html', sub: true },
+      { label: '↳ Module 3 — The Book of Jubilees',                      href: '/theme2/module3.html', sub: true },
+      { label: '↳ Module 4 — Feast of Tabernacles & Dead Sea Scrolls',   href: '/theme2/module4.html', sub: true },
     ]
   },
   {
@@ -69,10 +72,10 @@ const NAV_STRUCTURE = [
     label: 'My Study',
     collapsible: false,
     items: [
-      { label: 'Sermon & Teaching Log',      href: '/sermons.html' },
-      { label: 'Personal Journal',           href: '/journal.html' },
-      { label: 'My Growing Convictions',     href: '/convictions.html' },
-      { label: 'Current Events & Prophecy',  href: '/current-events.html' },
+      { label: 'Sermon & Teaching Log',     href: '/sermons.html' },
+      { label: 'Personal Journal',          href: '/journal.html' },
+      { label: 'My Growing Convictions',    href: '/convictions.html' },
+      { label: 'Current Events & Prophecy', href: '/current-events.html' },
     ]
   }
 ];
@@ -183,7 +186,6 @@ function closeSidebar() {
   if (overlay) overlay.classList.remove('active');
 }
 
-// Close sidebar on nav item tap (mobile)
 document.addEventListener('click', function(e) {
   if (e.target.classList.contains('nav-item') && window.innerWidth <= 768) {
     closeSidebar();
