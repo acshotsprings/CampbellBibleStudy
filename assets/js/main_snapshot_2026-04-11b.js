@@ -1113,87 +1113,6 @@ function initVisitorAdminBar() {
   rebuildTopBar();
 }
 
-// ── MODULE COMPLETION BUTTON (auto-injected) ─────────────────────────────
-// Looks up the current page in NAV_STRUCTURE (from nav.js).  If the page
-// is flagged `completable`, injects a toggle button just above the bottom
-// nav arrows.  Toggling writes to the same localStorage key that the
-// sidebar checkmarks read, so they stay in sync automatically.
-
-function injectCompletionButton() {
-  if (typeof NAV_STRUCTURE === 'undefined') return;            // nav.js not loaded
-  const path = window.location.pathname;                       // e.g. /CampbellBibleStudy/theme1/module3.html
-
-  // Find the matching nav item.
-  let navItem = null;
-  for (const section of NAV_STRUCTURE) {
-    if (!section.items) continue;
-    for (const item of section.items) {
-      if (!item.completable) continue;
-      // Match by the end of the pathname (handles both local & hosted)
-      if (path.endsWith(item.href) || path.endsWith('/' + item.href)) {
-        navItem = item;
-        break;
-      }
-    }
-    if (navItem) break;
-  }
-  if (!navItem) return;                                        // not a completable page
-
-  const lsKey = 'cbsg-' + navItem.completeKey;                // e.g. cbsg-complete-t1m1
-  const done  = localStorage.getItem(lsKey) === 'true';
-
-  // Build the button
-  const wrap = document.createElement('div');
-  wrap.id    = 'cbsg-complete-wrap';
-  wrap.style.cssText = 'text-align:center;margin:30px 0 10px;';
-
-  const btn = document.createElement('button');
-  btn.id    = 'cbsg-complete-btn';
-  btn.style.cssText =
-    'padding:12px 28px;font-size:15px;font-weight:bold;border-radius:6px;' +
-    'cursor:pointer;border:2px solid #2a6a2a;font-family:Arial,sans-serif;' +
-    'transition:all 0.2s ease;';
-
-  function applyState(isDone) {
-    if (isDone) {
-      btn.textContent     = '✅ Module Complete!';
-      btn.style.background = '#2a6a2a';
-      btn.style.color      = '#fff';
-      btn.title            = 'Click to unmark';
-    } else {
-      btn.textContent     = '☐ Mark Module as Complete';
-      btn.style.background = '#f8f8f0';
-      btn.style.color      = '#2a6a2a';
-      btn.title            = 'Click to mark this module done';
-    }
-  }
-  applyState(done);
-
-  btn.onclick = () => {
-    const current = localStorage.getItem(lsKey) === 'true';
-    const next    = !current;
-    localStorage.setItem(lsKey, next ? 'true' : 'false');
-    applyState(next);
-    // Rebuild sidebar so the checkmark updates immediately
-    if (typeof buildSidebar === 'function') {
-      const root = document.querySelector('script[src*="nav.js"]');
-      const dots = root && root.getAttribute('src').includes('../') ? '..' : '.';
-      buildSidebar(dots);
-    }
-  };
-
-  wrap.appendChild(btn);
-
-  // Insert just above the bottom ← / → nav arrows, or at end of #main
-  const bottomNav = document.querySelector('#main > div:last-child > a.btn-primary');
-  const mainEl    = document.getElementById('main');
-  if (bottomNav && bottomNav.parentElement) {
-    mainEl.insertBefore(wrap, bottomNav.parentElement);
-  } else if (mainEl) {
-    mainEl.appendChild(wrap);
-  }
-}
-
 // ── INIT ──────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1202,7 +1121,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadNotes();               // populate from localStorage (Quill-aware)
   wireAutoSave();            // attach text-change listeners
   markActivePage();
-  injectCompletionButton();   // add ✅ Mark as Complete on module pages
   startStudyTimer();         // begin session timer (per-page tracking)
   wireTimerLifecycle();      // pause on tab hide, save on tab close
 });
