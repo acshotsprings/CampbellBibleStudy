@@ -334,9 +334,11 @@ function bootstrapQuillEditors() {
     });
 
     // 6. Inject the 🕐 timestamp button into Quill's toolbar manually.
-    //    We add it as a real DOM button with a plain click listener so
-    //    it doesn't have to round-trip through Quill's format system.
-    const toolbarEl = parent.querySelector('.ql-toolbar');
+    //    We grab the toolbar element directly from Quill's toolbar module
+    //    so we always get THIS editor's toolbar, even if the page has
+    //    multiple note boxes.
+    const toolbarModule = q.getModule('toolbar');
+    const toolbarEl = toolbarModule && toolbarModule.container;
     if (toolbarEl) {
       const group = document.createElement('span');
       group.className = 'ql-formats';
@@ -350,9 +352,10 @@ function bootstrapQuillEditors() {
       tsBtn.style.padding = '0 6px';
       tsBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        // Make sure this editor has focus so insertTimestamp targets it.
+        e.stopPropagation();
+        // Focus this editor so insertTimestamp targets it.
         q.focus();
-        insertTimestamp();
+        _insertQuillStamp({ id: id, quill: q });
       });
       group.appendChild(tsBtn);
       toolbarEl.appendChild(group);
@@ -447,50 +450,44 @@ function _insertQuillStamp(entry) {
   const editorId = entry.id;
   const realNow = new Date();
   const sameDay = _wasStampedToday(editorId);
-
-  // Make sure we start on a new line.
-  let index = quill.getSelection(true) ? quill.getSelection(true).index : quill.getLength();
-  const before = index > 0 ? quill.getText(index - 1, 1) : '\n';
-  if (before !== '\n') {
-    quill.insertText(index, '\n', 'user');
-    index += 1;
-  }
-
-  // Build the stamp as raw HTML so the divider + heading land as a real
-  // block in Quill's content. Same-day stamps get a thinner border and
-  // omit the date line.
   const date = _formatDate(realNow);
   const time = _formatTime(realNow);
 
-  let html;
-  if (sameDay) {
-    html =
-      '<p><br></p>' +
-      '<p style="border-top:1px dashed #888;margin:6px 0 4px 0;padding-top:4px;">' +
-        '<strong>' + time + '</strong>' +
-      '</p>' +
-      '<p><br></p>';
-  } else {
-    html =
-      '<p><br></p>' +
-      '<p style="border-top:2px solid #444;border-bottom:2px solid #444;margin:10px 0 6px 0;padding:6px 0;text-align:center;">' +
-        '<strong>' + date + ' &nbsp;·&nbsp; ' + time + '</strong>' +
-      '</p>' +
-      '<p><br></p>';
+  // Figure out where to insert. Prefer current selection; fall back to end.
+  const sel = quill.getSelection(true);
+  let index = sel ? sel.index : quill.getLength();
+
+  // Make sure we start on a new line.
+  if (index > 0) {
+    const before = quill.getText(index - 1, 1);
+    if (before !== '\n') {
+      quill.insertText(index, '\n', 'user');
+      index += 1;
+    }
   }
 
-  // Use Quill's clipboard to convert HTML → Delta and insert at cursor.
-  const delta = quill.clipboard.convert(html);
-  quill.updateContents(
-    new (window.Quill.imports.delta)()
-      .retain(index)
-      .concat(delta),
-    'user'
-  );
+  // Build the stamp text. Same-day = time only, different day = date + time.
+  const stampText = sameDay
+    ? '— ' + time + ' —'
+    : '— ' + date + '  ·  ' + time + ' —';
 
-  // Move the cursor to the end of what we just inserted.
-  const newIndex = index + delta.length();
-  quill.setSelection(newIndex, 0, 'user');
+  // Insert: blank line, stamp line (bold + centered), blank line.
+  // We use Quill's native APIs so there's no HTML conversion to break.
+  quill.insertText(index, '\n', 'user');           // leading blank line
+  index += 1;
+  const stampStart = index;
+  quill.insertText(index, stampText, { bold: true }, 'user');
+  index += stampText.length;
+  quill.insertText(index, '\n', 'user');           // end of stamp line
+  index += 1;
+  quill.insertText(index, '\n', 'user');           // trailing blank line
+  index += 1;
+
+  // Center-align the stamp line itself.
+  quill.formatLine(stampStart, 1, 'align', 'center', 'user');
+
+  // Move cursor to after the stamp so the user can keep typing.
+  quill.setSelection(index, 0, 'user');
   quill.focus();
 
   _markStampedToday(editorId);
