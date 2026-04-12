@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reference Library — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <style>
     .author-block { margin:20px 0; border:1px solid #d0dce8; border-radius:8px; overflow:hidden; }
     .author-toggle { display:flex; align-items:center; gap:14px; padding:14px 18px; cursor:pointer; user-select:none; transition:filter 0.15s; }
@@ -591,7 +592,7 @@
       <div style="padding:12px 18px 16px;">
         <div class="notes-box" style="margin:0;">
           <div class="label">✏️ My Rosenberg reading log:</div>
-          <textarea class="notes-input" id="n-lib-rosenberg" placeholder="e.g. April 9, 2026 — Listened to Ezekiel Option Ch. 7 audio. Key: Gog = title not a name. Voltaire hostile witness. Five evidence streams for Russia..." style="min-height:70px;"></textarea>
+          <div class="quill-editor" id="n-lib-rosenberg" data-placeholder="e.g. April 9, 2026 — Listened to Ezekiel Option Ch. 7 audio. Key: Gog = title not a name. Voltaire hostile witness. Five evidence streams for Russia..." style="min-height:70px;"></div>
         </div>
       </div>
     </div>
@@ -788,7 +789,7 @@
       <div style="padding:12px 18px 16px;">
         <div class="notes-box" style="margin:0;">
           <div class="label">✏️ My Rhodes reading log:</div>
-          <textarea class="notes-input" id="n-lib-rhodes" placeholder="e.g. 3/23/2026 – 4/2/2026 — End Times in Chronological Order: awesome but confusing. Seal & trumpet judgments. Two Witnesses. Generating study guide with Claude..." style="min-height:70px;"></textarea>
+          <div class="quill-editor" id="n-lib-rhodes" data-placeholder="e.g. 3/23/2026 – 4/2/2026 — End Times in Chronological Order: awesome but confusing. Seal & trumpet judgments. Two Witnesses. Generating study guide with Claude..." style="min-height:70px;"></div>
         </div>
       </div>
     </div>
@@ -893,7 +894,7 @@
 
       <div class="note-block">
         <div class="label">✏️ My Gillette reading log:</div>
-        <textarea class="notes-input" id="n-lib-gillette" placeholder="e.g. started Signs of the Second Coming..." style="min-height:70px;"></textarea>
+        <div class="quill-editor" id="n-lib-gillette" data-placeholder="e.g. started Signs of the Second Coming..." style="min-height:70px;"></div>
       </div>
     </div>
   </div>
@@ -1272,7 +1273,7 @@
       <div style="padding:12px 18px 16px;">
         <div class="notes-box" style="margin:0;">
           <div class="label">✏️ My LaHaye reading log:</div>
-          <textarea class="notes-input" id="n-lib-lahaye" placeholder="e.g. April 7, 2026 — Heard about LaHaye's oil prediction in Sermon #8. He wrote that if Israel found oil greater than Iran's it would change history and fulfill Ezekiel 38. Tovia Luskin proved him right in 2004..." style="min-height:70px;"></textarea>
+          <div class="quill-editor" id="n-lib-lahaye" data-placeholder="e.g. April 7, 2026 — Heard about LaHaye's oil prediction in Sermon #8. He wrote that if Israel found oil greater than Iran's it would change history and fulfill Ezekiel 38. Tovia Luskin proved him right in 2004..." style="min-height:70px;"></div>
         </div>
       </div>
     </div>
@@ -1318,7 +1319,7 @@
       </div>
       <div class="note-block">
         <div class="label">✏️ My Kasdan reading log:</div>
-        <textarea class="notes-input" id="n-lib-kasdan" placeholder="e.g. started God's Appointed Times..." style="min-height:70px;"></textarea>
+        <div class="quill-editor" id="n-lib-kasdan" data-placeholder="e.g. started God's Appointed Times..." style="min-height:70px;"></div>
       </div>
     </div>
   </div>
@@ -1387,7 +1388,7 @@
       </div>
       <div class="note-block">
         <div class="label">✏️ My Cahn reading log:</div>
-        <textarea class="notes-input" id="n-lib-cahn" placeholder="e.g. started The Mystery of the Shemitah..." style="min-height:70px;"></textarea>
+        <div class="quill-editor" id="n-lib-cahn" data-placeholder="e.g. started The Mystery of the Shemitah..." style="min-height:70px;"></div>
       </div>
     </div>
   </div>
@@ -1432,7 +1433,7 @@
       </div>
       <div class="note-block">
         <div class="label">✏️ My Graham reading log:</div>
-        <textarea class="notes-input" id="n-lib-graham" placeholder="e.g. started Approaching Hoofbeats..." style="min-height:70px;"></textarea>
+        <div class="quill-editor" id="n-lib-graham" data-placeholder="e.g. started Approaching Hoofbeats..." style="min-height:70px;"></div>
       </div>
     </div>
   </div>
@@ -1504,7 +1505,7 @@
       </div>
       <div class="note-block">
         <div class="label">✏️ My Jeremiah reading log:</div>
-        <textarea class="notes-input" id="n-lib-jeremiah" placeholder="e.g. started Agents of the Apocalypse..." style="min-height:70px;"></textarea>
+        <div class="quill-editor" id="n-lib-jeremiah" data-placeholder="e.g. started Agents of the Apocalypse..." style="min-height:70px;"></div>
       </div>
     </div>
   </div>
@@ -1512,7 +1513,7 @@
   <!-- ADD NEW AUTHORS -->
   <div class="notes-box">
     <div class="label">✏️ Authors &amp; books to add — running list:</div>
-    <textarea class="notes-input" id="n-lib-authors" placeholder="e.g. Hal Lindsey — The Late Great Planet Earth&#10;John Walvoord — The Revelation of Jesus Christ&#10;Mark Hitchcock — 101 Answers on the Book of Revelation&#10;David Jeremiah — The Book of Signs"></textarea>
+    <div class="quill-editor" id="n-lib-authors" data-placeholder="e.g. Hal Lindsey — The Late Great Planet Earth&#10;John Walvoord — The Revelation of Jesus Christ&#10;Mark Hitchcock — 101 Answers on the Book of Revelation&#10;David Jeremiah — The Book of Signs"></div>
   </div>
 
   <div class="divider"></div>
@@ -1614,7 +1615,7 @@
 
   <div class="notes-box">
     <div class="label">✏️ Translation comparison notes:</div>
-    <textarea class="notes-input" id="n-lib-translations" placeholder="e.g. Ezek 38:2 — NLT says 'the land of Magog' while KJV says 'the chief prince of Meshech and Tubal' — the word Rosh is treated differently across translations..."></textarea>
+    <div class="quill-editor" id="n-lib-translations" data-placeholder="e.g. Ezek 38:2 — NLT says 'the land of Magog' while KJV says 'the chief prince of Meshech and Tubal' — the word Rosh is treated differently across translations..."></div>
   </div>
 
   <div class="divider"></div>
@@ -1643,7 +1644,7 @@
 
   <div class="notes-box">
     <div class="label">✏️ Resources to add:</div>
-    <textarea class="notes-input" id="n-lib-resources" placeholder="Add websites, podcasts, commentaries, and study tools as you discover them..."></textarea>
+    <div class="quill-editor" id="n-lib-resources" data-placeholder="Add websites, podcasts, commentaries, and study tools as you discover them..."></div>
   </div>
 
 </div>
@@ -1659,6 +1660,7 @@ window.PAGE_NOTE_IDS = [
 </script>
 
 <script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 

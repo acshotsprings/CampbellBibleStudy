@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Growing Convictions — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script></head>
-<body class="admin-mode">
+</head>
+<body>
 
 <div id="github-bar">
   <span class="bar-title">Campbell Bible Study</span>
   <span class="bar-sep">|</span>
-  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
-  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
-  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
-  <span id="gh-status" style=""></span>
-  <button onclick="insertConvictionTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;">New Entry</button>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status"></span>
   <div class="bar-right">
-    <span class="bar-originated">Originated: March 27, 2026</span>
+    <button onclick="insertConvictionTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;">New Entry</button>
+    <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version"><span style="font-size:11px;">Version: April 11, 2026</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded 10:31 AM</span></span>
+    <span id="gh-bar-version">Version: April 2, 2026</span>
   </div>
 </div>
 
@@ -44,10 +45,12 @@
       Example questions: "What do I actually believe about the rapture?" &nbsp;·&nbsp; "What themes keep showing up in my notes?" &nbsp;·&nbsp; "Where am I still uncertain?" &nbsp;·&nbsp; "Summarize my convictions on Israel"
     </div>
     <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center;">
-      <input id="gemini-key" type="password" placeholder="Paste Gemini API key here (saved locally, never shared)" style="flex:1;padding:6px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:white;font-size:12px;font-family:Arial,sans-serif;">
+      <input id="gemini-key" type="password"
+        placeholder="Paste Gemini API key here (saved locally, never shared)"
+        style="flex:1;padding:6px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:white;font-size:12px;font-family:Arial,sans-serif;">
       <button onclick="saveGeminiKey()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 12px;font-size:11px;font-weight:bold;cursor:pointer;white-space:nowrap;">Save Key</button>
     </div>
-    <div id="key-status" style="font-size: 11px; color: rgb(144, 238, 144); margin-bottom: 8px; font-family: Arial, sans-serif; display: block;">✅ Key loaded.</div>
+    <div id="key-status" style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:Arial,sans-serif;display:none;"></div>
     <div class="ai-input-row">
       <textarea class="ai-prompt-input" id="ai-prompt" placeholder="Ask something about your own convictions..." rows="2"></textarea>
       <button class="ai-btn" id="ai-btn" onclick="askAboutMyNotes()">
@@ -119,55 +122,7 @@
 
   <div class="notes-box">
     <div class="label">📖 Dated conviction snapshots:</div>
-    <div class="quill-editor" id="c-snapshots" data-placeholder="April 2026 — Starting out, I believe..."></div>
-  </div>
-
-  <!-- ── STUDY SESSION LOG ── -->
-  <div class="divider"></div>
-  <h2 class="section-title">📖 Study Session Log</h2>
-  <p class="body">Dated entries from study sessions, conversations, and teachings. Each entry captures what was discussed, what was learned, and what is still being wrestled with.</p>
-
-  <div class="info-box" style="border-left:4px solid #FFD700;margin-bottom:0;">
-    <div class="title" style="color:#FFD700;">April 9, 2026 — Gog, Magog &amp; the Russia-Iran Coalition (Module 9 Deep Dive)</div>
-    <div class="line" style="margin-bottom:8px;"><em>Sources: Module 9 (Ezekiel 38–39), Joel Rosenberg — The Ezekiel Option Ch. 7, current news search (April 9, 2026)</em></div>
-
-    <div class="line" style="font-weight:bold;margin-top:12px;">What Was Studied:</div>
-    <div class="line">Module 9 of the End Times study covers Ezekiel 38–39 — the Gog-Magog War. This session began with a personal question about who Gog is and where Magog is, prompted by a reflection written on the Convictions page.</div>
-
-    <div class="line" style="font-weight:bold;margin-top:12px;">Key Finding — Gog Is a Title, Not a Name:</div>
-    <div class="line">Joel Rosenberg argues that "Gog" is most likely a title — like Tsar or Pharaoh — not a personal name. We are not looking for someone literally named Gog, but a ruler who arises from the land of Magog, described by Ezekiel as "the remote parts of the north" (Ezekiel 38:15).</div>
-
-    <div class="line" style="font-weight:bold;margin-top:12px;">Key Finding — Magog = Russia (Five-Step Evidence Case):</div>
-    <div class="line">1. <strong>Geographic:</strong> Only five nations lie due north of Israel — Lebanon, Syria, Turkey, Ukraine, Russia. Russia is the farthest north by significant distance.</div>
-    <div class="line">2. <strong>Hostile Witness:</strong> Voltaire — an enemy of Christianity — independently concluded Magog referred to Russia about 150 years before Russia became a world power, tracing it through the Genesis 10 genealogy.</div>
-    <div class="line">3. <strong>Table of Nations:</strong> Genesis 10:1–2 lists Magog as a son of Japheth. Ancient and medieval tradition consistently linked Japheth's descendants to northern Eurasian regions — modern Russia and Central Asia.</div>
-    <div class="line">4. <strong>Pre-Modern Scholarship:</strong> Scholars in 1846 — before the Soviet era — reached the Russia identification independently, removing the objection that it is motivated by contemporary geopolitics.</div>
-    <div class="line">5. <strong>Contemporary Profile:</strong> Rosenberg wrote from Moscow in 2004 documenting Putin's early consolidation of power. His core argument: a strong authoritarian northern ruler with "hooks in his jaws" pulled toward catastrophic miscalculation against Israel matches Russia's trajectory.</div>
-
-    <div class="line" style="font-weight:bold;margin-top:12px;">Personal Question Raised — and a Good One:</div>
-    <div class="line">During this session, the question was raised: if Ezekiel is writing prophecy — not just describing what he knew — does it matter that Russia wasn't the farthest north nation known to him? The answer: Ezekiel saw the vision and described it in terms available to him. The revelation was designed for the people living when these nations actually exist as world powers. The point is not what Ezekiel knew — it is what God showed him. Prophecy consistently describes things the prophet could not have fully understood (gas and oil under Israel being another example).</div>
-
-    <div class="line" style="font-weight:bold;margin-top:12px;">The Coalition — Ancient Names, Modern Nations:</div>
-    <div class="line">Rosh / Magog = Russia / Central Asia &nbsp;·&nbsp; Persia = Iran &nbsp;·&nbsp; Cush = Sudan / Ethiopia &nbsp;·&nbsp; Put = Libya &nbsp;·&nbsp; Gomer / Beth-togarmah = Turkey / Central Asia</div>
-
-    <div class="line" style="font-weight:bold;margin-top:12px;">Current Events Search — April 9, 2026:</div>
-    <div class="line">Russia is actively providing Iran with satellite intelligence on Israeli and American military targets — detailed imagery of 55 critical Israeli energy infrastructure sites. Iran's Foreign Minister stated publicly that military cooperation between Russia and Iran is "not something new" and is continuing. Russia has struck deals to supply Iran with advanced air defense systems in 2027–2029. Russian and Iranian hackers are collaborating in the cyber domain. This is happening during an active U.S.-Israel conflict with Iran that began February 28, 2026.</div>
-
-    <div class="line" style="font-weight:bold;margin-top:12px;">Personal Reaction:</div>
-    <div class="line">This does not hit differently so much as it rattles the cage. The realization that the coalition Ezekiel described 2,500 years ago is visibly forming right now creates a sense of urgency. The unknown is not whether this will happen — only how many years remain before the coalition is strong enough to act.</div>
-
-    <div class="line" style="font-weight:bold;margin-top:12px;">God's Purpose in the Gog-Magog War:</div>
-    <div class="line">Ezekiel 38:23 — "In this way, I will show my greatness and holiness, and I will make myself known to all the nations of the world. Then they will know that I am the LORD." God defeats this massive coalition without Israel firing a single shot. The purpose is not Israel's military victory — it is God's self-revelation to the nations. Even in catastrophe, He has a redemptive purpose.</div>
-
-    <div class="line" style="font-weight:bold;margin-top:12px;">Next Steps:</div>
-    <div class="line">• Master End Times Prophecy Checklist (checklist.html) — now built and uploaded.</div>
-    <div class="line">• Continue wrestling with the timing of the Gog-Magog war relative to the Rapture and Tribulation.</div>
-    <div class="line">• Pray for Israel with urgency and specificity, not just as a theological exercise.</div>
-  </div>
-
-  <div class="notes-box" style="margin-top:12px;">
-    <div class="label">✏️ April 9, 2026 — My additional thoughts on this session:</div>
-    <div class="quill-editor" id="c-gog-session-apr9" data-placeholder="Write any additional thoughts, questions still lingering, or things you want to follow up on..."></div>
+    <div class="quill-editor" id="c-snapshots" data-placeholder="April 2026 — Starting out, I believe..." style="min-height:200px;"></div>
   </div>
 
 </div>
@@ -177,98 +132,233 @@
 <script>
 window.PAGE_NOTE_IDS = [
   'c-prophecy','c-israel','c-rapture','c-millennium',
-  'c-calendar','c-grace','c-live','c-snapshots',
-  'c-gog-session-apr9'
+  'c-calendar','c-grace','c-live','c-snapshots'
 ];
 </script>
 
+<!-- SCRIPTS -->
 <script src="assets/js/nav.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 
 <script>
+// ── AI REFLECTION TOOL ────────────────────────────────────
+
 async function askAboutMyNotes() {
   const prompt = document.getElementById('ai-prompt').value.trim();
-  if (!prompt) { alert('Please type a question first.'); return; }
-  const btn = document.getElementById('ai-btn');
+  if (!prompt) {
+    alert('Please type a question first.');
+    return;
+  }
+
+  const btn  = document.getElementById('ai-btn');
   const text = document.getElementById('ai-btn-text');
-  const box = document.getElementById('ai-response');
-  const out = document.getElementById('ai-response-text');
-  btn.disabled = true; text.textContent = '⏳ Thinking...';
-  box.classList.remove('visible'); out.textContent = '';
+  const box  = document.getElementById('ai-response');
+  const out  = document.getElementById('ai-response-text');
+
+  btn.disabled = true;
+  text.textContent = '⏳ Thinking...';
+  box.classList.remove('visible');
+  out.textContent = '';
+
   try {
-    const notesRes = await fetch('https://raw.githubusercontent.com/acshotsprings/CampbellBibleStudy/main/my-notes.json',{ cache:'no-store' });
+    // 1. Fetch my-notes.json from GitHub (raw)
+    const notesRes = await fetch(
+      'https://raw.githubusercontent.com/acshotsprings/CampbellBibleStudy/main/my-notes.json',
+      { cache: 'no-store' }
+    );
+
     let notesContext = '';
+
     if (notesRes.ok) {
       const notesData = await notesRes.json();
-      const labels = notesData.noteLabels || {}; const notes = notesData.notes || {};
+      const labels    = notesData.noteLabels || {};
+      const notes     = notesData.notes || {};
+
+      // Build a clean, readable summary of the user's own words only
       const lines = [];
       for (const [key, value] of Object.entries(notes)) {
-        if (value && value.trim()) lines.push(`[${labels[key]||key}]\n${value.trim()}`);
+        if (value && value.trim()) {
+          const label = labels[key] || key;
+          lines.push(`[${label}]\n${value.trim()}`);
+        }
       }
-      notesContext = lines.length === 0 ? '(No personal notes saved yet.)' : lines.join('\n\n---\n\n');
+
+      if (lines.length === 0) {
+        notesContext = '(No personal notes have been saved yet. Please write in some note fields and save to GitHub first.)';
+      } else {
+        notesContext = lines.join('\n\n---\n\n');
+      }
     } else {
-      notesContext = '(Could not load notes from GitHub.)';
+      // Fall back to reading from localStorage directly
+      const lines = [];
+      const labels = {
+        'n-intro': 'Introduction notes',
+        'n-m1': 'Daniel\'s 70 Weeks notes', 'n-m2': 'Israel in Prophecy notes',
+        'n-m3': 'Day of the Lord notes', 'n-m4': 'Watchman Principle notes',
+        'n-m5': 'New Covenant notes', 'n-m6': 'Rapture notes',
+        'n-m7': 'Antichrist notes', 'n-m8': 'Rebuilt Temple notes',
+        'n-m9': 'Gog-Magog notes', 'n-m10': 'Signs of the Times notes',
+        'n-m11': 'False Prophets notes', 'n-m12': 'Millennium notes',
+        'n-m13': 'Second Coming notes', 'n-m14': 'Matthew 24 vs Revelation notes',
+        'n-m15': 'Armageddon notes', 'n-t2m1': 'Calendar History notes',
+        'n-journal-new': 'Journal entries',
+        'c-prophecy': 'Conviction on prophecy', 'c-israel': 'Conviction on Israel',
+        'c-rapture': 'Conviction on the Rapture', 'c-millennium': 'Conviction on the Millennium',
+        'c-calendar': 'Conviction on the calendar', 'c-grace': 'Conviction on grace & holiness',
+        'c-live': 'Conviction on how study changes my life', 'c-snapshots': 'Dated conviction snapshots'
+      };
+      for (const [key, label] of Object.entries(labels)) {
+        const val = localStorage.getItem('cbsg-' + key);
+        if (val && val.trim()) lines.push(`[${label}]\n${val.trim()}`);
+      }
+      notesContext = lines.length > 0 ? lines.join('\n\n---\n\n')
+        : '(No notes found. Please write in some note fields first, then either save to GitHub or ask again.)';
     }
-    const geminiKey = document.getElementById('gemini-key').value.trim() || localStorage.getItem('cbsg-gemini-key');
-    if (!geminiKey) { out.textContent = 'Please paste your Gemini API key above.'; box.classList.add('visible'); btn.disabled=false; text.textContent='✨ Ask'; return; }
+
+    // 2. Get Gemini API key
+    const geminiKey = document.getElementById('gemini-key').value.trim()
+      || localStorage.getItem('cbsg-gemini-key');
+    if (!geminiKey) {
+      out.textContent = 'Please paste your Gemini API key in the field above.';
+      box.classList.add('visible');
+      btn.disabled = false;
+      text.textContent = '✨ Ask';
+      return;
+    }
     localStorage.setItem('cbsg-gemini-key', geminiKey);
-    const fullPrompt = `You are a spiritual reflection assistant for the Campbell Family Master Biblical Study Guide. The user is asking a SPECIFIC QUESTION. Answer THAT question directly using ONLY what appears in their personal notes below. Focus your entire response on the topic they asked about. Do not summarize all notes. Only reference notes relevant to their question. Be warm, specific, and direct. 2-4 paragraphs max.\n\nUser personal study notes:\n\n${notesContext}\n\n---\n\nThe user specific question is: ${prompt}\n\nAnswer ONLY about this topic using their notes.`;
-    const apiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${geminiKey}`,{
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ contents:[{parts:[{text:fullPrompt}]}], generationConfig:{maxOutputTokens:1000,temperature:0.7} })
-    });
+
+    // 3. Call Gemini API — context is ONLY the user's own words
+    const systemPrompt = `You are a thoughtful spiritual reflection assistant for a personal Bible study guide called the Campbell Family Master Biblical Study Guide.
+
+Your ONLY job is to reflect back and synthesize what the user has personally written in their own study notes. You have been given the complete text of everything they have written — their module notes, journal entries, study question answers, and conviction summaries.
+
+CRITICAL RULES:
+- Draw ONLY from what the user has written. Do not introduce theological positions, quotes, or ideas that are not already present in their notes.
+- Do not quote the Bible study guide content, scripture boxes, or any material they were reading. Only their own written words.
+- Be warm, honest, and specific — reference actual phrases or themes from their notes.
+- If their notes are sparse or empty, tell them honestly and encourage them to write more before asking again.
+- Never be preachy. You are a mirror, not a teacher.
+- Keep responses focused and readable — 2 to 4 paragraphs maximum unless they ask for more detail.`;
+
+    const fullPrompt = `${systemPrompt}\n\nHere is everything I have personally written in my Bible study notes:\n\n${notesContext}\n\n---\n\nMy question: ${prompt}`;
+
+    const apiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${geminiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: fullPrompt }] }],
+          generationConfig: { maxOutputTokens: 1000, temperature: 0.7 }
+        })
+      }
+    );
+
     const apiData = await apiRes.json();
-    const responseText = apiData.candidates?.[0]?.content?.parts?.[0]?.text || apiData.error?.message || 'Something went wrong.';
-    out.innerHTML = responseText.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>');
+    const responseText = apiData.candidates?.[0]?.content?.parts?.[0]?.text
+      || apiData.error?.message
+      || 'Something went wrong. Please try again.';
+
+    // Render response
+    out.innerHTML = responseText.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
     if (!out.innerHTML.startsWith('<p>')) out.innerHTML = '<p>' + out.innerHTML + '</p>';
     box.classList.add('visible');
-  } catch(e) { out.textContent = 'Error: ' + e.message; box.classList.add('visible'); }
-  finally { btn.disabled=false; text.textContent='✨ Ask'; }
+
+  } catch(e) {
+    out.textContent = 'Error: ' + e.message;
+    box.classList.add('visible');
+  } finally {
+    btn.disabled = false;
+    text.textContent = '✨ Ask';
+  }
 }
 
+// Allow Enter key in the prompt textarea (Shift+Enter for new line)
 async function listAvailableModels() {
-  const key = document.getElementById('gemini-key').value.trim() || localStorage.getItem('cbsg-gemini-key');
+  const key = document.getElementById('gemini-key').value.trim()
+    || localStorage.getItem('cbsg-gemini-key');
   const listEl = document.getElementById('model-list');
-  if (!key) { listEl.textContent='Save your API key first.'; listEl.style.display='block'; return; }
-  listEl.textContent='Fetching...'; listEl.style.display='block';
+  if (!key) { listEl.textContent = 'Save your API key first.'; listEl.style.display = 'block'; return; }
+  listEl.textContent = 'Fetching...';
+  listEl.style.display = 'block';
   try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models?key=${key}`
+    );
     const data = await res.json();
     if (data.models) {
-      listEl.textContent = 'Available: ' + data.models.filter(m=>m.supportedGenerationMethods?.includes('generateContent')).map(m=>m.name.replace('models/','')).join(', ');
-    } else { listEl.textContent = JSON.stringify(data); }
-  } catch(e) { listEl.textContent='Error: '+e.message; }
+      const names = data.models
+        .filter(m => m.supportedGenerationMethods?.includes('generateContent'))
+        .map(m => m.name.replace('models/', ''));
+      listEl.textContent = 'Available: ' + names.join(', ');
+    } else {
+      listEl.textContent = JSON.stringify(data);
+    }
+  } catch(e) {
+    listEl.textContent = 'Error: ' + e.message;
+  }
 }
 
 function saveGeminiKey() {
-  const keyEl=document.getElementById('gemini-key'); const statusEl=document.getElementById('key-status');
-  const key=keyEl?keyEl.value.trim():'';
-  if (!key) { if(statusEl){statusEl.textContent='⚠️ No key entered.';statusEl.style.display='block';statusEl.style.color='#FFD700';} return; }
-  localStorage.setItem('cbsg-gemini-key',key);
-  if(statusEl){statusEl.textContent='✅ Key saved — ready to use.';statusEl.style.display='block';statusEl.style.color='#90EE90';}
+  const keyEl = document.getElementById('gemini-key');
+  const statusEl = document.getElementById('key-status');
+  const key = keyEl ? keyEl.value.trim() : '';
+  if (!key) {
+    if (statusEl) { statusEl.textContent = '⚠️ No key entered.'; statusEl.style.display = 'block'; statusEl.style.color = '#FFD700'; }
+    return;
+  }
+  localStorage.setItem('cbsg-gemini-key', key);
+  if (statusEl) { statusEl.textContent = '✅ Key saved — ready to use.'; statusEl.style.display = 'block'; statusEl.style.color = '#90EE90'; }
 }
 
-document.addEventListener('DOMContentLoaded',()=>{
-  const savedKey=localStorage.getItem('cbsg-gemini-key');
-  const keyEl=document.getElementById('gemini-key'); const statusEl=document.getElementById('key-status');
-  if(savedKey&&keyEl){ keyEl.value=savedKey; if(statusEl){statusEl.textContent='✅ Key loaded.';statusEl.style.display='block';statusEl.style.color='#90EE90';} }
-  if(keyEl){ keyEl.addEventListener('input',()=>{const v=keyEl.value.trim();if(v)localStorage.setItem('cbsg-gemini-key',v);}); keyEl.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();saveGeminiKey();}}); }
-  const input=document.getElementById('ai-prompt');
-  if(input){ input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();askAboutMyNotes();}}); }
+document.addEventListener('DOMContentLoaded', () => {
+  // Restore saved Gemini key
+  const savedKey = localStorage.getItem('cbsg-gemini-key');
+  const keyEl = document.getElementById('gemini-key');
+  const statusEl = document.getElementById('key-status');
+  if (savedKey && keyEl) {
+    keyEl.value = savedKey;
+    if (statusEl) { statusEl.textContent = '✅ Key loaded from saved storage.'; statusEl.style.display = 'block'; statusEl.style.color = '#90EE90'; }
+  }
+
+  // Auto-save key to localStorage as user types
+  if (keyEl) {
+    keyEl.addEventListener('input', () => {
+      const val = keyEl.value.trim();
+      if (val) localStorage.setItem('cbsg-gemini-key', val);
+    });
+    // Also save on Enter key in key field
+    keyEl.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); saveGeminiKey(); }
+    });
+  }
+
+  // Wire Enter key on prompt field
+  const input = document.getElementById('ai-prompt');
+  if (input) {
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); askAboutMyNotes(); }
+    });
+  }
 });
 
 function insertConvictionTimestamp() {
-  const el=document.getElementById('c-snapshots'); if(!el) return;
-  const now=new Date();
-  const date=now.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-  const time=now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
-  el.value+=`\n${'─'.repeat(40)}\n${date} at ${time}\n${'─'.repeat(40)}\n`;
-  el.focus(); el.scrollTop=el.scrollHeight; el.scrollIntoView({behavior:'smooth',block:'center'});
+  // Stamps into the snapshots field — the natural home for dated conviction entries
+  const el = document.getElementById('c-snapshots');
+  if (!el) return;
+  const now   = new Date();
+  const date  = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const time  = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  const divider = '─'.repeat(40);
+  el.value += `\n${divider}\n${date} at ${time}\n${divider}\n`;
+  el.focus();
+  el.scrollTop = el.scrollHeight;
+  // Scroll the page down to the snapshots field so user sees it
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 </script>
 
-
-
-<div id="sidebar-overlay" style="display: none;"></div></body></html>
+</body>
+</html>

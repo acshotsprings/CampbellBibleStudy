@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Campbell Family Master Biblical Study Guide</title>
   <link rel="stylesheet" href="assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 </head>
 <body>
 
@@ -50,7 +51,7 @@
   <h2 class="section-title">Before you begin</h2>
   <div class="notes-box">
     <div class="label">✏️ What do I currently believe? What am I hoping to discover?</div>
-    <textarea class="notes-input" id="n-intro" placeholder="Write your thoughts here..."></textarea>
+    <div class="quill-editor" id="n-intro" data-placeholder="Write your thoughts here..."></div>
   </div>
 
   <div class="divider"></div>
@@ -85,6 +86,7 @@
 
 <script>window.PAGE_NOTE_IDS = ["n-intro"];</script>
 <script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script>
   buildSidebar('.');

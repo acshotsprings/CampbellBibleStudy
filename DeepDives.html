@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Deep Dives — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <style>
     .dd-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin-top:20px; }
     .dd-card { background:#fff; border:1px solid #d0dce8; border-radius:10px; padding:20px; cursor:pointer; transition:border-color 0.15s; text-decoration:none; display:block; }
@@ -88,7 +89,7 @@
 
   <div class="notes-box" style="margin-top:32px;">
     <div class="label">✏️ Deep dive subjects to add — running list:</div>
-    <textarea class="notes-input" id="n-deepdives-index" placeholder="e.g. The Restrainer — who or what is holding back the Antichrist (2 Thess 2:6–7)?" style="min-height:80px;"></textarea>
+    <div class="quill-editor" id="n-deepdives-index" data-placeholder="e.g. The Restrainer — who or what is holding back the Antichrist (2 Thess 2:6–7)?" style="min-height:80px;"></div>
   </div>
 
 </div>
@@ -96,6 +97,7 @@
 
 <script>window.PAGE_NOTE_IDS = ['n-deepdives-index'];</script>
 <script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 </body>

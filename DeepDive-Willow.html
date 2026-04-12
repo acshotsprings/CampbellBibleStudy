@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Willow in Scripture — Deep Dive — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script></head>
 <body class="admin-mode">
 
@@ -90,7 +91,7 @@
 
   <div class="notes-box" style="margin-top:24px;">
     <div class="label">✏️ My notes — The Willow (for Hazlee):</div>
-    <textarea class="notes-input" id="n-dd-willow" placeholder="Dedicated to Hazlee Willow — what stands out to you as you read this?" style="min-height:120px;"></textarea>
+    <div class="quill-editor" id="n-dd-willow" data-placeholder="Dedicated to Hazlee Willow — what stands out to you as you read this?" style="min-height:120px;"></div>
   </div>
 
   <div style="margin-top:24px;">
@@ -102,6 +103,7 @@
 
 <script>window.PAGE_NOTE_IDS = ['n-dd-willow'];</script>
 <script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 

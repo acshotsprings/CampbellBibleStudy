@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listening Notes — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <style>
     .ln-toolbar {
       display: flex;
@@ -193,12 +194,13 @@ Chapter 13 - It was RIVETING to hear how Adolf Hitler HATED the Jews....Great de
 
   <div class="notes-box" style="margin-top:24px;">
     <div class="label">✏️ General listening notes (overflow):</div>
-    <textarea class="notes-input" id="n-listening-general" placeholder="Quick overflow notes not tied to a specific entry..."></textarea>
+    <div class="quill-editor" id="n-listening-general" data-placeholder="Quick overflow notes not tied to a specific entry..."></div>
   </div>
 
 </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/nav.js"></script>
 <script>
