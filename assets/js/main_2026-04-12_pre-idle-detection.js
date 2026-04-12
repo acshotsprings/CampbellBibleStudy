@@ -552,25 +552,10 @@ function insertTimestamp() {
 // Total (accumulated for THIS page across all visits). Auto-starts on
 // page load, pauses when the tab is hidden, saves on tab close.
 // Per-page tracking: each page gets its own total under cbsg-timer-{key}.
-//
-// Accuracy protections (added 2026-04-12):
-//   1. Idle detection — if no mouse/keyboard activity for IDLE_THRESHOLD,
-//      the timer pauses. Resumes the moment activity returns.
-//   2. Wall-clock sanity check — each tick credits actual elapsed time
-//      since the previous tick, capped at 2 seconds. If the browser was
-//      throttled or the OS slept, we credit 1 normal tick, not the gap.
-//   3. Session cap — when saving a session to the page total, cap it at
-//      4 hours. No single sit-down adds more than that, ever.
 
-const IDLE_THRESHOLD_MS    = 5 * 60 * 1000; // 5 minutes
-const SESSION_CAP_SECONDS  = 4 * 60 * 60;   // 4 hours
-const TICK_CREDIT_CAP_MS   = 2000;          // single tick credits ≤ 2s
-
+let _sessionStart   = null;
 let _sessionSeconds = 0;
 let _timerInterval  = null;
-let _lastTickAt     = null;
-let _lastActivityAt = Date.now();
-let _isIdle         = false;
 
 function _getPageKey() {
   const path = window.location.pathname
@@ -588,9 +573,6 @@ function _getStoredSeconds() {
 }
 
 function _addStoredSeconds(s) {
-  // Cap any single addition at 4 hours — no sit-down adds more than that.
-  if (s > SESSION_CAP_SECONDS) s = SESSION_CAP_SECONDS;
-  if (s <= 0) return;
   const prev = _getStoredSeconds();
   localStorage.setItem('cbsg-' + _getPageKey(), String(prev + s));
 }
@@ -604,62 +586,12 @@ function _formatDuration(totalSeconds) {
   return s + 's';
 }
 
-function _markActivity() {
-  _lastActivityAt = Date.now();
-  if (_isIdle) {
-    // Coming back from idle — reset the tick anchor so we don't credit
-    // the idle gap, and unpause.
-    _isIdle = false;
-    _lastTickAt = Date.now();
-  }
-}
-
-function _wireIdleDetection() {
-  const events = ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart', 'click'];
-  events.forEach(evt => {
-    document.addEventListener(evt, _markActivity, { passive: true, capture: true });
-  });
-}
-
 function startStudyTimer() {
-  if (_timerInterval) return; // already running
-  _lastTickAt     = Date.now();
-  _lastActivityAt = Date.now();
-  _isIdle         = false;
-
+  _sessionStart   = Date.now();
+  _sessionSeconds = 0;
+  if (_timerInterval) clearInterval(_timerInterval);
   _timerInterval = setInterval(() => {
-    const now = Date.now();
-    const sinceActivity = now - _lastActivityAt;
-
-    // Idle gate — if no activity for the threshold, pause crediting.
-    if (sinceActivity >= IDLE_THRESHOLD_MS) {
-      if (!_isIdle) {
-        // First tick after going idle — flush whatever we had to storage.
-        _isIdle = true;
-        if (_sessionSeconds > 2) {
-          _addStoredSeconds(_sessionSeconds);
-          _sessionSeconds = 0;
-        }
-      }
-      _lastTickAt = now;
-      // Update display so the user can see total even while idle.
-      const totalEl = document.getElementById('bar-total-time');
-      if (totalEl) totalEl.textContent = _formatDuration(_getStoredSeconds());
-      const sessionEl = document.getElementById('bar-session-time');
-      if (sessionEl) sessionEl.textContent = _formatDuration(_sessionSeconds) + ' (idle)';
-      return;
-    }
-
-    // Wall-clock sanity check — credit actual elapsed time, capped at 2s.
-    // This prevents huge jumps when the browser was throttled or asleep.
-    const elapsedMs = now - (_lastTickAt || now);
-    const creditMs  = Math.min(elapsedMs, TICK_CREDIT_CAP_MS);
-    _lastTickAt = now;
-
-    if (creditMs > 0) {
-      _sessionSeconds += Math.round(creditMs / 1000);
-    }
-
+    _sessionSeconds = Math.floor((Date.now() - _sessionStart) / 1000);
     const total     = _getStoredSeconds() + _sessionSeconds;
     const sessionEl = document.getElementById('bar-session-time');
     const totalEl   = document.getElementById('bar-total-time');
@@ -673,9 +605,8 @@ function stopStudyTimer() {
     clearInterval(_timerInterval);
     _timerInterval = null;
   }
-  // Only persist if the session was meaningful (>2s) — avoids logging
-  // accidental refreshes or quick tab-flips. Cap is enforced inside
-  // _addStoredSeconds.
+  // Only persist if the session was meaningful (>2s) to avoid logging
+  // accidental refreshes or quick tab-flips.
   if (_sessionSeconds > 2) {
     _addStoredSeconds(_sessionSeconds);
     _sessionSeconds = 0;
@@ -683,7 +614,6 @@ function stopStudyTimer() {
 }
 
 function wireTimerLifecycle() {
-  _wireIdleDetection();
   window.addEventListener('beforeunload', stopStudyTimer);
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
