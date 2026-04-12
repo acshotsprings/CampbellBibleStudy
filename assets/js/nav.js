@@ -1,10 +1,11 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v7.0 Full Site Audit
+   Sidebar Navigation Builder — v7.1 Fixed Active-Page Detection
    - ALL pages from Drive + live site accounted for
    - completable + completeKey on every module
    - Deep Dive sub-pages linked
-   - Checklist, Resources, Listening Notes added
+   - FIXED: active page now matches full path, not just filename
+     (prevents theme1/module2 from highlighting when on theme2/module2)
    ============================================================ */
 
 const NAV_STRUCTURE = [
@@ -99,18 +100,30 @@ const NAV_STRUCTURE = [
   }
 ];
 
+/* ── PATH MATCHING HELPER ─────────────────────────────────
+   Compares the current browser path against a nav item's href.
+   Uses the FULL path (e.g. '/theme1/module2.html') instead of
+   just the filename, so theme1/module2 won't false-match when
+   the user is on theme2/module2.
+   ───────────────────────────────────────────────────────── */
+function _isActivePath(currentPath, itemHref) {
+  // Strip hash fragments for comparison
+  const href = itemHref.split('#')[0];
+  // Full canonical path: /CampbellBibleStudy + href
+  const canonical = '/CampbellBibleStudy' + href;
+  if (currentPath === canonical) return true;
+  // Also match if currentPath ends with the full href (not just the filename)
+  if (currentPath.endsWith(href)) return true;
+  return false;
+}
+
 function buildSidebar(root) {
   root = root || '.';
-  const base = '/CampbellBibleStudy';
   const currentPath = window.location.pathname;
 
   function isActiveSection(section) {
     if (!section.items) return false;
-    return section.items.some(item => {
-      const fullHref = base + item.href;
-      return currentPath === fullHref ||
-             currentPath.endsWith(item.href.split('/').pop());
-    });
+    return section.items.some(item => _isActivePath(currentPath, item.href));
   }
 
   function isCollapsed(key) {
@@ -135,9 +148,7 @@ function buildSidebar(root) {
     if (!section.collapsible) {
       html += `<div class="nav-section">${section.label}</div>`;
       section.items.forEach(item => {
-        const fullHref = base + item.href;
-        const active = currentPath === fullHref ||
-                       currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
+        const active = _isActivePath(currentPath, item.href) ? ' active' : '';
         const sub = item.sub ? ' sub' : '';
 
         // Completion checkmark for sidebar
@@ -164,9 +175,7 @@ function buildSidebar(root) {
       `;
 
       section.items.forEach(item => {
-        const fullHref = base + item.href;
-        const active = currentPath === fullHref ||
-                       currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
+        const active = _isActivePath(currentPath, item.href) ? ' active' : '';
         const sub = item.sub ? ' sub' : '';
 
         // Completion checkmark for sidebar
