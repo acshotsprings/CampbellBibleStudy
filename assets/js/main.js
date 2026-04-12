@@ -628,35 +628,107 @@ function logStudyTime() {
 
 // ── TIMESTAMP INSERT ──────────────────────────────────────
 function insertTimestamp() {
-  const now     = new Date();
-  const date    = now.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
-  const time    = now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
-  const divider = '─'.repeat(40);
-  const stamp   = `\n${divider}\n${date} at ${time}\n${divider}\n`;
+  const now  = new Date();
+  const date = now.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  const time = now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
+  const fullDivider  = '─'.repeat(40);
+  const shortDivider = '─'.repeat(20);
 
+  // --- Find the target: prefer the focused Quill editor, then any Quill on page, then textarea ---
+  let quillInstance = null;
+  let targetTextarea = null;
+
+  // Check if the user clicked inside a Quill editor (the active element will be inside .ql-editor)
   const active = document.activeElement;
-  if (active && active.tagName === 'TEXTAREA' && active.id) {
-    active.value += stamp;
-    active.scrollTop = active.scrollHeight;
-    localStorage.setItem('cbsg-' + active.id, active.value);
+  if (active) {
+    const qlEditor = active.closest ? active.closest('.ql-editor') : null;
+    if (qlEditor) {
+      // Find the corresponding Quill instance by matching the container
+      const container = qlEditor.closest('.ql-container');
+      if (container && container.__quill) quillInstance = container.__quill;
+    } else if (active.tagName === 'TEXTAREA' && active.id) {
+      targetTextarea = active;
+    }
+  }
+
+  // If no focused Quill, try to find any Quill editor on the page
+  if (!quillInstance && !targetTextarea) {
+    const quillContainers = document.querySelectorAll('.ql-container');
+    for (const c of quillContainers) {
+      if (c.__quill) { quillInstance = c.__quill; break; }
+    }
+  }
+
+  // Still nothing? Fall back to first textarea by PAGE_NOTE_IDS
+  if (!quillInstance && !targetTextarea) {
+    const journalEl = document.getElementById('n-journal-new');
+    if (journalEl && journalEl.tagName === 'TEXTAREA') {
+      targetTextarea = journalEl;
+    } else {
+      const ids = window.PAGE_NOTE_IDS || [];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.tagName === 'TEXTAREA') { targetTextarea = el; break; }
+      }
+    }
+  }
+
+  // --- Determine if same-day stamp (check existing content for today's date) ---
+  function isSameDay(content) {
+    // Look for today's date string in existing content
+    return content && content.includes(date);
+  }
+
+  // --- Insert into Quill editor ---
+  if (quillInstance) {
+    const existingHTML = quillInstance.root.innerHTML || '';
+    const sameDay = isSameDay(quillInstance.getText());
+    const len = quillInstance.getLength(); // always >= 1 (trailing newline)
+
+    // Ensure we're at the end
+    quillInstance.setSelection(len - 1);
+
+    if (sameDay) {
+      // Same-day: shorter border + time only
+      const stampHTML = `<p><br></p><p>${shortDivider}</p><p>${time}</p><p>${shortDivider}</p><p><br></p>`;
+      quillInstance.clipboard.dangerouslyPasteHTML(len - 1, stampHTML);
+    } else {
+      // New day: full border + date + time
+      const stampHTML = `<p><br></p><p>${fullDivider}</p><p>${date} at ${time}</p><p>${fullDivider}</p><p><br></p>`;
+      quillInstance.clipboard.dangerouslyPasteHTML(len - 1, stampHTML);
+    }
+
+    // Scroll to bottom
+    quillInstance.setSelection(quillInstance.getLength() - 1);
+    quillInstance.scrollSelectionIntoView();
+
+    // Sync to hidden textarea + localStorage
+    const hiddenId = quillInstance.container.closest('[id]');
+    const editorDiv = quillInstance.root.closest('[id]');
+    const noteId = editorDiv ? editorDiv.id.replace('__quill', '') : null;
+    if (noteId) {
+      const hiddenTA = document.getElementById(noteId);
+      if (hiddenTA) hiddenTA.value = quillInstance.root.innerHTML;
+      localStorage.setItem('cbsg-' + noteId, quillInstance.root.innerHTML);
+    }
     return;
   }
-  const journalEl = document.getElementById('n-journal-new');
-  if (journalEl) {
-    journalEl.value += stamp;
-    journalEl.focus();
-    journalEl.scrollTop = journalEl.scrollHeight;
-    localStorage.setItem('cbsg-n-journal-new', journalEl.value);
-    return;
-  }
-  const ids = window.PAGE_NOTE_IDS || [];
-  if (ids.length > 0) {
-    const el = document.getElementById(ids[0]);
-    if (el) {
-      el.value += stamp;
-      el.focus();
-      el.scrollTop = el.scrollHeight;
-      localStorage.setItem('cbsg-' + ids[0], el.value);
+
+  // --- Insert into plain textarea ---
+  if (targetTextarea) {
+    const existing = targetTextarea.value || '';
+    const sameDay = isSameDay(existing);
+    let stamp;
+    if (sameDay) {
+      stamp = `\n${shortDivider}\n${time}\n${shortDivider}\n`;
+    } else {
+      stamp = `\n${fullDivider}\n${date} at ${time}\n${fullDivider}\n`;
+    }
+    targetTextarea.value += stamp;
+    targetTextarea.focus();
+    targetTextarea.scrollTop = targetTextarea.scrollHeight;
+    if (targetTextarea.id) {
+      localStorage.setItem('cbsg-' + targetTextarea.id, targetTextarea.value);
     }
   }
 }
@@ -1165,6 +1237,8 @@ function initQuillEditors() {
       modules: { toolbar: TOOLBAR },
       placeholder: placeholder
     });
+    // Store reference so insertTimestamp can find it
+    quill.container.__quill = quill;
     // Load any existing content from localStorage
     const saved = localStorage.getItem('cbsg-' + id);
     if (saved) {
