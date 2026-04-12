@@ -1,6 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Shared JavaScript — v3.1 Multi-Page + Shared Notes + Quill Timestamps
+   Shared JavaScript — v3.2 Centralized Quill Toolbar + Locked Buttons
    ============================================================ */
 
 const OWNER = 'acshotsprings';
@@ -193,10 +193,25 @@ function updateVersionTimestamp() {
   if (sEl) sEl.textContent = 'Version: ' + label;
 }
 
-// ── LOCAL STORAGE NOTES ───────────────────────────────────
+// ── LOCAL STORAGE NOTES (Quill + textarea aware) ──────────
+//
+// For each id in PAGE_NOTE_IDS we look for a registered Quill first
+// (created by bootstrapQuillEditors below). If one exists, we read/write
+// its HTML. Otherwise we fall back to the plain textarea .value.
+
+function _getQuillFor(id) {
+  const list = window.CBSG_QUILLS || [];
+  const entry = list.find(e => e.id === id);
+  return entry ? entry.quill : null;
+}
 
 function saveAllNotes() {
   (window.PAGE_NOTE_IDS || []).forEach(id => {
+    const q = _getQuillFor(id);
+    if (q) {
+      localStorage.setItem('cbsg-' + id, q.root.innerHTML);
+      return;
+    }
     const el = document.getElementById(id);
     if (el) localStorage.setItem('cbsg-' + id, el.value);
   });
@@ -204,14 +219,27 @@ function saveAllNotes() {
 
 function loadNotes() {
   (window.PAGE_NOTE_IDS || []).forEach(id => {
-    const el  = document.getElementById(id);
     const val = localStorage.getItem('cbsg-' + id);
-    if (el && val) el.value = val;
+    if (val == null) return;
+    const q = _getQuillFor(id);
+    if (q) {
+      q.root.innerHTML = val;
+      return;
+    }
+    const el = document.getElementById(id);
+    if (el) el.value = val;
   });
 }
 
 function wireAutoSave() {
   (window.PAGE_NOTE_IDS || []).forEach(id => {
+    const q = _getQuillFor(id);
+    if (q) {
+      q.on('text-change', () => {
+        localStorage.setItem('cbsg-' + id, q.root.innerHTML);
+      });
+      return;
+    }
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', () => localStorage.setItem('cbsg-' + id, el.value));
   });
@@ -231,7 +259,106 @@ function markActivePage() {
   });
 }
 
-// ── JOURNAL TIMESTAMP (Quill-aware) ───────────────────────
+// ── CANONICAL QUILL TOOLBAR (locked, single source of truth) ──
+//
+// Every Quill editor on every page gets exactly this toolbar. To change
+// the buttons available site-wide, edit this one constant — do not let
+// individual pages define their own.
+
+const CBSG_TOOLBAR = [
+  [{ 'header': [1, 2, 3, false] }],
+  ['bold', 'italic', 'underline', 'strike'],
+  [{ 'color': [] }, { 'background': [] }],
+  [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+  ['blockquote', 'link'],
+  ['cbsg-timestamp'],   // custom 🕐 button — handler wired below
+  ['clean']
+];
+
+// ── QUILL BOOTSTRAP ───────────────────────────────────────
+//
+// Find every textarea.notes-input on the page, tear down any pre-baked
+// Quill DOM next to it (left over from earlier auto-converters), and
+// re-init Quill fresh with the canonical toolbar. This is what locks the
+// toolbar in place and stops it from drifting between pages or reloads.
+
+function bootstrapQuillEditors() {
+  if (!window.Quill) return;
+
+  const textareas = document.querySelectorAll('textarea.notes-input');
+  textareas.forEach(ta => {
+    const id = ta.id;
+    if (!id) return;
+
+    // 1. Capture any existing content. Priority order:
+    //    a) saved value in localStorage (most recent)
+    //    b) HTML inside a pre-baked .ql-editor sitting next to the textarea
+    //    c) the textarea's own .value
+    const stored = localStorage.getItem('cbsg-' + id);
+    const parent = ta.parentNode;
+    let prebakedHtml = null;
+    const oldQuillContainer = parent.querySelector('#' + CSS.escape(id) + '__quill');
+    if (oldQuillContainer) {
+      const ed = oldQuillContainer.querySelector('.ql-editor');
+      if (ed) prebakedHtml = ed.innerHTML;
+    }
+    const initialHtml = stored != null ? stored
+                       : prebakedHtml != null ? prebakedHtml
+                       : (ta.value || '');
+
+    // 2. Remove any leftover Quill DOM from prior auto-converters.
+    //    We strip both the old toolbar and the old container so we can
+    //    rebuild cleanly.
+    parent.querySelectorAll('.ql-toolbar').forEach(n => n.remove());
+    if (oldQuillContainer) oldQuillContainer.remove();
+
+    // 3. Hide the textarea (it stays as a hidden mirror for legacy code).
+    ta.style.display = 'none';
+
+    // 4. Build a fresh container right after the textarea.
+    const host = document.createElement('div');
+    host.id = id + '__quill';
+    host.className = 'quill-editor';
+    host.style.minHeight = '120px';
+    parent.insertBefore(host, ta.nextSibling);
+
+    // 5. Initialize Quill with the canonical toolbar.
+    const q = new Quill(host, {
+      theme: 'snow',
+      placeholder: ta.getAttribute('placeholder') || 'Write your notes…',
+      modules: {
+        toolbar: {
+          container: CBSG_TOOLBAR,
+          handlers: {
+            'cbsg-timestamp': function() { insertTimestamp(); }
+          }
+        }
+      }
+    });
+
+    // 6. Decorate the custom timestamp button so it actually shows 🕐.
+    //    Quill renders unknown toolbar entries as bare buttons; we find
+    //    it by class on whichever toolbar Quill just inserted next to
+    //    our host element.
+    const toolbarEl = parent.querySelector('.ql-toolbar');
+    const tsBtn = toolbarEl ? toolbarEl.querySelector('.ql-cbsg-timestamp') : null;
+    if (tsBtn) {
+      tsBtn.innerHTML = '🕐';
+      tsBtn.setAttribute('title', 'Insert timestamp');
+      tsBtn.setAttribute('aria-label', 'Insert timestamp');
+    }
+
+    // 7. Restore content into the fresh editor.
+    if (initialHtml) {
+      q.root.innerHTML = initialHtml;
+    }
+
+    // 8. Register so insertTimestamp + save/load can find this editor.
+    registerQuill(id, q);
+  });
+}
+
+
 //
 // Behavior:
 //   • Detects which Quill editor currently has focus and inserts there.
@@ -415,7 +542,8 @@ function insertTimestamp() {
 // ── INIT ──────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadNotes();
-  wireAutoSave();
+  bootstrapQuillEditors();   // build canonical toolbars + register Quills
+  loadNotes();               // populate from localStorage (Quill-aware)
+  wireAutoSave();            // attach text-change listeners
   markActivePage();
 });
