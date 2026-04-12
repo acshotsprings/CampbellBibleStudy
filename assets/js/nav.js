@@ -1,8 +1,10 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v6.0 Full Audit Fix
-   - Added completable + completeKey to ALL module items
-   - Added Checklist and Deep Dive Studies to nav
+   Sidebar Navigation Builder — v7.0 Full Site Audit
+   - ALL pages from Drive + live site accounted for
+   - completable + completeKey on every module
+   - Deep Dive sub-pages linked
+   - Checklist, Resources, Listening Notes added
    ============================================================ */
 
 const NAV_STRUCTURE = [
@@ -71,10 +73,14 @@ const NAV_STRUCTURE = [
   },
   {
     type: 'section',
-    label: 'Deep Studies',
-    collapsible: false,
+    label: 'Deep Dive Studies',
+    collapsible: true,
+    key: 'deepdives',
     items: [
-      { label: '◆ Deep Dive Studies →', href: '/DeepDives.html' },
+      { label: 'Deep Dives Index',                      href: '/DeepDives.html' },
+      { label: '↳ The Willow in Scripture',              href: '/DeepDive-Willow.html',    sub: true },
+      { label: '↳ Daniel\'s Weeks (H7620)',              href: '/DeepDive-Shabua.html',     sub: true },
+      { label: '↳ Prophetic Calendars',                  href: '/DeepDive-Calendars.html',  sub: true },
     ]
   },
   {
@@ -83,10 +89,12 @@ const NAV_STRUCTURE = [
     collapsible: false,
     items: [
       { label: 'Sermon & Teaching Log',     href: '/sermons.html' },
+      { label: 'Listening Notes',           href: '/listening-notes.html' },
       { label: 'Personal Journal',          href: '/journal.html' },
       { label: 'My Growing Convictions',    href: '/convictions.html' },
       { label: 'Current Events & Prophecy', href: '/current-events.html' },
       { label: 'Study Checklist',           href: '/checklist.html' },
+      { label: 'Reference Library',         href: '/resources.html' },
     ]
   }
 ];
