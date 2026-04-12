@@ -66,21 +66,13 @@ const NAV_STRUCTURE = [
   },
   {
     type: 'section',
-    label: 'Current Events & Prophecy',
-    collapsible: true,
-    key: 'currentevents',
-    items: [
-      { label: 'Watching the World', href: '/index.html#current-events' },
-    ]
-  },
-  {
-    type: 'section',
     label: 'My Study',
     collapsible: false,
     items: [
-      { label: 'Sermon & Teaching Log',  href: '/sermons.html' },
-      { label: 'Personal Journal',       href: '/journal.html' },
-      { label: 'My Growing Convictions', href: '/convictions.html' },
+      { label: 'Sermon & Teaching Log',      href: '/sermons.html' },
+      { label: 'Personal Journal',           href: '/journal.html' },
+      { label: 'My Growing Convictions',     href: '/convictions.html' },
+      { label: 'Current Events & Prophecy',  href: '/current-events.html' },
     ]
   }
 ];
