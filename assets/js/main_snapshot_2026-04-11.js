@@ -797,7 +797,7 @@ function logAndStamp() {
 // bar based on whether the user is in admin mode or visitor mode:
 //
 //   ADMIN MODE  → Save to GitHub, Load from GitHub, 🔓 Admin (logout)
-//   VISITOR MODE → 👤 [name], 💾 Save My Notes, 🔒 Admin (login)
+//   VISITOR MODE → 👤 [name], 📧 Send my notes to Chris, 🔒 Admin (login)
 //
 // Admin login: click 🔒 Admin → password prompt → "Campbell 2026" unlocks.
 // Session-scoped: closing the browser logs you out.
@@ -881,14 +881,15 @@ function _loadEmailJsThen(callback) {
   }, 500);
 }
 
-function saveVisitorNotes() {
+function sendVisitorNotesToChris() {
   let name = getVisitorName();
   if (!name) {
     name = promptForVisitorName();
     if (!name) { setStatus('⚠️ Please enter your name first.', 'warn'); return; }
   }
 
-  // Gather all the visitor's notes across the site from localStorage.
+  // Gather all the visitor's notes for this page from localStorage,
+  // and any others they've written across the site.
   const allNotes = {};
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
@@ -898,30 +899,22 @@ function saveVisitorNotes() {
     if (key === 'cbsg-admin') continue;
     if (key.startsWith('cbsg-laststamp-')) continue;
     if (key.startsWith('cbsg-nav-')) continue;
-    if (key.startsWith('cbsg-timer-')) continue;
     const val = localStorage.getItem(key);
     if (val && val.trim()) allNotes[key.replace('cbsg-', '')] = val;
   }
 
   if (Object.keys(allNotes).length === 0) {
-    setStatus('⚠️ No notes to save yet — write something first!', 'warn');
+    setStatus('⚠️ No notes to send yet — write something first.', 'warn');
     return;
   }
 
-  // ── STEP 1: Save to localStorage (already there, but confirm) ──
-  // Notes are already in localStorage from Quill autosave, so this is
-  // really just a confirmation + timestamp marker.
-  localStorage.setItem('cbsg-last-save-' + name.replace(/\s+/g, '_'), new Date().toISOString());
-
-  setStatus('✅ Notes saved to this device! Your study notes are stored for next time.', 'ok');
-
-  // ── STEP 2: Silently email Chris in the background ──
   // Build a plain-text bundle of every note, labeled.
   let body = '';
   for (const [k, v] of Object.entries(allNotes)) {
     body += '─────────────────────────────────\n';
     body += k + '\n';
     body += '─────────────────────────────────\n';
+    // Strip HTML tags so the email is readable plain text.
     const plain = v.replace(/<\/p>/gi, '\n')
                    .replace(/<br\s*\/?>/gi, '\n')
                    .replace(/<[^>]+>/g, '')
@@ -937,7 +930,8 @@ function saveVisitorNotes() {
   const pageName = document.title.replace(' — Campbell Bible Study', '').trim()
                  || window.location.pathname;
 
-  // Silent send — no status updates about the email.
+  setStatus('📡 Sending your notes to Chris...', 'info');
+
   _loadEmailJsThen(() => {
     emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
       name: name,
@@ -947,11 +941,10 @@ function saveVisitorNotes() {
       page_url: window.location.href,
       message: body
     }).then(() => {
-      // Silent success — visitor only sees "Notes saved" message above.
-      console.log('CBSG: visitor notes emailed to admin.');
+      setStatus('✅ Thank you, ' + name + '! Your notes were sent to Chris.', 'ok');
     }).catch((err) => {
-      // Silent failure — don't alarm the visitor.
-      console.error('CBSG silent email error:', err);
+      console.error('EmailJS error:', err);
+      setStatus('❌ Could not send: ' + (err && err.text ? err.text : 'unknown error'), 'error');
     });
   });
 }
@@ -1028,9 +1021,8 @@ function rebuildTopBar() {
 
     const sendBtn = document.createElement('button');
     sendBtn.className = 'btn-send-notes';
-    sendBtn.textContent = '💾 Save My Notes';
-    sendBtn.title = 'Save your notes to this device for personal study';
-    sendBtn.onclick = saveVisitorNotes;
+    sendBtn.textContent = '📧 Send my notes to Chris';
+    sendBtn.onclick = sendVisitorNotesToChris;
     bar.appendChild(sendBtn);
 
     const adminBtn = document.createElement('button');
