@@ -562,7 +562,7 @@ function insertTimestamp() {
 //   3. Session cap — when saving a session to the page total, cap it at
 //      4 hours. No single sit-down adds more than that, ever.
 
-const IDLE_THRESHOLD_MS    = 5 * 60 * 1000; // 5 minutes
+const IDLE_THRESHOLD_MS    = 3 * 60 * 1000; // 3 minutes
 const SESSION_CAP_SECONDS  = 4 * 60 * 60;   // 4 hours
 const TICK_CREDIT_CAP_MS   = 2000;          // single tick credits ≤ 2s
 
