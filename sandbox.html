@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sandbox — Campbell Bible Study</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<!-- Quill rich text editor (CDN) -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+<style>
+  /* Quill editor styling to match the site */
+  .ql-toolbar.ql-snow {
+    border: 1px solid #ccc;
+    border-radius: 6px 6px 0 0;
+    background: #f9f9f9;
+  }
+  .ql-container.ql-snow {
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    min-height: 140px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    background: #fff;
+  }
+  .ql-editor { min-height: 140px; }
+  .sandbox-warning {
+    background: #FFF3CD; border: 2px solid #FFC107;
+    padding: 14px 18px; border-radius: 8px; margin: 14px 0 22px;
+    color: #664d03; font-family: Arial, sans-serif; font-size: 14px;
+  }
+  .sandbox-warning strong { color: #1F3864; }
+  .test-result {
+    margin-top: 10px; padding: 10px 14px; border-radius: 6px;
+    font-family: Arial, sans-serif; font-size: 13px; display: none;
+  }
+  .test-result.ok { background: #D1E7DD; color: #0F5132; border: 1px solid #BADBCC; display: block; }
+  .test-result.err { background: #F8D7DA; color: #842029; border: 1px solid #F5C2C7; display: block; }
+</style>
+</head>
+<body>
+
+<div id="sidebar-mount"></div>
+
+<div class="main-content">
+  <div class="bar">
+    <div class="bar-title">Campbell Bible Study — 🧪 Sandbox</div>
+    <div class="bar-extras"></div>
+  </div>
+
+  <div class="page-content">
+    <h1 style="color:#1F3864;">🧪 Sandbox Test Page</h1>
+
+    <div class="sandbox-warning">
+      <strong>This is a test page.</strong> Nothing here is part of the live study guide.
+      Use it to try out the new rich text editor and the full-site backup button.
+      Once you bless these features, they'll roll out to the real pages
+      (Convictions, Journal, all theme modules).
+    </div>
+
+    <h2 style="color:#1F3864;">Test 1 — Rich Text Editor (Quill)</h2>
+    <p style="font-family:Arial,sans-serif;font-size:14px;color:#444;">
+      Three test note fields below, each using the new editor. Try the toolbar:
+      <strong>bold</strong>, <em>italic</em>, headings, bullet lists, links, undo/redo.
+      Then click <strong>Save to GitHub</strong> in the top bar (admin mode required) and
+      reload the page — your formatting should still be there.
+    </p>
+
+    <div class="notes-box">
+      <div class="label">✏️ Sandbox Note A — formatting test</div>
+      <div id="sandbox-note-a" class="quill-editor"></div>
+    </div>
+
+    <div class="notes-box" style="margin-top:14px;">
+      <div class="label">✏️ Sandbox Note B — long-form test</div>
+      <div id="sandbox-note-b" class="quill-editor"></div>
+    </div>
+
+    <div class="notes-box" style="margin-top:14px;">
+      <div class="label">✏️ Sandbox Note C — links and lists test</div>
+      <div id="sandbox-note-c" class="quill-editor"></div>
+    </div>
+
+    <h2 style="color:#1F3864;margin-top:36px;">Test 2 — Full-Site Backup Button</h2>
+    <p style="font-family:Arial,sans-serif;font-size:14px;color:#444;">
+      Click the button below to download a complete snapshot of your website
+      (all HTML pages, theme modules, JS, CSS, and your notes) as a single
+      <code>.zip</code> file to your computer's Downloads folder. Resources/book
+      covers are skipped to keep the file lean.
+    </p>
+    <button id="btn-backup-now" class="action-btn"
+            style="background:#1F3864;color:#fff;padding:12px 24px;font-size:15px;
+                   border:none;border-radius:6px;cursor:pointer;font-weight:bold;">
+      💾 Download Full Site Backup (.zip)
+    </button>
+    <div id="backup-result" class="test-result"></div>
+
+    <p style="font-family:Arial,sans-serif;font-size:12px;color:#888;margin-top:30px;">
+      Sandbox build — test before rollout. Delete this page once features are live.
+    </p>
+  </div>
+</div>
+
+<!-- The note IDs the main.js save/load system needs to know about -->
+<script>
+  window.PAGE_NOTE_IDS = ['sandbox-note-a', 'sandbox-note-b', 'sandbox-note-c'];
+</script>
+
+<!-- Quill library -->
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+<!-- JSZip for the backup button (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+<!-- Site nav + main scripts -->
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/main.js"></script>
+
+<script>
+/* ============================================================
+   QUILL INITIALIZATION
+   Wraps each .quill-editor div with a Quill instance, and
+   bridges its content to a hidden <textarea> with the same id
+   so the existing main.js save/load system works unchanged.
+   ============================================================ */
+(function initQuillEditors() {
+  const TOOLBAR = [
+    [{ 'header': [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline'],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    ['link'],
+    ['clean']
+  ];
+
+  document.querySelectorAll('.quill-editor').forEach(div => {
+    const id = div.id;
+    // Create a hidden textarea with the same id so main.js save/load works
+    const hidden = document.createElement('textarea');
+    hidden.id = id;
+    hidden.style.display = 'none';
+    hidden.className = 'notes-input';
+    div.parentNode.insertBefore(hidden, div);
+    div.id = id + '__quill'; // give the visible div a different id
+
+    const quill = new Quill('#' + id + '__quill', {
+      theme: 'snow',
+      modules: { toolbar: TOOLBAR },
+      placeholder: 'Write here...'
+    });
+
+    // Load any existing saved content from localStorage
+    const saved = localStorage.getItem('cbsg-' + id);
+    if (saved) {
+      // Existing notes may be plain text from the old textarea system
+      if (saved.trim().startsWith('<')) {
+        quill.root.innerHTML = saved;
+      } else {
+        quill.setText(saved);
+      }
+    }
+
+    // On every change, push HTML into the hidden textarea + save to localStorage
+    quill.on('text-change', () => {
+      const html = quill.root.innerHTML;
+      hidden.value = html;
+      localStorage.setItem('cbsg-' + id, html);
+    });
+
+    // Also push current value into hidden textarea immediately so save-to-github works on first click
+    hidden.value = quill.root.innerHTML;
+  });
+})();
+
+/* ============================================================
+   FULL-SITE BACKUP BUTTON
+   Pulls every text file from the GitHub repo (skipping the
+   resources/ folder), zips it client-side, and downloads it.
+   ============================================================ */
+(function initBackupButton() {
+  const btn = document.getElementById('btn-backup-now');
+  const result = document.getElementById('backup-result');
+  if (!btn) return;
+
+  const REPO = 'acshotsprings/CampbellBibleStudy';
+  const BRANCH = 'main';
+  const SKIP_PREFIXES = ['resources/']; // skip heavy static folders
+
+  function showResult(msg, ok) {
+    result.textContent = msg;
+    result.className = 'test-result ' + (ok ? 'ok' : 'err');
+  }
+
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    btn.textContent = '⏳ Building backup...';
+    showResult('Fetching file list from GitHub...', true);
+
+    try {
+      // 1. Get the full file tree from GitHub API
+      const treeUrl = `https://api.github.com/repos/${REPO}/git/trees/${BRANCH}?recursive=1`;
+      const treeRes = await fetch(treeUrl);
+      if (!treeRes.ok) throw new Error('GitHub tree fetch failed: ' + treeRes.status);
+      const tree = await treeRes.json();
+
+      // 2. Filter to files we want
+      const files = tree.tree.filter(item =>
+        item.type === 'blob' &&
+        !SKIP_PREFIXES.some(p => item.path.startsWith(p))
+      );
+
+      showResult(`Downloading ${files.length} files...`, true);
+
+      // 3. Fetch each file's raw content
+      const zip = new JSZip();
+      let done = 0;
+      for (const file of files) {
+        const rawUrl = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${file.path}`;
+        const r = await fetch(rawUrl);
+        if (r.ok) {
+          const blob = await r.blob();
+          zip.file(file.path, blob);
+        }
+        done++;
+        if (done % 5 === 0) {
+          btn.textContent = `⏳ ${done}/${files.length} files...`;
+        }
+      }
+
+      // 4. Generate zip + trigger download
+      btn.textContent = '⏳ Compressing...';
+      const zipBlob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+      const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16);
+      const filename = `CampbellBibleStudy-backup-${stamp}.zip`;
+
+      const url = URL.createObjectURL(zipBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      const sizeKB = Math.round(zipBlob.size / 1024);
+      showResult(`✅ Backup complete: ${filename} (${sizeKB} KB, ${files.length} files). Check your Downloads folder.`, true);
+    } catch (err) {
+      console.error(err);
+      showResult('❌ Backup failed: ' + err.message, false);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '💾 Download Full Site Backup (.zip)';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
