@@ -546,9 +546,278 @@ function insertTimestamp() {
   console.warn('insertTimestamp: no editor found to stamp.');
 }
 
+// ── VISITOR + ADMIN TOP BAR ───────────────────────────────
+//
+// One source of truth for the GitHub bar. On page load we rebuild the
+// bar based on whether the user is in admin mode or visitor mode:
+//
+//   ADMIN MODE  → Save to GitHub, Load from GitHub, 🔓 Admin (logout)
+//   VISITOR MODE → 👤 [name], 📧 Send my notes to Chris, 🔒 Admin (login)
+//
+// Admin login: click 🔒 Admin → password prompt → "Campbell 2026" unlocks.
+// Session-scoped: closing the browser logs you out.
+//
+// Visitor name: prompted on first visit, stored on the visitor's device.
+// Their notes get tagged with their name when emailed to Chris.
+
+const ADMIN_PASSWORD = 'Campbell 2026';
+const EMAILJS_PUBLIC_KEY  = '2duGE838Bx6BcJXTF';
+const EMAILJS_SERVICE_ID  = 'service_ef1507g';
+const EMAILJS_TEMPLATE_ID = 'template_275v5hl';
+
+function isAdmin() {
+  return sessionStorage.getItem('cbsg-admin') === 'true';
+}
+
+function getVisitorName() {
+  return localStorage.getItem('cbsg-visitor-name') || '';
+}
+
+function setVisitorName(name) {
+  if (name && name.trim()) {
+    localStorage.setItem('cbsg-visitor-name', name.trim());
+  }
+}
+
+function promptForVisitorName() {
+  const existing = getVisitorName();
+  if (existing) return existing;
+  if (isAdmin()) return ''; // admin doesn't need to be prompted
+  const name = window.prompt(
+    "Welcome to the Campbell Family Bible Study!\n\n" +
+    "What's your name? (so Chris knows who's sending notes)"
+  );
+  if (name && name.trim()) {
+    setVisitorName(name);
+    return name.trim();
+  }
+  return '';
+}
+
+function adminLogin() {
+  const pw = window.prompt('Admin password:');
+  if (pw === ADMIN_PASSWORD) {
+    sessionStorage.setItem('cbsg-admin', 'true');
+    document.body.classList.add('admin-mode');
+    document.body.classList.remove('visitor-mode');
+    rebuildTopBar();
+    setStatus('🔓 Admin mode unlocked.', 'ok');
+  } else if (pw !== null) {
+    setStatus('❌ Wrong password.', 'error');
+  }
+}
+
+function adminLogout() {
+  sessionStorage.removeItem('cbsg-admin');
+  document.body.classList.remove('admin-mode');
+  document.body.classList.add('visitor-mode');
+  rebuildTopBar();
+  setStatus('🔒 Logged out of admin mode.', 'info');
+}
+
+function _loadEmailJsThen(callback) {
+  if (typeof emailjs !== 'undefined') {
+    try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) {}
+    callback();
+    return;
+  }
+  // Wait up to 5 seconds for the EmailJS script to finish loading.
+  let attempts = 0;
+  const t = setInterval(() => {
+    attempts++;
+    if (typeof emailjs !== 'undefined') {
+      clearInterval(t);
+      try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) {}
+      callback();
+    } else if (attempts > 10) {
+      clearInterval(t);
+      setStatus('❌ Email service not loaded — try again in a moment.', 'error');
+    }
+  }, 500);
+}
+
+function sendVisitorNotesToChris() {
+  let name = getVisitorName();
+  if (!name) {
+    name = promptForVisitorName();
+    if (!name) { setStatus('⚠️ Please enter your name first.', 'warn'); return; }
+  }
+
+  // Gather all the visitor's notes for this page from localStorage,
+  // and any others they've written across the site.
+  const allNotes = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key || !key.startsWith('cbsg-')) continue;
+    if (key === 'cbsg-gh-token') continue;
+    if (key === 'cbsg-visitor-name') continue;
+    if (key === 'cbsg-admin') continue;
+    if (key.startsWith('cbsg-laststamp-')) continue;
+    if (key.startsWith('cbsg-nav-')) continue;
+    const val = localStorage.getItem(key);
+    if (val && val.trim()) allNotes[key.replace('cbsg-', '')] = val;
+  }
+
+  if (Object.keys(allNotes).length === 0) {
+    setStatus('⚠️ No notes to send yet — write something first.', 'warn');
+    return;
+  }
+
+  // Build a plain-text bundle of every note, labeled.
+  let body = '';
+  for (const [k, v] of Object.entries(allNotes)) {
+    body += '─────────────────────────────────\n';
+    body += k + '\n';
+    body += '─────────────────────────────────\n';
+    // Strip HTML tags so the email is readable plain text.
+    const plain = v.replace(/<\/p>/gi, '\n')
+                   .replace(/<br\s*\/?>/gi, '\n')
+                   .replace(/<[^>]+>/g, '')
+                   .replace(/&nbsp;/g, ' ')
+                   .replace(/&amp;/g, '&')
+                   .replace(/&lt;/g, '<')
+                   .replace(/&gt;/g, '>')
+                   .replace(/&quot;/g, '"')
+                   .trim();
+    body += plain + '\n\n';
+  }
+
+  const pageName = document.title.replace(' — Campbell Bible Study', '').trim()
+                 || window.location.pathname;
+
+  setStatus('📡 Sending your notes to Chris...', 'info');
+
+  _loadEmailJsThen(() => {
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      name: name,
+      from_name: name,
+      from_email: '(visitor — no email)',
+      page_name: pageName,
+      page_url: window.location.href,
+      message: body
+    }).then(() => {
+      setStatus('✅ Thank you, ' + name + '! Your notes were sent to Chris.', 'ok');
+    }).catch((err) => {
+      console.error('EmailJS error:', err);
+      setStatus('❌ Could not send: ' + (err && err.text ? err.text : 'unknown error'), 'error');
+    });
+  });
+}
+
+function rebuildTopBar() {
+  const bar = document.getElementById('github-bar');
+  if (!bar) return;
+
+  // Preserve the right-side version block if it exists.
+  const rightBlock = bar.querySelector('.bar-right');
+
+  // Clear and rebuild the left side.
+  bar.innerHTML = '';
+
+  const title = document.createElement('span');
+  title.className = 'bar-title';
+  title.textContent = 'Campbell Bible Study';
+  bar.appendChild(title);
+
+  const sep1 = document.createElement('span');
+  sep1.className = 'bar-sep';
+  sep1.textContent = '|';
+  bar.appendChild(sep1);
+
+  if (isAdmin()) {
+    // ── ADMIN MODE ──
+    const tokenInput = document.createElement('input');
+    tokenInput.id = 'gh-token';
+    tokenInput.type = 'password';
+    tokenInput.placeholder = 'Paste GitHub token here (saved locally, never shared)';
+    tokenInput.style.display = 'inline-block';
+    const savedToken = localStorage.getItem('cbsg-gh-token');
+    if (savedToken) tokenInput.value = savedToken;
+    bar.appendChild(tokenInput);
+
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'btn-save';
+    saveBtn.textContent = 'Save to GitHub';
+    saveBtn.onclick = saveToGitHub;
+    bar.appendChild(saveBtn);
+
+    const loadBtn = document.createElement('button');
+    loadBtn.className = 'btn-load';
+    loadBtn.textContent = 'Load from GitHub';
+    loadBtn.onclick = loadFromGitHub;
+    bar.appendChild(loadBtn);
+
+    const adminBtn = document.createElement('button');
+    adminBtn.className = 'btn-admin';
+    adminBtn.textContent = '🔓 Admin';
+    adminBtn.title = 'Click to log out of admin mode';
+    adminBtn.style.background = '#2a7a2a';
+    adminBtn.style.color = '#fff';
+    adminBtn.onclick = adminLogout;
+    bar.appendChild(adminBtn);
+  } else {
+    // ── VISITOR MODE ──
+    const visitorLabel = document.createElement('span');
+    visitorLabel.className = 'bar-visitor';
+    visitorLabel.style.color = 'rgba(255,255,255,0.85)';
+    visitorLabel.style.padding = '0 8px';
+    const name = getVisitorName();
+    visitorLabel.textContent = name ? '👤 ' + name : '👤 (no name set)';
+    visitorLabel.title = 'Click to change your name';
+    visitorLabel.style.cursor = 'pointer';
+    visitorLabel.onclick = () => {
+      const newName = window.prompt('Your name:', getVisitorName());
+      if (newName && newName.trim()) {
+        setVisitorName(newName);
+        rebuildTopBar();
+      }
+    };
+    bar.appendChild(visitorLabel);
+
+    const sendBtn = document.createElement('button');
+    sendBtn.className = 'btn-send-notes';
+    sendBtn.textContent = '📧 Send my notes to Chris';
+    sendBtn.onclick = sendVisitorNotesToChris;
+    bar.appendChild(sendBtn);
+
+    const adminBtn = document.createElement('button');
+    adminBtn.className = 'btn-admin';
+    adminBtn.textContent = '🔒 Admin';
+    adminBtn.title = 'Admin login (Chris only)';
+    adminBtn.onclick = adminLogin;
+    bar.appendChild(adminBtn);
+  }
+
+  // Status span (used by setStatus).
+  const status = document.createElement('span');
+  status.id = 'gh-status';
+  bar.appendChild(status);
+
+  // Re-append the right-side version block if it existed.
+  if (rightBlock) bar.appendChild(rightBlock);
+}
+
+function initVisitorAdminBar() {
+  // Set the right body class so any CSS targeting admin/visitor mode works.
+  if (isAdmin()) {
+    document.body.classList.add('admin-mode');
+    document.body.classList.remove('visitor-mode');
+  } else {
+    document.body.classList.add('visitor-mode');
+    document.body.classList.remove('admin-mode');
+    // Prompt new visitors for their name on first load.
+    if (!getVisitorName()) {
+      // Defer slightly so the page has a chance to render first.
+      setTimeout(promptForVisitorName, 400);
+    }
+  }
+  rebuildTopBar();
+}
+
 // ── INIT ──────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
+  initVisitorAdminBar();     // rebuild top bar based on admin/visitor state
   bootstrapQuillEditors();   // build canonical toolbars + register Quills
   loadNotes();               // populate from localStorage (Quill-aware)
   wireAutoSave();            // attach text-change listeners
