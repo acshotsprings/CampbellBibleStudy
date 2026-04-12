@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Signs of the Times — Campbell Bible Study</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <style>
     .study-q-box { background:#F5F5F5; border:1px solid #ddd; border-radius:6px; padding:16px 18px; margin:12px 0; }
     .study-q { font-size:13px; color:#333; line-height:1.7; margin-bottom:6px; font-family:Arial,sans-serif; font-weight:bold; }
@@ -68,7 +69,7 @@
   </div>
   <div class="notes-box">
     <div class="label">✏️ Module 10 — My notes on Signs of the Times:</div>
-    <textarea class="notes-input" id="n-m10" placeholder="Write your thoughts here..."></textarea>
+    <div class="quill-editor" id="n-m10" data-placeholder="Write your thoughts here..."></div>
   </div>
   <div class="cross-ref-box">
     <div class="title">🔗 Cross-References</div>
@@ -89,6 +90,7 @@
 
 <script>window.PAGE_NOTE_IDS = ["n-m10"];</script>
 <script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="../assets/js/main.js"></script>
 <script>buildSidebar('..');</script>
 </body>

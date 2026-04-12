@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Personal Journal — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script></head>
 <body class="admin-mode">
 
@@ -68,7 +69,7 @@
 
   <div class="notes-box">
     <div class="label">✏️ New entry — use the 📅 Timestamp button in the top bar, then write here:</div>
-    <textarea class="notes-input" id="n-journal-new" placeholder="Click 'Timestamp' in the top bar to stamp the date and time, then write your entry here..." style="min-height:220px;"></textarea>
+    <div class="quill-editor" id="n-journal-new" data-placeholder="Click 'Timestamp' in the top bar to stamp the date and time, then write your entry here..."></div>
   </div>
 
   <div style="display:flex;align-items:center;gap:12px;margin:28px 0;">
@@ -190,6 +191,7 @@
 
 <script>window.PAGE_NOTE_IDS = ['n-journal-new'];</script>
 <script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 

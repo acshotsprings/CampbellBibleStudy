@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calendar History — Campbell Bible Study</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 </head>
 <body>
 
@@ -169,7 +170,7 @@
 
   <div class="notes-box">
     <div class="label">✏️ Module 1 — My notes &amp; convictions on Biblical Calendar History:</div>
-    <textarea class="notes-input" id="n-t2m1" placeholder="Write your convictions here... Date your entry."></textarea>
+    <div class="quill-editor" id="n-t2m1" data-placeholder="Write your convictions here... Date your entry."></div>
   </div>
 
   <div class="cross-ref-box">
@@ -191,6 +192,7 @@
 
 <script>window.PAGE_NOTE_IDS = ['n-t2m1'];</script>
 <script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="../assets/js/main.js"></script>
 <script>buildSidebar('..');</script>
 

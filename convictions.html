@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Growing Convictions — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script></head>
 <body class="admin-mode">
 
@@ -76,41 +77,41 @@
 
   <div class="notes-box">
     <div class="label">📌 On prophecy &amp; how to interpret it:</div>
-    <textarea class="notes-input" id="c-prophecy" placeholder="e.g. I lean literal on most prophecy because... but I hold this humbly because..."></textarea>
+    <div class="quill-editor" id="c-prophecy" data-placeholder="e.g. I lean literal on most prophecy because... but I hold this humbly because..."></div>
   </div>
 
   <div class="notes-box">
     <div class="label">📌 On Israel &amp; the Church in prophecy:</div>
-    <textarea class="notes-input" id="c-israel" placeholder="e.g. I believe God's covenant with Israel is still active because..."></textarea>
+    <div class="quill-editor" id="c-israel" data-placeholder="e.g. I believe God's covenant with Israel is still active because..."></div>
   </div>
 
   <div class="notes-box">
     <div class="label">📌 On the Rapture:</div>
-    <textarea class="notes-input" id="c-rapture" placeholder="e.g. My current position is pre-trib / mid-trib / pre-wrath / post-trib because..."></textarea>
+    <div class="quill-editor" id="c-rapture" data-placeholder="e.g. My current position is pre-trib / mid-trib / pre-wrath / post-trib because..."></div>
   </div>
 
   <div class="notes-box">
     <div class="label">📌 On the Millennium:</div>
-    <textarea class="notes-input" id="c-millennium" placeholder="e.g. I lean premillennial because..."></textarea>
+    <div class="quill-editor" id="c-millennium" data-placeholder="e.g. I lean premillennial because..."></div>
   </div>
 
   <h2 class="section-title">Theme 2 — Biblical Calendar</h2>
 
   <div class="notes-box">
     <div class="label">📌 On God's original calendar and what it means for worship:</div>
-    <textarea class="notes-input" id="c-calendar" placeholder="e.g. What strikes me most about the Essene solar calendar is..."></textarea>
+    <div class="quill-editor" id="c-calendar" data-placeholder="e.g. What strikes me most about the Essene solar calendar is..."></div>
   </div>
 
   <h2 class="section-title">Christian Living</h2>
 
   <div class="notes-box">
     <div class="label">📌 On grace, holiness, and what it means to be ready:</div>
-    <textarea class="notes-input" id="c-grace" placeholder="What do I actually believe about how grace and holiness work together in my life?"></textarea>
+    <div class="quill-editor" id="c-grace" data-placeholder="What do I actually believe about how grace and holiness work together in my life?"></div>
   </div>
 
   <div class="notes-box">
     <div class="label">📌 How this study is changing how I live day to day:</div>
-    <textarea class="notes-input" id="c-live" placeholder="Concrete ways my thinking and living are shifting..."></textarea>
+    <div class="quill-editor" id="c-live" data-placeholder="Concrete ways my thinking and living are shifting..."></div>
   </div>
 
   <h2 class="section-title">Conviction Snapshots Over Time</h2>
@@ -118,7 +119,7 @@
 
   <div class="notes-box">
     <div class="label">📖 Dated conviction snapshots:</div>
-    <textarea class="notes-input" id="c-snapshots" placeholder="April 2026 — Starting out, I believe..." style="min-height:200px;"></textarea>
+    <div class="quill-editor" id="c-snapshots" data-placeholder="April 2026 — Starting out, I believe..."></div>
   </div>
 
   <!-- ── STUDY SESSION LOG ── -->
@@ -166,7 +167,7 @@
 
   <div class="notes-box" style="margin-top:12px;">
     <div class="label">✏️ April 9, 2026 — My additional thoughts on this session:</div>
-    <textarea class="notes-input" id="c-gog-session-apr9" placeholder="Write any additional thoughts, questions still lingering, or things you want to follow up on..."></textarea>
+    <div class="quill-editor" id="c-gog-session-apr9" data-placeholder="Write any additional thoughts, questions still lingering, or things you want to follow up on..."></div>
   </div>
 
 </div>
@@ -182,6 +183,7 @@ window.PAGE_NOTE_IDS = [
 </script>
 
 <script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 

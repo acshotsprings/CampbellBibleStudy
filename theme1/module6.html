@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Rapture — Campbell Bible Study</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <style>
     .study-q-box { background:#F5F5F5; border:1px solid #ddd; border-radius:6px; padding:16px 18px; margin:12px 0; }
     .study-q { font-size:13px; color:#333; line-height:1.7; margin-bottom:6px; font-family:Arial,sans-serif; font-weight:bold; }
@@ -66,7 +67,7 @@
   </div>
   <div class="notes-box">
     <div class="label">✏️ Module 6 — My current rapture position, my strongest reasons, and my remaining questions:</div>
-    <textarea class="notes-input" id="n-m6" placeholder="Write your convictions here... Date your entry."></textarea>
+    <div class="quill-editor" id="n-m6" data-placeholder="Write your convictions here... Date your entry."></div>
   </div>
   <div class="cross-ref-box">
     <div class="title">🔗 Cross-References</div>
@@ -87,6 +88,7 @@
 
 <script>window.PAGE_NOTE_IDS = ["n-m6", "q-m6-1", "q-m6-2", "q-m6-3", "q-m6-4"];</script>
 <script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="../assets/js/main.js"></script>
 <script>buildSidebar('..');</script>
 </body>

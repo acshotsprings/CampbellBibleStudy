@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Watchman — Campbell Bible Study</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 </head>
 <body>
 
@@ -108,7 +109,7 @@
 
   <div class="notes-box">
     <div class="label">✏️ Module 4 — My convictions on watching, warning, and staying alert:</div>
-    <textarea class="notes-input" id="n-m4" placeholder="Write your convictions here... Date your entry."></textarea>
+    <div class="quill-editor" id="n-m4" data-placeholder="Write your convictions here... Date your entry."></div>
   </div>
 
   <div class="cross-ref-box">
@@ -135,6 +136,7 @@
 
 <script src="../assets/js/nav.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="../assets/js/main.js"></script>
 
 <script>buildSidebar('..');</script>

@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sermon &amp; Teaching Log — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <style>
     .sermon-table { width: 100%; border-collapse: collapse; font-size: 13px; font-family: Arial, sans-serif; margin-top: 16px; }
     .sermon-table th {
@@ -190,7 +191,7 @@
 
   <div class="notes-box" style="margin-top:32px;">
     <div class="label">✏️ Teaching notes — overflow &amp; observations:</div>
-    <textarea class="notes-input" id="n-sermons" placeholder="Additional notes, things to follow up on..."></textarea>
+    <div class="quill-editor" id="n-sermons" data-placeholder="Additional notes, things to follow up on..."></div>
   </div>
 
 </div>
@@ -284,6 +285,7 @@
 
 <script src="assets/js/nav.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 
 <script>buildSidebar('.');</script>

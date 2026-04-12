@@ -1112,3 +1112,148 @@ document.addEventListener('DOMContentLoaded', () => {
     try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) {}
   }
 });
+
+
+/* ============================================================
+   QUILL RICH TEXT EDITORS — site-wide
+   Auto-initializes on any .quill-editor element. Bridges to a
+   hidden textarea with the same id so the existing save/load
+   to GitHub system works without modification.
+   ============================================================ */
+(function initQuillStyling() {
+  if (document.getElementById('cbsg-quill-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'cbsg-quill-styles';
+  style.textContent = `
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:90px; font-family:Arial,sans-serif; font-size:12px; background:#fff; }
+    .ql-editor { min-height:90px; padding:7px 9px; }
+  `;
+  document.head.appendChild(style);
+})();
+
+function initQuillEditors() {
+  if (typeof Quill === 'undefined') return;
+  const TOOLBAR = [
+    [{ 'header': [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline'],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    ['link']
+  ];
+  const ids = window.PAGE_NOTE_IDS || [];
+  document.querySelectorAll('.quill-editor').forEach(div => {
+    if (div.dataset.quillReady) return;
+    const id = div.id;
+    if (!id) return;
+    // Create hidden textarea with same id so save/load logic finds it
+    const hidden = document.createElement('textarea');
+    hidden.id = id;
+    hidden.style.display = 'none';
+    hidden.className = 'notes-input';
+    div.parentNode.insertBefore(hidden, div);
+    div.id = id + '__quill';
+    div.dataset.quillReady = '1';
+    if (!ids.includes(id)) ids.push(id);
+
+    const placeholder = div.dataset.placeholder || 'Write here...';
+    const quill = new Quill('#' + id + '__quill', {
+      theme: 'snow',
+      modules: { toolbar: TOOLBAR },
+      placeholder: placeholder
+    });
+    // Load any existing content from localStorage
+    const saved = localStorage.getItem('cbsg-' + id);
+    if (saved) {
+      if (saved.trim().startsWith('<')) quill.root.innerHTML = saved;
+      else quill.setText(saved);
+    }
+    // On change: mirror to hidden textarea and save to localStorage
+    quill.on('text-change', () => {
+      const html = quill.root.innerHTML;
+      hidden.value = html;
+      localStorage.setItem('cbsg-' + id, html);
+    });
+    hidden.value = quill.root.innerHTML;
+  });
+  window.PAGE_NOTE_IDS = ids;
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initQuillEditors);
+} else {
+  initQuillEditors();
+}
+
+/* ============================================================
+   FULL-SITE BACKUP BUTTON (admin only, top bar, every page)
+   Downloads a .zip of the entire repo (excluding resources/)
+   to the browser's default download folder.
+   ============================================================ */
+(function addBackupButton() {
+  function inject() {
+    if (document.getElementById('btn-backup')) return;
+    const bar = document.querySelector('.bar');
+    if (!bar) return;
+    const btn = document.createElement('button');
+    btn.id = 'btn-backup';
+    btn.textContent = '💾 Backup';
+    btn.title = 'Download a .zip backup of the entire site';
+    btn.style.cssText = 'background:rgba(255,255,255,0.1);color:#90EE90;padding:6px 12px;margin-left:6px;border:1px solid rgba(255,255,255,0.3);border-radius:4px;cursor:pointer;font-family:Arial,sans-serif;font-size:13px;';
+    btn.onclick = runFullBackup;
+    const adminBtn = document.getElementById('btn-admin');
+    if (adminBtn && adminBtn.parentNode) adminBtn.parentNode.insertBefore(btn, adminBtn);
+    else bar.appendChild(btn);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+
+async function runFullBackup() {
+  const btn = document.getElementById('btn-backup');
+  if (typeof JSZip === 'undefined') {
+    // Lazy-load JSZip from CDN
+    await new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js';
+      s.onload = resolve; s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+  const REPO = 'acshotsprings/CampbellBibleStudy';
+  const BRANCH = 'main';
+  const SKIP = ['resources/', 'backups/'];
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Backing up...'; }
+  try {
+    const treeRes = await fetch(`https://api.github.com/repos/${REPO}/git/trees/${BRANCH}?recursive=1`);
+    if (!treeRes.ok) throw new Error('GitHub tree fetch failed: ' + treeRes.status);
+    const tree = await treeRes.json();
+    const files = tree.tree.filter(i => i.type === 'blob' && !SKIP.some(p => i.path.startsWith(p)));
+    const zip = new JSZip();
+    let done = 0;
+    for (const file of files) {
+      const r = await fetch(`https://raw.githubusercontent.com/${REPO}/${BRANCH}/${file.path}`);
+      if (r.ok) zip.file(file.path, await r.blob());
+      done++;
+      if (btn && done % 5 === 0) btn.textContent = `⏳ ${done}/${files.length}`;
+    }
+    if (btn) btn.textContent = '⏳ Compressing...';
+    const zipBlob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(zipBlob);
+    a.download = `CampbellBibleStudy-backup-${stamp}.zip`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+    if (btn) btn.textContent = '✅ Done';
+    setTimeout(() => { if (btn) btn.textContent = '💾 Backup'; }, 2000);
+  } catch (err) {
+    console.error(err);
+    alert('Backup failed: ' + err.message);
+    if (btn) btn.textContent = '💾 Backup';
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
