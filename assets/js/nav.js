@@ -1,6 +1,8 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.0 Collapsible + Mobile
+   Sidebar Navigation Builder — v6.0 Full Audit Fix
+   - Added completable + completeKey to ALL module items
+   - Added Checklist and Deep Dive Studies to nav
    ============================================================ */
 
 const NAV_STRUCTURE = [
@@ -19,21 +21,21 @@ const NAV_STRUCTURE = [
     collapsible: true,
     key: 'theme1',
     items: [
-      { label: 'Module 1 — Daniel\'s 70 Weeks',     href: '/theme1/module1.html' },
-      { label: 'Module 2 — Israel in Prophecy',     href: '/theme1/module2.html' },
-      { label: 'Module 3 — Day of the Lord',        href: '/theme1/module3.html' },
-      { label: 'Module 4 — The Watchman',           href: '/theme1/module4.html' },
-      { label: 'Module 5 — The New Covenant',       href: '/theme1/module5.html' },
-      { label: 'Module 6 — The Rapture',            href: '/theme1/module6.html' },
-      { label: 'Module 7 — The Antichrist',         href: '/theme1/module7.html' },
-      { label: 'Module 8 — The Rebuilt Temple',     href: '/theme1/module8.html' },
-      { label: 'Module 9 — Gog-Magog War',          href: '/theme1/module9.html' },
-      { label: 'Module 10 — Signs of the Times',    href: '/theme1/module10.html' },
-      { label: 'Module 11 — False Prophets',        href: '/theme1/module11.html' },
-      { label: 'Module 12 — The Millennium',        href: '/theme1/module12.html' },
-      { label: 'Module 13 — Second Coming',         href: '/theme1/module13.html' },
-      { label: 'Module 14 — Matt 24 ↔ Revelation',  href: '/theme1/module14.html' },
-      { label: 'Module 15 — Armageddon',            href: '/theme1/module15.html' },
+      { label: 'Module 1 — Daniel\'s 70 Weeks',     href: '/theme1/module1.html',  completable: true, completeKey: 'complete-t1m1'  },
+      { label: 'Module 2 — Israel in Prophecy',     href: '/theme1/module2.html',  completable: true, completeKey: 'complete-t1m2'  },
+      { label: 'Module 3 — Day of the Lord',        href: '/theme1/module3.html',  completable: true, completeKey: 'complete-t1m3'  },
+      { label: 'Module 4 — The Watchman',           href: '/theme1/module4.html',  completable: true, completeKey: 'complete-t1m4'  },
+      { label: 'Module 5 — The New Covenant',       href: '/theme1/module5.html',  completable: true, completeKey: 'complete-t1m5'  },
+      { label: 'Module 6 — The Rapture',            href: '/theme1/module6.html',  completable: true, completeKey: 'complete-t1m6'  },
+      { label: 'Module 7 — The Antichrist',         href: '/theme1/module7.html',  completable: true, completeKey: 'complete-t1m7'  },
+      { label: 'Module 8 — The Rebuilt Temple',     href: '/theme1/module8.html',  completable: true, completeKey: 'complete-t1m8'  },
+      { label: 'Module 9 — Gog-Magog War',          href: '/theme1/module9.html',  completable: true, completeKey: 'complete-t1m9'  },
+      { label: 'Module 10 — Signs of the Times',    href: '/theme1/module10.html', completable: true, completeKey: 'complete-t1m10' },
+      { label: 'Module 11 — False Prophets',        href: '/theme1/module11.html', completable: true, completeKey: 'complete-t1m11' },
+      { label: 'Module 12 — The Millennium',        href: '/theme1/module12.html', completable: true, completeKey: 'complete-t1m12' },
+      { label: 'Module 13 — Second Coming',         href: '/theme1/module13.html', completable: true, completeKey: 'complete-t1m13' },
+      { label: 'Module 14 — Matt 24 ↔ Revelation',  href: '/theme1/module14.html', completable: true, completeKey: 'complete-t1m14' },
+      { label: 'Module 15 — Armageddon',            href: '/theme1/module15.html', completable: true, completeKey: 'complete-t1m15' },
     ]
   },
   {
@@ -43,10 +45,10 @@ const NAV_STRUCTURE = [
     key: 'theme2',
     items: [
       { label: 'Theme 2 Overview',                                       href: '/theme2/index.html' },
-      { label: '↳ Module 1 — Calendar History',                          href: '/theme2/module1.html', sub: true },
-      { label: '↳ Module 2 — Israel in Prophecy',                        href: '/theme2/module2.html', sub: true },
-      { label: '↳ Module 3 — The Book of Jubilees',                      href: '/theme2/module3.html', sub: true },
-      { label: '↳ Module 4 — Feast of Tabernacles & Dead Sea Scrolls',   href: '/theme2/module4.html', sub: true },
+      { label: '↳ Module 1 — Calendar History',                          href: '/theme2/module1.html', sub: true, completable: true, completeKey: 'complete-t2m1' },
+      { label: '↳ Module 2 — Israel in Prophecy',                        href: '/theme2/module2.html', sub: true, completable: true, completeKey: 'complete-t2m2' },
+      { label: '↳ Module 3 — The Book of Jubilees',                      href: '/theme2/module3.html', sub: true, completable: true, completeKey: 'complete-t2m3' },
+      { label: '↳ Module 4 — Feast of Tabernacles & Dead Sea Scrolls',   href: '/theme2/module4.html', sub: true, completable: true, completeKey: 'complete-t2m4' },
     ]
   },
   {
@@ -69,6 +71,14 @@ const NAV_STRUCTURE = [
   },
   {
     type: 'section',
+    label: 'Deep Studies',
+    collapsible: false,
+    items: [
+      { label: '◆ Deep Dive Studies →', href: '/DeepDives.html' },
+    ]
+  },
+  {
+    type: 'section',
     label: 'My Study',
     collapsible: false,
     items: [
@@ -76,6 +86,7 @@ const NAV_STRUCTURE = [
       { label: 'Personal Journal',          href: '/journal.html' },
       { label: 'My Growing Convictions',    href: '/convictions.html' },
       { label: 'Current Events & Prophecy', href: '/current-events.html' },
+      { label: 'Study Checklist',           href: '/checklist.html' },
     ]
   }
 ];
@@ -120,7 +131,15 @@ function buildSidebar(root) {
         const active = currentPath === fullHref ||
                        currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
         const sub = item.sub ? ' sub' : '';
-        html += `<a class="nav-item${sub}${active}" href="${root + item.href}">${item.label}</a>`;
+
+        // Completion checkmark for sidebar
+        let check = '';
+        if (item.completable && item.completeKey) {
+          const done = localStorage.getItem('cbsg-' + item.completeKey) === 'true';
+          check = done ? ' ✅' : '';
+        }
+
+        html += `<a class="nav-item${sub}${active}" href="${root + item.href}">${item.label}${check}</a>`;
       });
     } else {
       const key = section.key;
@@ -141,7 +160,15 @@ function buildSidebar(root) {
         const active = currentPath === fullHref ||
                        currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
         const sub = item.sub ? ' sub' : '';
-        html += `<a class="nav-item${sub}${active}" href="${root + item.href}">${item.label}</a>`;
+
+        // Completion checkmark for sidebar
+        let check = '';
+        if (item.completable && item.completeKey) {
+          const done = localStorage.getItem('cbsg-' + item.completeKey) === 'true';
+          check = done ? ' ✅' : '';
+        }
+
+        html += `<a class="nav-item${sub}${active}" href="${root + item.href}">${item.label}${check}</a>`;
       });
 
       html += `</div>`;
