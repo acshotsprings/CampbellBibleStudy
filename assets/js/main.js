@@ -271,8 +271,10 @@ const CBSG_TOOLBAR = [
   [{ 'color': [] }, { 'background': [] }],
   [{ 'list': 'ordered' }, { 'list': 'bullet' }],
   ['blockquote', 'link'],
-  ['cbsg-timestamp'],   // custom 🕐 button — handler wired below
   ['clean']
+  // Note: the 🕐 timestamp button is added manually after init in
+  // bootstrapQuillEditors — Quill 2 doesn't reliably accept custom
+  // non-format toolbar entries via the array form.
 ];
 
 // ── QUILL BOOTSTRAP ───────────────────────────────────────
@@ -327,25 +329,33 @@ function bootstrapQuillEditors() {
       theme: 'snow',
       placeholder: ta.getAttribute('placeholder') || 'Write your notes…',
       modules: {
-        toolbar: {
-          container: CBSG_TOOLBAR,
-          handlers: {
-            'cbsg-timestamp': function() { insertTimestamp(); }
-          }
-        }
+        toolbar: CBSG_TOOLBAR
       }
     });
 
-    // 6. Decorate the custom timestamp button so it actually shows 🕐.
-    //    Quill renders unknown toolbar entries as bare buttons; we find
-    //    it by class on whichever toolbar Quill just inserted next to
-    //    our host element.
+    // 6. Inject the 🕐 timestamp button into Quill's toolbar manually.
+    //    We add it as a real DOM button with a plain click listener so
+    //    it doesn't have to round-trip through Quill's format system.
     const toolbarEl = parent.querySelector('.ql-toolbar');
-    const tsBtn = toolbarEl ? toolbarEl.querySelector('.ql-cbsg-timestamp') : null;
-    if (tsBtn) {
+    if (toolbarEl) {
+      const group = document.createElement('span');
+      group.className = 'ql-formats';
+      const tsBtn = document.createElement('button');
+      tsBtn.type = 'button';
+      tsBtn.className = 'ql-cbsg-timestamp';
       tsBtn.innerHTML = '🕐';
-      tsBtn.setAttribute('title', 'Insert timestamp');
+      tsBtn.title = 'Insert timestamp';
       tsBtn.setAttribute('aria-label', 'Insert timestamp');
+      tsBtn.style.width = 'auto';
+      tsBtn.style.padding = '0 6px';
+      tsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Make sure this editor has focus so insertTimestamp targets it.
+        q.focus();
+        insertTimestamp();
+      });
+      group.appendChild(tsBtn);
+      toolbarEl.appendChild(group);
     }
 
     // 7. Restore content into the fresh editor.
