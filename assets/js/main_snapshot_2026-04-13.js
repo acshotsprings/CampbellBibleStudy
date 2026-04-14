@@ -149,8 +149,6 @@ async function saveNotesJson(token) {
       'n-t2m1': 'Theme 2 Module 1 — Calendar History: my notes',
       'n-journal-new': 'Personal Journal entries',
       'n-sermons': 'Sermon log overflow notes',
-      'n-sermons-log1': 'Sermon log entries 1–9 notes',
-      'n-sermons-log2': 'Sermon log entries 10+ notes',
       'c-prophecy': 'Conviction — On prophecy and how to interpret it',
       'c-israel': 'Conviction — On Israel\'s role in prophecy',
       'c-rapture': 'Conviction — On the Rapture',

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sermon Log — Entries 10+ — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: March 30, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version">Version: April 13, 2026</span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <span class="page-tag">My Study</span>
+  <h1 class="page-title">Sermon Log — Entries 10+</h1>
+  <p class="body"><a href="sermons.html">← Back to Sermon Index</a></p>
+
+  <table class="sermon-table">
+    <tr>
+      <th style="width:5%">#</th>
+      <th style="width:10%">Date</th>
+      <th style="width:30%">Title / Source</th>
+      <th style="width:55%">Key Topics &amp; Notes</th>
+    </tr>
+    <tr id="entry10"><td>10</td><td></td><td></td><td></td></tr>
+    <tr id="entry11"><td>11</td><td></td><td></td><td></td></tr>
+    <tr id="entry12"><td>12</td><td></td><td></td><td></td></tr>
+    <tr id="entry13"><td>13</td><td></td><td></td><td></td></tr>
+    <tr id="entry14"><td>14</td><td></td><td></td><td></td></tr>
+    <tr id="entry15"><td>15</td><td></td><td></td><td></td></tr>
+    <tr id="entry16"><td>16</td><td></td><td></td><td></td></tr>
+    <tr id="entry17"><td>17</td><td></td><td></td><td></td></tr>
+    <tr id="entry18"><td>18</td><td></td><td></td><td></td></tr>
+  </table>
+
+  <div class="notes-box">
+    <div class="label">✏️ Notes for entries 10+:</div>
+    <div class="quill-editor" id="n-sermons-log2" data-placeholder="Your notes on these teachings... Date your entries."></div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid #ddd;">
+    <a href="sermons-log1.html" class="btn-primary" style="font-size:12px;">← Entries 1–9</a>
+    <a href="sermons.html" class="btn-primary" style="font-size:12px;">Sermon Index</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-sermons-log2'];</script>
+<script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+</body>
+</html>

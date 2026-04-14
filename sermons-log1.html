@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sermon Log — Entries 1–9 — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: March 30, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version">Version: April 13, 2026</span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <span class="page-tag">My Study</span>
+  <h1 class="page-title">Sermon Log — Entries 1–9</h1>
+  <p class="body"><a href="sermons.html">← Back to Sermon Index</a></p>
+
+  <table class="sermon-table">
+    <tr>
+      <th style="width:5%">#</th>
+      <th style="width:10%">Date</th>
+      <th style="width:30%">Title / Source</th>
+      <th style="width:55%">Key Topics &amp; Notes</th>
+    </tr>
+    <tr id="entry1"><td>1</td><td>3/22/26</td><td>Imitate Christ's Example — Pastor Matt</td><td>Servanthood and humility</td></tr>
+    <tr id="entry2"><td>2</td><td>3/25/26</td><td>Judgment Seat &amp; Marriage of the Lamb</td><td>Bema Seat, crowns, bride/bridegroom — Rom 14:8–10; 1 Cor 3:11–15; Rev 19:7–9; John 14:1–3</td></tr>
+    <tr id="entry3"><td>3</td><td>3/25/26</td><td>Ezekiel: Invasion &amp; End</td><td>Gog-Magog war (Ezek 38–39); coalition: Russia/Iran/Turkey/Sudan/Libya; Israel at rest precondition</td></tr>
+    <tr id="entry4"><td>4</td><td>3/26/26</td><td>Ezekiel 38–39 continued (partial)</td><td>Scholars debate whether invasion already occurred; nation identification</td></tr>
+    <tr id="entry5"><td>5</td><td>3/27/26</td><td>Antichrist &amp; End Times — Audio Teaching</td><td>Day of the Lord; Antichrist profile; not Muslim/not Gog; temple rebuild; signs of the times; false prophets</td></tr>
+    <tr id="entry6"><td>6</td><td>3/31/26</td><td>Tribulation &amp; Judgment — Ron Rhodes, The End Times in Chronological Order</td><td>Seal &amp; trumpet judgments (Rev 6–8); Two Witnesses (Rev 11); seals → trumpets → martyrdom intensifies; God sovereign and a God of judgment</td></tr>
+    <tr id="entry7"><td>7</td><td>4/1/26</td><td>End-Times Tribulation — Audio Teaching (Summary AI)</td><td>Tribulation judgment, seal sequence, Rev 10 little scroll, Beast (Rev 13), false teachers — plus Matt 24 ↔ Rev parallel developed. Key: Rev 7:14; Jer 30:7; Rev 6:1–17; Rev 10:4–10; Rev 13:1–4; Acts 4:12</td></tr>
+    <tr id="entry8"><td>8</td><td>4/2/26</td><td>Jewish &amp; Essene Calendar History — Audio Teaching Series (Summary AI)</td><td>Jewish calendar development; Hillel II's 4th-century modifications; Pharisee observation-based calendar; Essene 364-day solar calendar; Dead Sea Scrolls evidence; Sons of Light vs. Sons of Darkness; high priest crisis (Yoma 9a); Seleucid Greek calendar; Birkat Hachama 28-year cycle; seven-day week unbroken from creation — integrated into Theme 2, Module 1. Key: Exod 12:1–2; Jubilees 6:36–38; Enoch 72:32; Isa 66:23; Ezek 46:1</td></tr>
+    <tr id="entry9"><td>9</td><td>4/13/26</td><td>Revelation &amp; Antichrist — Eschatology Podcast (Summary AI)</td><td>Two Witnesses (Rev 11); Daniel 11:35–36 transition from historical to prophetic; Antiochus IV as Antichrist foreshadow; "desire of women" debate (Dan 11:37); Pastor Haney teaching — Antichrist profile, League of Arab nations, king of the south; Ezek 38 Russia/Gog connection; four end-time power blocs; Edom/Moab/Petra as physical refuge; Antichrist sets up in Jerusalem; pre-trib vs. post-trib comparison requested; animal sacrifice restoration question flagged for deep dive. Key: Dan 11:36–45; Rev 11; Ezek 38; Matt 24</td></tr>
+  </table>
+
+  <div class="notes-box">
+    <div class="label">✏️ Notes for entries 1–9:</div>
+    <div class="quill-editor" id="n-sermons-log1" data-placeholder="Your notes on these teachings... Date your entries."></div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid #ddd;">
+    <a href="sermons.html" class="btn-primary" style="font-size:12px;">← Sermon Index</a>
+    <a href="sermons-log2.html" class="btn-primary" style="font-size:12px;">Entries 10+ →</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-sermons-log1'];</script>
+<script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+</body>
+</html>

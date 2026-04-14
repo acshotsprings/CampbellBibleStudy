@@ -70,8 +70,6 @@ const NAV_STRUCTURE = [
     collapsible: false,
     items: [
       { label: 'Sermon & Teaching Log',  href: '/sermons.html' },
-      { label: '↳ Entries 1–9',          href: '/sermons-log1.html', sub: true },
-      { label: '↳ Entries 10+',          href: '/sermons-log2.html', sub: true },
       { label: 'Personal Journal',       href: '/journal.html' },
       { label: 'My Growing Convictions', href: '/convictions.html' },
     ]
@@ -109,7 +107,7 @@ function buildSidebar(root) {
   let html = `
     <div id="sidebar-header">
       <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 13, 2026</p>
+      <p id="sidebar-version">Version: April 2, 2026</p>
     </div>
     <div id="sidebar-nav">
   `;
