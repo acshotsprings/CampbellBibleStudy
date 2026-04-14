@@ -1,9 +1,10 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Personal Journal — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
-  
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
@@ -14,75 +15,30 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
+  <span id="gh-status"></span>
   <div class="bar-right">
-    <button onclick="insertTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;margin-right:8px;">New Entry</button>
+    <button onclick="insertTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;margin-right:6px;">New Entry</button>
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
     <span id="gh-bar-version">Version: April 14, 2026</span>
   </div>
 </div>
-<div id="sidebar">
-    <div id="sidebar-header">
-      <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 13, 2026</p>
-    </div>
-    <div id="sidebar-nav">
-  <div class="nav-section">Getting Started</div><a class="nav-item" href="./index.html">Introduction</a><a class="nav-item" href="./index.html#index">Thematic Index</a>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme1')" id="nav-header-theme1">
-          <span>Theme 1 — End Times</span>
-          <span class="nav-arrow " id="nav-arrow-theme1">▶</span>
-        </div>
-        <div class="nav-section-items collapsed" id="nav-items-theme1">
-      <a class="nav-item" href="./theme1/module1.html">Module 1 — Daniel's 70 Weeks</a><a class="nav-item" href="./theme1/module2.html">Module 2 — Israel in Prophecy</a><a class="nav-item" href="./theme1/module3.html">Module 3 — Day of the Lord</a><a class="nav-item" href="./theme1/module4.html">Module 4 — The Watchman</a><a class="nav-item" href="./theme1/module5.html">Module 5 — The New Covenant</a><a class="nav-item" href="./theme1/module6.html">Module 6 — The Rapture</a><a class="nav-item" href="./theme1/module7.html">Module 7 — The Antichrist</a><a class="nav-item" href="./theme1/module8.html">Module 8 — The Rebuilt Temple</a><a class="nav-item" href="./theme1/module9.html">Module 9 — Gog-Magog War</a><a class="nav-item" href="./theme1/module10.html">Module 10 — Signs of the Times</a><a class="nav-item" href="./theme1/module11.html">Module 11 — False Prophets</a><a class="nav-item" href="./theme1/module12.html">Module 12 — The Millennium</a><a class="nav-item" href="./theme1/module13.html">Module 13 — Second Coming</a><a class="nav-item" href="./theme1/module14.html">Module 14 — Matt 24 ↔ Revelation</a><a class="nav-item" href="./theme1/module15.html">Module 15 — Armageddon</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme2')" id="nav-header-theme2">
-          <span>Theme 2 — Biblical Calendar</span>
-          <span class="nav-arrow open" id="nav-arrow-theme2">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme2">
-      <a class="nav-item" href="./theme2/index.html">Theme 2 Overview</a><a class="nav-item sub" href="./theme2/module1.html">↳ Module 1 — Calendar History</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme3')" id="nav-header-theme3">
-          <span>Theme 3 — Judgment &amp; Mercy</span>
-          <span class="nav-arrow open" id="nav-arrow-theme3">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme3">
-      <a class="nav-item" href="./theme3/index.html">Theme 3 Overview</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('themes48')" id="nav-header-themes48">
-          <span>Themes 4–8</span>
-          <span class="nav-arrow open" id="nav-arrow-themes48">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-themes48">
-      <a class="nav-item" href="./index.html#themes48">Themes 4–8 (Coming Soon)</a></div><div class="nav-section">My Study</div><a class="nav-item" href="./sermons.html">Sermon &amp; Teaching Log</a><a class="nav-item sub" href="./sermons-log1.html">↳ Entries 1–9</a><a class="nav-item sub" href="./sermons-log2.html">↳ Entries 10+</a><a class="nav-item active" href="./journal.html">Personal Journal</a><a class="nav-item" href="./convictions.html">My Growing Convictions</a></div></div>
+
+<div id="sidebar"></div>
 
 <div id="app">
 <div id="main">
 
   <span class="page-tag">My Study</span>
   <h1 class="page-title">Personal Reflections &amp; Journal</h1>
-  <p class="body">A space to record observations, convictions, and spiritual insight as they emerge through study and everyday life. Date each entry.</p>
+  <p class="body">A space to record observations, convictions, and spiritual insight as they emerge through study and everyday life. Click <strong>New Entry</strong> in the top bar to stamp the date, then write your entry and click <strong>Publish Entry</strong> to save it permanently.</p>
 
-    <!-- ── NEW ENTRY FORM ── -->
   <div class="notes-box">
-    <div class="label">✏️ New entry — click <strong>New Entry</strong> in the top bar to stamp the date, then write here:</div>
-    <textarea class="notes-input" id="n-journal-new" placeholder="── April 14, 2026 at 9:00 AM ──&#10;&#10;Write your entry here. Use blank lines between paragraphs.&#10;&#10;Questions to sit with:&#10;• Your first question" style="min-height:240px;"></textarea>
-    <div style="margin-top:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-      <button onclick="publishEntry()" style="background:#1F3864;color:#FFD700;border:none;border-radius:6px;padding:9px 22px;font-size:13px;font-family:Arial,sans-serif;font-weight:bold;cursor:pointer;">📌 Publish Entry</button>
-      <span id="publish-status" style="font-size:12px;font-family:Arial,sans-serif;color:#555;"></span>
-    </div>
-<<<<<<< HEAD
-=======
-    <div class="publish-hint">Write your entry below. Use blank lines to separate paragraphs. Add questions at the end starting with "•"</div>
-    <textarea class="publish-body" id="entry-body" placeholder="Write your journal entry here...
-
-Use blank lines between paragraphs.
-
-Questions to sit with:
-• Your first question
-• Your second question"></textarea>
-    <div class="publish-actions">
-      <button class="btn-stamp-entry" onclick="stampEntryDate()">📅 Stamp Date &amp; Time</button>
-      <button class="btn-publish" onclick="publishEntry()">📌 Publish Entry</button>
-      <span class="publish-status" id="publish-status"></span>
+    <div class="label">✏️ New entry:</div>
+    <textarea class="notes-input" id="n-journal-new" placeholder="Click New Entry in the top bar to stamp the date and time, then write here..." style="min-height:240px;"></textarea>
+    <div style="margin-top:10px;display:flex;align-items:center;gap:12px;">
+      <button onclick="publishEntry()" style="background:#1F3864;color:#FFD700;border:2px solid rgba(255,215,0,0.3);border-radius:6px;padding:9px 24px;font-size:13px;font-family:Arial,sans-serif;font-weight:bold;cursor:pointer;">📌 Publish Entry</button>
+      <span id="publish-status" style="font-size:12px;font-family:Arial,sans-serif;color:rgba(0,0,0,0.5);"></span>
     </div>
   </div>
 
@@ -90,10 +46,8 @@ Questions to sit with:
     <div style="flex:1;height:2px;background:linear-gradient(to right,#C8A800,transparent);"></div>
     <div style="font-size:11px;font-weight:bold;color:#7A6600;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;">Past Entries</div>
     <div style="flex:1;height:2px;background:linear-gradient(to left,#C8A800,transparent);"></div>
->>>>>>> 58bb9ae7293c89a27d152a07494525a743b6b8f6
   </div>
 
-  <!-- ── PAST ENTRIES ── -->
   <div id="past-entries-anchor"></div>
 
   <!-- ── APRIL 9, 2026 ── -->
@@ -165,31 +119,22 @@ Questions to sit with:
 <script>buildSidebar('.');</script>
 
 <script>
-// ── PUBLISH ENTRY ───────────────────────────────────────
 function publishEntry() {
-  const raw    = document.getElementById('n-journal-new').value.trim();
+  const raw    = (document.getElementById('n-journal-new').value || '').trim();
   const status = document.getElementById('publish-status');
+  if (!raw) { status.textContent = '⚠️ Write something first.'; return; }
 
-  if (!raw) {
-    status.textContent = '⚠️ Write something before publishing.';
-    return;
-  }
+  status.textContent = 'Publishing...';
 
-  status.textContent = 'Building entry...';
-
-  // Parse: first line starting with ── is the date stamp
+  // Extract date from timestamp line ── Month Day, Year at Time ──
   const lines = raw.split('\n');
   let date = '';
   const contentLines = [];
   lines.forEach(line => {
-    const stampMatch = line.match(/──\s*(.+?)\s+at\s+.+\s*──/);
-    if (stampMatch && !date) {
-      date = stampMatch[1].trim();
-    } else {
-      contentLines.push(line);
-    }
+    const m = line.match(/─+\s*(.+?)\s+at\s+.+\s*─+/);
+    if (m && !date) { date = m[1].trim(); }
+    else { contentLines.push(line); }
   });
-
   if (!date) date = new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
 
   const bodyRaw = contentLines.join('\n').trim();
@@ -199,98 +144,62 @@ function publishEntry() {
 
   paragraphs.forEach(para => {
     const plines = para.split('\n').map(l => l.trim()).filter(Boolean);
-    if (plines[0] && (plines[0].startsWith('•') || plines[0].toLowerCase().startsWith('question'))) {
+    if (plines[0] && (plines[0].startsWith('•') || /^questions?/i.test(plines[0]))) {
       plines.forEach(l => { if (l.startsWith('•')) questionLines.push(l); });
     } else {
-      const escaped = para.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      bodyParas.push(`    <div class="journal-p">${escaped}</div>`);
+      bodyParas.push('    <div class="journal-p">' + para.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>');
     }
   });
 
-  let questionsHtml = '';
-  if (questionLines.length > 0) {
-    questionsHtml = `    <div class="journal-qs">\n      <div class="journal-qs-title">Questions to sit with:</div>\n`;
-    questionLines.forEach(q => {
-      questionsHtml += `      <div class="journal-q">${q.replace(/&/g,'&amp;')}</div>\n`;
-    });
-    questionsHtml += `    </div>`;
+  let qHtml = '';
+  if (questionLines.length) {
+    qHtml = '    <div class="journal-qs">\n      <div class="journal-qs-title">Questions to sit with:</div>\n';
+    questionLines.forEach(q => { qHtml += '      <div class="journal-q">' + q.replace(/&/g,'&amp;') + '</div>\n'; });
+    qHtml += '    </div>';
   }
 
-  const newEntryHtml =
-    `\n  <!-- ── ${date.toUpperCase()} ── -->\n` +
-    `  <div class="journal-box">\n` +
-    `    <div class="journal-date">${date.replace(/&/g,'&amp;')}</div>\n` +
-    bodyParas.join('\n') +
-    (questionsHtml ? '\n' + questionsHtml : '') +
-    `\n  </div>\n`;
+  const entryHtml =
+    '\n  <!-- ── ' + date.toUpperCase() + ' ── -->\n' +
+    '  <div class="journal-box">\n' +
+    '    <div class="journal-date">' + date.replace(/&/g,'&amp;') + '</div>\n' +
+    bodyParas.join('\n') + (qHtml ? '\n' + qHtml : '') +
+    '\n  </div>\n';
 
-  const anchor = document.getElementById('past-entries-anchor');
-  if (anchor) anchor.insertAdjacentHTML('afterend', newEntryHtml);
+  // Show immediately on page
+  document.getElementById('past-entries-anchor').insertAdjacentHTML('afterend', entryHtml);
 
-  status.textContent = 'Saving to GitHub...';
-  savePublishedEntry(date, newEntryHtml, status);
-}
+  // Save to GitHub
+  const token = localStorage.getItem('cbsg-gh-token') || (document.getElementById('gh-token') || {}).value || '';
+  if (!token) { status.textContent = '⚠️ Paste your token first.'; return; }
 
-// ── SAVE TO GITHUB ──────────────────────────────────────
-async function savePublishedEntry(date, newEntryHtml, status) {
-  const token = localStorage.getItem('cbsg-gh-token') || document.getElementById('gh-token')?.value;
-  if (!token) {
-    status.textContent = '⚠️ Paste your GitHub token in the top bar first, then publish again.';
-    status.className = 'publish-status err';
-    return;
-  }
-
-  const repo    = 'acshotsprings/CampbellBibleStudy';
-  const path    = 'journal.html';
-  const apiUrl  = `https://api.github.com/repos/${repo}/contents/${path}`;
-
-  try {
-    // Get current file SHA and content
-    const getRes  = await fetch(apiUrl, { headers: { Authorization: `token ${token}` } });
-    const getData = await getRes.json();
-    if (!getData.sha) throw new Error('Could not fetch file SHA');
-
-    const currentHtml = atob(getData.content.replace(/\n/g,''));
-
-    // Insert new entry after the anchor comment
-    const anchorMarker = '<div id="past-entries-anchor"></div>';
-    if (!currentHtml.includes(anchorMarker)) throw new Error('Anchor marker not found in file');
-
-    const updatedHtml = currentHtml.replace(
-      anchorMarker,
-      anchorMarker + newEntryHtml
-    );
-
-    // Push back to GitHub
-    const putRes = await fetch(apiUrl, {
-      method: 'PUT',
-      headers: {
-        Authorization: `token ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        message: `Journal: Add entry — ${date}`,
-        content: btoa(unescape(encodeURIComponent(updatedHtml))),
-        sha: getData.sha
-      })
-    });
-
-    if (putRes.ok) {
-      // Clear the form
-      document.getElementById('n-journal-new').value = '';
-      status.textContent = `✅ Entry published and saved to GitHub!`;
-      status.className = 'publish-status ok';
-    } else {
-      const err = await putRes.json();
-      throw new Error(err.message || 'GitHub save failed');
-    }
-  } catch(e) {
-    status.textContent = `❌ ${e.message}`;
-    status.className = 'publish-status err';
-  }
+  const apiUrl = 'https://api.github.com/repos/acshotsprings/CampbellBibleStudy/contents/journal.html';
+  fetch(apiUrl, { headers: { Authorization: 'token ' + token } })
+    .then(r => r.json())
+    .then(data => {
+      const current = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+      const updated = current.replace('<div id="past-entries-anchor"></div>', '<div id="past-entries-anchor"></div>' + entryHtml);
+      return fetch(apiUrl, {
+        method: 'PUT',
+        headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: 'Journal: Add entry — ' + date,
+          content: btoa(unescape(encodeURIComponent(updated))),
+          sha: data.sha
+        })
+      });
+    })
+    .then(r => {
+      if (r.ok) {
+        document.getElementById('n-journal-new').value = '';
+        status.textContent = '✅ Published!';
+        localStorage.removeItem('cbsg-n-journal-new');
+      } else {
+        return r.json().then(e => { throw new Error(e.message); });
+      }
+    })
+    .catch(e => { status.textContent = '❌ ' + e.message; });
 }
 </script>
 
-
-
-</body></html>
+</body>
+</html>
