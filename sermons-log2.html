@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sermon Log — Entries 10+ — Campbell Bible Study</title>
@@ -15,7 +13,7 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status"></span>
+  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
   <div class="bar-right">
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
@@ -23,7 +21,37 @@
   </div>
 </div>
 
-<div id="sidebar"></div>
+<div id="sidebar">
+    <div id="sidebar-header">
+      <h1>Campbell Family<br>Biblical Study Guide</h1>
+      <p id="sidebar-version">Version: April 13, 2026</p>
+    </div>
+    <div id="sidebar-nav">
+  <div class="nav-section">Getting Started</div><a class="nav-item" href="./index.html">Introduction</a><a class="nav-item" href="./index.html#index">Thematic Index</a>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('theme1')" id="nav-header-theme1">
+          <span>Theme 1 — End Times</span>
+          <span class="nav-arrow open" id="nav-arrow-theme1">▶</span>
+        </div>
+        <div class="nav-section-items " id="nav-items-theme1">
+      <a class="nav-item" href="./theme1/module1.html">Module 1 — Daniel's 70 Weeks</a><a class="nav-item" href="./theme1/module2.html">Module 2 — Israel in Prophecy</a><a class="nav-item" href="./theme1/module3.html">Module 3 — Day of the Lord</a><a class="nav-item" href="./theme1/module4.html">Module 4 — The Watchman</a><a class="nav-item" href="./theme1/module5.html">Module 5 — The New Covenant</a><a class="nav-item" href="./theme1/module6.html">Module 6 — The Rapture</a><a class="nav-item" href="./theme1/module7.html">Module 7 — The Antichrist</a><a class="nav-item" href="./theme1/module8.html">Module 8 — The Rebuilt Temple</a><a class="nav-item" href="./theme1/module9.html">Module 9 — Gog-Magog War</a><a class="nav-item" href="./theme1/module10.html">Module 10 — Signs of the Times</a><a class="nav-item" href="./theme1/module11.html">Module 11 — False Prophets</a><a class="nav-item" href="./theme1/module12.html">Module 12 — The Millennium</a><a class="nav-item" href="./theme1/module13.html">Module 13 — Second Coming</a><a class="nav-item" href="./theme1/module14.html">Module 14 — Matt 24 ↔ Revelation</a><a class="nav-item" href="./theme1/module15.html">Module 15 — Armageddon</a></div>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('theme2')" id="nav-header-theme2">
+          <span>Theme 2 — Biblical Calendar</span>
+          <span class="nav-arrow open" id="nav-arrow-theme2">▶</span>
+        </div>
+        <div class="nav-section-items " id="nav-items-theme2">
+      <a class="nav-item" href="./theme2/index.html">Theme 2 Overview</a><a class="nav-item sub" href="./theme2/module1.html">↳ Module 1 — Calendar History</a></div>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('theme3')" id="nav-header-theme3">
+          <span>Theme 3 — Judgment &amp; Mercy</span>
+          <span class="nav-arrow open" id="nav-arrow-theme3">▶</span>
+        </div>
+        <div class="nav-section-items " id="nav-items-theme3">
+      <a class="nav-item" href="./theme3/index.html">Theme 3 Overview</a></div>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('themes48')" id="nav-header-themes48">
+          <span>Themes 4–8</span>
+          <span class="nav-arrow open" id="nav-arrow-themes48">▶</span>
+        </div>
+        <div class="nav-section-items " id="nav-items-themes48">
+      <a class="nav-item" href="./index.html#themes48">Themes 4–8 (Coming Soon)</a></div><div class="nav-section">My Study</div><a class="nav-item" href="./sermons.html">Sermon &amp; Teaching Log</a><a class="nav-item sub" href="./sermons-log1.html">↳ Entries 1–9</a><a class="nav-item sub active" href="./sermons-log2.html">↳ Entries 10+</a><a class="nav-item" href="./journal.html">Personal Journal</a><a class="nav-item" href="./convictions.html">My Growing Convictions</a></div></div>
 
 <div id="app">
 <div id="main">
@@ -33,7 +61,7 @@
   <p class="body"><a href="sermons.html">← Back to Sermon Index</a></p>
 
   <table class="sermon-table">
-    <tr>
+    <tbody><tr>
       <th style="width:5%">#</th>
       <th style="width:10%">Date</th>
       <th style="width:30%">Title / Source</th>
@@ -48,7 +76,7 @@
     <tr id="entry16"><td>16</td><td></td><td></td><td></td></tr>
     <tr id="entry17"><td>17</td><td></td><td></td><td></td></tr>
     <tr id="entry18"><td>18</td><td></td><td></td><td></td></tr>
-  </table>
+  </tbody></table>
 
   <div class="notes-box">
     <div class="label">✏️ Notes for entries 10+:</div>
@@ -69,5 +97,6 @@
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 
-</body>
-</html>
+
+
+</body></html>
