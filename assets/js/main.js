@@ -491,10 +491,12 @@ function updateVersionTimestamp() {
 
 function saveAllNotes() {
   (window.PAGE_NOTE_IDS || []).forEach(id => { const el = document.getElementById(id); if (el) localStorage.setItem('cbsg-' + id, el.value); });
+  saveAllQuillNotes();
 }
 
 function loadNotes() {
   (window.PAGE_NOTE_IDS || []).forEach(id => { const el = document.getElementById(id); const val = localStorage.getItem('cbsg-' + id); if (el && val) el.value = val; });
+  loadAllQuillNotes();
 }
 
 function wireAutoSave() {
@@ -520,9 +522,124 @@ function markActivePage() {
   });
 }
 
+
+// ── QUILL EDITOR INITIALIZATION ──────────────────────────────────────────────
+// Locked contract: CBSG_TOOLBAR — do not remove or reorder buttons
+const CBSG_TOOLBAR = [
+  [{ header: [1, 2, 3, false] }],
+  ['bold', 'italic', 'underline', 'strike'],
+  [{ color: [] }, { background: [] }],
+  [{ list: 'ordered' }, { list: 'bullet' }],
+  ['blockquote', 'link', 'clean']
+];
+
+const quillInstances = {};
+
+function _insertQuillStamp(quill, editorId) {
+  const now     = new Date();
+  const date    = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const time    = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  const lastKey = 'cbsg-laststamp-' + editorId;
+  const lastDateStr = localStorage.getItem(lastKey);
+  const todayStr    = now.toDateString();
+  let   stamp;
+  if (lastDateStr === todayStr) {
+    // Same day — just insert time
+    stamp = '\n' + '─'.repeat(40) + '\n' + time + '\n';
+  } else {
+    // New day — insert full date + time
+    stamp = '\n' + '─'.repeat(40) + '\n' + date + ' at ' + time + '\n' + '─'.repeat(40) + '\n';
+    localStorage.setItem(lastKey, todayStr);
+  }
+  const range = quill.getSelection(true);
+  const pos   = range ? range.index : quill.getLength();
+  quill.insertText(pos, stamp, 'user');
+  quill.setSelection(pos + stamp.length);
+}
+
+function _saveQuillContent(editorId, quill) {
+  const delta = JSON.stringify(quill.getContents());
+  localStorage.setItem('cbsg-' + editorId, delta);
+}
+
+function _loadQuillContent(editorId, quill) {
+  const saved = localStorage.getItem('cbsg-' + editorId);
+  if (!saved) return;
+  try {
+    const delta = JSON.parse(saved);
+    quill.setContents(delta, 'silent');
+  } catch(e) {
+    // Legacy plain text fallback
+    try { quill.setText(saved, 'silent'); } catch(e2) {}
+  }
+}
+
+function initQuillEditors() {
+  if (typeof Quill === 'undefined') return;
+
+  document.querySelectorAll('.quill-editor').forEach(el => {
+    if (el._quillInitialized) return;
+    el._quillInitialized = true;
+
+    const editorId   = el.id;
+    const placeholder = el.getAttribute('data-placeholder') || 'Write your notes here...';
+    const minHeight   = el.style.minHeight || '180px';
+
+    // Wrap in container for toolbar
+    const wrapper = document.createElement('div');
+    wrapper.className = 'quill-wrapper';
+    el.parentNode.insertBefore(wrapper, el);
+    wrapper.appendChild(el);
+
+    const quill = new Quill(el, {
+      theme: 'snow',
+      placeholder: placeholder,
+      modules: {
+        toolbar: { container: CBSG_TOOLBAR }
+      }
+    });
+
+    // Style the editor area
+    el.querySelector('.ql-editor').style.minHeight = minHeight;
+
+    // Inject 🕐 timestamp button into toolbar
+    const toolbarEl = wrapper.querySelector('.ql-toolbar');
+    if (toolbarEl) {
+      const stampBtn = document.createElement('button');
+      stampBtn.className = 'ql-stamp';
+      stampBtn.title = 'Insert timestamp';
+      stampBtn.innerHTML = '🕐';
+      stampBtn.style.cssText = 'width:auto;padding:3px 7px;font-size:13px;cursor:pointer;border:none;background:none;';
+      stampBtn.addEventListener('click', e => { e.preventDefault(); _insertQuillStamp(quill, editorId); });
+      toolbarEl.appendChild(stampBtn);
+    }
+
+    // Load saved content
+    _loadQuillContent(editorId, quill);
+
+    // Auto-save on change
+    quill.on('text-change', () => _saveQuillContent(editorId, quill));
+
+    quillInstances[editorId] = quill;
+  });
+}
+
+function saveAllQuillNotes() {
+  Object.entries(quillInstances).forEach(([id, quill]) => {
+    _saveQuillContent(id, quill);
+  });
+}
+
+function loadAllQuillNotes() {
+  Object.entries(quillInstances).forEach(([id, quill]) => {
+    _loadQuillContent(id, quill);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   loadNotes();
   wireAutoSave();
+  initQuillEditors();    // init all .quill-editor divs
   injectMobileOverlay();
   markActivePage();
   injectBarExtras();
