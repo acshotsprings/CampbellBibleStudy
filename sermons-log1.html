@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sermon Log — Entries 1–9 — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     .sermon-table { width:100%; border-collapse:collapse; font-size:13px; font-family:Arial,sans-serif; margin-top:16px; }
@@ -151,7 +152,7 @@
 
   <div class="notes-box" style="margin-top:32px;">
     <div class="label">☑️ Teaching notes — additional notes &amp; observations:</div>
-    <textarea class="notes-input" id="n-sermons" placeholder="Additional notes, things to follow up on..."></textarea>
+    <div class="quill-editor" id="n-sermons" data-placeholder="Additional notes, things to follow up on..."></div>
   </div>
 </div>
 </div>
@@ -194,8 +195,9 @@
   }
 </script>
 
-<script>window.PAGE_NOTE_IDS = ['n-sermons'];</script>
+<script>window.PAGE_NOTE_IDS = [];</script>
 <script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 <div id="sidebar-overlay" style="display:none;"></div></body></html>
