@@ -1,126 +1,180 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
-=======
->>>>>>> 20bff8966eefedaef72f9fa2d0d5bd73140ae82d
 <html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sermon Log — Entries 10+ — Campbell Bible Study</title>
+  <title>Sermon Log — Entries 10–15 — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
-  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    .sermon-table { width:100%; border-collapse:collapse; font-size:13px; font-family:Arial,sans-serif; margin-top:16px; }
+    .sermon-table th { background:#1F3864; color:#fff; padding:10px 12px; text-align:left; font-size:12px; cursor:pointer; user-select:none; white-space:nowrap; }
+    .sermon-table th:hover { background:#2E75B6; }
+    .sermon-table th .sort-arrow { margin-left:6px; font-size:10px; opacity:0.6; }
+    .sermon-table th.sorted-asc  .sort-arrow::after  { content:'▲'; opacity:1; }
+    .sermon-table th.sorted-desc .sort-arrow::after { content:'▼'; opacity:1; }
+    .sermon-table th:not(.sorted-asc):not(.sorted-desc) .sort-arrow::after { content:'⇕'; }
+    .sermon-table td { padding:9px 12px; border-bottom:1px solid #eee; color:#444; vertical-align:top; }
+    .sermon-table tr:nth-child(even) td { background:#f9f9f9; }
+    .sermon-table tr:hover td { background:#EBF4FC; }
+    .col-num     { width:4%; }
+    .col-date    { width:8%; white-space:nowrap; }
+    .col-title   { width:28%; }
+    .col-teacher { width:16%; }
+    .col-topics  { width:44%; }
+    .sort-controls { display:flex; gap:10px; align-items:center; margin-bottom:12px; flex-wrap:wrap; }
+    .sort-controls label { font-size:12px; font-family:Arial,sans-serif; color:#555; font-weight:bold; }
+    .sort-btn { font-size:11px; padding:4px 12px; border:1px solid #1F3864; border-radius:4px; background:#fff; color:#1F3864; cursor:pointer; font-family:Arial,sans-serif; }
+    .sort-btn:hover { background:#EBF4FC; }
+    .sort-btn.active { background:#1F3864; color:#fff; }
+    .log-nav { display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
+    .log-nav a { font-size:13px; font-family:Arial,sans-serif; padding:6px 14px; border:1px solid #1F3864; border-radius:4px; color:#1F3864; text-decoration:none; }
+    .log-nav a:hover { background:#EBF4FC; }
+    .log-nav a.active { background:#1F3864; color:#fff; }
+  </style>
 </head>
 <body>
 
-<<<<<<< HEAD
-<div id="github-bar"></div>
-<div id="sidebar"></div>
-=======
 <div id="github-bar">
   <span class="bar-title">Campbell Bible Study</span>
   <span class="bar-sep">|</span>
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
+  <span id="gh-status"></span>
   <div class="bar-right">
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 13, 2026</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: April 15, 2026</span></span>
   </div>
 </div>
 
-<div id="sidebar">
-    <div id="sidebar-header">
-      <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 13, 2026</p>
-    </div>
-    <div id="sidebar-nav">
-  <div class="nav-section">Getting Started</div><a class="nav-item" href="./index.html">Introduction</a><a class="nav-item" href="./index.html#index">Thematic Index</a>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme1')" id="nav-header-theme1">
-          <span>Theme 1 — End Times</span>
-          <span class="nav-arrow open" id="nav-arrow-theme1">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme1">
-      <a class="nav-item" href="./theme1/module1.html">Module 1 — Daniel's 70 Weeks</a><a class="nav-item" href="./theme1/module2.html">Module 2 — Israel in Prophecy</a><a class="nav-item" href="./theme1/module3.html">Module 3 — Day of the Lord</a><a class="nav-item" href="./theme1/module4.html">Module 4 — The Watchman</a><a class="nav-item" href="./theme1/module5.html">Module 5 — The New Covenant</a><a class="nav-item" href="./theme1/module6.html">Module 6 — The Rapture</a><a class="nav-item" href="./theme1/module7.html">Module 7 — The Antichrist</a><a class="nav-item" href="./theme1/module8.html">Module 8 — The Rebuilt Temple</a><a class="nav-item" href="./theme1/module9.html">Module 9 — Gog-Magog War</a><a class="nav-item" href="./theme1/module10.html">Module 10 — Signs of the Times</a><a class="nav-item" href="./theme1/module11.html">Module 11 — False Prophets</a><a class="nav-item" href="./theme1/module12.html">Module 12 — The Millennium</a><a class="nav-item" href="./theme1/module13.html">Module 13 — Second Coming</a><a class="nav-item" href="./theme1/module14.html">Module 14 — Matt 24 ↔ Revelation</a><a class="nav-item" href="./theme1/module15.html">Module 15 — Armageddon</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme2')" id="nav-header-theme2">
-          <span>Theme 2 — Biblical Calendar</span>
-          <span class="nav-arrow open" id="nav-arrow-theme2">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme2">
-      <a class="nav-item" href="./theme2/index.html">Theme 2 Overview</a><a class="nav-item sub" href="./theme2/module1.html">↳ Module 1 — Calendar History</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('theme3')" id="nav-header-theme3">
-          <span>Theme 3 — Judgment &amp; Mercy</span>
-          <span class="nav-arrow open" id="nav-arrow-theme3">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-theme3">
-      <a class="nav-item" href="./theme3/index.html">Theme 3 Overview</a></div>
-        <div class="nav-section-collapsible" onclick="toggleNavSection('themes48')" id="nav-header-themes48">
-          <span>Themes 4–8</span>
-          <span class="nav-arrow open" id="nav-arrow-themes48">▶</span>
-        </div>
-        <div class="nav-section-items " id="nav-items-themes48">
-      <a class="nav-item" href="./index.html#themes48">Themes 4–8 (Coming Soon)</a></div><div class="nav-section">My Study</div><a class="nav-item" href="./sermons.html">Sermon &amp; Teaching Log</a><a class="nav-item sub" href="./sermons-log1.html">↳ Entries 1–9</a><a class="nav-item sub active" href="./sermons-log2.html">↳ Entries 10+</a><a class="nav-item" href="./journal.html">Personal Journal</a><a class="nav-item" href="./convictions.html">My Growing Convictions</a></div></div>
->>>>>>> 20bff8966eefedaef72f9fa2d0d5bd73140ae82d
+<div id="sidebar"></div>
 
 <div id="app">
 <div id="main">
 
-  <span class="page-tag">My Study</span>
-  <h1 class="page-title">Sermon Log — Entries 10+</h1>
-  <p class="body"><a href="sermons.html">← Back to Sermon Index</a></p>
+<span class="page-tag">My Study</span>
 
-  <table class="sermon-table">
-<<<<<<< HEAD
-    <tbody>
-    <tr>
-=======
-    <tbody><tr>
->>>>>>> 20bff8966eefedaef72f9fa2d0d5bd73140ae82d
-      <th style="width:5%">#</th>
-      <th style="width:10%">Date</th>
-      <th style="width:30%">Title / Source</th>
-      <th style="width:55%">Key Topics &amp; Notes</th>
-    </tr>
-    <tr id="entry10"><td>10</td><td>4/3/26</td><td>Essene Calendar Debate</td><td>Audio Teaching (Summary AI) — Calendar integrity across 6,000 years; Noah's Flood and orbital stability; Joshua's long day &amp; Hezekiah's sundial — atmospheric not orbital explanations; Essene 364-day solar calendar (Enoch 72:32; Jubilees); tropical year 365.2422 days; seven-day week unbroken from creation through Julian (46 BC) to Gregorian (1582 AD); Julian→Gregorian transition preserved weekly cycle (US example: Wed Sep 2 → Thu Sep 14, 1752); Sabbath continuity confirmed; Isa 66:23; Ezek 46:1 — millennial observance of same cycles. Theme 2 cross-reference.</td></tr>
-    <tr id="entry11"><td>11</td><td>4/6/26</td><td>Feast of Tabernacles &amp; DSS Calendar</td><td>Audio Teaching (Summary AI) — Yom Kippur two-goat ceremony (Lev 16) — Azazel as proper name, Mishnah Yoma detail, red thread turning white ~AD 30; Sukkot structure — second tithe feast, Seventy Nations burnt offerings (Num 29), millennial observance (Zech 14:16); Four Species (Lev 23:40) — etrog, lulav, myrtle, willow; symbolic theology of each species; willow as "least" yet bound with all; DSS 364-day solar calendar and feast precision appointments. Special study: willow in Scripture (Ps 137; Isa 44:3–4; Ezek 17:5; Job 40:22) — dedicated to Hazlee Willow. Theme 2, Module 4.</td></tr>
-    <tr id="entry12"><td>12</td><td>4/6/26</td><td>Epicenter — Netanyahu, Russia-Iran Axis &amp; Ezekiel Scenario</td><td>Joel C. Rosenberg (Summary AI) — Memoir excerpt: Rosenberg's service as communications advisor to Netanyahu (2001); how his research into the Russia-Iran-Middle East geopolitical axis led him to write prophetically-themed fiction based on Ezekiel 38–39; Moscow's strategic interest in the Middle East traced from Afghanistan (1979) through post-Cold War scenarios; Saddam Hussein as complicating factor in Ezekiel coalition; state-sponsored terrorism and nuclear threat analysis. Cross-reference: Theme 1, Module 9 (Gog-Magog War).</td></tr>
-    <tr id="entry13"><td>13</td><td>4/9/26</td><td>Ezekiel 38 &amp; Russia — Identifying Gog</td><td>Joel C. Rosenberg, <em>The Ezekiel Option</em> Ch. 7 (Summary AI) — Historical &amp; etymological case for Russia as Magog/Rosh: Gog as a title (like Tsar/Pharaoh), not a personal name; geographic argument — Russia lies farthest due north of Israel (Ezek 38:6, 15); Voltaire's independent conclusion (hostile witness — pre-dated Russia as a world power by 150 years); Genesis 10 Table of Nations — Magog as son of Japheth; 19th-century pre-modern scholars reaching same conclusion before Soviet era; Rosenberg's firsthand Moscow observations of Putin's rise (Sept 2004 — political opponents jailed, media suppressed, 71% election). Cross-reference: Theme 1, Module 9.4.</td></tr>
-    <tr id="entry14"><td>14</td><td>4/14/26</td><td>Discernment &amp; End Times — Group Discussion</td><td>Jack Hibbs / Group Discussion (Summary AI) — Group discussion on biblical discernment, geopolitics, and last-days signs. Key topics: Ezekiel 38 coalition (Russia, China, Iran) tied to shifting Gulf trade routes and Israel's friends; Days of Noah vs. Days of Lot — Noah's ark as sign of judgment to mockers but salvation to believers; Lot emotionally tethered to corrupt city (warning to the church today); Islam as Christian heresy — votes Jesus as prophet only, built on deception; Genesis 3:15 protoevangelium and image of the beast / Tower of Babel connection; Allah as Arabic word for God (transliteration discussion) vs. the God of Scripture; Chuck Smith referenced re: political courage during California legislative overreach; Walter Martin quote on cults as instruments of refinement. Jack Hibbs (Calvary Chapel Chino Hills) identified as prophecy resource — see also his book <em>The Last Book: What You Need to Know About Revelation, the Rapture, and the End Times</em> (with Charles Ryrie). Key refs: Gen 3:15; Gen 11 (Babel); Ezek 38–39; 1 Tim 4; Matt 24:37–39 (days of Noah/Lot); Rev 13 (image of beast).</td></tr>
-    <tr id="entry15"><td>15</td><td></td><td></td><td></td></tr>
-    <tr id="entry16"><td>16</td><td></td><td></td><td></td></tr>
-    <tr id="entry17"><td>17</td><td></td><td></td><td></td></tr>
-    <tr id="entry18"><td>18</td><td></td><td></td><td></td></tr>
-<<<<<<< HEAD
-    </tbody>
-  </table>
-=======
-  </tbody></table>
->>>>>>> 20bff8966eefedaef72f9fa2d0d5bd73140ae82d
+  <h1 class="page-title">Sermon Log — Entries 10–15</h1>
+  <p class="body">Record of all sermons and audio teachings that have shaped this study. Date each entry. Over time this becomes a personal theological library.</p>
 
-  <div class="notes-box">
-    <div class="label">✏️ Notes for entries 10+:</div>
-    <div class="quill-editor" id="n-sermons-log2" data-placeholder="Your notes on these teachings... Date your entries."></div>
+  <div class="log-nav">
+    <a href="sermons.html">← All Entries</a>
+    <a href="sermons-log1.html">← Entries 1–9</a>
+    <a href="sermons-log2.html" class="active">Entries 10–15</a>
   </div>
 
-  <div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid #ddd;">
-    <a href="sermons-log1.html" class="btn-primary" style="font-size:12px;">← Entries 1–9</a>
-    <a href="sermons.html" class="btn-primary" style="font-size:12px;">Sermon Index</a>
+  <div class="sort-controls">
+    <label>Sort:</label>
+    <button class="sort-btn" onclick="sortTable(0,'num')">Entry # ↑</button>
+    <button class="sort-btn" onclick="sortTable(0,'num-desc')">Entry # ↓</button>
+    <button class="sort-btn active" onclick="sortTable(1,'date')">Date ↑</button>
+    <button class="sort-btn" onclick="sortTable(1,'date-desc')">Date ↓</button>
+    <button class="sort-btn" onclick="sortTable(2,'alpha')">Title A–Z</button>
+    <button class="sort-btn" onclick="sortTable(3,'alpha')">Teacher A–Z</button>
   </div>
+  <table class="sermon-table" id="sermon-table">
+    <thead>
+      <tr>
+        <th class="col-num sorted-asc" onclick="thSort(this,0,'num')">#<span class="sort-arrow"></span></th>
+        <th class="col-date" onclick="thSort(this,1,'date')">Date<span class="sort-arrow"></span></th>
+        <th class="col-title" onclick="thSort(this,2,'alpha')">Title<span class="sort-arrow"></span></th>
+        <th class="col-teacher" onclick="thSort(this,3,'alpha')">Teacher / Source<span class="sort-arrow"></span></th>
+        <th class="col-topics">Key Topics &amp; Notes</th>
+      </tr>
+    </thead>
+    <tbody id="sermon-tbody">
+<tr>
+    <td>10</td>
+    <td>4/3/26</td>
+    <td>Essene Calendar Debate</td>
+    <td>Audio Teaching (Summary AI)</td>
+    <td>Calendar integrity across 6,000 years; Noah’s Flood and orbital stability; Joshua's long day &amp; Hezekiah’s sundial — atmospheric not orbital explanations; Essene 364-day solar calendar (Enoch 72:32; Jubilees); tropical year 365.2422 days; seven-day week unbroken from creation through Julian (46 BC) to Gregorian (1582 AD); Julian→Gregorian transition preserved weekly cycle (US example: Wed Sep 2 → Thu Sep 14, 1752); Sabbath continuity confirmed; Isa 66:23; Ezek 46:1 — millennial observance of same cycles. Theme 2 cross-reference.</td>
+  </tr>
+<tr>
+    <td>11</td>
+    <td>4/6/26</td>
+    <td>Feast of Tabernacles &amp; DSS Calendar</td>
+    <td>Audio Teaching (Summary AI)</td>
+    <td>Yom Kippur two-goat ceremony (Lev 16) — Azazel as proper name, Mishnah Yoma detail, red thread turning white ~AD 30; Sukkot structure — second tithe feast, Seventy Nations burnt offerings (Num 29), millennial observance (Zech 14:16); Four Species (Lev 23:40) — etrog, lulav, myrtle, willow; symbolic theology of each species; willow as "least" yet bound with all; DSS 364-day solar calendar and feast precision appointments. Special study: willow in Scripture (Ps 137; Isa 44:3–4; Ezek 17:5; Job 40:22) — dedicated to Hazlee Willow. Theme 2, Module 4.</td>
+  </tr>
+<tr>
+    <td>12</td>
+    <td>4/6/26</td>
+    <td>Epicenter — Netanyahu, Russia-Iran Axis &amp; Ezekiel Scenario</td>
+    <td>Joel C. Rosenberg (Summary AI)</td>
+    <td>Memoir excerpt: Rosenberg's service as communications advisor to Netanyahu (2001); how his research into the Russia-Iran-Middle East geopolitial axis led him to write prophetically-themed fiction based on Ezekiel 38–39; Moscow's strategic interest in the Middle East traced from Afghanistan (1979) through post-Cold War scenarios; Saddam Hussein as complicating factor in Ezekiel coalition; state-sponsored terrorism and nuclear threat analysis. Cross-reference: Theme 1, Module 9 (Gog-Magog War).</td>
+  </tr>
+<tr>
+    <td>13</td>
+    <td>4/9/26</td>
+    <td>Ezekiel 38 &amp; Russia — Identifying Gog</td>
+    <td>Joel C. Rosenberg, <em>The Ezekiel Option</em> Ch. 7 (Summary AI)</td>
+    <td>Historical &amp; etymological case for Russia as Magog/Rosh: Gog as a title (like Tsar/Pharaoh), not a personal name; geographic argument — Russia lies farthest due north of Israel (Ezek 38:6, 15); Voltaire's independent conclusion (hostile witness — pre-dated Russia as a world power by 150 years); Genesis 10 Table of Nations — Magog as son of Japheth; 19th-century pre-modern scholars reaching same conclusion before Soviet era; Rosenberg's firsthand Moscow observations of Putin's rise (Sept 2004 — political opponents jailed, media suppressed, 71% election). Cross-reference: Theme 1, Module 9.4.</td>
+  </tr>
+<tr>
+    <td>14</td>
+    <td>4/14/26</td>
+    <td>Discernment &amp; End Times — Group Discussion</td>
+    <td>Jack Hibbs / Group Discussion (Summary AI)</td>
+    <td>Group discussion on biblical discernment, geopolitics, and last-days signs. Key topics: Ezekiel 38 coalition (Russia, China, Iran) tied to shifting Gulf trade routes and Israel's friends; Days of Noah vs. Days of Lot — Noah's ark as sign of judgment to mockers but salvation to believers; Lot emotionally tethered to corrupt city (warning to the church today); Islam as Christian heresy — votes Jesus as prophet only, built on deception; Genesis 3:15 protoevangelium and image of the beast / Tower of Babel connection; Allah as Arabic word for God (transliteration discussion) vs. the God of Scripture; Chuck Smith referenced re: political courage during California legislative overreach; Walter Martin quote on cults as instruments of refinement. Jack Hibbs (Calvary Chapel Chino Hills) identified as prophecy resource — see also his book <em>The Last Book: What You Need to Know About Revelation, the Rapture, and the End Times</em> (with Charles Ryrie). Key refs: Gen 3:15; Gen 11 (Babel); Ezek 38–39; 1 Tim 4; Matt 24:37–39 (days of Noah/Lot); Rev 13 (image of beast).</td>
+  </tr>
+<tr>
+    <td>15</td>
+    <td>4/15/26</td>
+    <td>Daniel 9 &amp; End-Time Signs</td>
+    <td>Jack Hibbs (Summary AI)</td>
+    <td>Daniel 9:24&ndash;27 &mdash; the 70 Weeks prophecy in full; Israel&rsquo;s 490-year debt to God traced from the Sabbath-year violations (Lev 26); 445 BC decree (Neh 2) as starting point; 49-year first segment (walls/street rebuilt); 434-year second segment; 483 years total = 173,880 days on 360-day prophetic calendar from March 14, 445 BC to Palm Sunday April 6, 32 AD; Messiah &ldquo;cut off but not for himself&rdquo; (Dan 9:26) &mdash; dies for others&rsquo; capital offense; Jerusalem and temple destroyed (Titus, AD 70); remaining 7-year Tribulation block with Antichrist confirming a covenant (Dan 9:27), breaking it at midpoint, desecrating the sanctuary; prophecies confirming Messiah&rsquo;s identity: Gen 3:15, Prov 30:4, Ps 2, Ps 118, Zech 9:9 (donkey/triumphal entry), Matt 23&ndash;24; Israel&rsquo;s regathering since 1948; October 7, 2023 cited as prophetic marker of accelerating end-times timeline; second coming returns to Israel/Jerusalem. Cross-reference: Theme 1, Module 8 (Daniel&rsquo;s 70 Weeks).</td>
+  </tr>
+    </tbody></table>
 
+  <div class="notes-box" style="margin-top:32px;">
+    <div class="label">☑️ Teaching notes — additional notes &amp; observations:</div>
+    <textarea class="notes-input" id="n-sermons" placeholder="Additional notes, things to follow up on..."></textarea>
+  </div>
 </div>
 </div>
 
-<script>window.PAGE_NOTE_IDS = ['n-sermons-log2'];</script>
+<script>
+  function parseDate(str) {
+    if (!str) return 0;
+    const parts = str.split('/');
+    if (parts.length < 3) return 0;
+    return parseInt(parts[2])*10000 + parseInt(parts[0])*100 + parseInt(parts[1]);
+  }
+  function getCellVal(row, col) { return row.cells[col] ? row.cells[col].innerText.trim() : ''; }
+  function sortTable(col, mode) {
+    const tbody = document.getElementById('sermon-tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.sort((a, b) => {
+      let va = getCellVal(a,col), vb = getCellVal(b,col);
+      if (mode==='num'||mode==='num-desc') { va=parseInt(va)||0; vb=parseInt(vb)||0; return mode==='num'?va-vb:vb-va; }
+      if (mode==='date'||mode==='date-desc') { va=parseDate(va); vb=parseDate(vb); return mode==='date'?va-vb:vb-va; }
+      return va.localeCompare(vb);
+    });
+    rows.forEach(r=>tbody.appendChild(r));
+    document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+  function thSort(th,col,baseMode) {
+    const ths=document.querySelectorAll('#sermon-table thead th'); let mode=baseMode;
+    if (th.classList.contains('sorted-asc')) { mode=baseMode+'-desc'; ths.forEach(t=>{t.classList.remove('sorted-asc','sorted-desc');}); th.classList.add('sorted-desc'); }
+    else { ths.forEach(t=>{t.classList.remove('sorted-asc','sorted-desc');}); th.classList.add('sorted-asc'); }
+    const tbody=document.getElementById('sermon-tbody');
+    const rows=Array.from(tbody.querySelectorAll('tr'));
+    rows.sort((a,b)=>{
+      let va=getCellVal(a,col),vb=getCellVal(b,col);
+      if (mode==='num'||mode==='num-desc'){va=parseInt(va)||0;vb=parseInt(vb)||0;return mode==='num'?va-vb:vb-va;}
+      if (mode==='date'||mode==='date-desc'){va=parseDate(va);vb=parseDate(vb);return mode==='date'?va-vb:vb-va;}
+      if (mode==='alpha-desc') return vb.localeCompare(va);
+      return va.localeCompare(vb);
+    });
+    rows.forEach(r=>tbody.appendChild(r));
+  }
+</script>
+
+<script>window.PAGE_NOTE_IDS = ['n-sermons'];</script>
 <script src="assets/js/nav.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
-
-<<<<<<< HEAD
-<div id="sidebar-overlay" style="display: none;"></div>
-</body></html>
-=======
-
-
-</body></html>
->>>>>>> 20bff8966eefedaef72f9fa2d0d5bd73140ae82d
+<div id="sidebar-overlay" style="display:none;"></div></body></html>
