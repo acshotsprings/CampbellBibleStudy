@@ -467,46 +467,7 @@ async function saveNotesJson(token) {
   try { const r = await fetch(`https://raw.githubusercontent.com/${OWNER}/${REPO}/main/my-notes.json?t=${Date.now()}`, { cache: 'no-store' }); if (r.ok) { const d = await r.json(); previousNotes = d.notes || {}; existingHistory = d.saveHistory || []; existingOriginDate = d.originDate || existingOriginDate; } } catch(e) {}
   const now = new Date();
   const timestamp = now.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }) + ' at ' + now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
-
-  // Build a meaningful summary of what changed
-  const PAGE_KEY_LABELS = {
-    'n-intro':'Introduction', 'n-m1':'T1 Module 1', 'n-m2':'T1 Module 2', 'n-m3':'T1 Module 3',
-    'n-m4':'T1 Module 4', 'n-m5':'T1 Module 5', 'n-m6':'T1 Module 6', 'n-m7':'T1 Module 7',
-    'n-m8':'T1 Module 8', 'n-m9':'T1 Module 9', 'n-m10':'T1 Module 10', 'n-m11':'T1 Module 11',
-    'n-m12':'T1 Module 12', 'n-m13':'T1 Module 13', 'n-m14':'T1 Module 14', 'n-m15':'T1 Module 15',
-    'n-t2m1':'T2 Module 1', 'n-t2m2':'T2 Module 2', 'n-t2m3':'T2 Module 3',
-    'n-journal-new':'Journal', 'n-sermons':'Sermons', 'n-dd-willow':'Deep Dive: Willow',
-    'n-dd-shabua':'Deep Dive: Shabua', 'n-dd-calendars':'Deep Dive: Calendars',
-  };
-  const PAGE_GROUPS = {
-    'n-m':'Theme 1 Modules', 'n-t2':'Theme 2 Modules', 'q-m':'Reflection Questions',
-    'c-':'Convictions', 'n-dd-':'Deep Dives',
-  };
-  const changedKeys = Object.keys(notes).filter(k => (notes[k] || '').trim() !== (previousNotes[k] || '').trim());
-  const newKeys     = Object.keys(notes).filter(k => !previousNotes[k] && (notes[k] || '').trim());
-  let summary, pagesChanged = [];
-  if (changedKeys.length === 0 && newKeys.length === 0) {
-    summary = 'No note changes — page HTML saved.';
-  } else {
-    const allChanged = [...new Set([...changedKeys, ...newKeys])];
-    // Map to readable labels
-    const labels = allChanged.map(k => PAGE_KEY_LABELS[k] || k);
-    // Derive page group tags
-    const groupSet = new Set();
-    allChanged.forEach(k => {
-      for (const [prefix, group] of Object.entries(PAGE_GROUPS)) { if (k.startsWith(prefix)) { groupSet.add(group); break; } }
-      if (k === 'n-journal-new') groupSet.add('Journal');
-      if (k === 'n-sermons')     groupSet.add('Sermon Log');
-    });
-    pagesChanged = [...groupSet];
-    if (allChanged.length <= 3) {
-      summary = `Updated: ${labels.join(', ')}.`;
-    } else {
-      summary = `Updated ${allChanged.length} note fields including ${labels.slice(0,3).join(', ')}, and more.`;
-    }
-  }
-
-  const updatedHistory = [...existingHistory, { timestamp, summary, pagesChanged, isoTime: now.toISOString() }].slice(-500);
+  const updatedHistory = [...existingHistory, { timestamp, summary: 'Notes saved.', isoTime: now.toISOString() }].slice(-500);
   const payload = { lastUpdated: now.toISOString(), originDate: existingOriginDate, saveHistory: updatedHistory, notes };
   await putFileNew(token, 'my-notes.json', JSON.stringify(payload, null, 2));
 }
