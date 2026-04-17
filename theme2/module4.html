@@ -274,12 +274,12 @@
     <div class="line">• Theme 1, Module 12 (The Millennium) — Tabernacles observed in the age to come</div>
   </div>
 
-  <!-- WORKING COMPLETION BUTTON -->
+  <!-- WORKING COMPLETION BUTTON WITH FIXED LOGIC -->
   <div style="border-top:1px solid #ddd;padding-top:28px;margin:32px 0px 8px;text-align:center;">
     <p style="font-size:13px;color:#888;font-family:Arial,sans-serif;margin-bottom:14px;">
       Finished studying this module? Mark it complete to track your progress in the sidebar.
     </p>
-    <button id="complete-btn" onclick="completeModule('complete-t2m4')" style="
+    <button id="complete-btn" onclick="toggleModuleCompletion()" style="
       background:#1F3864;
       color:rgba(255,255,255,0.7);
       border:2px solid rgba(255,255,255,0.3);
@@ -303,20 +303,36 @@
 </div>
 
 <script>
-// WORKING COMPLETION FUNCTION
-function completeModule(moduleKey) {
-  const isComplete = localStorage.getItem('cbsg-' + moduleKey) === 'true';
+// FIXED COMPLETION FUNCTION - CORRECTED TOGGLE LOGIC
+function toggleModuleCompletion() {
+  console.log('Button clicked!'); // Debug log
   
-  if (isComplete) {
-    // Mark as incomplete
+  const moduleKey = 'complete-t2m4';
+  const currentState = localStorage.getItem('cbsg-' + moduleKey);
+  console.log('Current state:', currentState); // Debug log
+  
+  const btn = document.getElementById('complete-btn');
+  const btnText = document.getElementById('complete-btn-text');
+  
+  if (!btn || !btnText) {
+    console.error('Button elements not found!');
+    return;
+  }
+  
+  // Toggle logic: if currently 'true' (complete), make it 'false' (incomplete)
+  // if currently 'false' or null/undefined (incomplete), make it 'true' (complete)
+  if (currentState === 'true') {
+    // Currently complete → mark as incomplete
     localStorage.setItem('cbsg-' + moduleKey, 'false');
-    document.getElementById('complete-btn-text').textContent = '☐ Mark as Complete';
-    document.getElementById('complete-btn').style.background = '#1F3864';
+    btnText.textContent = '☐ Mark as Complete';
+    btn.style.background = '#1F3864';
+    console.log('Set to incomplete');
   } else {
-    // Mark as complete
+    // Currently incomplete (or never set) → mark as complete
     localStorage.setItem('cbsg-' + moduleKey, 'true');
-    document.getElementById('complete-btn-text').textContent = '✓ Completed — Click to Undo';
-    document.getElementById('complete-btn').style.background = '#228B22';
+    btnText.textContent = '✓ Completed — Click to Undo';
+    btn.style.background = '#228B22';
+    console.log('Set to complete');
   }
   
   // Rebuild sidebar to show progress
@@ -326,17 +342,27 @@ function completeModule(moduleKey) {
 }
 
 // Set button state on page load
-document.addEventListener('DOMContentLoaded', function() {
+function setInitialButtonState() {
   const moduleKey = 'complete-t2m4';
   const isComplete = localStorage.getItem('cbsg-' + moduleKey) === 'true';
-  const btn = document.getElementById('complete-btn-text');
-  const button = document.getElementById('complete-btn');
+  const btn = document.getElementById('complete-btn');
+  const btnText = document.getElementById('complete-btn-text');
   
-  if (btn && button) {
-    btn.textContent = isComplete ? '✓ Completed — Click to Undo' : '☐ Mark as Complete';
-    button.style.background = isComplete ? '#228B22' : '#1F3864';
+  console.log('Initial state:', isComplete); // Debug log
+  
+  if (btn && btnText) {
+    if (isComplete) {
+      btnText.textContent = '✓ Completed — Click to Undo';
+      btn.style.background = '#228B22';
+    } else {
+      btnText.textContent = '☐ Mark as Complete';
+      btn.style.background = '#1F3864';
+    }
   }
-});
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', setInitialButtonState);
 
 window.PAGE_NOTE_IDS = ['n-t2m4-p1','n-t2m4-p2','n-t2m4-p3','n-t2m4-p4','n-t2m4-willow'];
 </script>
