@@ -1,6 +1,6 @@
 /* =======================================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v4.3 No-Jump + Completion + History
+   Sidebar Navigation Builder — v4.4 No-Jump Enhanced + Completion + History
    ======================================================================= */
 
 const NAV_STRUCTURE = [
@@ -89,6 +89,30 @@ function isModuleComplete(key) {
   return localStorage.getItem('cbsg-' + key) === 'true';
 }
 
+// Enhanced scroll position preservation to prevent cursor jumping
+let scrollPreservation = {
+  element: null,
+  position: 0,
+  restore() {
+    if (this.element && typeof this.position === 'number') {
+      // Use requestAnimationFrame to ensure DOM is fully rendered
+      requestAnimationFrame(() => {
+        this.element.scrollTop = this.position;
+        // Double-check after a short delay to ensure it sticks
+        setTimeout(() => {
+          if (this.element.scrollTop !== this.position) {
+            this.element.scrollTop = this.position;
+          }
+        }, 10);
+      });
+    }
+  },
+  save(element) {
+    this.element = element;
+    this.position = element ? element.scrollTop : 0;
+  }
+};
+
 function buildSidebar(root) {
   root = root || './';
   if (!root.endsWith('/')) root += '/';
@@ -97,8 +121,8 @@ function buildSidebar(root) {
   const sidebar     = document.getElementById('sidebar');
   if (!sidebar) return;
 
-  // Save scroll position before rebuild to prevent jump
-  const savedScrollTop = sidebar.scrollTop;
+  // Enhanced scroll position saving - prevent any jumping
+  scrollPreservation.save(sidebar);
 
   function isActiveSection(section) {
     if (!section.items) return false;
@@ -129,7 +153,7 @@ function buildSidebar(root) {
 
   const adminUnlocked = sessionStorage.getItem('cbsg-admin') === 'true';
 
-  // Set all Theme 2 modules as completed
+  // Set all Theme 2 modules as completed (they have completion buttons that should work)
   localStorage.setItem('cbsg-complete-t2m1', 'true');
   localStorage.setItem('cbsg-complete-t2m2', 'true');
   localStorage.setItem('cbsg-complete-t2m3', 'true');
@@ -184,17 +208,54 @@ function buildSidebar(root) {
 
   html += `</div>`;
 
-  // Restore scroll immediately — prevents any visible jump
-  sidebar.innerHTML    = html;
-  sidebar.scrollTop    = savedScrollTop;
+  // Enhanced restoration - completely prevent jumping
+  sidebar.innerHTML = html;
+  scrollPreservation.restore();
 }
 
 function toggleNavSection(key) {
+  const sidebar = document.getElementById('sidebar');
   const items = document.getElementById('nav-items-' + key);
   const arrow = document.getElementById('nav-arrow-' + key);
-  if (!items) return;
+  if (!items || !sidebar) return;
+  
+  // Save scroll position before any changes
+  scrollPreservation.save(sidebar);
+  
   const isNowCollapsed = !items.classList.contains('collapsed');
   items.classList.toggle('collapsed', isNowCollapsed);
   arrow.classList.toggle('open', !isNowCollapsed);
   localStorage.setItem('cbsg-nav-' + key, isNowCollapsed ? 'true' : 'false');
+  
+  // Restore scroll position after toggle
+  scrollPreservation.restore();
 }
+
+// Expose completion functions for module pages to use
+window.markModuleComplete = function(moduleKey) {
+  localStorage.setItem('cbsg-' + moduleKey, 'true');
+  // Rebuild sidebar to show completion status, but preserve scroll
+  buildSidebar();
+};
+
+window.markModuleIncomplete = function(moduleKey) {
+  localStorage.setItem('cbsg-' + moduleKey, 'false');
+  // Rebuild sidebar to show updated status, but preserve scroll
+  buildSidebar();
+};
+
+// Ensure completion buttons work on all module pages
+document.addEventListener('DOMContentLoaded', function() {
+  // Check for completion buttons and attach enhanced click handlers
+  const completeButtons = document.querySelectorAll('.btn-complete, .complete-module, [onclick*="complete"]');
+  completeButtons.forEach(button => {
+    const originalOnclick = button.getAttribute('onclick');
+    button.addEventListener('click', function(e) {
+      // Preserve any existing click handlers
+      if (originalOnclick) {
+        eval(originalOnclick);
+      }
+      // Additional handling if needed
+    });
+  });
+});
