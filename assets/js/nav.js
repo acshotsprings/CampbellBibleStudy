@@ -1,33 +1,4 @@
-/* =======================================================================
-   CAMPBELL BIBLE STUDY - FINAL NAV.JS FIX
-   Removes broken buttons, stops cursor jumping, makes buttons functional
-   ======================================================================= */
-
-// AGGRESSIVE scroll prevention system
-let isNavigating = false;
-let savedScroll = 0;
-
-function lockNavigation() {
-  const sidebar = document.getElementById('sidebar');
-  if (sidebar) {
-    isNavigating = true;
-    savedScroll = sidebar.scrollTop;
-    sidebar.style.pointerEvents = 'none';
-    sidebar.style.overflow = 'hidden';
-  }
-}
-
-function unlockNavigation() {
-  const sidebar = document.getElementById('sidebar');
-  if (sidebar) {
-    setTimeout(() => {
-      sidebar.style.pointerEvents = 'auto';
-      sidebar.style.overflow = 'auto';
-      sidebar.scrollTop = savedScroll;
-      isNavigating = false;
-    }, 150);
-  }
-}
+/* SIMPLE NAV.JS - FIXES CURSOR JUMPING */
 
 const NAV_STRUCTURE = [
   {
@@ -115,6 +86,9 @@ function isModuleComplete(key) {
   return localStorage.getItem('cbsg-' + key) === 'true';
 }
 
+// SIMPLE SCROLL PRESERVATION
+let savedScrollPosition = 0;
+
 function buildSidebar(root) {
   root = root || './';
   if (!root.endsWith('/')) root += '/';
@@ -123,8 +97,8 @@ function buildSidebar(root) {
   const sidebar = document.getElementById('sidebar');
   if (!sidebar) return;
 
-  // AGGRESSIVE lock during rebuild
-  lockNavigation();
+  // SAVE scroll position BEFORE any DOM changes
+  savedScrollPosition = sidebar.scrollTop;
 
   function isActiveSection(section) {
     if (!section.items) return false;
@@ -204,26 +178,41 @@ function buildSidebar(root) {
   html += `</div>`;
   sidebar.innerHTML = html;
   
-  // Unlock after rebuild
-  unlockNavigation();
+  // RESTORE scroll position AFTER DOM changes with multiple attempts
+  const attempts = [0, 10, 25, 50, 100];
+  attempts.forEach(delay => {
+    setTimeout(() => {
+      if (sidebar) sidebar.scrollTop = savedScrollPosition;
+    }, delay);
+  });
 }
 
 function toggleNavSection(key) {
+  const sidebar = document.getElementById('sidebar');
+  if (!sidebar) return;
+  
+  // SAVE scroll position BEFORE toggle
+  savedScrollPosition = sidebar.scrollTop;
+  
   const items = document.getElementById('nav-items-' + key);
   const arrow = document.getElementById('nav-arrow-' + key);
   if (!items) return;
-  
-  lockNavigation();
   
   const isNowCollapsed = !items.classList.contains('collapsed');
   items.classList.toggle('collapsed', isNowCollapsed);
   arrow.classList.toggle('open', !isNowCollapsed);
   localStorage.setItem('cbsg-nav-' + key, isNowCollapsed ? 'true' : 'false');
   
-  unlockNavigation();
+  // RESTORE scroll position AFTER toggle with multiple attempts
+  const attempts = [0, 10, 25, 50];
+  attempts.forEach(delay => {
+    setTimeout(() => {
+      if (sidebar) sidebar.scrollTop = savedScrollPosition;
+    }, delay);
+  });
 }
 
-// Expose completion functions - FUNCTIONAL BUTTONS
+// WORKING COMPLETION FUNCTIONS
 window.markModuleComplete = function(moduleKey) {
   localStorage.setItem('cbsg-' + moduleKey, 'true');
   buildSidebar();
@@ -234,113 +223,19 @@ window.markModuleIncomplete = function(moduleKey) {
   buildSidebar();
 };
 
-// Global toggleCompletion function that actually works
-window.toggleCompletion = function() {
-  const currentPath = window.location.pathname;
-  let moduleKey = '';
+// GLOBAL COMPLETION FUNCTION FOR BUTTONS
+window.completeModule = function(moduleKey) {
+  const isComplete = localStorage.getItem('cbsg-' + moduleKey) === 'true';
   
-  // Determine which module we're on
-  if (currentPath.includes('theme2/module1')) moduleKey = 'complete-t2m1';
-  else if (currentPath.includes('theme2/module2')) moduleKey = 'complete-t2m2';
-  else if (currentPath.includes('theme2/module3')) moduleKey = 'complete-t2m3';
-  else if (currentPath.includes('theme2/module4')) moduleKey = 'complete-t2m4';
-  // Add more modules as needed
-  
-  if (moduleKey) {
-    const isComplete = localStorage.getItem('cbsg-' + moduleKey) === 'true';
-    if (isComplete) {
-      markModuleIncomplete(moduleKey);
-    } else {
-      markModuleComplete(moduleKey);
-    }
-    
-    // Update button text immediately
-    const btn = document.getElementById('complete-btn-text');
-    if (btn) {
-      const newState = localStorage.getItem('cbsg-' + moduleKey) === 'true';
-      btn.textContent = newState ? '✓ Completed — Click to Undo' : '☐ Mark as Complete';
-      const button = document.getElementById('complete-btn');
-      if (button) {
-        button.style.background = newState ? '#228B22' : '#1F3864';
-      }
-    }
+  if (isComplete) {
+    localStorage.setItem('cbsg-' + moduleKey, 'false');
+    document.getElementById('complete-btn-text').textContent = '☐ Mark as Complete';
+    document.getElementById('complete-btn').style.background = '#1F3864';
+  } else {
+    localStorage.setItem('cbsg-' + moduleKey, 'true');
+    document.getElementById('complete-btn-text').textContent = '✓ Completed — Click to Undo';
+    document.getElementById('complete-btn').style.background = '#228B22';
   }
+  
+  buildSidebar();
 };
-
-// Fix broken completion buttons on page load
-document.addEventListener('DOMContentLoaded', function() {
-  setTimeout(() => {
-    console.log('Starting completion button cleanup...');
-    
-    // REMOVE all duplicate/broken completion sections
-    const allElements = document.querySelectorAll('*');
-    allElements.forEach(el => {
-      if (el.textContent && el.textContent.includes('Mark it complete to track your progress') && !el.id) {
-        console.log('Removing broken completion section:', el);
-        if (el.parentNode) {
-          el.parentNode.removeChild(el);
-        }
-      }
-    });
-    
-    // REMOVE standalone "Mark as Complete" text that's not in buttons
-    allElements.forEach(el => {
-      if (el.textContent && el.textContent.trim() === '☐ Mark as Complete' && el.tagName !== 'BUTTON' && el.tagName !== 'SPAN') {
-        console.log('Removing broken button text:', el);
-        if (el.parentNode) {
-          el.parentNode.removeChild(el);
-        }
-      }
-    });
-    
-    // Now add ONE working completion button if needed
-    if (!document.getElementById('complete-btn')) {
-      const main = document.getElementById('main');
-      if (main) {
-        const wrapper = document.createElement('div');
-        wrapper.style.cssText = 'border-top:1px solid #ddd;padding-top:28px;margin:32px 0 8px;text-align:center;';
-        wrapper.innerHTML = `
-          <p style="font-size:13px;color:#888;font-family:Arial,sans-serif;margin-bottom:14px;">
-            Finished studying this module? Mark it complete to track your progress in the sidebar.
-          </p>
-          <button id="complete-btn" onclick="toggleCompletion()" style="
-            background:#1F3864;color:rgba(255,255,255,0.7);border:2px solid rgba(255,255,255,0.3);
-            border-radius:6px;padding:10px 28px;font-size:13px;font-family:Arial,sans-serif;
-            font-weight:bold;cursor:pointer;transition:all 0.2s;">
-            <span id="complete-btn-text">☐ Mark as Complete</span>
-          </button>
-        `;
-        main.appendChild(wrapper);
-        console.log('Added working completion button');
-      }
-    }
-    
-    // Update button state if already complete
-    const currentPath = window.location.pathname;
-    let moduleKey = '';
-    if (currentPath.includes('theme2/module1')) moduleKey = 'complete-t2m1';
-    else if (currentPath.includes('theme2/module2')) moduleKey = 'complete-t2m2';
-    else if (currentPath.includes('theme2/module3')) moduleKey = 'complete-t2m3';
-    else if (currentPath.includes('theme2/module4')) moduleKey = 'complete-t2m4';
-    
-    if (moduleKey) {
-      const isComplete = localStorage.getItem('cbsg-' + moduleKey) === 'true';
-      const btn = document.getElementById('complete-btn-text');
-      const button = document.getElementById('complete-btn');
-      if (btn && button) {
-        btn.textContent = isComplete ? '✓ Completed — Click to Undo' : '☐ Mark as Complete';
-        button.style.background = isComplete ? '#228B22' : '#1F3864';
-      }
-    }
-    
-  }, 1000);
-});
-
-// Prevent scroll during navigation operations
-document.addEventListener('scroll', function(e) {
-  if (isNavigating && e.target.id === 'sidebar') {
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    return false;
-  }
-}, true);

@@ -4,7 +4,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Book of Jubilees — Campbell Bible Study</title>
   <link rel="stylesheet" href="../assets/css/style.css">
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 </head>
 <body>
 
@@ -164,7 +163,7 @@
 
   <div class="notes-box">
     <div class="label">✏️ Module 3 — My notes on the Book of Jubilees and what it means for my study:</div>
-    <div class="quill-editor" id="n-t2m3" data-placeholder="Write your convictions here... Date your entry."></div>
+    <textarea class="notes-input" id="n-t2m3" placeholder="Write your convictions here... Date your entry."></textarea>
   </div>
 
   <div class="cross-ref-box">
@@ -179,28 +178,27 @@
     <div class="line">• Colossians 2:16–17 — Paul's warning not to let calendar disputes become a source of condemnation; the feasts are "a shadow of things to come; the substance belongs to Christ"</div>
   </div>
 
-  <div style="margin: 32px 0px 8px; text-align: center;">
-    <div style="border-top:1px solid #ddd;padding-top:28px;margin-bottom:8px;">
-      <p style="font-size:13px;color:#888;font-family:Arial,sans-serif;margin-bottom:14px;">
-        Finished studying this module? Mark it complete to track your progress in the sidebar.
-      </p>
-      <button id="complete-btn" onclick="toggleCompletion()" style="
-        background:transparent;
-        color:rgba(255,255,255,0.7);
-        border:2px solid rgba(255,255,255,0.3);
-        border-radius:6px;
-        padding:10px 28px;
-        font-size:13px;
-        font-family:Arial,sans-serif;
-        font-weight:bold;
-        cursor:pointer;
-        transition:all 0.2s;
-        background-color:#1F3864;
-      ">
-        <span id="complete-btn-text">☐ Mark as Complete</span>
-      </button>
-    </div>
-  </div><div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid #ddd;">
+  <!-- WORKING COMPLETION BUTTON -->
+  <div style="border-top:1px solid #ddd;padding-top:28px;margin:32px 0px 8px;text-align:center;">
+    <p style="font-size:13px;color:#888;font-family:Arial,sans-serif;margin-bottom:14px;">
+      Finished studying this module? Mark it complete to track your progress in the sidebar.
+    </p>
+    <button id="complete-btn" onclick="completeModule('complete-t2m3')" style="
+      background:#1F3864;
+      color:rgba(255,255,255,0.7);
+      border:2px solid rgba(255,255,255,0.3);
+      border-radius:6px;
+      padding:10px 28px;
+      font-size:13px;
+      font-family:Arial,sans-serif;
+      font-weight:bold;
+      cursor:pointer;
+      transition:all 0.2s;">
+      <span id="complete-btn-text">☐ Mark as Complete</span>
+    </button>
+  </div>
+  
+  <div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid #ddd;">
     <a href="module2.html" class="btn-primary" style="font-size:12px;">← Module 2: Calendar Timeline</a>
     <span></span>
   </div>
@@ -208,12 +206,46 @@
 </div>
 </div>
 
-<script>window.PAGE_NOTE_IDS = ['n-t2m3'];</script>
+<script>
+// WORKING COMPLETION FUNCTION
+function completeModule(moduleKey) {
+  const isComplete = localStorage.getItem('cbsg-' + moduleKey) === 'true';
+  
+  if (isComplete) {
+    // Mark as incomplete
+    localStorage.setItem('cbsg-' + moduleKey, 'false');
+    document.getElementById('complete-btn-text').textContent = '☐ Mark as Complete';
+    document.getElementById('complete-btn').style.background = '#1F3864';
+  } else {
+    // Mark as complete
+    localStorage.setItem('cbsg-' + moduleKey, 'true');
+    document.getElementById('complete-btn-text').textContent = '✓ Completed — Click to Undo';
+    document.getElementById('complete-btn').style.background = '#228B22';
+  }
+  
+  // Rebuild sidebar to show progress
+  if (typeof buildSidebar === 'function') {
+    buildSidebar('..');
+  }
+}
+
+// Set button state on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const moduleKey = 'complete-t2m3';
+  const isComplete = localStorage.getItem('cbsg-' + moduleKey) === 'true';
+  const btn = document.getElementById('complete-btn-text');
+  const button = document.getElementById('complete-btn');
+  
+  if (btn && button) {
+    btn.textContent = isComplete ? '✓ Completed — Click to Undo' : '☐ Mark as Complete';
+    button.style.background = isComplete ? '#228B22' : '#1F3864';
+  }
+});
+
+window.PAGE_NOTE_IDS = ['n-t2m3'];
+</script>
 <script src="../assets/js/nav.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="../assets/js/main.js"></script>
 <script>buildSidebar('..');</script>
-
-
 
 </body></html>
