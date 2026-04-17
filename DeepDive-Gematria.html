@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gematria Hebrew/Greek — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <style>
+    .gematria-section { margin: 20px 0; }
+    .alphabet-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+    .alphabet-table th, .alphabet-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    .alphabet-table th { background: #f8f9fa; font-weight: bold; }
+    .hebrew-letter { font-size: 18px; font-weight: bold; }
+    .greek-letter { font-size: 18px; font-weight: bold; }
+    .value-col { font-weight: bold; color: #2E75B6; }
+    .discernment-box { background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 20px; margin: 20px 0; }
+    .discernment-title { font-weight: bold; color: #856404; margin-bottom: 10px; }
+    .troy-section { background: #f8f9fa; border-left: 4px solid #2E75B6; padding: 20px; margin: 20px 0; }
+    .troy-title { color: #2E75B6; font-weight: bold; margin-bottom: 10px; }
+    .warning-box { background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; padding: 15px; margin: 15px 0; }
+    .warning-title { color: #721c24; font-weight: bold; margin-bottom: 8px; }
+    .principles-list { list-style: none; padding: 0; }
+    .principles-list li { margin: 8px 0; padding: 5px 0; border-bottom: 1px dotted #ddd; }
+    .principles-list li:before { content: "✓ "; color: #28a745; font-weight: bold; }
+    .quill-container { margin: 15px 0; }
+  </style>
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: April 17, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version">Version: April 17, 2026</span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <span class="page-tag">Deep Dive</span>
+  <h1 class="page-title">🔢 Gematria Hebrew/Greek</h1>
+  <p class="body">A systematic study of biblical number patterns through Hebrew and Greek letter values. This page provides reference tables and examines Troy Brewer's "Numbers That Preach" through a biblical discernment framework.</p>
+
+  <div class="gematria-section">
+    <h2>Hebrew Alphabet & Values</h2>
+    <p>The Hebrew alphabet consists of 22 letters, each with a numerical value. This system was used for counting and has been examined for spiritual significance throughout Jewish and Christian history.</p>
+    
+    <table class="alphabet-table">
+      <thead>
+        <tr>
+          <th>Letter</th>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Letter</th>
+          <th>Name</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="hebrew-letter">א</td><td>Aleph</td><td class="value-col">1</td>
+          <td class="hebrew-letter">ל</td><td>Lamed</td><td class="value-col">30</td>
+        </tr>
+        <tr>
+          <td class="hebrew-letter">ב</td><td>Beth</td><td class="value-col">2</td>
+          <td class="hebrew-letter">מ</td><td>Mem</td><td class="value-col">40</td>
+        </tr>
+        <tr>
+          <td class="hebrew-letter">ג</td><td>Gimel</td><td class="value-col">3</td>
+          <td class="hebrew-letter">נ</td><td>Nun</td><td class="value-col">50</td>
+        </tr>
+        <tr>
+          <td class="hebrew-letter">ד</td><td>Daleth</td><td class="value-col">4</td>
+          <td class="hebrew-letter">ס</td><td>Samech</td><td class="value-col">60</td>
+        </tr>
+        <tr>
+          <td class="hebrew-letter">ה</td><td>He</td><td class="value-col">5</td>
+          <td class="hebrew-letter">ע</td><td>Ayin</td><td class="value-col">70</td>
+        </tr>
+        <tr>
+          <td class="hebrew-letter">ו</td><td>Vav</td><td class="value-col">6</td>
+          <td class="hebrew-letter">פ</td><td>Pe</td><td class="value-col">80</td>
+        </tr>
+        <tr>
+          <td class="hebrew-letter">ז</td><td>Zayin</td><td class="value-col">7</td>
+          <td class="hebrew-letter">צ</td><td>Tsade</td><td class="value-col">90</td>
+        </tr>
+        <tr>
+          <td class="hebrew-letter">ח</td><td>Heth</td><td class="value-col">8</td>
+          <td class="hebrew-letter">ק</td><td>Qoph</td><td class="value-col">100</td>
+        </tr>
+        <tr>
+          <td class="hebrew-letter">ט</td><td>Teth</td><td class="value-col">9</td>
+          <td class="hebrew-letter">ר</td><td>Resh</td><td class="value-col">200</td>
+        </tr>
+        <tr>
+          <td class="hebrew-letter">י</td><td>Yod</td><td class="value-col">10</td>
+          <td class="hebrew-letter">ש</td><td>Shin</td><td class="value-col">300</td>
+        </tr>
+        <tr>
+          <td class="hebrew-letter">כ</td><td>Kaph</td><td class="value-col">20</td>
+          <td class="hebrew-letter">ת</td><td>Tav</td><td class="value-col">400</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="gematria-section">
+    <h2>Greek Alphabet & Values</h2>
+    <p>The Greek alphabet contains 24 letters. Like Hebrew, each letter has a numerical value that was used in ancient counting systems.</p>
+    
+    <table class="alphabet-table">
+      <thead>
+        <tr>
+          <th>Letter</th>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Letter</th>
+          <th>Name</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="greek-letter">Α</td><td>Alpha</td><td class="value-col">1</td>
+          <td class="greek-letter">Ν</td><td>Nu</td><td class="value-col">50</td>
+        </tr>
+        <tr>
+          <td class="greek-letter">Β</td><td>Beta</td><td class="value-col">2</td>
+          <td class="greek-letter">Ξ</td><td>Xi</td><td class="value-col">60</td>
+        </tr>
+        <tr>
+          <td class="greek-letter">Γ</td><td>Gamma</td><td class="value-col">3</td>
+          <td class="greek-letter">Ο</td><td>Omicron</td><td class="value-col">70</td>
+        </tr>
+        <tr>
+          <td class="greek-letter">Δ</td><td>Delta</td><td class="value-col">4</td>
+          <td class="greek-letter">Π</td><td>Pi</td><td class="value-col">80</td>
+        </tr>
+        <tr>
+          <td class="greek-letter">Ε</td><td>Epsilon</td><td class="value-col">5</td>
+          <td class="greek-letter">Ρ</td><td>Rho</td><td class="value-col">100</td>
+        </tr>
+        <tr>
+          <td class="greek-letter">Ϝ</td><td>Digamma</td><td class="value-col">6</td>
+          <td class="greek-letter">Σ</td><td>Sigma</td><td class="value-col">200</td>
+        </tr>
+        <tr>
+          <td class="greek-letter">Ζ</td><td>Zeta</td><td class="value-col">7</td>
+          <td class="greek-letter">Τ</td><td>Tau</td><td class="value-col">300</td>
+        </tr>
+        <tr>
+          <td class="greek-letter">Η</td><td>Eta</td><td class="value-col">8</td>
+          <td class="greek-letter">Υ</td><td>Upsilon</td><td class="value-col">400</td>
+        </tr>
+        <tr>
+          <td class="greek-letter">Θ</td><td>Theta</td><td class="value-col">9</td>
+          <td class="greek-letter">Φ</td><td>Phi</td><td class="value-col">500</td>
+        </tr>
+        <tr>
+          <td class="greek-letter">Ι</td><td>Iota</td><td class="value-col">10</td>
+          <td class="greek-letter">Χ</td><td>Chi</td><td class="value-col">600</td>
+        </tr>
+        <tr>
+          <td class="greek-letter">Κ</td><td>Kappa</td><td class="value-col">20</td>
+          <td class="greek-letter">Ψ</td><td>Psi</td><td class="value-col">700</td>
+        </tr>
+        <tr>
+          <td class="greek-letter">Λ</td><td>Lambda</td><td class="value-col">30</td>
+          <td class="greek-letter">Ω</td><td>Omega</td><td class="value-col">800</td>
+        </tr>
+        <tr>
+          <td class="greek-letter">Μ</td><td>Mu</td><td class="value-col">40</td>
+          <td class="greek-letter">Ϡ</td><td>Sampi</td><td class="value-col">900</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="troy-section">
+    <div class="troy-title">Troy Brewer: "Numbers That Preach"</div>
+    <p>Pastor Troy Brewer has developed an extensive study of biblical numbers through gematria. His audiobook "Numbers That Preach" contains 40+ chapters covering individual numbers and their spiritual significance.</p>
+    
+    <h3>Key Concepts from Troy's Teaching:</h3>
+    <ul>
+      <li><strong>Unity (1):</strong> Represents God's singularity and oneness</li>
+      <li><strong>Faithful Witness (2):</strong> The concept of two witnesses establishing truth</li>
+      <li><strong>Set Apart (2):</strong> Separation and sanctification</li>
+    </ul>
+    
+    <p><strong>Full Chapter List:</strong> 40 sequential chapters (1-40), plus special studies on 50, 66, 120, 153, triple numbers (111-999), and 11 additional specialized topics.</p>
+  </div>
+
+  <div class="discernment-box">
+    <div class="discernment-title">🛡️ Biblical Discernment Framework</div>
+    <p>While studying gematria, we must maintain biblical balance. Numbers can reveal patterns, but we must avoid:</p>
+    <ul class="principles-list">
+      <li>Making doctrine from number patterns alone</li>
+      <li>Forcing correlations where none exist</li>
+      <li>Prioritizing numerical meaning over clear biblical text</li>
+      <li>Engaging in speculation rather than scriptural study</li>
+      <li>Treating gematria as mystical rather than mathematical</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">⚠️ Study Guidelines</div>
+    <p><strong>Remember:</strong> Scripture interprets Scripture. Any insights from gematria must align with clear biblical teaching. Use this as a study tool, not a source of new revelation.</p>
+    <p><strong>1 Thessalonians 5:21:</strong> "Test all things; hold fast what is good."</p>
+  </div>
+
+  <div class="gematria-section">
+    <h2>Personal Study Notes</h2>
+    <p>Use the editor below to record insights, questions, and observations as you study biblical numbers:</p>
+    
+    <div class="quill-container">
+      <div id="gematria-editor" style="height: 200px;"></div>
+    </div>
+    
+    <div class="notes-box" style="margin-top: 20px;">
+      <div class="label">📝 Quick Notes & References:</div>
+      <textarea class="notes-input" id="n-gematria-notes" placeholder="Record quick references, verse connections, or patterns you notice..." style="min-height: 100px;"></textarea>
+    </div>
+  </div>
+
+  <div class="gematria-section">
+    <h2>Next Steps</h2>
+    <p>This page is the foundation for deeper gematria study. Future development will include:</p>
+    <ul>
+      <li>Individual number study pages (linked to Troy's chapters)</li>
+      <li>Hebrew/Greek word calculators</li>
+      <li>Biblical text analysis tools</li>
+      <li>Cross-reference correlation tables</li>
+    </ul>
+  </div>
+
+</div>
+</div>
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script>
+  // Initialize Quill editor
+  var quill = new Quill('#gematria-editor', {
+    theme: 'snow',
+    placeholder: 'Write your gematria study notes here...',
+    modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline'],
+        ['link'],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        ['clean']
+      ]
+    }
+  });
+  
+  // Save/load functionality for Quill content
+  const GEMATRIA_STORAGE_KEY = 'campbell-gematria-notes';
+  
+  // Load saved content
+  const savedContent = localStorage.getItem(GEMATRIA_STORAGE_KEY);
+  if (savedContent) {
+    quill.setContents(JSON.parse(savedContent));
+  }
+  
+  // Auto-save every 30 seconds
+  setInterval(() => {
+    localStorage.setItem(GEMATRIA_STORAGE_KEY, JSON.stringify(quill.getContents()));
+  }, 30000);
+  
+  // Save on page unload
+  window.addEventListener('beforeunload', () => {
+    localStorage.setItem(GEMATRIA_STORAGE_KEY, JSON.stringify(quill.getContents()));
+  });
+
+  // Page note IDs for main.js
+  window.PAGE_NOTE_IDS = ['n-gematria-notes'];
+</script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+</body>
+</html>

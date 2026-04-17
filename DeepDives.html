@@ -4,7 +4,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Deep Dives — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <style>
     .dd-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin-top:20px; }
     .dd-card { background:#fff; border:1px solid #d0dce8; border-radius:10px; padding:20px; cursor:pointer; transition:border-color 0.15s; text-decoration:none; display:block; }
@@ -28,7 +27,7 @@
   <div class="bar-right">
     <span class="bar-originated">Originated: March 27, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 11, 2026</span>
+    <span id="gh-bar-version">Version: April 17, 2026</span>
   </div>
 </div>
 
@@ -38,7 +37,7 @@
 <div id="main">
 
   <span class="page-tag">My Study</span>
-  <h1 class="page-title">🔬 Deep Dives</h1>
+  <h1 class="page-title">📚 Deep Dives</h1>
   <p class="body">Extended research on subjects that deserve more space than a single module allows. Each deep dive is a standalone study. Click any subject below to open it — new dives are added as subjects emerge from teaching, study, and personal reflection.</p>
 
   <div class="dd-grid">
@@ -62,6 +61,13 @@
       <div class="dd-card-title">The Willow in Scripture</div>
       <div class="dd-card-desc">From the Four Species of Sukkot to the rivers of Babylon — what the willow reveals about exile, suspended praise, Spirit-filled revival, and God's covenant care. Dedicated to Hazlee Willow.</div>
       <span class="dd-card-tag">Psalm 137 · Isaiah 44 · Ezekiel 17 · Job 40</span>
+    </a>
+
+    <a href="DeepDive-Gematria.html" class="dd-card">
+      <div class="dd-card-icon">🔢</div>
+      <div class="dd-card-title">Gematria Hebrew/Greek</div>
+      <div class="dd-card-desc">Biblical number patterns through Hebrew and Greek letter values. A balanced study of Troy Brewer's "Numbers That Preach" with discernment framework and historical context.</div>
+      <span class="dd-card-tag">Hebrew/Greek · Troy Brewer · Discernment</span>
     </a>
 
     <div class="dd-card dd-coming">
@@ -89,7 +95,7 @@
 
   <div class="notes-box" style="margin-top:32px;">
     <div class="label">✏️ Deep dive subjects to add — running list:</div>
-    <div class="quill-editor" id="n-deepdives-index" data-placeholder="e.g. The Restrainer — who or what is holding back the Antichrist (2 Thess 2:6–7)?" style="min-height:80px;"></div>
+    <textarea class="notes-input" id="n-deepdives-index" placeholder="e.g. The Restrainer — who or what is holding back the Antichrist (2 Thess 2:6–7)?" style="min-height:80px;"></textarea>
   </div>
 
 </div>
@@ -97,7 +103,6 @@
 
 <script>window.PAGE_NOTE_IDS = ['n-deepdives-index'];</script>
 <script src="assets/js/nav.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 </body>

@@ -46,7 +46,6 @@ function buildSidebar(root) {
     { type: 'link',  label: 'Sermon & Teaching Log',                      href: root + '/sermons.html',         page: 'sermons.html' },
     { type: 'link',  label: 'Personal Journal',                           href: root + '/journal.html',         page: 'journal.html' },
     { type: 'link',  label: 'My Growing Convictions',                     href: root + '/convictions.html',     page: 'convictions.html' },
-    { type: 'link',  label: '🔢 Gematria Study', href: root + '/DeepDive-Gematria.html', page: 'DeepDive-Gematria.html', sub: true },
   ];
 
   const currentFile = window.location.pathname.split('/').pop() || 'index.html';
