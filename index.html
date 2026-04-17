@@ -1,30 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Campbell Family Master Biblical Study Guide</title>
   <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script></head>
+<body class="admin-mode">
 
 <!-- GITHUB BAR -->
 <div id="github-bar">
   <span class="bar-title">Campbell Bible Study</span>
   <span class="bar-sep">|</span>
-  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
-  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
-  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);"></span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  <span id="gh-status"></span>
   <div class="bar-right">
-    <span class="bar-originated">Originated: March 30, 2026</span>
+    <span class="bar-originated">Originated: March 27, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 12, 2026</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: April 17, 2026</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded 3:14 PM</span></span>
   </div>
 </div>
 
 <!-- HAMBURGER BUTTON (mobile only) -->
-<button id="hamburger-btn" onclick="toggleSidebar()" aria-label="Open navigation menu">☰</button>
+
 
 <!-- SIDEBAR OVERLAY (mobile only) -->
 <div id="sidebar-overlay" onclick="closeSidebar()"></div>
@@ -207,5 +206,6 @@
   buildSidebar('.');
 </script>
 
-</body>
-</html>
+
+
+</body></html>
