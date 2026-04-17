@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reference Library — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <style>
     .author-block { margin:20px 0; border:1px solid #d0dce8; border-radius:8px; overflow:hidden; }
     .author-toggle { display:flex; align-items:center; gap:14px; padding:14px 18px; cursor:pointer; user-select:none; transition:filter 0.15s; }
@@ -104,7 +103,7 @@
   <div class="bar-right">
     <span class="bar-originated">Originated: March 27, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 10, 2026</span>
+    <span id="gh-bar-version">Version: April 14, 2026</span>
   </div>
 </div>
 
@@ -592,7 +591,7 @@
       <div style="padding:12px 18px 16px;">
         <div class="notes-box" style="margin:0;">
           <div class="label">✏️ My Rosenberg reading log:</div>
-          <div class="quill-editor" id="n-lib-rosenberg" data-placeholder="e.g. April 9, 2026 — Listened to Ezekiel Option Ch. 7 audio. Key: Gog = title not a name. Voltaire hostile witness. Five evidence streams for Russia..." style="min-height:70px;"></div>
+          <textarea class="notes-input" id="n-lib-rosenberg" placeholder="e.g. April 9, 2026 — Listened to Ezekiel Option Ch. 7 audio. Key: Gog = title not a name. Voltaire hostile witness. Five evidence streams for Russia..." style="min-height:70px;"></textarea>
         </div>
       </div>
     </div>
@@ -789,7 +788,7 @@
       <div style="padding:12px 18px 16px;">
         <div class="notes-box" style="margin:0;">
           <div class="label">✏️ My Rhodes reading log:</div>
-          <div class="quill-editor" id="n-lib-rhodes" data-placeholder="e.g. 3/23/2026 – 4/2/2026 — End Times in Chronological Order: awesome but confusing. Seal & trumpet judgments. Two Witnesses. Generating study guide with Claude..." style="min-height:70px;"></div>
+          <textarea class="notes-input" id="n-lib-rhodes" placeholder="e.g. 3/23/2026 – 4/2/2026 — End Times in Chronological Order: awesome but confusing. Seal & trumpet judgments. Two Witnesses. Generating study guide with Claude..." style="min-height:70px;"></textarea>
         </div>
       </div>
     </div>
@@ -894,7 +893,7 @@
 
       <div class="note-block">
         <div class="label">✏️ My Gillette reading log:</div>
-        <div class="quill-editor" id="n-lib-gillette" data-placeholder="e.g. started Signs of the Second Coming..." style="min-height:70px;"></div>
+        <textarea class="notes-input" id="n-lib-gillette" placeholder="e.g. started Signs of the Second Coming..." style="min-height:70px;"></textarea>
       </div>
     </div>
   </div>
@@ -1273,7 +1272,7 @@
       <div style="padding:12px 18px 16px;">
         <div class="notes-box" style="margin:0;">
           <div class="label">✏️ My LaHaye reading log:</div>
-          <div class="quill-editor" id="n-lib-lahaye" data-placeholder="e.g. April 7, 2026 — Heard about LaHaye's oil prediction in Sermon #8. He wrote that if Israel found oil greater than Iran's it would change history and fulfill Ezekiel 38. Tovia Luskin proved him right in 2004..." style="min-height:70px;"></div>
+          <textarea class="notes-input" id="n-lib-lahaye" placeholder="e.g. April 7, 2026 — Heard about LaHaye's oil prediction in Sermon #8. He wrote that if Israel found oil greater than Iran's it would change history and fulfill Ezekiel 38. Tovia Luskin proved him right in 2004..." style="min-height:70px;"></textarea>
         </div>
       </div>
     </div>
@@ -1319,7 +1318,7 @@
       </div>
       <div class="note-block">
         <div class="label">✏️ My Kasdan reading log:</div>
-        <div class="quill-editor" id="n-lib-kasdan" data-placeholder="e.g. started God's Appointed Times..." style="min-height:70px;"></div>
+        <textarea class="notes-input" id="n-lib-kasdan" placeholder="e.g. started God's Appointed Times..." style="min-height:70px;"></textarea>
       </div>
     </div>
   </div>
@@ -1388,7 +1387,7 @@
       </div>
       <div class="note-block">
         <div class="label">✏️ My Cahn reading log:</div>
-        <div class="quill-editor" id="n-lib-cahn" data-placeholder="e.g. started The Mystery of the Shemitah..." style="min-height:70px;"></div>
+        <textarea class="notes-input" id="n-lib-cahn" placeholder="e.g. started The Mystery of the Shemitah..." style="min-height:70px;"></textarea>
       </div>
     </div>
   </div>
@@ -1433,7 +1432,7 @@
       </div>
       <div class="note-block">
         <div class="label">✏️ My Graham reading log:</div>
-        <div class="quill-editor" id="n-lib-graham" data-placeholder="e.g. started Approaching Hoofbeats..." style="min-height:70px;"></div>
+        <textarea class="notes-input" id="n-lib-graham" placeholder="e.g. started Approaching Hoofbeats..." style="min-height:70px;"></textarea>
       </div>
     </div>
   </div>
@@ -1503,17 +1502,351 @@
           <a class="audible-btn" href="https://www.audible.com/pd/Agents-of-Babylon-Audiobook/B013HQWHQK" target="_blank">🎧 Listen on Audible</a>
         </div>
       </div>
+            <!-- THE BOOK OF SIGNS -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('book-of-signs')">
+          <div class="book-read-wrap" id="wrap-rl-book-of-signs" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-book-of-signs" onchange="saveReadState('book-of-signs')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">The Book of Signs</div>
+            <div class="book-year-type">2020 · Non-Fiction · 31 Undeniable Prophecies of the Apocalypse</div>
+            <div class="book-modules-inline">→ Modules 9–15 — comprehensive sign-by-sign survey</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Book+of+Signs+David+Jeremiah" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-book-of-signs">▶</div>
+        </div>
+        <div class="book-body" id="book-book-of-signs">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-book-of-signs" placeholder="" onchange="saveDateState('book-of-signs','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-book-of-signs" placeholder="" onchange="saveDateState('book-of-signs','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Covers 31 prophetic signs organized into six categories: world signs, shadow signs, Israel signs, cultural signs, heavenly signs, and end signs. A strong survey text that maps well against the module structure in this study guide. Good starting companion for Modules 9–15.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=Book+of+Signs+David+Jeremiah" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- 60 DAYS OF PROPHECIES -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('60-days-prophecies')">
+          <div class="book-read-wrap" id="wrap-rl-60-days-prophecies" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-60-days-prophecies" onchange="saveReadState('60-days-prophecies')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">60 Days of Prophecies</div>
+            <div class="book-year-type">2025 · Non-Fiction · The Truth Behind End-Time Warnings</div>
+            <div class="book-modules-inline">→ All modules — daily devotional format for prophecy study</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=60+Days+Prophecies+David+Jeremiah" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-60-days-prophecies">▶</div>
+        </div>
+        <div class="book-body" id="book-60-days-prophecies">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-60-days-prophecies" placeholder="" onchange="saveDateState('60-days-prophecies','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-60-days-prophecies" placeholder="" onchange="saveDateState('60-days-prophecies','end',this.value)"></div>
+          </div>
+          <div class="book-desc">A 60-day devotional format covering end-time prophecy warnings. Published 2025. Fits the "study in small pieces" approach well and pairs naturally with the module-by-module structure of this guide. A good daily companion alongside active module study.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=60+Days+Prophecies+David+Jeremiah" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
       <div class="note-block">
         <div class="label">✏️ My Jeremiah reading log:</div>
-        <div class="quill-editor" id="n-lib-jeremiah" data-placeholder="e.g. started Agents of the Apocalypse..." style="min-height:70px;"></div>
+        <textarea class="notes-input" id="n-lib-jeremiah" placeholder="e.g. started Agents of the Apocalypse..." style="min-height:70px;"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ROBERT JEFFRESS ── -->
+  <div class="author-block">
+    <div class="author-toggle" onclick="toggleBlock('jeffress')" style="background:linear-gradient(135deg,#1F3864,#2E4F8A);">
+      <div class="author-avatar" style="color:#FFD700;border-color:#FFD700;">✍️</div>
+      <div class="author-meta">
+        <div class="author-name" style="color:#FFD700;">Robert Jeffress</div>
+        <div class="author-sub" style="color:rgba(255,255,255,0.7);">Non-Fiction · Eschatology · Pastoral</div>
+        <div class="author-count" style="color:rgba(255,255,255,0.4);">Click to expand · Audible links included</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        <a class="audible-author-btn" href="https://www.audible.com/search?keywords=Robert+Jeffress" target="_blank" onclick="event.stopPropagation()">🎧 All on Audible</a>
+        <div class="author-arrow" id="arrow-jeffress" style="color:rgba(255,255,255,0.4);">▶</div>
+      </div>
+    </div>
+    <div class="author-body" id="block-jeffress">
+      <div class="author-desc">Senior pastor of First Baptist Dallas and founder of Pathway to Victory. One of America's most accessible and media-present evangelical voices on end-times prophecy. Pre-trib/pre-millennial. Strong communicator who bridges deep biblical content with pastoral warmth. His illustrated and devotional end-times books are among the most approachable on the market.</div>
+
+      <div class="books-section-label">Non-Fiction</div>
+
+      <!-- PERFECT ENDING -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('perfect-ending')">
+          <div class="book-read-wrap" id="wrap-rl-perfect-ending" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-perfect-ending" onchange="saveReadState('perfect-ending')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Perfect Ending</div>
+            <div class="book-year-type">Non-Fiction · Why Your Eternal Future Matters Today</div>
+            <div class="book-modules-inline">→ Modules 12, 13 — Millennium and eternity focus</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Perfect+Ending+Robert+Jeffress" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-perfect-ending">▶</div>
+        </div>
+        <div class="book-body" id="book-perfect-ending">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-perfect-ending" placeholder="" onchange="saveDateState('perfect-ending','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-perfect-ending" placeholder="" onchange="saveDateState('perfect-ending','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Covers the Rapture, Millennium, and the believer's eternal future with pastoral warmth. Jeffress focuses on why prophecy matters for daily Christian living — not just intellectual knowledge. Good companion to Modules 12 and 13.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=Perfect+Ending+Robert+Jeffress" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- THE END TIMES ILLUSTRATED -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('end-times-illustrated')">
+          <div class="book-read-wrap" id="wrap-rl-end-times-illustrated" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-end-times-illustrated" onchange="saveReadState('end-times-illustrated')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">The End Times Illustrated</div>
+            <div class="book-year-type">Non-Fiction · 72-page illustrated guide with 18 infographics and charts</div>
+            <div class="book-modules-inline">→ All modules — visual timeline overview</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=End+Times+Illustrated+Jeffress" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-end-times-illustrated">▶</div>
+        </div>
+        <div class="book-body" id="book-end-times-illustrated">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-end-times-illustrated" placeholder="" onchange="saveDateState('end-times-illustrated','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-end-times-illustrated" placeholder="" onchange="saveDateState('end-times-illustrated','end',this.value)"></div>
+          </div>
+          <div class="book-desc">A compact 72-page visual guide to end-times prophecy with 18 infographics and charts. Excellent quick-reference companion — covers the Rapture, Tribulation, Second Coming, Millennium, and Eternity in visual form. Good for review and teaching visual learners.</div>
+        </div>
+      </div>
+
+      <!-- ARE WE LIVING IN THE END TIMES? (2023) -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('are-we-living-end-times')">
+          <div class="book-read-wrap" id="wrap-rl-are-we-living-end-times" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-are-we-living-end-times" onchange="saveReadState('are-we-living-end-times')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Are We Living in the End Times?</div>
+            <div class="book-year-type">2023 · Non-Fiction · Biblical Answers to 7 Questions about the Future</div>
+            <div class="book-modules-inline">→ Module 10 (Signs of the Times) — current events focus</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Are+We+Living+End+Times+Jeffress+2023" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-are-we-living-end-times">▶</div>
+        </div>
+        <div class="book-body" id="book-are-we-living-end-times">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-are-we-living-end-times" placeholder="" onchange="saveDateState('are-we-living-end-times','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-are-we-living-end-times" placeholder="" onchange="saveDateState('are-we-living-end-times','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Answers seven key questions about the end times with current events context (updated 2023). Accessible Q&amp;A format — good for people new to prophetic study or those who want to think through the most pressing contemporary questions. Pairs with Module 10.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=Are+We+Living+End+Times+Jeffress+2023" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- JESUS REVEALED IN THE END TIMES (2025) -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('jesus-end-times-jeffress')">
+          <div class="book-read-wrap" id="wrap-rl-jesus-end-times-jeffress" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-jesus-end-times-jeffress" onchange="saveReadState('jesus-end-times-jeffress')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Jesus Revealed in the End Times</div>
+            <div class="book-year-type">2025 · Non-Fiction · Hope for Today from the One Who Holds Our Future</div>
+            <div class="book-modules-inline">→ Modules 13, 15 — Christ-centered end-times focus</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Jesus+Revealed+End+Times+Jeffress" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-jesus-end-times-jeffress">▶</div>
+        </div>
+        <div class="book-body" id="book-jesus-end-times-jeffress">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-jesus-end-times-jeffress" placeholder="" onchange="saveDateState('jesus-end-times-jeffress','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-jesus-end-times-jeffress" placeholder="" onchange="saveDateState('jesus-end-times-jeffress','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Published 2025. Keeps Christ at the center of prophetic study — not just events and timelines, but who Jesus is through what He will do. Aligns well with this study guide's Christ-centered goal. Strong companion to the Second Coming and Armageddon modules.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=Jesus+Revealed+End+Times+Jeffress" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <div class="note-block">
+        <div class="label">✏️ My Jeffress reading log:</div>
+        <textarea class="notes-input" id="n-lib-jeffress" placeholder="e.g. started Perfect Ending..." style="min-height:70px;"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MICHAEL YOUSSEF ── -->
+  <div class="author-block">
+    <div class="author-toggle" onclick="toggleBlock('youssef')" style="background:linear-gradient(135deg,#1F3864,#2E4F8A);">
+      <div class="author-avatar" style="color:#FFD700;border-color:#FFD700;">✍️</div>
+      <div class="author-meta">
+        <div class="author-name" style="color:#FFD700;">Michael Youssef</div>
+        <div class="author-sub" style="color:rgba(255,255,255,0.7);">Non-Fiction · Revelation · Current Events</div>
+        <div class="author-count" style="color:rgba(255,255,255,0.4);">Click to expand</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        <div class="author-arrow" id="arrow-youssef" style="color:rgba(255,255,255,0.4);">▶</div>
+      </div>
+    </div>
+    <div class="author-body" id="block-youssef">
+      <div class="author-desc">Egyptian-born pastor and founder of The Church of The Apostles (Atlanta) and Leading The Way Ministry. Brings a uniquely global and cross-cultural perspective to end-times prophecy — having grown up in the Middle East and understanding Islam, Israel, and geopolitics from the inside. Foreword to <em>God's Final Call</em> by R. Albert Mohler Jr.</div>
+
+      <div class="books-section-label">Non-Fiction</div>
+
+      <!-- GOD'S FINAL CALL -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('gods-final-call')">
+          <div class="book-read-wrap" id="wrap-rl-gods-final-call" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-gods-final-call" onchange="saveReadState('gods-final-call')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">God's Final Call</div>
+            <div class="book-year-type">2025 · Non-Fiction · Foreword by R. Albert Mohler Jr.</div>
+            <div class="book-modules-inline">→ Modules 9, 10, 14 — Revelation, current events, and prophetic urgency</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=God%27s+Final+Call+Michael+Youssef" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-gods-final-call">▶</div>
+        </div>
+        <div class="book-body" id="book-gods-final-call">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-gods-final-call" placeholder="" onchange="saveDateState('gods-final-call','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-gods-final-call" placeholder="" onchange="saveDateState('gods-final-call','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Published 2025. Subtitle: <em>How the Book of Revelation Pulls Back the Veil on Current Events and Our Ultimate Future.</em> Youssef's unique vantage — as someone who grew up in Egypt and understands both the Islamic world and Israel — gives this book a credibility that purely Western authors lack on the Middle East content.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=God%27s+Final+Call+Michael+Youssef" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <div class="note-block">
+        <div class="label">✏️ My Youssef reading log:</div>
+        <textarea class="notes-input" id="n-lib-youssef" placeholder="e.g. started God's Final Call..." style="min-height:70px;"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── VICTOR MARTIN ── -->
+  <div class="author-block">
+    <div class="author-toggle" onclick="toggleBlock('victor-martin')" style="background:linear-gradient(135deg,#1F3864,#2E4F8A);">
+      <div class="author-avatar" style="color:#FFD700;border-color:#FFD700;">✍️</div>
+      <div class="author-meta">
+        <div class="author-name" style="color:#FFD700;">Victor Martin</div>
+        <div class="author-sub" style="color:rgba(255,255,255,0.7);">Non-Fiction · Celestial Signs · Prophetic Calendars</div>
+        <div class="author-count" style="color:rgba(255,255,255,0.4);">Click to expand</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        <div class="author-arrow" id="arrow-victor-martin" style="color:rgba(255,255,255,0.4);">▶</div>
+      </div>
+    </div>
+    <div class="author-body" id="block-victor-martin">
+      <div class="author-desc">Author focusing on the intersection of biblical prophecy and celestial signs — solar eclipses, blood moons, and prophetic calendar events. More speculative than the mainstream eschatology authors in this library, but provides useful perspective on how astronomical events have historically been connected to prophetic fulfillment. Engage with intellectual caution and appropriate skepticism.</div>
+
+      <div class="books-section-label">Non-Fiction</div>
+
+      <!-- HEAVEN'S ALARM -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('heavens-alarm')">
+          <div class="book-read-wrap" id="wrap-rl-heavens-alarm" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-heavens-alarm" onchange="saveReadState('heavens-alarm')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">Heaven's Alarm</div>
+            <div class="book-year-type">2024 · Non-Fiction · Bible Prophecy, the 2024 Solar Eclipse, and the 2025 Purim Blood Moon</div>
+            <div class="book-modules-inline">→ Module 10 (Signs of the Times) — celestial signs thread</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Heaven%27s+Alarm+Victor+Martin" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-heavens-alarm">▶</div>
+        </div>
+        <div class="book-body" id="book-heavens-alarm">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-heavens-alarm" placeholder="" onchange="saveDateState('heavens-alarm','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-heavens-alarm" placeholder="" onchange="saveDateState('heavens-alarm','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Connects the 2024 solar eclipse and 2025 Purim blood moon to biblical signs language (Genesis 1:14; Joel 2:31; Luke 21:25). More speculative than mainstream eschatology — read alongside established scholars rather than as a standalone source. Interesting for the celestial signs thread in Module 10, but hold interpretive conclusions lightly.</div>
+        </div>
+      </div>
+
+      <div class="note-block">
+        <div class="label">✏️ My Victor Martin reading log:</div>
+        <textarea class="notes-input" id="n-lib-victor-martin" placeholder="e.g. started Heaven's Alarm..." style="min-height:70px;"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MATTHEW L. HALSTED ── -->
+  <div class="author-block">
+    <div class="author-toggle" onclick="toggleBlock('halsted')" style="background:linear-gradient(135deg,#1F3864,#2E4F8A);">
+      <div class="author-avatar" style="color:#FFD700;border-color:#FFD700;">✍️</div>
+      <div class="author-meta">
+        <div class="author-name" style="color:#FFD700;">Matthew L. Halsted</div>
+        <div class="author-sub" style="color:rgba(255,255,255,0.7);">Non-Fiction · Alternative Eschatology · Academic</div>
+        <div class="author-count" style="color:rgba(255,255,255,0.4);">Click to expand — counterpoint voice</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        <div class="author-arrow" id="arrow-halsted" style="color:rgba(255,255,255,0.4);">▶</div>
+      </div>
+    </div>
+    <div class="author-body" id="block-halsted">
+      <div class="author-desc">Academic theologian presenting an alternative read of end-times prophecy — arguing that much of what popular eschatology treats as future has already been fulfilled or is being misread. Included as a counterpoint voice. The goal of this study guide is intellectual honesty — not confirmation bias — so having a serious scholarly voice that pushes back on pre-trib/pre-mill assumptions strengthens your study, even if you ultimately disagree.</div>
+
+      <div class="books-section-label">Non-Fiction</div>
+
+      <!-- THE END OF THE WORLD AS YOU KNOW IT -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('end-world-halsted')">
+          <div class="book-read-wrap" id="wrap-rl-end-world-halsted" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-end-world-halsted" onchange="saveReadState('end-world-halsted')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📘</div>
+          <div class="book-info">
+            <div class="book-title">The End of the World as You Know It</div>
+            <div class="book-year-type">2024 · Non-Fiction · What the Bible Really Says about the End Times (and Why It's Good News)</div>
+            <div class="book-modules-inline">→ All modules — counterpoint scholarly perspective</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=End+World+Know+It+Halsted+Bible" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-end-world-halsted">▶</div>
+        </div>
+        <div class="book-body" id="book-end-world-halsted">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-end-world-halsted" placeholder="" onchange="saveDateState('end-world-halsted','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-end-world-halsted" placeholder="" onchange="saveDateState('end-world-halsted','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Challenges popular end-times frameworks by arguing that the Bible's prophetic vision has already been largely fulfilled — and that this is good news, not a disappointment. Published 2024. Read alongside Rosenberg, Rhodes, and Jeremiah to sharpen your thinking on the hardest interpretive questions. This guide values intellectual honesty over confirmation — Halsted will push you to test your conclusions.</div>
+          <a class="audible-btn" href="https://www.audible.com/search?keywords=End+World+Know+It+Halsted+Bible" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <div class="note-block">
+        <div class="label">✏️ My Halsted reading log:</div>
+        <textarea class="notes-input" id="n-lib-halsted" placeholder="e.g. engaging counterpoint..." style="min-height:70px;"></textarea>
       </div>
     </div>
   </div>
 
   <!-- ADD NEW AUTHORS -->
+
   <div class="notes-box">
     <div class="label">✏️ Authors &amp; books to add — running list:</div>
-    <div class="quill-editor" id="n-lib-authors" data-placeholder="e.g. Hal Lindsey — The Late Great Planet Earth&#10;John Walvoord — The Revelation of Jesus Christ&#10;Mark Hitchcock — 101 Answers on the Book of Revelation&#10;David Jeremiah — The Book of Signs"></div>
+    <textarea class="notes-input" id="n-lib-authors" placeholder="e.g. Hal Lindsey — The Late Great Planet Earth&#10;John Walvoord — The Revelation of Jesus Christ&#10;Mark Hitchcock — 101 Answers on the Book of Revelation&#10;David Jeremiah — The Book of Signs"></textarea>
   </div>
 
   <div class="divider"></div>
@@ -1615,7 +1948,7 @@
 
   <div class="notes-box">
     <div class="label">✏️ Translation comparison notes:</div>
-    <div class="quill-editor" id="n-lib-translations" data-placeholder="e.g. Ezek 38:2 — NLT says 'the land of Magog' while KJV says 'the chief prince of Meshech and Tubal' — the word Rosh is treated differently across translations..."></div>
+    <textarea class="notes-input" id="n-lib-translations" placeholder="e.g. Ezek 38:2 — NLT says 'the land of Magog' while KJV says 'the chief prince of Meshech and Tubal' — the word Rosh is treated differently across translations..."></textarea>
   </div>
 
   <div class="divider"></div>
@@ -1644,7 +1977,7 @@
 
   <div class="notes-box">
     <div class="label">✏️ Resources to add:</div>
-    <div class="quill-editor" id="n-lib-resources" data-placeholder="Add websites, podcasts, commentaries, and study tools as you discover them..."></div>
+    <textarea class="notes-input" id="n-lib-resources" placeholder="Add websites, podcasts, commentaries, and study tools as you discover them..."></textarea>
   </div>
 
 </div>
@@ -1655,12 +1988,11 @@
 window.PAGE_NOTE_IDS = [
   'n-lib-rosenberg','n-lib-rhodes','n-lib-gillette','n-lib-lahaye','n-lib-authors',
   'n-lib-kasdan','n-lib-cahn','n-lib-graham','n-lib-jeremiah',
-  'n-lib-translations','n-lib-resources'
+  'n-lib-translations','n-lib-resources','n-lib-jeffress','n-lib-youssef','n-lib-victor-martin','n-lib-halsted'
 ];
 </script>
 
 <script src="assets/js/nav.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 
@@ -1705,7 +2037,10 @@ document.addEventListener('DOMContentLoaded', () => {
     'end-times-chrono','40-days-rev','prophecy-answer','rhodes-wwiii','rhodes-jesus-endtimes','rhodes-dictionary',
     'usa-end-times',
     'dead-sea-calendar','johnson-enoch','johnson-jubilees','johnson-prophecies','johnson-church-fathers',
-    'lahaye-endtimes','lahaye-rev','lahaye-rapture-nf','left-behind-1','tribulation-force','nicolae'
+    'lahaye-endtimes','lahaye-rev','lahaye-rapture-nf','left-behind-1','tribulation-force','nicolae',
+    'book-of-signs','60-days-prophecies',
+    'perfect-ending','end-times-illustrated','are-we-living-end-times','jesus-end-times-jeffress',
+    'gods-final-call','heavens-alarm','end-world-halsted'
   ];
 
   books.forEach(id => {

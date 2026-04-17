@@ -343,51 +343,30 @@ function logStudyTime() {
 }
 
 function insertTimestamp() {
-  const now      = new Date();
-  const date     = now.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
-  const time     = now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
-  const todayStr = now.toDateString();
-
-  function buildStamp(editorId) {
-    const lastKey = 'cbsg-laststamp-' + editorId;
-    const sameDay = localStorage.getItem(lastKey) === todayStr;
-    localStorage.setItem(lastKey, todayStr);
-    return sameDay
-      ? `\n${'·'.repeat(30)}\n${time}\n${'·'.repeat(30)}\n`
-      : `\n${'─'.repeat(40)}\n${date} at ${time}\n${'─'.repeat(40)}\n`;
-  }
-
+  const now = new Date();
+  const date = now.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  const time = now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
+  const divider = '─'.repeat(40);
+  const stamp = `\n${divider}\n${date} at ${time}\n${divider}\n`;
   const active = document.activeElement;
-  if (active && active.tagName === 'TEXTAREA' && active.id) {
-    const stamp = buildStamp(active.id);
-    active.value += stamp; active.scrollTop = active.scrollHeight; localStorage.setItem('cbsg-' + active.id, active.value); return;
-  }
+  if (active && active.tagName === 'TEXTAREA' && active.id) { active.value += stamp; active.scrollTop = active.scrollHeight; localStorage.setItem('cbsg-' + active.id, active.value); return; }
   const jEl = document.getElementById('n-journal-new');
-  if (jEl) { const stamp = buildStamp('n-journal-new'); jEl.value += stamp; jEl.focus(); jEl.scrollTop = jEl.scrollHeight; localStorage.setItem('cbsg-n-journal-new', jEl.value); return; }
+  if (jEl) { jEl.value += stamp; jEl.focus(); jEl.scrollTop = jEl.scrollHeight; localStorage.setItem('cbsg-n-journal-new', jEl.value); return; }
   const ids = window.PAGE_NOTE_IDS || [];
-  if (ids.length > 0) { const el = document.getElementById(ids[0]); if (el) { const stamp = buildStamp(ids[0]); el.value += stamp; el.focus(); el.scrollTop = el.scrollHeight; localStorage.setItem('cbsg-' + ids[0], el.value); } }
+  if (ids.length > 0) { const el = document.getElementById(ids[0]); if (el) { el.value += stamp; el.focus(); el.scrollTop = el.scrollHeight; localStorage.setItem('cbsg-' + ids[0], el.value); } }
 }
 
 function logAndStamp() {
-  const now      = new Date();
-  const date     = now.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
-  const time     = now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
-  const todayStr = now.toDateString();
-  const total    = getStoredSeconds() + sessionSeconds;
-
-  function buildStamp(editorId) {
-    const lastKey = 'cbsg-laststamp-' + editorId;
-    const sameDay = localStorage.getItem(lastKey) === todayStr;
-    localStorage.setItem(lastKey, todayStr);
-    return sameDay
-      ? `\n${'·'.repeat(30)}\n${time}\n${'·'.repeat(30)}\n`
-      : `\n${'─'.repeat(40)}\n${date} at ${time}\n${'─'.repeat(40)}\n`;
-  }
-
-  const logEntry = `\n${'─'.repeat(40)}\n📚 ${date} at ${time}\nPage: ${getPageLabel()}\nSession: ${formatTime(sessionSeconds)} | Total: ${formatTime(total)}\n${'─'.repeat(40)}\n`;
+  const now = new Date();
+  const date = now.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  const time = now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
+  const total = getStoredSeconds() + sessionSeconds;
+  const divider = '─'.repeat(40);
+  const stamp    = `\n${divider}\n${date} at ${time}\n${divider}\n`;
+  const logEntry = `\n${divider}\n📚 ${date} at ${time}\nPage: ${getPageLabel()}\nSession: ${formatTime(sessionSeconds)} | Total: ${formatTime(total)}\n${divider}\n`;
   const active = document.activeElement;
-  if (active && active.tagName === 'TEXTAREA' && active.id) { const stamp = buildStamp(active.id); active.value += stamp; active.scrollTop = active.scrollHeight; localStorage.setItem('cbsg-' + active.id, active.value); }
-  else { const ids = window.PAGE_NOTE_IDS || []; if (ids.length > 0) { const el = document.getElementById(ids[0]); if (el) { const stamp = buildStamp(ids[0]); el.value += stamp; el.scrollTop = el.scrollHeight; localStorage.setItem('cbsg-' + ids[0], el.value); } } }
+  if (active && active.tagName === 'TEXTAREA' && active.id) { active.value += stamp; active.scrollTop = active.scrollHeight; localStorage.setItem('cbsg-' + active.id, active.value); }
+  else { const ids = window.PAGE_NOTE_IDS || []; if (ids.length > 0) { const el = document.getElementById(ids[0]); if (el) { el.value += stamp; el.scrollTop = el.scrollHeight; localStorage.setItem('cbsg-' + ids[0], el.value); } } }
   const jEl = document.getElementById('n-journal-new');
   if (jEl) { jEl.value += logEntry; localStorage.setItem('cbsg-n-journal-new', jEl.value); }
   setStatus('📅 Stamped & logged!', 'ok');
