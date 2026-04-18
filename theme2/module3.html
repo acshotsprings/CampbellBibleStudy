@@ -177,6 +177,29 @@
     <div class="line">• Leviticus 23 — God's appointed feasts (moedim) — the same feasts Jubilees is defending</div>
     <div class="line">• Colossians 2:16–17 — Paul's warning not to let calendar disputes become a source of condemnation; the feasts are "a shadow of things to come; the substance belongs to Christ"</div>
   </div>
+<<<<<<< HEAD
+=======
+<!-- SINGLE WORKING COMPLETION BUTTON -->
+<div style="border-top:1px solid #ddd;padding-top:28px;margin:32px 0px 8px;text-align:center;">
+  <p style="font-size:13px;color:#888;font-family:Arial,sans-serif;margin-bottom:14px;">
+    Finished studying this module? Mark it complete to track your progress in the sidebar.
+  </p>
+  <button id="complete-btn" onclick="toggleModuleCompletion()" style="
+    background:#1F3864;
+    color:rgba(255,255,255,0.7);
+    border:2px solid rgba(255,255,255,0.3);
+    border-radius:6px;
+    padding:10px 28px;
+    font-size:13px;
+    font-family:Arial,sans-serif;
+    font-weight:bold;
+    cursor:pointer;
+    transition:all 0.2s;">
+    <span id="complete-btn-text">☐ Mark as Complete</span>
+  </button>
+</div>
+  
+>>>>>>> 2ff4cc4215de4b9cd6d750fd7513c7bb54628088
   <div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid #ddd;">
     <a href="module2.html" class="btn-primary" style="font-size:12px;">← Module 2: Calendar Timeline</a>
     <span></span>
@@ -185,7 +208,74 @@
 </div>
 </div>
 
+<<<<<<< HEAD
 <script>window.PAGE_NOTE_IDS = ['n-t2m3'];</script>
+=======
+<script>
+// FIXED COMPLETION FUNCTION - CORRECTED TOGGLE LOGIC
+function toggleModuleCompletion() {
+  console.log('Button clicked!'); // Debug log
+  
+  const moduleKey = 'complete-t2m3';
+  const currentState = localStorage.getItem('cbsg-' + moduleKey);
+  console.log('Current state:', currentState); // Debug log
+  
+  const btn = document.getElementById('complete-btn');
+  const btnText = document.getElementById('complete-btn-text');
+  
+  if (!btn || !btnText) {
+    console.error('Button elements not found!');
+    return;
+  }
+  
+  // Toggle logic: if currently 'true' (complete), make it 'false' (incomplete)
+  // if currently 'false' or null/undefined (incomplete), make it 'true' (complete)
+  if (currentState === 'true') {
+    // Currently complete → mark as incomplete
+    localStorage.setItem('cbsg-' + moduleKey, 'false');
+    btnText.textContent = '☐ Mark as Complete';
+    btn.style.background = '#1F3864';
+    console.log('Set to incomplete');
+  } else {
+    // Currently incomplete (or never set) → mark as complete
+    localStorage.setItem('cbsg-' + moduleKey, 'true');
+    btnText.textContent = '✓ Completed — Click to Undo';
+    btn.style.background = '#228B22';
+    console.log('Set to complete');
+  }
+  
+  // Rebuild sidebar to show progress
+  if (typeof buildSidebar === 'function') {
+    buildSidebar('..');
+  }
+}
+
+// Set button state on page load
+function setInitialButtonState() {
+  const moduleKey = 'complete-t2m3';
+  const isComplete = localStorage.getItem('cbsg-' + moduleKey) === 'true';
+  const btn = document.getElementById('complete-btn');
+  const btnText = document.getElementById('complete-btn-text');
+  
+  console.log('Initial state:', isComplete); // Debug log
+  
+  if (btn && btnText) {
+    if (isComplete) {
+      btnText.textContent = '✓ Completed — Click to Undo';
+      btn.style.background = '#228B22';
+    } else {
+      btnText.textContent = '☐ Mark as Complete';
+      btn.style.background = '#1F3864';
+    }
+  }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', setInitialButtonState);
+
+window.PAGE_NOTE_IDS = ['n-t2m3'];
+</script>
+>>>>>>> 2ff4cc4215de4b9cd6d750fd7513c7bb54628088
 <script src="../assets/js/nav.js"></script>
 <script src="../assets/js/main.js"></script>
 <script>buildSidebar('..');</script>
