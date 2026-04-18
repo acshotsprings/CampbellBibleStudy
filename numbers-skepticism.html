@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gematria Skepticism &amp; Discernment — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <style>
+    .framework-box {
+      background:#f5f8fc;
+      border-left:4px solid #2E75B6;
+      padding:16px 20px;
+      margin:16px 0;
+      border-radius:4px;
+      line-height:1.75;
+    }
+    .framework-box h3 {
+      color:#1F3864;
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:16px;
+      font-family:Georgia,serif;
+    }
+    .framework-box ul {
+      margin:10px 0 10px 20px;
+      padding:0;
+    }
+    .framework-box li {
+      margin:6px 0;
+      font-size:14px;
+      color:#333;
+    }
+    .framework-box p {
+      margin:8px 0;
+      font-size:14px;
+    }
+
+    .badge-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+      gap:12px;
+      margin:20px 0;
+    }
+    .badge-item {
+      background:#fff;
+      border:1px solid #d0dce8;
+      border-radius:6px;
+      padding:14px;
+      text-align:center;
+    }
+    .badge-symbol {
+      font-size:28px;
+      margin-bottom:6px;
+    }
+    .badge-label {
+      font-weight:bold;
+      color:#1F3864;
+      font-size:14px;
+      margin-bottom:4px;
+      font-family:Georgia,serif;
+    }
+    .badge-desc {
+      font-size:12px;
+      color:#666;
+      font-family:Arial,sans-serif;
+      line-height:1.5;
+    }
+
+    .tracker-section {
+      margin:24px 0;
+      border:1px solid #d0dce8;
+      border-radius:6px;
+      overflow:hidden;
+    }
+    .tracker-section-header {
+      background:#EBF4FC;
+      color:#1F3864;
+      padding:12px 16px;
+      font-weight:bold;
+      font-family:Georgia,serif;
+      font-size:15px;
+      cursor:pointer;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      user-select:none;
+    }
+    .tracker-section-header:hover {
+      background:#dce9f5;
+    }
+    .tracker-arrow {
+      font-size:12px;
+      transition:transform 0.15s;
+    }
+    .tracker-arrow.open {
+      transform:rotate(90deg);
+    }
+    .tracker-section-body {
+      display:none;
+      padding:0;
+    }
+    .tracker-section-body.open {
+      display:block;
+    }
+
+    .claims-table {
+      width:100%;
+      border-collapse:collapse;
+      background:#fff;
+      font-size:13px;
+    }
+    .claims-table th,
+    .claims-table td {
+      padding:10px 12px;
+      text-align:left;
+      border-bottom:1px solid #e0e0e0;
+      vertical-align:top;
+    }
+    .claims-table th {
+      background:#f5f8fc;
+      color:#1F3864;
+      font-weight:bold;
+      font-family:Arial,sans-serif;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.03em;
+    }
+    .claims-table td {
+      color:#333;
+      font-family:Arial,sans-serif;
+      line-height:1.5;
+    }
+    .claims-table td.num-cell {
+      font-weight:bold;
+      color:#1F3864;
+      font-family:Georgia,serif;
+      font-size:15px;
+      width:60px;
+      text-align:center;
+    }
+    .claims-table td.title-cell {
+      font-weight:600;
+      color:#1F3864;
+      width:28%;
+    }
+    .claims-table td.summary-cell {
+      color:#555;
+      font-style:italic;
+    }
+    .claims-table td.notes-cell {
+      color:#666;
+    }
+    .claims-table tr:hover {
+      background:#fafcfe;
+    }
+    .empty-placeholder {
+      color:#aaa;
+      font-style:italic;
+      font-size:12px;
+    }
+
+    .notes-box {
+      background:#f9fafb;
+      border:1px solid #d0dce8;
+      border-radius:6px;
+      padding:16px 20px;
+      margin-top:32px;
+    }
+    .notes-box .label {
+      font-weight:bold;
+      color:#1F3864;
+      display:block;
+      margin-bottom:10px;
+      font-size:13px;
+      font-family:Arial,sans-serif;
+    }
+    .quill-editor {
+      background:#fff;
+      border:1px solid #d0dce8;
+      border-radius:4px;
+      min-height:120px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: April 17, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version">Version: April 18, 2026</span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <span class="page-tag">My Study · Deep Dives</span>
+  <h1 class="page-title">📊 Gematria Skepticism &amp; Discernment</h1>
+  <p class="body">A framework for evaluating Hebrew and Greek numeric patterns in Scripture — and for working through Troy Brewer's <em>Numbers That Preach</em> chapter by chapter with intellectual honesty. This page distinguishes <strong>biblically grounded gematria</strong>, <strong>speculative applications</strong>, and <strong>pure numerology</strong>.</p>
+
+  <p class="body">The goal: not to reject numeric patterns in Scripture, and not to accept every claim at face value. The goal is to study each number carefully, ask where the meaning comes from, and let Scripture be the final authority.</p>
+
+  <!-- ===== DISCERNMENT FRAMEWORK ===== -->
+  <h2 style="margin-top:32px;color:#1F3864;font-family:Georgia,serif;">Discernment Framework</h2>
+  <p class="body" style="font-size:13px;color:#666;font-style:italic;">Drawing from Troy Brewer's <em>Numbers That Preach</em> (3rd Edition) and classical biblical numerology.</p>
+
+  <div class="framework-box">
+    <h3>✓ Biblically Grounded</h3>
+    <p>Numeric patterns with repeated, intentional appearance across Scripture that carry clear theological weight.</p>
+    <ul>
+      <li><strong>3</strong> — Resurrection, divine completeness (Jesus rose on the 3rd day; 3 crosses at Calvary; 3 hours of darkness)</li>
+      <li><strong>7</strong> — Perfection, covenant, divine completion (7 days of creation, 7 feasts, 7 churches)</li>
+      <li><strong>12</strong> — God's people, governmental perfection (12 tribes, 12 apostles, 12 foundations)</li>
+      <li><strong>40</strong> — Testing, trial, wilderness (40 days of temptation, flood, Sinai)</li>
+    </ul>
+    <p><em>Test:</em> Does the number appear repeatedly across Scripture? Is there direct biblical commentary on its meaning? Does it carry weight in multiple books written by different authors?</p>
+  </div>
+
+  <div class="framework-box">
+    <h3>⚠️ Speculative</h3>
+    <p>Observations with internal logic that may reveal genuine insight, but lack explicit biblical confirmation. These are worth studying but shouldn't form doctrine.</p>
+    <ul>
+      <li>Hebrew or Greek letter values summing to a thematically relevant number</li>
+      <li>Cross-language numeric parallels (Hebrew ↔ Greek) that align theologically</li>
+      <li>Mathematical patterns in genealogies suggesting intentional design</li>
+      <li>Translation-dependent counts (e.g., "X word appears N times in the KJV")</li>
+    </ul>
+    <p><em>Test:</em> Does the pattern illuminate existing biblical truth, or is it building new doctrine? Would the passage's meaning stand on its own without the gematria? Does the claim depend on a single translation?</p>
+  </div>
+
+  <div class="framework-box">
+    <h3>❌ Questionable</h3>
+    <p>Claims that treat numbers as mystical symbols rather than divine language. These should be evaluated carefully — not because numbers don't matter, but because speculation about numbers can drift from Scripture.</p>
+    <ul>
+      <li>Reducing all numbers to single digits with mystical meanings</li>
+      <li>Finding numeric connections between unrelated people or events</li>
+      <li>Using gematria to "prove" doctrine Scripture teaches clearly elsewhere</li>
+      <li>Applying modern dates or numbering systems retroactively to ancient texts</li>
+      <li>Treating a single numeric coincidence as a prophetic key</li>
+    </ul>
+    <p><em>Test:</em> Does the claim require ignoring plain biblical teaching? Would a believer without knowledge of gematria miss anything essential about the passage?</p>
+  </div>
+
+  <!-- ===== STATUS BADGE SYSTEM ===== -->
+  <h2 style="margin-top:40px;color:#1F3864;font-family:Georgia,serif;">Status Badge System</h2>
+  <p class="body">Use these badges to quickly categorize each claim in the tracker below.</p>
+
+  <div class="badge-grid">
+    <div class="badge-item">
+      <div class="badge-symbol">✓</div>
+      <div class="badge-label">Biblical</div>
+      <div class="badge-desc">Clear scriptural support; confirmed divine pattern</div>
+    </div>
+    <div class="badge-item">
+      <div class="badge-symbol">⚠️</div>
+      <div class="badge-label">Speculative</div>
+      <div class="badge-desc">Interesting, internally consistent, but needs confirmation</div>
+    </div>
+    <div class="badge-item">
+      <div class="badge-symbol">❌</div>
+      <div class="badge-label">Questionable</div>
+      <div class="badge-desc">Weak biblical basis; treats numbers as mystical</div>
+    </div>
+    <div class="badge-item">
+      <div class="badge-symbol">⏳</div>
+      <div class="badge-label">Research</div>
+      <div class="badge-desc">Logged, not yet evaluated</div>
+    </div>
+  </div>
+
+  <!-- ===== CLAIMS TRACKER ===== -->
+  <h2 style="margin-top:40px;color:#1F3864;font-family:Georgia,serif;">Claims Tracker — Troy Brewer's <em>Numbers That Preach</em></h2>
+  <p class="body">Every chapter from the 3rd edition, organized by category. The <em>Transcript Summary</em> and <em>My Notes</em> columns stay empty until you study that chapter. Click a section header to expand it.</p>
+
+  <!-- SECTION A: Sequential 1-40 -->
+  <div class="tracker-section">
+    <div class="tracker-section-header" onclick="toggleTrackerSection('seq')">
+      <span>A. Sequential Numbers 1–40</span>
+      <span class="tracker-arrow" id="arrow-seq">▶</span>
+    </div>
+    <div class="tracker-section-body" id="body-seq">
+      <table class="claims-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Troy's Title</th>
+            <th>Transcript Summary</th>
+            <th>My Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num-cell">1</td><td class="title-cell">Unity</td><td class="summary-cell">Unity, but also superiority/pride. God made Adam, then Eve from his side (security, next to His heart). References Mother Church under grace. Raises "only one David?" question.</td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">2</td><td class="title-cell">Faithful Witness &amp; Being Set Apart</td><td class="summary-cell">"Cannot be a witness without being separate from what you were witnessing against." God stamps #2 on separation. Gen 1:6-7 — 2nd day God divided waters. Biblical pairs: Cain/Abel, Abraham/Lot, Isaac/Ishmael, Jacob/Esau, First/Second Adam.</td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">3</td><td class="title-cell">Perfect Completion</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">4</td><td class="title-cell">God's Creation</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">5</td><td class="title-cell">The Grace of God</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">6</td><td class="title-cell">The Flesh of Man</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">7</td><td class="title-cell">The Spirit of God</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">8</td><td class="title-cell">New Beginnings</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">9</td><td class="title-cell">Divine Judgment</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">10</td><td class="title-cell">Perfect Order</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">11</td><td class="title-cell">Valor or Disorder</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">12</td><td class="title-cell">Perfect Government</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">13</td><td class="title-cell">Rebellion</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">14</td><td class="title-cell">Generational Promises &amp; Fear of the Lord</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">15</td><td class="title-cell">Rest &amp; Overcoming Death</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">16</td><td class="title-cell">The Love of God</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">17</td><td class="title-cell">Overcoming Victory</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">18</td><td class="title-cell">Abundant Life / Sin Bondage</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">19</td><td class="title-cell">Covenant Order / Godless Chaos</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">20</td><td class="title-cell">Waiting &amp; Expectancy</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">21</td><td class="title-cell">Manifest Spirit</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">22</td><td class="title-cell">Personal Revelation / Disorder Manifestation</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">23</td><td class="title-cell">God's Presence / Death</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">24</td><td class="title-cell">Perfect Government</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">25</td><td class="title-cell">Grace for Grace</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">26</td><td class="title-cell">Beloved</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">27</td><td class="title-cell">"Tada!"</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">28</td><td class="title-cell">Times &amp; Seasons</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">29</td><td class="title-cell">Mountains</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">30</td><td class="title-cell">Redemption &amp; Service</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">31</td><td class="title-cell">Journey of Wisdom</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">32</td><td class="title-cell">A Mature Heart</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">33</td><td class="title-cell">Spiritual Maturity</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">34</td><td class="title-cell">Miracle Deliverance</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">35</td><td class="title-cell">Grace &amp; Revelation</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">36</td><td class="title-cell">Divine Connection</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">37</td><td class="title-cell">Divine Completion</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">38</td><td class="title-cell">Transition</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">39</td><td class="title-cell">Godly Judgment</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">40</td><td class="title-cell">Trial / Probation</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION B: Jumps -->
+  <div class="tracker-section">
+    <div class="tracker-section-header" onclick="toggleTrackerSection('jumps')">
+      <span>B. Jumps — 50, 66, 120, 153</span>
+      <span class="tracker-arrow" id="arrow-jumps">▶</span>
+    </div>
+    <div class="tracker-section-body" id="body-jumps">
+      <table class="claims-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Troy's Title</th>
+            <th>Transcript Summary</th>
+            <th>My Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num-cell">50</td><td class="title-cell">Jubilee</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">66</td><td class="title-cell">A Witness to the Flesh</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">120</td><td class="title-cell">Completion, Graduation</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">153</td><td class="title-cell">The Sons of God</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION C: Triples -->
+  <div class="tracker-section">
+    <div class="tracker-section-header" onclick="toggleTrackerSection('triples')">
+      <span>C. Triples — 111 through 999</span>
+      <span class="tracker-arrow" id="arrow-triples">▶</span>
+    </div>
+    <div class="tracker-section-body" id="body-triples">
+      <table class="claims-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Troy's Title</th>
+            <th>Transcript Summary</th>
+            <th>My Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num-cell">111</td><td class="title-cell">Presence of God</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">222</td><td class="title-cell">Complete Witness</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">333</td><td class="title-cell">Urgent Need</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">444</td><td class="title-cell">Complete Creation</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">555</td><td class="title-cell">Complete Grace</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">666</td><td class="title-cell">Complete Flesh</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">777</td><td class="title-cell">Complete Perfection of Spirit</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">888</td><td class="title-cell">Jesus</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">999</td><td class="title-cell">Divine Order</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION D: Special Chapters -->
+  <div class="tracker-section">
+    <div class="tracker-section-header" onclick="toggleTrackerSection('special')">
+      <span>D. Special Chapters</span>
+      <span class="tracker-arrow" id="arrow-special">▶</span>
+    </div>
+    <div class="tracker-section-body" id="body-special">
+      <table class="claims-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Troy's Title</th>
+            <th>Transcript Summary</th>
+            <th>My Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num-cell">—</td><td class="title-cell">I Am Statements</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">—</td><td class="title-cell">Triplicates</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">11</td><td class="title-cell">God's Time 11</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">—</td><td class="title-cell">A Prophetic Landing for All Mankind</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">—</td><td class="title-cell">The End Is Near: The Story of Noah</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">—</td><td class="title-cell">USA: In God We Trust</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">—</td><td class="title-cell">God Alone: The Attempted Assassination of President Trump</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">7</td><td class="title-cell">The Seven Spirits of God</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">7</td><td class="title-cell">The Seven Churches</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">7</td><td class="title-cell">The Seven Festivals of the Lord</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+          <tr><td class="num-cell">—</td><td class="title-cell">The Sum of All Things</td><td class="summary-cell"><span class="empty-placeholder">— listen and add summary —</span></td><td class="notes-cell"><span class="empty-placeholder">— add your notes —</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== PERSONAL REFLECTION ===== -->
+  <div class="notes-box">
+    <span class="label">✏️ Personal Reflection &amp; Analysis</span>
+    <p style="font-size:12px;color:#666;margin-bottom:12px;font-family:Arial,sans-serif;">Big-picture thoughts as you work through the tracker above. What's standing out? What questions keep coming up? Where is your discernment landing?</p>
+    <div class="quill-editor" id="n-gematria-skepticism" data-placeholder="Personal reflections on gematria, Troy's framework, and what you're discovering as you study each number…"></div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid #ddd;">
+    <a href="DeepDives.html" class="btn-primary" style="font-size:12px;">← Back to Deep Dives</a>
+    <a href="DeepDive-Gematria.html" class="btn-primary" style="font-size:12px;">Gematria Reference →</a>
+  </div>
+
+</div>
+</div>
+
+<script>
+function toggleTrackerSection(key) {
+  const body  = document.getElementById('body-' + key);
+  const arrow = document.getElementById('arrow-' + key);
+  if (!body) return;
+  const isOpen = body.classList.toggle('open');
+  if (arrow) arrow.classList.toggle('open', isOpen);
+}
+</script>
+
+<script>window.PAGE_NOTE_IDS = ['n-gematria-skepticism'];</script>
+<script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+</body>
+</html>
