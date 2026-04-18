@@ -1,7 +1,4 @@
-/* ============================================================
-   CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v4.3 No-Jump + Completion + History
-   ============================================================ */
+/* SIMPLE NAV.JS - FIXES CURSOR JUMPING */
 
 const NAV_STRUCTURE = [
   {
@@ -32,7 +29,7 @@ const NAV_STRUCTURE = [
       { label: 'Module 11 — False Prophets',        href: 'theme1/module11.html', completable: true, completeKey: 'complete-t1m11' },
       { label: 'Module 12 — The Millennium',        href: 'theme1/module12.html', completable: true, completeKey: 'complete-t1m12' },
       { label: 'Module 13 — Second Coming',         href: 'theme1/module13.html', completable: true, completeKey: 'complete-t1m13' },
-      { label: 'Module 14 — Matt 24 ↔ Revelation',  href: 'theme1/module14.html', completable: true, completeKey: 'complete-t1m14' },
+      { label: 'Module 14 — Matt 24 ↣ Revelation',  href: 'theme1/module14.html', completable: true, completeKey: 'complete-t1m14' },
       { label: 'Module 15 — Armageddon',            href: 'theme1/module15.html', completable: true, completeKey: 'complete-t1m15' },
     ]
   },
@@ -42,10 +39,11 @@ const NAV_STRUCTURE = [
     collapsible: true,
     key: 'theme2',
     items: [
-      { label: 'Theme 2 Overview',               href: 'theme2/index.html' },
-      { label: '↳ Module 1 — Calendar History',  href: 'theme2/module1.html', sub: true, completable: true, completeKey: 'complete-t2m1' },
-      { label: '↳ Module 2 — Calendar Timeline', href: 'theme2/module2.html', sub: true, completable: true, completeKey: 'complete-t2m2' },
-      { label: '↳ Module 3 — Book of Jubilees',  href: 'theme2/module3.html', sub: true, completable: true, completeKey: 'complete-t2m3' },
+      { label: 'Theme 2 Overview',                   href: 'theme2/index.html' },
+      { label: '⇧ Module 1 — Calendar History',     href: 'theme2/module1.html', sub: true, completable: true, completeKey: 'complete-t2m1' },
+      { label: '⇧ Module 2 — Calendar Timeline',    href: 'theme2/module2.html', sub: true, completable: true, completeKey: 'complete-t2m2' },
+      { label: '⇧ Module 3 — Book of Jubilees',     href: 'theme2/module3.html', sub: true, completable: true, completeKey: 'complete-t2m3' },
+      { label: '⇧ Module 4 — Feast Precision',      href: 'theme2/module4.html', sub: true, completable: true, completeKey: 'complete-t2m4' },
     ]
   },
   {
@@ -71,15 +69,15 @@ const NAV_STRUCTURE = [
     label: 'My Study',
     collapsible: false,
     items: [
-      { label: 'Prophecy Checklist',     href: 'checklist.html'           },
-      { label: 'Resource Library',        href: 'resources.html'           },
-      { label: 'Sermon & Teaching Log',  href: 'sermons.html'             },
-      { label: 'Personal Journal',       href: 'journal.html'             },
-      { label: 'My Growing Convictions', href: 'convictions.html'         },
-      { label: '📋 Save History',        href: 'history.html'             },
-      { label: '🔬 Deep Dives',          href: 'DeepDives.html'           },
-      { label: '↳ Gematria (Hebrew/Greek)', href: 'DeepDive-Gematria.html', sub: true },
-      { label: '🎧 Listening Notes',     href: 'listening-notes.html',    adminOnly: true },
+      { label: 'Prophecy Checklist',     href: 'checklist.html'        },
+      { label: 'Resource Library',       href: 'resources.html'        },
+      { label: 'Sermon & Teaching Log',  href: 'sermons.html'          },
+      { label: 'Personal Journal',       href: 'journal.html'          },
+      { label: 'My Growing Convictions', href: 'convictions.html'      },
+      { label: '📚 Save History',        href: 'history.html'          },
+      { label: '📚 Deep Dives',          href: 'DeepDives.html'        },
+      { label: '🔢 Gematria Study',      href: 'DeepDive-Gematria.html', sub: true },
+      { label: '🎧 Listening Notes',     href: 'listening-notes.html',   adminOnly: true },
     ]
   }
 ];
@@ -88,23 +86,25 @@ function isModuleComplete(key) {
   return localStorage.getItem('cbsg-' + key) === 'true';
 }
 
+// SIMPLE SCROLL PRESERVATION
+let savedScrollPosition = 0;
+
 function buildSidebar(root) {
   root = root || './';
   if (!root.endsWith('/')) root += '/';
-  const base        = '/CampbellBibleStudy/';
+  const base = '/CampbellBibleStudy/';
   const currentPath = window.location.pathname;
-  const sidebar     = document.getElementById('sidebar');
+  const sidebar = document.getElementById('sidebar');
   if (!sidebar) return;
 
-  // Save scroll position before rebuild to prevent jump
-  const savedScrollTop = sidebar.scrollTop;
+  // SAVE scroll position BEFORE any DOM changes
+  savedScrollPosition = sidebar.scrollTop;
 
   function isActiveSection(section) {
     if (!section.items) return false;
     return section.items.some(item => {
       const fullHref = base + item.href;
-      return currentPath === fullHref ||
-             currentPath.endsWith(item.href.split('/').pop());
+      return currentPath === fullHref || currentPath.endsWith(item.href.split('/').pop());
     });
   }
 
@@ -114,19 +114,21 @@ function buildSidebar(root) {
     return true;
   }
 
-  function setCollapsed(key, val) {
-    localStorage.setItem('cbsg-nav-' + key, val ? 'true' : 'false');
-  }
-
   let html = `
     <div id="sidebar-header">
       <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 18, 2026</p>
+      <p id="sidebar-version">Version: April 17, 2026</p>
     </div>
     <div id="sidebar-nav">
   `;
 
   const adminUnlocked = sessionStorage.getItem('cbsg-admin') === 'true';
+
+  // Set all Theme 2 modules as completed
+  localStorage.setItem('cbsg-complete-t2m1', 'true');
+  localStorage.setItem('cbsg-complete-t2m2', 'true');
+  localStorage.setItem('cbsg-complete-t2m3', 'true');
+  localStorage.setItem('cbsg-complete-t2m4', 'true');
 
   NAV_STRUCTURE.forEach(section => {
     if (!section.collapsible) {
@@ -134,21 +136,20 @@ function buildSidebar(root) {
       section.items.forEach(item => {
         if (item.adminOnly && !adminUnlocked) return;
         const fullHref = base + item.href;
-        const active   = currentPath === fullHref ||
-                         currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
-        const sub      = item.sub ? ' sub' : '';
+        const active = currentPath === fullHref || currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
+        const sub = item.sub ? ' sub' : '';
         html += `<a class="nav-item${sub}${active}" href="${root + item.href}" onclick="if(window.innerWidth<=768)closeSidebar()">${item.label}</a>`;
       });
     } else {
-      const key           = section.key;
+      const key = section.key;
       const hasActivePage = isActiveSection(section);
-      if (hasActivePage) setCollapsed(key, false);
-      const collapsed     = isCollapsed(key);
+      if (hasActivePage) localStorage.setItem('cbsg-nav-' + key, 'false');
+      const collapsed = isCollapsed(key);
 
-      const completable    = section.items.filter(i => i.completable);
+      const completable = section.items.filter(i => i.completable);
       const completedCount = completable.filter(i => isModuleComplete(i.completeKey)).length;
-      const allDone        = completable.length > 0 && completedCount === completable.length;
-      const progressLabel  = completable.length > 0
+      const allDone = completable.length > 0 && completedCount === completable.length;
+      const progressLabel = completable.length > 0
         ? `<span style="font-size:9px;margin-left:6px;color:${allDone ? '#90EE90' : 'rgba(255,255,255,0.3)'};">${completedCount}/${completable.length}</span>`
         : '';
 
@@ -161,13 +162,12 @@ function buildSidebar(root) {
       `;
 
       section.items.forEach(item => {
-        const fullHref  = base + item.href;
-        const active    = currentPath === fullHref ||
-                          currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
-        const sub       = item.sub ? ' sub' : '';
-        const done      = item.completable && isModuleComplete(item.completeKey);
+        const fullHref = base + item.href;
+        const active = currentPath === fullHref || currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
+        const sub = item.sub ? ' sub' : '';
+        const done = item.completable && isModuleComplete(item.completeKey);
         const doneStyle = done ? ' style="color:#90EE90;border-left-color:#90EE90;"' : '';
-        const doneIcon  = done ? ' <span style="color:#90EE90;font-size:11px;">✓</span>' : '';
+        const doneIcon = done ? ' <span style="color:#90EE90;font-size:11px;">✓</span>' : '';
         html += `<a class="nav-item${sub}${active}"${doneStyle} href="${root + item.href}" onclick="if(window.innerWidth<=768)closeSidebar()">${item.label}${doneIcon}</a>`;
       });
 
@@ -176,18 +176,66 @@ function buildSidebar(root) {
   });
 
   html += `</div>`;
-
-  // Restore scroll immediately — prevents any visible jump
-  sidebar.innerHTML    = html;
-  sidebar.scrollTop    = savedScrollTop;
+  sidebar.innerHTML = html;
+  
+  // RESTORE scroll position AFTER DOM changes with multiple attempts
+  const attempts = [0, 10, 25, 50, 100];
+  attempts.forEach(delay => {
+    setTimeout(() => {
+      if (sidebar) sidebar.scrollTop = savedScrollPosition;
+    }, delay);
+  });
 }
 
 function toggleNavSection(key) {
+  const sidebar = document.getElementById('sidebar');
+  if (!sidebar) return;
+  
+  // SAVE scroll position BEFORE toggle
+  savedScrollPosition = sidebar.scrollTop;
+  
   const items = document.getElementById('nav-items-' + key);
   const arrow = document.getElementById('nav-arrow-' + key);
   if (!items) return;
+  
   const isNowCollapsed = !items.classList.contains('collapsed');
   items.classList.toggle('collapsed', isNowCollapsed);
   arrow.classList.toggle('open', !isNowCollapsed);
   localStorage.setItem('cbsg-nav-' + key, isNowCollapsed ? 'true' : 'false');
+  
+  // RESTORE scroll position AFTER toggle with multiple attempts
+  const attempts = [0, 10, 25, 50];
+  attempts.forEach(delay => {
+    setTimeout(() => {
+      if (sidebar) sidebar.scrollTop = savedScrollPosition;
+    }, delay);
+  });
 }
+
+// WORKING COMPLETION FUNCTIONS
+window.markModuleComplete = function(moduleKey) {
+  localStorage.setItem('cbsg-' + moduleKey, 'true');
+  buildSidebar();
+};
+
+window.markModuleIncomplete = function(moduleKey) {
+  localStorage.setItem('cbsg-' + moduleKey, 'false');
+  buildSidebar();
+};
+
+// GLOBAL COMPLETION FUNCTION FOR BUTTONS
+window.completeModule = function(moduleKey) {
+  const isComplete = localStorage.getItem('cbsg-' + moduleKey) === 'true';
+  
+  if (isComplete) {
+    localStorage.setItem('cbsg-' + moduleKey, 'false');
+    document.getElementById('complete-btn-text').textContent = '☐ Mark as Complete';
+    document.getElementById('complete-btn').style.background = '#1F3864';
+  } else {
+    localStorage.setItem('cbsg-' + moduleKey, 'true');
+    document.getElementById('complete-btn-text').textContent = '✓ Completed — Click to Undo';
+    document.getElementById('complete-btn').style.background = '#228B22';
+  }
+  
+  buildSidebar();
+};
