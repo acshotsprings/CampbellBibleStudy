@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Personal Journal — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -15,12 +13,12 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status"></span>
+  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
   <div class="bar-right">
-    <button onclick="insertTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;margin-right:6px;">New Entry</button>
+    <button onclick="insertTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;">New Entry</button>
     <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 14, 2026</span>
+    <span id="gh-bar-version">Version: April 18, 2026</span>
   </div>
 </div>
 
@@ -31,112 +29,34 @@
 
   <span class="page-tag">My Study</span>
   <h1 class="page-title">Personal Reflections &amp; Journal</h1>
-  <p class="body">A space to record observations, convictions, and spiritual insight as they emerge through study and everyday life. Click <strong>New Entry</strong> in the top bar to stamp the date, then write your entry and click <strong>Publish Entry</strong> to save it permanently.</p>
+  <p class="body">A space to record observations, convictions, and spiritual insight as they emerge through study and everyday life. Date each entry. Entries are ordered oldest to newest below — so you can watch your thinking develop over time.</p>
 
+  <!-- New entry textarea always at top -->
   <div class="notes-box">
-    <div class="label">✏️ New entry:</div>
-    <textarea class="notes-input" id="n-journal-new" placeholder="Click New Entry in the top bar to stamp the date and time, then write here..." style="min-height:240px;"></textarea>
-    <div style="margin-top:10px;display:flex;align-items:center;gap:12px;">
-      <button onclick="publishEntry()" style="background:#1F3864;color:#FFD700;border:2px solid rgba(255,215,0,0.3);border-radius:6px;padding:9px 24px;font-size:13px;font-family:Arial,sans-serif;font-weight:bold;cursor:pointer;">📌 Publish Entry</button>
-      <span id="publish-status" style="font-size:12px;font-family:Arial,sans-serif;color:rgba(0,0,0,0.5);"></span>
-    </div>
+    <div class="label">✏️ New entry — click "New Entry" above to insert today's date and time:</div>
+    <textarea class="notes-input" id="n-journal-new" placeholder="Click 'New Entry' in the top bar to stamp the date and time, then write your entry here..." style="min-height:220px;"></textarea>
   </div>
 
   <div style="display:flex;align-items:center;gap:12px;margin:28px 0;">
     <div style="flex:1;height:2px;background:linear-gradient(to right,#C8A800,transparent);"></div>
-    <div style="font-size:11px;font-weight:bold;color:#7A6600;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;">Past Entries</div>
+    <div style="font-size:11px;font-weight:bold;color:#7A6600;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;">Past Entries — Oldest to Newest</div>
     <div style="flex:1;height:2px;background:linear-gradient(to left,#C8A800,transparent);"></div>
   </div>
 
-  <div id="past-entries-anchor"></div>
-  <!-- ── APRIL 16, 2026 ── -->
+  <!-- ── MARCH 28, 2026 ── -->
   <div class="journal-box">
-    <div class="journal-date">April 16, 2026</div>
-    <div class="journal-p">────────────────────────────────────────
-April 16, 2026 at 9:27 AM
-────────────────────────────────────────
-This is a "conversation" that I had with Claude about my studies on the Bible.</div>
-    <div class="journal-p"># Saved Reflections — Campbell Bible Study
-*Recovered from past conversations — ready to paste into your journal or convictions page*</div>
-    <div class="journal-p">---</div>
-    <div class="journal-p">## PIECE 1 — What Happens When a Believer Dies? (Purgatory &amp; the Protestant Position)</div>
-    <div class="journal-p">*Originally written April 12, 2026*</div>
-    <div class="journal-p">The thief on the cross is the clearest place to start. He had no time for works, no sacraments, no purification process. Just faith — and Jesus said *today*. Not someday. Not after a period of cleansing. Today you will be with me in paradise.</div>
-    <div class="journal-p">**2 Corinthians 5:6–8** — Paul writes that to be absent from the body is to be present with the Lord. No gap. No waiting room.</div>
-    <div class="journal-p">**Philippians 1:21–23** — Paul says dying is gain, and he desires to depart and be with Christ, which is "far better." If there were a painful purification process ahead, calling death "far better" and "gain" makes no sense.</div>
-    <div class="journal-p">**Hebrews 9:27** — "Each person is destined to die once, and after that comes judgment." Death, then judgment — no intermediate purification stage mentioned.</div>
-    <div class="journal-p">**1 Corinthians 3:13–15** is about the Judgment Seat of Christ — where believers' *works* are tested by fire, not their *souls*. Paul says the person is saved "yet so as through fire" — meaning they lose rewards but are still saved. This is about reward evaluation, not soul purification.</div>
-    <div class="journal-p">**What Scripture teaches:** At death, believers go immediately into Christ's presence. Unbelievers face judgment. There is no intermediate state of purification because Christ's sacrifice on the cross was *complete*. "It is finished" (John 19:30) means the debt is fully paid — not mostly paid with a remaining balance to work off.</div>
-    <div class="journal-p">**Why this matters theologically:** Purgatory, at its root, implies that Christ's atoning work was insufficient to fully cleanse a believer. That's a significant theological problem. Hebrews 10:14 says, "For by one offering He has perfected forever those who are being sanctified." If we're perfected by His offering, there's nothing left to purge.</div>
-    <div class="journal-p">**The "Bosom of Abraham":** In Luke 16:19–31, Jesus describes Lazarus going to "Abraham's bosom" — a place of comfort, not purification. The rich man goes to a place of torment. There's a great chasm between them. No crossing. No graduating out. This pre-cross reality shows that even before the resurrection, God's system was binary: comfort or torment — not a middle lane.</div>
-    <div class="journal-p">**One more thing worth sitting with:** The entire purgatory framework tends to shift the focus from Christ's sufficiency to human effort — even post-mortem effort. But the gospel message from Genesis to Revelation is that God does for us what we cannot do for ourselves. That's grace. That's the whole story.</div>
-    <div class="journal-p">---</div>
-    <div class="journal-p">────────────────────────────────────────
-9:27 AM
-────────────────────────────────────────
-## PIECE 2 — Daniel 9 and the 70 Weeks (Drive Conversation Notes)</div>
-    <div class="journal-p">*Originally written April 15, 2026*</div>
-    <div class="journal-p">Daniel is in Babylon, praying and confessing Israel's sins, asking God when the exile will end. The angel Gabriel shows up and gives him a mathematical prophecy — 70 "sevens" (weeks of years) are decreed for Israel. 490 years, broken into three chunks: 7 + 62 + 1.</div>
-    <div class="journal-p">**The remarkable thing:** The first 69 weeks ran out *exactly* on Palm Sunday — the day Jesus rode into Jerusalem on a donkey and was publicly declared King for the first time. The calculation: 444 BC → March 29, AD 33 = 173,880 days (69 weeks × 7 years × 360 days). The odds of that being coincidence are essentially zero.</div>
-    <div class="journal-p">**The big question:** Then there's a gap. The 70th week — the final 7 years — hasn't happened yet. That's the Tribulation period. Why the gap? Why doesn't it just run straight through?</div>
-    <div class="journal-p">**The answer worth sitting with:** Because God *paused the clock* when Israel rejected Jesus. The 70 weeks are specifically about Israel and Jerusalem — *"your people and your holy city"* (Daniel 9:24). The Church Age is a kind of divine parenthesis. When the Church is taken out (the Rapture), the clock for Israel restarts — and the final 7 years begins.</div>
-    <div class="journal-p">**The six things God said would be accomplished in the 70 weeks (Daniel 9:24):**
-- Finish transgression
-- Put an end to sin
-- Atone for wickedness
-- Bring in everlasting righteousness
-- Seal up vision and prophecy
-- Anoint the Most Holy Place</div>
-    <div class="journal-p">The first three were accomplished at the Cross. The last three await the Second Coming. The gap between them is the age we're living in right now.</div>
-    <div class="journal-p">This is the linchpin of everything in Theme 1. Once you see it, you can't unsee it.</div>
-    <div class="journal-p">---</div>
-  </div>
-
-  <!-- ── APRIL 16, 2026 ── -->
-  <div class="journal-box">
-    <div class="journal-date">April 16, 2026</div>
-    <div class="journal-p">────────────────────────────────────────
-April 16, 2026 at 9:20 AM
-────────────────────────────────────────
-I've been watching a TV series called Homeland lately, and somewhere in the middle of an episode set in Beirut — watching the tensions between Iran, Hezbollah, and the United States play out on screen — I realized I was seeing something I wouldn't have noticed a year ago. The location, the players, the deception woven through every storyline. It maps almost perfectly onto what I've been studying in Ezekiel and Revelation.
-I'm not sure God put Homeland on television as a prophetic message. But I do think He's sharpening my eyes, and that feels significant.
-For a long time I avoided Revelation like most people do. Not because I didn't believe it, but because I didn't understand it, and what you don't understand you tend to leave alone. I think that's where most people I know are right now. They're not indifferent — they just haven't had a way in.
-That's starting to change for me. I look at the world differently now. I read the news differently. I watch things differently. And what I'm feeling more and more is that God isn't just asking me to learn this for myself — He's asking me to be someone who can help others find their way in too.
-That's why this study guide exists. That's why I keep building it.
-Be watchful. Jesus said it plainly. I'm trying to take Him at His word.</div>
-  </div>
-
-  <!-- ── APRIL 9, 2026 ── -->
-  <div class="journal-box">
-    <div class="journal-date">April 9, 2026</div>
-    <div class="journal-p">one of the things that I really started thinking deeply about yesterday as I was driving and listening to the book epicenter, was that it seems I have a lot more questions about gog and magog. There are a lot of refeences in different parts of the bible that I was unaware of. I really would like to do a deeper dive into this subject. Maybe even create a module just for this subject.
-Also, I am very intrigued in the chapter that I am in now talking about the oil and gas beneath Isreal. Its crazy that its likely been there for YEARS but they recently found it. THE END TIMES ARE HERE</div>
-  </div>
-
-
-  <!-- ── APRIL 9, 2026 ── -->
-  <div class="journal-box">
-    <div class="journal-date">April 9, 2026</div>
-    <div class="journal-topic">Topic: Gog-Magog, Oil &amp; the End Times</div>
-    <div class="journal-cat">Category: End Times / Current Events / Prophecy</div>
-    <div class="journal-p">One of the things that I really started thinking deeply about yesterday as I was driving and listening to the book Epicenter, was that it seems I have a lot more questions about Gog and Magog. There are a lot of references in different parts of the Bible that I was unaware of. I really would like to do a deeper dive into this subject. Maybe even create a module just for this subject.</div>
-    <div class="journal-p">Also, I am very intrigued in the chapter that I am in now talking about the oil and gas beneath Israel. It's crazy that it's likely been there for YEARS but they recently found it. THE END TIMES ARE HERE.</div>
-  </div>
-
-  <!-- ── APRIL 1, 2026 ── -->
-  <div class="journal-box">
-    <div class="journal-date">April 1, 2026</div>
-    <div class="journal-topic">Topic: Grace, Truth &amp; Witness in the Last Days</div>
-    <div class="journal-cat">Category: Evangelism / Christian Living / Signs of the Times</div>
-    <div class="journal-p">Came across the Jaden Ivey situation today — the NBA player waived by the Chicago Bulls after publicly calling out the league's Pride Month promotion as "unrighteous." He's clearly sincere in his faith and the biblical convictions he holds are real. Scripture is clear on the subject: Leviticus 18:22, Romans 1:26–27, 1 Corinthians 6:9. The question this raises isn't whether the conviction is biblical — it is — but whether the expression of that conviction was the most effective witness in that moment.</div>
-    <div class="journal-p">Jesus was full of both grace AND truth (John 1:14). Neither one at the expense of the other. He called sin what it was, but he also ate with sinners, healed them, and spoke to them with love before and after correction. The Pharisees had truth without grace. The culture today often pushes grace without truth. Both are distortions.</div>
-    <div class="journal-p">What strikes me most is the cost. This young man lost his career — or at least accelerated its end — over a public statement of faith. That's not nothing. And yet this is exactly what Jesus said would happen: "You will be hated by all for my name's sake." (Matt 10:22)</div>
-    <div class="journal-p"><strong>Key scriptures:</strong> John 1:14, Matthew 10:22, Romans 1:16, Colossians 4:5–6. Cross-reference with Module 11 (False Prophets) and Module 4 (The Watchman).</div>
+    <div class="journal-date">March 28, 2026</div>
+    <div class="journal-topic">Topic: Spiritual Deception &amp; the Demonic Realm</div>
+    <div class="journal-cat">Category: Signs of the Times / Spiritual Warfare</div>
+    <div class="journal-p">I came across something today that connected directly to what we've been studying. VP JD Vance made a public statement arguing that unexplained aerial phenomena — the UFO phenomenon that has been in the news for years — may not be extraterrestrial at all, but something from the spiritual realm. He specifically referenced the Christian understanding that evil is real and active, and quoted what felt like a paraphrase of a well-known idea: that one of the devil's greatest tricks is convincing the world he doesn't exist.</div>
+    <div class="journal-p">This strikes me as deeply connected to what we've been studying about deception in the end times. Scripture is clear that the enemy doesn't announce himself — he masquerades. 2 Corinthians 11:14 says that Satan disguises himself as an angel of light. The idea that something supernatural could be repackaged as "extraterrestrial" or "scientific" fits exactly the kind of deception Jesus warned about in Matthew 24. The false signs and wonders of the Antichrist and the False Prophet won't look obviously evil — they will look convincing, maybe even miraculous.</div>
+    <div class="journal-p">What stood out to me is how this connects to the broader cultural moment. If demonic activity can be reframed as a cosmic, non-threatening mystery — something humanity is meant to "discover" and "open up" to — that is exactly the kind of deception the end times framework warns about.</div>
+    <div class="journal-p"><strong>Key scriptures:</strong> 2 Corinthians 11:14, Matthew 24:24, Revelation 13:13–14, Ephesians 6:12. Cross-reference with Module 11 (False Prophets) and Module 10 (Signs of the Times).</div>
     <div class="journal-qs">
       <div class="journal-qs-title">Questions to sit with:</div>
-      <div class="journal-q">• Where in my own life am I tempted to choose comfort over honest witness?</div>
-      <div class="journal-q">• What does it look like to speak truth with grace — not softening the truth, but not weaponizing it either?</div>
-      <div class="journal-q">• Am I prepared for the cost of faithfulness to increase as culture shifts further from biblical values?</div>
+      <div class="journal-q">• How does the enemy disguise evil as wonder or curiosity in our own culture today?</div>
+      <div class="journal-q">• What is the difference between healthy curiosity about the unknown and dangerous spiritual openness?</div>
+      <div class="journal-q">• How do we teach our kids to recognize spiritual deception when it comes dressed as something appealing?</div>
     </div>
   </div>
 
@@ -157,20 +77,38 @@ Also, I am very intrigued in the chapter that I am in now talking about the oil 
     </div>
   </div>
 
-  <!-- ── MARCH 28, 2026 ── -->
+  <!-- ── APRIL 1, 2026 ── -->
   <div class="journal-box">
-    <div class="journal-date">March 28, 2026</div>
-    <div class="journal-topic">Topic: Spiritual Deception &amp; the Demonic Realm</div>
-    <div class="journal-cat">Category: Signs of the Times / Spiritual Warfare</div>
-    <div class="journal-p">I came across something today that connected directly to what we've been studying. VP JD Vance made a public statement arguing that unexplained aerial phenomena — the UFO phenomenon that has been in the news for years — may not be extraterrestrial at all, but something from the spiritual realm. He specifically referenced the Christian understanding that evil is real and active, and quoted what felt like a paraphrase of a well-known idea: that one of the devil's greatest tricks is convincing the world he doesn't exist.</div>
-    <div class="journal-p">This strikes me as deeply connected to what we've been studying about deception in the end times. Scripture is clear that the enemy doesn't announce himself — he masquerades. 2 Corinthians 11:14 says that Satan disguises himself as an angel of light. The idea that something supernatural could be repackaged as "extraterrestrial" or "scientific" fits exactly the kind of deception Jesus warned about in Matthew 24. The false signs and wonders of the Antichrist and the False Prophet won't look obviously evil — they will look convincing, maybe even miraculous.</div>
-    <div class="journal-p">What stood out to me is how this connects to the broader cultural moment. If demonic activity can be reframed as a cosmic, non-threatening mystery — something humanity is meant to "discover" and "open up" to — that is exactly the kind of deception the end times framework warns about.</div>
-    <div class="journal-p"><strong>Key scriptures:</strong> 2 Corinthians 11:14, Matthew 24:24, Revelation 13:13–14, Ephesians 6:12. Cross-reference with Module 11 (False Prophets) and Module 10 (Signs of the Times).</div>
+    <div class="journal-date">April 1, 2026</div>
+    <div class="journal-topic">Topic: Grace, Truth &amp; Witness in the Last Days</div>
+    <div class="journal-cat">Category: Evangelism / Christian Living / Signs of the Times</div>
+    <div class="journal-p">Came across the Jaden Ivey situation today — the NBA player waived by the Chicago Bulls after publicly calling out the league's Pride Month promotion as "unrighteous." He's clearly sincere in his faith and the biblical convictions he holds are real. Scripture is clear on the subject: Leviticus 18:22, Romans 1:26–27, 1 Corinthians 6:9. The question this raises isn't whether the conviction is biblical — it is — but whether the expression of that conviction was the most effective witness in that moment.</div>
+    <div class="journal-p">Jesus was full of both grace AND truth (John 1:14). Neither one at the expense of the other. He called sin what it was, but he also ate with sinners, healed them, and spoke to them with love before and after correction. The Pharisees had truth without grace. The culture today often pushes grace without truth. Both are distortions.</div>
+    <div class="journal-p">What strikes me most is the cost. This young man lost his career — or at least accelerated its end — over a public statement of faith. That's not nothing. And yet this is exactly what Jesus said would happen: "You will be hated by all for my name's sake." (Matt 10:22)</div>
+    <div class="journal-p"><strong>Key scriptures:</strong> John 1:14, Matthew 10:22, Romans 1:16, Colossians 4:5–6. Cross-reference with Module 11 (False Prophets) and Module 4 (The Watchman).</div>
     <div class="journal-qs">
       <div class="journal-qs-title">Questions to sit with:</div>
-      <div class="journal-q">• How does the enemy disguise evil as wonder or curiosity in our own culture today?</div>
-      <div class="journal-q">• What is the difference between healthy curiosity about the unknown and dangerous spiritual openness?</div>
-      <div class="journal-q">• How do we teach our kids to recognize spiritual deception when it comes dressed as something appealing?</div>
+      <div class="journal-q">• Where in my own life am I tempted to choose comfort over honest witness?</div>
+      <div class="journal-q">• What does it look like to speak truth with grace — not softening the truth, but not weaponizing it either?</div>
+      <div class="journal-q">• Am I prepared for the cost of faithfulness to increase as culture shifts further from biblical values?</div>
+    </div>
+  </div>
+
+  <!-- ── APRIL 15, 2026 ── -->
+  <div class="journal-box">
+    <div class="journal-date">April 15, 2026</div>
+    <div class="journal-topic">Topic: Daniel's 70 Weeks — The Clock That Paused</div>
+    <div class="journal-cat">Category: End Times Prophecy / Daniel 9</div>
+    <div class="journal-p">The 70 Weeks prophecy in Daniel 9 finally clicked for me today in a deeper way. Gabriel shows up while Daniel is praying and confessing Israel's sins, and gives him this mathematical prophecy — 70 "sevens" decreed for Israel and Jerusalem. That's 490 years, broken into three chunks: 7 weeks, then 62 weeks, then one final week still to come.</div>
+    <div class="journal-p">The jaw-dropping part is the math. Starting from Artaxerxes' decree in 444 BC, 69 weeks of years — 483 years, or exactly 173,880 days on the prophetic calendar — lands precisely on Palm Sunday. The day Jesus rode into Jerusalem on a donkey and was publicly declared King for the first time. That is not coincidence. The odds of that lining up by accident are essentially zero.</div>
+    <div class="journal-p">Then the clock stopped. Israel rejected Jesus, and God paused the prophetic timeline. The 70th week — the final 7 years — is still future. That's the Tribulation. The Church Age we're living in right now is a divine parenthesis, tucked inside a prophecy specifically about Israel and Jerusalem. When the Rapture happens, the clock restarts. The final 7 years begin.</div>
+    <div class="journal-p">We also talked about the Gog-Magog precondition — Israel living in perceived safety. There's a ceasefire in place right now between Israel and Hamas, about six months old, but it's fragile. Israel says they won't stop until Hamas is annihilated. We're nowhere near "unwalled villages" yet. That condition is still Not Yet — but the ceasefire might be laying early groundwork for what Ezekiel describes.</div>
+    <div class="journal-p"><strong>Key scriptures:</strong> Daniel 9:24–27, Ezekiel 38:11, 1 Thessalonians 5:1–11. Cross-reference with Module 1 (Daniel's 70 Weeks) and Module 9 (Gog-Magog War).</div>
+    <div class="journal-qs">
+      <div class="journal-qs-title">Questions to sit with:</div>
+      <div class="journal-q">• If God paused the prophetic clock for 2,000+ years out of patience toward Israel — what does that say about His patience toward me personally?</div>
+      <div class="journal-q">• The ceasefire is fragile and full of violations. Am I watching these headlines through a prophetic lens, or just a political one?</div>
+      <div class="journal-q">• The 70th week is coming. Am I living like someone who actually believes that?</div>
     </div>
   </div>
 
@@ -182,88 +120,4 @@ Also, I am very intrigued in the chapter that I am in now talking about the oil 
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 
-<script>
-function publishEntry() {
-  const raw    = (document.getElementById('n-journal-new').value || '').trim();
-  const status = document.getElementById('publish-status');
-  if (!raw) { status.textContent = '⚠️ Write something first.'; return; }
-
-  status.textContent = 'Publishing...';
-
-  // Extract date from timestamp line ── Month Day, Year at Time ──
-  const lines = raw.split('\n');
-  let date = '';
-  const contentLines = [];
-  lines.forEach(line => {
-    const m = line.match(/─+\s*(.+?)\s+at\s+.+\s*─+/);
-    if (m && !date) { date = m[1].trim(); }
-    else { contentLines.push(line); }
-  });
-  if (!date) date = new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
-
-  const bodyRaw = contentLines.join('\n').trim();
-  const paragraphs = bodyRaw.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
-  const questionLines = [];
-  const bodyParas = [];
-
-  paragraphs.forEach(para => {
-    const plines = para.split('\n').map(l => l.trim()).filter(Boolean);
-    if (plines[0] && (plines[0].startsWith('•') || /^questions?/i.test(plines[0]))) {
-      plines.forEach(l => { if (l.startsWith('•')) questionLines.push(l); });
-    } else {
-      bodyParas.push('    <div class="journal-p">' + para.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>');
-    }
-  });
-
-  let qHtml = '';
-  if (questionLines.length) {
-    qHtml = '    <div class="journal-qs">\n      <div class="journal-qs-title">Questions to sit with:</div>\n';
-    questionLines.forEach(q => { qHtml += '      <div class="journal-q">' + q.replace(/&/g,'&amp;') + '</div>\n'; });
-    qHtml += '    </div>';
-  }
-
-  const entryHtml =
-    '\n  <!-- ── ' + date.toUpperCase() + ' ── -->\n' +
-    '  <div class="journal-box">\n' +
-    '    <div class="journal-date">' + date.replace(/&/g,'&amp;') + '</div>\n' +
-    bodyParas.join('\n') + (qHtml ? '\n' + qHtml : '') +
-    '\n  </div>\n';
-
-  // Show immediately on page
-  document.getElementById('past-entries-anchor').insertAdjacentHTML('afterend', entryHtml);
-
-  // Save to GitHub
-  const token = localStorage.getItem('cbsg-gh-token') || (document.getElementById('gh-token') || {}).value || '';
-  if (!token) { status.textContent = '⚠️ Paste your token first.'; return; }
-
-  const apiUrl = 'https://api.github.com/repos/acshotsprings/CampbellBibleStudy/contents/journal.html';
-  fetch(apiUrl, { headers: { Authorization: 'token ' + token } })
-    .then(r => r.json())
-    .then(data => {
-      const current = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
-      const updated = current.replace('<div id="past-entries-anchor"></div>', '<div id="past-entries-anchor"></div>' + entryHtml);
-      return fetch(apiUrl, {
-        method: 'PUT',
-        headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: 'Journal: Add entry — ' + date,
-          content: btoa(unescape(encodeURIComponent(updated))),
-          sha: data.sha
-        })
-      });
-    })
-    .then(r => {
-      if (r.ok) {
-        document.getElementById('n-journal-new').value = '';
-        status.textContent = '✅ Published!';
-        localStorage.removeItem('cbsg-n-journal-new');
-      } else {
-        return r.json().then(e => { throw new Error(e.message); });
-      }
-    })
-    .catch(e => { status.textContent = '❌ ' + e.message; });
-}
-</script>
-
-</body>
-</html>
+</body></html>
