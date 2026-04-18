@@ -59,7 +59,12 @@ body {
   font-style: italic;
 }
 
-#sidebar-nav { padding-bottom: 24px; }
+/* Push all nav content inward so per-item colored left-borders
+   have a visible gutter between them and the drawer's left edge. */
+#sidebar-nav {
+  padding-bottom: 24px;
+  padding-left: 10px;
+}
 
 .nav-section {
   padding: 12px 16px 4px;
@@ -71,21 +76,13 @@ body {
   font-family: Arial, sans-serif;
 }
 
-#sidebar #sidebar-nav .nav-item,
-#sidebar .nav-item,
 .nav-item {
-  display: block !important;
-  /* Margin pulls item away from drawer edge so the colored left-border
-     has a visible gutter. All values !important to beat any conflict. */
-  margin-left: 10px !important;
-  margin-right: 8px !important;
-  padding: 8px 13px !important;
+  display: block;
+  padding: 8px 13px;
   font-size: 12px;
   color: rgba(255,255,255,0.8);
   cursor: pointer;
-  border-left-width: 3px !important;
-  border-left-style: solid !important;
-  border-left-color: transparent;
+  border-left: 3px solid transparent;
   border-radius: 0 3px 3px 0;
   line-height: 1.4;
   transition: all 0.15s;
