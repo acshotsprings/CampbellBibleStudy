@@ -1,9 +1,9 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.1 (2026-04-18)
-   Color theming (inline styles) + My Study collapsible +
-   Deep Dives sub-collapsible. No CSS injection — avoids CLS
-   and specificity conflicts with style.css.
+   Sidebar Navigation Builder — v5.2 (2026-04-18)
+   Color theming (inline !important) + My Study collapsible +
+   Deep Dives sub-collapsible. v5.2 adds !important to beat
+   style.css .nav-item.active border-left-color override.
    ============================================================ */
 
 /* ---- COLOR PALETTE ------------------------------------------
@@ -126,15 +126,17 @@ function isModuleComplete(key) {
 }
 
 /* Resolve the inline border-left color for an item. Completed items
-   override with green. Returns a CSS value (e.g. "3px solid #E57373")
-   or empty string if no color is set. */
+   override with green. Returns a CSS value (e.g. "3px solid #E57373 !important")
+   or empty string if no color is set. !important is required because
+   style.css .nav-item.active sets border-left-color and would otherwise
+   win against a shorthand. */
 function navItemBorder(item, sectionColorKey, done) {
-  if (done) return '3px solid #90EE90';
+  if (done) return '3px solid #90EE90 !important';
   if (item.itemColor && MYSTUDY_ITEM_COLORS[item.itemColor]) {
-    return '3px solid ' + MYSTUDY_ITEM_COLORS[item.itemColor];
+    return '3px solid ' + MYSTUDY_ITEM_COLORS[item.itemColor] + ' !important';
   }
   const pal = NAV_COLORS[sectionColorKey];
-  if (pal && pal.item) return '3px solid ' + pal.item;
+  if (pal && pal.item) return '3px solid ' + pal.item + ' !important';
   return '';
 }
 
@@ -204,7 +206,7 @@ function buildSidebar(root) {
 
   NAV_STRUCTURE.forEach(section => {
     const palette   = NAV_COLORS[section.colorKey] || {};
-    const headerBd  = palette.header ? `border-left:4px solid ${palette.header};padding-left:10px;` : '';
+    const headerBd  = palette.header ? `border-left:4px solid ${palette.header} !important;padding-left:10px !important;` : '';
 
     if (!section.collapsible) {
       const nonStyle = headerBd ? ` style="${headerBd}"` : '';
