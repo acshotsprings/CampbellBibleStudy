@@ -386,60 +386,9 @@ function logAndStamp() {
   }
 
   const logEntry = `\n${'─'.repeat(40)}\n📚 ${date} at ${time}\nPage: ${getPageLabel()}\nSession: ${formatTime(sessionSeconds)} | Total: ${formatTime(total)}\n${'─'.repeat(40)}\n`;
-
-  // --- Quill-aware target resolution (fix 2026-04-18) -----------------
-  // Priority:
-  //   1. If focus is inside a Quill editor → stamp THAT editor
-  //   2. Else if any Quill editors exist on this page → stamp the first
-  //   3. Else if active element is a textarea → stamp it
-  //   4. Else fall back to PAGE_NOTE_IDS[0] textarea
-  // --------------------------------------------------------------------
-  let stamped = false;
   const active = document.activeElement;
-
-  // (1) focus inside a Quill editor?
-  if (!stamped && active && quillInstances) {
-    for (const [editorId, quill] of Object.entries(quillInstances)) {
-      const editorEl = document.getElementById(editorId);
-      if (editorEl && editorEl.contains(active)) {
-        _insertQuillStamp(quill, editorId);
-        stamped = true;
-        break;
-      }
-    }
-  }
-
-  // (2) any Quill editors present on the page?
-  if (!stamped && quillInstances && Object.keys(quillInstances).length > 0) {
-    const [editorId, quill] = Object.entries(quillInstances)[0];
-    _insertQuillStamp(quill, editorId);
-    stamped = true;
-  }
-
-  // (3) active textarea?
-  if (!stamped && active && active.tagName === 'TEXTAREA' && active.id) {
-    const stamp = buildStamp(active.id);
-    active.value += stamp;
-    active.scrollTop = active.scrollHeight;
-    localStorage.setItem('cbsg-' + active.id, active.value);
-    stamped = true;
-  }
-
-  // (4) fallback to PAGE_NOTE_IDS[0]
-  if (!stamped) {
-    const ids = window.PAGE_NOTE_IDS || [];
-    if (ids.length > 0) {
-      const el = document.getElementById(ids[0]);
-      if (el && el.tagName === 'TEXTAREA') {
-        const stamp = buildStamp(ids[0]);
-        el.value += stamp;
-        el.scrollTop = el.scrollHeight;
-        localStorage.setItem('cbsg-' + ids[0], el.value);
-      }
-    }
-  }
-
-  // Journal log entry (unchanged — only applies where n-journal-new textarea exists)
+  if (active && active.tagName === 'TEXTAREA' && active.id) { const stamp = buildStamp(active.id); active.value += stamp; active.scrollTop = active.scrollHeight; localStorage.setItem('cbsg-' + active.id, active.value); }
+  else { const ids = window.PAGE_NOTE_IDS || []; if (ids.length > 0) { const el = document.getElementById(ids[0]); if (el) { const stamp = buildStamp(ids[0]); el.value += stamp; el.scrollTop = el.scrollHeight; localStorage.setItem('cbsg-' + ids[0], el.value); } } }
   const jEl = document.getElementById('n-journal-new');
   if (jEl) { jEl.value += logEntry; localStorage.setItem('cbsg-n-journal-new', jEl.value); }
   setStatus('📅 Stamped & logged!', 'ok');
