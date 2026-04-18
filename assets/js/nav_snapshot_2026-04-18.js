@@ -1,9 +1,12 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.2 (2026-04-18)
+   Sidebar Navigation Builder — v5.3 (2026-04-18)
    Color theming (inline !important) + My Study collapsible +
-   Deep Dives sub-collapsible. v5.2 adds !important to beat
-   style.css .nav-item.active border-left-color override.
+   Deep Dives sub-collapsible. v5.3 fixes the real bug: !important
+   cannot appear inside a CSS shorthand value like "border-left" —
+   the browser silently drops the whole declaration. Split into
+   long-form border-left-width / -style / -color, each with its
+   own !important, so the colors actually render.
    ============================================================ */
 
 /* ---- COLOR PALETTE ------------------------------------------
@@ -125,18 +128,19 @@ function isModuleComplete(key) {
   return localStorage.getItem('cbsg-' + key) === 'true';
 }
 
-/* Resolve the inline border-left color for an item. Completed items
-   override with green. Returns a CSS value (e.g. "3px solid #E57373 !important")
-   or empty string if no color is set. !important is required because
-   style.css .nav-item.active sets border-left-color and would otherwise
-   win against a shorthand. */
-function navItemBorder(item, sectionColorKey, done) {
-  if (done) return '3px solid #90EE90 !important';
+/* Resolve the inline border-left COLOR for an item. Completed items
+   override with green. Returns just the color string (e.g. "#E57373")
+   or empty string if no color is set. The caller splits this across
+   three long-form border-left-* properties, each with !important,
+   because !important inside a shorthand value is invalid CSS and
+   gets silently dropped by the browser. */
+function navItemBorderColor(item, sectionColorKey, done) {
+  if (done) return '#90EE90';
   if (item.itemColor && MYSTUDY_ITEM_COLORS[item.itemColor]) {
-    return '3px solid ' + MYSTUDY_ITEM_COLORS[item.itemColor] + ' !important';
+    return MYSTUDY_ITEM_COLORS[item.itemColor];
   }
   const pal = NAV_COLORS[sectionColorKey];
-  if (pal && pal.item) return '3px solid ' + pal.item + ' !important';
+  if (pal && pal.item) return pal.item;
   return '';
 }
 
@@ -179,16 +183,24 @@ function buildSidebar(root) {
   /* Render a single nav item <a>. `extraStyle` is any additional inline
      CSS (e.g. flex:1 for sub-collapse rows). */
   function renderItem(item, sectionColorKey, extraStyle) {
-    const fullHref  = base + item.href;
-    const active    = currentPath === fullHref || currentPath.endsWith('/' + item.href) ? ' active' : '';
-    const subCls    = item.sub ? ' sub' : '';
-    const done      = item.completable && isModuleComplete(item.completeKey);
-    const border    = navItemBorder(item, sectionColorKey, done);
-    const doneColor = done ? 'color:#90EE90;' : '';
-    const doneIcon  = done ? ' <span style="color:#90EE90;font-size:11px;">✓</span>' : '';
+    const fullHref    = base + item.href;
+    const active      = currentPath === fullHref || currentPath.endsWith('/' + item.href) ? ' active' : '';
+    const subCls      = item.sub ? ' sub' : '';
+    const done        = item.completable && isModuleComplete(item.completeKey);
+    const borderColor = navItemBorderColor(item, sectionColorKey, done);
+    const doneColor   = done ? 'color:#90EE90 !important;' : '';
+    const doneIcon    = done ? ' <span style="color:#90EE90;font-size:11px;">✓</span>' : '';
     const styleBits = [];
-    if (border)    styleBits.push('border-left:' + border);
-    if (doneColor) styleBits.push(doneColor);
+    if (borderColor) {
+      // Long-form properties, each with !important — this is the ONLY
+      // way !important survives in an inline style attribute. Putting
+      // !important inside a shorthand value (e.g. "border-left:3px
+      // solid red !important") is invalid CSS and gets dropped.
+      styleBits.push('border-left-width:3px !important');
+      styleBits.push('border-left-style:solid !important');
+      styleBits.push('border-left-color:' + borderColor + ' !important');
+    }
+    if (doneColor)  styleBits.push(doneColor.replace(/;$/, ''));
     if (extraStyle) styleBits.push(extraStyle);
     const styleAttr = styleBits.length ? ` style="${styleBits.join(';')}"` : '';
     return `<a class="nav-item${subCls}${active}"${styleAttr} href="${root + item.href}" onclick="if(window.innerWidth<=768)closeSidebar()">${item.label}${doneIcon}</a>`;
@@ -206,7 +218,9 @@ function buildSidebar(root) {
 
   NAV_STRUCTURE.forEach(section => {
     const palette   = NAV_COLORS[section.colorKey] || {};
-    const headerBd  = palette.header ? `border-left:4px solid ${palette.header} !important;padding-left:10px !important;` : '';
+    const headerBd  = palette.header
+      ? `border-left-width:4px !important;border-left-style:solid !important;border-left-color:${palette.header} !important;padding-left:10px !important;`
+      : '';
 
     if (!section.collapsible) {
       const nonStyle = headerBd ? ` style="${headerBd}"` : '';
