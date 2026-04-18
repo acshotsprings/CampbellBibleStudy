@@ -1,26 +1,37 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.3 (2026-04-18)
-   Color theming (inline !important) + My Study collapsible +
-   Deep Dives sub-collapsible. v5.3 fixes the real bug: !important
-   cannot appear inside a CSS shorthand value like "border-left" —
-   the browser silently drops the whole declaration. Split into
-   long-form border-left-width / -style / -color, each with its
-   own !important, so the colors actually render.
+   Sidebar Navigation Builder — v5.4 (2026-04-18)
+
+   Color approach changed: instead of fighting CSS to render
+   per-item LEFT-BORDER stripes (which kept getting hidden at
+   the drawer's left edge), colors now apply directly to the
+   LINK TEXT itself (semi-bold, colored). Much simpler, no
+   layout fights, no specificity wars.
+
+   - Theme 1 modules: blue text
+   - Theme 2 modules: green text
+   - Theme 3 modules: purple text
+   - Themes 4-8: gray text
+   - My Study items: each their own distinct color
+   - Getting Started: default white (unchanged)
+   - Completed items: green ✓ (unchanged)
+   - Active page: gold (unchanged)
+
+   Locked nav structure, My Study collapsible, Deep Dives
+   sub-collapse, and admin gating all preserved from v5.3.
    ============================================================ */
 
 /* ---- COLOR PALETTE ------------------------------------------
-   Each theme gets a strong accent color for its header, and a
-   lighter-shade accent for its module items. My Study items
-   each get their own distinct color for quick scanning.
+   Each theme has a text color for its module items. My Study
+   items each get their own distinct color for quick scanning.
    ------------------------------------------------------------ */
 const NAV_COLORS = {
-  theme1:    { header: '#2E75B6', item: 'rgba(46,117,182,0.55)' },   // blue
-  theme2:    { header: '#4a7c59', item: 'rgba(74,124,89,0.55)'  },   // green
-  theme3:    { header: '#7E57C2', item: 'rgba(126,87,194,0.55)' },   // purple
-  themes48:  { header: '#888888', item: 'rgba(136,136,136,0.55)' },  // gray
-  mystudy:   { header: '#FFD700', item: null                    },   // gold header; items use per-item colors below
-  getstarted:{ header: 'rgba(255,255,255,0.4)', item: null      },
+  theme1:    { header: '#2E75B6', item: '#6BA5D9' },   // blue
+  theme2:    { header: '#4a7c59', item: '#7BB593' },   // green
+  theme3:    { header: '#7E57C2', item: '#A389D4' },   // purple
+  themes48:  { header: '#888888', item: '#AAAAAA' },   // gray
+  mystudy:   { header: '#FFD700', item: null        }, // gold header; items use per-item colors below
+  getstarted:{ header: 'rgba(255,255,255,0.4)', item: null },
 };
 
 const MYSTUDY_ITEM_COLORS = {
@@ -128,14 +139,15 @@ function isModuleComplete(key) {
   return localStorage.getItem('cbsg-' + key) === 'true';
 }
 
-/* Resolve the inline border-left COLOR for an item. Completed items
-   override with green. Returns just the color string (e.g. "#E57373")
-   or empty string if no color is set. The caller splits this across
-   three long-form border-left-* properties, each with !important,
-   because !important inside a shorthand value is invalid CSS and
-   gets silently dropped by the browser. */
-function navItemBorderColor(item, sectionColorKey, done) {
-  if (done) return '#90EE90';
+/* Resolve the TEXT color for a nav item. Priority:
+   1. Completed items → green (overrides everything)
+   2. Active page → skip inline color, let CSS .active rule (gold) win
+   3. My Study per-item color (if itemColor specified)
+   4. Section's item color from NAV_COLORS palette
+   5. Empty (falls back to CSS default white) */
+function navItemTextColor(item, sectionColorKey, done, active) {
+  if (done)   return '#90EE90';
+  if (active) return '';
   if (item.itemColor && MYSTUDY_ITEM_COLORS[item.itemColor]) {
     return MYSTUDY_ITEM_COLORS[item.itemColor];
   }
@@ -180,30 +192,25 @@ function buildSidebar(root) {
     localStorage.setItem('cbsg-nav-' + key, val ? 'true' : 'false');
   }
 
-  /* Render a single nav item <a>. `extraStyle` is any additional inline
-     CSS (e.g. flex:1 for sub-collapse rows). */
+  /* Render a single nav item <a>. Text is colored per theme/item,
+     semi-bold (font-weight: 500). `extraStyle` is any additional
+     inline CSS (e.g. flex:1 for sub-collapse rows). */
   function renderItem(item, sectionColorKey, extraStyle) {
-    const fullHref    = base + item.href;
-    const active      = currentPath === fullHref || currentPath.endsWith('/' + item.href) ? ' active' : '';
-    const subCls      = item.sub ? ' sub' : '';
-    const done        = item.completable && isModuleComplete(item.completeKey);
-    const borderColor = navItemBorderColor(item, sectionColorKey, done);
-    const doneColor   = done ? 'color:#90EE90 !important;' : '';
-    const doneIcon    = done ? ' <span style="color:#90EE90;font-size:11px;">✓</span>' : '';
+    const fullHref  = base + item.href;
+    const active    = currentPath === fullHref || currentPath.endsWith('/' + item.href);
+    const activeCls = active ? ' active' : '';
+    const subCls    = item.sub ? ' sub' : '';
+    const done      = item.completable && isModuleComplete(item.completeKey);
+    const textColor = navItemTextColor(item, sectionColorKey, done, active);
+    const doneIcon  = done ? ' <span style="color:#90EE90;font-size:11px;">✓</span>' : '';
     const styleBits = [];
-    if (borderColor) {
-      // Long-form properties, each with !important — this is the ONLY
-      // way !important survives in an inline style attribute. Putting
-      // !important inside a shorthand value (e.g. "border-left:3px
-      // solid red !important") is invalid CSS and gets dropped.
-      styleBits.push('border-left-width:3px !important');
-      styleBits.push('border-left-style:solid !important');
-      styleBits.push('border-left-color:' + borderColor + ' !important');
+    if (textColor) {
+      styleBits.push('color:' + textColor + ' !important');
+      styleBits.push('font-weight:500');  // semi-bold
     }
-    if (doneColor)  styleBits.push(doneColor.replace(/;$/, ''));
     if (extraStyle) styleBits.push(extraStyle);
     const styleAttr = styleBits.length ? ` style="${styleBits.join(';')}"` : '';
-    return `<a class="nav-item${subCls}${active}"${styleAttr} href="${root + item.href}" onclick="if(window.innerWidth<=768)closeSidebar()">${item.label}${doneIcon}</a>`;
+    return `<a class="nav-item${subCls}${activeCls}"${styleAttr} href="${root + item.href}" onclick="if(window.innerWidth<=768)closeSidebar()">${item.label}${doneIcon}</a>`;
   }
 
   let html = `
@@ -217,13 +224,13 @@ function buildSidebar(root) {
   const adminUnlocked = sessionStorage.getItem('cbsg-admin') === 'true';
 
   NAV_STRUCTURE.forEach(section => {
-    const palette   = NAV_COLORS[section.colorKey] || {};
-    const headerBd  = palette.header
-      ? `border-left-width:4px !important;border-left-style:solid !important;border-left-color:${palette.header} !important;padding-left:10px !important;`
-      : '';
+    const palette  = NAV_COLORS[section.colorKey] || {};
+    // Section headers get their theme color via inline text color.
+    // No more left-border stripes anywhere — cleaner.
+    const headerColor = palette.header ? `color:${palette.header} !important;` : '';
 
     if (!section.collapsible) {
-      const nonStyle = headerBd ? ` style="${headerBd}"` : '';
+      const nonStyle = headerColor ? ` style="${headerColor}"` : '';
       html += `<div class="nav-section"${nonStyle}>${section.label}</div>`;
       section.items.forEach(item => {
         if (item.adminOnly && !adminUnlocked) return;
@@ -242,7 +249,7 @@ function buildSidebar(root) {
         ? `<span style="font-size:9px;margin-left:6px;color:${allDone ? '#90EE90' : 'rgba(255,255,255,0.3)'};">${completedCount}/${completable.length}</span>`
         : '';
 
-      const headerStyle = headerBd ? ` style="${headerBd}"` : '';
+      const headerStyle = headerColor ? ` style="${headerColor}"` : '';
 
       html += `
         <div class="nav-section-collapsible"${headerStyle} onclick="toggleNavSection('${key}')" id="nav-header-${key}">
