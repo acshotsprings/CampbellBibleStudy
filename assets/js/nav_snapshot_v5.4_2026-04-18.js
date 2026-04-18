@@ -1,21 +1,24 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.5 (2026-04-18)
+   Sidebar Navigation Builder — v5.4 (2026-04-18)
 
-   v5.5: Deep Dives collapsible now lists all 4 live Deep Dive
-   pages as sub-items (Calendars, Shabua, Willow, Gematria).
-   "Coming Soon" dives on DeepDives.html (Hailstones, Gog-Magog,
-   Abomination of Desolation) are NOT listed here until they
-   have dedicated pages built.
+   Color approach changed: instead of fighting CSS to render
+   per-item LEFT-BORDER stripes (which kept getting hidden at
+   the drawer's left edge), colors now apply directly to the
+   LINK TEXT itself (semi-bold, colored). Much simpler, no
+   layout fights, no specificity wars.
 
-   Order matches DeepDives.html page order:
-     1. Prophetic Calendars
-     2. H7620 — What Does "Weeks" Mean in Daniel 9?
-     3. The Willow in Scripture
-     4. Gematria (Hebrew/Greek)
+   - Theme 1 modules: blue text
+   - Theme 2 modules: green text
+   - Theme 3 modules: purple text
+   - Themes 4-8: gray text
+   - My Study items: each their own distinct color
+   - Getting Started: default white (unchanged)
+   - Completed items: green ✓ (unchanged)
+   - Active page: gold (unchanged)
 
-   All other v5.4 behavior preserved: colored text (no stripes),
-   My Study collapsible, admin gating, etc.
+   Locked nav structure, My Study collapsible, Deep Dives
+   sub-collapse, and admin gating all preserved from v5.3.
    ============================================================ */
 
 /* ---- COLOR PALETTE ------------------------------------------
@@ -126,10 +129,7 @@ const NAV_STRUCTURE = [
       { label: '✝️ My Growing Convictions', href: 'convictions.html',   itemColor: 'mystudy-convictions' },
       { label: '💾 Save History',           href: 'history.html',       itemColor: 'mystudy-history'     },
       { label: '🔬 Deep Dives',             href: 'DeepDives.html',     itemColor: 'mystudy-deepdives', hasSubCollapse: true, subKey: 'deepdives' },
-      { label: '↳ 📅 Prophetic Calendars',  href: 'DeepDive-Calendars.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
-      { label: '↳ 📖 H7620 — "Weeks" in Daniel 9', href: 'DeepDive-Shabua.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
-      { label: '↳ 🌿 Willow in Scripture',  href: 'DeepDive-Willow.html',    sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
-      { label: '↳ 🔢 Gematria (Hebrew/Greek)', href: 'DeepDive-Gematria.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-gematria' },
+      { label: '↳ Gematria (Hebrew/Greek)', href: 'DeepDive-Gematria.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-gematria' },
       { label: '🎧 Listening Notes',        href: 'listening-notes.html', adminOnly: true, itemColor: 'mystudy-listening' },
     ]
   }
@@ -216,7 +216,7 @@ function buildSidebar(root) {
   let html = `
     <div id="sidebar-header">
       <h1>Campbell Family<br>Biblical Study Guide</h1>
-      <p id="sidebar-version">Version: April 18, 2026 (v5.5)</p>
+      <p id="sidebar-version">Version: April 18, 2026</p>
     </div>
     <div id="sidebar-nav">
   `;
