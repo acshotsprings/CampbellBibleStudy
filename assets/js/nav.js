@@ -46,6 +46,7 @@ const NAV_STRUCTURE = [
       { label: '↳ Module 1 — Calendar History',  href: 'theme2/module1.html', sub: true, completable: true, completeKey: 'complete-t2m1' },
       { label: '↳ Module 2 — Calendar Timeline', href: 'theme2/module2.html', sub: true, completable: true, completeKey: 'complete-t2m2' },
       { label: '↳ Module 3 — Book of Jubilees',  href: 'theme2/module3.html', sub: true, completable: true, completeKey: 'complete-t2m3' },
+      { label: '↳ Module 4 — Feast of Tabernacles',  href: 'theme2/module4.html', sub: true, completable: true, completeKey: 'complete-t2m4' },
     ]
   },
   {
@@ -103,8 +104,7 @@ function buildSidebar(root) {
     if (!section.items) return false;
     return section.items.some(item => {
       const fullHref = base + item.href;
-      return currentPath === fullHref ||
-             currentPath.endsWith(item.href.split('/').pop());
+      return currentPath === fullHref || currentPath.endsWith('/' + item.href);
     });
   }
 
@@ -134,8 +134,7 @@ function buildSidebar(root) {
       section.items.forEach(item => {
         if (item.adminOnly && !adminUnlocked) return;
         const fullHref = base + item.href;
-        const active   = currentPath === fullHref ||
-                         currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
+        const active   = currentPath === fullHref || currentPath.endsWith('/' + item.href) ? ' active' : '';
         const sub      = item.sub ? ' sub' : '';
         html += `<a class="nav-item${sub}${active}" href="${root + item.href}" onclick="if(window.innerWidth<=768)closeSidebar()">${item.label}</a>`;
       });
@@ -162,8 +161,7 @@ function buildSidebar(root) {
 
       section.items.forEach(item => {
         const fullHref  = base + item.href;
-        const active    = currentPath === fullHref ||
-                          currentPath.endsWith(item.href.split('/').pop()) ? ' active' : '';
+        const active    = currentPath === fullHref || currentPath.endsWith('/' + item.href) ? ' active' : '';
         const sub       = item.sub ? ' sub' : '';
         const done      = item.completable && isModuleComplete(item.completeKey);
         const doneStyle = done ? ' style="color:#90EE90;border-left-color:#90EE90;"' : '';

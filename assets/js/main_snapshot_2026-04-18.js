@@ -32,7 +32,6 @@ const COMPLETION_KEYS = {
   'theme2/module1':  'complete-t2m1',
   'theme2/module2':  'complete-t2m2',
   'theme2/module3':  'complete-t2m3',
-  'theme2/module4':  'complete-t2m4',
 };
 
 function isAdminUnlocked() { return sessionStorage.getItem('cbsg-admin') === 'true'; }
