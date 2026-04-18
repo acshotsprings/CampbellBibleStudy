@@ -1,7 +1,9 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Shared JavaScript — v5.0
-   Admin persistence · Guest notes · Silent EmailJS
+   Shared JavaScript — v5.1 (2026-04-18)
+   Admin persistence · Visitor name + inline Quill notes · Silent EmailJS
+   Change vs v5.0: removed floating guest panel; visitors type in
+   the same Quill fields as admin; top bar shows 👤 name + 💾 Save.
    ============================================================ */
 
 const OWNER = 'acshotsprings';
@@ -44,18 +46,20 @@ function applyAdminUI() {
   const btnLoad    = document.getElementById('btn-load')    || document.querySelector('.btn-load');
   const btnStamp   = document.getElementById('btn-timestamp');
   const tokenInput = document.getElementById('gh-token');
+  const visName    = document.getElementById('bar-visitor-name');
+  const visSave    = document.getElementById('bar-visitor-save');
   if (btnAdmin)   btnAdmin.textContent     = unlocked ? '🔓 Admin ON' : '🔒 Admin';
   if (btnSave)    btnSave.style.display    = unlocked ? 'inline-block' : 'none';
   if (btnLoad)    btnLoad.style.display    = unlocked ? 'inline-block' : 'none';
   if (btnStamp)   btnStamp.style.display   = unlocked ? 'inline-block' : 'none';
   if (tokenInput) tokenInput.style.display = unlocked ? 'inline-block' : 'none';
+  if (visName)    visName.style.display    = unlocked ? 'none' : 'inline-flex';
+  if (visSave)    visSave.style.display    = unlocked ? 'none' : 'inline-block';
   if (unlocked) {
     document.body.classList.add('admin-mode');
     document.body.classList.remove('readonly');
     const saved = localStorage.getItem('cbsg-gh-token');
     if (saved && tokenInput) tokenInput.value = saved;
-    const gp = document.getElementById('cbsg-guest-panel');
-    if (gp) gp.style.display = 'none';
   } else {
     document.body.classList.remove('admin-mode');
     document.body.classList.add('readonly');
@@ -124,68 +128,145 @@ function saveWelcomeName() {
   localStorage.setItem('cbsg-guest-welcomed', 'true');
   const modal = document.getElementById('cbsg-welcome-modal');
   if (modal) modal.remove();
-  injectGuestPanel();
+  refreshVisitorBarName();
 }
 
 function checkFirstVisit() {
   if (isAdminUnlocked()) return;
   const welcomed = localStorage.getItem('cbsg-guest-welcomed');
-  if (!welcomed) showWelcomeModal(); else injectGuestPanel();
+  if (!welcomed) showWelcomeModal(); else refreshVisitorBarName();
 }
 
-function getGuestPageKey() {
-  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\/?/, '').replace(/\.html$/, '') || 'index';
-  return 'cbsg-guest-' + path;
+
+/* ------------------------------------------------------------
+   VISITOR FLOW (top bar, no floating panel)
+   - Welcome modal captures name on first visit
+   - Top bar shows 👤 name + 💾 Save My Notes when NOT admin
+   - Save reads the page's Quill + textarea notes (same fields
+     admin uses), stores them to localStorage per-page, and
+     silently emails Chris via EmailJS
+   ------------------------------------------------------------ */
+
+function refreshVisitorBarName() {
+  const el = document.getElementById('bar-visitor-name-text');
+  if (el) el.textContent = getGuestName() || 'Guest';
 }
 
-function silentEmailGuest() {
+function getCurrentNotesPlainText() {
+  // Prefer Quill contents (richer). Fall back to textarea note IDs.
+  let out = '';
   try {
-    const notesEl = document.getElementById('cbsg-guest-textarea');
-    const nameEl  = document.getElementById('cbsg-guest-name');
-    if (!notesEl) return;
-    const notes = notesEl.value.trim();
-    if (notes.length < 5) return;
-    const name     = (nameEl ? nameEl.value.trim() : '') || getGuestName() || 'Guest';
+    Object.entries(quillInstances || {}).forEach(([id, quill]) => {
+      const txt = (quill.getText() || '').trim();
+      if (txt) out += `[${id}]\n${txt}\n\n`;
+    });
+  } catch(e) {}
+  if (!out) {
+    const ids = window.PAGE_NOTE_IDS || [];
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && (el.value || '').trim()) out += `[${id}]\n${el.value.trim()}\n\n`;
+    });
+  }
+  return out.trim();
+}
+
+function silentEmailVisitor(plainText) {
+  try {
+    if (!plainText || plainText.length < 5) return;
+    const name     = getGuestName() || 'Guest';
     const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
-    const doSend = () => { try { emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, { name, from_email: '(not provided)', page_name: pageName, message: notes }).catch(() => {}); } catch(e) {} };
+    const doSend = () => {
+      try {
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          name,
+          from_email: '(not provided)',
+          page_name: pageName,
+          message: plainText
+        }).catch(() => {});
+      } catch(e) {}
+    };
     if (typeof emailjs !== 'undefined') { doSend(); }
-    else { let a = 0; const r = setInterval(() => { a++; if (typeof emailjs !== 'undefined') { clearInterval(r); doSend(); } else if (a > 10) clearInterval(r); }, 500); }
+    else {
+      let a = 0;
+      const r = setInterval(() => {
+        a++;
+        if (typeof emailjs !== 'undefined') { clearInterval(r); doSend(); }
+        else if (a > 10) clearInterval(r);
+      }, 500);
+    }
   } catch(e) {}
 }
 
-function saveGuestNotes() {
-  const notesEl = document.getElementById('cbsg-guest-textarea');
-  const nameEl  = document.getElementById('cbsg-guest-name');
-  if (!notesEl) return;
-  localStorage.setItem(getGuestPageKey(), notesEl.value);
-  if (nameEl && nameEl.value.trim()) localStorage.setItem('cbsg-guest-name', nameEl.value.trim());
-  const btn = document.getElementById('cbsg-guest-save-btn');
-  if (btn) { btn.textContent = '✓ Saved'; btn.style.background = '#2E6B0E'; btn.style.color = 'white'; setTimeout(() => { btn.textContent = 'Save My Notes'; btn.style.background = '#FFD700'; btn.style.color = '#1F3864'; }, 1800); }
-  silentEmailGuest();
+function saveVisitorNotes() {
+  // 1) Persist Quill contents locally (same keys admin uses)
+  try { saveAllQuillNotes(); } catch(e) {}
+  // 2) Persist textarea note IDs locally
+  (window.PAGE_NOTE_IDS || []).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) localStorage.setItem('cbsg-' + id, el.value);
+  });
+  // 3) Silently email Chris a plain-text snapshot
+  const body = getCurrentNotesPlainText();
+  silentEmailVisitor(body);
+  // 4) Button feedback
+  const btn = document.getElementById('bar-visitor-save');
+  if (btn) {
+    const original = btn.innerHTML;
+    btn.innerHTML = '✓ Saved';
+    btn.style.background = '#2E6B0E';
+    btn.style.color = 'white';
+    btn.style.borderColor = '#90EE90';
+    setTimeout(() => {
+      btn.innerHTML = original;
+      btn.style.background = '#FFD700';
+      btn.style.color = '#1F3864';
+      btn.style.borderColor = '#FFD700';
+    }, 1800);
+  }
+  setStatus('📝 Notes saved to this browser.', 'ok');
 }
 
-function injectGuestPanel() {
-  if (isAdminUnlocked()) return;
-  if (document.getElementById('cbsg-guest-panel')) return;
-  const savedNotes = localStorage.getItem(getGuestPageKey()) || '';
-  const savedName  = getGuestName();
-  const panel = document.createElement('div');
-  panel.id = 'cbsg-guest-panel';
-  panel.style.cssText = 'position:fixed;bottom:0;right:0;width:310px;background:#1F3864;border-top:2px solid #FFD700;border-left:2px solid #FFD700;border-radius:8px 0 0 0;font-family:Arial,sans-serif;z-index:1000;box-shadow:-4px -4px 16px rgba(0,0,0,0.3);';
-  const safeName  = savedName.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
-  const safeNotes = savedNotes.replace(/</g,'&lt;').replace(/&/g,'&amp;');
-  panel.innerHTML = `<div id="cbsg-guest-header" onclick="toggleGuestPanel()" style="display:flex;align-items:center;justify-content:space-between;padding:8px 14px;cursor:pointer;user-select:none;"><span style="font-size:12px;font-weight:bold;color:#FFD700;letter-spacing:0.04em;">📝 My Notes</span><span id="cbsg-guest-chevron" style="font-size:10px;color:rgba(255,255,255,0.5);">▲</span></div><div id="cbsg-guest-body" style="padding:0 12px 12px;"><input id="cbsg-guest-name" type="text" placeholder="Your name (optional)" value="${safeName}" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:5px 8px;font-size:11px;margin-bottom:6px;font-family:Arial,sans-serif;" oninput="localStorage.setItem('cbsg-guest-name',this.value)"><textarea id="cbsg-guest-textarea" placeholder="Add your thoughts, questions, or reflections on this page..." style="width:100%;box-sizing:border-box;height:110px;resize:vertical;background:rgba(255,255,255,0.08);color:white;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:7px 8px;font-size:12px;font-family:Arial,sans-serif;line-height:1.5;margin-bottom:8px;" oninput="localStorage.setItem('${getGuestPageKey()}',this.value)">${safeNotes}</textarea><button id="cbsg-guest-save-btn" style="width:100%;background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:7px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">Save My Notes</button></div>`;
-  document.body.appendChild(panel);
-  document.getElementById('cbsg-guest-save-btn').addEventListener('click', saveGuestNotes);
-}
+function injectVisitorBarItems() {
+  const bar = document.getElementById('github-bar');
+  if (!bar) return;
+  if (document.getElementById('bar-visitor-name') || document.getElementById('bar-visitor-save')) return;
 
-let guestPanelOpen = true;
-function toggleGuestPanel() {
-  const body    = document.getElementById('cbsg-guest-body');
-  const chevron = document.getElementById('cbsg-guest-chevron');
-  guestPanelOpen = !guestPanelOpen;
-  if (body)    body.style.display  = guestPanelOpen ? 'block' : 'none';
-  if (chevron) chevron.textContent = guestPanelOpen ? '▲' : '▼';
+  const barRight = bar.querySelector('.bar-right');
+
+  // 👤 Name display
+  const nameWrap = document.createElement('span');
+  nameWrap.id = 'bar-visitor-name';
+  nameWrap.title = 'Click to change your name';
+  nameWrap.style.cssText = 'display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:4px;padding:4px 10px;font-size:11px;color:rgba(255,255,255,0.9);font-family:Arial,sans-serif;cursor:pointer;';
+  nameWrap.innerHTML = '<span style="font-size:12px;">👤</span><span id="bar-visitor-name-text" style="font-weight:bold;"></span>';
+  nameWrap.addEventListener('click', () => {
+    const current = getGuestName();
+    const next = prompt('Your name:', current);
+    if (next !== null) {
+      localStorage.setItem('cbsg-guest-name', next.trim() || 'Guest');
+      refreshVisitorBarName();
+    }
+  });
+
+  // 💾 Save My Notes
+  const saveBtn = document.createElement('button');
+  saveBtn.id = 'bar-visitor-save';
+  saveBtn.innerHTML = '💾 Save My Notes';
+  saveBtn.title = 'Save this page\'s notes to your browser';
+  saveBtn.style.cssText = 'background:#FFD700;color:#1F3864;border:1px solid #FFD700;border-radius:4px;padding:5px 12px;font-size:11px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;white-space:nowrap;';
+  saveBtn.addEventListener('click', saveVisitorNotes);
+
+  // Insert before .bar-right so they sit with the other left-of-right-section items
+  if (barRight) {
+    bar.insertBefore(nameWrap, barRight);
+    bar.insertBefore(saveBtn,  barRight);
+  } else {
+    bar.appendChild(nameWrap);
+    bar.appendChild(saveBtn);
+  }
+
+  refreshVisitorBarName();
 }
 
 function getCompleteKey() {
@@ -704,6 +785,8 @@ document.addEventListener('DOMContentLoaded', () => {
   injectMobileOverlay();
   markActivePage();
   injectBarExtras();
+  injectVisitorBarItems();
+  applyAdminUI();
   injectCompleteButton();
   startTimer();
   updateVersionTimestamp();
