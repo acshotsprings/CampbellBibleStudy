@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bibliography — Prophetic Fiction — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .bib-nav { display:flex; flex-wrap:wrap; gap:10px; margin:14px 0 24px; }
+    .bib-nav a { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:6px; text-decoration:none; font-family:Arial,sans-serif; font-size:13px; font-weight:bold; border:1px solid #d0dce8; background:#f9fbfd; color:#2E75B6; transition:all 0.15s; }
+    .bib-nav a:hover { background:#EBF4FC; border-color:#2E75B6; }
+    .bib-nav a.current { background:#1F3864; color:#FFD700; border-color:#1F3864; }
+    .bib-nav .back-link { margin-left:auto; color:#888; background:transparent; border-color:transparent; }
+    .bib-nav .back-link:hover { color:#1F3864; background:transparent; }
+
+    .author-block { margin:20px 0; border:1px solid #d0dce8; border-radius:8px; overflow:hidden; }
+    .author-toggle { display:flex; align-items:center; gap:14px; padding:14px 18px; cursor:pointer; user-select:none; transition:filter 0.15s; }
+    .author-toggle:hover { filter:brightness(1.08); }
+    .author-avatar { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; border:2px solid currentColor; }
+    .author-meta { flex:1; }
+    .author-name  { font-size:15px; font-weight:bold; font-family:Georgia,serif; }
+    .author-sub   { font-size:11px; font-family:Arial,sans-serif; margin-top:2px; opacity:0.7; }
+    .author-count { font-size:10px; font-family:Arial,sans-serif; opacity:0.5; margin-top:1px; }
+    .author-arrow { font-size:11px; color:#aaa; transition:transform 0.2s; flex-shrink:0; }
+    .author-arrow.open { transform:rotate(90deg); color:#FFD700; }
+    .author-body { display:none; border-top:1px solid #eef1f5; }
+    .author-body.open { display:block; }
+    .author-desc { padding:12px 18px; font-size:13px; color:#555; font-family:Arial,sans-serif; line-height:1.7; background:#f9fbfd; border-bottom:1px solid #eef1f5; }
+
+    .books-section-label { font-size:9px; font-weight:bold; font-family:Arial,sans-serif; text-transform:uppercase; letter-spacing:0.08em; padding:10px 18px 4px; color:#888; background:#f9fbfd; border-bottom:1px solid #eef1f5; }
+
+    .book-item { border-bottom:1px solid #eef1f5; }
+    .book-item:last-child { border-bottom:none; }
+    .book-toggle { display:flex; align-items:center; gap:10px; padding:11px 18px; cursor:pointer; transition:background 0.15s; user-select:none; }
+    .book-toggle:hover { background:#f7f9fc; }
+
+    .book-read-wrap { flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:2px; }
+    .book-read-wrap input[type=checkbox] { width:16px; height:16px; cursor:pointer; accent-color:#2E6B0E; }
+    .book-read-wrap .rl { font-size:8px; font-family:Arial,sans-serif; color:#bbb; text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap; }
+    .book-read-wrap.done .rl { color:#2E6B0E; font-weight:bold; }
+
+    .book-icon { font-size:15px; flex-shrink:0; }
+    .book-info { flex:1; min-width:0; }
+    .book-title { font-size:13px; font-weight:bold; color:#1F3864; font-family:Georgia,serif; line-height:1.4; }
+    .book-year-type { font-size:11px; color:#888; font-family:Arial,sans-serif; margin-top:1px; }
+    .book-modules-inline { font-size:11px; color:#2E75B6; font-family:Arial,sans-serif; font-style:italic; }
+    .book-arrow { font-size:10px; color:#ccc; transition:transform 0.2s; flex-shrink:0; }
+    .book-arrow.open { transform:rotate(90deg); color:#2E75B6; }
+
+    .book-body { display:none; padding:0 18px 16px 18px; background:#fafbfd; }
+    .book-body.open { display:block; }
+    .book-desc { font-size:12px; color:#555; font-family:Arial,sans-serif; line-height:1.7; margin:10px 0 10px; }
+
+    .book-dates { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; background:#f0f4ff; border:1px solid #d0dce8; border-radius:6px; padding:8px 12px; margin-bottom:10px; }
+    .bdf { display:flex; flex-direction:column; gap:2px; }
+    .bdl { font-size:9px; font-weight:bold; color:#888; text-transform:uppercase; letter-spacing:0.06em; font-family:Arial,sans-serif; }
+    .bdi { border:none; border-bottom:1px solid #bbb; background:transparent; font-size:12px; color:#1F3864; font-family:Arial,sans-serif; padding:2px 0; width:105px; cursor:pointer; }
+    .bdi:focus { outline:none; border-bottom-color:#1F3864; }
+    .bdn { font-size:12px; color:#555; font-family:Arial,sans-serif; }
+    .reading-note { font-size:12px; color:#3B5E1A; font-family:Arial,sans-serif; background:#F4F8EE; border:1px solid #6B8E3A; border-radius:4px; padding:8px 12px; margin-bottom:10px; font-style:italic; }
+    .reading-note::before { content:"📝 Your note: "; font-weight:bold; font-style:normal; }
+
+    .audible-btn { display:inline-flex; align-items:center; gap:6px; background:#FF9900; color:#1a1a1a; text-decoration:none; padding:6px 14px; border-radius:4px; font-size:12px; font-family:Arial,sans-serif; font-weight:bold; margin-top:2px; margin-right:6px; transition:background 0.15s; }
+    .audible-btn:hover { background:#e68a00; }
+    .audible-btn-sm { display:inline-flex; align-items:center; gap:5px; background:rgba(255,153,0,0.15); color:#cc7a00; text-decoration:none; padding:4px 10px; border-radius:4px; font-size:11px; font-family:Arial,sans-serif; font-weight:bold; border:1px solid rgba(255,153,0,0.4); transition:all 0.15s; white-space:nowrap; }
+    .audible-btn-sm:hover { background:#FF9900; color:#1a1a1a; }
+    .audible-author-btn { display:inline-flex; align-items:center; gap:6px; background:transparent; color:rgba(255,255,255,0.7); text-decoration:none; padding:5px 12px; border-radius:4px; font-size:11px; font-family:Arial,sans-serif; font-weight:bold; border:1px solid rgba(255,255,255,0.3); transition:all 0.15s; white-space:nowrap; }
+    .audible-author-btn:hover { background:rgba(255,153,0,0.2); color:#FF9900; border-color:#FF9900; }
+
+    .chapter-list { margin:8px 0 10px; }
+    .chapter-label { font-size:9px; font-weight:bold; font-family:Arial,sans-serif; text-transform:uppercase; letter-spacing:0.07em; color:#aaa; margin-bottom:6px; }
+    .chapter-item { display:flex; align-items:flex-start; gap:8px; font-size:12px; font-family:Arial,sans-serif; color:#444; padding:3px 0; border-bottom:1px dotted #e8edf5; line-height:1.5; }
+    .chapter-item:last-child { border-bottom:none; }
+    .cn { color:#2E75B6; font-weight:bold; flex-shrink:0; min-width:24px; }
+    .ca { color:#1F3864; font-weight:bold; }
+    .cb { font-size:9px; font-weight:bold; background:#FFD700; color:#1F3864; padding:1px 6px; border-radius:8px; font-family:Arial,sans-serif; margin-left:4px; white-space:nowrap; }
+
+    .in-progress-badge { font-size:9px; font-weight:bold; background:#2E75B6; color:white; padding:2px 6px; border-radius:8px; font-family:Arial,sans-serif; display:inline-block; margin-left:4px; vertical-align:middle; }
+    .completed-badge { font-size:9px; font-weight:bold; background:#2E6B0E; color:white; padding:2px 6px; border-radius:8px; font-family:Arial,sans-serif; display:inline-block; margin-left:4px; vertical-align:middle; }
+  </style>
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <button id="btn-timestamp" class="btn-timestamp" title="Insert timestamp at cursor in your notes" onclick="insertTimestamp()">🕒 Timestamp</button>
+  <button id="btn-log-time" class="btn-timestamp" title="Insert study time summary at cursor in your notes" onclick="insertStudyTime()">📚 Log Study Time</button>
+  <span id="study-timer-display" class="study-timer-display"></span>
+  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: March 27, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version">Version: April 19, 2026</span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <span class="page-tag">My Study · Bibliography</span>
+  <h1 class="page-title">Bibliography — Prophetic Fiction</h1>
+  <p class="body">Prophetic fiction — the Marcus Ryker series, the Last Jihad series, the Left Behind series, and standalone historical fiction. Stories that dramatize Ezekiel’s prophecy, the Gog-Magog coalition, the Rapture, and the Tribulation. Click any author or book to expand. Checkmarks and dates save automatically.</p>
+
+  <div class="bib-nav">
+    <a href="bibliography-prophecy.html">📖 Prophecy &amp; Eschatology</a>
+    <a href="bibliography-calendar.html">📅 Biblical Calendar &amp; Feasts</a>
+    <a href="bibliography-fiction.html" class="current">📗 Prophetic Fiction</a>
+    <a href="resources.html" class="back-link">← Back to Reference Library</a>
+  </div>
+
+<!-- ── JOEL C. ROSENBERG ── -->
+  <div class="author-block">
+    <div class="author-toggle" onclick="toggleBlock('rosenberg')" style="background:linear-gradient(135deg,#1F3864,#2E4F8A);">
+      <div class="author-avatar" style="color:#FFD700;border-color:#FFD700;">✍️</div>
+      <div class="author-meta">
+        <div class="author-name" style="color:#FFD700;">Joel C. Rosenberg</div>
+        <div class="author-sub" style="color:rgba(255,255,255,0.7);">Non-Fiction · Prophetic Fiction</div>
+        <div class="author-count" style="color:rgba(255,255,255,0.4);">Click to expand · Audible links on every book</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        <a class="audible-author-btn" href="https://www.audible.com/author/Joel-C-Rosenberg/B001IODPM2" target="_blank" onclick="event.stopPropagation()">🎧 All on Audible</a>
+        <div class="author-arrow" id="arrow-rosenberg" style="color:rgba(255,255,255,0.4);">▶</div>
+      </div>
+    </div>
+    <div class="author-body" id="block-rosenberg">
+      <div class="author-desc">Former communications advisor to Benjamin Netanyahu and other Israeli and U.S. leaders. His non-fiction traces Ezekiel 38–39 onto modern geopolitics — Russia, Iran, Turkey, and the coalition forming against Israel. His prophetic fiction has repeatedly anticipated real geopolitical events before they occurred. Core source for Module 9 and the Gog-Magog coalition in the Prophecy Checklist.</div>
+
+      <div class="books-section-label">Prophetic Fiction — Marcus Ryker Series</div>
+
+      <!-- PERSIAN GAMBLE -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('persian-gamble')">
+          <div class="book-read-wrap" id="wrap-rl-persian-gamble" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-persian-gamble" onchange="saveReadState('persian-gamble')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Persian Gamble</div>
+            <div class="book-year-type">2019 · Fiction — Marcus Ryker #2</div>
+            <div class="book-modules-inline">→ Checklist Phase 1 (Iran), current events 2026</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Persian-Gamble-Audiobook/1491587873" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-persian-gamble">▶</div>
+        </div>
+        <div class="book-body" id="book-persian-gamble">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-persian-gamble" placeholder="" onchange="saveDateState('persian-gamble','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-persian-gamble" placeholder="" onchange="saveDateState('persian-gamble','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Iran on the brink of nuclear war. Russia, Iran, and North Korea forming a deadly nuclear alliance. Eerily relevant to the 2026 U.S.-Israel-Iran conflict. Read alongside current news for prophetic context.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Persian-Gamble-Audiobook/1491587873" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- JERUSALEM ASSASSIN -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('jerusalem-assassin')">
+          <div class="book-read-wrap" id="wrap-rl-jerusalem-assassin" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-jerusalem-assassin" onchange="saveReadState('jerusalem-assassin')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Jerusalem Assassin</div>
+            <div class="book-year-type">2020 · Fiction — Marcus Ryker #3</div>
+            <div class="book-modules-inline">→ Module 7 (Antichrist), Module 1 (Daniel's 70 Weeks)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Jerusalem-Assassin-Audiobook/1491534893" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-jerusalem-assassin">▶</div>
+        </div>
+        <div class="book-body" id="book-jerusalem-assassin">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-jerusalem-assassin" placeholder="" onchange="saveDateState('jerusalem-assassin','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-jerusalem-assassin" placeholder="" onchange="saveDateState('jerusalem-assassin','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Plot to assassinate the U.S. President during a historic peace summit in Jerusalem. Engages the Israel-peace-covenant theme relevant to Daniel 9:27 and the Antichrist's future peace deal.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Jerusalem-Assassin-Audiobook/1491534893" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- BEIRUT PROTOCOL -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('beirut-protocol')">
+          <div class="book-read-wrap" id="wrap-rl-beirut-protocol" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-beirut-protocol" onchange="saveReadState('beirut-protocol')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Beirut Protocol</div>
+            <div class="book-year-type">2021 · Fiction — Marcus Ryker #4</div>
+            <div class="book-modules-inline">→ Module 9 (Lebanon/Syria in Gog-Magog coalition)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Beirut-Protocol-Audiobook/1496456580" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-beirut-protocol">▶</div>
+        </div>
+        <div class="book-body" id="book-beirut-protocol">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-beirut-protocol" placeholder="" onchange="saveDateState('beirut-protocol','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-beirut-protocol" placeholder="" onchange="saveDateState('beirut-protocol','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Kidnapping at the Lebanese border draws America and Israel toward war with Iran and Hezbollah. Engages northern coalition territory (Lebanon, Syria) from Ezekiel 38.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Beirut-Protocol-Audiobook/1496456580" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- LIBYAN DIVERSION -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('libyan-diversion')">
+          <div class="book-read-wrap" id="wrap-rl-libyan-diversion" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-libyan-diversion" onchange="saveReadState('libyan-diversion')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Libyan Diversion</div>
+            <div class="book-year-type">2022 · Fiction — Marcus Ryker #5</div>
+            <div class="book-modules-inline">→ Module 9 (Put/Libya coalition member)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Libyan-Diversion-Audiobook/B0BKBBQD78" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-libyan-diversion">▶</div>
+        </div>
+        <div class="book-body" id="book-libyan-diversion">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-libyan-diversion" placeholder="" onchange="saveDateState('libyan-diversion','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-libyan-diversion" placeholder="" onchange="saveDateState('libyan-diversion','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Libya (Put in Ezekiel's coalition) takes center stage. Puts narrative flesh on one of the less-discussed coalition members in Ezekiel 38:5.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Libyan-Diversion-Audiobook/B0BKBBQD78" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <div class="books-section-label">Prophetic Fiction — Last Jihad Series</div>
+
+      <!-- THE LAST JIHAD -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('last-jihad')">
+          <div class="book-read-wrap" id="wrap-rl-last-jihad" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-last-jihad" onchange="saveReadState('last-jihad')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Last Jihad</div>
+            <div class="book-year-type">2002 · Fiction — Last Jihad #1</div>
+            <div class="book-modules-inline">→ Module 9.4 (Israel oil/wealth), Sermon Log #8</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Last-Jihad-Audiobook/B002V5BV7I" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-last-jihad">▶</div>
+        </div>
+        <div class="book-body" id="book-last-jihad">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-last-jihad" placeholder="" onchange="saveDateState('last-jihad','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-last-jihad" placeholder="" onchange="saveDateState('last-jihad','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Rosenberg's debut novel — a kamikaze attack on Air Force One opens a war against Saddam Hussein and a hunt for weapons of mass destruction. Written and submitted to publishers on September 9, 2001 — two days before 9/11. The book that a Zion Oil investor picked up at Ben Gurion Airport in 2005, read on the plane, and immediately emailed CEO Jim Soltero about — directly connecting Rosenberg's fiction to the real-world Israel oil discovery story (Sermon Log #8, Module 9.4).</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Last-Jihad-Audiobook/B002V5BV7I" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- THE LAST DAYS -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('last-days')">
+          <div class="book-read-wrap" id="wrap-rl-last-days" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-last-days" onchange="saveReadState('last-days')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Last Days</div>
+            <div class="book-year-type">2003 · Fiction — Last Jihad #2</div>
+            <div class="book-modules-inline">→ Module 9 (Gog-Magog), Module 9.4 (Israel wealth)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Last-Days-Audiobook/B002V5GYAY" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-last-days">▶</div>
+        </div>
+        <div class="book-body" id="book-last-days">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-last-days" placeholder="" onchange="saveDateState('last-days','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-last-days" placeholder="" onchange="saveDateState('last-days','end',this.value)"></div>
+          </div>
+          <div class="book-desc">A Palestinian leader is assassinated just as peace talks begin. A CIA operative races to prevent all-out war. Was being published at the exact time the Zion Oil/Luskin oil discovery news broke in 2004 — mentioned by name in the April 7, 2026 audio teaching (Sermon Log #8).</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Last-Days-Audiobook/B002V5GYAY" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- THE EZEKIEL OPTION (FICTION) -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('ezekiel-fiction')">
+          <div class="book-read-wrap" id="wrap-rl-ezekiel-fiction" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-ezekiel-fiction" onchange="saveReadState('ezekiel-fiction')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Ezekiel Option <span style="font-size:10px;color:#888;">(Fiction)</span></div>
+            <div class="book-year-type">2005 · Fiction — Last Jihad #3</div>
+            <div class="book-modules-inline">→ Module 9 (Gog-Magog War — full narrative treatment)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Ezekiel-Option-Audiobook/B002V8KH78" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-ezekiel-fiction">▶</div>
+        </div>
+        <div class="book-body" id="book-ezekiel-fiction">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-ezekiel-fiction" placeholder="" onchange="saveDateState('ezekiel-fiction','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-ezekiel-fiction" placeholder="" onchange="saveDateState('ezekiel-fiction','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Russia and Iran form a military alliance and prepare to invade Israel — a fictional dramatization of Ezekiel 38–39. Rosenberg wrote this before such an alliance existed; within a year of publication, Russia and Iran signed their first major defense cooperation agreement. The most direct fictional treatment of the Gog-Magog War in this study guide.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Ezekiel-Option-Audiobook/B002V8KH78" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- THE COPPER SCROLL -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('copper-scroll')">
+          <div class="book-read-wrap" id="wrap-rl-copper-scroll" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-copper-scroll" onchange="saveReadState('copper-scroll')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Copper Scroll</div>
+            <div class="book-year-type">2006 · Fiction — Last Jihad #4</div>
+            <div class="book-modules-inline">→ Theme 2 (Dead Sea Scrolls), Module 8 (Temple treasure)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Copper-Scroll-Audiobook/B002V0QUGO" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-copper-scroll">▶</div>
+        </div>
+        <div class="book-body" id="book-copper-scroll">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-copper-scroll" placeholder="" onchange="saveDateState('copper-scroll','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-copper-scroll" placeholder="" onchange="saveDateState('copper-scroll','end',this.value)"></div>
+          </div>
+          <div class="book-desc">A real Dead Sea Scroll — the Copper Scroll — claims to reveal the hiding place of the Temple treasure from Solomon's era. A hunt for that treasure leads to a catastrophic terrorist attack. Connects to Theme 2 (Dead Sea Scrolls) and Module 8 (Temple preparations).</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Copper-Scroll-Audiobook/B002V0QUGO" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- DEAD HEAT -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('dead-heat')">
+          <div class="book-read-wrap" id="wrap-rl-dead-heat" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-dead-heat" onchange="saveReadState('dead-heat')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">Dead Heat</div>
+            <div class="book-year-type">2008 · Fiction — Last Jihad #5</div>
+            <div class="book-modules-inline">→ Module 6 (Rapture), Module 3 (Day of the Lord)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/Dead-Heat-Audiobook/B002V5BTGE" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-dead-heat">▶</div>
+        </div>
+        <div class="book-body" id="book-dead-heat">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-dead-heat" placeholder="" onchange="saveDateState('dead-heat','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-dead-heat" placeholder="" onchange="saveDateState('dead-heat','end',this.value)"></div>
+          </div>
+          <div class="book-desc">A U.S. Presidential election on the brink of apocalypse — nuclear threats, terrorism, and the Rapture itself. The most eschatologically explicit of the Last Jihad series, bringing the Rapture and Tribulation into the narrative directly.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/Dead-Heat-Audiobook/B002V5BTGE" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <div class="books-section-label">Prophetic Fiction — Other Novels</div>
+
+      <!-- THE AUSCHWITZ ESCAPE -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('auschwitz-escape')">
+          <div class="book-read-wrap" id="wrap-rl-auschwitz-escape" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-auschwitz-escape" onchange="saveReadState('auschwitz-escape')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">The Auschwitz Escape</div>
+            <div class="book-year-type">2014 · Fiction — Standalone Historical</div>
+            <div class="book-modules-inline">→ Module 2 (Israel in Prophecy — Holocaust context)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/The-Auschwitz-Escape-Audiobook/B00JNZQBP4" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-auschwitz-escape">▶</div>
+        </div>
+        <div class="book-body" id="book-auschwitz-escape">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-auschwitz-escape" placeholder="" onchange="saveDateState('auschwitz-escape','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-auschwitz-escape" placeholder="" onchange="saveDateState('auschwitz-escape','end',this.value)"></div>
+          </div>
+          <div class="book-desc">Historical fiction based on the true story of Rudolf Vrba and Alfred Wetzler — two Jewish prisoners who escaped Auschwitz in 1944 to warn the world. Provides powerful historical grounding for understanding why Israel's existence is a fulfillment of prophecy after near-annihilation.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/The-Auschwitz-Escape-Audiobook/B00JNZQBP4" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <div style="padding:12px 18px 16px;">
+        <div class="notes-box" style="margin:0;">
+          <div class="label">✏️ My Rosenberg reading log:</div>
+          <textarea class="notes-input" id="n-lib-rosenberg" placeholder="e.g. April 9, 2026 — Listened to Ezekiel Option Ch. 7 audio. Key: Gog = title not a name. Voltaire hostile witness. Five evidence streams for Russia..." style="min-height:70px;"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- ── TIM LAHAYE ── -->
+  <div class="author-block">
+    <div class="author-toggle" onclick="toggleBlock('lahaye')" style="background:linear-gradient(135deg,#8B1A1A,#B22222);">
+      <div class="author-avatar" style="color:#FFD0D0;border-color:#FFD0D0;">✍️</div>
+      <div class="author-meta">
+        <div class="author-name" style="color:#FFD0D0;">Tim LaHaye</div>
+        <div class="author-sub" style="color:rgba(255,255,255,0.7);">Non-Fiction &amp; Fiction · Bible Prophecy · Left Behind Series</div>
+        <div class="author-count" style="color:rgba(255,255,255,0.4);">Click to expand · Non-fiction &amp; fiction</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        <a class="audible-author-btn" href="https://www.audible.com/author/Tim-LaHaye/B000AQ3RJS" target="_blank" onclick="event.stopPropagation()">🎧 All on Audible</a>
+        <div class="author-arrow" id="arrow-lahaye" style="color:rgba(255,255,255,0.4);">▶</div>
+      </div>
+    </div>
+    <div class="author-body" id="block-lahaye">
+      <div class="author-desc">Co-founder of the Pre-Trib Research Center and one of the most influential prophecy teachers of the 20th century. His non-fiction studies of Ezekiel 38–39 predicted Israel's oil wealth as a precondition for the Gog-Magog invasion years before the 2003–2005 oil discoveries proved him right (Sermon Log #8, Module 9.4). His Left Behind fiction series (co-written with Jerry Jenkins) sold 65 million copies and directly inspired Joel Rosenberg to write his own prophetic fiction — including The Last Jihad.</div>
+
+      <div class="books-section-label">Fiction — Left Behind Series (with Jerry Jenkins)</div>
+
+      <!-- LEFT BEHIND -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('left-behind-1')">
+          <div class="book-read-wrap" id="wrap-rl-left-behind-1" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-left-behind-1" onchange="saveReadState('left-behind-1')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">Left Behind</div>
+            <div class="book-year-type">1995 · Fiction — Left Behind #1</div>
+            <div class="book-modules-inline">→ Module 6 (Rapture), Module 7 (Antichrist)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/Left-Behind-Audiobook/B002VA9SYO" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-left-behind-1">▶</div>
+        </div>
+        <div class="book-body" id="book-left-behind-1">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-left-behind-1" placeholder="" onchange="saveDateState('left-behind-1','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-left-behind-1" placeholder="" onchange="saveDateState('left-behind-1','end',this.value)"></div>
+          </div>
+          <div class="book-desc">The Rapture occurs and the world is thrown into chaos. Airline pilot Rayford Steele and journalist Buck Williams begin to piece together what happened. The book that launched the 16-volume series and sold 65 million copies — and directly inspired Joel Rosenberg to write The Last Jihad.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/Left-Behind-Audiobook/B002VA9SYO" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- TRIBULATION FORCE -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('tribulation-force')">
+          <div class="book-read-wrap" id="wrap-rl-tribulation-force" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-tribulation-force" onchange="saveReadState('tribulation-force')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">Tribulation Force</div>
+            <div class="book-year-type">1996 · Fiction — Left Behind #2</div>
+            <div class="book-modules-inline">→ Module 7 (Antichrist rises), Module 3 (Day of the Lord)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/Tribulation-Force-Audiobook/B002V5HGKO" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-tribulation-force">▶</div>
+        </div>
+        <div class="book-body" id="book-tribulation-force">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-tribulation-force" placeholder="" onchange="saveDateState('tribulation-force','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-tribulation-force" placeholder="" onchange="saveDateState('tribulation-force','end',this.value)"></div>
+          </div>
+          <div class="book-desc">The Tribulation Force forms as the Antichrist Nicolae Carpathia consolidates global power. A fictional dramatization of the early Tribulation period — Daniel 9:27's covenant, the rise of the one-world government, and the two witnesses of Revelation 11.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/Tribulation-Force-Audiobook/B002V5HGKO" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <!-- NICOLAE -->
+      <div class="book-item">
+        <div class="book-toggle" onclick="toggleBook('nicolae')">
+          <div class="book-read-wrap" id="wrap-rl-nicolae" onclick="event.stopPropagation()">
+            <input type="checkbox" id="rl-nicolae" onchange="saveReadState('nicolae')">
+            <span class="rl">Read</span>
+          </div>
+          <div class="book-icon">📗</div>
+          <div class="book-info">
+            <div class="book-title">Nicolae: The Rise of the Antichrist</div>
+            <div class="book-year-type">1997 · Fiction — Left Behind #3</div>
+            <div class="book-modules-inline">→ Module 7 (Antichrist profile), Module 15 (Armageddon)</div>
+          </div>
+          <a class="audible-btn-sm" href="https://www.audible.com/pd/Nicolae-Audiobook/B002V8LCWQ" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
+          <div class="book-arrow" id="arrow-nicolae">▶</div>
+        </div>
+        <div class="book-body" id="book-nicolae">
+          <div class="book-dates">
+            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-nicolae" placeholder="" onchange="saveDateState('nicolae','start',this.value)"></div>
+            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-nicolae" placeholder="" onchange="saveDateState('nicolae','end',this.value)"></div>
+          </div>
+          <div class="book-desc">War engulfs the globe as Carpathia directs a world war. A fictional treatment of the seal judgments of Revelation 6 and the Antichrist's growing military dominance in the first half of the Tribulation.</div>
+          <a class="audible-btn" href="https://www.audible.com/pd/Nicolae-Audiobook/B002V8LCWQ" target="_blank">🎧 Listen on Audible</a>
+        </div>
+      </div>
+
+      <div style="padding:12px 18px 16px;">
+        <div class="notes-box" style="margin:0;">
+          <div class="label">✏️ My LaHaye reading log:</div>
+          <textarea class="notes-input" id="n-lib-lahaye" placeholder="e.g. April 7, 2026 — Heard about LaHaye's oil prediction in Sermon #8. He wrote that if Israel found oil greater than Iran's it would change history and fulfill Ezekiel 38. Tovia Luskin proved him right in 2004..." style="min-height:70px;"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+</div>
+
+<!-- PAGE NOTE IDS -->
+<script>
+window.PAGE_NOTE_IDS = ["n-lib-rosenberg", "n-lib-lahaye"];
+</script>
+
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+<script>
+function toggleBlock(id) {
+  const body  = document.getElementById('block-' + id);
+  const arrow = document.getElementById('arrow-' + id);
+  if (!body || !arrow) return;
+  const open = body.classList.toggle('open');
+  arrow.classList.toggle('open', open);
+}
+
+function toggleBook(id) {
+  const body  = document.getElementById('book-' + id);
+  const arrow = document.getElementById('arrow-' + id);
+  if (!body || !arrow) return;
+  const open = body.classList.toggle('open');
+  arrow.classList.toggle('open', open);
+}
+
+function saveReadState(id) {
+  const cb   = document.getElementById('rl-' + id);
+  const wrap = document.getElementById('wrap-rl-' + id);
+  if (!cb) return;
+  localStorage.setItem('cbsg-rl-read-' + id, cb.checked ? 'true' : 'false');
+  if (wrap) wrap.classList.toggle('done', cb.checked);
+}
+
+function saveDateState(id, field, val) {
+  localStorage.setItem('cbsg-rl-' + field + '-' + id, val);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const books = ["persian-gamble", "jerusalem-assassin", "beirut-protocol", "libyan-diversion", "last-jihad", "last-days", "ezekiel-fiction", "copper-scroll", "dead-heat", "auschwitz-escape", "left-behind-1", "tribulation-force", "nicolae"];
+
+  books.forEach(id => {
+    const cb   = document.getElementById('rl-' + id);
+    const wrap = document.getElementById('wrap-rl-' + id);
+    const saved = localStorage.getItem('cbsg-rl-read-' + id);
+    if (cb && saved !== null) {
+      cb.checked = saved === 'true';
+      if (wrap) wrap.classList.toggle('done', cb.checked);
+    } else if (cb && cb.checked) {
+      localStorage.setItem('cbsg-rl-read-' + id, 'true');
+      if (wrap) wrap.classList.add('done');
+    }
+
+    ['start','end'].forEach(field => {
+      const el = document.getElementById('rl-' + field + '-' + id);
+      if (!el) return;
+      const savedDate = localStorage.getItem('cbsg-rl-' + field + '-' + id);
+      if (savedDate) el.value = savedDate;
+    });
+  });
+});
+</script>
+
+</body>
+</html>
