@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hearing God's Voice — Deep Dive — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:260px; font-family:Arial,sans-serif; font-size:13px; background:#fff; }
+    .ql-editor { min-height:260px; padding:10px 12px; }
+
+    /* Page-specific styling */
+    .hgv-hero {
+      background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+      border-left: 6px solid #FFB300;
+      border-radius: 8px;
+      padding: 20px 22px;
+      margin: 20px 0 28px 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .hgv-hero .hgv-star {
+      font-size: 22px;
+      color: #B77900;
+      font-weight: bold;
+      margin-bottom: 6px;
+      font-family: Arial, sans-serif;
+      letter-spacing: 0.02em;
+    }
+    .hgv-hero h2 {
+      margin: 0 0 10px 0;
+      color: #6B4500;
+      font-family: Arial, sans-serif;
+      font-size: 20px;
+    }
+    .hgv-hero p {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #4A3200;
+      font-family: Arial, sans-serif;
+    }
+    .hgv-hero p:last-child { margin-bottom: 0; }
+    .hgv-hero em {
+      color: #6B4500;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    .story-box {
+      background: #FFFDF7;
+      border: 1px solid #E8D9A8;
+      border-left: 4px solid #C9A227;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 18px 0;
+    }
+    .story-box .story-label {
+      font-size: 11px;
+      font-weight: bold;
+      color: #8B6914;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .story-box .story-p {
+      font-size: 13px;
+      line-height: 1.65;
+      color: #333;
+      margin: 0 0 10px 0;
+      font-family: Georgia, serif;
+    }
+    .story-box .story-p:last-child { margin-bottom: 0; }
+
+    .method-card {
+      background: #fff;
+      border: 1px solid #d9d9d9;
+      border-left: 4px solid #1F3864;
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 12px 0;
+    }
+    .method-card .method-title {
+      font-weight: bold;
+      color: #1F3864;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .method-card .method-body {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+    }
+    .method-card .method-verse {
+      font-size: 12px;
+      color: #666;
+      font-style: italic;
+      margin-top: 6px;
+      display: block;
+    }
+
+    .discern-box {
+      background: #F4F8EE;
+      border: 2px solid #6B8E3A;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .discern-box .discern-title {
+      font-weight: bold;
+      color: #3B5E1A;
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+    .discern-box .discern-q {
+      font-size: 13px;
+      line-height: 1.55;
+      color: #2D4A12;
+      margin: 6px 0;
+      padding-left: 18px;
+      text-indent: -14px;
+    }
+
+    .caution-box {
+      background: #FFF3E0;
+      border: 1px solid #E8B266;
+      border-left: 4px solid #C87F00;
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 16px 0;
+    }
+    .caution-box .caution-title {
+      font-weight: bold;
+      color: #8B4500;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .caution-box p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #333;
+      margin: 0 0 8px 0;
+    }
+    .caution-box p:last-child { margin-bottom: 0; }
+
+    .living-journal-banner {
+      background: linear-gradient(90deg, #FFB300 0%, #FFD54F 100%);
+      color: #4A3200;
+      padding: 14px 20px;
+      border-radius: 8px 8px 0 0;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 30px;
+    }
+    .living-journal-banner small {
+      display: block;
+      font-size: 11px;
+      font-weight: normal;
+      font-style: italic;
+      color: #6B4500;
+      margin-top: 3px;
+    }
+    .living-journal-box {
+      background: #FFFDF7;
+      border: 1px solid #E8D9A8;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      padding: 18px;
+    }
+
+    .scripture-anchor {
+      background: #EBF4FC;
+      border-left: 4px solid #2E75B6;
+      padding: 12px 16px;
+      margin: 14px 0;
+      font-style: italic;
+      color: #1F3864;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      line-height: 1.6;
+      border-radius: 0 4px 4px 0;
+    }
+    .scripture-anchor .ref {
+      display: block;
+      font-style: normal;
+      font-weight: bold;
+      color: #2E75B6;
+      font-size: 11px;
+      margin-top: 6px;
+      font-family: Arial, sans-serif;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: April 20, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version">Version: April 20, 2026</span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="DeepDives.html" style="display:inline-block;margin-bottom:16px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Deep Dives</a>
+
+  <span class="page-tag">🔬 Deep Dive · Spiritual Formation · Living Study</span>
+  <h1 class="page-title">⭐ Hearing God's Voice</h1>
+  <p class="page-subtitle" style="font-style:italic;">Am I listening to God — or am I just hearing what I want to hear? A living study that will never be complete, because God has not finished speaking.</p>
+
+  <div class="hgv-hero">
+    <div class="hgv-star">⭐ Core Conviction</div>
+    <h2>This is not a module to finish. It is a discipline to live.</h2>
+    <p>Every other page on this site can be "marked complete." This one cannot — and should not. Hearing God's voice is the work of a lifetime. The Father has been speaking since Genesis 1, and He has not stopped. The question is never <em>Is He speaking?</em> The question is always <em>Am I listening — and how do I tell His voice from my own?</em></p>
+    <p>This page exists to help our family learn that skill together. Scripture is the foundation. Prayer is the posture. The Holy Spirit is the teacher. Circumstances, counsel, and conviction are the confirmations. And the journal at the bottom is where we keep a record of the moments — big and small — when we sensed God's voice and learned something about how He speaks.</p>
+  </div>
+
+  <h2 class="section-title">Why This Study — Right Now</h2>
+
+  <div class="story-box">
+    <div class="story-label">Real Life · April 20, 2026</div>
+    <p class="story-p">This morning Kim and I had a hard conversation about the insurance policy. MassMutual came back with Table F — approved, but rated. The numbers are what they are. And underneath her words I could hear the real question: <em>with WinChoice income being what it is right now, is this the right time?</em></p>
+    <p class="story-p">I walked away from that conversation wrestling with something bigger than the policy itself. <strong>Am I sensing God's will here, or am I just pushing my own agenda and calling it faith?</strong> That is not a small question. It is the question.</p>
+    <p class="story-p">Within the hour, Deborah Pitts's appointment cancelled. Before I could even finish processing that, the door with John Herron closed. Two opportunities I was counting on — gone within an hour of that conversation.</p>
+    <p class="story-p">Now — I don't want to read tea leaves. Circumstances are not Scripture. A cancelled appointment is not a burning bush. But when I stack it together with what Kim said, with the timing, with the quiet pull I've been feeling to <em>slow down and listen</em>, I have to ask honestly: <strong>is God speaking through this? Or am I pattern-matching my own anxiety?</strong></p>
+    <p class="story-p" style="color:#1F3864;font-weight:bold;">That's why this page exists. I need to get better at this. My family needs to get better at this. And the only way to get better is to study how God has actually spoken — in Scripture, in the lives of His people, and in our own story — and then practice listening.</p>
+  </div>
+
+  <div class="cross-ref-box">
+    <div class="title">🔗 Cross-References</div>
+    <div class="line">• Convictions page — this study feeds directly into ongoing spiritual formation</div>
+    <div class="line">• Journal (April 20, 2026) — the Kim conversation and the two closed doors</div>
+    <div class="line">• Theme 1 Module 11 (False Prophets) — discerning what is NOT God's voice in the last days</div>
+    <div class="line">• Galatians 5:22–23 — Fruits of the Spirit as a discernment filter</div>
+  </div>
+
+  <h2 class="section-title">How God Speaks — Biblical Methods</h2>
+
+  <p class="body">Scripture shows God communicating with His people through multiple means. No single method is "the" way God speaks — He uses whatever is needed to get His children's attention. But He is also consistent. He never contradicts Himself, He never contradicts His written Word, and He always speaks in ways that can be tested.</p>
+
+  <div class="method-card">
+    <div class="method-title">1. Scripture — The Primary, Non-Negotiable Voice</div>
+    <p class="method-body">Every other method is measured against this one. The Bible is God's revealed, sufficient, inspired Word. If an impression, feeling, dream, or piece of counsel contradicts Scripture, it is not from God — full stop. Reading the Bible is not a religious duty; it is how we train our ears to recognize His voice.</p>
+    <span class="method-verse">2 Timothy 3:16–17 · Hebrews 4:12 · Psalm 119:105</span>
+  </div>
+
+  <div class="method-card">
+    <div class="method-title">2. Prayer — Two-Way Conversation</div>
+    <p class="method-body">Prayer is not a monologue. It is a conversation where we speak AND listen. Much of learning to hear God is learning to stop talking long enough for Him to answer. Silence is part of the practice.</p>
+    <span class="method-verse">1 Samuel 3:9–10 · Psalm 46:10 · Habakkuk 2:1</span>
+  </div>
+
+  <div class="method-card">
+    <div class="method-title">3. The Holy Spirit's Inner Witness</div>
+    <p class="method-body">Believers have the Holy Spirit dwelling in them. He convicts of sin, confirms truth, gives peace or unease, and guides into all truth. This "still, small voice" is often quiet — it rarely shouts. It shows up as a nudge, a check in the spirit, a sudden clarity.</p>
+    <span class="method-verse">John 14:26 · John 16:13 · Romans 8:14–16 · 1 Kings 19:11–12</span>
+  </div>
+
+  <div class="method-card">
+    <div class="method-title">4. Circumstances — Open and Closed Doors</div>
+    <p class="method-body">God orders providence. Opportunities open. Doors close. Paths get blocked. Circumstances alone are not enough — Satan can also arrange circumstances — but when lined up with Scripture, prayer, and counsel, they become part of God's confirmation. Paul was stopped from going to Bithynia (Acts 16:7) before being redirected to Macedonia.</p>
+    <span class="method-verse">Acts 16:6–10 · Proverbs 16:9 · Revelation 3:7–8</span>
+  </div>
+
+  <div class="method-card">
+    <div class="method-title">5. Godly Counsel — The Body of Christ</div>
+    <p class="method-body">God often speaks through mature believers who know us well. Pastors, elders, godly spouses, trusted friends — these are gifts of confirmation. If every wise person in our life is saying the same thing, we should probably listen. Multitude of counselors matters.</p>
+    <span class="method-verse">Proverbs 11:14 · Proverbs 15:22 · Proverbs 27:17</span>
+  </div>
+
+  <div class="method-card">
+    <div class="method-title">6. Dreams, Visions & Direct Revelation</div>
+    <p class="method-body">God used dreams and visions throughout Scripture — Joseph, Daniel, Peter, Paul, John on Patmos. These still happen, but they are rarer and must be tested against Scripture with extra rigor. A "dream from God" that contradicts the Bible is not from God.</p>
+    <span class="method-verse">Joel 2:28 · Acts 2:17 · Numbers 12:6 · Job 33:14–16</span>
+  </div>
+
+  <div class="method-card">
+    <div class="method-title">7. Peace (or the Absence of It)</div>
+    <p class="method-body">Paul says "let the peace of Christ rule in your hearts" (Col 3:15). The word "rule" is an athletic term — to act as umpire. When making a decision, unsettled anxiety that will not lift despite prayer is often the Spirit's way of saying "not yet" or "not this." Settled peace, even in hard circumstances, is often His yes.</p>
+    <span class="method-verse">Colossians 3:15 · Philippians 4:6–7 · Isaiah 26:3</span>
+  </div>
+
+  <div class="method-card">
+    <div class="method-title">8. Conviction of Sin</div>
+    <p class="method-body">When we feel the weight of something we've done (or failed to do), and that weight doesn't just feel like guilt but like a specific, clear, actionable call to repent — that is the Spirit. Worldly sorrow condemns; godly sorrow leads to repentance and life.</p>
+    <span class="method-verse">2 Corinthians 7:10 · John 16:8 · Psalm 51</span>
+  </div>
+
+  <h2 class="section-title">Distinguishing My Desires From God's Will</h2>
+
+  <p class="body">This is the hardest part. I can want something badly enough to convince myself God wants it too. I can read "signs" into coincidences. I can hear my own preferences in a voice that sounds like the Spirit's. Every honest believer has done this. The goal is not to never get it wrong — the goal is to build habits that catch it when we do.</p>
+
+  <div class="discern-box">
+    <div class="discern-title">🧭 A Discernment Framework — Seven Questions</div>
+    <div class="discern-q"><strong>1. Does it align with Scripture?</strong> Not just "is it not forbidden" — does it fit the character, priorities, and heart of God revealed in the Bible?</div>
+    <div class="discern-q"><strong>2. Does it bear the fruit of the Spirit?</strong> Love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control (Gal 5:22–23). Or does it come wrapped in fear, urgency, pride, or anxiety?</div>
+    <div class="discern-q"><strong>3. Have I actually prayed about it — or just strategized?</strong> Real prayer includes silence, surrender, and the honest willingness to hear "no."</div>
+    <div class="discern-q"><strong>4. Am I willing to be wrong?</strong> If I am only willing to hear one answer, I am not really listening — I am waiting to be validated.</div>
+    <div class="discern-q"><strong>5. What do the wise people in my life say?</strong> Especially my spouse, pastor, and long-trusted friends. Am I listening to them, or looking for someone who will agree with me?</div>
+    <div class="discern-q"><strong>6. What is the Spirit's witness in me?</strong> Settled peace, or unsettled striving? Godly conviction, or self-justification?</div>
+    <div class="discern-q"><strong>7. Am I willing to wait?</strong> God is never in a hurry. If I have to force it, rush it, or push past warnings to make it happen, that is usually flesh, not Spirit.</div>
+  </div>
+
+  <div class="caution-box">
+    <div class="caution-title">⚠️ Red Flags That It May Not Be God</div>
+    <p>• I'm getting a "yes" only because I haven't really asked.</p>
+    <p>• The only voice agreeing is my own.</p>
+    <p>• I'm using isolated verses to justify a direction Scripture as a whole would not support.</p>
+    <p>• I have to hide parts of the situation from my spouse, pastor, or closest friends.</p>
+    <p>• The urgency feels manufactured — like I'll miss the window if I pause and pray.</p>
+    <p>• My peace depends on the outcome, not on God's character.</p>
+    <p style="color:#8B4500;font-weight:bold;margin-top:10px;">God does not hide His will from people who are genuinely willing to do it. Delay is not denial — it is often discipleship.</p>
+  </div>
+
+  <h2 class="section-title">Biblical Case Studies</h2>
+
+  <p class="body">Some of the clearest examples of people learning to hear God's voice — and some who didn't:</p>
+
+  <div class="scripture-anchor">
+    Samuel was only a boy when the Lord first called him. He ran to Eli three times, thinking it was the priest calling him. It took an older, wiser believer to say, "That is the Lord. Next time, answer: <strong>Speak, Lord, for your servant is listening.</strong>" Samuel had to be taught how to recognize the voice.
+    <span class="ref">1 Samuel 3:1–10</span>
+  </div>
+
+  <div class="scripture-anchor">
+    Elijah expected God in the wind, the earthquake, the fire. But the Lord was not in any of those. He came in a "still, small voice" — a gentle whisper. The lesson: God often speaks most clearly when the noise dies down.
+    <span class="ref">1 Kings 19:11–13</span>
+  </div>
+
+  <div class="scripture-anchor">
+    Paul and Silas tried to go into Bithynia, but the Spirit "would not allow them." Closed door. Then Paul had a vision of a man from Macedonia saying "Come over and help us." Open door. Both the no and the yes came from God. The no was not a failure — it was guidance.
+    <span class="ref">Acts 16:6–10</span>
+  </div>
+
+  <div class="scripture-anchor">
+    Saul was told to wait for Samuel before offering the sacrifice. He waited… and then he didn't. He acted on his own urgency instead of trusting the word he had already been given. It cost him the kingdom. Impatience is one of the loudest ways we drown out God's voice.
+    <span class="ref">1 Samuel 13:8–14</span>
+  </div>
+
+  <div class="scripture-anchor">
+    Jesus said, "My sheep hear my voice, and I know them, and they follow me." The capacity to recognize His voice is not a special gift for super-Christians. It is the birthright of every sheep that belongs to the Shepherd. If we belong to Him, we <em>can</em> learn to hear Him.
+    <span class="ref">John 10:27</span>
+  </div>
+
+  <h2 class="section-title">Practical Habits That Train the Ear</h2>
+
+  <div class="info-box">
+    <div class="title">Daily</div>
+    <div class="line">• Scripture intake before phone, news, or noise. Train the first voice of the day to be His.</div>
+    <div class="line">• Silent prayer — at least a few minutes of no-request listening.</div>
+    <div class="line">• Journal one line: "What did God say today?" If the answer is "nothing I noticed," that itself is honest data.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="title">Weekly</div>
+    <div class="line">• Sabbath posture — a day (or half-day) of slowing down, worship, and family unhurriedness.</div>
+    <div class="line">• Review the week: where did I sense His voice? Where did I ignore it? Where am I unsure?</div>
+  </div>
+
+  <div class="info-box">
+    <div class="title">In Decision-Making</div>
+    <div class="line">• Run the seven-question framework above before committing to anything significant.</div>
+    <div class="line">• Talk it over with Kim and a trusted counselor before acting.</div>
+    <div class="line">• Build in a delay. If God is in it, the answer will still be the answer a week from now.</div>
+  </div>
+
+  <h2 class="section-title">What This Study Is NOT</h2>
+
+  <div class="caution-box">
+    <p><strong>This is not mysticism.</strong> We are not chasing goosebumps, not treating every hunch as prophecy, not elevating personal impressions above Scripture. The Bible is always the ceiling and the floor.</p>
+    <p><strong>This is not a formula.</strong> God cannot be reduced to a seven-step method. The questions above are training wheels, not a machine that spits out His will on demand.</p>
+    <p><strong>This is not a substitute for obedience to what He has already said.</strong> Most of God's will is not hidden. It is written in red and black on pages we've already read. If I am not doing what He has already clearly commanded, I have no business asking Him for new revelation.</p>
+    <p><strong>This is not private.</strong> Hearing God is meant to be tested in community — with Kim, with our pastor, with trusted believers, with this journal as a record our family can learn from together.</p>
+  </div>
+
+  <h2 class="section-title">A Word to Our Family</h2>
+
+  <div class="hgv-hero" style="background: linear-gradient(135deg, #EBF4FC 0%, #D4E7F7 100%); border-left-color: #2E75B6;">
+    <p style="color:#1F3864;">Natalie, Daniel, Matt, Hazelee — and any family member reading this someday: the goal of this page is not for me to give you a method. The goal is for us to learn together that the God who spoke the universe into being has not gone silent. He still speaks. He speaks to you. He will speak to you your whole life.</p>
+    <p style="color:#1F3864;">But like Samuel, you have to be taught to recognize the voice. And like Elijah, you have to learn that most of the time it is not in the wind or the fire — it is in the quiet. Slow down enough to hear it. Check it against Scripture. Test it in prayer. Talk it over with someone wiser than you. And then, when you are as sure as you can be — obey.</p>
+    <p style="color:#1F3864;font-weight:bold;">That is the walk of faith. That is what it means to be a sheep that hears the Shepherd.</p>
+  </div>
+
+  <!-- LIVING JOURNAL -->
+  <div class="living-journal-banner">
+    📓 Living Journal — Moments of Hearing God
+    <small>Not complete. Not ever complete. This is where we log the real-time moments — what He said, how He said it, and what we did (or didn't) do about it. Oldest entries become training for future ones.</small>
+  </div>
+
+  <div class="living-journal-box">
+    <div style="font-size:12px;color:#666;font-family:Arial,sans-serif;margin-bottom:10px;font-style:italic;">
+      Click the 🕐 button in the toolbar to stamp a new entry with the date and time. Then write what happened — the circumstance, what you sensed, the Scripture involved, the counsel given, the outcome (if known), and what you learned about how He speaks.
+    </div>
+    <div class="quill-editor" id="n-hearing-voice" data-placeholder="Today... I was... and I sensed... The Scripture that came to mind... Kim / the pastor / a friend said... The peace (or lack of it) felt like... Looking back later, what I learned was..."></div>
+  </div>
+
+  <div class="info-box" style="margin-top:24px;border-color:#6B8E3A;background:#F4F8EE;">
+    <div class="title" style="color:#3B5E1A;">📖 Further Study</div>
+    <div class="line">• <em>Hearing God</em> by Dallas Willard — classic treatment of this exact topic</div>
+    <div class="line">• <em>Experiencing God</em> by Henry Blackaby — framework for recognizing God's activity and joining Him</div>
+    <div class="line">• Cross-reference: Jesus Revealed in the End Times (Jeffress) — how hearing His voice matters even more in the last days</div>
+    <div class="line">• Cross-reference: Convictions page — entries shaped by listening</div>
+  </div>
+
+  <div style="margin-top:32px;padding-top:18px;border-top:1px solid #ddd;">
+    <a href="DeepDives.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Deep Dives</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-hearing-voice'];</script>
+<script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+</body></html>

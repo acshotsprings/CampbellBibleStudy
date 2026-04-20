@@ -1,27 +1,21 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.6 (2026-04-20)
+   Sidebar Navigation Builder — v5.5 (2026-04-18)
 
-   v5.6: Added ⭐ Hearing God's Voice as a starred sub-item
-   under Deep Dives. This is Chris's core-priority, living
-   spiritual study — never completable, evolves as God
-   continues speaking. Placed at top of the deep-dive list
-   (above the standard 4) with a distinctive star color.
+   v5.5: Deep Dives collapsible now lists all 4 live Deep Dive
+   pages as sub-items (Calendars, Shabua, Willow, Gematria).
+   "Coming Soon" dives on DeepDives.html (Hailstones, Gog-Magog,
+   Abomination of Desolation) are NOT listed here until they
+   have dedicated pages built.
 
-   v5.5: Deep Dives collapsible lists all live Deep Dive
-   pages as sub-items. "Coming Soon" dives on DeepDives.html
-   (Hailstones, Gog-Magog, Abomination of Desolation) are
-   NOT listed here until they have dedicated pages built.
-
-   Order under Deep Dives:
-     ⭐ Hearing God's Voice (starred — priority spiritual study)
+   Order matches DeepDives.html page order:
      1. Prophetic Calendars
      2. H7620 — What Does "Weeks" Mean in Daniel 9?
      3. The Willow in Scripture
      4. Gematria (Hebrew/Greek)
 
-   All other v5.4/v5.5 behavior preserved: colored text
-   (no stripes), My Study collapsible, admin gating, etc.
+   All other v5.4 behavior preserved: colored text (no stripes),
+   My Study collapsible, admin gating, etc.
    ============================================================ */
 
 /* ---- COLOR PALETTE ------------------------------------------
@@ -45,7 +39,6 @@ const MYSTUDY_ITEM_COLORS = {
   'mystudy-convictions': '#BA68C8',  // purple
   'mystudy-history':     '#4DB6AC',  // teal
   'mystudy-deepdives':   '#FFD54F',  // gold
-  'mystudy-hearing':     '#FFB300',  // deep amber (starred — stands out)
   'mystudy-gematria':    '#F48FB1',  // pink
   'mystudy-listening':   '#A1887F',  // brown
 };
@@ -133,7 +126,6 @@ const NAV_STRUCTURE = [
       { label: '✝️ My Growing Convictions', href: 'convictions.html',   itemColor: 'mystudy-convictions' },
       { label: '💾 Save History',           href: 'history.html',       itemColor: 'mystudy-history'     },
       { label: '🔬 Deep Dives',             href: 'DeepDives.html',     itemColor: 'mystudy-deepdives', hasSubCollapse: true, subKey: 'deepdives' },
-      { label: '↳ ⭐ Hearing God\'s Voice',  href: 'hearing-gods-voice.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-hearing' },
       { label: '↳ 📅 Prophetic Calendars',  href: 'DeepDive-Calendars.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
       { label: '↳ 📖 H7620 — "Weeks" in Daniel 9', href: 'DeepDive-Shabua.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
       { label: '↳ 🌿 Willow in Scripture',  href: 'DeepDive-Willow.html',    sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
