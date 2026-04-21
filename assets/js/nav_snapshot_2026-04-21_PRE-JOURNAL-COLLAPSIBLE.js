@@ -1,37 +1,26 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.7 (2026-04-21)
-
-   v5.7: Personal Journal is now a collapsible subsection.
-   Grouped under it are the personal/reflective studies:
-     ⭐ Hearing God's Voice (migrated from Deep Dives — this
-        is Chris's core-priority living spiritual study, more
-        personal-reflective than academic-analytical)
-     ⚖️ Gematria Skepticism (new — personal stance page on
-        the Troy Brewer framework, built to live alongside
-        but separate from the Deep Dive on Gematria itself)
-
-   Deep Dives is now 4 items (Hearing God's Voice removed):
-     1. Prophetic Calendars
-     2. H7620 — What Does "Weeks" Mean in Daniel 9?
-     3. The Willow in Scripture
-     4. Gematria (Hebrew/Greek)
-
-   Rationale: Hearing God's Voice is spiritual practice, not
-   topical study. Gematria Skepticism is personal conviction,
-   not academic analysis. Both fit naturally with Journal
-   (personal-reflective content) rather than Deep Dives
-   (topical-analytical content).
+   Sidebar Navigation Builder — v5.6 (2026-04-20)
 
    v5.6: Added ⭐ Hearing God's Voice as a starred sub-item
-   under Deep Dives. (Now migrated in v5.7.)
+   under Deep Dives. This is Chris's core-priority, living
+   spiritual study — never completable, evolves as God
+   continues speaking. Placed at top of the deep-dive list
+   (above the standard 4) with a distinctive star color.
 
    v5.5: Deep Dives collapsible lists all live Deep Dive
    pages as sub-items. "Coming Soon" dives on DeepDives.html
    (Hailstones, Gog-Magog, Abomination of Desolation) are
    NOT listed here until they have dedicated pages built.
 
-   All other v5.4/v5.5/v5.6 behavior preserved: colored text
+   Order under Deep Dives:
+     ⭐ Hearing God's Voice (starred — priority spiritual study)
+     1. Prophetic Calendars
+     2. H7620 — What Does "Weeks" Mean in Daniel 9?
+     3. The Willow in Scripture
+     4. Gematria (Hebrew/Greek)
+
+   All other v5.4/v5.5 behavior preserved: colored text
    (no stripes), My Study collapsible, admin gating, etc.
    ============================================================ */
 
@@ -57,8 +46,7 @@ const MYSTUDY_ITEM_COLORS = {
   'mystudy-history':     '#4DB6AC',  // teal
   'mystudy-deepdives':   '#FFD54F',  // gold
   'mystudy-hearing':     '#FFB300',  // deep amber (starred — stands out)
-  'mystudy-gematria':    '#F48FB1',  // pink (Deep Dive — affirmative exploration)
-  'mystudy-skepticism':  '#C9A227',  // warm gold (stance page — discerning counterweight)
+  'mystudy-gematria':    '#F48FB1',  // pink
   'mystudy-listening':   '#A1887F',  // brown
 };
 
@@ -141,12 +129,11 @@ const NAV_STRUCTURE = [
       { label: '📋 Prophecy Checklist',     href: 'checklist.html',     itemColor: 'mystudy-checklist'   },
       { label: '📚 Resource Library',       href: 'resources.html',     itemColor: 'mystudy-resources'   },
       { label: '🎤 Sermon & Teaching Log',  href: 'sermons.html',       itemColor: 'mystudy-sermons'     },
-      { label: '📔 Personal Journal',       href: 'journal.html',       itemColor: 'mystudy-journal', hasSubCollapse: true, subKey: 'journal' },
-      { label: '↳ ⭐ Hearing God\'s Voice',  href: 'hearing-gods-voice.html',  sub: true, underSubKey: 'journal', itemColor: 'mystudy-hearing' },
-      { label: '↳ ⚖️ Gematria Skepticism',  href: 'numbers-skepticism.html',  sub: true, underSubKey: 'journal', itemColor: 'mystudy-skepticism' },
+      { label: '📔 Personal Journal',       href: 'journal.html',       itemColor: 'mystudy-journal'     },
       { label: '✝️ My Growing Convictions', href: 'convictions.html',   itemColor: 'mystudy-convictions' },
       { label: '💾 Save History',           href: 'history.html',       itemColor: 'mystudy-history'     },
       { label: '🔬 Deep Dives',             href: 'DeepDives.html',     itemColor: 'mystudy-deepdives', hasSubCollapse: true, subKey: 'deepdives' },
+      { label: '↳ ⭐ Hearing God\'s Voice',  href: 'hearing-gods-voice.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-hearing' },
       { label: '↳ 📅 Prophetic Calendars',  href: 'DeepDive-Calendars.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
       { label: '↳ 📖 H7620 — "Weeks" in Daniel 9', href: 'DeepDive-Shabua.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
       { label: '↳ 🌿 Willow in Scripture',  href: 'DeepDive-Willow.html',    sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
