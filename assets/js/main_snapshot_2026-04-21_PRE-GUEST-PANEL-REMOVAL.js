@@ -194,7 +194,7 @@ function saveWelcomeName() {
   localStorage.setItem('cbsg-guest-welcomed', 'true');
   const modal = document.getElementById('cbsg-welcome-modal');
   if (modal) modal.remove();
-  // Guest panel removed 2026-04-21 — visitors use the embedded Quill boxes on each page instead.
+  injectGuestPanel();
   // Now that we have a name, (re)configure GA with user_id and start the session
   cbsgConfigureGAUser();
   cbsgSessionStart();
@@ -207,7 +207,7 @@ function checkFirstVisit() {
   if (!welcomed) {
     showWelcomeModal();
   } else {
-    // Guest panel removed 2026-04-21 — visitors use embedded Quill boxes.
+    injectGuestPanel();
     // Existing visitor — GA user_id already configured at init; just record the page entry
     cbsgSessionRecordPageEntry();
   }
@@ -1013,44 +1013,6 @@ function _saveQuillContent(editorId, quill) {
   localStorage.setItem('cbsg-' + editorId, delta);
 }
 
-/* ---- VISITOR NOTES EMAIL ON SAVE ---------------------------
-   When a visitor (non-admin) types in a Quill editor, after a
-   30-second pause in typing, silently email the notes to Chris.
-   Only one email per editor per session to avoid spam.
-   ------------------------------------------------------------ */
-const _quillEmailTimers = {};    // editorId → debounce timeout handle
-const _quillEmailedThisSession = {}; // editorId → true once emailed
-
-function _maybeEmailVisitorNotes(editorId, quill) {
-  if (isAdminUnlocked()) return;               // Admin (you) — no self-email
-  const name = getGuestName();
-  if (!name) return;                            // No name yet — skip
-  // Get plain text content
-  let text = '';
-  try { text = quill.getText().trim(); } catch(e) { return; }
-  if (text.length < 10) return;                 // Too short to bother
-  // Clear any existing timer for this editor
-  if (_quillEmailTimers[editorId]) {
-    clearTimeout(_quillEmailTimers[editorId]);
-  }
-  // Debounce — wait 30 seconds of inactivity, then email
-  _quillEmailTimers[editorId] = setTimeout(() => {
-    try {
-      const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
-      const params = {
-        name: name,
-        from_email: '(visitor notes)',
-        page_name: pageName + ' — ' + editorId,
-        message: text
-      };
-      if (typeof emailjs !== 'undefined') {
-        try { emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params).catch(()=>{}); } catch(e) {}
-      }
-      _quillEmailedThisSession[editorId] = true;
-    } catch(e) {}
-  }, 30000); // 30 seconds
-}
-
 function _loadQuillContent(editorId, quill) {
   const saved = localStorage.getItem('cbsg-' + editorId);
   if (!saved) return;
@@ -1106,11 +1068,8 @@ function initQuillEditors() {
     // Load saved content
     _loadQuillContent(editorId, quill);
 
-    // Auto-save on change (and email visitor notes after 30s of inactivity)
-    quill.on('text-change', () => {
-      _saveQuillContent(editorId, quill);
-      _maybeEmailVisitorNotes(editorId, quill);
-    });
+    // Auto-save on change
+    quill.on('text-change', () => _saveQuillContent(editorId, quill));
 
     quillInstances[editorId] = quill;
   });
