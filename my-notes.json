@@ -1,77 +1,18 @@
 {
-  "lastUpdated": "2026-04-22T14:10:42.854Z",
-  "originDate": "March 30, 2026",
+  "lastUpdated": "2026-04-22T14:21:50.506Z",
+  "originDate": "March 27, 2026",
   "saveHistory": [
     {
-      "timestamp": "April 15, 2026 at 8:13 PM",
-      "summary": "Notes saved.",
-      "isoTime": "2026-04-16T01:13:13.762Z"
-    },
-    {
-      "timestamp": "April 17, 2026 at 3:14 PM",
-      "summary": "Updated 34 note fields including c-snapshots, time-m11, rl-end-epicenter, and more.",
+      "timestamp": "April 22, 2026 at 9:21 AM",
+      "summary": "Updated 50 note fields including c-snapshots, complete-t2m1, Introduction, and more.",
       "pagesChanged": [
         "Convictions",
-        "Theme 1 Modules",
-        "Theme 2 Modules",
         "Deep Dives",
-        "Journal"
-      ],
-      "isoTime": "2026-04-17T20:14:56.073Z"
-    },
-    {
-      "timestamp": "April 18, 2026 at 1:14 PM",
-      "summary": "Updated 9 note fields including complete-t2m4, n-t2m4-p2, T1 Module 14, and more.",
-      "pagesChanged": [
         "Theme 2 Modules",
         "Theme 1 Modules",
-        "Reflection Questions",
-        "Deep Dives"
+        "Reflection Questions"
       ],
-      "isoTime": "2026-04-18T18:14:11.950Z"
-    },
-    {
-      "timestamp": "April 18, 2026 at 2:51 PM",
-      "summary": "Updated: complete-t2m4, T1 Module 14, Journal.",
-      "pagesChanged": [
-        "Theme 1 Modules",
-        "Journal"
-      ],
-      "isoTime": "2026-04-18T19:51:15.206Z"
-    },
-    {
-      "timestamp": "April 18, 2026 at 3:22 PM",
-      "summary": "Updated: n-cl-general, journal-archive, Journal.",
-      "pagesChanged": [
-        "Journal"
-      ],
-      "isoTime": "2026-04-18T20:22:17.636Z"
-    },
-    {
-      "timestamp": "April 18, 2026 at 3:28 PM",
-      "summary": "No note changes — page HTML saved.",
-      "pagesChanged": [],
-      "isoTime": "2026-04-18T20:28:01.722Z"
-    },
-    {
-      "timestamp": "April 18, 2026 at 6:41 PM",
-      "summary": "Updated: laststamp-n-m1, T1 Module 1.",
-      "pagesChanged": [
-        "Theme 1 Modules"
-      ],
-      "isoTime": "2026-04-18T23:41:03.572Z"
-    },
-    {
-      "timestamp": "April 20, 2026 at 1:21 PM",
-      "summary": "Updated: journal-archive, laststamp-n-journal-new.",
-      "pagesChanged": [],
-      "isoTime": "2026-04-20T18:21:28.674Z"
-    },
-    {
-      "timestamp": "April 22, 2026 at 9:10 AM",
-      "summary": "Updated: journal-archive.",
-      "pagesChanged": [],
-      "isoTime": "2026-04-22T14:10:42.854Z"
+      "isoTime": "2026-04-22T14:21:50.506Z"
     }
   ],
   "notes": {
