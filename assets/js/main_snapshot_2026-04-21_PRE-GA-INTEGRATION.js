@@ -11,14 +11,6 @@ const EMAILJS_PUBLIC_KEY  = '2duGE838Bx6BcJXTF';
 const EMAILJS_SERVICE_ID  = 'service_6mi6r6r';
 const EMAILJS_TEMPLATE_ID = 'template_275v5hl';
 
-/* ---- GOOGLE ANALYTICS --------------------------------------
-   Property: Campbell Bible Study (CBS)
-   Added 2026-04-21: Tracks all page visits with visitor name
-   as user_id, enabling per-person page-view + dwell time
-   analytics in the GA4 dashboard.
-   ------------------------------------------------------------ */
-const GA_MEASUREMENT_ID = 'G-P44J6HEJYG';
-
 const ADMIN_PASSWORD = 'Campbell2026';
 
 const COMPLETION_KEYS = {
@@ -115,361 +107,30 @@ function injectAdminModal() {
 
 function getGuestName() { return localStorage.getItem('cbsg-guest-name') || ''; }
 
-/* ---- NAME VALIDATION ---------------------------------------
-   Blocks obvious junk entries. Cannot verify a name is "real"
-   (e.g., block "Bob" but allow "Danielle") — that would require
-   a massive database. Instead, blocks patterns that clearly
-   aren't names: too short, no letters, all-same-character,
-   common junk strings, pure numbers.
-   ------------------------------------------------------------ */
-const CBSG_JUNK_NAMES = [
-  'test','testing','tester','asdf','asdfasdf','qwerty','qwertyuiop',
-  'anonymous','anon','user','visitor','guest','admin','name',
-  'none','na','nope','xxx','yyy','zzz','abc','abcabc','hello',
-  'fuck','fuckyou','shit','poop','butt','dick','ass','sex',
-  'xyz','aaa','bbb','ccc','ddd','eee','fff','ggg','hhh','iii',
-  'jjj','kkk','lll','mmm','nnn','ooo','ppp','qqq','rrr','sss',
-  'ttt','uuu','vvv','www','xxxx','yyyy','zzzz'
-];
-function validateGuestName(raw) {
-  const n = (raw || '').trim();
-  if (n.length < 3) return { ok:false, reason:'Please enter at least 3 characters.' };
-  if (n.length > 40) return { ok:false, reason:'That name is too long.' };
-  const letters = (n.match(/[A-Za-zÀ-ÿ]/g) || []).length;
-  if (letters < 2) return { ok:false, reason:'Please enter a real name (letters required).' };
-  if (/^(.)\1+$/.test(n)) return { ok:false, reason:'Please enter a real name.' };
-  if (/^\d+$/.test(n)) return { ok:false, reason:'Please enter a real name, not numbers.' };
-  const lc = n.toLowerCase().replace(/[^a-z0-9]/g,'');
-  if (CBSG_JUNK_NAMES.includes(lc)) return { ok:false, reason:'Please enter your real name.' };
-  if (/^[a-z]{1,3}(\d+)?$/i.test(n)) return { ok:false, reason:'Please enter your real name.' };
-  return { ok:true, name:n };
-}
-
 function showWelcomeModal() {
   if (document.getElementById('cbsg-welcome-modal')) return;
   const modal = document.createElement('div');
   modal.id = 'cbsg-welcome-modal';
-  modal.style.cssText = 'display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;font-family:Arial,sans-serif;backdrop-filter:blur(3px);';
-  modal.innerHTML = `<div style="background:#fff;border-radius:12px;padding:32px 36px;width:360px;box-shadow:0 12px 40px rgba(0,0,0,0.45);text-align:center;">
-    <div style="font-size:36px;margin-bottom:10px;">✝️</div>
-    <h2 style="margin:0 0 8px;font-size:20px;color:#1F3864;">Welcome!</h2>
-    <p style="margin:0 0 6px;font-size:13px;color:#555;line-height:1.6;">This is the Campbell Family Biblical Study Guide — a personal resource for growing in the knowledge of Christ.</p>
-    <p style="margin:0 0 20px;font-size:13px;color:#555;line-height:1.6;">Please enter your name to continue.</p>
-    <input id="cbsg-welcome-name" type="text" placeholder="Your name..." autocomplete="off" oninput="cbsgValidateLive()" onkeydown="if(event.key==='Enter')saveWelcomeName()" style="width:100%;box-sizing:border-box;border:2px solid #1F3864;border-radius:6px;padding:10px 14px;font-size:15px;margin-bottom:8px;text-align:center;font-family:Arial,sans-serif;">
-    <div id="cbsg-welcome-err" style="font-size:11px;color:#C62828;min-height:14px;margin-bottom:10px;font-family:Arial,sans-serif;"></div>
-    <button id="cbsg-welcome-btn" onclick="saveWelcomeName()" disabled style="width:100%;background:#888;color:#ddd;border:none;border-radius:6px;padding:11px;font-size:14px;font-weight:bold;cursor:not-allowed;font-family:Arial,sans-serif;letter-spacing:0.03em;transition:all 0.2s;">Let's Study ✝</button>
-    <p style="margin:12px 0 0;font-size:11px;color:#aaa;">Your name is required to continue.</p>
-  </div>`;
+  modal.style.cssText = 'display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.65);z-index:9998;align-items:center;justify-content:center;font-family:Arial,sans-serif;';
+  modal.innerHTML = `<div style="background:#fff;border-radius:12px;padding:32px 36px;width:340px;box-shadow:0 12px 40px rgba(0,0,0,0.35);text-align:center;"><div style="font-size:36px;margin-bottom:10px;">✝️</div><h2 style="margin:0 0 8px;font-size:20px;color:#1F3864;">Welcome!</h2><p style="margin:0 0 6px;font-size:13px;color:#555;line-height:1.6;">This is the Campbell Family Biblical Study Guide — a personal resource for growing in the knowledge of Christ.</p><p style="margin:0 0 20px;font-size:13px;color:#555;line-height:1.6;">What's your name? We'd love to know who's studying with us.</p><input id="cbsg-welcome-name" type="text" placeholder="Your name..." onkeydown="if(event.key==='Enter')saveWelcomeName()" style="width:100%;box-sizing:border-box;border:2px solid #1F3864;border-radius:6px;padding:10px 14px;font-size:15px;margin-bottom:16px;text-align:center;font-family:Arial,sans-serif;"><button onclick="saveWelcomeName()" style="width:100%;background:#1F3864;color:#FFD700;border:none;border-radius:6px;padding:11px;font-size:14px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;letter-spacing:0.03em;">Let's Study ✝</button><p style="margin:12px 0 0;font-size:11px;color:#aaa;">You can leave this blank — just press the button.</p></div>`;
   document.body.appendChild(modal);
   setTimeout(() => { const inp = document.getElementById('cbsg-welcome-name'); if (inp) inp.focus(); }, 150);
 }
 
-function cbsgValidateLive() {
-  const inp = document.getElementById('cbsg-welcome-name');
-  const btn = document.getElementById('cbsg-welcome-btn');
-  const err = document.getElementById('cbsg-welcome-err');
-  if (!inp || !btn) return;
-  const r = validateGuestName(inp.value);
-  if (r.ok) {
-    btn.disabled = false;
-    btn.style.background = '#1F3864';
-    btn.style.color = '#FFD700';
-    btn.style.cursor = 'pointer';
-    if (err) err.textContent = '';
-  } else {
-    btn.disabled = true;
-    btn.style.background = '#888';
-    btn.style.color = '#ddd';
-    btn.style.cursor = 'not-allowed';
-    if (err) err.textContent = (inp.value.trim().length > 0) ? r.reason : '';
-  }
-}
-
 function saveWelcomeName() {
-  const inp = document.getElementById('cbsg-welcome-name');
-  if (!inp) return;
-  const r = validateGuestName(inp.value);
-  if (!r.ok) { cbsgValidateLive(); return; }
-  localStorage.setItem('cbsg-guest-name', r.name);
+  const inp  = document.getElementById('cbsg-welcome-name');
+  const name = inp ? inp.value.trim() : '';
+  localStorage.setItem('cbsg-guest-name', name || 'Guest');
   localStorage.setItem('cbsg-guest-welcomed', 'true');
   const modal = document.getElementById('cbsg-welcome-modal');
   if (modal) modal.remove();
   injectGuestPanel();
-  // Now that we have a name, (re)configure GA with user_id and start the session
-  cbsgConfigureGAUser();
-  cbsgSessionStart();
-  cbsgSessionRecordPageEntry();
 }
 
 function checkFirstVisit() {
   if (isAdminUnlocked()) return;
   const welcomed = localStorage.getItem('cbsg-guest-welcomed');
-  if (!welcomed) {
-    showWelcomeModal();
-  } else {
-    injectGuestPanel();
-    // Existing visitor — GA user_id already configured at init; just record the page entry
-    cbsgSessionRecordPageEntry();
-  }
-}
-
-/* ============================================================
-   GOOGLE ANALYTICS + SESSION TRACKING
-   Added 2026-04-21. Two layers of tracking:
-
-   1. Google Analytics (gtag.js) — loads on every page, silently
-      tracks pageviews. When a visitor name is set, it's used as
-      the GA user_id so all pageviews are tied to that person in
-      the GA dashboard.
-
-   2. Session tracking — builds a list of {page, seconds} entries
-      across the visitor's browsing session. When they close the
-      tab OR go idle for 15 minutes, ONE email summary is sent
-      with the full session (start time, pages visited, dwell
-      time per page, total session duration).
-
-   Session data lives in sessionStorage (survives page navigation
-   within the same tab) under key 'cbsg-session'. Shape:
-   {
-     name: "Matt",
-     sessionId: "abc123",
-     startTs: 1729500000000,
-     lastActiveTs: 1729500120000,
-     pages: [{page:"index", path:"/", enterTs:..., seconds:45}, ...]
-   }
-   ============================================================ */
-
-const CBSG_IDLE_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
-
-function cbsgInitGA() {
-  if (window.cbsgGALoaded) return;
-  window.cbsgGALoaded = true;
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function(){ window.dataLayer.push(arguments); };
-  const s = document.createElement('script');
-  s.async = true;
-  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
-  document.head.appendChild(s);
-  gtag('js', new Date());
-  cbsgConfigureGAUser();
-}
-
-function cbsgConfigureGAUser() {
-  if (typeof gtag !== 'function') return;
-  const cfg = { send_page_view: true };
-  const name = getGuestName();
-  if (name) cfg.user_id = name;
-  gtag('config', GA_MEASUREMENT_ID, cfg);
-}
-
-function cbsgSessionGet() {
-  try {
-    const raw = sessionStorage.getItem('cbsg-session');
-    return raw ? JSON.parse(raw) : null;
-  } catch(e) { return null; }
-}
-function cbsgSessionSet(s) {
-  try { sessionStorage.setItem('cbsg-session', JSON.stringify(s)); } catch(e) {}
-}
-function cbsgSessionClear() {
-  try { sessionStorage.removeItem('cbsg-session'); } catch(e) {}
-}
-
-function cbsgSessionStart() {
-  const name = getGuestName();
-  if (!name) return;
-  const now = Date.now();
-  const s = {
-    name: name,
-    sessionId: 's_' + now.toString(36) + Math.random().toString(36).slice(2,6),
-    startTs: now,
-    lastActiveTs: now,
-    pages: []
-  };
-  cbsgSessionSet(s);
-}
-
-/* Records the current page as a new entry in the session.
-   Called on every page load (once a name is present). Before
-   adding, it closes out any previous page's timer (finalizing
-   its seconds). Also starts a new session if none exists or
-   the last one went idle past the timeout. */
-function cbsgSessionRecordPageEntry() {
-  const name = getGuestName();
-  if (!name) return;
-  if (typeof gtag === 'function') {
-    gtag('event', 'page_view_named', {
-      visitor_name: name,
-      page_title: document.title,
-      page_path: window.location.pathname
-    });
-  }
-  let s = cbsgSessionGet();
-  const now = Date.now();
-  // If no session or stale (idle past timeout), close previous and start new
-  if (!s || (now - (s.lastActiveTs || s.startTs)) > CBSG_IDLE_TIMEOUT_MS) {
-    if (s) cbsgSessionFinalizeAndSend(s, 'idle_timeout_on_new_visit');
-    cbsgSessionStart();
-    s = cbsgSessionGet();
-    if (!s) return;
-  }
-  // Close out the previous page's timer (if any)
-  if (s.pages.length) {
-    const last = s.pages[s.pages.length - 1];
-    if (last && !last.closed) {
-      last.seconds = Math.max(0, Math.round((now - last.enterTs) / 1000));
-      last.closed = true;
-    }
-  }
-  // Add this page
-  const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
-  s.pages.push({
-    page: pageName,
-    path: window.location.pathname,
-    enterTs: now,
-    seconds: 0,
-    closed: false
-  });
-  s.lastActiveTs = now;
-  cbsgSessionSet(s);
-}
-
-/* Updates the current (open) page's seconds count. Called
-   periodically by the heartbeat and on visibility/unload. */
-function cbsgSessionTickCurrentPage() {
-  const s = cbsgSessionGet();
-  if (!s || !s.pages.length) return;
-  const last = s.pages[s.pages.length - 1];
-  if (!last || last.closed) return;
-  const now = Date.now();
-  last.seconds = Math.max(0, Math.round((now - last.enterTs) / 1000));
-  s.lastActiveTs = now;
-  cbsgSessionSet(s);
-}
-
-/* Closes the current page (marks as closed, finalizes its
-   seconds). Called on pagehide/beforeunload. */
-function cbsgSessionClosePage() {
-  const s = cbsgSessionGet();
-  if (!s || !s.pages.length) return;
-  const last = s.pages[s.pages.length - 1];
-  if (!last || last.closed) return;
-  const now = Date.now();
-  last.seconds = Math.max(0, Math.round((now - last.enterTs) / 1000));
-  last.closed = true;
-  s.lastActiveTs = now;
-  cbsgSessionSet(s);
-}
-
-/* Formats seconds as "Nm Ss" or "Ss" */
-function cbsgFmtSecs(sec) {
-  sec = Math.max(0, Math.round(sec));
-  if (sec < 60) return sec + 's';
-  const m = Math.floor(sec / 60);
-  const s = sec % 60;
-  return s > 0 ? m + 'm ' + s + 's' : m + 'm';
-}
-
-/* Finalizes the session and emails a summary to Chris.
-   Uses emailjs.send with the existing template. The message
-   body is a formatted session report. Also clears the session
-   from sessionStorage so a new one starts on next visit. */
-function cbsgSessionFinalizeAndSend(session, reason) {
-  try {
-    const s = session || cbsgSessionGet();
-    if (!s || !s.pages.length) { cbsgSessionClear(); return; }
-    // Ensure last page is closed
-    const last = s.pages[s.pages.length - 1];
-    if (last && !last.closed) {
-      last.seconds = Math.max(0, Math.round((Date.now() - last.enterTs) / 1000));
-      last.closed = true;
-    }
-    const start = new Date(s.startTs);
-    const end   = new Date(s.lastActiveTs || Date.now());
-    const totalSecs = s.pages.reduce((a,p) => a + (p.seconds || 0), 0);
-    const lines = [];
-    lines.push('Visitor: ' + s.name);
-    lines.push('Session start: ' + start.toLocaleString());
-    lines.push('Session end:   ' + end.toLocaleString());
-    lines.push('Total time:    ' + cbsgFmtSecs(totalSecs));
-    lines.push('Pages visited: ' + s.pages.length);
-    lines.push('End reason:    ' + (reason || 'unload'));
-    lines.push('');
-    lines.push('--- PAGES ---');
-    s.pages.forEach((p,i) => {
-      lines.push((i+1) + '. ' + p.page + '  (' + cbsgFmtSecs(p.seconds || 0) + ')  [' + p.path + ']');
-    });
-    const body = lines.join('\n');
-    const params = {
-      name: s.name,
-      from_email: '(visitor session)',
-      page_name: 'SESSION SUMMARY — ' + s.pages.length + ' pages, ' + cbsgFmtSecs(totalSecs),
-      message: body
-    };
-    // Use sendBeacon-friendly approach: try emailjs normally, but we can't
-    // truly guarantee delivery on unload. This is a best-effort send.
-    if (typeof emailjs !== 'undefined') {
-      try { emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params).catch(()=>{}); } catch(e) {}
-    }
-    // Also fire a GA event capturing the total session
-    if (typeof gtag === 'function') {
-      gtag('event', 'session_summary', {
-        visitor_name: s.name,
-        total_seconds: totalSecs,
-        pages_count: s.pages.length,
-        end_reason: reason || 'unload'
-      });
-    }
-    cbsgSessionClear();
-  } catch(e) {}
-}
-
-/* Heartbeat: every 30s while page is active, ticks the current
-   page's timer. Also checks for idle timeout (if the user has
-   been away for 15+ min, finalize the session). */
-function cbsgStartHeartbeat() {
-  if (window.cbsgHeartbeatStarted) return;
-  window.cbsgHeartbeatStarted = true;
-  setInterval(() => {
-    if (document.hidden) return;
-    const s = cbsgSessionGet();
-    if (!s) return;
-    const now = Date.now();
-    // Idle check: if last activity was over timeout ago, finalize
-    if ((now - (s.lastActiveTs || s.startTs)) > CBSG_IDLE_TIMEOUT_MS) {
-      cbsgSessionFinalizeAndSend(s, 'idle_timeout');
-      return;
-    }
-    cbsgSessionTickCurrentPage();
-  }, 30000);
-
-  // pagehide fires on tab close / navigation away — most reliable unload event
-  window.addEventListener('pagehide', () => {
-    cbsgSessionClosePage();
-    const s = cbsgSessionGet();
-    if (s) cbsgSessionFinalizeAndSend(s, 'pagehide');
-  });
-
-  // visibilitychange to 'hidden' — fires on mobile when user switches apps
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      cbsgSessionTickCurrentPage();
-    } else {
-      // Came back — check if session went idle
-      const s = cbsgSessionGet();
-      if (s && (Date.now() - (s.lastActiveTs || s.startTs)) > CBSG_IDLE_TIMEOUT_MS) {
-        cbsgSessionFinalizeAndSend(s, 'idle_timeout_on_return');
-      }
-    }
-  });
-
-  // Activity listeners to keep lastActiveTs fresh (detects real engagement)
-  ['mousemove','keydown','click','scroll','touchstart'].forEach(ev => {
-    window.addEventListener(ev, () => {
-      const s = cbsgSessionGet();
-      if (s) { s.lastActiveTs = Date.now(); cbsgSessionSet(s); }
-    }, { passive: true });
-  });
+  if (!welcomed) showWelcomeModal(); else injectGuestPanel();
 }
 
 function getGuestPageKey() {
@@ -1098,10 +759,6 @@ document.addEventListener('DOMContentLoaded', () => {
   startTimer();
   updateVersionTimestamp();
   document.querySelectorAll('.bar-originated').forEach(el => { el.textContent = 'Originated: March 27, 2026'; });
-  // Initialize Google Analytics silently on every page load (fires before modal)
-  cbsgInitGA();
-  // Start the session heartbeat (tracks dwell time, handles unload/idle, sends summary email)
-  cbsgStartHeartbeat();
   setTimeout(() => { if (!isAdminUnlocked()) checkFirstVisit(); }, 400);
   if (typeof emailjs === 'undefined') {
     const s = document.createElement('script');
