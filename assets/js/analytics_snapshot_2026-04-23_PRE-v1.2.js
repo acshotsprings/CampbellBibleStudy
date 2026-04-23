@@ -1,7 +1,7 @@
 /* ============================================================
    CAMPBELL BIBLE STUDY — ANALYTICS & NOTIFICATIONS
    File: assets/js/analytics.js
-   Updated: April 23, 2026 (v1.2 — hardened against blank/bot emails)
+   Updated: April 22, 2026 (v1.1 — added owner suppression)
 
    HANDLES TWO SYSTEMS:
    1. Google Analytics 4 (GA4) page tracking
@@ -11,7 +11,7 @@
    • Visitor lands on site (first page view this session)
    • Visitor saves their notes (fires when saveVisitorNotes() runs)
 
-   OWNER SUPPRESSION (v1.1):
+   OWNER SUPPRESSION (NEW in v1.1):
    • Visit https://acshotsprings.github.io/CampbellBibleStudy/?owner=true
      to mark this device as the owner (Chris).
    • Owner visits and note-saves will NOT trigger emails.
@@ -19,13 +19,6 @@
    • Flag persists in localStorage as 'cbsg-is-owner' = 'true'.
    • To disable: visit ?owner=false OR clear localStorage manually.
    • To check status anytime: open browser console and type CBSG_isOwner()
-
-   BOT / BLANK-EMAIL GUARDS (NEW in v1.2):
-   • Hit emails now require the page to stay open for 8 seconds (bots leave fast).
-   • Hit emails also require at least one real human interaction (mousemove,
-     click, scroll, or keypress) — pure prefetchers never trigger them.
-   • Note-save emails require a non-empty note context string.
-   • All templateParams are sanitized so no field is blank/undefined.
    ============================================================ */
 
 (function() {
@@ -114,40 +107,25 @@
       return;
     }
 
-    // BLANK-FIELD GUARD (v1.2) — if eventType is missing, don't send at all.
-    // This prevents the "nobody / nobody / nobody" emails seen in v1.1.
-    if (!eventType || typeof eventType !== 'string' || eventType.trim().length === 0) {
-      console.log('[CBSG Analytics] Email skipped: missing eventType');
-      return;
-    }
-
     try {
       await loadEmailJS();
 
-      // v1.2: sanitize every template field so nothing comes through as blank.
-      // If a field is empty/undefined, substitute a labeled placeholder so
-      // the email is at least informative instead of "nobody."
-      const visitorName = (localStorage.getItem('cbsg-visitor-name') || '').trim() || 'Anonymous Visitor';
+      const visitorName = localStorage.getItem('cbsg-visitor-name') || 'Unknown Visitor';
       const now = new Date();
       const timestamp = now.toLocaleString('en-US', {
         dateStyle: 'full',
         timeStyle: 'short'
       });
-      const pageTitle = (document.title || '').trim() || '(untitled page)';
-      const pageUrl   = window.location.href || '(no url)';
-      const safeEvent = eventType.trim();
-      const safeExtra = (extraInfo && String(extraInfo).trim()) || '(no details)';
-      const userAgent = navigator.userAgent || '(unknown agent)';
 
       const templateParams = {
-        to_email:     NOTIFY_EMAIL,
+        to_email: NOTIFY_EMAIL,
         visitor_name: visitorName,
-        event_type:   safeEvent,
-        page_url:     pageUrl,
-        page_title:   pageTitle,
-        timestamp:    timestamp,
-        extra_info:   safeExtra,
-        user_agent:   userAgent
+        event_type: eventType,
+        page_url: window.location.href,
+        page_title: document.title,
+        timestamp: timestamp,
+        extra_info: extraInfo || '',
+        user_agent: navigator.userAgent
       };
 
       await window.emailjs.send(
@@ -156,54 +134,22 @@
         templateParams
       );
 
-      console.log(`[CBSG Analytics] Email sent: ${safeEvent}`);
+      console.log(`[CBSG Analytics] Email sent: ${eventType}`);
     } catch (err) {
       console.warn('[CBSG Analytics] Email notification failed:', err.message);
     }
   }
 
   // ─── VISITOR HIT TRIGGER ───────────────────────────────────
-  // v1.2: This now requires BOTH (a) the page to stay open 8+ seconds AND
-  // (b) at least one real human interaction (mousemove, click, scroll, key).
-  // Bots and link-prefetchers rarely do either — this kills blank emails at
-  // the source. If the visitor closes the tab before the thresholds are met,
-  // no email is sent.
   function fireVisitorHitEmail() {
     if (sessionStorage.getItem(SESSION_HIT_KEY)) {
       return;
     }
+    sessionStorage.setItem(SESSION_HIT_KEY, 'true');
 
-    const DWELL_MS = 8000;
-    let humanInteracted = false;
-    let dwellElapsed = false;
-
-    function markInteracted() {
-      if (humanInteracted) return;
-      humanInteracted = true;
-      maybeFire();
-    }
-    function markDwellDone() {
-      dwellElapsed = true;
-      maybeFire();
-    }
-    function maybeFire() {
-      if (!humanInteracted || !dwellElapsed) return;
-      if (sessionStorage.getItem(SESSION_HIT_KEY)) return;
-      sessionStorage.setItem(SESSION_HIT_KEY, 'true');
+    setTimeout(() => {
       sendNotificationEmail('Visitor hit site', `Landing page: ${window.location.pathname}`);
-      cleanup();
-    }
-    function cleanup() {
-      ['mousemove', 'click', 'scroll', 'keydown', 'touchstart'].forEach(evt => {
-        document.removeEventListener(evt, markInteracted, { passive: true });
-      });
-    }
-
-    ['mousemove', 'click', 'scroll', 'keydown', 'touchstart'].forEach(evt => {
-      document.addEventListener(evt, markInteracted, { passive: true });
-    });
-
-    setTimeout(markDwellDone, DWELL_MS);
+    }, 1500);
   }
 
   // ─── NOTE SAVE TRIGGER (exposed globally) ──────────────────

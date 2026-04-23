@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Activate Owner Mode — Campbell Bible Study</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 30px;
+    background: #f7f9fc;
+    color: #222;
+    line-height: 1.6;
+  }
+  h1 { color: #1F3864; }
+  .status {
+    padding: 16px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 20px 0;
+  }
+  .on  { background: #d4edda; color: #155724; border: 2px solid #28a745; }
+  .off { background: #fff3cd; color: #856404; border: 2px solid #ffc107; }
+  a.btn {
+    display: inline-block;
+    background: #1F3864;
+    color: #FFD700;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 8px 6px;
+  }
+  a.btn.red { background: #842029; color: #fff; }
+  code { background: #eef; padding: 2px 6px; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<h1>Owner Mode — Quick Check</h1>
+
+<p>This page shows whether your current browser is flagged as the site owner. When owner mode is ON, analytics.js will NOT send you emails when you visit pages or save notes — it only emails you when a <em>different</em> visitor does those things.</p>
+
+<div id="status" class="status off">Checking…</div>
+
+<h3>Activate owner mode on this device:</h3>
+<p>Click the button below to visit the site with <code>?owner=true</code>. Do this once on <strong>every browser and every device</strong> you use to visit your own site (phone, tablet, laptop, work computer, etc.). The flag is stored per-browser in localStorage.</p>
+
+<p>
+  <a class="btn" href="https://acshotsprings.github.io/CampbellBibleStudy/?owner=true">✓ Turn Owner Mode ON</a>
+  <a class="btn red" href="https://acshotsprings.github.io/CampbellBibleStudy/?owner=false">✗ Turn Owner Mode OFF</a>
+</p>
+
+<h3>What to expect:</h3>
+<ul>
+  <li>After visiting the ON link, open the browser console (F12) — you'll see a log message confirming owner mode is enabled.</li>
+  <li>Visit any page on your site — you should NOT receive an email.</li>
+  <li>If a real visitor comes to the site from a different device, you WILL still get their email (that's the whole point).</li>
+  <li>Google Analytics tracking runs regardless, so you can still see your own visits in GA if you want. If you want to also exclude yourself from GA, that's a separate setting in GA's admin panel.</li>
+</ul>
+
+<h3>If you're still getting emails after turning owner mode ON:</h3>
+<ul>
+  <li>Check that you visited the <code>?owner=true</code> link on <em>the same browser</em> you're getting emails from.</li>
+  <li>If you use private/incognito browsing, the flag doesn't persist — avoid incognito for your own visits.</li>
+  <li>If you clear localStorage (or the browser does it automatically), you'll need to re-visit the ON link.</li>
+</ul>
+
+<script>
+  function check() {
+    const el = document.getElementById('status');
+    const isOwner = localStorage.getItem('cbsg-is-owner') === 'true';
+    if (isOwner) {
+      el.className = 'status on';
+      el.textContent = '✓ Owner mode is ON — emails suppressed on this browser';
+    } else {
+      el.className = 'status off';
+      el.textContent = '⚠ Owner mode is OFF — you WILL receive emails on this browser. Click the green button below.';
+    }
+  }
+  check();
+</script>
+
+</body>
+</html>
