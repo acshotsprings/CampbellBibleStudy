@@ -1,63 +1,23 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Shared JavaScript — v5.1 (Restored + Analytics Delegated)
-   ============================================================
-   UPDATED: April 23, 2026
-   RESTORED FROM: commit 94ab4880 (April 22, 2026 "v5.0")
-   PRIOR STATE: stripped to v3.1 (282 lines, missing all locked contracts)
-
-   CHANGES from v5.0:
-   • DISABLED inline GA tracking — now handled by assets/js/analytics.js (v1.1+)
-   • DISABLED inline EmailJS init/send — now handled by analytics.js
-   • DISABLED cbsgSession* heartbeat/session tracking — analytics.js handles it
-   • Added v3.1-style email hook inside saveAllNotes() and saveToGitHub()
-     (calls window.CBSG_notifyNoteSave() which is defined by analytics.js)
-
-   NOTHING IS DELETED — all disabled code is preserved inside comment blocks
-   marked with:
-       // CBSG-DISABLED-v5.1 ... END CBSG-DISABLED
-   To re-enable any block, uncomment it AND remove the corresponding call
-   from analytics.js (to avoid duplicate GA events / duplicate emails).
-
-   LOCKED CONTRACTS PRESERVED (all active):
-   • Top bar rebuild (injectBarExtras) — per 2026-04-12 contract
-   • Quill toolbar + timestamp button — per 2026-04-11 contract
-   • Timer pills, Log & Stamp button — per 2026-04-12 contract
-   • Admin login/logout (Campbell2026 password) — per 2026-04-12 contract
-   • Completion button (injectCompleteButton) — per 2026-04-12 contract
-   • Visitor welcome modal + guest name system — per 2026-04-12 contract
-   • Sidebar active state, mobile overlay — per 2026-04-11 contract
-
-   LOAD ORDER (required):
-   1. assets/js/analytics.js  (defines window.CBSG_notifyNoteSave)
-   2. assets/js/nav.js
-   3. assets/js/main.js       (this file)
+   Shared JavaScript — v5.0
+   Admin persistence · Guest notes · Silent EmailJS
    ============================================================ */
 
 const OWNER = 'acshotsprings';
 const REPO  = 'CampbellBibleStudy';
 
-/* === CBSG-DISABLED-v5.1 === inline EmailJS config ===
-   Disabled 2026-04-23: these constants are now owned by assets/js/analytics.js
-   which handles all email sends (including owner suppression). Leaving here
-   preserves original config values for reference / future revival.
 const EMAILJS_PUBLIC_KEY  = '2duGE838Bx6BcJXTF';
 const EMAILJS_SERVICE_ID  = 'service_6mi6r6r';
 const EMAILJS_TEMPLATE_ID = 'template_275v5hl';
-=== END CBSG-DISABLED === */
 
-/* === CBSG-DISABLED-v5.1 === inline GA config ===
-   Disabled 2026-04-23: GA is now initialized by assets/js/analytics.js.
-   The measurement ID below matches what analytics.js uses. Leaving here
-   for reference only; do not re-enable without removing GA init from
-   analytics.js to avoid double tracking.
----- GOOGLE ANALYTICS --------------------------------------
+/* ---- GOOGLE ANALYTICS --------------------------------------
    Property: Campbell Bible Study (CBS)
    Added 2026-04-21: Tracks all page visits with visitor name
    as user_id, enabling per-person page-view + dwell time
    analytics in the GA4 dashboard.
+   ------------------------------------------------------------ */
 const GA_MEASUREMENT_ID = 'G-P44J6HEJYG';
-=== END CBSG-DISABLED === */
 
 const ADMIN_PASSWORD = 'Campbell2026';
 
@@ -234,11 +194,11 @@ function saveWelcomeName() {
   localStorage.setItem('cbsg-guest-welcomed', 'true');
   const modal = document.getElementById('cbsg-welcome-modal');
   if (modal) modal.remove();
-  // Guest panel removed 2026-04-21 — visitors use the embedded Quill boxes on each page instead.
-  // CBSG-DISABLED-v5.1: inline GA/session bootstrap moved to analytics.js
-  // cbsgConfigureGAUser();
-  // cbsgSessionStart();
-  // cbsgSessionRecordPageEntry();
+  injectGuestPanel();
+  // Now that we have a name, (re)configure GA with user_id and start the session
+  cbsgConfigureGAUser();
+  cbsgSessionStart();
+  cbsgSessionRecordPageEntry();
 }
 
 function checkFirstVisit() {
@@ -247,296 +207,270 @@ function checkFirstVisit() {
   if (!welcomed) {
     showWelcomeModal();
   } else {
-    // Guest panel removed 2026-04-21 — visitors use embedded Quill boxes.
-    // CBSG-DISABLED-v5.1: page entry tracking moved to analytics.js
-    // cbsgSessionRecordPageEntry();
+    injectGuestPanel();
+    // Existing visitor — GA user_id already configured at init; just record the page entry
+    cbsgSessionRecordPageEntry();
   }
 }
 
-// ============================================================
-// CBSG-DISABLED-v5.1 === Google Analytics + Session Tracking
-// ============================================================
-// Disabled 2026-04-23: This entire block (GA init, session heartbeat,
-// per-page dwell time tracking, session summary emails) is superseded by
-// assets/js/analytics.js (v1.1), which handles GA page views and email
-// notifications with owner suppression.
-//
-// TO RE-ENABLE (if you want the richer session tracking back — per-page
-// seconds, session summary emails): remove the "// " prefix from every
-// line below, AND remove the GA init and email send calls from
-// analytics.js — otherwise you'll get duplicate GA events and duplicate
-// emails.
-//
-// Functions disabled below:
-//   cbsgInitGA, cbsgConfigureGAUser
-//   cbsgSessionGet/Set/Clear/Start
-//   cbsgSessionRecordPageEntry/TickCurrentPage/ClosePage
-//   cbsgFmtSecs, cbsgSessionFinalizeAndSend
-//   cbsgStartHeartbeat
-// Constants disabled: CBSG_IDLE_TIMEOUT_MS
-// ============================================================
-// /* ============================================================
-//    GOOGLE ANALYTICS + SESSION TRACKING
-//    Added 2026-04-21. Two layers of tracking:
-//
-//    1. Google Analytics (gtag.js) — loads on every page, silently
-//       tracks pageviews. When a visitor name is set, it's used as
-//       the GA user_id so all pageviews are tied to that person in
-//       the GA dashboard.
-//
-//    2. Session tracking — builds a list of {page, seconds} entries
-//       across the visitor's browsing session. When they close the
-//       tab OR go idle for 15 minutes, ONE email summary is sent
-//       with the full session (start time, pages visited, dwell
-//       time per page, total session duration).
-//
-//    Session data lives in sessionStorage (survives page navigation
-//    within the same tab) under key 'cbsg-session'. Shape:
-//    {
-//      name: "Matt",
-//      sessionId: "abc123",
-//      startTs: 1729500000000,
-//      lastActiveTs: 1729500120000,
-//      pages: [{page:"index", path:"/", enterTs:..., seconds:45}, ...]
-//    }
-//    ============================================================ */
-//
-// const CBSG_IDLE_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
-//
-// function cbsgInitGA() {
-//   if (window.cbsgGALoaded) return;
-//   window.cbsgGALoaded = true;
-//   window.dataLayer = window.dataLayer || [];
-//   window.gtag = function(){ window.dataLayer.push(arguments); };
-//   const s = document.createElement('script');
-//   s.async = true;
-//   s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
-//   document.head.appendChild(s);
-//   gtag('js', new Date());
-//   cbsgConfigureGAUser();
-// }
-//
-// function cbsgConfigureGAUser() {
-//   if (typeof gtag !== 'function') return;
-//   const cfg = { send_page_view: true };
-//   const name = getGuestName();
-//   if (name) cfg.user_id = name;
-//   gtag('config', GA_MEASUREMENT_ID, cfg);
-// }
-//
-// function cbsgSessionGet() {
-//   try {
-//     const raw = sessionStorage.getItem('cbsg-session');
-//     return raw ? JSON.parse(raw) : null;
-//   } catch(e) { return null; }
-// }
-// function cbsgSessionSet(s) {
-//   try { sessionStorage.setItem('cbsg-session', JSON.stringify(s)); } catch(e) {}
-// }
-// function cbsgSessionClear() {
-//   try { sessionStorage.removeItem('cbsg-session'); } catch(e) {}
-// }
-//
-// function cbsgSessionStart() {
-//   const name = getGuestName();
-//   if (!name) return;
-//   const now = Date.now();
-//   const s = {
-//     name: name,
-//     sessionId: 's_' + now.toString(36) + Math.random().toString(36).slice(2,6),
-//     startTs: now,
-//     lastActiveTs: now,
-//     pages: []
-//   };
-//   cbsgSessionSet(s);
-// }
-//
-// /* Records the current page as a new entry in the session.
-//    Called on every page load (once a name is present). Before
-//    adding, it closes out any previous page's timer (finalizing
-//    its seconds). Also starts a new session if none exists or
-//    the last one went idle past the timeout. */
-// function cbsgSessionRecordPageEntry() {
-//   const name = getGuestName();
-//   if (!name) return;
-//   if (typeof gtag === 'function') {
-//     gtag('event', 'page_view_named', {
-//       visitor_name: name,
-//       page_title: document.title,
-//       page_path: window.location.pathname
-//     });
-//   }
-//   let s = cbsgSessionGet();
-//   const now = Date.now();
-//   // If no session or stale (idle past timeout), close previous and start new
-//   if (!s || (now - (s.lastActiveTs || s.startTs)) > CBSG_IDLE_TIMEOUT_MS) {
-//     if (s) cbsgSessionFinalizeAndSend(s, 'idle_timeout_on_new_visit');
-//     cbsgSessionStart();
-//     s = cbsgSessionGet();
-//     if (!s) return;
-//   }
-//   // Close out the previous page's timer (if any)
-//   if (s.pages.length) {
-//     const last = s.pages[s.pages.length - 1];
-//     if (last && !last.closed) {
-//       last.seconds = Math.max(0, Math.round((now - last.enterTs) / 1000));
-//       last.closed = true;
-//     }
-//   }
-//   // Add this page
-//   const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
-//   s.pages.push({
-//     page: pageName,
-//     path: window.location.pathname,
-//     enterTs: now,
-//     seconds: 0,
-//     closed: false
-//   });
-//   s.lastActiveTs = now;
-//   cbsgSessionSet(s);
-// }
-//
-// /* Updates the current (open) page's seconds count. Called
-//    periodically by the heartbeat and on visibility/unload. */
-// function cbsgSessionTickCurrentPage() {
-//   const s = cbsgSessionGet();
-//   if (!s || !s.pages.length) return;
-//   const last = s.pages[s.pages.length - 1];
-//   if (!last || last.closed) return;
-//   const now = Date.now();
-//   last.seconds = Math.max(0, Math.round((now - last.enterTs) / 1000));
-//   s.lastActiveTs = now;
-//   cbsgSessionSet(s);
-// }
-//
-// /* Closes the current page (marks as closed, finalizes its
-//    seconds). Called on pagehide/beforeunload. */
-// function cbsgSessionClosePage() {
-//   const s = cbsgSessionGet();
-//   if (!s || !s.pages.length) return;
-//   const last = s.pages[s.pages.length - 1];
-//   if (!last || last.closed) return;
-//   const now = Date.now();
-//   last.seconds = Math.max(0, Math.round((now - last.enterTs) / 1000));
-//   last.closed = true;
-//   s.lastActiveTs = now;
-//   cbsgSessionSet(s);
-// }
-//
-// /* Formats seconds as "Nm Ss" or "Ss" */
-// function cbsgFmtSecs(sec) {
-//   sec = Math.max(0, Math.round(sec));
-//   if (sec < 60) return sec + 's';
-//   const m = Math.floor(sec / 60);
-//   const s = sec % 60;
-//   return s > 0 ? m + 'm ' + s + 's' : m + 'm';
-// }
-//
-// /* Finalizes the session and emails a summary to Chris.
-//    Uses emailjs.send with the existing template. The message
-//    body is a formatted session report. Also clears the session
-//    from sessionStorage so a new one starts on next visit. */
-// function cbsgSessionFinalizeAndSend(session, reason) {
-//   try {
-//     const s = session || cbsgSessionGet();
-//     if (!s || !s.pages.length) { cbsgSessionClear(); return; }
-//     // Ensure last page is closed
-//     const last = s.pages[s.pages.length - 1];
-//     if (last && !last.closed) {
-//       last.seconds = Math.max(0, Math.round((Date.now() - last.enterTs) / 1000));
-//       last.closed = true;
-//     }
-//     const start = new Date(s.startTs);
-//     const end   = new Date(s.lastActiveTs || Date.now());
-//     const totalSecs = s.pages.reduce((a,p) => a + (p.seconds || 0), 0);
-//     const lines = [];
-//     lines.push('Visitor: ' + s.name);
-//     lines.push('Session start: ' + start.toLocaleString());
-//     lines.push('Session end:   ' + end.toLocaleString());
-//     lines.push('Total time:    ' + cbsgFmtSecs(totalSecs));
-//     lines.push('Pages visited: ' + s.pages.length);
-//     lines.push('End reason:    ' + (reason || 'unload'));
-//     lines.push('');
-//     lines.push('--- PAGES ---');
-//     s.pages.forEach((p,i) => {
-//       lines.push((i+1) + '. ' + p.page + '  (' + cbsgFmtSecs(p.seconds || 0) + ')  [' + p.path + ']');
-//     });
-//     const body = lines.join('\n');
-//     const params = {
-//       name: s.name,
-//       from_email: '(visitor session)',
-//       page_name: 'SESSION SUMMARY — ' + s.pages.length + ' pages, ' + cbsgFmtSecs(totalSecs),
-//       message: body
-//     };
-//     // Use sendBeacon-friendly approach: try emailjs normally, but we can't
-//     // truly guarantee delivery on unload. This is a best-effort send.
-//     if (typeof emailjs !== 'undefined') {
-//       try { emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params).catch(()=>{}); } catch(e) {}
-//     }
-//     // Also fire a GA event capturing the total session
-//     if (typeof gtag === 'function') {
-//       gtag('event', 'session_summary', {
-//         visitor_name: s.name,
-//         total_seconds: totalSecs,
-//         pages_count: s.pages.length,
-//         end_reason: reason || 'unload'
-//       });
-//     }
-//     cbsgSessionClear();
-//   } catch(e) {}
-// }
-//
-// /* Heartbeat: every 30s while page is active, ticks the current
-//    page's timer. Also checks for idle timeout (if the user has
-//    been away for 15+ min, finalize the session). */
-// function cbsgStartHeartbeat() {
-//   if (window.cbsgHeartbeatStarted) return;
-//   window.cbsgHeartbeatStarted = true;
-//   setInterval(() => {
-//     if (document.hidden) return;
-//     const s = cbsgSessionGet();
-//     if (!s) return;
-//     const now = Date.now();
-//     // Idle check: if last activity was over timeout ago, finalize
-//     if ((now - (s.lastActiveTs || s.startTs)) > CBSG_IDLE_TIMEOUT_MS) {
-//       cbsgSessionFinalizeAndSend(s, 'idle_timeout');
-//       return;
-//     }
-//     cbsgSessionTickCurrentPage();
-//   }, 30000);
-//
-//   // pagehide fires on tab close / navigation away — most reliable unload event
-//   window.addEventListener('pagehide', () => {
-//     cbsgSessionClosePage();
-//     const s = cbsgSessionGet();
-//     if (s) cbsgSessionFinalizeAndSend(s, 'pagehide');
-//   });
-//
-//   // visibilitychange to 'hidden' — fires on mobile when user switches apps
-//   document.addEventListener('visibilitychange', () => {
-//     if (document.hidden) {
-//       cbsgSessionTickCurrentPage();
-//     } else {
-//       // Came back — check if session went idle
-//       const s = cbsgSessionGet();
-//       if (s && (Date.now() - (s.lastActiveTs || s.startTs)) > CBSG_IDLE_TIMEOUT_MS) {
-//         cbsgSessionFinalizeAndSend(s, 'idle_timeout_on_return');
-//       }
-//     }
-//   });
-//
-//   // Activity listeners to keep lastActiveTs fresh (detects real engagement)
-//   ['mousemove','keydown','click','scroll','touchstart'].forEach(ev => {
-//     window.addEventListener(ev, () => {
-//       const s = cbsgSessionGet();
-//       if (s) { s.lastActiveTs = Date.now(); cbsgSessionSet(s); }
-//     }, { passive: true });
-//   });
-// }
-//
-// ============================================================
-// END CBSG-DISABLED === Google Analytics + Session Tracking
-// ============================================================
+/* ============================================================
+   GOOGLE ANALYTICS + SESSION TRACKING
+   Added 2026-04-21. Two layers of tracking:
+
+   1. Google Analytics (gtag.js) — loads on every page, silently
+      tracks pageviews. When a visitor name is set, it's used as
+      the GA user_id so all pageviews are tied to that person in
+      the GA dashboard.
+
+   2. Session tracking — builds a list of {page, seconds} entries
+      across the visitor's browsing session. When they close the
+      tab OR go idle for 15 minutes, ONE email summary is sent
+      with the full session (start time, pages visited, dwell
+      time per page, total session duration).
+
+   Session data lives in sessionStorage (survives page navigation
+   within the same tab) under key 'cbsg-session'. Shape:
+   {
+     name: "Matt",
+     sessionId: "abc123",
+     startTs: 1729500000000,
+     lastActiveTs: 1729500120000,
+     pages: [{page:"index", path:"/", enterTs:..., seconds:45}, ...]
+   }
+   ============================================================ */
+
+const CBSG_IDLE_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
+
+function cbsgInitGA() {
+  if (window.cbsgGALoaded) return;
+  window.cbsgGALoaded = true;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ window.dataLayer.push(arguments); };
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
+  document.head.appendChild(s);
+  gtag('js', new Date());
+  cbsgConfigureGAUser();
+}
+
+function cbsgConfigureGAUser() {
+  if (typeof gtag !== 'function') return;
+  const cfg = { send_page_view: true };
+  const name = getGuestName();
+  if (name) cfg.user_id = name;
+  gtag('config', GA_MEASUREMENT_ID, cfg);
+}
+
+function cbsgSessionGet() {
+  try {
+    const raw = sessionStorage.getItem('cbsg-session');
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+function cbsgSessionSet(s) {
+  try { sessionStorage.setItem('cbsg-session', JSON.stringify(s)); } catch(e) {}
+}
+function cbsgSessionClear() {
+  try { sessionStorage.removeItem('cbsg-session'); } catch(e) {}
+}
+
+function cbsgSessionStart() {
+  const name = getGuestName();
+  if (!name) return;
+  const now = Date.now();
+  const s = {
+    name: name,
+    sessionId: 's_' + now.toString(36) + Math.random().toString(36).slice(2,6),
+    startTs: now,
+    lastActiveTs: now,
+    pages: []
+  };
+  cbsgSessionSet(s);
+}
+
+/* Records the current page as a new entry in the session.
+   Called on every page load (once a name is present). Before
+   adding, it closes out any previous page's timer (finalizing
+   its seconds). Also starts a new session if none exists or
+   the last one went idle past the timeout. */
+function cbsgSessionRecordPageEntry() {
+  const name = getGuestName();
+  if (!name) return;
+  if (typeof gtag === 'function') {
+    gtag('event', 'page_view_named', {
+      visitor_name: name,
+      page_title: document.title,
+      page_path: window.location.pathname
+    });
+  }
+  let s = cbsgSessionGet();
+  const now = Date.now();
+  // If no session or stale (idle past timeout), close previous and start new
+  if (!s || (now - (s.lastActiveTs || s.startTs)) > CBSG_IDLE_TIMEOUT_MS) {
+    if (s) cbsgSessionFinalizeAndSend(s, 'idle_timeout_on_new_visit');
+    cbsgSessionStart();
+    s = cbsgSessionGet();
+    if (!s) return;
+  }
+  // Close out the previous page's timer (if any)
+  if (s.pages.length) {
+    const last = s.pages[s.pages.length - 1];
+    if (last && !last.closed) {
+      last.seconds = Math.max(0, Math.round((now - last.enterTs) / 1000));
+      last.closed = true;
+    }
+  }
+  // Add this page
+  const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
+  s.pages.push({
+    page: pageName,
+    path: window.location.pathname,
+    enterTs: now,
+    seconds: 0,
+    closed: false
+  });
+  s.lastActiveTs = now;
+  cbsgSessionSet(s);
+}
+
+/* Updates the current (open) page's seconds count. Called
+   periodically by the heartbeat and on visibility/unload. */
+function cbsgSessionTickCurrentPage() {
+  const s = cbsgSessionGet();
+  if (!s || !s.pages.length) return;
+  const last = s.pages[s.pages.length - 1];
+  if (!last || last.closed) return;
+  const now = Date.now();
+  last.seconds = Math.max(0, Math.round((now - last.enterTs) / 1000));
+  s.lastActiveTs = now;
+  cbsgSessionSet(s);
+}
+
+/* Closes the current page (marks as closed, finalizes its
+   seconds). Called on pagehide/beforeunload. */
+function cbsgSessionClosePage() {
+  const s = cbsgSessionGet();
+  if (!s || !s.pages.length) return;
+  const last = s.pages[s.pages.length - 1];
+  if (!last || last.closed) return;
+  const now = Date.now();
+  last.seconds = Math.max(0, Math.round((now - last.enterTs) / 1000));
+  last.closed = true;
+  s.lastActiveTs = now;
+  cbsgSessionSet(s);
+}
+
+/* Formats seconds as "Nm Ss" or "Ss" */
+function cbsgFmtSecs(sec) {
+  sec = Math.max(0, Math.round(sec));
+  if (sec < 60) return sec + 's';
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return s > 0 ? m + 'm ' + s + 's' : m + 'm';
+}
+
+/* Finalizes the session and emails a summary to Chris.
+   Uses emailjs.send with the existing template. The message
+   body is a formatted session report. Also clears the session
+   from sessionStorage so a new one starts on next visit. */
+function cbsgSessionFinalizeAndSend(session, reason) {
+  try {
+    const s = session || cbsgSessionGet();
+    if (!s || !s.pages.length) { cbsgSessionClear(); return; }
+    // Ensure last page is closed
+    const last = s.pages[s.pages.length - 1];
+    if (last && !last.closed) {
+      last.seconds = Math.max(0, Math.round((Date.now() - last.enterTs) / 1000));
+      last.closed = true;
+    }
+    const start = new Date(s.startTs);
+    const end   = new Date(s.lastActiveTs || Date.now());
+    const totalSecs = s.pages.reduce((a,p) => a + (p.seconds || 0), 0);
+    const lines = [];
+    lines.push('Visitor: ' + s.name);
+    lines.push('Session start: ' + start.toLocaleString());
+    lines.push('Session end:   ' + end.toLocaleString());
+    lines.push('Total time:    ' + cbsgFmtSecs(totalSecs));
+    lines.push('Pages visited: ' + s.pages.length);
+    lines.push('End reason:    ' + (reason || 'unload'));
+    lines.push('');
+    lines.push('--- PAGES ---');
+    s.pages.forEach((p,i) => {
+      lines.push((i+1) + '. ' + p.page + '  (' + cbsgFmtSecs(p.seconds || 0) + ')  [' + p.path + ']');
+    });
+    const body = lines.join('\n');
+    const params = {
+      name: s.name,
+      from_email: '(visitor session)',
+      page_name: 'SESSION SUMMARY — ' + s.pages.length + ' pages, ' + cbsgFmtSecs(totalSecs),
+      message: body
+    };
+    // Use sendBeacon-friendly approach: try emailjs normally, but we can't
+    // truly guarantee delivery on unload. This is a best-effort send.
+    if (typeof emailjs !== 'undefined') {
+      try { emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params).catch(()=>{}); } catch(e) {}
+    }
+    // Also fire a GA event capturing the total session
+    if (typeof gtag === 'function') {
+      gtag('event', 'session_summary', {
+        visitor_name: s.name,
+        total_seconds: totalSecs,
+        pages_count: s.pages.length,
+        end_reason: reason || 'unload'
+      });
+    }
+    cbsgSessionClear();
+  } catch(e) {}
+}
+
+/* Heartbeat: every 30s while page is active, ticks the current
+   page's timer. Also checks for idle timeout (if the user has
+   been away for 15+ min, finalize the session). */
+function cbsgStartHeartbeat() {
+  if (window.cbsgHeartbeatStarted) return;
+  window.cbsgHeartbeatStarted = true;
+  setInterval(() => {
+    if (document.hidden) return;
+    const s = cbsgSessionGet();
+    if (!s) return;
+    const now = Date.now();
+    // Idle check: if last activity was over timeout ago, finalize
+    if ((now - (s.lastActiveTs || s.startTs)) > CBSG_IDLE_TIMEOUT_MS) {
+      cbsgSessionFinalizeAndSend(s, 'idle_timeout');
+      return;
+    }
+    cbsgSessionTickCurrentPage();
+  }, 30000);
+
+  // pagehide fires on tab close / navigation away — most reliable unload event
+  window.addEventListener('pagehide', () => {
+    cbsgSessionClosePage();
+    const s = cbsgSessionGet();
+    if (s) cbsgSessionFinalizeAndSend(s, 'pagehide');
+  });
+
+  // visibilitychange to 'hidden' — fires on mobile when user switches apps
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      cbsgSessionTickCurrentPage();
+    } else {
+      // Came back — check if session went idle
+      const s = cbsgSessionGet();
+      if (s && (Date.now() - (s.lastActiveTs || s.startTs)) > CBSG_IDLE_TIMEOUT_MS) {
+        cbsgSessionFinalizeAndSend(s, 'idle_timeout_on_return');
+      }
+    }
+  });
+
+  // Activity listeners to keep lastActiveTs fresh (detects real engagement)
+  ['mousemove','keydown','click','scroll','touchstart'].forEach(ev => {
+    window.addEventListener(ev, () => {
+      const s = cbsgSessionGet();
+      if (s) { s.lastActiveTs = Date.now(); cbsgSessionSet(s); }
+    }, { passive: true });
+  });
+}
 
 function getGuestPageKey() {
   const path = window.location.pathname.replace(/^\/CampbellBibleStudy\/?/, '').replace(/\.html$/, '') || 'index';
@@ -544,19 +478,6 @@ function getGuestPageKey() {
 }
 
 function silentEmailGuest() {
-  // CBSG-DISABLED-v5.1: direct EmailJS send delegated to analytics.js via
-  // window.CBSG_notifyNoteSave. Preserves owner suppression from analytics.js v1.1.
-  try {
-    const notesEl = document.getElementById('cbsg-guest-textarea');
-    if (!notesEl) return;
-    const notes = notesEl.value.trim();
-    if (notes.length < 5) return;
-    const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
-    if (typeof window.CBSG_notifyNoteSave === 'function') {
-      window.CBSG_notifyNoteSave('Guest save from ' + pageName);
-    }
-  } catch(e) {}
-  /* === CBSG-DISABLED-v5.1 === original inline send, preserved for reference ===
   try {
     const notesEl = document.getElementById('cbsg-guest-textarea');
     const nameEl  = document.getElementById('cbsg-guest-name');
@@ -569,7 +490,6 @@ function silentEmailGuest() {
     if (typeof emailjs !== 'undefined') { doSend(); }
     else { let a = 0; const r = setInterval(() => { a++; if (typeof emailjs !== 'undefined') { clearInterval(r); doSend(); } else if (a > 10) clearInterval(r); }, 500); }
   } catch(e) {}
-  === END CBSG-DISABLED === */
 }
 
 function saveGuestNotes() {
@@ -912,16 +832,7 @@ async function saveToGitHub() {
   if (aiOut) aiOut.innerHTML = aiOutBackup;
   if (aiBox && aiBoxHadVisible) aiBox.classList.add('visible');
   stripped.reverse().forEach(({ parent, el, next }) => { if (parent) parent.insertBefore(el, next); });
-  try {
-    await putFile(token, filePath, html);
-    await saveNotesJson(token);
-    setStatus('✅ Saved! Live in ~30 seconds.', 'ok');
-    updateVersionTimestamp();
-    // v3.1 EMAIL HOOK: notify via analytics.js (owner-suppressed, de-duped)
-    if (typeof window.CBSG_notifyNoteSave === 'function') {
-      window.CBSG_notifyNoteSave('GitHub save from ' + filePath);
-    }
-  }
+  try { await putFile(token, filePath, html); await saveNotesJson(token); setStatus('✅ Saved! Live in ~30 seconds.', 'ok'); updateVersionTimestamp(); }
   catch(e) { setStatus('❌ ' + e.message, 'error'); }
 }
 
@@ -1030,27 +941,8 @@ function updateVersionTimestamp() {
 }
 
 function saveAllNotes() {
-  let saved = 0;
-  (window.PAGE_NOTE_IDS || []).forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      localStorage.setItem('cbsg-' + id, el.value);
-      saved++;
-    }
-  });
+  (window.PAGE_NOTE_IDS || []).forEach(id => { const el = document.getElementById(id); if (el) localStorage.setItem('cbsg-' + id, el.value); });
   saveAllQuillNotes();
-
-  // v3.1 EMAIL HOOK: fire silent email notification (throttled 60s).
-  // Only fires when there's actually something to save. analytics.js handles
-  // owner suppression.
-  if (saved > 0 && typeof window.CBSG_notifyNoteSave === 'function') {
-    const now = Date.now();
-    const lastFire = parseInt(sessionStorage.getItem('cbsg-last-save-email') || '0', 10);
-    if (now - lastFire > 60000) {
-      sessionStorage.setItem('cbsg-last-save-email', String(now));
-      window.CBSG_notifyNoteSave('Local save from ' + window.location.pathname);
-    }
-  }
 }
 
 function loadNotes() {
@@ -1121,51 +1013,6 @@ function _saveQuillContent(editorId, quill) {
   localStorage.setItem('cbsg-' + editorId, delta);
 }
 
-/* ---- VISITOR NOTES EMAIL ON SAVE ---------------------------
-   When a visitor (non-admin) types in a Quill editor, after a
-   30-second pause in typing, silently email the notes to Chris.
-   Only one email per editor per session to avoid spam.
-   ------------------------------------------------------------ */
-const _quillEmailTimers = {};    // editorId → debounce timeout handle
-const _quillEmailedThisSession = {}; // editorId → true once emailed
-
-function _maybeEmailVisitorNotes(editorId, quill) {
-  if (isAdminUnlocked()) return;               // Admin (you) — no self-email
-  const name = getGuestName();
-  if (!name) return;                            // No name yet — skip
-  // Get plain text content
-  let text = '';
-  try { text = quill.getText().trim(); } catch(e) { return; }
-  if (text.length < 10) return;                 // Too short to bother
-  // Clear any existing timer for this editor
-  if (_quillEmailTimers[editorId]) {
-    clearTimeout(_quillEmailTimers[editorId]);
-  }
-  // Debounce — wait 30 seconds of inactivity, then email
-  _quillEmailTimers[editorId] = setTimeout(() => {
-    try {
-      const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
-      const params = {
-        name: name,
-        from_email: '(visitor notes)',
-        page_name: pageName + ' — ' + editorId,
-        message: text
-      };
-      if (typeof emailjs !== 'undefined') {
-        /* CBSG-DISABLED-v5.1: inline send delegated to analytics.js.
-           Call window.CBSG_notifyNoteSave if you want the visitor note save
-           to trigger an owner-suppressed email via analytics.js v1.1.
-           Preserved below for reference. */
-        if (typeof window.CBSG_notifyNoteSave === 'function') {
-          window.CBSG_notifyNoteSave('Visitor Quill save');
-        }
-        /* original: try { emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params).catch(()=>{}); } catch(e) {} */
-      }
-      _quillEmailedThisSession[editorId] = true;
-    } catch(e) {}
-  }, 30000); // 30 seconds
-}
-
 function _loadQuillContent(editorId, quill) {
   const saved = localStorage.getItem('cbsg-' + editorId);
   if (!saved) return;
@@ -1221,11 +1068,8 @@ function initQuillEditors() {
     // Load saved content
     _loadQuillContent(editorId, quill);
 
-    // Auto-save on change (and email visitor notes after 30s of inactivity)
-    quill.on('text-change', () => {
-      _saveQuillContent(editorId, quill);
-      _maybeEmailVisitorNotes(editorId, quill);
-    });
+    // Auto-save on change
+    quill.on('text-change', () => _saveQuillContent(editorId, quill));
 
     quillInstances[editorId] = quill;
   });
@@ -1254,15 +1098,15 @@ document.addEventListener('DOMContentLoaded', () => {
   startTimer();
   updateVersionTimestamp();
   document.querySelectorAll('.bar-originated').forEach(el => { el.textContent = 'Originated: March 27, 2026'; });
-  // CBSG-DISABLED-v5.1: GA init and session heartbeat moved to analytics.js
-  // cbsgInitGA();
-  // cbsgStartHeartbeat();
+  // Initialize Google Analytics silently on every page load (fires before modal)
+  cbsgInitGA();
+  // Start the session heartbeat (tracks dwell time, handles unload/idle, sends summary email)
+  cbsgStartHeartbeat();
   setTimeout(() => { if (!isAdminUnlocked()) checkFirstVisit(); }, 400);
-  // CBSG-DISABLED-v5.1: EmailJS lazy-load + init moved to analytics.js
-  // if (typeof emailjs === 'undefined') {
-  //   const s = document.createElement('script');
-  //   s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-  //   s.onload = () => { try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) {} };
-  //   document.head.appendChild(s);
-  // } else { try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) {} }
+  if (typeof emailjs === 'undefined') {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+    s.onload = () => { try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) {} };
+    document.head.appendChild(s);
+  } else { try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) {} }
 });
