@@ -1,82 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bibliography — Biblical Calendar &amp; Feasts — Campbell Bible Study</title>
+  <title>Biblical Calendar &amp; Feasts Bibliography — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/analytics.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <style>
-    .bib-nav { display:flex; flex-wrap:wrap; gap:10px; margin:14px 0 24px; }
-    .bib-nav a { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:6px; text-decoration:none; font-family:Arial,sans-serif; font-size:13px; font-weight:bold; border:1px solid #d0dce8; background:#f9fbfd; color:#2E75B6; transition:all 0.15s; }
-    .bib-nav a:hover { background:#EBF4FC; border-color:#2E75B6; }
-    .bib-nav a.current { background:#1F3864; color:#FFD700; border-color:#1F3864; }
-    .bib-nav .back-link { margin-left:auto; color:#888; background:transparent; border-color:transparent; }
-    .bib-nav .back-link:hover { color:#1F3864; background:transparent; }
-
-    .author-block { margin:20px 0; border:1px solid #d0dce8; border-radius:8px; overflow:hidden; }
-    .author-toggle { display:flex; align-items:center; gap:14px; padding:14px 18px; cursor:pointer; user-select:none; transition:filter 0.15s; }
-    .author-toggle:hover { filter:brightness(1.08); }
-    .author-avatar { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; border:2px solid currentColor; }
-    .author-meta { flex:1; }
-    .author-name  { font-size:15px; font-weight:bold; font-family:Georgia,serif; }
-    .author-sub   { font-size:11px; font-family:Arial,sans-serif; margin-top:2px; opacity:0.7; }
-    .author-count { font-size:10px; font-family:Arial,sans-serif; opacity:0.5; margin-top:1px; }
-    .author-arrow { font-size:11px; color:#aaa; transition:transform 0.2s; flex-shrink:0; }
-    .author-arrow.open { transform:rotate(90deg); color:#FFD700; }
-    .author-body { display:none; border-top:1px solid #eef1f5; }
-    .author-body.open { display:block; }
-    .author-desc { padding:12px 18px; font-size:13px; color:#555; font-family:Arial,sans-serif; line-height:1.7; background:#f9fbfd; border-bottom:1px solid #eef1f5; }
-
-    .books-section-label { font-size:9px; font-weight:bold; font-family:Arial,sans-serif; text-transform:uppercase; letter-spacing:0.08em; padding:10px 18px 4px; color:#888; background:#f9fbfd; border-bottom:1px solid #eef1f5; }
-
-    .book-item { border-bottom:1px solid #eef1f5; }
-    .book-item:last-child { border-bottom:none; }
-    .book-toggle { display:flex; align-items:center; gap:10px; padding:11px 18px; cursor:pointer; transition:background 0.15s; user-select:none; }
-    .book-toggle:hover { background:#f7f9fc; }
-
-    .book-read-wrap { flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:2px; }
-    .book-read-wrap input[type=checkbox] { width:16px; height:16px; cursor:pointer; accent-color:#2E6B0E; }
-    .book-read-wrap .rl { font-size:8px; font-family:Arial,sans-serif; color:#bbb; text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap; }
-    .book-read-wrap.done .rl { color:#2E6B0E; font-weight:bold; }
-
-    .book-icon { font-size:15px; flex-shrink:0; }
-    .book-info { flex:1; min-width:0; }
-    .book-title { font-size:13px; font-weight:bold; color:#1F3864; font-family:Georgia,serif; line-height:1.4; }
-    .book-year-type { font-size:11px; color:#888; font-family:Arial,sans-serif; margin-top:1px; }
-    .book-modules-inline { font-size:11px; color:#2E75B6; font-family:Arial,sans-serif; font-style:italic; }
-    .book-arrow { font-size:10px; color:#ccc; transition:transform 0.2s; flex-shrink:0; }
-    .book-arrow.open { transform:rotate(90deg); color:#2E75B6; }
-
-    .book-body { display:none; padding:0 18px 16px 18px; background:#fafbfd; }
-    .book-body.open { display:block; }
-    .book-desc { font-size:12px; color:#555; font-family:Arial,sans-serif; line-height:1.7; margin:10px 0 10px; }
-
-    .book-dates { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; background:#f0f4ff; border:1px solid #d0dce8; border-radius:6px; padding:8px 12px; margin-bottom:10px; }
-    .bdf { display:flex; flex-direction:column; gap:2px; }
-    .bdl { font-size:9px; font-weight:bold; color:#888; text-transform:uppercase; letter-spacing:0.06em; font-family:Arial,sans-serif; }
-    .bdi { border:none; border-bottom:1px solid #bbb; background:transparent; font-size:12px; color:#1F3864; font-family:Arial,sans-serif; padding:2px 0; width:105px; cursor:pointer; }
-    .bdi:focus { outline:none; border-bottom-color:#1F3864; }
-    .bdn { font-size:12px; color:#555; font-family:Arial,sans-serif; }
-    .reading-note { font-size:12px; color:#3B5E1A; font-family:Arial,sans-serif; background:#F4F8EE; border:1px solid #6B8E3A; border-radius:4px; padding:8px 12px; margin-bottom:10px; font-style:italic; }
-    .reading-note::before { content:"📝 Your note: "; font-weight:bold; font-style:normal; }
-
-    .audible-btn { display:inline-flex; align-items:center; gap:6px; background:#FF9900; color:#1a1a1a; text-decoration:none; padding:6px 14px; border-radius:4px; font-size:12px; font-family:Arial,sans-serif; font-weight:bold; margin-top:2px; margin-right:6px; transition:background 0.15s; }
-    .audible-btn:hover { background:#e68a00; }
-    .audible-btn-sm { display:inline-flex; align-items:center; gap:5px; background:rgba(255,153,0,0.15); color:#cc7a00; text-decoration:none; padding:4px 10px; border-radius:4px; font-size:11px; font-family:Arial,sans-serif; font-weight:bold; border:1px solid rgba(255,153,0,0.4); transition:all 0.15s; white-space:nowrap; }
-    .audible-btn-sm:hover { background:#FF9900; color:#1a1a1a; }
-    .audible-author-btn { display:inline-flex; align-items:center; gap:6px; background:transparent; color:rgba(255,255,255,0.7); text-decoration:none; padding:5px 12px; border-radius:4px; font-size:11px; font-family:Arial,sans-serif; font-weight:bold; border:1px solid rgba(255,255,255,0.3); transition:all 0.15s; white-space:nowrap; }
-    .audible-author-btn:hover { background:rgba(255,153,0,0.2); color:#FF9900; border-color:#FF9900; }
-
-    .chapter-list { margin:8px 0 10px; }
-    .chapter-label { font-size:9px; font-weight:bold; font-family:Arial,sans-serif; text-transform:uppercase; letter-spacing:0.07em; color:#aaa; margin-bottom:6px; }
-    .chapter-item { display:flex; align-items:flex-start; gap:8px; font-size:12px; font-family:Arial,sans-serif; color:#444; padding:3px 0; border-bottom:1px dotted #e8edf5; line-height:1.5; }
-    .chapter-item:last-child { border-bottom:none; }
-    .cn { color:#2E75B6; font-weight:bold; flex-shrink:0; min-width:24px; }
-    .ca { color:#1F3864; font-weight:bold; }
-    .cb { font-size:9px; font-weight:bold; background:#FFD700; color:#1F3864; padding:1px 6px; border-radius:8px; font-family:Arial,sans-serif; margin-left:4px; white-space:nowrap; }
-
-    .in-progress-badge { font-size:9px; font-weight:bold; background:#2E75B6; color:white; padding:2px 6px; border-radius:8px; font-family:Arial,sans-serif; display:inline-block; margin-left:4px; vertical-align:middle; }
-    .completed-badge { font-size:9px; font-weight:bold; background:#2E6B0E; color:white; padding:2px 6px; border-radius:8px; font-family:Arial,sans-serif; display:inline-block; margin-left:4px; vertical-align:middle; }
+    .bib-author {
+      background: #4a7c59;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 10px 16px;
+      border-radius: 6px 6px 0 0;
+      margin-top: 28px;
+    }
+    .bib-body {
+      border: 1px solid #cfe0d4;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      padding: 14px 18px;
+      background: #fafdfb;
+    }
+    .bib-book {
+      border-bottom: 1px solid #e8efea;
+      padding: 10px 0;
+      font-family: Georgia, serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #222;
+    }
+    .bib-book:last-child { border-bottom: none; }
+    .bib-title { font-weight: bold; color: #2b4a34; }
+    .bib-year { color: #6b7a91; font-size: 12px; font-family: Arial, sans-serif; margin-left: 6px; }
+    .bib-note { font-size: 13px; color: #555; font-style: italic; margin-top: 3px; }
+    .bib-status {
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-left: 8px;
+      letter-spacing: 0.03em;
+    }
+    .bib-status.read   { background: #d4edda; color: #155724; }
+    .bib-status.queued { background: #fff3cd; color: #856404; }
+    .bib-status.future { background: #e8edf5; color: #6c757d; }
+    .intro-box {
+      background: #f3f8f4;
+      border: 1px solid #cfe0d4;
+      border-left: 4px solid #4a7c59;
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 18px 0 28px;
+      font-family: Georgia, serif;
+      font-size: 14px;
+      line-height: 1.65;
+      color: #2b4a34;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 32px;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      color: #1F3864;
+      text-decoration: none;
+      border-bottom: 1px dotted #1F3864;
+    }
+    .back-link:hover { border-bottom: none; }
   </style>
 </head>
 <body>
@@ -87,14 +83,11 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <button id="btn-timestamp" class="btn-timestamp" title="Insert timestamp at cursor in your notes" onclick="insertTimestamp()">🕒 Timestamp</button>
-  <button id="btn-log-time" class="btn-timestamp" title="Insert study time summary at cursor in your notes" onclick="insertStudyTime()">📚 Log Study Time</button>
-  <span id="study-timer-display" class="study-timer-display"></span>
-  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);"></span>
+  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
   <div class="bar-right">
-    <span class="bar-originated">Originated: March 27, 2026</span>
+    <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 19, 2026</span>
+    <span id="gh-bar-version">Version: April 23, 2026</span>
   </div>
 </div>
 
@@ -103,277 +96,73 @@
 <div id="app">
 <div id="main">
 
-  <span class="page-tag">My Study · Bibliography</span>
-  <h1 class="page-title">Bibliography — Biblical Calendar &amp; Feasts</h1>
-  <p class="body">Authors focused on the 364-day solar calendar, the Dead Sea Scrolls, the Book of Jubilees, and the seven biblical feasts of Israel. Core reading for Theme 2. Click any author or book to expand. Checkmarks and dates save automatically.</p>
+  <span class="page-tag">Reading Library — Topic 2 of 3</span>
+  <h1 class="page-title">📅 Biblical Calendar &amp; Feasts</h1>
+  <p class="body">Core reading for Theme 2. The 364-day solar calendar, the Dead Sea Scrolls, the Book of Jubilees, and the seven feasts of Israel. Notes save automatically.</p>
 
-  <div class="bib-nav">
-    <a href="bibliography-prophecy.html">📖 Prophecy &amp; Eschatology</a>
-    <a href="bibliography-calendar.html" class="current">📅 Biblical Calendar &amp; Feasts</a>
-    <a href="bibliography-fiction.html">📗 Prophetic Fiction</a>
-    <a href="resources.html" class="back-link">← Back to Reference Library</a>
+  <p class="body" style="font-style:italic;color:#6b7a91;">Navigate: <a href="./resources.html">← Back to Resource Library</a> · <a href="./bibliography-prophecy.html">Prophecy &amp; Eschatology →</a> · <a href="./bibliography-fiction.html">Prophetic Fiction →</a></p>
+
+  <div class="intro-box">
+    <strong>Why this library matters:</strong> Theme 2 is rebuilt on the premise that the calendar God gave Israel was a 364-day solar calendar — NOT the post-exilic lunar calendar that later crept in. The Dead Sea Scrolls, the Book of Jubilees, and the book of Enoch all testify to this. Ken Johnson and Barney Kasdan are the two authors anchoring this theme.
   </div>
 
-<!-- ── KEN JOHNSON ── -->
-  <div class="author-block">
-    <div class="author-toggle" onclick="toggleBlock('johnson')" style="background:linear-gradient(135deg,#7A4F00,#A06A00);">
-      <div class="author-avatar" style="color:#FFD700;border-color:#FFD700;">✍️</div>
-      <div class="author-meta">
-        <div class="author-name" style="color:#FFD700;">Ken Johnson</div>
-        <div class="author-sub" style="color:rgba(255,255,255,0.7);">Non-Fiction · Dead Sea Scrolls · Ancient Church</div>
-        <div class="author-count" style="color:rgba(255,255,255,0.4);">In Progress — Started 4/2/2026 · Click to expand</div>
-      </div>
-      <div class="author-arrow" id="arrow-johnson" style="color:rgba(255,255,255,0.4);">▶</div>
+  <!-- Ken Johnson -->
+  <div class="bib-author">Ken Johnson, Th.D.</div>
+  <div class="bib-body">
+    <div class="bib-book">
+      <span class="bib-title">The Ancient Book of Enoch</span>
+      <span class="bib-status read">Core Source</span>
+      <div class="bib-note">Johnson's translation and commentary on 1 Enoch. Critical for the Watcher / Nephilim / prophetic calendar thread.</div>
     </div>
-    <div class="author-body" id="block-johnson">
-      <div class="author-desc">Expert on the Dead Sea Scrolls and ancient church writings. His work on the Ancient Dead Sea Scroll Calendar is directly relevant to Theme 2 — the 364-day solar calendar and its prophetic implications.</div>
-
-      <div class="books-section-label">Non-Fiction</div>
-
-      <div class="book-item">
-        <div class="book-toggle" onclick="toggleBook('dead-sea-calendar')">
-          <div class="book-read-wrap" id="wrap-rl-dead-sea-calendar" onclick="event.stopPropagation()">
-            <input type="checkbox" id="rl-dead-sea-calendar" onchange="saveReadState('dead-sea-calendar')">
-            <span class="rl">Read</span>
-          </div>
-          <div class="book-icon">📘</div>
-          <div class="book-info">
-            <div class="book-title">The Ancient Dead Sea Scroll Calendar <span class="in-progress-badge">⏳ In Progress</span></div>
-            <div class="book-year-type">2020 · Non-Fiction</div>
-            <div class="book-modules-inline">→ Theme 2 Module 3 (Book of Jubilees), Theme 2 Module 1 (Calendar History)</div>
-          </div>
-          <a class="audible-btn-sm" href="https://www.amazon.com/Ancient-Dead-Sea-Scroll-Calendar/dp/B087LGY8N8" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
-          <div class="book-arrow" id="arrow-dead-sea-calendar">▶</div>
-        </div>
-        <div class="book-body" id="book-dead-sea-calendar">
-          <div class="book-dates">
-            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-dead-sea-calendar" value="4/2/2026" onchange="saveDateState('dead-sea-calendar','start',this.value)"></div>
-            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-dead-sea-calendar" placeholder="In progress..." onchange="saveDateState('dead-sea-calendar','end',this.value)"></div>
-            <div class="bdf"><span class="bdl">Pages</span><span class="bdn">133</span></div>
-          </div>
-          <div class="book-desc">Deep dive into the Dead Sea Scrolls' calendar material — the 364-day solar calendar found at Qumran, its prophetic structure, and why the Essene community considered the lunar calendar a corruption of God's appointed times. Also reveals summer festivals deliberately hidden from mainstream Judaism — the Festival of New Wine and Festival of New Oil — that point to the Age of Grace. Directly connects to Theme 2 on the Biblical Calendar.</div>
-          <a class="audible-btn" href="https://www.amazon.com/Ancient-Dead-Sea-Scroll-Calendar/dp/B087LGY8N8" target="_blank">🎧 Listen on Audible</a>
-        </div>
-      </div>
-
-      <!-- ANCIENT BOOK OF ENOCH -->
-      <div class="book-item">
-        <div class="book-toggle" onclick="toggleBook('johnson-enoch')">
-          <div class="book-read-wrap" id="wrap-rl-johnson-enoch" onclick="event.stopPropagation()">
-            <input type="checkbox" id="rl-johnson-enoch" onchange="saveReadState('johnson-enoch')">
-            <span class="rl">Read</span>
-          </div>
-          <div class="book-icon">📘</div>
-          <div class="book-info">
-            <div class="book-title">Ancient Book of Enoch</div>
-            <div class="book-year-type">2012 · Non-Fiction</div>
-            <div class="book-modules-inline">→ Theme 2 (364-day calendar), Module 9 (angelic warfare)</div>
-          </div>
-          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Ancient+Book+Enoch+Ken+Johnson" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
-          <div class="book-arrow" id="arrow-johnson-enoch">▶</div>
-        </div>
-        <div class="book-body" id="book-johnson-enoch">
-          <div class="book-dates">
-            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-johnson-enoch" placeholder="" onchange="saveDateState('johnson-enoch','start',this.value)"></div>
-            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-johnson-enoch" placeholder="" onchange="saveDateState('johnson-enoch','end',this.value)"></div>
-          </div>
-          <div class="book-desc">Johnson's commentary on the Book of Enoch — covering its astronomical and calendar sections (the 364-day solar year), the Watchers and fallen angels, the Son of Man figure, and its direct relationship to the Dead Sea Scrolls. Companion to the Enoch PDF in this library and to Theme 2.</div>
-          <a class="audible-btn" href="https://www.audible.com/search?keywords=Ancient+Book+Enoch+Ken+Johnson" target="_blank">🎧 Search on Audible</a>
-        </div>
-      </div>
-
-      <!-- ANCIENT BOOK OF JUBILEES -->
-      <div class="book-item">
-        <div class="book-toggle" onclick="toggleBook('johnson-jubilees')">
-          <div class="book-read-wrap" id="wrap-rl-johnson-jubilees" onclick="event.stopPropagation()">
-            <input type="checkbox" id="rl-johnson-jubilees" onchange="saveReadState('johnson-jubilees')">
-            <span class="rl">Read</span>
-          </div>
-          <div class="book-icon">📘</div>
-          <div class="book-info">
-            <div class="book-title">Ancient Book of Jubilees</div>
-            <div class="book-year-type">2012 · Non-Fiction</div>
-            <div class="book-modules-inline">→ Theme 2 Module 3 (Book of Jubilees), Module 1 (Daniel's 70 Weeks)</div>
-          </div>
-          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Ancient+Book+Jubilees+Ken+Johnson" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
-          <div class="book-arrow" id="arrow-johnson-jubilees">▶</div>
-        </div>
-        <div class="book-body" id="book-johnson-jubilees">
-          <div class="book-dates">
-            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-johnson-jubilees" placeholder="" onchange="saveDateState('johnson-jubilees','start',this.value)"></div>
-            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-johnson-jubilees" placeholder="" onchange="saveDateState('johnson-jubilees','end',this.value)"></div>
-          </div>
-          <div class="book-desc">Johnson's commentary on the Book of Jubilees — the 364-day solar calendar, the jubilee nested-seven system and its connection to Daniel's 70 Weeks, and the calendar warnings from Noah in Jubilees 6. Directly ties to Theme 2 Module 3 in this study guide.</div>
-          <a class="audible-btn" href="https://www.audible.com/search?keywords=Ancient+Book+Jubilees+Ken+Johnson" target="_blank">🎧 Search on Audible</a>
-        </div>
-      </div>
-
-      <!-- ANCIENT PROPHECIES REVEALED -->
-      <div class="book-item">
-        <div class="book-toggle" onclick="toggleBook('johnson-prophecies')">
-          <div class="book-read-wrap" id="wrap-rl-johnson-prophecies" onclick="event.stopPropagation()">
-            <input type="checkbox" id="rl-johnson-prophecies" onchange="saveReadState('johnson-prophecies')">
-            <span class="rl">Read</span>
-          </div>
-          <div class="book-icon">📘</div>
-          <div class="book-info">
-            <div class="book-title">Ancient Prophecies Revealed</div>
-            <div class="book-year-type">2008 · Non-Fiction</div>
-            <div class="book-modules-inline">→ All Theme 1 modules — prophecy background</div>
-          </div>
-          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Ancient+Prophecies+Revealed+Ken+Johnson" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
-          <div class="book-arrow" id="arrow-johnson-prophecies">▶</div>
-        </div>
-        <div class="book-body" id="book-johnson-prophecies">
-          <div class="book-dates">
-            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-johnson-prophecies" placeholder="" onchange="saveDateState('johnson-prophecies','start',this.value)"></div>
-            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-johnson-prophecies" placeholder="" onchange="saveDateState('johnson-prophecies','end',this.value)"></div>
-          </div>
-          <div class="book-desc">500 prophecies from the Old Testament with their New Testament or historical fulfillments. Useful reference for tracing any prophetic theme across the full canon — especially useful alongside Module 1 (Daniel) and Module 2 (Israel).</div>
-          <a class="audible-btn" href="https://www.audible.com/search?keywords=Ancient+Prophecies+Revealed+Ken+Johnson" target="_blank">🎧 Search on Audible</a>
-        </div>
-      </div>
-
-      <!-- ANCIENT CHURCH FATHERS -->
-      <div class="book-item">
-        <div class="book-toggle" onclick="toggleBook('johnson-church-fathers')">
-          <div class="book-read-wrap" id="wrap-rl-johnson-church-fathers" onclick="event.stopPropagation()">
-            <input type="checkbox" id="rl-johnson-church-fathers" onchange="saveReadState('johnson-church-fathers')">
-            <span class="rl">Read</span>
-          </div>
-          <div class="book-icon">📘</div>
-          <div class="book-info">
-            <div class="book-title">Ancient Church Fathers</div>
-            <div class="book-year-type">2010 · Non-Fiction</div>
-            <div class="book-modules-inline">→ Module 6 (Rapture history), Module 12 (Millennium views)</div>
-          </div>
-          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Ancient+Church+Fathers+Ken+Johnson" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
-          <div class="book-arrow" id="arrow-johnson-church-fathers">▶</div>
-        </div>
-        <div class="book-body" id="book-johnson-church-fathers">
-          <div class="book-dates">
-            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-johnson-church-fathers" placeholder="" onchange="saveDateState('johnson-church-fathers','start',this.value)"></div>
-            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-johnson-church-fathers" placeholder="" onchange="saveDateState('johnson-church-fathers','end',this.value)"></div>
-          </div>
-          <div class="book-desc">What did the earliest church fathers actually believe about prophecy, the Rapture, and the Millennium? Johnson surveys the writings of Polycarp, Irenaeus, Clement, Tertullian, and others to show what pre-Nicene Christianity taught about the end times — relevant to the debate over whether pre-trib theology is a modern invention.</div>
-          <a class="audible-btn" href="https://www.audible.com/search?keywords=Ancient+Church+Fathers+Ken+Johnson" target="_blank">🎧 Search on Audible</a>
-        </div>
-      </div>
-
+    <div class="bib-book">
+      <span class="bib-title">The Ancient Book of Jubilees</span>
+      <span class="bib-status read">Core Source</span>
+      <div class="bib-note">Retells Genesis/Exodus within a 364-day calendar framework. Essential for Theme 2 Module 3.</div>
+    </div>
+    <div class="bib-book">
+      <span class="bib-title">Ancient Dead Sea Scrolls</span>
+      <span class="bib-status read">Core Source</span>
+      <div class="bib-note">Johnson's overview of the Qumran community's calendar, scriptures, and theological positions.</div>
+    </div>
+    <div class="bib-book">
+      <span class="bib-title">Ancient Prophecies Revealed</span>
+      <span class="bib-status queued">On Deck</span>
+      <div class="bib-note">Historic fulfillment of biblical prophecy.</div>
+    </div>
+    <div class="bib-book">
+      <span class="bib-title">Ancient Church Fathers</span>
+      <span class="bib-status future">On Deck</span>
+      <div class="bib-note">Pre-Nicene fathers on prophecy, the calendar, and early Church doctrine.</div>
     </div>
   </div>
 
-<!-- ── BARNEY KASDAN ── -->
-  <div class="author-block">
-    <div class="author-toggle" onclick="toggleBlock('kasdan')" style="background:linear-gradient(135deg,#1A5276,#2E86C1);">
-      <div class="author-avatar" style="color:#AED6F1;border-color:#AED6F1;">✍️</div>
-      <div class="author-meta">
-        <div class="author-name" style="color:#AED6F1;">Barney Kasdan</div>
-        <div class="author-sub" style="color:rgba(255,255,255,0.7);">Non-Fiction · Messianic Jewish · Biblical Feasts & Prophecy</div>
-        <div class="author-count" style="color:rgba(255,255,255,0.4);">Click to expand · Audible links included</div>
-      </div>
-      <div class="author-arrow" id="arrow-kasdan" style="color:rgba(255,255,255,0.4);">▶</div>
-    </div>
-    <div class="author-body" id="block-kasdan">
-      <div class="author-desc">Messianic Jewish pastor and scholar. His study of the biblical feasts treats them exactly as your Theme 2 convictions describe — precise prophetic appointments, not floating observances. Kasdan brings a Jewish-insider perspective that connects the Levitical calendar directly to the first and second coming of Messiah. Core resource for Theme 2 and your growing conviction that God's feast calendar is a system of prophetic precision.</div>
-      <div class="books-section-label">Non-Fiction</div>
-      <div class="book-item">
-        <div class="book-toggle" onclick="toggleBook('gods-appointed-times')">
-          <div class="book-read-wrap" id="wrap-rl-gods-appointed-times" onclick="event.stopPropagation()">
-            <input type="checkbox" id="rl-gods-appointed-times" onchange="saveReadState('gods-appointed-times')">
-            <span class="rl">Read</span>
-          </div>
-          <div class="book-icon">📘</div>
-          <div class="book-info">
-            <div class="book-title">God's Appointed Times</div>
-            <div class="book-year-type">1993 · Non-Fiction · Messianic Study</div>
-            <div class="book-modules-inline">→ Theme 2 (all modules), Module 6 (Rapture), Module 13 (Second Coming)</div>
-          </div>
-          <a class="audible-btn-sm" href="https://www.audible.com/search?keywords=Gods+Appointed+Times+Barney+Kasdan" target="_blank" onclick="event.stopPropagation()">🎧 Audible</a>
-          <div class="book-arrow" id="arrow-gods-appointed-times">▶</div>
-        </div>
-        <div class="book-body" id="book-gods-appointed-times">
-          <div class="book-dates">
-            <div class="bdf"><span class="bdl">Started</span><input class="bdi" type="text" id="rl-start-gods-appointed-times" placeholder="" onchange="saveDateState('gods-appointed-times','start',this.value)"></div>
-            <div class="bdf"><span class="bdl">Completed</span><input class="bdi" type="text" id="rl-end-gods-appointed-times" placeholder="" onchange="saveDateState('gods-appointed-times','end',this.value)"></div>
-          </div>
-          <div class="book-desc">A Messianic Jewish study of the seven feasts of Israel — Passover, Unleavened Bread, Firstfruits, Shavuot, Trumpets, Day of Atonement, and Tabernacles — examining their prophetic fulfillment in Jesus's first coming and their foreshadowing of the second. Kasdan treats each feast as a precision prophetic appointment, directly supporting your Theme 2 conviction that the calendar is a divine prophetic mechanism. The single best book companion to your Biblical Calendar modules.</div>
-          <a class="audible-btn" href="https://www.audible.com/search?keywords=Gods+Appointed+Times+Barney+Kasdan" target="_blank">🎧 Search on Audible</a>
-        </div>
-      </div>
-      <div class="note-block">
-        <div class="label">✏️ My Kasdan reading log:</div>
-        <textarea class="notes-input" id="n-lib-kasdan" placeholder="e.g. started God's Appointed Times..." style="min-height:70px;"></textarea>
-      </div>
+  <!-- Barney Kasdan -->
+  <div class="bib-author">Barney Kasdan</div>
+  <div class="bib-body">
+    <div class="bib-book">
+      <span class="bib-title">God's Appointed Times: A Practical Guide for Understanding and Celebrating the Biblical Holy Days</span>
+      <span class="bib-status read">Core Source</span>
+      <div class="bib-note">Messianic Jewish treatment of the seven feasts of Leviticus 23 — their history, meaning, and practical observance in the Christian life. Foundational for Theme 2 Module 4 (Feast of Tabernacles).</div>
     </div>
   </div>
 
+  <div class="notes-box" style="margin-top:32px;">
+    <div class="label">✏️ My notes — Calendar &amp; Feasts reading:</div>
+    <div class="quill-editor" id="n-bib-calendar" data-placeholder="Reading progress, key insights from each book, connections to Theme 2 modules..." style="min-height:140px;"></div>
+  </div>
+
+  <a href="./resources.html" class="back-link">← Back to Resource Library</a>
 
 </div>
 </div>
 
-<!-- PAGE NOTE IDS -->
 <script>
-window.PAGE_NOTE_IDS = ["n-lib-kasdan"];
+  window.PAGE_NOTE_IDS = ['n-bib-calendar'];
 </script>
 
 <script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 
-<script>
-function toggleBlock(id) {
-  const body  = document.getElementById('block-' + id);
-  const arrow = document.getElementById('arrow-' + id);
-  if (!body || !arrow) return;
-  const open = body.classList.toggle('open');
-  arrow.classList.toggle('open', open);
-}
-
-function toggleBook(id) {
-  const body  = document.getElementById('book-' + id);
-  const arrow = document.getElementById('arrow-' + id);
-  if (!body || !arrow) return;
-  const open = body.classList.toggle('open');
-  arrow.classList.toggle('open', open);
-}
-
-function saveReadState(id) {
-  const cb   = document.getElementById('rl-' + id);
-  const wrap = document.getElementById('wrap-rl-' + id);
-  if (!cb) return;
-  localStorage.setItem('cbsg-rl-read-' + id, cb.checked ? 'true' : 'false');
-  if (wrap) wrap.classList.toggle('done', cb.checked);
-}
-
-function saveDateState(id, field, val) {
-  localStorage.setItem('cbsg-rl-' + field + '-' + id, val);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const books = ["dead-sea-calendar", "johnson-enoch", "johnson-jubilees", "johnson-prophecies", "johnson-church-fathers", "gods-appointed-times"];
-
-  books.forEach(id => {
-    const cb   = document.getElementById('rl-' + id);
-    const wrap = document.getElementById('wrap-rl-' + id);
-    const saved = localStorage.getItem('cbsg-rl-read-' + id);
-    if (cb && saved !== null) {
-      cb.checked = saved === 'true';
-      if (wrap) wrap.classList.toggle('done', cb.checked);
-    } else if (cb && cb.checked) {
-      localStorage.setItem('cbsg-rl-read-' + id, 'true');
-      if (wrap) wrap.classList.add('done');
-    }
-
-    ['start','end'].forEach(field => {
-      const el = document.getElementById('rl-' + field + '-' + id);
-      if (!el) return;
-      const savedDate = localStorage.getItem('cbsg-rl-' + field + '-' + id);
-      if (savedDate) el.value = savedDate;
-    });
-  });
-});
-</script>
-
-</body>
-</html>
+<div id="sidebar-overlay" style="display: none;"></div></body></html>
