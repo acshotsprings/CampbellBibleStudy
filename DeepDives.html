@@ -5,7 +5,7 @@
   <title>Deep Dives — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
-    .dd-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin-top:20px; }
+    .dd-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin-top:14px; }
     .dd-card { background:#fff; border:1px solid #d0dce8; border-radius:10px; padding:20px; cursor:pointer; transition:border-color 0.15s; text-decoration:none; display:block; }
     .dd-card:hover { border-color:#2E75B6; }
     .dd-card-icon { font-size:28px; margin-bottom:10px; }
@@ -13,6 +13,40 @@
     .dd-card-desc { font-size:13px; color:#555; line-height:1.6; font-family:Arial,sans-serif; }
     .dd-card-tag { display:inline-block; margin-top:10px; font-size:11px; background:#EBF4FC; color:#1F3864; padding:3px 9px; border-radius:4px; font-family:Arial,sans-serif; }
     .dd-coming { opacity:0.5; cursor:default; pointer-events:none; }
+    .dd-category-header {
+      margin-top: 32px;
+      margin-bottom: 6px;
+      padding: 10px 16px;
+      background: linear-gradient(90deg, #1F3864 0%, #2E75B6 100%);
+      color: #FFD700;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dd-category-header .cat-count {
+      font-weight: normal;
+      font-size: 11px;
+      background: rgba(255,215,0,0.18);
+      color: #FFD700;
+      padding: 2px 9px;
+      border-radius: 10px;
+      margin-left: auto;
+    }
+    .dd-category-desc {
+      font-family: Georgia, serif;
+      font-size: 13px;
+      color: #6b7a91;
+      font-style: italic;
+      margin: 8px 4px 0;
+      line-height: 1.5;
+    }
+    .dd-category-header:first-of-type { margin-top: 20px; }
   </style>
   <script src="assets/js/analytics.js"></script>
 </head>
@@ -28,7 +62,7 @@
   <div class="bar-right">
     <span class="bar-originated">Originated: March 27, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 22, 2026</span>
+    <span id="gh-bar-version">Version: April 23, 2026</span>
   </div>
 </div>
 
@@ -39,7 +73,16 @@
 
   <span class="page-tag">My Study</span>
   <h1 class="page-title">📚 Deep Dives</h1>
-  <p class="body">Extended research on subjects that deserve more space than a single module allows. Each deep dive is a standalone study. Click any subject below to open it — new dives are added as subjects emerge from teaching, study, and personal reflection.</p>
+  <p class="body">Extended research on subjects that deserve more space than a single module allows. Each deep dive is a standalone study. Click any subject below to open it — new dives are added as subjects emerge from teaching, study, and personal reflection. Dives are organized by category; faded cards are "Coming Soon."</p>
+
+  <!-- =============================================== -->
+  <!-- CATEGORY 1: CALENDAR & TIMING                   -->
+  <!-- =============================================== -->
+  <div class="dd-category-header">
+    📅 <span>Calendar &amp; Timing</span>
+    <span class="cat-count">4 dives</span>
+  </div>
+  <p class="dd-category-desc">How God measures time in prophecy — calendars, day counts, and the precise math that anchors Daniel, Revelation, and the tribulation sequence.</p>
 
   <div class="dd-grid">
 
@@ -50,11 +93,187 @@
       <span class="dd-card-tag">Theme 2 · Daniel · Revelation</span>
     </a>
 
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">⚖️</div>
+      <div class="dd-card-title">360-Day Prophetic vs. 364-Day Cosmic Calendar</div>
+      <div class="dd-card-desc">If God built a 364-day solar calendar into creation, why does Daniel's 70 Weeks math assume a 360-day year? Testing whether both systems are valid for different purposes — or whether one should override the other.</div>
+      <span class="dd-card-tag">Coming Soon · Daniel 9 · Enoch · Jubilees</span>
+    </div>
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">⏳</div>
+      <div class="dd-card-title">1,290 vs. 1,260 Days — The 30-Day Gap</div>
+      <div class="dd-card-desc">Daniel 12:11 gives 1,290 days from the Abomination, but the last half of the Tribulation is 1,260. What fills the extra 30 days? Working theory: the seven Bowl Judgments pouring out sequentially before Christ's return.</div>
+      <span class="dd-card-tag">Coming Soon · Daniel 12 · Revelation 16</span>
+    </div>
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">🕰️</div>
+      <div class="dd-card-title">The 2,000-Year Church Age</div>
+      <div class="dd-card-desc">If the 69 weeks hit Palm Sunday to the day, is the Church Age gap ALSO prophetically precise? Exploring whether the span between Christ's resurrection and the start of Week 70 is calculable — or just how long it has happened to be.</div>
+      <span class="dd-card-tag">Coming Soon · 2 Peter 3:8 · Daniel 9</span>
+    </div>
+
+  </div>
+
+  <!-- =============================================== -->
+  <!-- CATEGORY 2: DANIEL & THE 70 WEEKS               -->
+  <!-- =============================================== -->
+  <div class="dd-category-header">
+    📖 <span>Daniel &amp; the 70 Weeks</span>
+    <span class="cat-count">2 dives</span>
+  </div>
+  <p class="dd-category-desc">The prophetic backbone of all end-times Scripture. Word studies, timing precision, and the historical fulfillment of week 69.</p>
+
+  <div class="dd-grid">
+
     <a href="DeepDive-Shabua.html" class="dd-card">
       <div class="dd-card-icon">📖</div>
       <div class="dd-card-title">H7620 — What Does "Weeks" Mean in Daniel 9?</div>
       <div class="dd-card-desc">A full Hebrew word study on <em>shabua</em> — why the "weeks" of Daniel 9 mean years, not days. Four converging lines of evidence from grammar, context, and mathematics.</div>
       <span class="dd-card-tag">Daniel 9 · Strong's H7620 · 70 Weeks</span>
+    </a>
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">✝️</div>
+      <div class="dd-card-title">Crucifixion Date Precision — April 3, 33 AD</div>
+      <div class="dd-card-desc">If God's prophetic calendar is precise to the day, we should know the exact date and hour of the crucifixion. The 3/3/33 signature — divine design or coincidence? A research dive into the astronomical and historical evidence.</div>
+      <span class="dd-card-tag">Coming Soon · Palm Sunday · Numerology</span>
+    </div>
+
+  </div>
+
+  <!-- =============================================== -->
+  <!-- CATEGORY 3: RAPTURE TIMING                      -->
+  <!-- =============================================== -->
+  <div class="dd-category-header">
+    🕊️ <span>Rapture Timing</span>
+    <span class="cat-count">2 dives</span>
+  </div>
+  <p class="dd-category-desc">When does the Church go? The central eschatological debate — Pre-Trib, Mid-Trib, or Post-Trib — and what Scripture actually supports.</p>
+
+  <div class="dd-grid">
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">⛅</div>
+      <div class="dd-card-title">Pre-Trib vs. Mid-Trib vs. Post-Trib</div>
+      <div class="dd-card-desc">The three main rapture-timing positions, their key texts, and the logic behind each. 1 Thessalonians 5:9, Revelation 3:10, Matthew 24:29-31, and the tension between "not destined for wrath" and "called to endure."</div>
+      <span class="dd-card-tag">Coming Soon · 1 Thess 4–5 · Rev 3 · Matt 24</span>
+    </div>
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">🌾</div>
+      <div class="dd-card-title">Matthew 24:29-31 — Rapture or Gathering of Survivors?</div>
+      <div class="dd-card-desc">Is the "gathering of the elect" after the tribulation the Rapture — or is it a separate event, the collection of surviving believers to populate the Millennial Kingdom? A critical distinction that resolves much of the Pre-Trib/Post-Trib tension.</div>
+      <span class="dd-card-tag">Coming Soon · Matthew 24 · Millennial Kingdom</span>
+    </div>
+
+  </div>
+
+  <!-- =============================================== -->
+  <!-- CATEGORY 4: GOG-MAGOG & THE COALITION           -->
+  <!-- =============================================== -->
+  <div class="dd-category-header">
+    ⚔️ <span>Gog-Magog &amp; the Coalition</span>
+    <span class="cat-count">2 dives</span>
+  </div>
+  <p class="dd-category-desc">The Ezekiel 38-39 coalition — who's in it, when it strikes, and how current events in Russia, Iran, and Turkey are positioning the chess board right now.</p>
+
+  <div class="dd-grid">
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">🗺️</div>
+      <div class="dd-card-title">Gog &amp; Magog — Five Evidence Streams for Russia</div>
+      <div class="dd-card-desc">The historical, etymological, geographical, and prophetic case for Russia as Magog. Walvoord, Rosenberg, and the Genesis 10 Table of Nations.</div>
+      <span class="dd-card-tag">Coming Soon · Ezekiel 38–39</span>
+    </div>
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">⏰</div>
+      <div class="dd-card-title">Gog-Magog War Timing — Pre-Trib vs. Mid/Late Trib</div>
+      <div class="dd-card-desc">When does the Russia-Iran-Turkey invasion of Israel actually happen? Before the 70th week begins, allowing the Antichrist's covenant to make sense? Or during the tribulation itself? The two main positions weighed.</div>
+      <span class="dd-card-tag">Coming Soon · Ezekiel 38 · Daniel 9 · Pre-Trib</span>
+    </div>
+
+  </div>
+
+  <!-- =============================================== -->
+  <!-- CATEGORY 5: TRIBULATION EVENTS                  -->
+  <!-- =============================================== -->
+  <div class="dd-category-header">
+    🏛️ <span>Tribulation Events</span>
+    <span class="cat-count">4 dives</span>
+  </div>
+  <p class="dd-category-desc">Specific moments inside Week 70 — the Abomination, the Two Witnesses, the Bowl Judgments, and how the seal/trumpet/bowl sequence unfolds.</p>
+
+  <div class="dd-grid">
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">🏛️</div>
+      <div class="dd-card-title">The Abomination of Desolation</div>
+      <div class="dd-card-desc">Matthew 24:15 vs Revelation 13 — are these the same event? A precision analysis of the distinctions between the temple event and global worship enforcement.</div>
+      <span class="dd-card-tag">Coming Soon · Matthew 24 · Revelation 13</span>
+    </div>
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">👥</div>
+      <div class="dd-card-title">The Two Witnesses — Precise Timeline</div>
+      <div class="dd-card-desc">Who are they, when do they prophesy, how do the 1,260 days and the 3.5 days align, and what fills the window between their ascension and Christ's physical return?</div>
+      <span class="dd-card-tag">Coming Soon · Revelation 11</span>
+    </div>
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">📯</div>
+      <div class="dd-card-title">Seals, Trumpets, Bowls — The Chronology</div>
+      <div class="dd-card-desc">How do the three sets of judgments in Revelation overlap and sequence? Are they spread evenly across the tribulation, or do they cluster? Mapping the layered structure of God's wrath.</div>
+      <span class="dd-card-tag">Coming Soon · Revelation 6 · 8–9 · 16</span>
+    </div>
+
+    <div class="dd-card dd-coming">
+      <div class="dd-card-icon">⚡</div>
+      <div class="dd-card-title">The 100-Pound Hailstones</div>
+      <div class="dd-card-desc">Revelation 16:21 and the 7th Bowl Judgment — what a talent weighed in the ancient world and what this judgment means in the Tribulation sequence.</div>
+      <span class="dd-card-tag">Coming Soon · Revelation 16</span>
+    </div>
+
+  </div>
+
+  <!-- =============================================== -->
+  <!-- CATEGORY 6: NUMBERS & PATTERNS                  -->
+  <!-- =============================================== -->
+  <div class="dd-category-header">
+    🔢 <span>Numbers &amp; Patterns</span>
+    <span class="cat-count">1 dive</span>
+  </div>
+  <p class="dd-category-desc">Biblical numerology, Gematria, and the mathematical signatures that run through Scripture — approached with healthy skepticism.</p>
+
+  <div class="dd-grid">
+
+    <a href="DeepDive-Gematria.html" class="dd-card">
+      <div class="dd-card-icon">🔢</div>
+      <div class="dd-card-title">Gematria Hebrew/Greek</div>
+      <div class="dd-card-desc">Biblical number patterns through Hebrew and Greek letter values. A balanced study of Troy Brewer's "Numbers That Preach" with discernment framework and historical context.</div>
+      <span class="dd-card-tag">Hebrew/Greek · Troy Brewer · Discernment</span>
+    </a>
+
+  </div>
+
+  <!-- =============================================== -->
+  <!-- CATEGORY 7: PROPHECY CASE STUDIES               -->
+  <!-- =============================================== -->
+  <div class="dd-category-header">
+    📜 <span>Prophecy Case Studies</span>
+    <span class="cat-count">2 dives</span>
+  </div>
+  <p class="dd-category-desc">Real prophecies, real fulfillments — specific passages studied in depth for what they teach about God's precision, faithfulness, and covenant care.</p>
+
+  <div class="dd-grid">
+
+    <a href="DeepDive-TyreSidon.html" class="dd-card">
+      <div class="dd-card-icon">🏺</div>
+      <div class="dd-card-title">Tyre &amp; Sidon</div>
+      <div class="dd-card-desc">Ezekiel's 2,500-year-old prophecy fulfilled in striking detail by Alexander the Great. Jesus' warning that pagan Tyre would have repented before the religious cities of His day. A quick-hit study of prophecy, pride, and privilege.</div>
+      <span class="dd-card-tag">Ezekiel 26–28 · Matthew 11 · Quick Hit</span>
     </a>
 
     <a href="DeepDive-Willow.html" class="dd-card">
@@ -64,44 +283,9 @@
       <span class="dd-card-tag">Psalm 137 · Isaiah 44 · Ezekiel 17 · Job 40</span>
     </a>
 
-    <a href="DeepDive-Gematria.html" class="dd-card">
-      <div class="dd-card-icon">🔢</div>
-      <div class="dd-card-title">Gematria Hebrew/Greek</div>
-      <div class="dd-card-desc">Biblical number patterns through Hebrew and Greek letter values. A balanced study of Troy Brewer's "Numbers That Preach" with discernment framework and historical context.</div>
-      <span class="dd-card-tag">Hebrew/Greek · Troy Brewer · Discernment</span>
-    </a>
-
-    <a href="DeepDive-TyreSidon.html" class="dd-card">
-      <div class="dd-card-icon">🏺</div>
-      <div class="dd-card-title">Tyre &amp; Sidon</div>
-      <div class="dd-card-desc">Ezekiel's 2,500-year-old prophecy fulfilled in striking detail by Alexander the Great. Jesus' warning that pagan Tyre would have repented before the religious cities of His day. A quick-hit study of prophecy, pride, and privilege.</div>
-      <span class="dd-card-tag">Ezekiel 26–28 · Matthew 11 · Quick Hit</span>
-    </a>
-
-    <div class="dd-card dd-coming">
-      <div class="dd-card-icon">⚡</div>
-      <div class="dd-card-title">The 100-Pound Hailstones</div>
-      <div class="dd-card-desc">Revelation 16:21 and the 7th Bowl Judgment — what a talent weighed in the ancient world and what this judgment means in the Tribulation sequence.</div>
-      <span class="dd-card-tag">Coming Soon · Revelation 16</span>
-    </div>
-
-    <div class="dd-card dd-coming">
-      <div class="dd-card-icon">🗺️</div>
-      <div class="dd-card-title">Gog & Magog — Five Evidence Streams for Russia</div>
-      <div class="dd-card-desc">The historical, etymological, geographical, and prophetic case for Russia as Magog. Walvoord, Rosenberg, and the Genesis 10 Table of Nations.</div>
-      <span class="dd-card-tag">Coming Soon · Ezekiel 38–39</span>
-    </div>
-
-    <div class="dd-card dd-coming">
-      <div class="dd-card-icon">🏛️</div>
-      <div class="dd-card-title">The Abomination of Desolation</div>
-      <div class="dd-card-desc">Matthew 24:15 vs Revelation 13 — are these the same event? A precision analysis of the distinctions between the temple event and global worship enforcement.</div>
-      <span class="dd-card-tag">Coming Soon · Matthew 24 · Revelation 13</span>
-    </div>
-
   </div>
 
-  <div class="notes-box" style="margin-top:32px;">
+  <div class="notes-box" style="margin-top:40px;">
     <div class="label">✏️ Deep dive subjects to add — running list:</div>
     <textarea class="notes-input" id="n-deepdives-index" placeholder="e.g. The Restrainer — who or what is holding back the Antichrist (2 Thess 2:6–7)?" style="min-height:80px;"></textarea>
   </div>
