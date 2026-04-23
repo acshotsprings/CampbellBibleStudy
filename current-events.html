@@ -1,281 +1,554 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Current Events & Prophecy — Campbell Bible Study</title>
+  <title>Current Events Tracker — Campbell Bible Study</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/analytics.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <style>
-    .scripture-box .ref a { color:inherit; text-decoration:none; border-bottom:1px dotted currentColor; }
-    .scripture-box .ref a:hover { text-decoration:underline; border-bottom:none; }
-    .info-box a, .cross-ref-box a, .views-box a, .bullet-list a, .checklist-table a, .reflection-box a, p.body a { color:#1F3864; text-decoration:none; border-bottom:1px dotted #1F3864; }
-    .info-box a:hover, .cross-ref-box a:hover, .views-box a:hover, .bullet-list a:hover, .checklist-table a:hover, .reflection-box a:hover, p.body a:hover { text-decoration:underline; border-bottom:none; }
+    /* ---------- Page-level accents ---------- */
+    .ce-intro-box {
+      background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+      border: 1px solid #f0d0d0;
+      border-left: 4px solid #E57373;
+      border-radius: 6px;
+      padding: 18px 22px;
+      margin: 18px 0 28px;
+      font-family: Georgia, serif;
+      color: #333;
+      line-height: 1.65;
+      font-size: 14px;
+    }
+    .ce-intro-box .intro-title {
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      color: #B33A3A;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .ce-intro-box p { margin: 0 0 10px; }
+    .ce-intro-box p:last-child { margin-bottom: 0; }
+
+    /* ---------- Watchlist categories ---------- */
+    .ce-section {
+      margin: 28px 0 8px;
+    }
+    .ce-section-header {
+      background: #1F3864;
+      color: #FFD700;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 10px 16px;
+      border-radius: 6px 6px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ce-section-header .ce-count {
+      background: rgba(229, 115, 115, 0.85);
+      color: #fff;
+      font-size: 11px;
+      font-weight: normal;
+      padding: 2px 9px;
+      border-radius: 10px;
+      letter-spacing: 0.02em;
+    }
+    .ce-section-body {
+      border: 1px solid #d0dce8;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      overflow: hidden;
+    }
+    .ce-section-intro {
+      background: #f3f6fa;
+      color: #3b4a66;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      font-style: italic;
+      padding: 10px 16px;
+      border-bottom: 1px solid #d0dce8;
+      line-height: 1.55;
+    }
+
+    /* ---------- Individual event entry ---------- */
+    .ce-entry {
+      border-bottom: 1px solid #eef1f5;
+      padding: 14px 16px;
+      font-family: Georgia, serif;
+    }
+    .ce-entry:last-child { border-bottom: none; }
+    .ce-entry-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 6px;
+    }
+    .ce-entry-title {
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      color: #1F3864;
+      font-size: 14px;
+      line-height: 1.35;
+      flex: 1;
+    }
+    .ce-entry-date {
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      color: #6b7a91;
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+    .ce-entry-body {
+      color: #333;
+      font-size: 13px;
+      line-height: 1.65;
+      margin-bottom: 8px;
+    }
+    .ce-entry-refs {
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      color: #6b7a91;
+      padding: 6px 0 2px;
+      border-top: 1px dashed #e2e6ed;
+      margin-top: 8px;
+    }
+    .ce-entry-refs a {
+      color: #1F3864;
+      text-decoration: none;
+      border-bottom: 1px dotted #1F3864;
+    }
+    .ce-entry-refs a:hover { border-bottom: none; }
+
+    /* ---------- Tag chips ---------- */
+    .ce-tag {
+      display: inline-block;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 7px;
+      border-radius: 3px;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+    .ce-tag.israel     { background: #dbe9f7; color: #1F3864; }
+    .ce-tag.mideast    { background: #fbe4d4; color: #8B4000; }
+    .ce-tag.russia     { background: #f1d8dd; color: #6B1B2B; }
+    .ce-tag.economy    { background: #e5f2df; color: #2E6B0E; }
+    .ce-tag.technology { background: #e6dff5; color: #4a2c8a; }
+    .ce-tag.church     { background: #f7e6b3; color: #5b4a00; }
+    .ce-tag.apostasy   { background: #f5d5d5; color: #8B1A1A; }
+
+    /* ---------- Empty-state placeholder ---------- */
+    .ce-empty {
+      padding: 22px 18px;
+      text-align: center;
+      font-family: Georgia, serif;
+      font-style: italic;
+      color: #8a95a9;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .ce-empty strong {
+      color: #B33A3A;
+      font-style: normal;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ---------- How-to-use block ---------- */
+    .ce-howto {
+      background: #fdf8e8;
+      border: 1px solid #e8d98c;
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 18px 0;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      color: #5b4a00;
+      line-height: 1.65;
+    }
+    .ce-howto .howto-title {
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      font-size: 11px;
+      color: #8B6F00;
+      margin-bottom: 6px;
+    }
+    .ce-howto ol { margin: 4px 0 0 20px; padding: 0; }
+    .ce-howto li { margin-bottom: 4px; }
+
+    /* ---------- Journal-style note editor ---------- */
+    .ce-notes-wrap {
+      margin: 16px 0 4px;
+    }
+    .ce-notes-label {
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      font-size: 12px;
+      color: #1F3864;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .ce-notes {
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 180px;
+      border: 1px solid #d0dce8;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-family: Georgia, serif;
+      font-size: 14px;
+      line-height: 1.65;
+      color: #222;
+      background: #fafbfd;
+      resize: vertical;
+    }
+    .ce-notes:focus {
+      outline: none;
+      border-color: #1F3864;
+      background: #fff;
+    }
+
+    /* ---------- Scripture lens block ---------- */
+    .ce-lens {
+      background: #f7f9fc;
+      border: 1px solid #d0dce8;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 22px 0;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      color: #333;
+      line-height: 1.7;
+    }
+    .ce-lens .lens-title {
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 11px;
+      color: #1F3864;
+      margin-bottom: 8px;
+    }
+    .ce-lens .verse-ref {
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      color: #1F3864;
+      font-size: 12px;
+    }
+    .ce-lens blockquote {
+      margin: 4px 0 10px;
+      padding-left: 14px;
+      border-left: 3px solid #FFD700;
+      font-style: italic;
+      color: #3b4a66;
+    }
+
+    /* ---------- Timestamp button inside notes ---------- */
+    .ce-stamp-btn {
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      color: #1F3864;
+      background: #FFD700;
+      border: 1px solid #d4b300;
+      border-radius: 4px;
+      padding: 4px 10px;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+    .ce-stamp-btn:hover { background: #f0c800; }
   </style>
 </head>
 <body>
 
-<!-- GITHUB BAR -->
+<!-- GITHUB BAR (injected by main.js injectBarExtras) -->
 <div id="github-bar">
   <span class="bar-title">Campbell Bible Study</span>
   <span class="bar-sep">|</span>
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
   <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status"></span>
+  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
   <div class="bar-right">
-    <span class="bar-originated">Originated: April 12, 2026</span>
+    <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: April 18, 2026</span>
+    <span id="gh-bar-version">Version: April 23, 2026</span>
   </div>
 </div>
 
-<!-- HAMBURGER BUTTON (mobile only) -->
-<button id="hamburger-btn" onclick="toggleSidebar()" aria-label="Open navigation menu">☰</button>
-
-<!-- SIDEBAR OVERLAY (mobile only) -->
-<div id="sidebar-overlay" onclick="closeSidebar()"></div>
-
-<!-- SIDEBAR -->
+<!-- SIDEBAR (injected by nav.js buildSidebar) -->
 <div id="sidebar"></div>
 
-<!-- MAIN -->
-<div id="app">
-<div id="main">
+<div id="main-content">
+<div class="content">
 
-  <span class="page-tag">My Study</span>
-  <h1 class="page-title">Watching the World Through Scripture</h1>
-  <p class="page-subtitle">"You know how to discern the appearance of the sky, but cannot discern the signs of the times?" — Matthew 16:3 (NASB 1995)</p>
+  <h1>🌍 Current Events Tracker</h1>
+  <p class="lead">A running log of world events worth watching with a prophetic lens — filtered by category, not by panic.</p>
 
-  <div style="display:inline-block;background:#1F3864;color:#fff;padding:5px 14px;border-radius:16px;font-family:Arial,sans-serif;font-size:12px;font-weight:bold;margin:4px 0 16px;">📅 Last entry added: April 18, 2026 &nbsp;·&nbsp; 2 total entries</div>
-
-  <p class="body">This section is not exegesis — it is observation. Current events do not interpret prophecy, but prophecy can help us understand the times we are living in. Each entry uses a real-world development as a launching pad for Spirit-led discussion, grounded in Scripture.</p>
-
-  <div class="info-box" style="border-color:#7A6600;background:#FFFBF0;">
-    <div class="title" style="color:#7A6600;">📌 How to use this section</div>
-    <div class="line">Read the event. Consider the prophetic lens. Pray through the discussion questions. Write your observations in the notes box. Date every entry — your thinking will develop over time.</div>
-    <div class="line" style="margin-top:6px;font-style:italic;color:#888;">Remember: Hold these connections loosely. We are watching, not predicting. Only God knows the day and hour (<a href="https://www.bible.com/bible/100/MAT.24.36.NASB1995" target="_blank" rel="noopener">Matt 24:36</a>).</div>
+  <div class="ce-intro-box">
+    <div class="intro-title">Purpose</div>
+    <p>The goal here is <strong>discernment, not alarmism</strong>. World events in themselves prove nothing — but patterns of events, seen across years and measured against Scripture, can sharpen the watchman's eye. This page is where I track the stories that seem to matter, note what Scripture they connect to (if anything), and resist the temptation to force every headline into a prophetic frame.</p>
+    <p>Some events will turn out to be nothing. Some will be ordinary news that only felt significant in the moment. A few may end up genuinely significant. Only time and Scripture tell.</p>
   </div>
 
-  <div class="divider"></div>
+  <div class="ce-lens">
+    <div class="lens-title">📖 The Watchman's Lens</div>
+    <span class="verse-ref">Matthew 24:6 (NASB 1995)</span>
+    <blockquote>"You will be hearing of wars and rumors of wars. See that you are not frightened, for those things must take place, but that is not yet the end."</blockquote>
+    <span class="verse-ref">Luke 21:28 (NASB 1995)</span>
+    <blockquote>"But when these things begin to take place, straighten up and lift up your heads, because your redemption is drawing near."</blockquote>
+    <span class="verse-ref">1 Thessalonians 5:6 (NASB 1995)</span>
+    <blockquote>"So then let us not sleep as others do, but let us be alert and sober."</blockquote>
+  </div>
 
-  <!-- ── ENTRY 2 (most recent - placed above #1) ── -->
-  <div id="entry-2">
-    <span class="page-tag" style="background:#7A2020;">Entry #2</span>
-    <h2 class="section-title" style="margin-top:10px;">Israel–Hezbollah Ceasefire, Iran's "Nuclear Dust," and the Dismantling of the Northern Tier</h2>
-    <p class="body" style="font-size:12px;color:#999;">Added: April 18, 2026</p>
+  <div class="ce-howto">
+    <div class="howto-title">How to use this page</div>
+    <ol>
+      <li><strong>Add events under the appropriate category below.</strong> Don't force-fit — if it doesn't cleanly belong to one, put it in General Watchlist.</li>
+      <li><strong>Include a date</strong> (when the event happened, not just when you heard about it).</li>
+      <li><strong>Write what happened in plain language</strong> — no speculation yet.</li>
+      <li><strong>Then, separately, note any Scripture it connects to</strong> — direct, thematic, or "maybe nothing."</li>
+      <li><strong>Revisit old entries periodically.</strong> Events that looked urgent often fade; events that looked minor sometimes compound. The log itself teaches discernment.</li>
+    </ol>
+  </div>
 
-    <div class="info-box">
-      <div class="title">📰 What's Happening</div>
-      <div class="line">The U.S.–Israel war with Iran that began February 28, 2026 (with the strikes that killed Ayatollah Khamenei) has moved toward resolution this week on two fronts simultaneously:</div>
-      <div class="line" style="margin-top:8px;"><strong>Lebanon front:</strong> A 10-day ceasefire between Israel and Hezbollah took effect Thursday night (April 16) after phone calls between Trump, Netanyahu, and Lebanese President Joseph Aoun. Israel is keeping troops in southern Lebanon; Hezbollah claims the right to resist. For the first time in 34 years, Israeli and Lebanese leaders spoke directly. Earlier (April 8), Israel had launched "Operation Eternal Darkness" across Lebanon — Lebanon's deadliest single-day strike toll in the war (~357 killed).</div>
-      <div class="line" style="margin-top:8px;"><strong>Iran front:</strong> Trump publicly stated Iran has agreed to an "unlimited" suspension of its nuclear program and to hand over its ~2,000kg stockpile of enriched uranium (including 450kg enriched to 60% purity). A proposed three-page framework under discussion would unfreeze $20 billion in Iranian assets in exchange for uranium surrender. Iran disputes parts of Trump's claims. Pakistan is the lead mediator. A second round of talks is expected in Islamabad before the April 22 ceasefire deadline.</div>
-      <div class="line" style="margin-top:8px;"><strong>Strategic picture:</strong> Iran's proxy network (Hezbollah, Hamas) is being systematically dismantled. The Strait of Hormuz reopened after Iran briefly closed it, sending oil prices down 10%+. The USS Gerald Ford has returned to the Middle East — 3rd U.S. aircraft carrier deployed. U.S. naval blockade of Iranian ports continues.</div>
+  <!-- =========================================================
+       WATCHLIST CATEGORIES
+       Each section uses consistent structure so new events
+       can be added by copy-pasting the .ce-entry template.
+       ========================================================= -->
+
+  <div class="ce-section">
+    <div class="ce-section-header">
+      <span>🕎 Israel &amp; Jerusalem</span>
+      <span class="ce-count" id="count-israel">Watching</span>
     </div>
-
-    <h3 class="sub-title">🔍 Prophetic Lenses</h3>
-
-    <div class="views-box">
-      <div class="view-item">
-        <div class="view-title"><a href="https://www.bible.com/bible/100/EZK.38.NASB1995" target="_blank" rel="noopener">Ezekiel 38–39</a> — Iran Being Cornered, Not Defeated</div>
-        <div class="view-body">Iran is one of the three named coalition members in the Gog-Magog invasion (Persia, <a href="https://www.bible.com/bible/100/EZK.38.5.NASB1995" target="_blank" rel="noopener">Ezek 38:5</a>). What's happening right now is not Iran's destruction — it's Iran's <em>humiliation</em>. Their supreme leader is dead. Their proxies are broken. Their uranium is being bargained away. Their economic lifeline (Hormuz) is under U.S. control. This creates exactly the conditions Ezekiel 38 describes: a bitter, isolated, revenge-driven northern power that partners with Russia and Turkey for one last desperate move against Israel — motivated not just by plunder but by humiliation that cannot be avenged by normal means.</div>
-        <div class="view-key">Key passages: <a href="https://www.bible.com/bible/100/EZK.38.1-6.NASB1995" target="_blank" rel="noopener">Ezek 38:1–6</a> (coalition), <a href="https://www.bible.com/bible/100/EZK.38.10-13.NASB1995" target="_blank" rel="noopener">38:10–13</a> (evil plan), <a href="https://www.bible.com/bible/100/EZK.38.15.NASB1995" target="_blank" rel="noopener">38:15</a> (from the remote north)</div>
+    <div class="ce-section-body">
+      <div class="ce-section-intro">
+        The foundational prerequisite. Every other end-times checklist item depends on Israel being a nation and Jerusalem being a flashpoint (<a href="https://www.bible.com/bible/100/EZK.37.NASB1995" target="_blank">Ezekiel 37</a>, <a href="https://www.bible.com/bible/100/ZEC.12.NASB1995" target="_blank">Zechariah 12</a>). This section tracks political, territorial, temple-related, and demographic developments.
       </div>
-      <div class="view-item">
-        <div class="view-title"><a href="https://www.bible.com/bible/100/EZK.38.11.NASB1995" target="_blank" rel="noopener">Ezekiel 38:11</a> — The "Peace and Safety" Precondition</div>
-        <div class="view-body">Gog-Magog begins when Israel dwells "securely, all of them living without walls, and having no bars or gates." We are NOT there today — Israel still has walls, active fronts, IDF deployments in Lebanon. But something has shifted this week. If the ceasefires hold, if Hezbollah is disarmed, if Iran's uranium is removed, if Lebanon–Israel peace talks succeed — Israel's northern border could become the most peaceful it has been in 40 years. Paul's warning in <a href="https://www.bible.com/bible/100/1TH.5.3.NASB1995" target="_blank" rel="noopener">1 Thess 5:3</a> is striking: "While they are saying, 'Peace and safety!' then destruction will come upon them suddenly." The conditions are being laid.</div>
-        <div class="view-key">Key passages: <a href="https://www.bible.com/bible/100/EZK.38.11.NASB1995" target="_blank" rel="noopener">Ezek 38:11</a> (unwalled villages), <a href="https://www.bible.com/bible/100/1TH.5.1-3.NASB1995" target="_blank" rel="noopener">1 Thess 5:1–3</a> (peace and safety)</div>
+      <div class="ce-empty">
+        <strong>Empty for now.</strong><br>
+        Add events below via the notes box. Examples worth tracking:<br>
+        • Temple Mount incidents &nbsp; • Red heifer developments &nbsp; • Abraham Accord expansions<br>
+        • Knesset decisions on prophetic land issues &nbsp; • Third Temple preparations
       </div>
-      <div class="view-item" style="border-left:4px solid #7A2020;padding-left:14px;">
-        <div class="view-title">📍 Biblical Geography — Tyre &amp; Sidon Are in the News Right Now</div>
-        <div class="view-body">The cities Scripture names repeatedly — Tyre and Sidon — are not ancient ruins in textbooks. They are functioning modern cities inside Lebanon, and they are where the fighting has been happening this week.
-          <div style="background:#F8F4EB;border:1px solid #C8A800;border-radius:6px;padding:12px 14px;margin:10px 0;font-size:13px;">
-            <div style="font-weight:bold;color:#7A6600;margin-bottom:6px;">🗺️ Where These Cities Are Today</div>
-            <div style="margin-bottom:4px;"><strong>Sidon</strong> — Called "Saida" in Arabic today. Mediterranean coastal city in southern Lebanon, about 25 miles south of Beirut. Third-largest city in Lebanon.</div>
-            <div style="margin-bottom:4px;"><strong>Tyre</strong> — Called "Sour" in Arabic today. Mediterranean coastal city about 20 miles south of Sidon, only 12 miles north of Israel's border. Directly inside the current combat zone.</div>
-            <div style="margin-top:8px;font-style:italic;color:#555;">In the biblical era, Tyre and Sidon were the two great port cities of Phoenicia — the maritime trading civilization famous for cedar wood, purple dye, and shipbuilding.</div>
-          </div>
-        Tyre was struck during Israel's April 8 "Operation Eternal Darkness" campaign — the deadliest single-day strikes of the current Lebanon war. An Israeli strike hit near a hospital in Tyre. When we read the news about "southern Lebanon," we are reading about biblical Tyre and Sidon — the same soil the prophets named.
-        </div>
-        <div class="view-key">Biblical references: <a href="https://www.bible.com/bible/100/EZK.26.NASB1995" target="_blank" rel="noopener">Ezek 26–28</a> (prophecy against Tyre), <a href="https://www.bible.com/bible/100/ISA.23.NASB1995" target="_blank" rel="noopener">Isa 23</a> (burden of Tyre), <a href="https://www.bible.com/bible/100/JOL.3.4-8.NASB1995" target="_blank" rel="noopener">Joel 3:4–8</a> (judgment on Tyre/Sidon), <a href="https://www.bible.com/bible/100/MAT.11.21-22.NASB1995" target="_blank" rel="noopener">Matt 11:21–22</a>, <a href="https://www.bible.com/bible/100/MAT.15.21.NASB1995" target="_blank" rel="noopener">15:21</a> (Jesus visits the region)</div>
+      <div class="ce-notes-wrap">
+        <div class="ce-notes-label">My notes for Israel &amp; Jerusalem events</div>
+        <textarea id="n-ce-israel" class="ce-notes" placeholder="Add events here. Each entry: DATE | HEADLINE | what happened | scripture lens (if any)."></textarea>
+        <button class="ce-stamp-btn" onclick="stampNote('n-ce-israel')">🕐 Insert timestamp</button>
       </div>
-      <div class="view-item">
-        <div class="view-title"><a href="https://www.bible.com/bible/100/DAN.9.27.NASB1995" target="_blank" rel="noopener">Daniel 9:27</a> — The Covenant Template</div>
-        <div class="view-body">Daniel describes the Antichrist as one who "will make a firm covenant with the many for one week" — a single dominant leader brokering a regional peace deal. What's happening right now is NOT that covenant — but it IS a live rehearsal of the <em>mechanism</em>: one leader, personal phone calls, financial inducements, enemy nations brought to heel, peace announced to the world. The world is being conditioned to accept single-leader peace deals as normal. When the real covenant comes, the template will already be familiar. <strong>Caution:</strong> This is NOT identifying any living leader as the Antichrist. It is observing that the world is being trained to receive this kind of figure.</div>
-        <div class="view-key">Key passages: <a href="https://www.bible.com/bible/100/DAN.9.27.NASB1995" target="_blank" rel="noopener">Dan 9:27</a> (covenant with many), <a href="https://www.bible.com/bible/100/2TH.2.3-4.NASB1995" target="_blank" rel="noopener">2 Thess 2:3–4</a> (man of lawlessness)</div>
-      </div>
-      <div class="view-item">
-        <div class="view-title"><a href="https://www.bible.com/bible/100/MAT.24.6-8.NASB1995" target="_blank" rel="noopener">Matthew 24:6–8</a> — Acceleration</div>
-        <div class="view-body">Jesus called end-time events "the beginning of birth pangs" (<em>ōdinōn</em> — labor contractions that intensify and accelerate). Look at the 18-month window leading to today: Oct 7, 2023 (Hamas attack) → Gaza war → Hezbollah war → Houthi Red Sea attacks → Iran direct strikes → U.S.+Israel war on Iran → Khamenei killed → Hezbollah broken → Strait of Hormuz closed and reopened → Lebanon peace talks (first in 34 years). That pace of regional realignment is abnormal. Whether these are the <em>final</em> contractions or earlier ones, they display the pattern Jesus described.</div>
-        <div class="view-key">Key passages: <a href="https://www.bible.com/bible/100/MAT.24.6-8.NASB1995" target="_blank" rel="noopener">Matt 24:6–8</a>, <a href="https://www.bible.com/bible/100/LUK.21.28.NASB1995" target="_blank" rel="noopener">Luke 21:28</a> ("lift up your heads"), <a href="https://www.bible.com/bible/100/1TH.5.3.NASB1995" target="_blank" rel="noopener">1 Thess 5:3</a></div>
-      </div>
-      <div class="view-item">
-        <div class="view-title"><a href="https://www.bible.com/bible/100/EZK.38.13.NASB1995" target="_blank" rel="noopener">Ezekiel 38:13</a> — The Young Lions Protest</div>
-        <div class="view-body">Ezekiel names observer nations who protest Gog's invasion but do not intervene militarily: Sheba, Dedan (Arabian Peninsula — today's Saudi Arabia, UAE, Kuwait), merchants of Tarshish and "the young lions" (widely interpreted as Western maritime trading nations and their descendants — possibly including the United States). Notice what we're seeing today: the U.S. is actively <em>involved</em> — naval blockade, 3rd carrier deployed, direct strikes on Iran. That is NOT the Ezekiel 38 posture. For the U.S. to match the "young lions" profile in Gog-Magog, something would need to shift America from active intervention to observer status. Watch this dynamic.</div>
-        <div class="view-key">Key passages: <a href="https://www.bible.com/bible/100/EZK.38.13.NASB1995" target="_blank" rel="noopener">Ezek 38:13</a> (observer nations)</div>
-      </div>
-    </div>
-
-    <div class="info-box" style="border-color:#6B8E3A;background:#F4F8EE;margin-top:14px;">
-      <div class="title" style="color:#3B5E1A;">⚖️ Important Distinction — What We Can and Cannot Say</div>
-      <div class="line"><strong>What we CAN say:</strong> The Middle East is being reshaped at a pace that matches the preconditions for Ezekiel 38–39 and Daniel 9:27. The groundwork is being laid. The pattern Jesus described is visible.</div>
-      <div class="line" style="margin-top:6px;"><strong>What we CANNOT say:</strong> This specific week is the trigger. Every generation has thought so. Birth pains come in waves — some are false labor. Only God knows which contractions deliver the Kingdom.</div>
-      <div class="line" style="margin-top:6px;"><strong>The watchman's posture:</strong> Not prediction, but preparation. Not fear, but faithfulness. Not sensationalism, but sober-minded alertness (<a href="https://www.bible.com/bible/100/1TH.5.6.NASB1995" target="_blank" rel="noopener">1 Thess 5:6</a>).</div>
-    </div>
-
-    <div class="reflection-box" style="margin-top:14px;">
-      <div class="title">🙏 Discussion Questions</div>
-      <div class="reflection-item">Iran is being systematically weakened — proxies broken, uranium bargained away, economy choked, leader killed. Rather than removing Iran from the end-times picture, does this actually prepare Iran for its Ezekiel 38 role as a desperate, vengeful partner to Russia? How do I hold this?</div>
-      <div class="reflection-item">For the first time in 34 years, Israel and Lebanon are in direct peace talks. If that peace holds, it would be one of the most significant regional shifts since 1979 (Egypt) or 1994 (Jordan). Could this be an early step toward the "peace and safety" of 1 Thessalonians 5:3?</div>
-      <div class="reflection-item">The world is being trained right now to watch a single leader broker peace deals through personal phone calls and financial leverage. How does this prepare culture to accept the covenant of Daniel 9:27 when it comes?</div>
-      <div class="reflection-item">How do I stay watchful without becoming anxious? What does it look like to hold Maranatha — "Come, Lord Jesus" — as a prayer of hope rather than fear?</div>
-      <div class="reflection-item">Fruits of the Spirit check: Am I watching these events with love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, and self-control (<a href="https://www.bible.com/bible/100/GAL.5.22-23.NASB1995" target="_blank" rel="noopener">Gal 5:22–23</a>)? Or has the news cycle stolen any of those from me?</div>
-    </div>
-
-    <div class="scripture-box">
-      <div class="ref"><a href="https://www.bible.com/bible/100/EZK.38.10-12.NASB1995" target="_blank" rel="noopener">Ezekiel 38:10–12 (NASB 1995)</a></div>
-      <div class="text">Thus says the Lord God, "It will come about on that day, that thoughts will come into your mind and you will devise an evil plan, and you will say, 'I will go up against the land of unwalled villages. I will go against those who are at rest, that live securely, all of them living without walls and having no bars or gates, to capture spoil and to seize plunder, to turn your hand against the waste places which are now inhabited, and against the people who are gathered from the nations, who have acquired cattle and goods, who live at the center of the world.'"</div>
-    </div>
-
-    <div class="cross-ref-box">
-      <div class="title">🔗 Related Modules</div>
-      <div class="line">• Module 9 — The Gog-Magog War (coalition, preconditions, Russia-Iran identification)</div>
-      <div class="line">• Module 9.5 — Russia-Iran Threat Buildup (Weinberger, Sharansky, Iran's apocalyptic ideology)</div>
-      <div class="line">• Module 7 — The Antichrist (covenant template, global peacemaker profile)</div>
-      <div class="line">• Module 3 — The Day of the Lord (begins with the covenant of Dan 9:27)</div>
-      <div class="line">• Module 4 — The Watchman (the posture we're called to in moments like this)</div>
-      <div class="line">• Module 10 — Signs of the Times (birth pains, acceleration)</div>
-      <div class="line">• Entry #1 — U.S. Energy Dominance (economic dimension connects directly)</div>
-    </div>
-
-    <div class="notes-box">
-      <div class="label">✏️ My observations — Entry #2</div>
-      <textarea class="notes-input" id="n-ce-2" placeholder="Date your entries. What stands out? What does the Spirit bring to mind?"></textarea>
     </div>
   </div>
 
-  <script>
-  // Seed Entry #2 first-person reflection if nothing is saved locally yet on this device
-  window.addEventListener('load', function() {
-    setTimeout(function() {
-      var key = 'cbsg-note-n-ce-2';
-      var existing = localStorage.getItem(key);
-      if (!existing) {
-        var seed = `April 18, 2026 — Evening Reflection
-
-Today I watched the news and tried to read it through Scripture. It has been a remarkable week. In about seven days, the regional chessboard has shifted in ways that would have seemed unimaginable eight weeks ago.
-
-WHAT ACTUALLY CHANGED THIS WEEK
-
-Israel and Hezbollah entered a 10-day ceasefire on Thursday night. Israel is keeping troops in southern Lebanon and has vowed to act against emerging threats. For the first time in 34 years, Israeli and Lebanese leaders spoke directly — a diplomatic milestone. On the Iran front, Trump publicly claimed Iran has agreed to an "unlimited" suspension of its nuclear program and to hand over its enriched uranium stockpile. A three-page framework is reportedly being negotiated in Islamabad with Pakistan as mediator, possibly involving $20 billion in unfrozen Iranian assets in exchange for the uranium. Iran is disputing parts of Trump's claims. The ceasefire expires April 22. The Strait of Hormuz reopened. A third U.S. aircraft carrier is heading to the region.
-
-WHAT I'M NOTICING PROPHETICALLY
-
-Iran — one of the three nations Ezekiel names in the Gog-Magog coalition — is not being destroyed. It is being humiliated, cornered, and stripped of its proxies and leverage. That is not the same as being removed from the prophetic picture. If anything, this sets Iran up for exactly the kind of desperate, revenge-driven posture Ezekiel describes. Their supreme leader is dead. Hezbollah is broken. Their uranium is being bargained away. Their economic lifeline is under U.S. control. This is humiliation at a scale that creates the theological and political fuel for the Gog-Magog coalition to form.
-
-THE "PEACE AND SAFETY" PRECONDITION
-
-Israel is not yet dwelling in unwalled villages — but the direction has shifted. If these ceasefires hold, if Hezbollah is actually disarmed, if Iran's uranium is actually removed, then Israel's northern border could become genuinely peaceful for the first time in my lifetime. That moves the 1 Thessalonians 5:3 scenario closer, not further away. Tyre and Sidon — the two ancient Phoenician cities of biblical prophecy — sit inside modern Lebanon, less than 25 miles from the Israeli border. The land the Bible talks about is the same land in the news.
-
-THE COVENANT TEMPLATE
-
-What strikes me most is not any individual leader — it is the mechanism being rehearsed in front of the world. One leader. Personal phone calls. Financial inducements. Enemy nations brought to heel. Peace announced before the microphones. The Antichrist's covenant in Daniel 9:27 will be received as normal because the world is being trained right now to expect exactly this kind of deal-making from a dominant global figure. This is NOT an identification of any living person as the Antichrist. It is an observation that the stage and the audience are being prepared for him.
-
-BIRTH PAINS — THE PATTERN IS VISIBLE
-
-Eighteen months: Oct 7, 2023 → Gaza war → Hezbollah war → Houthi attacks → Iran strikes Israel (2024) → U.S.+Israel war on Iran → Khamenei killed → Hezbollah broken → Lebanon peace talks (first in 34 years). Jesus's metaphor in Matthew 24:8 is labor contractions — ōdinōn — intensifying and accelerating. That is what I am watching.
-
-THE WARNING I WANT TO HOLD
-
-Every generation has looked at its moment and felt like this was it. Some were in false labor. The honest position is not "this is THE moment" but "these are the conditions the 70th week requires, and they are being laid quickly." The watchman's job is not prediction — it is preparation.
-
-WHERE MY HEART NEEDS TO LAND
-
-I can watch all of this without losing peace. Galatians 5:22-23 is not suspended when the news gets heavy. Love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control — those are not optional even in the season of birth pains. ESPECIALLY in the season of birth pains. Maranatha does not mean panic — it means longing. Come, Lord Jesus. And in the meantime: dinner gets made. Hazelee gets hugged. Natalie gets her husband's full attention. The Kingdom work does not wait for the Kingdom to arrive.
-
-ONE THING I WANT MY FAMILY TO KNOW IF THEY READ THIS LATER
-
-I am not watching the news to be afraid. I am watching because Jesus told me to. He said "watch." He did not say "worry." The difference between those two postures is everything.
-
-— Chris Campbell, April 18, 2026`;
-        localStorage.setItem(key, seed);
-        var ta = document.getElementById('n-ce-2');
-        if (ta) ta.value = seed;
-      }
-    }, 400);
-  });
-  </script>
-
-  <div class="divider"></div>
-
-  <!-- ── ENTRY 1 ── -->
-  <div id="entry-1">
-    <span class="page-tag" style="background:#7A2020;">Entry #1</span>
-    <h2 class="section-title" style="margin-top:10px;">U.S. Energy Dominance &amp; End-Times Geopolitics</h2>
-    <p class="body" style="font-size:12px;color:#999;">Added: April 12, 2026</p>
-
-    <div class="info-box">
-      <div class="title">📰 What's Happening</div>
-      <div class="line">The U.S. is aggressively expanding offshore oil production in the Gulf of America, with major new discoveries (Occidental Petroleum's "Bandit" well off the Louisiana coast — one of the deepest ever drilled) and 30 mandated federal lease sales under new legislation. America is positioning itself as a dominant global energy superpower.</div>
+  <div class="ce-section">
+    <div class="ce-section-header">
+      <span>🛢️ Middle East &amp; Regional Powers</span>
+      <span class="ce-count" id="count-mideast">Watching</span>
     </div>
-
-    <h3 class="sub-title">🔍 Prophetic Lenses</h3>
-
-    <div class="views-box">
-      <div class="view-item">
-        <div class="view-title"><a href="https://www.bible.com/bible/100/EZK.38.NASB1995" target="_blank" rel="noopener">Ezekiel 38–39</a> — The Gog-Magog Invasion</div>
-        <div class="view-body">A key scholarly question is <em>why</em> the Gog-Magog coalition invades Israel. <a href="https://www.bible.com/bible/100/EZK.38.12-13.NASB1995" target="_blank" rel="noopener">Ezekiel 38:12–13</a> suggests they come for "plunder and spoil" — Israel's wealth and resources. If U.S. energy dominance shifts global power and reduces Russian and Iranian leverage over the world economy, it could accelerate the desperation that drives those nations toward the coalition described in Ezekiel 38. Worth watching.</div>
-        <div class="view-key">Key passages: <a href="https://www.bible.com/bible/100/EZK.38.1-6.NASB1995" target="_blank" rel="noopener">Ezek 38:1–6</a> (coalition), <a href="https://www.bible.com/bible/100/EZK.38.10-13.NASB1995" target="_blank" rel="noopener">38:10–13</a> (motive), <a href="https://www.bible.com/bible/100/EZK.39.1-6.NASB1995" target="_blank" rel="noopener">39:1–6</a> (outcome)</div>
+    <div class="ce-section-body">
+      <div class="ce-section-intro">
+        Egypt, Turkey, Iran, Syria, Iraq, Saudi Arabia, Lebanon, and the broader Arab world. Particularly relevant to <a href="./theme1/module9.html">Gog-Magog (Module 9)</a> and <a href="./theme1/module15.html">Armageddon (Module 15)</a>. Also worth noting: Tyre/Sidon area (Lebanon coast) — see the <a href="./DeepDive-TyreSidon.html">Tyre &amp; Sidon deep dive</a>.
       </div>
-      <div class="view-item">
-        <div class="view-title">America's Role — Or Absence — in Prophecy</div>
-        <div class="view-body">One of the great prophetic questions is why the United States appears absent from end-times Scripture. Some scholars suggest America's power will be diminished, distracted, or collapsed before the Tribulation begins. Others see the U.S. as part of the "young lions" in <a href="https://www.bible.com/bible/100/EZK.38.13.NASB1995" target="_blank" rel="noopener">Ezekiel 38:13</a> — protesting the Gog-Magog invasion but not intervening militarily. Either way, watching American strength and global posture is worth tracking through a prophetic lens.</div>
-        <div class="view-key">Key passages: <a href="https://www.bible.com/bible/100/EZK.38.13.NASB1995" target="_blank" rel="noopener">Ezek 38:13</a> (young lions), <a href="https://www.bible.com/bible/100/REV.17.18.NASB1995" target="_blank" rel="noopener">Rev 17:18</a> (great city), <a href="https://www.bible.com/bible/100/DAN.7.4.NASB1995" target="_blank" rel="noopener">Dan 7:4</a> (eagle's wings)</div>
+      <div class="ce-empty">
+        <strong>Empty for now.</strong><br>
+        Examples worth tracking:<br>
+        • Iran nuclear program steps &nbsp; • Turkey's shifting alliances &nbsp; • Syrian regime changes<br>
+        • Egypt/Saudi relations with Israel &nbsp; • Lebanon-Israel border events
       </div>
-      <div class="view-item">
-        <div class="view-title"><a href="https://www.bible.com/bible/100/REV.17.NASB1995" target="_blank" rel="noopener">Revelation 17–18</a> — Mystery Babylon</div>
-        <div class="view-body">Some prophecy scholars interpret "Mystery Babylon" as a dominant commercial and economic power — not ancient Babylon literally, but a system or nation characterized by global trade dominance, wealth, and influence. Aggressive resource extraction and energy dominance are characteristics worth noting — not as proof of any identification, but as a discussion thread worth holding loosely.</div>
-        <div class="view-key">Key passages: <a href="https://www.bible.com/bible/100/REV.17.1-6.NASB1995" target="_blank" rel="noopener">Rev 17:1–6</a>, <a href="https://www.bible.com/bible/100/REV.18.1-8.NASB1995" target="_blank" rel="noopener">18:1–8</a>, <a href="https://www.bible.com/bible/100/REV.18.11-19.NASB1995" target="_blank" rel="noopener">18:11–19</a></div>
+      <div class="ce-notes-wrap">
+        <div class="ce-notes-label">My notes for Middle East events</div>
+        <textarea id="n-ce-mideast" class="ce-notes" placeholder="Add events here."></textarea>
+        <button class="ce-stamp-btn" onclick="stampNote('n-ce-mideast')">🕐 Insert timestamp</button>
       </div>
-    </div>
-
-    <div class="reflection-box" style="margin-top:14px;">
-      <div class="title">🙏 Discussion Questions</div>
-      <div class="reflection-item">As the U.S. expands energy dominance, how might this shift the global power dynamics described in Ezekiel 38? Could it make the Gog-Magog invasion more or less likely in the near term?</div>
-      <div class="reflection-item">What role does Scripture suggest America plays — or doesn't play — in the last days? Does current U.S. strength make that harder or easier to imagine?</div>
-      <div class="reflection-item">How do we stay watchful without over-interpreting? What's the difference between "reading the signs of the times" and sensationalism or fear?</div>
-      <div class="reflection-item">What does <a href="https://www.bible.com/bible/100/1TH.5.1-6.NASB1995" target="_blank" rel="noopener">1 Thessalonians 5:1–6</a> say about how we should live in light of the uncertainty of timing?</div>
-    </div>
-
-    <div class="scripture-box">
-      <div class="ref"><a href="https://www.bible.com/bible/100/EZK.38.10-13.NASB1995" target="_blank" rel="noopener">Ezekiel 38:10–13 (NASB 1995)</a></div>
-      <div class="text">Thus says the Lord God, "It will come about on that day, that thoughts will come into your mind and you will devise an evil plan, and you will say, 'I will go up against the land of unwalled villages. I will go against those who are at rest, that live securely, all of them living without walls and having no bars or gates, to capture spoil and to seize plunder...'"</div>
-    </div>
-
-    <div class="notes-box">
-      <div class="label">✏️ My observations — Entry #1</div>
-      <textarea class="notes-input" id="n-ce-1" placeholder="Date your entries. What stands out? What does the Spirit bring to mind?"></textarea>
     </div>
   </div>
 
-  <div class="divider"></div>
-
-  <!-- ── ADD NEW ENTRIES BELOW THIS LINE ── -->
-  <div style="background:#f9f9f9;border:2px dashed #ccc;border-radius:8px;padding:32px 24px;text-align:center;margin:20px 0;">
-    <p style="font-size:14px;color:#999;font-family:Arial,sans-serif;">📰 New entries added above — newest first. Date each one.</p>
+  <div class="ce-section">
+    <div class="ce-section-header">
+      <span>🇷🇺 Russia, China, &amp; the North</span>
+      <span class="ce-count" id="count-russia">Watching — Nearly Finished</span>
+    </div>
+    <div class="ce-section-body">
+      <div class="ce-section-intro">
+        The Gog-Magog alliance context (<a href="https://www.bible.com/bible/100/EZK.38.NASB1995" target="_blank">Ezekiel 38</a>). Per the <a href="./checklist.html">Prophecy Checklist</a>, Russia-Iran alignment is already classified as "Nearly Finished." This section watches for specific military, economic, or diplomatic confirmations that tighten that alliance.
+      </div>
+      <div class="ce-empty">
+        <strong>Empty for now.</strong><br>
+        Examples worth tracking:<br>
+        • Russia-Iran military cooperation announcements &nbsp; • Chinese positioning on Israel/Mideast<br>
+        • North African (Libya, Sudan, Ethiopia) alignment shifts — these are the biblical allies of Magog
+      </div>
+      <div class="ce-notes-wrap">
+        <div class="ce-notes-label">My notes for Russia/China events</div>
+        <textarea id="n-ce-russia" class="ce-notes" placeholder="Add events here."></textarea>
+        <button class="ce-stamp-btn" onclick="stampNote('n-ce-russia')">🕐 Insert timestamp</button>
+      </div>
+    </div>
   </div>
 
-  <div class="notes-box">
-    <div class="label">✏️ General observations &amp; overflow notes</div>
-    <textarea class="notes-input" id="n-ce-general" placeholder="General thoughts, patterns noticed, things to follow up on..."></textarea>
+  <div class="ce-section">
+    <div class="ce-section-header">
+      <span>💰 Economy &amp; Global Systems</span>
+      <span class="ce-count" id="count-economy">Watching</span>
+    </div>
+    <div class="ce-section-body">
+      <div class="ce-section-intro">
+        Financial, monetary, and control-system developments relevant to <a href="./theme1/module7.html">Antichrist (Module 7)</a> and Revelation 13 (mark of the beast / buy-sell control). <strong>Be cautious here</strong> — every generation since the printing press has thought its payment system was prophetic. The goal is to notice, not to predict.
+      </div>
+      <div class="ce-empty">
+        <strong>Empty for now.</strong><br>
+        Examples worth tracking:<br>
+        • CBDC (central bank digital currency) rollouts &nbsp; • Dollar reserve-currency shifts<br>
+        • Major financial system integrations &nbsp; • Biometric payment normalization
+      </div>
+      <div class="ce-notes-wrap">
+        <div class="ce-notes-label">My notes for economic events</div>
+        <textarea id="n-ce-economy" class="ce-notes" placeholder="Add events here."></textarea>
+        <button class="ce-stamp-btn" onclick="stampNote('n-ce-economy')">🕐 Insert timestamp</button>
+      </div>
+    </div>
   </div>
 
-</div><!-- /#main -->
-</div><!-- /#app -->
+  <div class="ce-section">
+    <div class="ce-section-header">
+      <span>🤖 Technology &amp; Surveillance</span>
+      <span class="ce-count" id="count-tech">Watching</span>
+    </div>
+    <div class="ce-section-body">
+      <div class="ce-section-intro">
+        AI, biometric ID, surveillance infrastructure, and the general question of whether technology is making certain Revelation passages newly plausible (e.g., a single person tracked globally, a signal reaching every nation instantly, knowledge increased — <a href="https://www.bible.com/bible/100/DAN.12.4.NASB1995" target="_blank">Daniel 12:4</a>). Again: notice, don't predict.
+      </div>
+      <div class="ce-empty">
+        <strong>Empty for now.</strong><br>
+        Examples worth tracking:<br>
+        • Major AI capability jumps &nbsp; • Biometric ID mandates &nbsp; • Global tracking infrastructure<br>
+        • Brain-computer interface milestones &nbsp; • Social-credit style systems in democracies
+      </div>
+      <div class="ce-notes-wrap">
+        <div class="ce-notes-label">My notes for technology events</div>
+        <textarea id="n-ce-tech" class="ce-notes" placeholder="Add events here."></textarea>
+        <button class="ce-stamp-btn" onclick="stampNote('n-ce-tech')">🕐 Insert timestamp</button>
+      </div>
+    </div>
+  </div>
 
-<script>window.PAGE_NOTE_IDS = ['n-ce-1', 'n-ce-2', 'n-ce-general'];</script>
+  <div class="ce-section">
+    <div class="ce-section-header">
+      <span>⛪ Church &amp; Apostasy Watch</span>
+      <span class="ce-count" id="count-church">Watching</span>
+    </div>
+    <div class="ce-section-body">
+      <div class="ce-section-intro">
+        Doctrinal drift, apostasy markers, false prophecy claims, persecution of Bible-faithful churches — all relevant to <a href="./theme1/module11.html">False Prophets (Module 11)</a> and <a href="https://www.bible.com/bible/100/2TI.3.NASB1995" target="_blank">2 Timothy 3</a>. This is the hardest category to be fair in, because disagreement ≠ apostasy. Stay charitable, stay scriptural.
+      </div>
+      <div class="ce-empty">
+        <strong>Empty for now.</strong><br>
+        Examples worth tracking:<br>
+        • Major denominational departures from scripture &nbsp; • Documented false prophecy failures<br>
+        • Persecution of Bible-faithful ministries &nbsp; • Public acceptance of "another gospel"
+      </div>
+      <div class="ce-notes-wrap">
+        <div class="ce-notes-label">My notes for church &amp; apostasy events</div>
+        <textarea id="n-ce-church" class="ce-notes" placeholder="Add events here."></textarea>
+        <button class="ce-stamp-btn" onclick="stampNote('n-ce-church')">🕐 Insert timestamp</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ce-section">
+    <div class="ce-section-header">
+      <span>📌 General Watchlist</span>
+      <span class="ce-count" id="count-general">Open log</span>
+    </div>
+    <div class="ce-section-body">
+      <div class="ce-section-intro">
+        Catch-all for events that don't cleanly fit above, or for cross-cutting developments (natural disasters, pandemic-class events, cultural earthquakes, things you just want to remember).
+      </div>
+      <div class="ce-notes-wrap">
+        <div class="ce-notes-label">My general watchlist</div>
+        <textarea id="n-ce-general" class="ce-notes" placeholder="Add events here that don't fit elsewhere. Review this quarterly — some will move to dedicated categories, some will turn out to be noise."></textarea>
+        <button class="ce-stamp-btn" onclick="stampNote('n-ce-general')">🕐 Insert timestamp</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       REFLECTION / DISCERNMENT BOX
+       ========================================================= -->
+  <div class="ce-section">
+    <div class="ce-section-header">
+      <span>🪞 Reflection — What am I learning?</span>
+    </div>
+    <div class="ce-section-body">
+      <div class="ce-section-intro">
+        Pause regularly and ask: Am I watching soberly, or anxiously? Are my predictions aging well, or poorly? Is my faith growing, or fear-based? This box is for the meta-question — what is tracking these events doing to my soul?
+      </div>
+      <div class="ce-notes-wrap">
+        <div class="ce-notes-label">My reflections on watching</div>
+        <textarea id="n-ce-reflection" class="ce-notes" style="min-height:140px;" placeholder="What am I learning about discernment? About my own tendencies toward panic or dismissal? About God's sovereignty over events?"></textarea>
+        <button class="ce-stamp-btn" onclick="stampNote('n-ce-reflection')">🕐 Insert timestamp</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="cross-ref-box">
+    <div class="title">🔗 Cross-References</div>
+    <div class="line">• <a href="./checklist.html">Prophecy Checklist</a> — the structural framework these events feed into</div>
+    <div class="line">• <a href="./theme1/module9.html">Module 9 — Gog-Magog</a> — primary lens for Russia/Mideast tracking</div>
+    <div class="line">• <a href="./theme1/module10.html">Module 10 — Signs of the Times</a> — general watchman framework</div>
+    <div class="line">• <a href="./theme1/module11.html">Module 11 — False Prophets</a> — apostasy discernment</div>
+    <div class="line">• <a href="./journal.html">Personal Journal</a> — for deeper processing of any single event</div>
+  </div>
+
+</div>
+</div>
+
+<!-- PAGE NOTE IDS -->
+<script>
+window.PAGE_NOTE_IDS = [
+  'n-ce-israel',
+  'n-ce-mideast',
+  'n-ce-russia',
+  'n-ce-economy',
+  'n-ce-tech',
+  'n-ce-church',
+  'n-ce-general',
+  'n-ce-reflection'
+];
+</script>
+
+<!-- SCRIPTS -->
 <script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="assets/js/main.js"></script>
 <script>buildSidebar('.');</script>
 
-</body>
-</html>
+<script>
+function stampNote(textareaId) {
+  const el = document.getElementById(textareaId);
+  if (!el) return;
+  const now    = new Date();
+  const date   = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const time   = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  const stamp  = `\n── ${date} at ${time} ──\n`;
+  el.value += stamp;
+  el.focus();
+  el.scrollTop = el.scrollHeight;
+}
+</script>
+
+<div id="sidebar-overlay" style="display: none;"></div></body></html>

@@ -1,13 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.8 (2026-04-23)
-
-   v5.8: Added new top-level "🌍 Current Events" section between
-   "Themes 4–8" and "My Study". Red/amber color palette (header
-   #E57373 / item #F4A6A6) to signal urgency/watchfulness —
-   distinct from existing theme colors. Contains a single
-   "Current Events Tracker" item pointing to current-events.html.
-   Uses existing collapsible plumbing (no buildSidebar changes).
+   Sidebar Navigation Builder — v5.7 (2026-04-21)
 
    v5.7: Personal Journal is now a collapsible subsection.
    Grouped under it are the personal/reflective studies:
@@ -53,7 +46,6 @@ const NAV_COLORS = {
   themes48:  { header: '#888888', item: '#AAAAAA' },   // gray
   mystudy:   { header: '#FFD700', item: null        }, // gold header; items use per-item colors below
   getstarted:{ header: 'rgba(255,255,255,0.4)', item: null },
-  currentevents: { header: '#E57373', item: '#F4A6A6' }, // red/amber — urgency/watchfulness (v5.8)
 };
 
 const MYSTUDY_ITEM_COLORS = {
@@ -137,16 +129,6 @@ const NAV_STRUCTURE = [
     colorKey: 'themes48',
     items: [
       { label: 'Themes 4–8 (Coming Soon)', href: 'index.html#index' },
-    ]
-  },
-  {
-    type: 'section',
-    label: '🌍 Current Events',
-    collapsible: true,
-    key: 'currentevents',
-    colorKey: 'currentevents',
-    items: [
-      { label: 'Current Events Tracker', href: 'current-events.html' },
     ]
   },
   {
