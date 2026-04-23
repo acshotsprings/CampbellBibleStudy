@@ -1,13 +1,10 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Shared JavaScript — v3.1 Multi-Page + Shared Notes + Email Hook
+   Shared JavaScript — v3.0 Multi-Page + Shared Notes
    ============================================================
-   UPDATED: April 22, 2026
-   CHANGES from v3.0:
-   • Added CBSG_notifyNoteSave() trigger inside saveToGitHub() success path
-   • Added CBSG_notifyNoteSave() trigger inside saveAllNotes() — fires on any local save
-   • Requires analytics.js loaded on page (exposes window.CBSG_notifyNoteSave)
-   • Silent failure if analytics.js not loaded (page still works normally)
+   SNAPSHOT — April 22, 2026
+   Reason: Pre-modification backup before adding CBSG_notifyNoteSave hook
+   Source: https://raw.githubusercontent.com/acshotsprings/CampbellBibleStudy/main/assets/js/main.js
    ============================================================ */
 
 const OWNER = 'acshotsprings';
@@ -31,13 +28,6 @@ async function saveToGitHub() {
     await saveNotesJson(token);
     setStatus('✅ Saved! Live in ~30 seconds.', 'ok');
     updateVersionTimestamp();
-
-    // ── EMAIL HOOK (added 2026-04-22) ──
-    // Fire silent email notification to Chris via analytics.js
-    if (typeof window.CBSG_notifyNoteSave === 'function') {
-      window.CBSG_notifyNoteSave('GitHub save from ' + filePath);
-    }
-
   } catch(e) {
     setStatus('❌ ' + e.message, 'error');
   }
@@ -207,27 +197,10 @@ function updateVersionTimestamp() {
 // ── LOCAL STORAGE NOTES ───────────────────────────────────
 
 function saveAllNotes() {
-  let saved = 0;
   (window.PAGE_NOTE_IDS || []).forEach(id => {
     const el = document.getElementById(id);
-    if (el) {
-      localStorage.setItem('cbsg-' + id, el.value);
-      saved++;
-    }
+    if (el) localStorage.setItem('cbsg-' + id, el.value);
   });
-
-  // ── EMAIL HOOK (added 2026-04-22) ──
-  // Fire silent email notification to Chris if analytics.js is loaded
-  // Only fires when there's actually something to save (prevents noise on page load)
-  if (saved > 0 && typeof window.CBSG_notifyNoteSave === 'function') {
-    // Throttle: only fire once per 60 seconds from the same page
-    const now = Date.now();
-    const lastFire = parseInt(sessionStorage.getItem('cbsg-last-save-email') || '0', 10);
-    if (now - lastFire > 60000) {
-      sessionStorage.setItem('cbsg-last-save-email', String(now));
-      window.CBSG_notifyNoteSave('Local save from ' + window.location.pathname);
-    }
-  }
 }
 
 function loadNotes() {
