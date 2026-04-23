@@ -4,32 +4,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Campbell Family Master Biblical Study Guide</title>
   <link rel="stylesheet" href="assets/css/style.css">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script></head>
-<body class="admin-mode">
+  <script src="assets/js/analytics.js"></script>
+</head>
+<body>
 
 <!-- GITHUB BAR -->
 <div id="github-bar">
   <span class="bar-title">Campbell Bible Study</span>
   <span class="bar-sep">|</span>
-  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
-  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
-  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
-  <span id="gh-status"></span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status" style="color: rgba(255, 255, 255, 0.7);">📡 Saving...</span>
   <div class="bar-right">
-    <span class="bar-originated">Originated: March 27, 2026</span>
+    <span class="bar-originated">Originated: March 30, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version"><span style="font-size:11px;">Version: April 17, 2026</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded 3:14 PM</span></span>
+    <span id="gh-bar-version">Version: April 22, 2026</span>
   </div>
 </div>
 
-<!-- HAMBURGER BUTTON (mobile only) -->
-
-
-<!-- SIDEBAR OVERLAY (mobile only) -->
-<div id="sidebar-overlay" onclick="closeSidebar()"></div>
-
 <!-- SIDEBAR -->
-<div id="sidebar"></div>
+<div id="sidebar">
+    <div id="sidebar-header">
+      <h1>Campbell Family<br>Biblical Study Guide</h1>
+      <p id="sidebar-version">Version: April 22, 2026</p>
+    </div>
+    <div id="sidebar-nav">
+  <div class="nav-section">Getting Started</div><a class="nav-item active" href="./index.html">Introduction</a><a class="nav-item" href="./index.html#index">Thematic Index</a>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('theme1')" id="nav-header-theme1">
+          <span>Theme 1 — End Times</span>
+          <span class="nav-arrow open" id="nav-arrow-theme1">▶</span>
+        </div>
+        <div class="nav-section-items " id="nav-items-theme1">
+      <a class="nav-item" href="./theme1/module1.html">Module 1 — Daniel's 70 Weeks</a><a class="nav-item" href="./theme1/module2.html">Module 2 — Israel in Prophecy</a><a class="nav-item" href="./theme1/module3.html">Module 3 — Day of the Lord</a><a class="nav-item" href="./theme1/module4.html">Module 4 — The Watchman</a><a class="nav-item" href="./theme1/module5.html">Module 5 — The New Covenant</a><a class="nav-item" href="./theme1/module6.html">Module 6 — The Rapture</a><a class="nav-item" href="./theme1/module7.html">Module 7 — The Antichrist</a><a class="nav-item" href="./theme1/module8.html">Module 8 — The Rebuilt Temple</a><a class="nav-item" href="./theme1/module9.html">Module 9 — Gog-Magog War</a><a class="nav-item" href="./theme1/module10.html">Module 10 — Signs of the Times</a><a class="nav-item" href="./theme1/module11.html">Module 11 — False Prophets</a><a class="nav-item" href="./theme1/module12.html">Module 12 — The Millennium</a><a class="nav-item" href="./theme1/module13.html">Module 13 — Second Coming</a><a class="nav-item" href="./theme1/module14.html">Module 14 — Matt 24 ↔ Revelation</a><a class="nav-item" href="./theme1/module15.html">Module 15 — Armageddon</a></div>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('theme2')" id="nav-header-theme2">
+          <span>Theme 2 — Biblical Calendar</span>
+          <span class="nav-arrow open" id="nav-arrow-theme2">▶</span>
+        </div>
+        <div class="nav-section-items " id="nav-items-theme2">
+      <a class="nav-item active" href="./theme2/index.html">Theme 2 Overview</a><a class="nav-item sub" href="./theme2/module1.html">↳ Module 1 — Calendar History</a></div>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('theme3')" id="nav-header-theme3">
+          <span>Theme 3 — Judgment &amp; Mercy</span>
+          <span class="nav-arrow open" id="nav-arrow-theme3">▶</span>
+        </div>
+        <div class="nav-section-items " id="nav-items-theme3">
+      <a class="nav-item active" href="./theme3/index.html">Theme 3 Overview</a></div>
+        <div class="nav-section-collapsible" onclick="toggleNavSection('themes48')" id="nav-header-themes48">
+          <span>Themes 4–8</span>
+          <span class="nav-arrow open" id="nav-arrow-themes48">▶</span>
+        </div>
+        <div class="nav-section-items " id="nav-items-themes48">
+      <a class="nav-item" href="./index.html#themes48">Themes 4–8 (Coming Soon)</a></div><div class="nav-section">My Study</div><a class="nav-item" href="./sermons.html">Sermon &amp; Teaching Log</a><a class="nav-item" href="./journal.html">Personal Journal</a><a class="nav-item" href="./convictions.html">My Growing Convictions</a></div></div>
 
 <!-- MAIN -->
 <div id="app">
@@ -103,39 +128,6 @@
       <div class="line">God's original calendar (Exod 12:2; Jubilees) ↔ The Feasts of Israel ↔ Millennial worship (Isa 66:23)</div>
     </div>
 
-    <!-- ── CURRENT EVENTS & PROPHECY ── -->
-    <div class="divider"></div>
-    <div id="current-events">
-      <span class="page-tag" style="background:#7A2020;">Current Events &amp; Prophecy</span>
-      <h2 class="section-title" style="margin-top:14px;">Watching the World Through Scripture</h2>
-      <p class="body">This section is not exegesis — it is observation. Current events do not interpret prophecy, but prophecy can help us understand the times we are living in. Use this section as a launching pad for Spirit-led discussion, not as a source of doctrine.</p>
-      <p class="body" style="font-style:italic;color:#888;font-size:13px;">Added: April 12, 2026</p>
-
-      <div class="info-box" style="border-color:#7A2020;background:#FDF0F0;">
-        <div class="title" style="color:#7A2020;">📰 Entry #1 — U.S. Energy Dominance &amp; End-Times Geopolitics</div>
-        <div class="line"><strong>Date observed:</strong> April 12, 2026</div>
-        <div class="line"><strong>What's happening:</strong> The U.S. is aggressively expanding offshore oil production in the Gulf of America, with major new discoveries (Occidental's "Bandit" well off Louisiana) and 30 mandated lease sales under new federal legislation. America is positioning itself as a global energy superpower.</div>
-        <div class="line" style="margin-top:10px;"><strong>Prophetic lens — Ezekiel 38–39 (Gog-Magog):</strong> A key scholarly question is <em>why</em> the Gog-Magog coalition invades Israel. Ezekiel 38:12–13 suggests the invaders come for "plunder and spoil" — Israel's wealth. If America's energy dominance shifts global power dynamics and reduces Russian/Iranian leverage, it could accelerate the conditions that push those nations toward desperate action.</div>
-        <div class="line" style="margin-top:10px;"><strong>Prophetic lens — America's role (or absence):</strong> One of the great prophetic questions is why the United States appears absent from end-times Scripture. Some scholars suggest America's power will be diminished, distracted, or collapsed before the Tribulation. Others see America as part of the "young lions" in Ezekiel 38:13 — protesting but not intervening. Either way, watching American geopolitical strength is worth tracking.</div>
-        <div class="line" style="margin-top:10px;"><strong>Prophetic lens — Revelation 17–18 (Babylon):</strong> Some prophecy scholars interpret "Mystery Babylon" as a dominant commercial/economic power. Aggressive resource extraction and global energy dominance are characteristics worth noting — not as proof, but as a discussion thread.</div>
-      </div>
-
-      <div class="reflection-box" style="margin-top:14px;">
-        <div class="title">🙏 Discussion Questions</div>
-        <div class="reflection-item">As the U.S. expands Gulf energy production, how might shifting global energy dynamics relate to the Gog-Magog coalition's motives in Ezekiel 38–39?</div>
-        <div class="reflection-item">What role does Scripture suggest America plays — or doesn't play — in the last days? Does current U.S. strength make that harder or easier to imagine?</div>
-        <div class="reflection-item">How do we hold current events loosely — staying watchful without over-interpreting? What's the difference between "watching the signs" and sensationalism?</div>
-        <div class="reflection-item">Key passages to study: Ezekiel 38:10–13; Revelation 17–18; Matthew 24:6–8; 1 Thessalonians 5:1–6</div>
-      </div>
-
-      <div class="notes-box" style="margin-top:14px;">
-        <div class="label">✏️ My observations — what does the Spirit bring to mind?</div>
-        <textarea class="notes-input" id="n-current-events" placeholder="Date your entries. Record what stands out, what questions arise, what the Spirit speaks..."></textarea>
-      </div>
-    </div>
-
-    <!-- ── QUICK-START CARD GRID ── -->
-    <div class="divider"></div>
     <h2 class="section-title">Quick Start — Jump to a Module</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:16px 0;">
 
@@ -189,14 +181,14 @@
 
     </div>
 
-  </div><!-- /#index -->
+  </div>
 
-</div><!-- /#main -->
-</div><!-- /#app -->
+</div>
+</div>
 
 <!-- PAGE NOTE IDS -->
 <script>
-  window.PAGE_NOTE_IDS = ['n-intro', 'n-current-events'];
+  window.PAGE_NOTE_IDS = ['n-intro'];
 </script>
 
 <!-- SCRIPTS -->
@@ -205,7 +197,5 @@
 <script>
   buildSidebar('.');
 </script>
-
-
 
 </body></html>

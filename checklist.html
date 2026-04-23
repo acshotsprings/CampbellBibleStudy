@@ -38,6 +38,16 @@
       padding: 7px 16px;
       border-bottom: 1px solid #d0dce8;
     }
+    .prerequisite-banner {
+      background: linear-gradient(90deg, #d4edda, #e8f5ec);
+      border-left: 4px solid #28a745;
+      padding: 12px 16px;
+      margin-bottom: 0;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: #155724;
+      font-style: italic;
+    }
     .checklist-item {
       border-bottom: 1px solid #eef1f5;
     }
@@ -100,9 +110,18 @@
       background: #fff3cd;
       color: #856404;
     }
+    .status-nearlyfinished {
+      background: #ffe4b5;
+      color: #8a5a00;
+      border: 1px solid #d4a017;
+    }
     .status-fulfilled {
       background: #d4edda;
       color: #155724;
+    }
+    .status-prerequisite {
+      background: #28a745;
+      color: white;
     }
     .item-toggle {
       flex-shrink: 0;
@@ -175,6 +194,19 @@
       margin-left: 6px;
       vertical-align: middle;
     }
+    .prerequisite-badge {
+      display: inline-block;
+      background: #28a745;
+      color: white;
+      font-size: 9px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 6px;
+      border-radius: 8px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
     .legend {
       display: flex;
       gap: 16px;
@@ -194,7 +226,8 @@
       border-radius: 50%;
     }
   </style>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script></head>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="assets/js/analytics.js"></script></head>
 <body class="admin-mode">
 
 <div id="github-bar">
@@ -204,10 +237,10 @@
   <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
   <span id="gh-status" style=""></span>
-  <span id="bar-visitor-name" title="Click to change your name" style="display: none; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 4px; padding: 4px 10px; font-size: 11px; color: rgba(255, 255, 255, 0.9); font-family: Arial, sans-serif; cursor: pointer;"><span style="font-size:12px;">👤</span><span id="bar-visitor-name-text" style="font-weight:bold;">Poppy</span></span><button id="bar-visitor-save" title="Save this page's notes to your browser" style="background: rgb(255, 215, 0); color: rgb(31, 56, 100); border: 1px solid rgb(255, 215, 0); border-radius: 4px; padding: 5px 12px; font-size: 11px; font-weight: bold; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; display: none;">💾 Save My Notes</button><div class="bar-right">
-    <span class="bar-originated">Originated: March 27, 2026</span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: April 9, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version"><span style="font-size:11px;">Version: April 18, 2026</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded 3:22 PM</span></span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: April 22, 2026</span></span>
   </div>
 </div>
 
@@ -221,15 +254,49 @@
   <p class="body">A living timeline of prophesied events — organized by phase and theme. Click any item to expand it, add notes, and log what you are learning from teachings, sermons, and current events. Use the timestamp button to date your entries. Check items off as they are fulfilled.</p>
 
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#f0f0f0;border:1px solid #ccc;"></div> Not Yet</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#fff3cd;border:1px solid #ffc107;"></div> Forming / In Progress</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#28a745;"></div> <strong>Prerequisite — Fulfilled</strong></div>
     <div class="legend-item"><div class="legend-dot" style="background:#d4edda;border:1px solid #28a745;"></div> Fulfilled</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ffe4b5;border:1px solid #d4a017;"></div> Nearly Finished</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#fff3cd;border:1px solid #ffc107;"></div> Forming / In Progress</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f0f0f0;border:1px solid #ccc;"></div> Not Yet</div>
     <div class="legend-item" style="color:#dc3545;font-weight:bold;">● LIVE — Current news connection</div>
   </div>
 
   <div class="info-box">
     <div class="title">How to use this checklist</div>
     <div class="line">Click any row to open the notes section. Use the timestamp button to log the date, source, and what you learned. Update the status dropdown as events develop. This page saves to GitHub just like all other pages — paste your token and click Save.</div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════
+       FOUNDATIONAL PREREQUISITE
+  ═══════════════════════════════════════════════ -->
+  <div class="checklist-phase">
+    <div class="phase-header">🏛️ Foundational Prerequisite</div>
+    <div class="phase-body">
+
+      <div class="prerequisite-banner">
+        Israel's reconstitution as a modern nation is the foundational prerequisite for every other end-times prophecy listed below. Without Israel in the land, no other sign on this checklist is possible. This is the anchor event of the entire prophetic timeline.
+      </div>
+
+      <div class="checklist-item">
+        <div class="item-header" onclick="toggleItem('pre-1')">
+          <div class="item-check"><input type="checkbox" id="chk-pre-1" onclick="event.stopPropagation()" checked></div>
+          <div class="item-text">
+            <div class="item-title">Israel re-established as a nation — Jews regathered to the land<span class="prerequisite-badge">Prerequisite</span></div>
+            <div class="item-scripture">Ezekiel 37:21–22; Isaiah 11:11–12; Isaiah 66:8 — "I will bring them back to their own land" · "Can a nation be born in a day?"</div>
+          </div>
+          <div class="item-status status-prerequisite">✓ Prerequisite Fulfilled</div>
+          <div class="item-toggle" id="toggle-pre-1">▼</div>
+        </div>
+        <div class="item-notes" id="notes-pre-1">
+          <div class="notes-label">📝 My notes, log entries, and sources:</div>
+          <textarea class="notes-textarea" id="n-cl-pre-1" placeholder="Fulfilled — May 14, 1948. This is the foundational prerequisite for all other end-times signs. Log any additional teachings on this..."></textarea>
+          <button class="timestamp-btn" onclick="stampNote('n-cl-pre-1')">📅 Add Timestamp</button>
+        </div>
+      </div>
+
+    </div>
   </div>
 
 
@@ -266,12 +333,12 @@
             <div class="item-title">Russia–Iran military alliance forms<span class="current-events-badge">Live</span></div>
             <div class="item-scripture">Ezekiel 38:5 — Persia (Iran) listed as coalition member under Gog</div>
           </div>
-          <div class="item-status status-forming">Forming</div>
+          <div class="item-status status-nearlyfinished">Nearly Finished</div>
           <div class="item-toggle" id="toggle-p1-2">▼</div>
         </div>
         <div class="item-notes" id="notes-p1-2">
           <div class="notes-label">📝 My notes, log entries, and sources:</div>
-          <textarea class="notes-textarea" id="n-cl-p1-2" placeholder="e.g. April 9, 2026 — Current news search: Russia providing Iran satellite intelligence on 55 Israeli energy targets. Iran FM confirmed military cooperation is 'not something new.' Russia-Iran cyber collaboration active. Russia supplying Verba air defense systems 2027–2029..."></textarea>
+          <textarea class="notes-textarea" id="n-cl-p1-2" placeholder="e.g. April 22, 2026 — Status updated from 'Forming' to 'Nearly Finished.' Russia providing Iran satellite intelligence on 55 Israeli energy targets. Iran FM confirmed military cooperation is 'not something new.' Russia-Iran cyber collaboration active. Russia supplying Verba air defense systems 2027–2029. This is closer to complete than most other signs..."></textarea>
           <button class="timestamp-btn" onclick="stampNote('n-cl-p1-2')">📅 Add Timestamp</button>
         </div>
       </div>
@@ -311,23 +378,6 @@
       </div>
 
       <div class="theme-header">🇮🇱 Israel Signs</div>
-
-      <div class="checklist-item">
-        <div class="item-header" onclick="toggleItem('p1-5')">
-          <div class="item-check"><input type="checkbox" id="chk-p1-5" onclick="event.stopPropagation()"></div>
-          <div class="item-text">
-            <div class="item-title">Israel re-established as a nation — Jews regathered to the land</div>
-            <div class="item-scripture">Ezekiel 37:21–22; Isaiah 11:11–12 — "I will bring them back to their own land"</div>
-          </div>
-          <div class="item-status status-fulfilled">Fulfilled</div>
-          <div class="item-toggle" id="toggle-p1-5">▼</div>
-        </div>
-        <div class="item-notes" id="notes-p1-5">
-          <div class="notes-label">📝 My notes, log entries, and sources:</div>
-          <textarea class="notes-textarea" id="n-cl-p1-5" placeholder="Fulfilled — May 14, 1948. Log any additional teachings on this..."></textarea>
-          <button class="timestamp-btn" onclick="stampNote('n-cl-p1-5')">📅 Add Timestamp</button>
-        </div>
-      </div>
 
       <div class="checklist-item">
         <div class="item-header" onclick="toggleItem('p1-6')">
@@ -1065,106 +1115,14 @@
     </div>
   </div>
 
-
-  <!-- ── STUDY PROJECT QUEUE ── -->
-  <div class="divider"></div>
-  <h2 class="section-title">📋 Study Project Queue</h2>
-  <p style="font-size:13px;color:#555;font-family:Arial,sans-serif;margin-bottom:16px;">Open items flagged during study sessions — things to build, research, or dig into next.</p>
-
-  <div class="checklist-phase">
-    <div class="phase-header" style="background:#4A3060;">Open Items — Flagged April 13, 2026</div>
-    <div class="phase-body">
-
-      <div class="checklist-item">
-        <div class="item-header" onclick="toggleItem('sq-1')">
-          <div class="item-check"><input type="checkbox" id="chk-sq-1" onclick="event.stopPropagation()"></div>
-          <div class="item-text">
-            <div class="item-title">Build Pre-Trib vs. Post-Trib Comparison Page</div>
-            <div class="item-scripture">Session: Apr 13, 2026 — Chris requested a side-by-side comparison module for the study guide</div>
-          </div>
-          <div class="item-status status-notyet">Open</div>
-          <div class="item-toggle" id="toggle-sq-1">▼</div>
-        </div>
-        <div class="item-notes" id="notes-sq-1">
-          <div class="notes-label">📝 Notes:</div>
-          <textarea class="notes-textarea" id="n-cl-sq-1" placeholder="Pre-trib position: Rapture occurs before the 7-year Tribulation; Church is absent during God's wrath. Post-trib position: Church goes through the Tribulation; Rapture and Second Coming are the same event. Key texts: 1 Thess 4:16-17, Rev 3:10, Matt 24:29-31..."></textarea>
-          <button class="timestamp-btn" onclick="stampNote('n-cl-sq-1')">📅 Add Timestamp</button>
-        </div>
-      </div>
-
-      <div class="checklist-item">
-        <div class="item-header" onclick="toggleItem('sq-2')">
-          <div class="item-check"><input type="checkbox" id="chk-sq-2" onclick="event.stopPropagation()"></div>
-          <div class="item-text">
-            <div class="item-title">Deep Dive: Why Animal Sacrifice? — Theological Question Flagged</div>
-            <div class="item-scripture">Session: Apr 13, 2026 — "Why would we go back to sacrificing animals?" (flagged for dedicated study)</div>
-          </div>
-          <div class="item-status status-notyet">Open</div>
-          <div class="item-toggle" id="toggle-sq-2">▼</div>
-        </div>
-        <div class="item-notes" id="notes-sq-2">
-          <div class="notes-label">📝 Notes:</div>
-          <textarea class="notes-textarea" id="n-cl-sq-2" placeholder="Daniel 9:27 says the Antichrist stops the sacrifice and grain offering at the midpoint — implying sacrifices resume. Temple Institute actively preparing. Theological question: if Christ's sacrifice is final (Heb 10:1-18), what theological function would restored sacrifices serve? Memorial? Anticipatory during the Tribulation period?..."></textarea>
-          <button class="timestamp-btn" onclick="stampNote('n-cl-sq-2')">📅 Add Timestamp</button>
-        </div>
-      </div>
-
-      <div class="checklist-item">
-        <div class="item-header" onclick="toggleItem('sq-3')">
-          <div class="item-check"><input type="checkbox" id="chk-sq-3" onclick="event.stopPropagation()"></div>
-          <div class="item-text">
-            <div class="item-title">Identify Pastor Haney — Background &amp; Theological Position</div>
-            <div class="item-scripture">Session: Apr 13, 2026 — Pastor Haney teaching cited in Eschatology Podcast on Antichrist profile, four power blocs, Petra as refuge</div>
-          </div>
-          <div class="item-status status-notyet">Open</div>
-          <div class="item-toggle" id="toggle-sq-3">▼</div>
-        </div>
-        <div class="item-notes" id="notes-sq-3">
-          <div class="notes-label">📝 Notes:</div>
-          <textarea class="notes-textarea" id="n-cl-sq-3" placeholder="Topics taught: King of the South (Arab nations), Antichrist initially aligns with then betrays Muslim nations, four end-time power blocs, Edom/Moab/Petra as physical refuge, physical vs. spiritual refuge, Antichrist sets up in Jerusalem. Need to identify: full name, church affiliation, pre/post-trib position, other available teachings..."></textarea>
-          <button class="timestamp-btn" onclick="stampNote('n-cl-sq-3')">📅 Add Timestamp</button>
-        </div>
-      </div>
-
-      <div class="checklist-item">
-        <div class="item-header" onclick="toggleItem('sq-4')">
-          <div class="item-check"><input type="checkbox" id="chk-sq-4" onclick="event.stopPropagation()"></div>
-          <div class="item-text">
-            <div class="item-title">Begin Acquiring Books from the Eschatology Reading List</div>
-            <div class="item-scripture">Session: Apr 13, 2026 — 9-book list assembled; start acquiring and working through them alongside current study</div>
-          </div>
-          <div class="item-status status-notyet">Open</div>
-          <div class="item-toggle" id="toggle-sq-4">▼</div>
-        </div>
-        <div class="item-notes" id="notes-sq-4">
-          <div class="notes-label">📝 Notes on acquisition priority:</div>
-          <textarea class="notes-textarea" id="n-cl-sq-4" placeholder="Book list (Apr 13, 2026):
-• Jeffress — The End Times Illustrated (charts/infographics — good visual companion)
-• Jeffress — Are We Living in the End Times? (2023 — most current)
-• Rosenberg — Epicenter (already referenced in Module 9; foundational)
-• Jeremiah — Book of Signs (31 prophecies — broad coverage)
-• Youssef — God's Final Call (Revelation + current events, 2025)
-• Jeffress — Perfect Ending
-• Halsted — End of the World as You Know It (2024 — contrarian/balanced view)
-• Martin — Heaven's Alarm (2024 — signs-focused)
-• Jeremiah — 60 Days of Prophecies (2025 — devotional format)"></textarea>
-          <button class="timestamp-btn" onclick="stampNote('n-cl-sq-4')">📅 Add Timestamp</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
   <!-- ── GENERAL NOTES ── -->
   <div class="divider"></div>
   <h2 class="section-title">📝 General Notes &amp; Cross-References</h2>
   <div class="notes-box">
     <div class="label">Log additional sources, teachings, books, and sermons that inform this checklist:</div>
-    <div class="quill-wrapper"><div role="toolbar" class="ql-toolbar ql-snow"><span class="ql-formats"><span class="ql-header ql-picker"><span class="ql-picker-label" tabindex="0" role="button" aria-expanded="false" aria-controls="ql-picker-options-0"><svg viewBox="0 0 18 18"><polygon class="ql-stroke" points="7 11 9 13 11 11 7 11"></polygon><polygon class="ql-stroke" points="7 7 9 5 11 7 7 7"></polygon></svg></span><span class="ql-picker-options" aria-hidden="true" tabindex="-1" id="ql-picker-options-0"><span tabindex="0" role="button" class="ql-picker-item" data-value="1"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="2"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="3"></span><span tabindex="0" role="button" class="ql-picker-item ql-selected"></span></span></span><select class="ql-header" style="display: none;"><option value="1"></option><option value="2"></option><option value="3"></option><option selected="selected"></option></select></span><span class="ql-formats"><button type="button" class="ql-bold" aria-pressed="false" aria-label="bold"><svg viewBox="0 0 18 18"><path class="ql-stroke" d="M5,4H9.5A2.5,2.5,0,0,1,12,6.5v0A2.5,2.5,0,0,1,9.5,9H5A0,0,0,0,1,5,9V4A0,0,0,0,1,5,4Z"></path><path class="ql-stroke" d="M5,9h5.5A2.5,2.5,0,0,1,13,11.5v0A2.5,2.5,0,0,1,10.5,14H5a0,0,0,0,1,0,0V9A0,0,0,0,1,5,9Z"></path></svg></button><button type="button" class="ql-italic" aria-pressed="false" aria-label="italic"><svg viewBox="0 0 18 18"><line class="ql-stroke" x1="7" x2="13" y1="4" y2="4"></line><line class="ql-stroke" x1="5" x2="11" y1="14" y2="14"></line><line class="ql-stroke" x1="8" x2="10" y1="14" y2="4"></line></svg></button><button type="button" class="ql-underline" aria-pressed="false" aria-label="underline"><svg viewBox="0 0 18 18"><path class="ql-stroke" d="M5,3V9a4.012,4.012,0,0,0,4,4H9a4.012,4.012,0,0,0,4-4V3"></path><rect class="ql-fill" height="1" rx="0.5" ry="0.5" width="12" x="3" y="15"></rect></svg></button><button type="button" class="ql-strike" aria-pressed="false" aria-label="strike"><svg viewBox="0 0 18 18"><line class="ql-stroke ql-thin" x1="15.5" x2="2.5" y1="8.5" y2="9.5"></line><path class="ql-fill" d="M9.007,8C6.542,7.791,6,7.519,6,6.5,6,5.792,7.283,5,9,5c1.571,0,2.765.679,2.969,1.309a1,1,0,0,0,1.9-.617C13.356,4.106,11.354,3,9,3,6.2,3,4,4.538,4,6.5a3.2,3.2,0,0,0,.5,1.843Z"></path><path class="ql-fill" d="M8.984,10C11.457,10.208,12,10.479,12,11.5c0,0.708-1.283,1.5-3,1.5-1.571,0-2.765-.679-2.969-1.309a1,1,0,1,0-1.9.617C4.644,13.894,6.646,15,9,15c2.8,0,5-1.538,5-3.5a3.2,3.2,0,0,0-.5-1.843Z"></path></svg></button></span><span class="ql-formats"><span class="ql-color ql-picker ql-color-picker"><span class="ql-picker-label" tabindex="0" role="button" aria-expanded="false" aria-controls="ql-picker-options-1"><svg viewBox="0 0 18 18"><line class="ql-color-label ql-stroke ql-transparent" x1="3" x2="15" y1="15" y2="15"></line><polyline class="ql-stroke" points="5.5 11 9 3 12.5 11"></polyline><line class="ql-stroke" x1="11.63" x2="6.38" y1="9" y2="9"></line></svg></span><span class="ql-picker-options" aria-hidden="true" tabindex="-1" id="ql-picker-options-1"><span tabindex="0" role="button" class="ql-picker-item ql-selected ql-primary"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#e60000" style="background-color: rgb(230, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#ff9900" style="background-color: rgb(255, 153, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#ffff00" style="background-color: rgb(255, 255, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#008a00" style="background-color: rgb(0, 138, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#0066cc" style="background-color: rgb(0, 102, 204);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#9933ff" style="background-color: rgb(153, 51, 255);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffffff" style="background-color: rgb(255, 255, 255);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#facccc" style="background-color: rgb(250, 204, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffebcc" style="background-color: rgb(255, 235, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffffcc" style="background-color: rgb(255, 255, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#cce8cc" style="background-color: rgb(204, 232, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#cce0f5" style="background-color: rgb(204, 224, 245);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ebd6ff" style="background-color: rgb(235, 214, 255);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#bbbbbb" style="background-color: rgb(187, 187, 187);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#f06666" style="background-color: rgb(240, 102, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffc266" style="background-color: rgb(255, 194, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffff66" style="background-color: rgb(255, 255, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#66b966" style="background-color: rgb(102, 185, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#66a3e0" style="background-color: rgb(102, 163, 224);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#c285ff" style="background-color: rgb(194, 133, 255);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#888888" style="background-color: rgb(136, 136, 136);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#a10000" style="background-color: rgb(161, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#b26b00" style="background-color: rgb(178, 107, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#b2b200" style="background-color: rgb(178, 178, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#006100" style="background-color: rgb(0, 97, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#0047b2" style="background-color: rgb(0, 71, 178);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#6b24b2" style="background-color: rgb(107, 36, 178);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#444444" style="background-color: rgb(68, 68, 68);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#5c0000" style="background-color: rgb(92, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#663d00" style="background-color: rgb(102, 61, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#666600" style="background-color: rgb(102, 102, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#003700" style="background-color: rgb(0, 55, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#002966" style="background-color: rgb(0, 41, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#3d1466" style="background-color: rgb(61, 20, 102);"></span></span></span><select class="ql-color" style="display: none;"><option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option></select><span class="ql-background ql-picker ql-color-picker"><span class="ql-picker-label" tabindex="0" role="button" aria-expanded="false" aria-controls="ql-picker-options-2"><svg viewBox="0 0 18 18"><g class="ql-fill ql-color-label"><polygon points="6 6.868 6 6 5 6 5 7 5.942 7 6 6.868"></polygon><rect height="1" width="1" x="4" y="4"></rect><polygon points="6.817 5 6 5 6 6 6.38 6 6.817 5"></polygon><rect height="1" width="1" x="2" y="6"></rect><rect height="1" width="1" x="3" y="5"></rect><rect height="1" width="1" x="4" y="7"></rect><polygon points="4 11.439 4 11 3 11 3 12 3.755 12 4 11.439"></polygon><rect height="1" width="1" x="2" y="12"></rect><rect height="1" width="1" x="2" y="9"></rect><rect height="1" width="1" x="2" y="15"></rect><polygon points="4.63 10 4 10 4 11 4.192 11 4.63 10"></polygon><rect height="1" width="1" x="3" y="8"></rect><path d="M10.832,4.2L11,4.582V4H10.708A1.948,1.948,0,0,1,10.832,4.2Z"></path><path d="M7,4.582L7.168,4.2A1.929,1.929,0,0,1,7.292,4H7V4.582Z"></path><path d="M8,13H7.683l-0.351.8a1.933,1.933,0,0,1-.124.2H8V13Z"></path><rect height="1" width="1" x="12" y="2"></rect><rect height="1" width="1" x="11" y="3"></rect><path d="M9,3H8V3.282A1.985,1.985,0,0,1,9,3Z"></path><rect height="1" width="1" x="2" y="3"></rect><rect height="1" width="1" x="6" y="2"></rect><rect height="1" width="1" x="3" y="2"></rect><rect height="1" width="1" x="5" y="3"></rect><rect height="1" width="1" x="9" y="2"></rect><rect height="1" width="1" x="15" y="14"></rect><polygon points="13.447 10.174 13.469 10.225 13.472 10.232 13.808 11 14 11 14 10 13.37 10 13.447 10.174"></polygon><rect height="1" width="1" x="13" y="7"></rect><rect height="1" width="1" x="15" y="5"></rect><rect height="1" width="1" x="14" y="6"></rect><rect height="1" width="1" x="15" y="8"></rect><rect height="1" width="1" x="14" y="9"></rect><path d="M3.775,14H3v1H4V14.314A1.97,1.97,0,0,1,3.775,14Z"></path><rect height="1" width="1" x="14" y="3"></rect><polygon points="12 6.868 12 6 11.62 6 12 6.868"></polygon><rect height="1" width="1" x="15" y="2"></rect><rect height="1" width="1" x="12" y="5"></rect><rect height="1" width="1" x="13" y="4"></rect><polygon points="12.933 9 13 9 13 8 12.495 8 12.933 9"></polygon><rect height="1" width="1" x="9" y="14"></rect><rect height="1" width="1" x="8" y="15"></rect><path d="M6,14.926V15H7V14.316A1.993,1.993,0,0,1,6,14.926Z"></path><rect height="1" width="1" x="5" y="15"></rect><path d="M10.668,13.8L10.317,13H10v1h0.792A1.947,1.947,0,0,1,10.668,13.8Z"></path><rect height="1" width="1" x="11" y="15"></rect><path d="M14.332,12.2a1.99,1.99,0,0,1,.166.8H15V12H14.245Z"></path><rect height="1" width="1" x="14" y="15"></rect><rect height="1" width="1" x="15" y="11"></rect></g><polyline class="ql-stroke" points="5.5 13 9 5 12.5 13"></polyline><line class="ql-stroke" x1="11.63" x2="6.38" y1="11" y2="11"></line></svg></span><span class="ql-picker-options" aria-hidden="true" tabindex="-1" id="ql-picker-options-2"><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#000000" style="background-color: rgb(0, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#e60000" style="background-color: rgb(230, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#ff9900" style="background-color: rgb(255, 153, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#ffff00" style="background-color: rgb(255, 255, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#008a00" style="background-color: rgb(0, 138, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#0066cc" style="background-color: rgb(0, 102, 204);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#9933ff" style="background-color: rgb(153, 51, 255);"></span><span tabindex="0" role="button" class="ql-picker-item ql-selected"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#facccc" style="background-color: rgb(250, 204, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffebcc" style="background-color: rgb(255, 235, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffffcc" style="background-color: rgb(255, 255, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#cce8cc" style="background-color: rgb(204, 232, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#cce0f5" style="background-color: rgb(204, 224, 245);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ebd6ff" style="background-color: rgb(235, 214, 255);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#bbbbbb" style="background-color: rgb(187, 187, 187);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#f06666" style="background-color: rgb(240, 102, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffc266" style="background-color: rgb(255, 194, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffff66" style="background-color: rgb(255, 255, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#66b966" style="background-color: rgb(102, 185, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#66a3e0" style="background-color: rgb(102, 163, 224);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#c285ff" style="background-color: rgb(194, 133, 255);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#888888" style="background-color: rgb(136, 136, 136);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#a10000" style="background-color: rgb(161, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#b26b00" style="background-color: rgb(178, 107, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#b2b200" style="background-color: rgb(178, 178, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#006100" style="background-color: rgb(0, 97, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#0047b2" style="background-color: rgb(0, 71, 178);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#6b24b2" style="background-color: rgb(107, 36, 178);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#444444" style="background-color: rgb(68, 68, 68);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#5c0000" style="background-color: rgb(92, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#663d00" style="background-color: rgb(102, 61, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#666600" style="background-color: rgb(102, 102, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#003700" style="background-color: rgb(0, 55, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#002966" style="background-color: rgb(0, 41, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#3d1466" style="background-color: rgb(61, 20, 102);"></span></span></span><select class="ql-background" style="display: none;"><option value="#000000"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option selected="selected"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option></select></span><span class="ql-formats"><button type="button" class="ql-list" aria-pressed="false" value="ordered" aria-label="list: ordered"><svg viewBox="0 0 18 18"><line class="ql-stroke" x1="7" x2="15" y1="4" y2="4"></line><line class="ql-stroke" x1="7" x2="15" y1="9" y2="9"></line><line class="ql-stroke" x1="7" x2="15" y1="14" y2="14"></line><line class="ql-stroke ql-thin" x1="2.5" x2="4.5" y1="5.5" y2="5.5"></line><path class="ql-fill" d="M3.5,6A0.5,0.5,0,0,1,3,5.5V3.085l-0.276.138A0.5,0.5,0,0,1,2.053,3c-0.124-.247-0.023-0.324.224-0.447l1-.5A0.5,0.5,0,0,1,4,2.5v3A0.5,0.5,0,0,1,3.5,6Z"></path><path class="ql-stroke ql-thin" d="M4.5,10.5h-2c0-.234,1.85-1.076,1.85-2.234A0.959,0.959,0,0,0,2.5,8.156"></path><path class="ql-stroke ql-thin" d="M2.5,14.846a0.959,0.959,0,0,0,1.85-.109A0.7,0.7,0,0,0,3.75,14a0.688,0.688,0,0,0,.6-0.736,0.959,0.959,0,0,0-1.85-.109"></path></svg></button><button type="button" class="ql-list" aria-pressed="false" value="bullet" aria-label="list: bullet"><svg viewBox="0 0 18 18"><line class="ql-stroke" x1="6" x2="15" y1="4" y2="4"></line><line class="ql-stroke" x1="6" x2="15" y1="9" y2="9"></line><line class="ql-stroke" x1="6" x2="15" y1="14" y2="14"></line><line class="ql-stroke" x1="3" x2="3" y1="4" y2="4"></line><line class="ql-stroke" x1="3" x2="3" y1="9" y2="9"></line><line class="ql-stroke" x1="3" x2="3" y1="14" y2="14"></line></svg></button></span><span class="ql-formats"><button type="button" class="ql-blockquote" aria-pressed="false" aria-label="blockquote"><svg viewBox="0 0 18 18"><rect class="ql-fill ql-stroke" height="3" width="3" x="4" y="5"></rect><rect class="ql-fill ql-stroke" height="3" width="3" x="11" y="5"></rect><path class="ql-even ql-fill ql-stroke" d="M7,8c0,4.031-3,5-3,5"></path><path class="ql-even ql-fill ql-stroke" d="M14,8c0,4.031-3,5-3,5"></path></svg></button><button type="button" class="ql-link" aria-pressed="false" aria-label="link"><svg viewBox="0 0 18 18"><line class="ql-stroke" x1="7" x2="11" y1="7" y2="11"></line><path class="ql-even ql-stroke" d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z"></path><path class="ql-even ql-stroke" d="M13.423,9.1a3.476,3.476,0,0,0-4.679-.36,3.476,3.476,0,0,0,.36,4.679c1.392,1.392,2.5,2.542,4.679.36S14.815,10.5,13.423,9.1Z"></path></svg></button><button type="button" class="ql-clean" aria-pressed="false" aria-label="clean"><svg class="" viewBox="0 0 18 18"><line class="ql-stroke" x1="5" x2="13" y1="3" y2="3"></line><line class="ql-stroke" x1="6" x2="9.35" y1="12" y2="3"></line><line class="ql-stroke" x1="11" x2="15" y1="11" y2="15"></line><line class="ql-stroke" x1="15" x2="11" y1="11" y2="15"></line><rect class="ql-fill" height="1" rx="0.5" ry="0.5" width="7" x="2" y="14"></rect></svg></button></span><button class="ql-stamp" title="Insert timestamp" style="width: auto; padding: 3px 7px; font-size: 13px; cursor: pointer; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; background: none;">🕐</button></div><div class="quill-editor ql-container ql-snow" id="n-cl-general" data-placeholder="e.g. April 9, 2026 — Rosenberg, Epicenter: Key argument is that Russia, Iran, Turkey, Sudan/Libya align as Ezekiel's coalition in modern geopolitics...
+    <div class="quill-editor" id="n-cl-general" data-placeholder="e.g. April 9, 2026 — Rosenberg, Epicenter: Key argument is that Russia, Iran, Turkey, Sudan/Libya align as Ezekiel's coalition in modern geopolitics...
 
-Module 9 cross-refs: Ezek 38:11 (Israel's perceived safety precondition), Dan 9:27 (peace covenant), Rev 20:7-9 (different post-Millennial Gog-Magog event)..." style="min-height:160px;"><div class="ql-editor ql-blank" contenteditable="true" data-placeholder="e.g. April 9, 2026 — Rosenberg, Epicenter: Key argument is that Russia, Iran, Turkey, Sudan/Libya align as Ezekiel's coalition in modern geopolitics...
-
-Module 9 cross-refs: Ezek 38:11 (Israel's perceived safety precondition), Dan 9:27 (peace covenant), Rev 20:7-9 (different post-Millennial Gog-Magog event)..." style="min-height: 160px;"><p><br></p></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div></div></div>
+Module 9 cross-refs: Ezek 38:11 (Israel's perceived safety precondition), Dan 9:27 (peace covenant), Rev 20:7-9 (different post-Millennial Gog-Magog event)..." style="min-height:160px;"></div>
   </div>
 
   <div class="cross-ref-box">
@@ -1182,7 +1140,8 @@ Module 9 cross-refs: Ezek 38:11 (Israel's perceived safety precondition), Dan 9:
 <!-- PAGE NOTE IDS -->
 <script>
 window.PAGE_NOTE_IDS = [
-  'n-cl-p1-1','n-cl-p1-2','n-cl-p1-3','n-cl-p1-4','n-cl-p1-5','n-cl-p1-6','n-cl-p1-7','n-cl-p1-8','n-cl-p1-9',
+  'n-cl-pre-1',
+  'n-cl-p1-1','n-cl-p1-2','n-cl-p1-3','n-cl-p1-4','n-cl-p1-6','n-cl-p1-7','n-cl-p1-8','n-cl-p1-9',
   'n-cl-p2-1','n-cl-p2-2','n-cl-p2-3',
   'n-cl-p3-1','n-cl-p3-2','n-cl-p3-3','n-cl-p3-4','n-cl-p3-5','n-cl-p3-6','n-cl-p3-7',
   'n-cl-p4-1','n-cl-p4-2','n-cl-p4-3','n-cl-p4-4','n-cl-p4-5','n-cl-p4-6','n-cl-p4-7',
@@ -1190,8 +1149,7 @@ window.PAGE_NOTE_IDS = [
   'n-cl-p6-1','n-cl-p6-2','n-cl-p6-3','n-cl-p6-4',
   'n-cl-p7-1','n-cl-p7-2','n-cl-p7-3',
   'n-cl-p8-1','n-cl-p8-2','n-cl-p8-3','n-cl-p8-4','n-cl-p8-5',
-  'n-cl-general',
-  'n-cl-sq-1','n-cl-sq-2','n-cl-sq-3','n-cl-sq-4'
+  'n-cl-general'
 ];
 </script>
 

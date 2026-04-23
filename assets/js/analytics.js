@@ -1,7 +1,7 @@
 /* ============================================================
    CAMPBELL BIBLE STUDY — ANALYTICS & NOTIFICATIONS
    File: assets/js/analytics.js
-   Created: April 22, 2026
+   Updated: April 22, 2026 (v1.1 — added owner suppression)
 
    HANDLES TWO SYSTEMS:
    1. Google Analytics 4 (GA4) page tracking
@@ -11,13 +11,14 @@
    • Visitor lands on site (first page view this session)
    • Visitor saves their notes (fires when saveVisitorNotes() runs)
 
-   SETUP REQUIREMENTS:
-   • Add this ONE line to the <head> of every page:
-     <script src="[PATH]/assets/js/analytics.js"></script>
-     where [PATH] is the correct relative path:
-     - index.html → src="assets/js/analytics.js"
-     - theme1/module*.html → src="../assets/js/analytics.js"
-     - theme2/module*.html → src="../assets/js/analytics.js"
+   OWNER SUPPRESSION (NEW in v1.1):
+   • Visit https://acshotsprings.github.io/CampbellBibleStudy/?owner=true
+     to mark this device as the owner (Chris).
+   • Owner visits and note-saves will NOT trigger emails.
+   • Google Analytics tracking still runs (so you see your own traffic).
+   • Flag persists in localStorage as 'cbsg-is-owner' = 'true'.
+   • To disable: visit ?owner=false OR clear localStorage manually.
+   • To check status anytime: open browser console and type CBSG_isOwner()
    ============================================================ */
 
 (function() {
@@ -29,19 +30,42 @@
   const EMAILJS_SERVICE_ID = 'service_6mi6r6r';
   const EMAILJS_TEMPLATE_ID = 'template_275v5hl';
   const NOTIFY_EMAIL = 'acshotsprings@gmail.com';
-
-  // Session tracking — prevent duplicate "visitor hit" emails in same session
+  const OWNER_FLAG_KEY = 'cbsg-is-owner';
   const SESSION_HIT_KEY = 'cbsg-session-hit-sent';
+
+  // ─── OWNER DETECTION ───────────────────────────────────────
+  function handleOwnerFlag() {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const ownerParam = urlParams.get('owner');
+
+      if (ownerParam === 'true') {
+        localStorage.setItem(OWNER_FLAG_KEY, 'true');
+        console.log('[CBSG Analytics] Owner mode ENABLED. Email notifications suppressed for this device.');
+      } else if (ownerParam === 'false') {
+        localStorage.removeItem(OWNER_FLAG_KEY);
+        console.log('[CBSG Analytics] Owner mode DISABLED. Email notifications will fire normally.');
+      }
+    } catch (err) {
+      // Silent fail
+    }
+  }
+
+  function isOwner() {
+    try {
+      return localStorage.getItem(OWNER_FLAG_KEY) === 'true';
+    } catch (err) {
+      return false;
+    }
+  }
 
   // ─── LOAD GOOGLE ANALYTICS ─────────────────────────────────
   function loadGoogleAnalytics() {
-    // Inject gtag.js script
     const gaScript = document.createElement('script');
     gaScript.async = true;
     gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
     document.head.appendChild(gaScript);
 
-    // Initialize gtag
     window.dataLayer = window.dataLayer || [];
     function gtag() { window.dataLayer.push(arguments); }
     window.gtag = gtag;
@@ -55,7 +79,6 @@
   // ─── LOAD EMAILJS ──────────────────────────────────────────
   function loadEmailJS() {
     return new Promise((resolve, reject) => {
-      // Check if already loaded
       if (window.emailjs) {
         resolve();
         return;
@@ -78,6 +101,12 @@
 
   // ─── SEND EMAIL ────────────────────────────────────────────
   async function sendNotificationEmail(eventType, extraInfo) {
+    // OWNER SUPPRESSION — skip all emails if this device is marked as owner
+    if (isOwner()) {
+      console.log(`[CBSG Analytics] Owner mode — email suppressed: ${eventType}`);
+      return;
+    }
+
     try {
       await loadEmailJS();
 
@@ -107,40 +136,39 @@
 
       console.log(`[CBSG Analytics] Email sent: ${eventType}`);
     } catch (err) {
-      // Silent failure — don't interrupt user experience if email fails
       console.warn('[CBSG Analytics] Email notification failed:', err.message);
     }
   }
 
   // ─── VISITOR HIT TRIGGER ───────────────────────────────────
   function fireVisitorHitEmail() {
-    // Only fire once per session (uses sessionStorage, so clearing browser
-    // or opening new tab will fire again — that's intentional)
     if (sessionStorage.getItem(SESSION_HIT_KEY)) {
       return;
     }
     sessionStorage.setItem(SESSION_HIT_KEY, 'true');
 
-    // Small delay so GA loads first + page is rendered
     setTimeout(() => {
       sendNotificationEmail('Visitor hit site', `Landing page: ${window.location.pathname}`);
     }, 1500);
   }
 
   // ─── NOTE SAVE TRIGGER (exposed globally) ──────────────────
-  // Call this from main.js when notes are saved:
-  //   if (window.CBSG_notifyNoteSave) window.CBSG_notifyNoteSave('context info');
   window.CBSG_notifyNoteSave = function(noteContext) {
     sendNotificationEmail('Notes saved', noteContext || 'Notes saved on ' + window.location.pathname);
   };
 
+  // ─── OWNER STATUS CHECK (exposed globally for debugging) ───
+  window.CBSG_isOwner = function() {
+    return isOwner();
+  };
+
   // ─── INITIALIZE ON PAGE LOAD ───────────────────────────────
   function init() {
-    loadGoogleAnalytics();
-    fireVisitorHitEmail();
+    handleOwnerFlag();       // Check URL for ?owner=true/false first
+    loadGoogleAnalytics();   // GA always runs (tracks your own visits too)
+    fireVisitorHitEmail();   // Email fires only if not owner
   }
 
-  // Run init when DOM is ready (or immediately if already loaded)
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
