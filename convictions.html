@@ -43,13 +43,16 @@
       Search written notes across the site. No internet connection needed, no API keys, no accounts — everything runs right here in your browser.
     </p>
 
-    <!-- Mode toggle: My own notes vs. Chris's published notes -->
-    <div style="display:flex;gap:0;margin-bottom:14px;background:rgba(0,0,0,0.2);border-radius:6px;padding:3px;">
-      <button id="sr-mode-mine" onclick="setSearchMode('mine')" style="flex:1;padding:8px 12px;background:#FFD700;color:#1F3864;border:none;border-radius:4px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;transition:all 0.15s;">
-        📝 My Own Notes
+    <!-- Mode toggle: 3 sources -->
+    <div style="display:flex;gap:0;margin-bottom:14px;background:rgba(0,0,0,0.2);border-radius:6px;padding:3px;flex-wrap:wrap;">
+      <button id="sr-mode-mine" onclick="setSearchMode('mine')" style="flex:1;min-width:120px;padding:8px 10px;background:#FFD700;color:#1F3864;border:none;border-radius:4px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;transition:all 0.15s;">
+        📝 My Notes
       </button>
-      <button id="sr-mode-chris" onclick="setSearchMode('chris')" style="flex:1;padding:8px 12px;background:transparent;color:rgba(255,255,255,0.7);border:none;border-radius:4px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;transition:all 0.15s;">
-        📖 Chris's Published Notes
+      <button id="sr-mode-chris" onclick="setSearchMode('chris')" style="flex:1;min-width:120px;padding:8px 10px;background:transparent;color:rgba(255,255,255,0.7);border:none;border-radius:4px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;transition:all 0.15s;">
+        📖 Chris's Published
+      </button>
+      <button id="sr-mode-site" onclick="setSearchMode('site')" style="flex:1;min-width:120px;padding:8px 10px;background:transparent;color:rgba(255,255,255,0.7);border:none;border-radius:4px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;transition:all 0.15s;">
+        📚 Entire Site
       </button>
     </div>
     <div id="sr-mode-desc" style="font-size:12px;color:rgba(255,255,255,0.55);font-family:Arial,sans-serif;margin-bottom:14px;font-style:italic;">
@@ -68,6 +71,7 @@
     <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
       <button onclick="showNoteSummary()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:Arial,sans-serif;">📊 Show overall themes</button>
       <button onclick="showAllTopics()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:Arial,sans-serif;">📋 List all notes</button>
+      <button id="sr-refresh-btn" onclick="srRefreshCache()" style="display:none;background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:Arial,sans-serif;">🔄 Refresh site cache</button>
       <button onclick="document.getElementById('sr-query').value='';document.getElementById('sr-results').style.display='none';" style="background:transparent;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:Arial,sans-serif;">Clear</button>
     </div>
   </div>
@@ -163,16 +167,64 @@ async function askAboutMyNotes() {
 // Rebuilt 2026-04-23 to replace the Gemini-based reflection tool.
 // ============================================================
 
-// Mode state: 'mine' = this browser's localStorage notes
-//             'chris' = Chris's published notes from my-notes.json
+// Mode state: 'mine' = browser localStorage, 'chris' = published JSON, 'site' = full site content
 let srMode = 'mine';
 
 // Cache for the remote my-notes.json so we don't hammer the network
 let srChrisNotesCache = null;
 
+// Cache for fetched site page content (populated on first Site Content search)
+let srSitePagesCache = null;
+let srSitePagesFetching = false;  // reentrancy guard
+
 // URL of the published notes file (public GitHub raw URL)
 const SR_CHRIS_NOTES_URL =
   'https://raw.githubusercontent.com/acshotsprings/CampbellBibleStudy/main/my-notes.json';
+
+// Base URL for fetching individual page content
+const SR_SITE_BASE_URL =
+  'https://raw.githubusercontent.com/acshotsprings/CampbellBibleStudy/main/';
+
+// Every page on the site (derived from nav.js structure — keep in sync when pages added)
+const SR_SITE_PAGES = [
+  { path: 'index.html',                      label: 'Home' },
+  { path: 'resources.html',                  label: 'Resources' },
+  { path: 'sermons.html',                    label: 'Sermons' },
+  { path: 'checklist.html',                  label: 'Checklist' },
+  { path: 'journal.html',                    label: 'Journal' },
+  { path: 'history.html',                    label: 'Save History' },
+  { path: 'convictions.html',                label: 'My Convictions' },
+  { path: 'listening-notes.html',            label: 'Listening Notes' },
+  { path: 'hearing-gods-voice.html',         label: "Hearing God's Voice" },
+  { path: 'numbers-skepticism.html',         label: 'Numbers Skepticism' },
+  { path: 'current-events.html',             label: 'Current Events' },
+  { path: 'DeepDives.html',                  label: 'Deep Dives — Index' },
+  { path: 'DeepDive-Calendars.html',         label: 'Deep Dive — Calendars' },
+  { path: 'DeepDive-Gematria.html',          label: 'Deep Dive — Gematria' },
+  { path: 'DeepDive-Shabua.html',            label: 'Deep Dive — Shabua' },
+  { path: 'DeepDive-Willow.html',            label: 'Deep Dive — Willow' },
+  { path: 'theme1/module1.html',             label: 'Theme 1 · Module 1 — Daniel\u2019s 70 Weeks' },
+  { path: 'theme1/module2.html',             label: 'Theme 1 · Module 2 — Israel in Prophecy' },
+  { path: 'theme1/module3.html',             label: 'Theme 1 · Module 3 — Day of the Lord' },
+  { path: 'theme1/module4.html',             label: 'Theme 1 · Module 4 — Watchman Principle' },
+  { path: 'theme1/module5.html',             label: 'Theme 1 · Module 5 — New Covenant' },
+  { path: 'theme1/module6.html',             label: 'Theme 1 · Module 6 — Rapture' },
+  { path: 'theme1/module7.html',             label: 'Theme 1 · Module 7 — Antichrist' },
+  { path: 'theme1/module8.html',             label: 'Theme 1 · Module 8 — Rebuilt Temple' },
+  { path: 'theme1/module9.html',             label: 'Theme 1 · Module 9 — Gog-Magog' },
+  { path: 'theme1/module10.html',            label: 'Theme 1 · Module 10 — Signs of the Times' },
+  { path: 'theme1/module11.html',            label: 'Theme 1 · Module 11 — False Prophets' },
+  { path: 'theme1/module12.html',            label: 'Theme 1 · Module 12 — Millennium' },
+  { path: 'theme1/module13.html',            label: 'Theme 1 · Module 13 — Second Coming' },
+  { path: 'theme1/module14.html',            label: 'Theme 1 · Module 14 — Matt 24 vs Revelation' },
+  { path: 'theme1/module15.html',            label: 'Theme 1 · Module 15 — Armageddon' },
+  { path: 'theme2/index.html',               label: 'Theme 2 — Biblical Calendar (overview)' },
+  { path: 'theme2/module1.html',             label: 'Theme 2 · Module 1 — Calendar History' },
+  { path: 'theme2/module2.html',             label: 'Theme 2 · Module 2 — Enoch' },
+  { path: 'theme2/module3.html',             label: 'Theme 2 · Module 3 — Jubilees' },
+  { path: 'theme2/module4.html',             label: 'Theme 2 · Module 4 — Feast of Tabernacles' },
+  { path: 'theme3/index.html',               label: 'Theme 3 — Overview' }
+];
 
 // Friendly labels for every note key we collect.
 // Extend this list whenever new notes boxes are added to the site.
@@ -251,11 +303,11 @@ function srIsUsefulKey(bareKey) {
   return false;
 }
 
-// Collect notes for the CURRENT mode. Returns array of {key, label, text}.
+// Collect notes/content for the CURRENT mode. Returns array of {key, label, text, url?}.
+// For 'site' mode, result items include a 'url' field for jump-to-page links.
 async function srCollectNotes() {
-  if (srMode === 'chris') {
-    return srCollectChrisNotes();
-  }
+  if (srMode === 'chris') return srCollectChrisNotes();
+  if (srMode === 'site')  return srCollectSiteContent();
   return srCollectLocalNotes();
 }
 
@@ -312,27 +364,133 @@ async function srCollectChrisNotes() {
   }
 }
 
-// Switch between 'mine' and 'chris' modes. Updates UI and clears results.
+// SITE MODE: Fetch every HTML page on the site, strip to plain text, cache it.
+// First call populates the cache (slow — ~5-10s). Subsequent calls are instant.
+// Cache is cleared on page load and on explicit "Refresh cache" click.
+async function srCollectSiteContent() {
+  if (srSitePagesCache) return srSitePagesCache;
+  if (srSitePagesFetching) {
+    // Another fetch is already in progress — wait for it
+    return { __error: 'A site fetch is already running; please wait.' };
+  }
+  srSitePagesFetching = true;
+
+  try {
+    const resultsEl = document.getElementById('sr-results');
+    // Progressive loading indicator with live progress count
+    const updateProgress = (done, total) => {
+      if (!resultsEl) return;
+      resultsEl.innerHTML = `<p style="margin:0;color:#8A5A00;"><em>Indexing site content: fetched ${done} of ${total} pages...</em></p>`;
+      resultsEl.style.display = 'block';
+    };
+
+    const total = SR_SITE_PAGES.length;
+    let done = 0;
+    updateProgress(done, total);
+
+    // Fetch in parallel batches of 6 to avoid overwhelming the CDN but stay fast
+    const BATCH = 6;
+    const fetched = [];
+    for (let i = 0; i < SR_SITE_PAGES.length; i += BATCH) {
+      const slice = SR_SITE_PAGES.slice(i, i + BATCH);
+      const batchPromises = slice.map(async (page) => {
+        try {
+          const res = await fetch(SR_SITE_BASE_URL + page.path, { cache: 'no-store' });
+          if (!res.ok) return null;
+          const html = await res.text();
+          // Strip scripts, styles, and tags to get readable text
+          const text = srHtmlToText(html);
+          if (text.length < 50) return null;  // empty or near-empty pages
+          return {
+            key:   page.path,
+            label: page.label,
+            url:   'https://acshotsprings.github.io/CampbellBibleStudy/' + page.path,
+            text:  text
+          };
+        } catch (e) {
+          return null;
+        }
+      });
+      const batchResults = await Promise.all(batchPromises);
+      for (const r of batchResults) {
+        if (r) fetched.push(r);
+        done++;
+      }
+      updateProgress(done, total);
+    }
+
+    srSitePagesCache = fetched;
+    return fetched;
+  } catch (e) {
+    console.warn('Failed to fetch site content:', e);
+    return { __error: e.message || String(e) };
+  } finally {
+    srSitePagesFetching = false;
+  }
+}
+
+// Strip HTML to plain readable text, removing scripts, styles, and common navigation chrome.
+// Used only for the Site Content mode.
+function srHtmlToText(html) {
+  // Parse into a detached document so we don't affect the current page
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  // Remove non-content elements
+  doc.querySelectorAll('script, style, noscript, nav, #sidebar, #github-bar, #sidebar-overlay, .quill-editor, .notes-input, textarea, input').forEach(el => el.remove());
+  // Also strip any Quill runtime DOM that may have been saved back into the file
+  doc.querySelectorAll('.ql-toolbar, .ql-container, .quill-wrapper').forEach(el => el.remove());
+  // Now take the body text
+  const body = doc.body || doc.documentElement;
+  let text = body ? (body.textContent || body.innerText || '') : '';
+  // Collapse whitespace
+  text = text.replace(/\s+/g, ' ').trim();
+  return text;
+}
+
+// Clear all caches and force a fresh fetch on the next search. Wired to the 🔄 button.
+function srRefreshCache() {
+  srChrisNotesCache = null;
+  srSitePagesCache = null;
+  const resultsEl = document.getElementById('sr-results');
+  if (resultsEl) {
+    resultsEl.innerHTML = '<p style="margin:0;color:#155724;"><em>\u2713 Cache cleared. Your next search will fetch fresh content from the live site.</em></p>';
+    resultsEl.style.display = 'block';
+  }
+}
+
+// Switch between 'mine', 'chris', and 'site' modes. Updates UI and clears results.
 function setSearchMode(mode) {
-  if (mode !== 'mine' && mode !== 'chris') return;
+  if (mode !== 'mine' && mode !== 'chris' && mode !== 'site') return;
   srMode = mode;
 
-  const btnMine  = document.getElementById('sr-mode-mine');
-  const btnChris = document.getElementById('sr-mode-chris');
-  const desc     = document.getElementById('sr-mode-desc');
-  const query    = document.getElementById('sr-query');
-  const results  = document.getElementById('sr-results');
+  const btnMine    = document.getElementById('sr-mode-mine');
+  const btnChris   = document.getElementById('sr-mode-chris');
+  const btnSite    = document.getElementById('sr-mode-site');
+  const desc       = document.getElementById('sr-mode-desc');
+  const query      = document.getElementById('sr-query');
+  const results    = document.getElementById('sr-results');
+  const refreshBtn = document.getElementById('sr-refresh-btn');
+
+  // Reset all buttons to inactive state
+  const allBtns = [btnMine, btnChris, btnSite];
+  allBtns.forEach(b => {
+    if (b) { b.style.background = 'transparent'; b.style.color = 'rgba(255,255,255,0.7)'; }
+  });
 
   if (mode === 'mine') {
-    if (btnMine)  { btnMine.style.background = '#FFD700'; btnMine.style.color = '#1F3864'; }
-    if (btnChris) { btnChris.style.background = 'transparent'; btnChris.style.color = 'rgba(255,255,255,0.7)'; }
-    if (desc) desc.textContent = "Searching notes you've written in this browser. Only you can see these — they live on your device, not on the site.";
-    if (query) query.placeholder = 'Type a topic or word to find in your notes...';
-  } else {
-    if (btnMine)  { btnMine.style.background = 'transparent'; btnMine.style.color = 'rgba(255,255,255,0.7)'; }
+    if (btnMine) { btnMine.style.background = '#FFD700'; btnMine.style.color = '#1F3864'; }
+    if (desc)    desc.textContent = "Searching notes you've written in this browser. Only you can see these — they live on your device, not on the site.";
+    if (query)   query.placeholder = 'Type a topic or word to find in your notes...';
+    if (refreshBtn) refreshBtn.style.display = 'none';
+  } else if (mode === 'chris') {
     if (btnChris) { btnChris.style.background = '#FFD700'; btnChris.style.color = '#1F3864'; }
-    if (desc) desc.textContent = "Searching Chris's published notes from my-notes.json on GitHub. Everyone who visits sees the same content.";
-    if (query) query.placeholder = "Type a topic or word to find in Chris's notes...";
+    if (desc)     desc.textContent = "Searching Chris's published notes from my-notes.json on GitHub. Everyone who visits sees the same content.";
+    if (query)    query.placeholder = "Type a topic or word to find in Chris's notes...";
+    if (refreshBtn) refreshBtn.style.display = 'none';
+  } else if (mode === 'site') {
+    if (btnSite) { btnSite.style.background = '#FFD700'; btnSite.style.color = '#1F3864'; }
+    if (desc)    desc.textContent = "Searching the full teaching content of every page on the site — scriptures, modules, deep dives, everything. First search may take 5–10 seconds while pages are indexed.";
+    if (query)   query.placeholder = 'Type a topic or word to find anywhere on the site...';
+    if (refreshBtn) refreshBtn.style.display = 'inline-block';
   }
 
   // Clear any stale results when switching modes
@@ -361,9 +519,11 @@ function srShowLoading(message) {
 function srShowEmptyMessage() {
   const resultsEl = document.getElementById('sr-results');
   if (srMode === 'mine') {
-    resultsEl.innerHTML = '<p style="margin:0;color:#8A5A00;"><em>No notes found yet in this browser. Once you write in any of the note or conviction fields on the site, they will show up here. Or try the "Chris\u2019s Published Notes" toggle above to explore published study notes.</em></p>';
-  } else {
+    resultsEl.innerHTML = '<p style="margin:0;color:#8A5A00;"><em>No notes found yet in this browser. Once you write in any of the note or conviction fields on the site, they will show up here. Or try the \u201CChris\u2019s Published Notes\u201D or \u201CEntire Site\u201D toggles above.</em></p>';
+  } else if (srMode === 'chris') {
     resultsEl.innerHTML = '<p style="margin:0;color:#8A5A00;"><em>Could not load Chris\u2019s published notes. Check your internet connection and try again.</em></p>';
+  } else if (srMode === 'site') {
+    resultsEl.innerHTML = '<p style="margin:0;color:#8A5A00;"><em>Could not load site content. Check your internet connection and try the \ud83d\udd04 Refresh button.</em></p>';
   }
   resultsEl.style.display = 'block';
 }
@@ -378,7 +538,11 @@ async function searchMyNotes() {
     return;
   }
 
-  srShowLoading(srMode === 'chris' ? 'Loading Chris\u2019s published notes...' : 'Searching...');
+  srShowLoading(
+    srMode === 'chris' ? 'Loading Chris\u2019s published notes...' :
+    srMode === 'site'  ? 'Searching site content (first search in this session will fetch and index all pages \u2014 this takes 5\u201310 seconds)...' :
+                         'Searching...'
+  );
   const notes = await srCollectNotes();
   if (!Array.isArray(notes)) { srShowEmptyMessage(); return; }
   if (notes.length === 0) { srShowEmptyMessage(); return; }
@@ -392,14 +556,17 @@ async function searchMyNotes() {
     const matchingChunks = chunks.filter(c => c.toLowerCase().includes(q));
     if (matchingChunks.length > 0) {
       hits.push({
-        label: note.label, key: note.key,
+        label: note.label, key: note.key, url: note.url,
         count: matchingChunks.length,
         passages: matchingChunks.slice(0, 5)
       });
     }
   }
 
-  const sourceLabel = srMode === 'mine' ? 'your notes' : 'Chris\u2019s published notes';
+  const sourceLabel =
+    srMode === 'mine'  ? 'your notes' :
+    srMode === 'chris' ? 'Chris\u2019s published notes' :
+                         'the entire site';
 
   if (hits.length === 0) {
     resultsEl.innerHTML = `<p style="margin:0 0 8px 0;color:#8A5A00;font-weight:bold;">No matches for "${query}" in ${sourceLabel}.</p>
@@ -413,12 +580,15 @@ async function searchMyNotes() {
 
   for (const hit of hits) {
     html += `<div style="margin-bottom:16px;padding:10px 14px;background:rgba(255,255,255,0.5);border-radius:4px;border-left:3px solid #1F3864;">`;
-    html += `<div style="font-size:12px;color:#1F3864;font-weight:bold;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">${hit.label} <span style="font-weight:normal;color:#666;">(${hit.count} hit${hit.count===1?'':'s'})</span></div>`;
+    const labelHtml = hit.url
+      ? `<a href="${hit.url}" target="_blank" style="color:#1F3864;text-decoration:none;border-bottom:1px dotted #1F3864;">${hit.label} \u2197</a>`
+      : hit.label;
+    html += `<div style="font-size:12px;color:#1F3864;font-weight:bold;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">${labelHtml} <span style="font-weight:normal;color:#666;">(${hit.count} hit${hit.count===1?'':'s'})</span></div>`;
     for (const passage of hit.passages) {
       html += `<p style="margin:6px 0;font-size:14px;color:#222;line-height:1.6;">"${srHighlight(passage, query)}"</p>`;
     }
     if (hit.count > hit.passages.length) {
-      html += `<p style="margin:4px 0 0 0;font-size:11px;color:#888;font-style:italic;">...and ${hit.count - hit.passages.length} more mention${hit.count - hit.passages.length===1?'':'s'} in this note.</p>`;
+      html += `<p style="margin:4px 0 0 0;font-size:11px;color:#888;font-style:italic;">...and ${hit.count - hit.passages.length} more mention${hit.count - hit.passages.length===1?'':'s'} in this ${srMode === 'site' ? 'page' : 'note'}.</p>`;
     }
     html += `</div>`;
   }
@@ -429,7 +599,11 @@ async function searchMyNotes() {
 // Show overall themes (word count ranking, plus keyword frequencies)
 async function showNoteSummary() {
   const resultsEl = document.getElementById('sr-results');
-  srShowLoading(srMode === 'chris' ? 'Loading Chris\u2019s published notes...' : 'Analyzing...');
+  srShowLoading(
+    srMode === 'chris' ? 'Loading Chris\u2019s published notes...' :
+    srMode === 'site'  ? 'Indexing site content (first call in this session will fetch all pages \u2014 5\u201310 seconds)...' :
+                         'Analyzing...'
+  );
 
   const notes = await srCollectNotes();
   if (!Array.isArray(notes)) { srShowEmptyMessage(); return; }
@@ -457,13 +631,16 @@ async function showNoteSummary() {
   }).filter(t => t.count > 0).sort((a, b) => b.count - a.count);
 
   const totalWords = byVolume.reduce((s, v) => s + v.words, 0);
-  const sourceLabel = srMode === 'mine' ? 'your notes' : 'Chris\u2019s published notes';
+  const sourceLabel =
+    srMode === 'mine'  ? 'your notes' :
+    srMode === 'chris' ? 'Chris\u2019s published notes' :
+                         'the entire site';
 
   let html = `<p style="margin:0 0 14px 0;color:#1F3864;font-weight:bold;font-size:15px;">Overall summary of ${sourceLabel}</p>`;
-  html += `<p style="margin:0 0 14px 0;color:#444;font-size:14px;">${totalWords.toLocaleString()} words total across ${notes.length} different notes.</p>`;
+  html += `<p style="margin:0 0 14px 0;color:#444;font-size:14px;">${totalWords.toLocaleString()} words total across ${notes.length} ${srMode === 'site' ? 'page' : 'note'}${notes.length===1?'':'s'}.</p>`;
 
   html += `<div style="margin-bottom:18px;padding:12px 14px;background:rgba(255,255,255,0.5);border-radius:4px;border-left:3px solid #1F3864;">`;
-  html += `<div style="font-size:12px;color:#1F3864;font-weight:bold;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px;">Where the most has been written</div>`;
+  html += `<div style="font-size:12px;color:#1F3864;font-weight:bold;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px;">Where the most ${srMode === 'site' ? 'content' : 'has been written'} ${srMode === 'site' ? 'lives' : ''}</div>`;
   for (const v of byVolume.slice(0, 10)) {
     if (v.words === 0) continue;
     html += `<p style="margin:4px 0;font-size:13px;color:#222;"><strong>${v.label}</strong> — ${v.words.toLocaleString()} word${v.words===1?'':'s'}</p>`;
@@ -489,19 +666,30 @@ async function showNoteSummary() {
 // Show a plain list of every note with a snippet preview
 async function showAllTopics() {
   const resultsEl = document.getElementById('sr-results');
-  srShowLoading(srMode === 'chris' ? 'Loading Chris\u2019s published notes...' : 'Loading...');
+  srShowLoading(
+    srMode === 'chris' ? 'Loading Chris\u2019s published notes...' :
+    srMode === 'site'  ? 'Indexing site content (first call in this session will fetch all pages \u2014 5\u201310 seconds)...' :
+                         'Loading...'
+  );
 
   const notes = await srCollectNotes();
   if (!Array.isArray(notes)) { srShowEmptyMessage(); return; }
   if (notes.length === 0) { srShowEmptyMessage(); return; }
 
-  const sourceLabel = srMode === 'mine' ? 'your notes' : 'Chris\u2019s published notes';
-  let html = `<p style="margin:0 0 14px 0;color:#1F3864;font-weight:bold;font-size:15px;">All ${notes.length} note${notes.length===1?'':'s'} in ${sourceLabel}</p>`;
+  const sourceLabel =
+    srMode === 'mine'  ? 'your notes' :
+    srMode === 'chris' ? 'Chris\u2019s published notes' :
+                         'the entire site';
+  const itemWord = srMode === 'site' ? 'page' : 'note';
+  let html = `<p style="margin:0 0 14px 0;color:#1F3864;font-weight:bold;font-size:15px;">All ${notes.length} ${itemWord}${notes.length===1?'':'s'} in ${sourceLabel}</p>`;
   for (const n of notes) {
     const preview = n.text.length > 200 ? n.text.slice(0, 200).trim() + '...' : n.text;
     const words = n.text.split(/\s+/).filter(Boolean).length;
+    const labelHtml = n.url
+      ? `<a href="${n.url}" target="_blank" style="color:#1F3864;text-decoration:none;border-bottom:1px dotted #1F3864;">${n.label} \u2197</a>`
+      : n.label;
     html += `<div style="margin-bottom:12px;padding:10px 14px;background:rgba(255,255,255,0.5);border-radius:4px;border-left:3px solid #1F3864;">`;
-    html += `<div style="font-size:12px;color:#1F3864;font-weight:bold;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">${n.label} <span style="font-weight:normal;color:#666;">(${words.toLocaleString()} word${words===1?'':'s'})</span></div>`;
+    html += `<div style="font-size:12px;color:#1F3864;font-weight:bold;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">${labelHtml} <span style="font-weight:normal;color:#666;">(${words.toLocaleString()} word${words===1?'':'s'})</span></div>`;
     html += `<p style="margin:4px 0;font-size:13px;color:#444;line-height:1.5;">${preview.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}</p>`;
     html += `</div>`;
   }
