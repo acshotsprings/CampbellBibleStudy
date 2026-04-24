@@ -434,10 +434,12 @@ async function srCollectSiteContent() {
 function srHtmlToText(html) {
   // Parse into a detached document so we don't affect the current page
   const doc = new DOMParser().parseFromString(html, 'text/html');
-  // Remove non-content elements
-  doc.querySelectorAll('script, style, noscript, nav, #sidebar, #github-bar, #sidebar-overlay, .quill-editor, .notes-input, textarea, input').forEach(el => el.remove());
+  // Remove non-content elements (site chrome, editors, nav)
+  doc.querySelectorAll('script, style, noscript, nav, #sidebar, #github-bar, #sidebar-overlay, .quill-editor, .notes-input, textarea, input, button, select, #nav-hamburger, .sidebar-overlay').forEach(el => el.remove());
   // Also strip any Quill runtime DOM that may have been saved back into the file
-  doc.querySelectorAll('.ql-toolbar, .ql-container, .quill-wrapper').forEach(el => el.remove());
+  doc.querySelectorAll('.ql-toolbar, .ql-container, .quill-wrapper, .ql-editor, .ql-tooltip, .ql-picker').forEach(el => el.remove());
+  // Strip common metadata spans that pollute search results
+  doc.querySelectorAll('.bar-title, .bar-sep, .bar-originated, .bar-right, #gh-bar-version, #gh-status, #gh-token, .page-tag').forEach(el => el.remove());
   // Now take the body text
   const body = doc.body || doc.documentElement;
   let text = body ? (body.textContent || body.innerText || '') : '';
@@ -549,18 +551,54 @@ async function searchMyNotes() {
 
   const q = query.toLowerCase();
   const hits = [];
+
+  // How wide of a window to show around each match (in characters).
+  // Keeps snippets readable and prevents walls of text.
+  const SNIPPET_RADIUS = 80;  // chars before and after the match word
+  const MAX_SNIPPETS_PER_RESULT = 3;  // show at most 3 snippets per note/page
+
   for (const note of notes) {
     const text = note.text;
-    if (!text.toLowerCase().includes(q)) continue;
-    const chunks = text.split(/(?<=[.!?])\s+|\n+/).map(s => s.trim()).filter(Boolean);
-    const matchingChunks = chunks.filter(c => c.toLowerCase().includes(q));
-    if (matchingChunks.length > 0) {
-      hits.push({
-        label: note.label, key: note.key, url: note.url,
-        count: matchingChunks.length,
-        passages: matchingChunks.slice(0, 5)
-      });
+    const lowerText = text.toLowerCase();
+    if (!lowerText.includes(q)) continue;
+
+    // Find all match positions, then build short windows around each
+    const matchPositions = [];
+    let pos = 0;
+    while (pos < lowerText.length) {
+      const idx = lowerText.indexOf(q, pos);
+      if (idx === -1) break;
+      matchPositions.push(idx);
+      pos = idx + q.length;
+      if (matchPositions.length > 200) break;  // sanity cap
     }
+
+    // Build non-overlapping snippets from the first N match positions
+    const snippets = [];
+    for (const matchStart of matchPositions.slice(0, MAX_SNIPPETS_PER_RESULT)) {
+      let snipStart = Math.max(0, matchStart - SNIPPET_RADIUS);
+      let snipEnd   = Math.min(text.length, matchStart + q.length + SNIPPET_RADIUS);
+
+      // Try to extend to word boundaries so we don't cut words in half
+      while (snipStart > 0 && /\S/.test(text[snipStart - 1]) && matchStart - snipStart < SNIPPET_RADIUS + 20) {
+        snipStart--;
+      }
+      while (snipEnd < text.length && /\S/.test(text[snipEnd]) && snipEnd - (matchStart + q.length) < SNIPPET_RADIUS + 20) {
+        snipEnd++;
+      }
+
+      let snippet = text.slice(snipStart, snipEnd).trim();
+      // Add leading/trailing ellipsis if the snippet is truncated from the full text
+      if (snipStart > 0) snippet = '...' + snippet;
+      if (snipEnd < text.length) snippet = snippet + '...';
+      snippets.push(snippet);
+    }
+
+    hits.push({
+      label: note.label, key: note.key, url: note.url,
+      count: matchPositions.length,
+      passages: snippets
+    });
   }
 
   const sourceLabel =
@@ -570,13 +608,14 @@ async function searchMyNotes() {
 
   if (hits.length === 0) {
     resultsEl.innerHTML = `<p style="margin:0 0 8px 0;color:#8A5A00;font-weight:bold;">No matches for "${query}" in ${sourceLabel}.</p>
-      <p style="margin:0;color:#555;font-size:13px;">Try a broader or shorter word. The current source contains ${notes.length} note${notes.length===1?'':'s'}.</p>`;
+      <p style="margin:0;color:#555;font-size:13px;">Try a broader or shorter word. The current source contains ${notes.length} ${srMode === 'site' ? 'page' : 'note'}${notes.length===1?'':'s'}.</p>`;
     resultsEl.style.display = 'block';
     return;
   }
 
   const totalMatches = hits.reduce((a, h) => a + h.count, 0);
-  let html = `<p style="margin:0 0 14px 0;color:#1F3864;font-weight:bold;font-size:15px;">Found ${totalMatches} mention${totalMatches===1?'':'s'} of "${query}" across ${hits.length} note${hits.length===1?'':'s'} in ${sourceLabel}:</p>`;
+  const itemWord = srMode === 'site' ? 'page' : 'note';
+  let html = `<p style="margin:0 0 14px 0;color:#1F3864;font-weight:bold;font-size:15px;">Found ${totalMatches} mention${totalMatches===1?'':'s'} of "${query}" across ${hits.length} ${itemWord}${hits.length===1?'':'s'} in ${sourceLabel}:</p>`;
 
   for (const hit of hits) {
     html += `<div style="margin-bottom:16px;padding:10px 14px;background:rgba(255,255,255,0.5);border-radius:4px;border-left:3px solid #1F3864;">`;
@@ -585,10 +624,14 @@ async function searchMyNotes() {
       : hit.label;
     html += `<div style="font-size:12px;color:#1F3864;font-weight:bold;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">${labelHtml} <span style="font-weight:normal;color:#666;">(${hit.count} hit${hit.count===1?'':'s'})</span></div>`;
     for (const passage of hit.passages) {
-      html += `<p style="margin:6px 0;font-size:14px;color:#222;line-height:1.6;">"${srHighlight(passage, query)}"</p>`;
+      html += `<p style="margin:6px 0;font-size:13px;color:#333;line-height:1.6;font-family:Georgia,serif;">${srHighlight(passage, query)}</p>`;
     }
     if (hit.count > hit.passages.length) {
-      html += `<p style="margin:4px 0 0 0;font-size:11px;color:#888;font-style:italic;">...and ${hit.count - hit.passages.length} more mention${hit.count - hit.passages.length===1?'':'s'} in this ${srMode === 'site' ? 'page' : 'note'}.</p>`;
+      const extra = hit.count - hit.passages.length;
+      const linkSuffix = hit.url ? ` &mdash; <a href="${hit.url}" target="_blank" style="color:#2E75B6;">View the full ${itemWord} \u2197</a>` : '';
+      html += `<p style="margin:8px 0 0 0;font-size:11px;color:#888;font-style:italic;">\u2026and ${extra} more mention${extra===1?'':'s'} in this ${itemWord}.${linkSuffix}</p>`;
+    } else if (hit.url) {
+      html += `<p style="margin:8px 0 0 0;font-size:11px;"><a href="${hit.url}" target="_blank" style="color:#2E75B6;">View the full ${itemWord} \u2197</a></p>`;
     }
     html += `</div>`;
   }
