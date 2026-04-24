@@ -37,23 +37,37 @@
   <!-- ── SEARCH & REFLECT TOOL (local-only, no API keys) ── -->
   <div style="background:linear-gradient(135deg,#1F3864,#2E4F8A);border-radius:8px;padding:20px;margin:16px 0 24px;">
     <div style="font-size:13px;font-weight:bold;color:#FFD700;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">
-      🔍 Search &amp; Reflect on My Own Words
+      🔍 Search &amp; Reflect
     </div>
     <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:14px;font-family:Arial,sans-serif;">
-      This tool searches <strong>only what you have written</strong> across all your notes, journal entries, and conviction fields — nothing from the study guide itself. No internet connection, no API keys, no accounts. Everything runs right here in your browser.
+      Search written notes across the site. No internet connection needed, no API keys, no accounts — everything runs right here in your browser.
     </p>
+
+    <!-- Mode toggle: My own notes vs. Chris's published notes -->
+    <div style="display:flex;gap:0;margin-bottom:14px;background:rgba(0,0,0,0.2);border-radius:6px;padding:3px;">
+      <button id="sr-mode-mine" onclick="setSearchMode('mine')" style="flex:1;padding:8px 12px;background:#FFD700;color:#1F3864;border:none;border-radius:4px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;transition:all 0.15s;">
+        📝 My Own Notes
+      </button>
+      <button id="sr-mode-chris" onclick="setSearchMode('chris')" style="flex:1;padding:8px 12px;background:transparent;color:rgba(255,255,255,0.7);border:none;border-radius:4px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;transition:all 0.15s;">
+        📖 Chris's Published Notes
+      </button>
+    </div>
+    <div id="sr-mode-desc" style="font-size:12px;color:rgba(255,255,255,0.55);font-family:Arial,sans-serif;margin-bottom:14px;font-style:italic;">
+      Searching notes you've written in this browser. Only you can see these — they live on your device, not on the site.
+    </div>
+
     <div style="font-size:12px;color:rgba(255,255,255,0.55);font-family:Arial,sans-serif;margin-bottom:12px;">
       Try: <em>rapture</em> &nbsp;·&nbsp; <em>calendar</em> &nbsp;·&nbsp; <em>Israel</em> &nbsp;·&nbsp; <em>Gog-Magog</em> &nbsp;·&nbsp; <em>watchfulness</em> &nbsp;·&nbsp; <em>obedience</em>
     </div>
     <div class="ai-input-row">
-      <input type="text" id="sr-query" placeholder="Type a topic or word to find in your notes..." style="flex:1;padding:8px 12px;border-radius:4px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:white;font-size:14px;font-family:Arial,sans-serif;" onkeydown="if(event.key==='Enter'){searchMyNotes();}">
+      <input type="text" id="sr-query" placeholder="Type a topic or word to find..." style="flex:1;padding:8px 12px;border-radius:4px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:white;font-size:14px;font-family:Arial,sans-serif;" onkeydown="if(event.key==='Enter'){searchMyNotes();}">
       <button class="ai-btn" id="sr-btn" onclick="searchMyNotes()">
         <span id="sr-btn-text">🔍 Search</span>
       </button>
     </div>
     <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
       <button onclick="showNoteSummary()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:Arial,sans-serif;">📊 Show overall themes</button>
-      <button onclick="showAllTopics()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:Arial,sans-serif;">📋 List all my notes</button>
+      <button onclick="showAllTopics()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.4);border-radius:4px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:Arial,sans-serif;">📋 List all notes</button>
       <button onclick="document.getElementById('sr-query').value='';document.getElementById('sr-results').style.display='none';" style="background:transparent;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:Arial,sans-serif;">Clear</button>
     </div>
   </div>
@@ -144,13 +158,23 @@ async function askAboutMyNotes() {
 }
 
 // ============================================================
-// LOCAL-ONLY SEARCH & REFLECT TOOL (no API keys, no internet)
+// LOCAL-ONLY SEARCH & REFLECT TOOL (no API keys, no internet
+// beyond fetching Chris's published notes file from GitHub).
 // Rebuilt 2026-04-23 to replace the Gemini-based reflection tool.
-// Reads only what the user has written across their notes, then
-// searches/summarizes/reports entirely inside the browser.
 // ============================================================
 
-// Friendly labels for every note key we collect from localStorage.
+// Mode state: 'mine' = this browser's localStorage notes
+//             'chris' = Chris's published notes from my-notes.json
+let srMode = 'mine';
+
+// Cache for the remote my-notes.json so we don't hammer the network
+let srChrisNotesCache = null;
+
+// URL of the published notes file (public GitHub raw URL)
+const SR_CHRIS_NOTES_URL =
+  'https://raw.githubusercontent.com/acshotsprings/CampbellBibleStudy/main/my-notes.json';
+
+// Friendly labels for every note key we collect.
 // Extend this list whenever new notes boxes are added to the site.
 const SR_NOTE_LABELS = {
   'n-intro': 'Introduction notes',
@@ -173,12 +197,22 @@ const SR_NOTE_LABELS = {
   'n-t2m2': 'Theme 2, Module 2 — Enoch',
   'n-t2m3': 'Theme 2, Module 3 — Jubilees',
   'n-t2m4': 'Theme 2, Module 4 — Feast of Tabernacles',
-  'n-journal-new': 'Journal entries',
+  'n-journal-new': 'Journal — new entries',
+  'journal-archive': 'Journal — archived entries',
   'n-dd-willow': 'Deep Dive — Willow',
+  'n-dd-willow__quill': 'Deep Dive — Willow (Quill)',
   'n-dd-shabua': 'Deep Dive — Shabua',
   'n-dd-gematria': 'Deep Dive — Gematria',
+  'n-dd-calendars': 'Deep Dive — Calendars',
+  'n-dd-tyresidon': 'Deep Dive — Tyre & Sidon',
   'n-sermons': 'Sermon log notes',
-  'n-hearing': 'Hearing God\u2019s Voice notes',
+  'n-sermons-log1': 'Sermon log — entries 1-9',
+  'n-sermons-log2': 'Sermon log — entries 10-16',
+  'n-hearing': "Hearing God\u2019s Voice notes",
+  'n-lib-authors': 'Library — authors',
+  'n-lib-rosenberg': 'Library — Rosenberg',
+  'n-cl-general': 'Checklist — general notes',
+  'listening-entries': 'Listening notes',
   'c-prophecy': 'Conviction on prophecy',
   'c-israel': 'Conviction on Israel',
   'c-rapture': 'Conviction on the Rapture',
@@ -189,6 +223,13 @@ const SR_NOTE_LABELS = {
   'c-snapshots': 'Dated conviction snapshots'
 };
 
+// Keys we should NOT show in search results even if present — these are
+// machine-only state (timers, flags, metadata), not actual written content.
+const SR_SKIP_KEYS = new Set([
+  'visitor-name', 'is-owner', 'guest-name',
+  'sandbox-note-a'  // test field
+]);
+
 // Strip HTML tags so Quill-stored HTML is shown as plain readable text.
 function srStripHtml(s) {
   if (!s) return '';
@@ -197,29 +238,105 @@ function srStripHtml(s) {
   return (tmp.textContent || tmp.innerText || '').trim();
 }
 
-// Collect every note the user has written, as an array of {key, label, text}.
-// Pulls from both the plain textarea keys (cbsg-c-...) and any Quill keys (cbsg-n-...).
-function srCollectAllNotes() {
+// Should we include a given bare key in search results? We skip short
+// machine-only fields (timers, completion flags, reading-list flags, etc.)
+function srIsUsefulKey(bareKey) {
+  if (SR_SKIP_KEYS.has(bareKey)) return false;
+  if (bareKey.startsWith('time-')) return false;       // session timers
+  if (bareKey.startsWith('complete-')) return false;   // completion flags
+  if (bareKey.startsWith('laststamp-')) return false;  // quill stamp memory
+  if (bareKey.startsWith('rl-')) return false;         // reading-list flags
+  if (bareKey.startsWith('q-')) return false;          // question answers (usually single char)
+  if (/^(n-|c-|journal-archive$|listening-entries$)/.test(bareKey)) return true;
+  return false;
+}
+
+// Collect notes for the CURRENT mode. Returns array of {key, label, text}.
+async function srCollectNotes() {
+  if (srMode === 'chris') {
+    return srCollectChrisNotes();
+  }
+  return srCollectLocalNotes();
+}
+
+// LOCAL MODE: Read user's own notes from localStorage
+function srCollectLocalNotes() {
   const all = [];
-  // Known labeled keys
+  // Labeled keys first (so we pick up friendly names)
   for (const [key, label] of Object.entries(SR_NOTE_LABELS)) {
+    if (!srIsUsefulKey(key)) continue;
     const raw = localStorage.getItem('cbsg-' + key);
     const txt = srStripHtml(raw);
-    if (txt) all.push({ key, label, text: txt });
+    if (txt && txt.length >= 10) all.push({ key, label, text: txt });
   }
-  // Also scan for ANY cbsg- key not in the labeled list (future-proof)
+  // Also scan for any cbsg- key not in the labeled list (future-proof)
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
     if (!k || !k.startsWith('cbsg-')) continue;
     const bareKey = k.slice(5);
-    // Skip if we already have it, and skip non-note keys (tokens, timers, etc.)
-    if (SR_NOTE_LABELS[bareKey]) continue;
-    if (!bareKey.startsWith('n-') && !bareKey.startsWith('c-')) continue;
+    if (SR_NOTE_LABELS[bareKey]) continue;  // already collected
+    if (!srIsUsefulKey(bareKey)) continue;
     const raw = localStorage.getItem(k);
     const txt = srStripHtml(raw);
-    if (txt) all.push({ key: bareKey, label: bareKey, text: txt });
+    if (txt && txt.length >= 10) all.push({ key: bareKey, label: bareKey, text: txt });
   }
   return all;
+}
+
+// PUBLISHED MODE: Fetch and parse Chris's my-notes.json from GitHub.
+// Cached after first successful load per page view.
+async function srCollectChrisNotes() {
+  if (srChrisNotesCache) return srChrisNotesCache;
+  try {
+    const res = await fetch(SR_CHRIS_NOTES_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Could not load published notes (' + res.status + ').');
+    const data = await res.json();
+    const notes = (data && data.notes) || {};
+    const all = [];
+    for (const [bareKey, value] of Object.entries(notes)) {
+      if (!srIsUsefulKey(bareKey)) continue;
+      const txt = srStripHtml(value);
+      if (txt && txt.length >= 10) {
+        all.push({
+          key: bareKey,
+          label: SR_NOTE_LABELS[bareKey] || bareKey,
+          text: txt
+        });
+      }
+    }
+    srChrisNotesCache = all;
+    return all;
+  } catch (e) {
+    console.warn('Failed to load Chris\u2019s published notes:', e);
+    return { __error: e.message || String(e) };
+  }
+}
+
+// Switch between 'mine' and 'chris' modes. Updates UI and clears results.
+function setSearchMode(mode) {
+  if (mode !== 'mine' && mode !== 'chris') return;
+  srMode = mode;
+
+  const btnMine  = document.getElementById('sr-mode-mine');
+  const btnChris = document.getElementById('sr-mode-chris');
+  const desc     = document.getElementById('sr-mode-desc');
+  const query    = document.getElementById('sr-query');
+  const results  = document.getElementById('sr-results');
+
+  if (mode === 'mine') {
+    if (btnMine)  { btnMine.style.background = '#FFD700'; btnMine.style.color = '#1F3864'; }
+    if (btnChris) { btnChris.style.background = 'transparent'; btnChris.style.color = 'rgba(255,255,255,0.7)'; }
+    if (desc) desc.textContent = "Searching notes you've written in this browser. Only you can see these — they live on your device, not on the site.";
+    if (query) query.placeholder = 'Type a topic or word to find in your notes...';
+  } else {
+    if (btnMine)  { btnMine.style.background = 'transparent'; btnMine.style.color = 'rgba(255,255,255,0.7)'; }
+    if (btnChris) { btnChris.style.background = '#FFD700'; btnChris.style.color = '#1F3864'; }
+    if (desc) desc.textContent = "Searching Chris's published notes from my-notes.json on GitHub. Everyone who visits sees the same content.";
+    if (query) query.placeholder = "Type a topic or word to find in Chris's notes...";
+  }
+
+  // Clear any stale results when switching modes
+  if (results) { results.style.display = 'none'; results.innerHTML = ''; }
 }
 
 // Highlight a query inside a body of text (returns HTML-safe string with <mark>)
@@ -234,8 +351,25 @@ function srHighlight(text, query) {
     m => `<mark style="background:#FFD700;color:#1F3864;padding:1px 3px;border-radius:2px;">${m}</mark>`);
 }
 
-// Main search function — finds all sentences/passages mentioning the query word
-function searchMyNotes() {
+// Show a transient loading message while async work runs
+function srShowLoading(message) {
+  const resultsEl = document.getElementById('sr-results');
+  resultsEl.innerHTML = `<p style="margin:0;color:#8A5A00;"><em>${message}</em></p>`;
+  resultsEl.style.display = 'block';
+}
+
+function srShowEmptyMessage() {
+  const resultsEl = document.getElementById('sr-results');
+  if (srMode === 'mine') {
+    resultsEl.innerHTML = '<p style="margin:0;color:#8A5A00;"><em>No notes found yet in this browser. Once you write in any of the note or conviction fields on the site, they will show up here. Or try the "Chris\u2019s Published Notes" toggle above to explore published study notes.</em></p>';
+  } else {
+    resultsEl.innerHTML = '<p style="margin:0;color:#8A5A00;"><em>Could not load Chris\u2019s published notes. Check your internet connection and try again.</em></p>';
+  }
+  resultsEl.style.display = 'block';
+}
+
+// Main search function — finds all passages mentioning the query
+async function searchMyNotes() {
   const query = document.getElementById('sr-query').value.trim();
   const resultsEl = document.getElementById('sr-results');
   if (!query) {
@@ -244,45 +378,38 @@ function searchMyNotes() {
     return;
   }
 
-  const notes = srCollectAllNotes();
-  if (notes.length === 0) {
-    resultsEl.innerHTML = '<p style="margin:0;color:#8A5A00;"><em>No notes found yet. Once you write in any of the note or conviction fields on the site, they will show up here.</em></p>';
-    resultsEl.style.display = 'block';
-    return;
-  }
+  srShowLoading(srMode === 'chris' ? 'Loading Chris\u2019s published notes...' : 'Searching...');
+  const notes = await srCollectNotes();
+  if (!Array.isArray(notes)) { srShowEmptyMessage(); return; }
+  if (notes.length === 0) { srShowEmptyMessage(); return; }
 
-  // For each note, find passages that match the query. A "passage" is a sentence
-  // or paragraph containing the match, so context is preserved.
   const q = query.toLowerCase();
   const hits = [];
   for (const note of notes) {
     const text = note.text;
     if (!text.toLowerCase().includes(q)) continue;
-
-    // Split into sentences/lines. Keep any chunk that mentions the query.
     const chunks = text.split(/(?<=[.!?])\s+|\n+/).map(s => s.trim()).filter(Boolean);
     const matchingChunks = chunks.filter(c => c.toLowerCase().includes(q));
-
     if (matchingChunks.length > 0) {
       hits.push({
-        label: note.label,
-        key: note.key,
+        label: note.label, key: note.key,
         count: matchingChunks.length,
-        passages: matchingChunks.slice(0, 5)  // cap at 5 per location
+        passages: matchingChunks.slice(0, 5)
       });
     }
   }
 
+  const sourceLabel = srMode === 'mine' ? 'your notes' : 'Chris\u2019s published notes';
+
   if (hits.length === 0) {
-    resultsEl.innerHTML = `<p style="margin:0 0 8px 0;color:#8A5A00;font-weight:bold;">No matches for "${query}" in your notes.</p>
-      <p style="margin:0;color:#555;font-size:13px;">Try a broader or shorter word. Your notes contain ${notes.length} written section(s).</p>`;
+    resultsEl.innerHTML = `<p style="margin:0 0 8px 0;color:#8A5A00;font-weight:bold;">No matches for "${query}" in ${sourceLabel}.</p>
+      <p style="margin:0;color:#555;font-size:13px;">Try a broader or shorter word. The current source contains ${notes.length} note${notes.length===1?'':'s'}.</p>`;
     resultsEl.style.display = 'block';
     return;
   }
 
-  // Render results
   const totalMatches = hits.reduce((a, h) => a + h.count, 0);
-  let html = `<p style="margin:0 0 14px 0;color:#1F3864;font-weight:bold;font-size:15px;">Found ${totalMatches} mention${totalMatches===1?'':'s'} of "${query}" across ${hits.length} note${hits.length===1?'':'s'}:</p>`;
+  let html = `<p style="margin:0 0 14px 0;color:#1F3864;font-weight:bold;font-size:15px;">Found ${totalMatches} mention${totalMatches===1?'':'s'} of "${query}" across ${hits.length} note${hits.length===1?'':'s'} in ${sourceLabel}:</p>`;
 
   for (const hit of hits) {
     html += `<div style="margin-bottom:16px;padding:10px 14px;background:rgba(255,255,255,0.5);border-radius:4px;border-left:3px solid #1F3864;">`;
@@ -295,69 +422,63 @@ function searchMyNotes() {
     }
     html += `</div>`;
   }
-
   resultsEl.innerHTML = html;
   resultsEl.style.display = 'block';
 }
 
-// Show an overall summary — which topics you've written most about
-function showNoteSummary() {
+// Show overall themes (word count ranking, plus keyword frequencies)
+async function showNoteSummary() {
   const resultsEl = document.getElementById('sr-results');
-  const notes = srCollectAllNotes();
-  if (notes.length === 0) {
-    resultsEl.innerHTML = '<p style="margin:0;color:#8A5A00;"><em>No notes found yet. Once you write in any of the note or conviction fields on the site, they will show up here.</em></p>';
-    resultsEl.style.display = 'block';
-    return;
-  }
+  srShowLoading(srMode === 'chris' ? 'Loading Chris\u2019s published notes...' : 'Analyzing...');
 
-  // Topic strength = total word count per note
+  const notes = await srCollectNotes();
+  if (!Array.isArray(notes)) { srShowEmptyMessage(); return; }
+  if (notes.length === 0) { srShowEmptyMessage(); return; }
+
   const byVolume = notes.map(n => ({
     label: n.label,
-    words: n.text.split(/\s+/).filter(Boolean).length,
-    chars: n.text.length
+    words: n.text.split(/\s+/).filter(Boolean).length
   })).sort((a, b) => b.words - a.words);
 
-  // Recurring theme keywords — look for prophecy/theology words that appear often
   const themeWords = [
     'rapture','tribulation','antichrist','israel','jerusalem','temple',
     'calendar','prophecy','prophetic','messiah','christ','jesus',
     'gog','magog','russia','iran','turkey','china',
-    'rapture','millennium','second coming','abomination','desolation',
+    'millennium','second coming','abomination','desolation',
     'watch','watchful','obedience','obedient','grace','mercy','wrath',
     'covenant','sacrifice','daniel','revelation','ezekiel','matthew',
     'seven','seal','trumpet','bowl','witness','witnesses','hazelee','willow',
-    'faith','faithful','pray','prayer','spirit','holy','god','lord'
+    'faith','faithful','pray','prayer','spirit','holy','lord'
   ];
   const allText = notes.map(n => n.text.toLowerCase()).join(' ');
   const themeCounts = themeWords.map(w => {
-    const re = new RegExp('\\b' + w + '\\b', 'gi');
+    const re = new RegExp('\\b' + w.replace(/\s+/g, '\\s+') + '\\b', 'gi');
     return { word: w, count: (allText.match(re) || []).length };
   }).filter(t => t.count > 0).sort((a, b) => b.count - a.count);
 
-  const totalWords = notes.reduce((sum, n) => sum + n.text.split(/\s+/).filter(Boolean).length, 0);
+  const totalWords = byVolume.reduce((s, v) => s + v.words, 0);
+  const sourceLabel = srMode === 'mine' ? 'your notes' : 'Chris\u2019s published notes';
 
-  let html = `<p style="margin:0 0 14px 0;color:#1F3864;font-weight:bold;font-size:15px;">Overall summary of your written notes</p>`;
-  html += `<p style="margin:0 0 14px 0;color:#444;font-size:14px;">You have written <strong>${totalWords.toLocaleString()} words</strong> across <strong>${notes.length} different notes</strong> on the site.</p>`;
+  let html = `<p style="margin:0 0 14px 0;color:#1F3864;font-weight:bold;font-size:15px;">Overall summary of ${sourceLabel}</p>`;
+  html += `<p style="margin:0 0 14px 0;color:#444;font-size:14px;">${totalWords.toLocaleString()} words total across ${notes.length} different notes.</p>`;
 
-  // Volume breakdown
   html += `<div style="margin-bottom:18px;padding:12px 14px;background:rgba(255,255,255,0.5);border-radius:4px;border-left:3px solid #1F3864;">`;
-  html += `<div style="font-size:12px;color:#1F3864;font-weight:bold;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px;">Where you have written the most</div>`;
+  html += `<div style="font-size:12px;color:#1F3864;font-weight:bold;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px;">Where the most has been written</div>`;
   for (const v of byVolume.slice(0, 10)) {
     if (v.words === 0) continue;
     html += `<p style="margin:4px 0;font-size:13px;color:#222;"><strong>${v.label}</strong> — ${v.words.toLocaleString()} word${v.words===1?'':'s'}</p>`;
   }
   html += `</div>`;
 
-  // Recurring theme keywords
   if (themeCounts.length > 0) {
     html += `<div style="margin-bottom:8px;padding:12px 14px;background:rgba(255,255,255,0.5);border-radius:4px;border-left:3px solid #1F3864;">`;
-    html += `<div style="font-size:12px;color:#1F3864;font-weight:bold;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px;">Themes you return to most often</div>`;
+    html += `<div style="font-size:12px;color:#1F3864;font-weight:bold;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px;">Themes that return most often</div>`;
     html += `<p style="margin:4px 0;font-size:13px;color:#222;line-height:1.8;">`;
     for (const t of themeCounts.slice(0, 15)) {
       html += `<span style="display:inline-block;background:#FFD700;color:#1F3864;padding:2px 9px;border-radius:10px;margin:2px 4px 2px 0;font-size:12px;"><strong>${t.word}</strong> &middot; ${t.count}</span>`;
     }
     html += `</p>`;
-    html += `<p style="margin:10px 0 0 0;font-size:11px;color:#888;font-style:italic;">Click a theme in the search box to see every place you've written about it.</p>`;
+    html += `<p style="margin:10px 0 0 0;font-size:11px;color:#888;font-style:italic;">Type any theme in the search box above to see every passage that mentions it.</p>`;
     html += `</div>`;
   }
 
@@ -366,16 +487,16 @@ function showNoteSummary() {
 }
 
 // Show a plain list of every note with a snippet preview
-function showAllTopics() {
+async function showAllTopics() {
   const resultsEl = document.getElementById('sr-results');
-  const notes = srCollectAllNotes();
-  if (notes.length === 0) {
-    resultsEl.innerHTML = '<p style="margin:0;color:#8A5A00;"><em>No notes found yet. Once you write in any of the note or conviction fields on the site, they will show up here.</em></p>';
-    resultsEl.style.display = 'block';
-    return;
-  }
+  srShowLoading(srMode === 'chris' ? 'Loading Chris\u2019s published notes...' : 'Loading...');
 
-  let html = `<p style="margin:0 0 14px 0;color:#1F3864;font-weight:bold;font-size:15px;">All ${notes.length} of your written notes</p>`;
+  const notes = await srCollectNotes();
+  if (!Array.isArray(notes)) { srShowEmptyMessage(); return; }
+  if (notes.length === 0) { srShowEmptyMessage(); return; }
+
+  const sourceLabel = srMode === 'mine' ? 'your notes' : 'Chris\u2019s published notes';
+  let html = `<p style="margin:0 0 14px 0;color:#1F3864;font-weight:bold;font-size:15px;">All ${notes.length} note${notes.length===1?'':'s'} in ${sourceLabel}</p>`;
   for (const n of notes) {
     const preview = n.text.length > 200 ? n.text.slice(0, 200).trim() + '...' : n.text;
     const words = n.text.split(/\s+/).filter(Boolean).length;
@@ -390,8 +511,10 @@ function showAllTopics() {
 
 document.addEventListener('DOMContentLoaded', () => {
   // Clean up any old Gemini API key still sitting in localStorage —
-  // it's deprecated and shouldn't linger. (Your notes and convictions are untouched.)
+  // it's deprecated and shouldn't linger. (Notes and convictions untouched.)
   try { localStorage.removeItem('cbsg-gemini-key'); } catch(e) {}
+  // Initialize mode UI to the default ('mine')
+  setSearchMode('mine');
 });
 
 function insertConvictionTimestamp() {
