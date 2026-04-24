@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Growing Convictions — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/analytics.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <button onclick="insertConvictionTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;">New Entry</button>
+    <span class="bar-originated">Originated: March 30, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version">Version: April 2, 2026</span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <span class="page-tag">My Study</span>
+  <h1 class="page-title">My Growing Convictions</h1>
+  <p class="body">A living summary of where you've landed on key theological questions — updated as your study deepens. These are not final answers. They are honest snapshots of conviction at a point in time. Date each update.</p>
+
+  <!-- ── AI REFLECTION TOOL ── -->
+  <div style="background:linear-gradient(135deg,#1F3864,#2E4F8A);border-radius:8px;padding:20px;margin:16px 0 24px;">
+    <div style="font-size:13px;font-weight:bold;color:#FFD700;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">
+      ✨ Reflect on My Own Words
+    </div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:14px;font-family:Arial,sans-serif;">
+      This tool reads <strong>only what you have written</strong> across all your notes, journal entries, study questions, and conviction fields — nothing from the study guide itself. Ask it anything about your own convictions.
+    </p>
+    <div style="font-size:12px;color:rgba(255,255,255,0.55);font-family:Arial,sans-serif;margin-bottom:12px;">
+      Example questions: "What do I actually believe about the rapture?" &nbsp;·&nbsp; "What themes keep showing up in my notes?" &nbsp;·&nbsp; "Where am I still uncertain?" &nbsp;·&nbsp; "Summarize my convictions on Israel"
+    </div>
+    <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center;">
+      <input id="gemini-key" type="password"
+        placeholder="Paste Gemini API key here (saved locally, never shared)"
+        style="flex:1;padding:6px 10px;border-radius:4px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:white;font-size:12px;font-family:Arial,sans-serif;">
+      <button onclick="saveGeminiKey()" style="background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:6px 12px;font-size:11px;font-weight:bold;cursor:pointer;white-space:nowrap;">Save Key</button>
+    </div>
+    <div id="key-status" style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:Arial,sans-serif;display:none;"></div>
+    <div class="ai-input-row">
+      <textarea class="ai-prompt-input" id="ai-prompt" placeholder="Ask something about your own convictions..." rows="2"></textarea>
+      <button class="ai-btn" id="ai-btn" onclick="askAboutMyNotes()">
+        <span id="ai-btn-text">✨ Ask</span>
+      </button>
+    </div>
+    <div style="margin-top:8px;">
+      <button onclick="listAvailableModels()" style="background:transparent;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:4px 10px;font-size:10px;cursor:pointer;font-family:Arial,sans-serif;">🔍 Check available models</button>
+    </div>
+    <div id="model-list" style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:6px;font-family:monospace;display:none;max-height:120px;overflow-y:auto;background:rgba(0,0,0,0.2);padding:8px;border-radius:4px;"></div>
+  </div>
+
+  <div class="ai-response-box" id="ai-response">
+    <div class="ai-label">Based on your own words across all your notes:</div>
+    <div id="ai-response-text"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── CONVICTION FIELDS ── -->
+  <div class="info-box">
+    <div class="title">How to use this page</div>
+    <div class="line">After completing a module, write a brief summary of what you now believe and why. Keep it in your own words. Date each entry. Come back and revise as your thinking develops. The AI tool above will draw from everything you write here and across all modules.</div>
+  </div>
+
+  <h2 class="section-title">Theme 1 — End Times</h2>
+
+  <div class="notes-box">
+    <div class="label">📌 On prophecy &amp; how to interpret it:</div>
+    <div class="quill-editor" id="c-prophecy" data-placeholder="e.g. I lean literal on most prophecy because... but I hold this humbly because..."></div>
+  </div>
+
+  <div class="notes-box">
+    <div class="label">📌 On Israel &amp; the Church in prophecy:</div>
+    <div class="quill-editor" id="c-israel" data-placeholder="e.g. I believe God's covenant with Israel is still active because..."></div>
+  </div>
+
+  <div class="notes-box">
+    <div class="label">📌 On the Rapture:</div>
+    <div class="quill-editor" id="c-rapture" data-placeholder="e.g. My current position is pre-trib / mid-trib / pre-wrath / post-trib because..."></div>
+  </div>
+
+  <div class="notes-box">
+    <div class="label">📌 On the Millennium:</div>
+    <div class="quill-editor" id="c-millennium" data-placeholder="e.g. I lean premillennial because..."></div>
+  </div>
+
+  <h2 class="section-title">Theme 2 — Biblical Calendar</h2>
+
+  <div class="notes-box">
+    <div class="label">📌 On God's original calendar and what it means for worship:</div>
+    <div class="quill-editor" id="c-calendar" data-placeholder="e.g. What strikes me most about the Essene solar calendar is..."></div>
+  </div>
+
+  <h2 class="section-title">Christian Living</h2>
+
+  <div class="notes-box">
+    <div class="label">📌 On grace, holiness, and what it means to be ready:</div>
+    <div class="quill-editor" id="c-grace" data-placeholder="What do I actually believe about how grace and holiness work together in my life?"></div>
+  </div>
+
+  <div class="notes-box">
+    <div class="label">📌 How this study is changing how I live day to day:</div>
+    <div class="quill-editor" id="c-live" data-placeholder="Concrete ways my thinking and living are shifting..."></div>
+  </div>
+
+  <h2 class="section-title">Conviction Snapshots Over Time</h2>
+  <p class="body">Use this space to date-stamp periodic summaries of where you are overall. Looking back at these over months and years can be profoundly encouraging.</p>
+
+  <div class="notes-box">
+    <div class="label">📖 Dated conviction snapshots:</div>
+    <div class="quill-editor" id="c-snapshots" data-placeholder="April 2026 — Starting out, I believe..." style="min-height:200px;"></div>
+  </div>
+
+</div>
+</div>
+
+<!-- PAGE NOTE IDS -->
+<script>
+window.PAGE_NOTE_IDS = [
+  'c-prophecy','c-israel','c-rapture','c-millennium',
+  'c-calendar','c-grace','c-live','c-snapshots'
+];
+</script>
+
+<!-- SCRIPTS -->
+<script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+<script>
+// ── AI REFLECTION TOOL ────────────────────────────────────
+
+async function askAboutMyNotes() {
+  const prompt = document.getElementById('ai-prompt').value.trim();
+  if (!prompt) {
+    alert('Please type a question first.');
+    return;
+  }
+
+  const btn  = document.getElementById('ai-btn');
+  const text = document.getElementById('ai-btn-text');
+  const box  = document.getElementById('ai-response');
+  const out  = document.getElementById('ai-response-text');
+
+  btn.disabled = true;
+  text.textContent = '⏳ Thinking...';
+  box.classList.remove('visible');
+  out.textContent = '';
+
+  try {
+    // 1. Fetch my-notes.json from GitHub (raw)
+    const notesRes = await fetch(
+      'https://raw.githubusercontent.com/acshotsprings/CampbellBibleStudy/main/my-notes.json',
+      { cache: 'no-store' }
+    );
+
+    let notesContext = '';
+
+    if (notesRes.ok) {
+      const notesData = await notesRes.json();
+      const labels    = notesData.noteLabels || {};
+      const notes     = notesData.notes || {};
+
+      // Build a clean, readable summary of the user's own words only
+      const lines = [];
+      for (const [key, value] of Object.entries(notes)) {
+        if (value && value.trim()) {
+          const label = labels[key] || key;
+          lines.push(`[${label}]\n${value.trim()}`);
+        }
+      }
+
+      if (lines.length === 0) {
+        notesContext = '(No personal notes have been saved yet. Please write in some note fields and save to GitHub first.)';
+      } else {
+        notesContext = lines.join('\n\n---\n\n');
+      }
+    } else {
+      // Fall back to reading from localStorage directly
+      const lines = [];
+      const labels = {
+        'n-intro': 'Introduction notes',
+        'n-m1': 'Daniel\'s 70 Weeks notes', 'n-m2': 'Israel in Prophecy notes',
+        'n-m3': 'Day of the Lord notes', 'n-m4': 'Watchman Principle notes',
+        'n-m5': 'New Covenant notes', 'n-m6': 'Rapture notes',
+        'n-m7': 'Antichrist notes', 'n-m8': 'Rebuilt Temple notes',
+        'n-m9': 'Gog-Magog notes', 'n-m10': 'Signs of the Times notes',
+        'n-m11': 'False Prophets notes', 'n-m12': 'Millennium notes',
+        'n-m13': 'Second Coming notes', 'n-m14': 'Matthew 24 vs Revelation notes',
+        'n-m15': 'Armageddon notes', 'n-t2m1': 'Calendar History notes',
+        'n-journal-new': 'Journal entries',
+        'c-prophecy': 'Conviction on prophecy', 'c-israel': 'Conviction on Israel',
+        'c-rapture': 'Conviction on the Rapture', 'c-millennium': 'Conviction on the Millennium',
+        'c-calendar': 'Conviction on the calendar', 'c-grace': 'Conviction on grace & holiness',
+        'c-live': 'Conviction on how study changes my life', 'c-snapshots': 'Dated conviction snapshots'
+      };
+      for (const [key, label] of Object.entries(labels)) {
+        const val = localStorage.getItem('cbsg-' + key);
+        if (val && val.trim()) lines.push(`[${label}]\n${val.trim()}`);
+      }
+      notesContext = lines.length > 0 ? lines.join('\n\n---\n\n')
+        : '(No notes found. Please write in some note fields first, then either save to GitHub or ask again.)';
+    }
+
+    // 2. Get Gemini API key
+    const geminiKey = document.getElementById('gemini-key').value.trim()
+      || localStorage.getItem('cbsg-gemini-key');
+    if (!geminiKey) {
+      out.textContent = 'Please paste your Gemini API key in the field above.';
+      box.classList.add('visible');
+      btn.disabled = false;
+      text.textContent = '✨ Ask';
+      return;
+    }
+    localStorage.setItem('cbsg-gemini-key', geminiKey);
+
+    // 3. Call Gemini API — context is ONLY the user's own words
+    const systemPrompt = `You are a thoughtful spiritual reflection assistant for a personal Bible study guide called the Campbell Family Master Biblical Study Guide.
+
+Your ONLY job is to reflect back and synthesize what the user has personally written in their own study notes. You have been given the complete text of everything they have written — their module notes, journal entries, study question answers, and conviction summaries.
+
+CRITICAL RULES:
+- Draw ONLY from what the user has written. Do not introduce theological positions, quotes, or ideas that are not already present in their notes.
+- Do not quote the Bible study guide content, scripture boxes, or any material they were reading. Only their own written words.
+- Be warm, honest, and specific — reference actual phrases or themes from their notes.
+- If their notes are sparse or empty, tell them honestly and encourage them to write more before asking again.
+- Never be preachy. You are a mirror, not a teacher.
+- Keep responses focused and readable — 2 to 4 paragraphs maximum unless they ask for more detail.`;
+
+    const fullPrompt = `${systemPrompt}\n\nHere is everything I have personally written in my Bible study notes:\n\n${notesContext}\n\n---\n\nMy question: ${prompt}`;
+
+    // Model updated 2026-04-23: gemini-1.5-flash-latest was retired by Google.
+    // Using gemini-2.5-flash (current stable model per Google AI docs, April 2026).
+    const GEMINI_MODEL = 'gemini-2.5-flash';
+    const apiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${geminiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: fullPrompt }] }],
+          generationConfig: { maxOutputTokens: 1000, temperature: 0.7 }
+        })
+      }
+    );
+
+    const apiData = await apiRes.json();
+    const responseText = apiData.candidates?.[0]?.content?.parts?.[0]?.text
+      || apiData.error?.message
+      || 'Something went wrong. Please try again.';
+
+    // Render response
+    out.innerHTML = responseText.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+    if (!out.innerHTML.startsWith('<p>')) out.innerHTML = '<p>' + out.innerHTML + '</p>';
+    box.classList.add('visible');
+
+  } catch(e) {
+    out.textContent = 'Error: ' + e.message;
+    box.classList.add('visible');
+  } finally {
+    btn.disabled = false;
+    text.textContent = '✨ Ask';
+  }
+}
+
+// Allow Enter key in the prompt textarea (Shift+Enter for new line)
+async function listAvailableModels() {
+  const key = document.getElementById('gemini-key').value.trim()
+    || localStorage.getItem('cbsg-gemini-key');
+  const listEl = document.getElementById('model-list');
+  if (!key) { listEl.textContent = 'Save your API key first.'; listEl.style.display = 'block'; return; }
+  listEl.textContent = 'Fetching...';
+  listEl.style.display = 'block';
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models?key=${key}`
+    );
+    const data = await res.json();
+    if (data.models) {
+      const names = data.models
+        .filter(m => m.supportedGenerationMethods?.includes('generateContent'))
+        .map(m => m.name.replace('models/', ''));
+      listEl.textContent = 'Available: ' + names.join(', ');
+    } else {
+      listEl.textContent = JSON.stringify(data);
+    }
+  } catch(e) {
+    listEl.textContent = 'Error: ' + e.message;
+  }
+}
+
+function saveGeminiKey() {
+  const keyEl = document.getElementById('gemini-key');
+  const statusEl = document.getElementById('key-status');
+  const key = keyEl ? keyEl.value.trim() : '';
+  if (!key) {
+    if (statusEl) { statusEl.textContent = '⚠️ No key entered.'; statusEl.style.display = 'block'; statusEl.style.color = '#FFD700'; }
+    return;
+  }
+  localStorage.setItem('cbsg-gemini-key', key);
+  if (statusEl) { statusEl.textContent = '✅ Key saved — ready to use.'; statusEl.style.display = 'block'; statusEl.style.color = '#90EE90'; }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Restore saved Gemini key
+  const savedKey = localStorage.getItem('cbsg-gemini-key');
+  const keyEl = document.getElementById('gemini-key');
+  const statusEl = document.getElementById('key-status');
+  if (savedKey && keyEl) {
+    keyEl.value = savedKey;
+    if (statusEl) { statusEl.textContent = '✅ Key loaded from saved storage.'; statusEl.style.display = 'block'; statusEl.style.color = '#90EE90'; }
+  }
+
+  // Auto-save key to localStorage as user types
+  if (keyEl) {
+    keyEl.addEventListener('input', () => {
+      const val = keyEl.value.trim();
+      if (val) localStorage.setItem('cbsg-gemini-key', val);
+    });
+    // Also save on Enter key in key field
+    keyEl.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); saveGeminiKey(); }
+    });
+  }
+
+  // Wire Enter key on prompt field
+  const input = document.getElementById('ai-prompt');
+  if (input) {
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); askAboutMyNotes(); }
+    });
+  }
+});
+
+function insertConvictionTimestamp() {
+  // Stamps into the snapshots field — the natural home for dated conviction entries
+  const el = document.getElementById('c-snapshots');
+  if (!el) return;
+  const now   = new Date();
+  const date  = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const time  = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  const divider = '─'.repeat(40);
+  el.value += `\n${divider}\n${date} at ${time}\n${divider}\n`;
+  el.focus();
+  el.scrollTop = el.scrollHeight;
+  // Scroll the page down to the snapshots field so user sees it
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+
+</body>
+</html>
