@@ -81,10 +81,6 @@ const COMPLETION_KEYS = {
   'theme2/module2':  'complete-t2m2',
   'theme2/module3':  'complete-t2m3',
   'theme2/module4':  'complete-t2m4',
-  'theme2/module5':  'complete-t2m5',
-  'theme3/module1':  'complete-t3m1',
-  'theme3/module2':  'complete-t3m2',
-  'theme3/module3':  'complete-t3m3',
 };
 
 function isAdminUnlocked() { return sessionStorage.getItem('cbsg-admin') === 'true'; }
@@ -612,7 +608,7 @@ function toggleGuestPanel() {
 }
 
 function getCompleteKey() {
-  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\//, '').replace(/^\//, '').replace(/\.html$/, '');
+  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\//, '').replace(/\.html$/, '');
   return COMPLETION_KEYS[path] || null;
 }
 
@@ -652,7 +648,7 @@ function injectCompleteButton() {
 }
 
 function getPageKey() {
-  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\/?/, '').replace(/^\//, '').replace(/\.html$/, '');
+  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\/?/, '').replace(/\.html$/, '');
   return 'timer-' + (path || 'index');
 }
 
