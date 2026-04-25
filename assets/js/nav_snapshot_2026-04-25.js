@@ -114,7 +114,7 @@ const NAV_STRUCTURE = [
     items: [
       { label: 'Theme 2 Overview',               href: 'theme2/index.html' },
       { label: '↳ Module 1 — Calendar History',  href: 'theme2/module1.html', sub: true, completable: true, completeKey: 'complete-t2m1' },
-      { label: '↳ Module 2 — Israel in Prophecy', href: 'theme2/module2.html', sub: true, completable: true, completeKey: 'complete-t2m2' },
+      { label: '↳ Module 2 — Calendar Timeline', href: 'theme2/module2.html', sub: true, completable: true, completeKey: 'complete-t2m2' },
       { label: '↳ Module 3 — Book of Jubilees',  href: 'theme2/module3.html', sub: true, completable: true, completeKey: 'complete-t2m3' },
       { label: '↳ Module 4 — Feast of Tabernacles',  href: 'theme2/module4.html', sub: true, completable: true, completeKey: 'complete-t2m4' },
       { label: '↳ Module 5 — The Hebrew Calendar',  href: 'theme2/module5.html', sub: true, completable: true, completeKey: 'complete-t2m5' },
