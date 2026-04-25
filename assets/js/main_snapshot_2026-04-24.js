@@ -656,14 +656,6 @@ function getPageLabel() { return document.title.replace(' — Campbell Bible Stu
 
 let sessionStart = null, sessionSeconds = 0, timerInterval = null;
 
-// ─── IDLE PAUSE STATE (added 2026-04-24) ─────────────────────
-// Timer pauses after IDLE_MS of no activity; any mousemove/keydown/
-// click/scroll/touchstart resumes it. Activity listeners stay attached.
-const IDLE_MS = 3 * 60 * 1000; // 3 minutes
-let lastActivityAt = Date.now();
-let timerPaused = false;
-let idleCheckInterval = null;
-
 function getStoredSeconds() { return parseInt(localStorage.getItem('cbsg-' + getPageKey()) || '0', 10); }
 function addStoredSeconds(s) { const prev = getStoredSeconds(); localStorage.setItem('cbsg-' + getPageKey(), String(prev + s)); }
 
@@ -675,11 +667,7 @@ function formatTime(t) {
 }
 
 function startTimer() {
-  // Defensive: clear any lingering interval before creating a new one (stall fix)
-  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   sessionStart = Date.now(); sessionSeconds = 0;
-  timerPaused = false;
-  lastActivityAt = Date.now();
   timerInterval = setInterval(() => {
     sessionSeconds = Math.floor((Date.now() - sessionStart) / 1000);
     const total = getStoredSeconds() + sessionSeconds;
@@ -691,76 +679,14 @@ function startTimer() {
 }
 
 function stopTimer() {
-  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  if (timerInterval) clearInterval(timerInterval);
   if (sessionSeconds > 2) addStoredSeconds(sessionSeconds);
 }
 
-// ─── IDLE PAUSE / RESUME ─────────────────────────────────────
-function pauseTimerForIdle() {
-  if (timerPaused || !timerInterval) return;
-  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-  timerPaused = true;
-  // Banked seconds stay in sessionSeconds; we resume from there.
-}
-
-function resumeTimerFromIdle() {
-  if (!timerPaused) return;
-  timerPaused = false;
-  // Rebase sessionStart so elapsed = sessionSeconds already banked.
-  sessionStart = Date.now() - (sessionSeconds * 1000);
-  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-  timerInterval = setInterval(() => {
-    sessionSeconds = Math.floor((Date.now() - sessionStart) / 1000);
-    const total = getStoredSeconds() + sessionSeconds;
-    const sEl = document.getElementById('bar-session-time');
-    const tEl = document.getElementById('bar-total-time');
-    if (sEl) sEl.textContent = formatTime(sessionSeconds);
-    if (tEl) tEl.textContent = formatTime(total);
-  }, 1000);
-}
-
-function markActivity() {
-  lastActivityAt = Date.now();
-  if (timerPaused) resumeTimerFromIdle();
-}
-
-// Attach activity listeners once (document-level, passive for perf)
-['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(evt => {
-  document.addEventListener(evt, markActivity, { passive: true });
-});
-
-// Idle checker: every 10s, see if we've crossed the idle threshold
-idleCheckInterval = setInterval(() => {
-  if (document.hidden) return; // visibilitychange handles hidden tabs
-  if (timerPaused) return;
-  if (!timerInterval) return;
-  if (Date.now() - lastActivityAt >= IDLE_MS) {
-    pauseTimerForIdle();
-  }
-}, 10000);
-
 window.addEventListener('beforeunload', stopTimer);
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    // Tab hidden → stop timer, preserve banked seconds
-    stopTimer();
-  } else {
-    // Tab visible again → restart cleanly (stall fix)
-    // Reset activity timestamp so we don't immediately re-idle on return
-    lastActivityAt = Date.now();
-    timerPaused = false;
-    if (!timerInterval) {
-      sessionStart = Date.now() - (sessionSeconds * 1000);
-      timerInterval = setInterval(() => {
-        sessionSeconds = Math.floor((Date.now() - sessionStart) / 1000);
-        const total = getStoredSeconds() + sessionSeconds;
-        const sEl = document.getElementById('bar-session-time');
-        const tEl = document.getElementById('bar-total-time');
-        if (sEl) sEl.textContent = formatTime(sessionSeconds);
-        if (tEl) tEl.textContent = formatTime(total);
-      }, 1000);
-    }
-  }
+  if (document.hidden) { stopTimer(); }
+  else { sessionStart = Date.now() - (sessionSeconds * 1000); if (!timerInterval) startTimer(); }
 });
 
 function injectBarExtras() {
