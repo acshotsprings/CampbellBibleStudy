@@ -1,14 +1,14 @@
 /* ============================================================
    CAMPBELL BIBLE STUDY — ANALYTICS & NOTIFICATIONS
    File: assets/js/analytics.js
-   Updated: April 24, 2026 (v1.3 — name-key fix + diagnostic logging + test hook)
+   Updated: April 23, 2026 (v1.2 — hardened against blank/bot emails)
 
    HANDLES TWO SYSTEMS:
    1. Google Analytics 4 (GA4) page tracking
    2. EmailJS silent email notifications to Chris
 
    EMAIL TRIGGERS:
-   • Visitor lands on site (first page view this session, after 8s dwell + 1 interaction)
+   • Visitor lands on site (first page view this session)
    • Visitor saves their notes (fires when saveVisitorNotes() runs)
 
    OWNER SUPPRESSION (v1.1):
@@ -20,23 +20,12 @@
    • To disable: visit ?owner=false OR clear localStorage manually.
    • To check status anytime: open browser console and type CBSG_isOwner()
 
-   BOT / BLANK-EMAIL GUARDS (v1.2):
-   • Hit emails require the page to stay open for 8 seconds (bots leave fast).
+   BOT / BLANK-EMAIL GUARDS (NEW in v1.2):
+   • Hit emails now require the page to stay open for 8 seconds (bots leave fast).
    • Hit emails also require at least one real human interaction (mousemove,
      click, scroll, or keypress) — pure prefetchers never trigger them.
    • Note-save emails require a non-empty note context string.
    • All templateParams are sanitized so no field is blank/undefined.
-
-   V1.3 CHANGES (2026-04-24):
-   • FIXED: name-key mismatch. main.js writes visitor name to 'cbsg-guest-name'
-     but this file previously read 'cbsg-visitor-name' (never set), so every
-     email arrived as "Anonymous Visitor". Now reads cbsg-guest-name first.
-   • ADDED: diagnostic console.log at every decision point in the hit-email
-     flow (isOwner check, dwell elapsed, human interaction, EmailJS load,
-     send success/failure). All tagged [CBSG Analytics] for easy filtering.
-   • ADDED: window.CBSG_testEmail() — manual trigger from browser console to
-     test EmailJS pipeline independently of visitor-detection gates. Still
-     respects owner suppression.
    ============================================================ */
 
 (function() {
@@ -119,8 +108,6 @@
 
   // ─── SEND EMAIL ────────────────────────────────────────────
   async function sendNotificationEmail(eventType, extraInfo) {
-    console.log('[CBSG Analytics] sendNotificationEmail() called. eventType=' + eventType);
-
     // OWNER SUPPRESSION — skip all emails if this device is marked as owner
     if (isOwner()) {
       console.log(`[CBSG Analytics] Owner mode — email suppressed: ${eventType}`);
@@ -135,21 +122,12 @@
     }
 
     try {
-      console.log('[CBSG Analytics] Loading EmailJS SDK...');
       await loadEmailJS();
-      console.log('[CBSG Analytics] ✓ EmailJS SDK loaded.');
 
       // v1.2: sanitize every template field so nothing comes through as blank.
       // If a field is empty/undefined, substitute a labeled placeholder so
       // the email is at least informative instead of "nobody."
-      // v1.3 (2026-04-24): FIXED name-key mismatch.
-      // main.js writes visitor name to 'cbsg-guest-name' in the welcome modal.
-      // Previously this read 'cbsg-visitor-name' which was never set, so every
-      // email arrived as "Anonymous Visitor". Now reads cbsg-guest-name first,
-      // falls back to cbsg-visitor-name (for any legacy data), then anonymous.
-      const visitorName = (localStorage.getItem('cbsg-guest-name') || '').trim()
-                       || (localStorage.getItem('cbsg-visitor-name') || '').trim()
-                       || 'Anonymous Visitor';
+      const visitorName = (localStorage.getItem('cbsg-visitor-name') || '').trim() || 'Anonymous Visitor';
       const now = new Date();
       const timestamp = now.toLocaleString('en-US', {
         dateStyle: 'full',
@@ -172,16 +150,15 @@
         user_agent:   userAgent
       };
 
-      console.log('[CBSG Analytics] Sending email with params:', templateParams);
       await window.emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         templateParams
       );
 
-      console.log(`[CBSG Analytics] ✓ Email sent: ${safeEvent}`);
+      console.log(`[CBSG Analytics] Email sent: ${safeEvent}`);
     } catch (err) {
-      console.warn('[CBSG Analytics] ✗ Email notification failed:', err && err.message ? err.message : err, err);
+      console.warn('[CBSG Analytics] Email notification failed:', err.message);
     }
   }
 
@@ -192,10 +169,7 @@
   // the source. If the visitor closes the tab before the thresholds are met,
   // no email is sent.
   function fireVisitorHitEmail() {
-    console.log('[CBSG Analytics] fireVisitorHitEmail() called. isOwner=' + isOwner());
-
     if (sessionStorage.getItem(SESSION_HIT_KEY)) {
-      console.log('[CBSG Analytics] Already fired this session — skipping.');
       return;
     }
 
@@ -206,19 +180,16 @@
     function markInteracted() {
       if (humanInteracted) return;
       humanInteracted = true;
-      console.log('[CBSG Analytics] ✓ Human interaction detected (dwellElapsed=' + dwellElapsed + ')');
       maybeFire();
     }
     function markDwellDone() {
       dwellElapsed = true;
-      console.log('[CBSG Analytics] ✓ 8-second dwell elapsed (humanInteracted=' + humanInteracted + ')');
       maybeFire();
     }
     function maybeFire() {
       if (!humanInteracted || !dwellElapsed) return;
       if (sessionStorage.getItem(SESSION_HIT_KEY)) return;
       sessionStorage.setItem(SESSION_HIT_KEY, 'true');
-      console.log('[CBSG Analytics] ✓ Both gates passed — firing hit email.');
       sendNotificationEmail('Visitor hit site', `Landing page: ${window.location.pathname}`);
       cleanup();
     }
@@ -232,7 +203,6 @@
       document.addEventListener(evt, markInteracted, { passive: true });
     });
 
-    console.log('[CBSG Analytics] Waiting for 8s dwell + 1 human interaction...');
     setTimeout(markDwellDone, DWELL_MS);
   }
 
@@ -244,16 +214,6 @@
   // ─── OWNER STATUS CHECK (exposed globally for debugging) ───
   window.CBSG_isOwner = function() {
     return isOwner();
-  };
-
-  // ─── TEST EMAIL TRIGGER (exposed globally, v1.3) ───
-  // Call CBSG_testEmail() from the browser console to fire a test email,
-  // bypassing the dwell/interaction/session guards. Useful for verifying
-  // that EmailJS credentials + template + quota all still work end-to-end
-  // independent of the visitor-detection logic. Will still respect isOwner().
-  window.CBSG_testEmail = function() {
-    console.log('[CBSG Analytics] CBSG_testEmail() triggered manually.');
-    sendNotificationEmail('Manual test email', 'Triggered by CBSG_testEmail() from console at ' + new Date().toISOString());
   };
 
   // ─── INITIALIZE ON PAGE LOAD ───────────────────────────────
