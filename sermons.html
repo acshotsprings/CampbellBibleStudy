@@ -15,38 +15,44 @@
     .sort-pill:hover { background:#EBF4FC; }
     .sort-pill.active { background:#1F3864; color:#fff; }
 
-    .sermon-count { font-size:12px; color:#888; font-family:Arial,sans-serif; margin:0 0 10px; }
+    .sermon-count { font-size:12px; color:#888; font-family:Arial,sans-serif; margin:0 0 16px; }
 
-    .sermon-list { display:flex; flex-direction:column; border-top:1px solid #e8edf5; }
-    .sermon-row { display:grid; grid-template-columns:46px 80px 1fr 22px; gap:12px; align-items:start; padding:14px 8px; border-bottom:1px solid #e8edf5; cursor:pointer; transition:background 0.12s ease; }
-    .sermon-row:hover { background:#f7f9fc; }
-    .sermon-row.open { background:#EBF4FC; }
-    .sermon-num { font-size:13px; font-weight:bold; color:#1F3864; font-variant-numeric:tabular-nums; font-family:Arial,sans-serif; padding-top:1px; }
-    .sermon-date { font-size:12px; color:#6b7a91; font-variant-numeric:tabular-nums; font-family:Arial,sans-serif; padding-top:2px; white-space:nowrap; }
-    .sermon-main { min-width:0; }
-    .sermon-title { font-size:14px; font-weight:bold; color:#1F3864; line-height:1.4; margin-bottom:3px; font-family:Georgia,serif; }
-    .sermon-teacher { font-size:12px; color:#6b7a91; font-style:italic; font-family:Arial,sans-serif; }
-    .sermon-toggle { font-size:12px; color:#1F3864; padding-top:3px; user-select:none; transition:transform 0.18s ease; font-family:Arial,sans-serif; }
-    .sermon-row.open .sermon-toggle { transform:rotate(90deg); }
+    .sermon-list { display:flex; flex-direction:column; gap:14px; }
 
-    .sermon-body { display:none; padding:6px 8px 18px 138px; border-bottom:1px solid #e8edf5; background:#fafbfd; }
-    .sermon-row.open + .sermon-body { display:block; }
-    .sermon-body-text { font-size:13px; line-height:1.7; color:#333; font-family:Georgia,serif; }
-    .sermon-body-text strong { color:#1F3864; }
-    .sermon-body-text em { color:#444; }
-    .sermon-row.hidden, .sermon-row.hidden + .sermon-body { display:none !important; }
+    .sermon-card { background:#fff; border:1px solid #e0e6ee; border-left:4px solid #1F3864; border-radius:6px; padding:18px 22px; transition:box-shadow 0.15s ease, border-left-color 0.15s ease; }
+    .sermon-card:hover { box-shadow:0 2px 8px rgba(31,56,100,0.08); border-left-color:#2E75B6; }
 
-    /* Highlight search hits */
+    .sermon-header { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
+    .sermon-num { font-size:12px; font-weight:bold; color:#fff; background:#1F3864; padding:3px 9px; border-radius:10px; font-variant-numeric:tabular-nums; font-family:Arial,sans-serif; letter-spacing:0.03em; }
+    .sermon-date { font-size:12px; color:#6b7a91; font-variant-numeric:tabular-nums; font-family:Arial,sans-serif; white-space:nowrap; }
+    .sermon-title { font-size:17px; font-weight:bold; color:#1F3864; line-height:1.35; flex:1; min-width:200px; font-family:Georgia,serif; margin:0; }
+
+    .sermon-teacher { font-size:13px; color:#6b7a91; font-style:italic; font-family:Arial,sans-serif; margin-bottom:12px; padding-bottom:10px; border-bottom:1px dashed #e0e6ee; }
+
+    .sermon-body { font-size:13.5px; line-height:1.75; color:#333; font-family:Georgia,serif; }
+    .sermon-body strong { color:#1F3864; }
+    .sermon-body em { color:#444; }
+
     mark.search-hit { background:#FFE89C; color:#1F3864; padding:0 2px; border-radius:2px; }
 
+    .pagination { display:flex; align-items:center; justify-content:center; gap:6px; margin:32px 0 16px; flex-wrap:wrap; font-family:Arial,sans-serif; }
+    .page-btn { font-size:13px; padding:7px 13px; border:1px solid #c9d2e1; background:#fff; color:#1F3864; border-radius:5px; cursor:pointer; min-width:38px; font-family:Arial,sans-serif; }
+    .page-btn:hover:not(:disabled) { background:#EBF4FC; border-color:#1F3864; }
+    .page-btn.active { background:#1F3864; color:#fff; border-color:#1F3864; cursor:default; }
+    .page-btn:disabled { opacity:0.4; cursor:not-allowed; background:#f5f5f5; }
+    .page-ellipsis { color:#888; font-size:13px; padding:0 4px; }
+    .page-info { font-size:12px; color:#888; margin:0 8px; font-family:Arial,sans-serif; }
+
     @media (max-width:640px) {
-      .sermon-row { grid-template-columns:36px 70px 1fr 20px; gap:8px; padding:12px 4px; }
-      .sermon-body { padding:6px 4px 16px 12px; }
-      .sermon-title { font-size:13px; }
+      .sermon-card { padding:14px 16px; }
+      .sermon-title { font-size:15px; }
+      .sermon-body { font-size:13px; }
     }
 
-    .empty-msg { text-align:center; padding:32px 12px; color:#888; font-size:13px; font-family:Arial,sans-serif; display:none; font-style:italic; }
+    .empty-msg { text-align:center; padding:40px 12px; color:#888; font-size:14px; font-family:Arial,sans-serif; display:none; font-style:italic; }
     .empty-msg.show { display:block; }
+
+    .sermon-card.filtered-out, .sermon-card.page-out { display:none; }
   </style>
 </head>
 <body>
@@ -73,209 +79,194 @@
 <span class="page-tag">My Study</span>
 
   <h1 class="page-title">Sermon & Teaching Log</h1>
-  <p class="body">Record of all sermons and audio teachings that have shaped this study. Click any entry to expand the full notes. Use the search box to filter by title, teacher, or topic.</p>
+  <p class="body">Record of all sermons and audio teachings that have shaped this study. Each entry shows the full theological notes and cross-references. Use the search box to find any topic, teacher, or Scripture across the whole library.</p>
 
   <div class="sermon-toolbar">
-    <input type="text" id="sermon-search" class="sermon-search" placeholder="🔍 Search title, teacher, or topic..." oninput="filterSermons()">
-    <button class="sort-pill active" onclick="sortSermons(this,'newest')">Newest first</button>
-    <button class="sort-pill" onclick="sortSermons(this,'oldest')">Oldest first</button>
-    <button class="sort-pill" onclick="sortSermons(this,'num')">By #</button>
+    <input type="text" id="sermon-search" class="sermon-search" placeholder="🔍 Search title, teacher, topic, or Scripture..." oninput="applyFilter()">
+    <button class="sort-pill active" onclick="setSortMode(this,'newest')">Newest first</button>
+    <button class="sort-pill" onclick="setSortMode(this,'oldest')">Oldest first</button>
+    <button class="sort-pill" onclick="setSortMode(this,'num')">By #</button>
   </div>
 
   <p class="sermon-count" id="sermon-count">17 entries</p>
 
   <div class="sermon-list" id="sermon-list">
 
-    <div class="sermon-row" data-num="17" data-date="20260426" onclick="toggleRow(this)">
-      <div class="sermon-num">#17</div>
-      <div class="sermon-date">4/26/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Just in Time (Living in Time series, Msg 1)</div>
-        <div class="sermon-teacher">Pastor Matt Scully, Trinity Church</div>
+    <article class="sermon-card" data-num="17" data-date="20260426">
+      <div class="sermon-header">
+        <span class="sermon-num">#17</span>
+        <span class="sermon-date">April 26, 2026</span>
+        <h2 class="sermon-title">Just in Time (Living in Time series, Msg 1)</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Opening sermon of new series &ldquo;Living in Time.&rdquo; Core text: Eccl 3:1 &mdash; &ldquo;There is an appointed time for everything.&rdquo; Big idea: <em>God would rather we be IN His time than ON time.</em> Pastor's Sonic drive-thru story &mdash; late to a 9:30 appointment because of a 10-minute parking-lot conversation with a church member; that conversation was where God's anointing landed that morning. Five biblical case studies of God being &ldquo;in time&rdquo; rather than &ldquo;on time&rdquo;: (1) <strong>Gal 4:4</strong> &mdash; &ldquo;the fullness of time&rdquo; / &ldquo;just the right time&rdquo;; Christ came at the appointed moment, even though Moses, David, Elijah, Daniel might all have wished He'd come in their day (Matt 13:17). (2) <strong>John 11 / Lazarus</strong> &mdash; Jesus deliberately stayed two more days <em>because</em> He loved them (the &ldquo;therefore&rdquo; of v.6); not on time for the healing, but in time for the resurrection; Martha's model faith in v.22 (&ldquo;but even now, I know that whatever You ask of God, God will give You&rdquo;). (3) <strong>Luke 8 / Jairus &amp; the woman with the issue of blood</strong> &mdash; Jesus stops to heal the bleeding woman while Jairus's daughter dies; not on time for the healing, but in time for the raising (Luke 8:54&ndash;55: &ldquo;Child, arise&rdquo;). (4) <strong>Matt 14</strong> &mdash; Jesus grieving John the Baptist's beheading wanted solitude; compassion moved Him to be in time for the multitudes anyway. (5) <strong>Acts 8 / Philip and the Ethiopian eunuch</strong> &mdash; pulled out of a citywide revival to meet one man on a desert road; that one conversation carried the gospel to a whole nation. Counter-warning: <strong>1 Sam 13 / Saul at Gilgal</strong> &mdash; Saul waited the seven days but ran out of patience and offered the burnt offering himself; cost him a dynasty that would have continued in Christ's lineage. Right thing, wrong time. Discernment text: <strong>1 Chr 12:32</strong> &mdash; the sons of Issachar, &ldquo;men who understood the times, with knowledge of what Israel should do.&rdquo; Closing text: <strong>Ps 31:15</strong> &mdash; &ldquo;My times are in Your hand.&rdquo; Personal testimony: Pastor Matt's 20-year vision of pastors meeting in this sanctuary; 5,000-person Easter 2026 service at his alma mater football field with five Hot Springs pastors fulfilling Eph 4 fivefold pattern (Trinity, Lake Point, Lakeview, New Life, Freedom). Pastor Matt's prayer request for the church: financial board meeting next Sun, elders the following Tues, on a major decision for Trinity Church &mdash; pray that they discern God's timing. Personal connection: same passage (John 11) the Lord put in front of me this morning in e-Sword before service. Cross-reference candidates: Theme 1 (the &ldquo;why hasn't He come yet&rdquo; question; 2 Pet 3:9; Matt 24:32&ndash;33 fig tree); Theme 2 (Gal 4:4 &ldquo;fullness of time&rdquo; as a moedim/appointed-time statement); Theme 3 (Saul's impatience vs. God's 120-year patience in the days of Noah, 1 Pet 3:20).</div></div>
+      <div class="sermon-teacher">Pastor Matt Scully, Trinity Church</div>
+      <div class="sermon-body">Opening sermon of new series &ldquo;Living in Time.&rdquo; Core text: Eccl 3:1 &mdash; &ldquo;There is an appointed time for everything.&rdquo; Big idea: <em>God would rather we be IN His time than ON time.</em> Pastor's Sonic drive-thru story &mdash; late to a 9:30 appointment because of a 10-minute parking-lot conversation with a church member; that conversation was where God's anointing landed that morning. Five biblical case studies of God being &ldquo;in time&rdquo; rather than &ldquo;on time&rdquo;: (1) <strong>Gal 4:4</strong> &mdash; &ldquo;the fullness of time&rdquo; / &ldquo;just the right time&rdquo;; Christ came at the appointed moment, even though Moses, David, Elijah, Daniel might all have wished He'd come in their day (Matt 13:17). (2) <strong>John 11 / Lazarus</strong> &mdash; Jesus deliberately stayed two more days <em>because</em> He loved them (the &ldquo;therefore&rdquo; of v.6); not on time for the healing, but in time for the resurrection; Martha's model faith in v.22 (&ldquo;but even now, I know that whatever You ask of God, God will give You&rdquo;). (3) <strong>Luke 8 / Jairus &amp; the woman with the issue of blood</strong> &mdash; Jesus stops to heal the bleeding woman while Jairus's daughter dies; not on time for the healing, but in time for the raising (Luke 8:54&ndash;55: &ldquo;Child, arise&rdquo;). (4) <strong>Matt 14</strong> &mdash; Jesus grieving John the Baptist's beheading wanted solitude; compassion moved Him to be in time for the multitudes anyway. (5) <strong>Acts 8 / Philip and the Ethiopian eunuch</strong> &mdash; pulled out of a citywide revival to meet one man on a desert road; that one conversation carried the gospel to a whole nation. Counter-warning: <strong>1 Sam 13 / Saul at Gilgal</strong> &mdash; Saul waited the seven days but ran out of patience and offered the burnt offering himself; cost him a dynasty that would have continued in Christ's lineage. Right thing, wrong time. Discernment text: <strong>1 Chr 12:32</strong> &mdash; the sons of Issachar, &ldquo;men who understood the times, with knowledge of what Israel should do.&rdquo; Closing text: <strong>Ps 31:15</strong> &mdash; &ldquo;My times are in Your hand.&rdquo; Personal testimony: Pastor Matt's 20-year vision of pastors meeting in this sanctuary; 5,000-person Easter 2026 service at his alma mater football field with five Hot Springs pastors fulfilling Eph 4 fivefold pattern (Trinity, Lake Point, Lakeview, New Life, Freedom). Pastor Matt's prayer request for the church: financial board meeting next Sun, elders the following Tues, on a major decision for Trinity Church &mdash; pray that they discern God's timing. Personal connection: same passage (John 11) the Lord put in front of me this morning in e-Sword before service. Cross-reference candidates: Theme 1 (the &ldquo;why hasn't He come yet&rdquo; question; 2 Pet 3:9; Matt 24:32&ndash;33 fig tree); Theme 2 (Gal 4:4 &ldquo;fullness of time&rdquo; as a moedim/appointed-time statement); Theme 3 (Saul's impatience vs. God's 120-year patience in the days of Noah, 1 Pet 3:20).</div>
+    </article>
 
-    <div class="sermon-row" data-num="16" data-date="20260420" onclick="toggleRow(this)">
-      <div class="sermon-num">#16</div>
-      <div class="sermon-date">4/20/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Seven Churches of Revelation, Seven Feasts &amp; the Spirit of God</div>
-        <div class="sermon-teacher">Multiple sources / Group Study (Summary AI)</div>
+    <article class="sermon-card" data-num="16" data-date="20260420">
+      <div class="sermon-header">
+        <span class="sermon-num">#16</span>
+        <span class="sermon-date">April 20, 2026</span>
+        <h2 class="sermon-title">Seven Churches of Revelation, Seven Feasts &amp; the Spirit of God</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Three-hour session working through the layered sevens of Revelation: the Seven Churches of Asia Minor (Rev 2&ndash;3), the Seven Feasts of the Lord (Lev 23), and the Seven Spirits of God (Rev 1:4; 4:5). Geographic note: all seven churches cluster in western Turkey (modern Alaşehir = ancient Philadelphia, translated "God's City"), within courier-distance of one another. Philadelphia (Rev 3:7&ndash;13) received the pre-Trib protection promise &mdash; "I will keep you from the hour of trial that is coming on the whole world" (Rev 3:10), treated here as a pre-Trib proof text. Geopolitical overlay: Turkey's current repositioning (Assad's fall Dec 2024, Turkish troops in Syria, Russia/Iran influence collapsing) may be reshaping the Ezekiel 38 coalition &mdash; Turkey possibly breaking away before realigning later. Organic discussion of the firmament (Gen 1:6&ndash;7): ancient Hebrew three-layer cosmology (waters below, firmament dome, waters above), "windows of heaven" opening during the flood (Gen 7:11), distinction between ancient observational model and modern science while preserving theological truth of God's sovereignty over creation. Key refs: Rev 2&ndash;3 (letters to churches), Rev 3:7&ndash;13 (Philadelphia specifically), Rev 3:10 (kept from the hour), Lev 23 (seven feasts), Rev 1:4 &amp; 4:5 (seven spirits), Gen 1:6&ndash;7, Gen 7:11, Isa 40:22. Cross-reference: Theme 1 (End Times), future firmament study, future Philadelphia deep dive.</div></div>
+      <div class="sermon-teacher">Multiple sources / Group Study (Summary AI)</div>
+      <div class="sermon-body">Three-hour session working through the layered sevens of Revelation: the Seven Churches of Asia Minor (Rev 2&ndash;3), the Seven Feasts of the Lord (Lev 23), and the Seven Spirits of God (Rev 1:4; 4:5). Geographic note: all seven churches cluster in western Turkey (modern Alaşehir = ancient Philadelphia, translated "God's City"), within courier-distance of one another. Philadelphia (Rev 3:7&ndash;13) received the pre-Trib protection promise &mdash; "I will keep you from the hour of trial that is coming on the whole world" (Rev 3:10), treated here as a pre-Trib proof text. Geopolitical overlay: Turkey's current repositioning (Assad's fall Dec 2024, Turkish troops in Syria, Russia/Iran influence collapsing) may be reshaping the Ezekiel 38 coalition &mdash; Turkey possibly breaking away before realigning later. Organic discussion of the firmament (Gen 1:6&ndash;7): ancient Hebrew three-layer cosmology (waters below, firmament dome, waters above), "windows of heaven" opening during the flood (Gen 7:11), distinction between ancient observational model and modern science while preserving theological truth of God's sovereignty over creation. Key refs: Rev 2&ndash;3 (letters to churches), Rev 3:7&ndash;13 (Philadelphia specifically), Rev 3:10 (kept from the hour), Lev 23 (seven feasts), Rev 1:4 &amp; 4:5 (seven spirits), Gen 1:6&ndash;7, Gen 7:11, Isa 40:22. Cross-reference: Theme 1 (End Times), future firmament study, future Philadelphia deep dive.</div>
+    </article>
 
-    <div class="sermon-row" data-num="15" data-date="20260415" onclick="toggleRow(this)">
-      <div class="sermon-num">#15</div>
-      <div class="sermon-date">4/15/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Daniel 9 &amp; End-Time Signs</div>
-        <div class="sermon-teacher">Jack Hibbs (Summary AI)</div>
+    <article class="sermon-card" data-num="15" data-date="20260415">
+      <div class="sermon-header">
+        <span class="sermon-num">#15</span>
+        <span class="sermon-date">April 15, 2026</span>
+        <h2 class="sermon-title">Daniel 9 &amp; End-Time Signs</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Daniel 9:24&ndash;27 &mdash; the 70 Weeks prophecy in full; Israel&rsquo;s 490-year debt to God traced from the Sabbath-year violations (Lev 26); 445 BC decree (Neh 2) as starting point; 49-year first segment (walls/street rebuilt); 434-year second segment; 483 years total = 173,880 days on 360-day prophetic calendar from March 14, 445 BC to Palm Sunday April 6, 32 AD; Messiah &ldquo;cut off but not for himself&rdquo; (Dan 9:26) &mdash; dies for others&rsquo; capital offense; Jerusalem and temple destroyed (Titus, AD 70); remaining 7-year Tribulation block with Antichrist confirming a covenant (Dan 9:27), breaking it at midpoint, desecrating the sanctuary; prophecies confirming Messiah&rsquo;s identity: Gen 3:15, Prov 30:4, Ps 2, Ps 118, Zech 9:9 (donkey/triumphal entry), Matt 23&ndash;24; Israel&rsquo;s regathering since 1948; October 7, 2023 cited as prophetic marker of accelerating end-times timeline; second coming returns to Israel/Jerusalem. Cross-reference: Theme 1, Module 8 (Daniel&rsquo;s 70 Weeks).</div></div>
+      <div class="sermon-teacher">Jack Hibbs (Summary AI)</div>
+      <div class="sermon-body">Daniel 9:24&ndash;27 &mdash; the 70 Weeks prophecy in full; Israel&rsquo;s 490-year debt to God traced from the Sabbath-year violations (Lev 26); 445 BC decree (Neh 2) as starting point; 49-year first segment (walls/street rebuilt); 434-year second segment; 483 years total = 173,880 days on 360-day prophetic calendar from March 14, 445 BC to Palm Sunday April 6, 32 AD; Messiah &ldquo;cut off but not for himself&rdquo; (Dan 9:26) &mdash; dies for others&rsquo; capital offense; Jerusalem and temple destroyed (Titus, AD 70); remaining 7-year Tribulation block with Antichrist confirming a covenant (Dan 9:27), breaking it at midpoint, desecrating the sanctuary; prophecies confirming Messiah&rsquo;s identity: Gen 3:15, Prov 30:4, Ps 2, Ps 118, Zech 9:9 (donkey/triumphal entry), Matt 23&ndash;24; Israel&rsquo;s regathering since 1948; October 7, 2023 cited as prophetic marker of accelerating end-times timeline; second coming returns to Israel/Jerusalem. Cross-reference: Theme 1, Module 8 (Daniel&rsquo;s 70 Weeks).</div>
+    </article>
 
-    <div class="sermon-row" data-num="14" data-date="20260414" onclick="toggleRow(this)">
-      <div class="sermon-num">#14</div>
-      <div class="sermon-date">4/14/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Discernment &amp; End Times — Group Discussion</div>
-        <div class="sermon-teacher">Jack Hibbs / Group Discussion (Summary AI)</div>
+    <article class="sermon-card" data-num="14" data-date="20260414">
+      <div class="sermon-header">
+        <span class="sermon-num">#14</span>
+        <span class="sermon-date">April 14, 2026</span>
+        <h2 class="sermon-title">Discernment &amp; End Times — Group Discussion</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Group discussion on biblical discernment, geopolitics, and last-days signs. Key topics: Ezekiel 38 coalition (Russia, China, Iran) tied to shifting Gulf trade routes and Israel's friends; Days of Noah vs. Days of Lot &mdash; Noah's ark as sign of judgment to mockers but salvation to believers; Lot emotionally tethered to corrupt city (warning to the church today); Islam as Christian heresy &mdash; votes Jesus as prophet only, built on deception; Genesis 3:15 protoevangelium and image of the beast / Tower of Babel connection; Allah as Arabic word for God (transliteration discussion) vs. the God of Scripture; Chuck Smith referenced re: political courage during California legislative overreach; Walter Martin quote on cults as instruments of refinement. Jack Hibbs (Calvary Chapel Chino Hills) identified as prophecy resource &mdash; see also his book <em>The Last Book: What You Need to Know About Revelation, the Rapture, and the End Times</em> (with Charles Ryrie). Key refs: Gen 3:15; Gen 11 (Babel); Ezek 38&ndash;39; 1 Tim 4; Matt 24:37&ndash;39 (days of Noah/Lot); Rev 13 (image of beast).</div></div>
+      <div class="sermon-teacher">Jack Hibbs / Group Discussion (Summary AI)</div>
+      <div class="sermon-body">Group discussion on biblical discernment, geopolitics, and last-days signs. Key topics: Ezekiel 38 coalition (Russia, China, Iran) tied to shifting Gulf trade routes and Israel's friends; Days of Noah vs. Days of Lot &mdash; Noah's ark as sign of judgment to mockers but salvation to believers; Lot emotionally tethered to corrupt city (warning to the church today); Islam as Christian heresy &mdash; votes Jesus as prophet only, built on deception; Genesis 3:15 protoevangelium and image of the beast / Tower of Babel connection; Allah as Arabic word for God (transliteration discussion) vs. the God of Scripture; Chuck Smith referenced re: political courage during California legislative overreach; Walter Martin quote on cults as instruments of refinement. Jack Hibbs (Calvary Chapel Chino Hills) identified as prophecy resource &mdash; see also his book <em>The Last Book: What You Need to Know About Revelation, the Rapture, and the End Times</em> (with Charles Ryrie). Key refs: Gen 3:15; Gen 11 (Babel); Ezek 38&ndash;39; 1 Tim 4; Matt 24:37&ndash;39 (days of Noah/Lot); Rev 13 (image of beast).</div>
+    </article>
 
-    <div class="sermon-row" data-num="13" data-date="20260409" onclick="toggleRow(this)">
-      <div class="sermon-num">#13</div>
-      <div class="sermon-date">4/9/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Ezekiel 38 &amp; Russia — Identifying Gog</div>
-        <div class="sermon-teacher">Joel C. Rosenberg, <em>The Ezekiel Option</em> Ch. 7 (Summary AI)</div>
+    <article class="sermon-card" data-num="13" data-date="20260409">
+      <div class="sermon-header">
+        <span class="sermon-num">#13</span>
+        <span class="sermon-date">April 9, 2026</span>
+        <h2 class="sermon-title">Ezekiel 38 &amp; Russia — Identifying Gog</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Historical &amp; etymological case for Russia as Magog/Rosh: Gog as a title (like Tsar/Pharaoh), not a personal name; geographic argument &mdash; Russia lies farthest due north of Israel (Ezek 38:6, 15); Voltaire's independent conclusion (hostile witness &mdash; pre-dated Russia as a world power by 150 years); Genesis 10 Table of Nations &mdash; Magog as son of Japheth; 19th-century pre-modern scholars reaching same conclusion before Soviet era; Rosenberg's firsthand Moscow observations of Putin's rise (Sept 2004 &mdash; political opponents jailed, media suppressed, 71% election). Cross-reference: Theme 1, Module 9.4.</div></div>
+      <div class="sermon-teacher">Joel C. Rosenberg, <em>The Ezekiel Option</em> Ch. 7 (Summary AI)</div>
+      <div class="sermon-body">Historical &amp; etymological case for Russia as Magog/Rosh: Gog as a title (like Tsar/Pharaoh), not a personal name; geographic argument &mdash; Russia lies farthest due north of Israel (Ezek 38:6, 15); Voltaire's independent conclusion (hostile witness &mdash; pre-dated Russia as a world power by 150 years); Genesis 10 Table of Nations &mdash; Magog as son of Japheth; 19th-century pre-modern scholars reaching same conclusion before Soviet era; Rosenberg's firsthand Moscow observations of Putin's rise (Sept 2004 &mdash; political opponents jailed, media suppressed, 71% election). Cross-reference: Theme 1, Module 9.4.</div>
+    </article>
 
-    <div class="sermon-row" data-num="12" data-date="20260406" onclick="toggleRow(this)">
-      <div class="sermon-num">#12</div>
-      <div class="sermon-date">4/6/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Epicenter — Netanyahu, Russia-Iran Axis &amp; Ezekiel Scenario</div>
-        <div class="sermon-teacher">Joel C. Rosenberg (Summary AI)</div>
+    <article class="sermon-card" data-num="12" data-date="20260406">
+      <div class="sermon-header">
+        <span class="sermon-num">#12</span>
+        <span class="sermon-date">April 6, 2026</span>
+        <h2 class="sermon-title">Epicenter — Netanyahu, Russia-Iran Axis &amp; Ezekiel Scenario</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Memoir excerpt: Rosenberg's service as communications advisor to Netanyahu (2001); how his research into the Russia-Iran-Middle East geopolitical axis led him to write prophetically-themed fiction based on Ezekiel 38&ndash;39; Moscow's strategic interest in the Middle East traced from Afghanistan (1979) through post-Cold War scenarios; Saddam Hussein as complicating factor in Ezekiel coalition; state-sponsored terrorism and nuclear threat analysis. Cross-reference: Theme 1, Module 9 (Gog-Magog War).</div></div>
+      <div class="sermon-teacher">Joel C. Rosenberg (Summary AI)</div>
+      <div class="sermon-body">Memoir excerpt: Rosenberg's service as communications advisor to Netanyahu (2001); how his research into the Russia-Iran-Middle East geopolitical axis led him to write prophetically-themed fiction based on Ezekiel 38&ndash;39; Moscow's strategic interest in the Middle East traced from Afghanistan (1979) through post-Cold War scenarios; Saddam Hussein as complicating factor in Ezekiel coalition; state-sponsored terrorism and nuclear threat analysis. Cross-reference: Theme 1, Module 9 (Gog-Magog War).</div>
+    </article>
 
-    <div class="sermon-row" data-num="11" data-date="20260406" onclick="toggleRow(this)">
-      <div class="sermon-num">#11</div>
-      <div class="sermon-date">4/6/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Feast of Tabernacles &amp; DSS Calendar</div>
-        <div class="sermon-teacher">Audio Teaching (Summary AI)</div>
+    <article class="sermon-card" data-num="11" data-date="20260406">
+      <div class="sermon-header">
+        <span class="sermon-num">#11</span>
+        <span class="sermon-date">April 6, 2026</span>
+        <h2 class="sermon-title">Feast of Tabernacles &amp; DSS Calendar</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Yom Kippur two-goat ceremony (Lev 16) &mdash; Azazel as proper name, Mishnah Yoma detail, red thread turning white ~AD 30; Sukkot structure &mdash; second tithe feast, Seventy Nations burnt offerings (Num 29), millennial observance (Zech 14:16); Four Species (Lev 23:40) &mdash; etrog, lulav, myrtle, willow; symbolic theology of each species; willow as "least" yet bound with all; DSS 364-day solar calendar and feast precision appointments. Special study: willow in Scripture (Ps 137; Isa 44:3&ndash;4; Ezek 17:5; Job 40:22) &mdash; dedicated to Hazelee Willow. Theme 2, Module 4.</div></div>
+      <div class="sermon-teacher">Audio Teaching (Summary AI)</div>
+      <div class="sermon-body">Yom Kippur two-goat ceremony (Lev 16) &mdash; Azazel as proper name, Mishnah Yoma detail, red thread turning white ~AD 30; Sukkot structure &mdash; second tithe feast, Seventy Nations burnt offerings (Num 29), millennial observance (Zech 14:16); Four Species (Lev 23:40) &mdash; etrog, lulav, myrtle, willow; symbolic theology of each species; willow as "least" yet bound with all; DSS 364-day solar calendar and feast precision appointments. Special study: willow in Scripture (Ps 137; Isa 44:3&ndash;4; Ezek 17:5; Job 40:22) &mdash; dedicated to Hazelee Willow. Theme 2, Module 4.</div>
+    </article>
 
-    <div class="sermon-row" data-num="10" data-date="20260403" onclick="toggleRow(this)">
-      <div class="sermon-num">#10</div>
-      <div class="sermon-date">4/3/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Essene Calendar Debate</div>
-        <div class="sermon-teacher">Audio Teaching (Summary AI)</div>
+    <article class="sermon-card" data-num="10" data-date="20260403">
+      <div class="sermon-header">
+        <span class="sermon-num">#10</span>
+        <span class="sermon-date">April 3, 2026</span>
+        <h2 class="sermon-title">Essene Calendar Debate</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Calendar integrity across 6,000 years; Noah&rsquo;s Flood and orbital stability; Joshua's long day &amp; Hezekiah&rsquo;s sundial &mdash; atmospheric not orbital explanations; Essene 364-day solar calendar (Enoch 72:32; Jubilees); tropical year 365.2422 days; seven-day week unbroken from creation through Julian (46 BC) to Gregorian (1582 AD); Julian&rarr;Gregorian transition preserved weekly cycle (US example: Wed Sep 2 &rarr; Thu Sep 14, 1752); Sabbath continuity confirmed; Isa 66:23; Ezek 46:1 &mdash; millennial observance of same cycles. Theme 2 cross-reference.</div></div>
+      <div class="sermon-teacher">Audio Teaching (Summary AI)</div>
+      <div class="sermon-body">Calendar integrity across 6,000 years; Noah&rsquo;s Flood and orbital stability; Joshua's long day &amp; Hezekiah&rsquo;s sundial &mdash; atmospheric not orbital explanations; Essene 364-day solar calendar (Enoch 72:32; Jubilees); tropical year 365.2422 days; seven-day week unbroken from creation through Julian (46 BC) to Gregorian (1582 AD); Julian&rarr;Gregorian transition preserved weekly cycle (US example: Wed Sep 2 &rarr; Thu Sep 14, 1752); Sabbath continuity confirmed; Isa 66:23; Ezek 46:1 &mdash; millennial observance of same cycles. Theme 2 cross-reference.</div>
+    </article>
 
-    <div class="sermon-row" data-num="9" data-date="20260403" onclick="toggleRow(this)">
-      <div class="sermon-num">#9</div>
-      <div class="sermon-date">4/3/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Mount of Olives Return</div>
-        <div class="sermon-teacher">Josh Howerton</div>
+    <article class="sermon-card" data-num="9" data-date="20260403">
+      <div class="sermon-header">
+        <span class="sermon-num">#9</span>
+        <span class="sermon-date">April 3, 2026</span>
+        <h2 class="sermon-title">Mount of Olives Return</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Christ's return to the Mount of Olives (Acts 1:11; Zech 14:3&ndash;5); East Gate bricked up by Sultan Suleiman in 1517 (Ezek 44:2); geological fault line running east-west beneath the Mount discovered 1964; three independent lines of evidence &mdash; ascension site, sealed gate, fault line &mdash; converging on one prophetic event.</div></div>
+      <div class="sermon-teacher">Josh Howerton</div>
+      <div class="sermon-body">Christ's return to the Mount of Olives (Acts 1:11; Zech 14:3&ndash;5); East Gate bricked up by Sultan Suleiman in 1517 (Ezek 44:2); geological fault line running east-west beneath the Mount discovered 1964; three independent lines of evidence &mdash; ascension site, sealed gate, fault line &mdash; converging on one prophetic event.</div>
+    </article>
 
-    <div class="sermon-row" data-num="8" data-date="20260402" onclick="toggleRow(this)">
-      <div class="sermon-num">#8</div>
-      <div class="sermon-date">4/2/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Jewish &amp; Essene Calendar History</div>
-        <div class="sermon-teacher">Audio Teaching Series (Summary AI)</div>
+    <article class="sermon-card" data-num="8" data-date="20260402">
+      <div class="sermon-header">
+        <span class="sermon-num">#8</span>
+        <span class="sermon-date">April 2, 2026</span>
+        <h2 class="sermon-title">Jewish &amp; Essene Calendar History</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Jewish calendar development; Hillel II's 4th-century modifications; Pharisee observation-based calendar; Essene 364-day solar calendar; Dead Sea Scrolls evidence; Sons of Light vs. Sons of Darkness; high priest crisis (Yoma 9a); Seleucid Greek calendar; Birkat Hachama 28-year cycle; seven-day week unbroken from creation &mdash; integrated into Theme 2, Module 1. Key: Exod 12:1&ndash;2; Jubilees 6:36&ndash;38; Enoch 72:32; Isa 66:23; Ezek 46:1.</div></div>
+      <div class="sermon-teacher">Audio Teaching Series (Summary AI)</div>
+      <div class="sermon-body">Jewish calendar development; Hillel II's 4th-century modifications; Pharisee observation-based calendar; Essene 364-day solar calendar; Dead Sea Scrolls evidence; Sons of Light vs. Sons of Darkness; high priest crisis (Yoma 9a); Seleucid Greek calendar; Birkat Hachama 28-year cycle; seven-day week unbroken from creation &mdash; integrated into Theme 2, Module 1. Key: Exod 12:1&ndash;2; Jubilees 6:36&ndash;38; Enoch 72:32; Isa 66:23; Ezek 46:1.</div>
+    </article>
 
-    <div class="sermon-row" data-num="7" data-date="20260401" onclick="toggleRow(this)">
-      <div class="sermon-num">#7</div>
-      <div class="sermon-date">4/1/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">End-Times Tribulation</div>
-        <div class="sermon-teacher">Audio Teaching (Summary AI)</div>
+    <article class="sermon-card" data-num="7" data-date="20260401">
+      <div class="sermon-header">
+        <span class="sermon-num">#7</span>
+        <span class="sermon-date">April 1, 2026</span>
+        <h2 class="sermon-title">End-Times Tribulation</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Tribulation judgment, seal sequence, Rev 10 little scroll, Beast (Rev 13), false teachers &mdash; plus Matt 24 &rarr; Rev parallel developed. Key: Rev 7:14; Jer 30:7; Rev 6:1&ndash;17; Rev 10:4&ndash;10; Rev 13:1&ndash;4; Acts 4:12.</div></div>
+      <div class="sermon-teacher">Audio Teaching (Summary AI)</div>
+      <div class="sermon-body">Tribulation judgment, seal sequence, Rev 10 little scroll, Beast (Rev 13), false teachers &mdash; plus Matt 24 &rarr; Rev parallel developed. Key: Rev 7:14; Jer 30:7; Rev 6:1&ndash;17; Rev 10:4&ndash;10; Rev 13:1&ndash;4; Acts 4:12.</div>
+    </article>
 
-    <div class="sermon-row" data-num="6" data-date="20260331" onclick="toggleRow(this)">
-      <div class="sermon-num">#6</div>
-      <div class="sermon-date">3/31/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Tribulation &amp; Judgment — The End Times in Chronological Order</div>
-        <div class="sermon-teacher">Ron Rhodes</div>
+    <article class="sermon-card" data-num="6" data-date="20260331">
+      <div class="sermon-header">
+        <span class="sermon-num">#6</span>
+        <span class="sermon-date">March 31, 2026</span>
+        <h2 class="sermon-title">Tribulation &amp; Judgment — The End Times in Chronological Order</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Seal &amp; trumpet judgments (Rev 6&ndash;8); Two Witnesses (Rev 11); seals &rarr; trumpets &rarr; martyrdom intensifies; God sovereign and a God of judgment.</div></div>
+      <div class="sermon-teacher">Ron Rhodes</div>
+      <div class="sermon-body">Seal &amp; trumpet judgments (Rev 6&ndash;8); Two Witnesses (Rev 11); seals &rarr; trumpets &rarr; martyrdom intensifies; God sovereign and a God of judgment.</div>
+    </article>
 
-    <div class="sermon-row" data-num="5" data-date="20260327" onclick="toggleRow(this)">
-      <div class="sermon-num">#5</div>
-      <div class="sermon-date">3/27/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Antichrist &amp; End Times</div>
-        <div class="sermon-teacher">Audio Teaching</div>
+    <article class="sermon-card" data-num="5" data-date="20260327">
+      <div class="sermon-header">
+        <span class="sermon-num">#5</span>
+        <span class="sermon-date">March 27, 2026</span>
+        <h2 class="sermon-title">Antichrist &amp; End Times</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Day of the Lord; Antichrist profile; not Muslim/not Gog; temple rebuild; signs of the times; false prophets.</div></div>
+      <div class="sermon-teacher">Audio Teaching</div>
+      <div class="sermon-body">Day of the Lord; Antichrist profile; not Muslim/not Gog; temple rebuild; signs of the times; false prophets.</div>
+    </article>
 
-    <div class="sermon-row" data-num="4" data-date="20260326" onclick="toggleRow(this)">
-      <div class="sermon-num">#4</div>
-      <div class="sermon-date">3/26/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Ezekiel 38–39 continued (partial)</div>
-        <div class="sermon-teacher">&mdash;</div>
+    <article class="sermon-card" data-num="4" data-date="20260326">
+      <div class="sermon-header">
+        <span class="sermon-num">#4</span>
+        <span class="sermon-date">March 26, 2026</span>
+        <h2 class="sermon-title">Ezekiel 38–39 continued (partial)</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Scholars debate whether invasion already occurred; nation identification.</div></div>
+      <div class="sermon-teacher">&mdash;</div>
+      <div class="sermon-body">Scholars debate whether invasion already occurred; nation identification.</div>
+    </article>
 
-    <div class="sermon-row" data-num="3" data-date="20260325" onclick="toggleRow(this)">
-      <div class="sermon-num">#3</div>
-      <div class="sermon-date">3/25/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Ezekiel: Invasion &amp; End</div>
-        <div class="sermon-teacher">&mdash;</div>
+    <article class="sermon-card" data-num="3" data-date="20260325">
+      <div class="sermon-header">
+        <span class="sermon-num">#3</span>
+        <span class="sermon-date">March 25, 2026</span>
+        <h2 class="sermon-title">Ezekiel: Invasion &amp; End</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Gog-Magog war (Ezek 38&ndash;39); coalition: Russia/Iran/Turkey/Sudan/Libya; Israel at rest precondition.</div></div>
+      <div class="sermon-teacher">&mdash;</div>
+      <div class="sermon-body">Gog-Magog war (Ezek 38&ndash;39); coalition: Russia/Iran/Turkey/Sudan/Libya; Israel at rest precondition.</div>
+    </article>
 
-    <div class="sermon-row" data-num="2" data-date="20260325" onclick="toggleRow(this)">
-      <div class="sermon-num">#2</div>
-      <div class="sermon-date">3/25/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Judgment Seat &amp; Marriage of the Lamb</div>
-        <div class="sermon-teacher">&mdash;</div>
+    <article class="sermon-card" data-num="2" data-date="20260325">
+      <div class="sermon-header">
+        <span class="sermon-num">#2</span>
+        <span class="sermon-date">March 25, 2026</span>
+        <h2 class="sermon-title">Judgment Seat &amp; Marriage of the Lamb</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Bema Seat, crowns, bride/bridegroom &mdash; Rom 14:8&ndash;10; 1 Cor 3:11&ndash;15; Rev 19:7&ndash;9; John 14:1&ndash;3.</div></div>
+      <div class="sermon-teacher">&mdash;</div>
+      <div class="sermon-body">Bema Seat, crowns, bride/bridegroom &mdash; Rom 14:8&ndash;10; 1 Cor 3:11&ndash;15; Rev 19:7&ndash;9; John 14:1&ndash;3.</div>
+    </article>
 
-    <div class="sermon-row" data-num="1" data-date="20260322" onclick="toggleRow(this)">
-      <div class="sermon-num">#1</div>
-      <div class="sermon-date">3/22/26</div>
-      <div class="sermon-main">
-        <div class="sermon-title">Imitate Christ's Example</div>
-        <div class="sermon-teacher">Pastor Matt</div>
+    <article class="sermon-card" data-num="1" data-date="20260322">
+      <div class="sermon-header">
+        <span class="sermon-num">#1</span>
+        <span class="sermon-date">March 22, 2026</span>
+        <h2 class="sermon-title">Imitate Christ's Example</h2>
       </div>
-      <div class="sermon-toggle">▸</div>
-    </div>
-    <div class="sermon-body"><div class="sermon-body-text">Servanthood and humility.</div></div>
+      <div class="sermon-teacher">Pastor Matt Scully, Trinity Church</div>
+      <div class="sermon-body">Servanthood and humility.</div>
+    </article>
 
   </div>
 
   <p class="empty-msg" id="empty-msg">No sermons match your search.</p>
+
+  <div class="pagination" id="pagination"></div>
 
   <div class="notes-box" style="margin-top:32px;">
     <div class="label">☑️ Teaching notes — additional notes &amp; observations:</div>
@@ -285,36 +276,46 @@
 </div>
 
 <script>
-  function toggleRow(row) {
-    row.classList.toggle('open');
+  const PER_PAGE = 20;
+  let currentPage = 1;
+  let currentSort = 'newest';
+
+  function getAllCards() {
+    return Array.from(document.querySelectorAll('#sermon-list .sermon-card'));
+  }
+  function getVisibleCards() {
+    return getAllCards().filter(c => !c.classList.contains('filtered-out'));
   }
 
-  function sortSermons(btn, mode) {
+  function setSortMode(btn, mode) {
     document.querySelectorAll('.sort-pill').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    currentSort = mode;
+    sortCards();
+    currentPage = 1;
+    applyPagination();
+  }
+
+  function sortCards() {
     const list = document.getElementById('sermon-list');
-    const rows = Array.from(list.querySelectorAll('.sermon-row'));
-    const pairs = rows.map(r => ({ row: r, body: r.nextElementSibling }));
-    pairs.sort((a, b) => {
-      if (mode === 'newest') {
-        const da = parseInt(a.row.dataset.date), db = parseInt(b.row.dataset.date);
+    const cards = getAllCards();
+    cards.sort((a, b) => {
+      if (currentSort === 'newest') {
+        const da = parseInt(a.dataset.date), db = parseInt(b.dataset.date);
         if (db !== da) return db - da;
-        return parseInt(b.row.dataset.num) - parseInt(a.row.dataset.num);
+        return parseInt(b.dataset.num) - parseInt(a.dataset.num);
       }
-      if (mode === 'oldest') {
-        const da = parseInt(a.row.dataset.date), db = parseInt(b.row.dataset.date);
+      if (currentSort === 'oldest') {
+        const da = parseInt(a.dataset.date), db = parseInt(b.dataset.date);
         if (da !== db) return da - db;
-        return parseInt(a.row.dataset.num) - parseInt(b.row.dataset.num);
+        return parseInt(a.dataset.num) - parseInt(b.dataset.num);
       }
-      if (mode === 'num') {
-        return parseInt(a.row.dataset.num) - parseInt(b.row.dataset.num);
+      if (currentSort === 'num') {
+        return parseInt(a.dataset.num) - parseInt(b.dataset.num);
       }
       return 0;
     });
-    pairs.forEach(p => {
-      list.appendChild(p.row);
-      list.appendChild(p.body);
-    });
+    cards.forEach(c => list.appendChild(c));
   }
 
   function clearHighlights() {
@@ -332,6 +333,7 @@
     let node;
     while ((node = walker.nextNode())) {
       if (node.parentNode.tagName === 'MARK') continue;
+      if (node.parentNode.tagName === 'SCRIPT' || node.parentNode.tagName === 'STYLE') continue;
       const lower = node.nodeValue.toLowerCase();
       if (lower.includes(term)) matches.push(node);
     }
@@ -357,48 +359,105 @@
     });
   }
 
-  function filterSermons() {
+  function applyFilter() {
     const q = document.getElementById('sermon-search').value.trim().toLowerCase();
     clearHighlights();
-    const rows = document.querySelectorAll('.sermon-row');
-    let visible = 0;
-    rows.forEach(row => {
-      const body = row.nextElementSibling;
+    const cards = getAllCards();
+    cards.forEach(card => {
       if (!q) {
-        row.classList.remove('hidden');
-        row.classList.remove('open');
-        visible++;
+        card.classList.remove('filtered-out');
         return;
       }
-      const titleText = row.querySelector('.sermon-title').textContent.toLowerCase();
-      const teacherText = row.querySelector('.sermon-teacher').textContent.toLowerCase();
-      const bodyText = body ? body.textContent.toLowerCase() : '';
-      const dateText = row.querySelector('.sermon-date').textContent.toLowerCase();
-      const hit = titleText.includes(q) || teacherText.includes(q) || bodyText.includes(q) || dateText.includes(q);
-      if (hit) {
-        row.classList.remove('hidden');
-        // Auto-expand body if match is in body text only
-        if (bodyText.includes(q) && !titleText.includes(q) && !teacherText.includes(q)) {
-          row.classList.add('open');
-        }
-        highlightInElement(row, q);
-        if (body) highlightInElement(body, q);
-        visible++;
+      const text = card.textContent.toLowerCase();
+      if (text.includes(q)) {
+        card.classList.remove('filtered-out');
+        highlightInElement(card, q);
       } else {
-        row.classList.add('hidden');
-        row.classList.remove('open');
+        card.classList.add('filtered-out');
       }
     });
-    const countEl = document.getElementById('sermon-count');
-    const emptyEl = document.getElementById('empty-msg');
-    if (q) {
-      countEl.textContent = visible + ' of 17 entries match "' + q + '"';
-      emptyEl.classList.toggle('show', visible === 0);
-    } else {
-      countEl.textContent = '17 entries';
-      emptyEl.classList.remove('show');
-    }
+    currentPage = 1;
+    applyPagination();
   }
+
+  function applyPagination() {
+    const visible = getVisibleCards();
+    const total = visible.length;
+    const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    getAllCards().forEach(c => c.classList.remove('page-out'));
+    visible.forEach((card, i) => {
+      const onPage = (i >= (currentPage - 1) * PER_PAGE) && (i < currentPage * PER_PAGE);
+      if (!onPage) card.classList.add('page-out');
+    });
+
+    const countEl = document.getElementById('sermon-count');
+    const allTotal = getAllCards().length;
+    const q = document.getElementById('sermon-search').value.trim();
+    if (q) {
+      if (total === 0) {
+        countEl.textContent = '0 of ' + allTotal + ' entries match "' + q + '"';
+      } else {
+        const start = (currentPage - 1) * PER_PAGE + 1;
+        const end = Math.min(currentPage * PER_PAGE, total);
+        countEl.textContent = 'Showing ' + start + '–' + end + ' of ' + total + ' matching entries (' + allTotal + ' total)';
+      }
+    } else {
+      const start = (currentPage - 1) * PER_PAGE + 1;
+      const end = Math.min(currentPage * PER_PAGE, total);
+      if (total <= PER_PAGE) {
+        countEl.textContent = total + ' entries';
+      } else {
+        countEl.textContent = 'Showing ' + start + '–' + end + ' of ' + total + ' entries';
+      }
+    }
+
+    document.getElementById('empty-msg').classList.toggle('show', total === 0);
+    renderPaginationControls(totalPages);
+  }
+
+  function renderPaginationControls(totalPages) {
+    const pag = document.getElementById('pagination');
+    if (totalPages <= 1) { pag.innerHTML = ''; return; }
+    let html = '';
+    html += '<button class="page-btn" onclick="goToPage(' + (currentPage - 1) + ')"' + (currentPage === 1 ? ' disabled' : '') + '>← Prev</button>';
+
+    const pages = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (currentPage > 3) pages.push('...');
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (currentPage < totalPages - 2) pages.push('...');
+      pages.push(totalPages);
+    }
+    pages.forEach(p => {
+      if (p === '...') {
+        html += '<span class="page-ellipsis">…</span>';
+      } else {
+        html += '<button class="page-btn' + (p === currentPage ? ' active' : '') + '" onclick="goToPage(' + p + ')">' + p + '</button>';
+      }
+    });
+
+    html += '<button class="page-btn" onclick="goToPage(' + (currentPage + 1) + ')"' + (currentPage === totalPages ? ' disabled' : '') + '>Next →</button>';
+    html += '<span class="page-info">Page ' + currentPage + ' of ' + totalPages + '</span>';
+    pag.innerHTML = html;
+  }
+
+  function goToPage(p) {
+    currentPage = p;
+    applyPagination();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    sortCards();
+    applyPagination();
+  });
 </script>
 
 <script>window.PAGE_NOTE_IDS = ['n-sermons'];</script>
