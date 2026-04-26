@@ -1,7 +1,7 @@
 /* ============================================================
    CAMPBELL BIBLE STUDY — ANALYTICS & NOTIFICATIONS
    File: assets/js/analytics.js
-   Updated: April 26, 2026 (v1.4 — public-key fix for preloaded SDK)
+   Updated: April 24, 2026 (v1.3 — name-key fix + diagnostic logging + test hook)
 
    HANDLES TWO SYSTEMS:
    1. Google Analytics 4 (GA4) page tracking
@@ -37,16 +37,6 @@
    • ADDED: window.CBSG_testEmail() — manual trigger from browser console to
      test EmailJS pipeline independently of visitor-detection gates. Still
      respects owner suppression.
-
-   V1.4 CHANGES (2026-04-26):
-   • FIXED: "The public key is required" send() failure. When sermons.html
-     (and other pages) preloaded the EmailJS CDN via a <script> tag in <head>,
-     window.emailjs already existed when loadEmailJS() ran, so the early-return
-     path skipped init() entirely — leaving the SDK uninitialized. Two fixes:
-     (1) loadEmailJS() now always calls init({publicKey}) even when SDK was
-     pre-loaded by another script; (2) send() now passes {publicKey} as its
-     4th argument as a belt-and-suspenders fallback. Either fix alone resolves
-     the bug; together they're robust against future page-load order changes.
    ============================================================ */
 
 (function() {
@@ -105,18 +95,9 @@
   }
 
   // ─── LOAD EMAILJS ──────────────────────────────────────────
-  // FIXED 2026-04-26: When sermons.html (and other pages) preload the EmailJS
-  // CDN script via a <script> tag in <head>, window.emailjs exists by the time
-  // this loader runs — so the previous "if (window.emailjs) resolve()" path
-  // skipped init() entirely, leaving the SDK uninitialized. Now we ALWAYS call
-  // init() once we have window.emailjs, regardless of how it loaded. init() is
-  // idempotent in v4 (safe to call multiple times). Belt-and-suspenders: send()
-  // calls below also pass {publicKey} explicitly to handle any edge case where
-  // init didn't take.
   function loadEmailJS() {
     return new Promise((resolve, reject) => {
       if (window.emailjs) {
-        try { window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); } catch (e) { /* ignore */ }
         resolve();
         return;
       }
@@ -192,14 +173,10 @@
       };
 
       console.log('[CBSG Analytics] Sending email with params:', templateParams);
-      // FIXED 2026-04-26: Pass {publicKey} as 4th argument to send() so the
-      // SDK has the credential even if init() didn't fully take (e.g. when
-      // a preloaded <script> tag created window.emailjs before our init ran).
       await window.emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        templateParams,
-        { publicKey: EMAILJS_PUBLIC_KEY }
+        templateParams
       );
 
       console.log(`[CBSG Analytics] ✓ Email sent: ${safeEvent}`);
