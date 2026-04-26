@@ -96,11 +96,7 @@ function applyAdminUI() {
   const btnLoad    = document.getElementById('btn-load')    || document.querySelector('.btn-load');
   const btnStamp   = document.getElementById('btn-timestamp');
   const tokenInput = document.getElementById('gh-token');
-  if (btnAdmin) {
-    btnAdmin.textContent = unlocked ? '🔓 Admin ON' : '🔒 Admin';
-    btnAdmin.style.color = unlocked ? '#4ADE80' : '#FFD700';
-    btnAdmin.style.borderColor = unlocked ? 'rgba(74,222,128,0.5)' : 'rgba(255,215,0,0.4)';
-  }
+  if (btnAdmin)   btnAdmin.textContent     = unlocked ? '🔓 Admin ON' : '🔒 Admin';
   if (btnSave)    btnSave.style.display    = unlocked ? 'inline-block' : 'none';
   if (btnLoad)    btnLoad.style.display    = unlocked ? 'inline-block' : 'none';
   if (btnStamp)   btnStamp.style.display   = unlocked ? 'inline-block' : 'none';
@@ -547,7 +543,7 @@ function checkFirstVisit() {
 // ============================================================
 
 function getGuestPageKey() {
-  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\/?/, '').replace(/^\//, '').replace(/\.html$/, '') || 'index';
+  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\/?/, '').replace(/\.html$/, '') || 'index';
   return 'cbsg-guest-' + path;
 }
 
@@ -970,7 +966,7 @@ async function saveToGitHub() {
   if (!token) { setStatus('⚠️ Paste your GitHub token first.', 'warn'); return; }
   localStorage.setItem('cbsg-gh-token', token);
   saveAllNotes();
-  const rawPath  = window.location.pathname.replace(/^\/CampbellBibleStudy\//, '').replace(/^\//, '');
+  const rawPath  = window.location.pathname.replace(/^\/CampbellBibleStudy\//, '');
   const filePath = rawPath || 'index.html';
   setStatus('📡 Saving...', 'info');
   const sensitiveIds = ['gh-token', 'gemini-key'];
