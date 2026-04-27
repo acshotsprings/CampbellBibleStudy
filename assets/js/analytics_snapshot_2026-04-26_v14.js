@@ -1,7 +1,7 @@
 /* ============================================================
    CAMPBELL BIBLE STUDY — ANALYTICS & NOTIFICATIONS
    File: assets/js/analytics.js
-   Updated: April 26, 2026 (v1.5 — template-agnostic params)
+   Updated: April 26, 2026 (v1.4 — public-key fix for preloaded SDK)
 
    HANDLES TWO SYSTEMS:
    1. Google Analytics 4 (GA4) page tracking
@@ -47,20 +47,6 @@
      pre-loaded by another script; (2) send() now passes {publicKey} as its
      4th argument as a belt-and-suspenders fallback. Either fix alone resolves
      the bug; together they're robust against future page-load order changes.
-
-   V1.5 CHANGES (2026-04-26):
-   • TEMPLATE-AGNOSTIC PARAMS. The EmailJS dashboard kept reverting save
-     attempts to the original "Contact Us" template variables ({{name}},
-     {{message}}, {{from_name}}, etc.), so we stopped fighting the UI.
-     sendNotificationEmail() now sends BOTH the old template's variables
-     AND the new v1.4 ones in every request. The {{message}} field carries
-     a fully-formatted multi-line summary built in JS — visitor, event,
-     timestamp, page, URL, details, browser/device — so the email body is
-     readable as-is in the existing template, no dashboard edit required.
-   • The new v1.4 names ({{visitor_name}}, {{event_type}}, etc.) still go
-     out in case a future template uses the cleaner names.
-   • Net result: one analytics.js change, zero EmailJS dashboard changes,
-     readable emails forever.
    ============================================================ */
 
 (function() {
@@ -173,17 +159,13 @@
       console.log('[CBSG Analytics] ✓ EmailJS SDK loaded.');
 
       // v1.2: sanitize every template field so nothing comes through as blank.
-      // v1.3 (2026-04-24): FIXED name-key mismatch — read 'cbsg-guest-name' first.
-      // v1.5 (2026-04-26): TEMPLATE-AGNOSTIC PARAMS. The EmailJS dashboard was
-      // fighting save attempts, so instead of forcing the template to match our
-      // variable names, we now populate BOTH naming conventions:
-      //   • Old template fields ({{name}}, {{message}}, {{from_name}}, etc.)
-      //     get sensible values, with {{message}} carrying the full readable
-      //     summary as multi-line text.
-      //   • New v1.4 fields ({{visitor_name}}, {{event_type}}, etc.) still go
-      //     out for any future template that uses the cleaner names.
-      // This way the email is readable no matter which template version is
-      // active in the EmailJS dashboard. We never have to touch the UI again.
+      // If a field is empty/undefined, substitute a labeled placeholder so
+      // the email is at least informative instead of "nobody."
+      // v1.3 (2026-04-24): FIXED name-key mismatch.
+      // main.js writes visitor name to 'cbsg-guest-name' in the welcome modal.
+      // Previously this read 'cbsg-visitor-name' which was never set, so every
+      // email arrived as "Anonymous Visitor". Now reads cbsg-guest-name first,
+      // falls back to cbsg-visitor-name (for any legacy data), then anonymous.
       const visitorName = (localStorage.getItem('cbsg-guest-name') || '').trim()
                        || (localStorage.getItem('cbsg-visitor-name') || '').trim()
                        || 'Anonymous Visitor';
@@ -198,38 +180,7 @@
       const safeExtra = (extraInfo && String(extraInfo).trim()) || '(no details)';
       const userAgent = navigator.userAgent || '(unknown agent)';
 
-      // Build the rich message body. This is what {{message}} renders as in
-      // the existing "Contact Us" template. Plain-text formatting that holds
-      // up in any email client.
-      const messageBody =
-        '🔔 New activity on the Campbell Bible Study site\n' +
-        '\n' +
-        'Visitor:  ' + visitorName + '\n' +
-        'Event:    ' + safeEvent + '\n' +
-        'When:     ' + timestamp + '\n' +
-        '\n' +
-        'Page:     ' + pageTitle + '\n' +
-        'URL:      ' + pageUrl + '\n' +
-        '\n' +
-        'Details:  ' + safeExtra + '\n' +
-        '\n' +
-        '────────────────────────────────────────\n' +
-        'Browser / device info:\n' +
-        userAgent;
-
       const templateParams = {
-        // === OLD TEMPLATE VARIABLES (the "Contact Us" defaults) ===
-        // These map to {{name}}, {{time}}, {{message}}, {{from_name}},
-        // {{from_email}}, {{page_name}}, {{email}} in the dashboard template.
-        name:         visitorName,
-        time:         timestamp,
-        message:      messageBody,
-        from_name:    'Campbell Bible Study Site',
-        from_email:   'noreply@cbs2026.com',
-        page_name:    pageTitle,
-        email:        NOTIFY_EMAIL,
-
-        // === NEW v1.4 VARIABLES (cleaner names, for future template) ===
         to_email:     NOTIFY_EMAIL,
         visitor_name: visitorName,
         event_type:   safeEvent,
