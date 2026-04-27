@@ -132,7 +132,6 @@ const NAV_STRUCTURE = [
       { label: '↳ Module 2 — The Ark and the Flood', href: 'theme3/module2.html', sub: true, completable: true, completeKey: 'complete-t3m2' },
       { label: '↳ Module 3 — The Rainbow Covenant', href: 'theme3/module3.html', sub: true, completable: true, completeKey: 'complete-t3m3' },
       { label: '↳ Module 4 — The Days of Noah', href: 'theme3/module4.html', sub: true, completable: true, completeKey: 'complete-t3m4' },
-      { label: '↳ Module 5 — Salvation Through the Water', href: 'theme3/module5.html', sub: true, completable: true, completeKey: 'complete-t3m5' },
     ]
   },
   {
