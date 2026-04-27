@@ -1,7 +1,7 @@
 /* ============================================================
    CAMPBELL BIBLE STUDY — ANALYTICS & NOTIFICATIONS
    File: assets/js/analytics.js
-   Updated: April 26, 2026 (v1.7 — admin auto-suppression)
+   Updated: April 26, 2026 (v1.6 — GA4 custom event tracking)
 
    HANDLES TWO SYSTEMS:
    1. Google Analytics 4 (GA4) page tracking
@@ -79,23 +79,6 @@
    • DEBUG: window.CBSG_testTrackEvent() fires a sample event for testing.
      All tracking honors owner suppression (your own clicks won't pollute
      GA reports unless owner mode is off).
-
-   V1.7 CHANGES (2026-04-26):
-   • ADMIN-MODE AUTO-SUPPRESSION. Previously, owner suppression required
-     visiting ?owner=true on every device + every browser to set a
-     localStorage flag. Domain migration to cbs2026.com wiped all flags
-     (localStorage is per-origin), causing self-emails to resume. Fix:
-     isOwner() now also returns true if admin is unlocked (sessionStorage
-     'cbsg-admin' === 'true' OR body.classList contains 'admin-mode'),
-     AND when admin is detected the persistent owner flag is auto-set in
-     localStorage. Net effect: any device Chris admin-logs into becomes
-     permanently suppressed — surviving admin logout, browser restart,
-     and even future domain changes (as long as he admin-logs in once on
-     the new domain). The ?owner=true URL trick still works as a backup
-     for non-admin scenarios.
-   • New helper: isAdminMode() — internal-only, checks both signals
-     defensively (sessionStorage + body class) so it works regardless of
-     analytics.js vs main.js load order.
    ============================================================ */
 
 (function() {
@@ -130,42 +113,10 @@
 
   function isOwner() {
     try {
-      // Persistent owner flag (set via ?owner=true URL param OR by isAdminMode below)
-      if (localStorage.getItem(OWNER_FLAG_KEY) === 'true') return true;
-
-      // Admin mode auto-suppresses. If admin is currently unlocked, ALSO
-      // promote this device to a persistent owner so future visits (even
-      // after admin logout, even after browser restart) stay suppressed.
-      // This is the durable fix for the "I keep getting emails from my own
-      // devices" problem — every device Chris uses gets admin-unlocked at
-      // some point, so this self-heals across phones, laptops, new browsers,
-      // and even domain migrations.
-      if (isAdminMode()) {
-        try {
-          localStorage.setItem(OWNER_FLAG_KEY, 'true');
-          console.log('[CBSG Analytics] Admin detected — device auto-promoted to owner. Emails suppressed permanently on this device/browser.');
-        } catch (e) { /* storage write fail — still return true for this session */ }
-        return true;
-      }
-
-      return false;
+      return localStorage.getItem(OWNER_FLAG_KEY) === 'true';
     } catch (err) {
       return false;
     }
-  }
-
-  // Detect admin mode without depending on main.js load order.
-  // Two signals, either is sufficient:
-  //   1. sessionStorage 'cbsg-admin' === 'true' (set by main.js on unlock)
-  //   2. document.body has 'admin-mode' class (applied by applyAdminUI)
-  function isAdminMode() {
-    try {
-      if (sessionStorage.getItem('cbsg-admin') === 'true') return true;
-    } catch (e) { /* sessionStorage may throw in some privacy modes */ }
-    try {
-      if (document.body && document.body.classList.contains('admin-mode')) return true;
-    } catch (e) { /* body may not exist yet */ }
-    return false;
   }
 
   // ─── LOAD GOOGLE ANALYTICS ─────────────────────────────────
