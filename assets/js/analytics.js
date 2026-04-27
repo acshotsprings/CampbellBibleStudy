@@ -1,7 +1,7 @@
 /* ============================================================
    CAMPBELL BIBLE STUDY — ANALYTICS & NOTIFICATIONS
    File: assets/js/analytics.js
-   Updated: April 26, 2026 (v1.5 — template-agnostic params)
+   Updated: April 26, 2026 (v1.6 — GA4 custom event tracking)
 
    HANDLES TWO SYSTEMS:
    1. Google Analytics 4 (GA4) page tracking
@@ -61,6 +61,24 @@
      out in case a future template uses the cleaner names.
    • Net result: one analytics.js change, zero EmailJS dashboard changes,
      readable emails forever.
+
+   V1.6 CHANGES (2026-04-26):
+   • GA4 CUSTOM EVENT TRACKING. Five behavioral events now fire to GA4
+     in addition to default page_view tracking:
+       (1) strongs_link_click  — anchor clicks to blueletterbible.org
+       (2) scripture_link_click — anchor clicks to bible.com
+       (3) module_complete     — when cbsg-complete-* localStorage flips true
+       (4) notes_saved          — when window.CBSG_notifyNoteSave() runs
+       (5) sermon_search       — what visitors search for in the sermon log
+     All events go through the helper window.CBSG_trackEvent(name, params)
+     which calls gtag('event', name, params) when GA is loaded.
+   • PASSIVE OBSERVER PATTERN: events 1, 2, 3 are auto-detected without
+     touching main.js, nav.js, or per-module pages. Document-level click
+     listener catches anchor URLs; localStorage.setItem is wrapped to
+     detect completion flips. Locked contracts preserved.
+   • DEBUG: window.CBSG_testTrackEvent() fires a sample event for testing.
+     All tracking honors owner suppression (your own clicks won't pollute
+     GA reports unless owner mode is off).
    ============================================================ */
 
 (function() {
@@ -310,6 +328,13 @@
 
   // ─── NOTE SAVE TRIGGER (exposed globally) ──────────────────
   window.CBSG_notifyNoteSave = function(noteContext) {
+    // Fire GA event (v1.6) — aggregate behavioral analytics
+    trackEvent('notes_saved', {
+      note_context: noteContext || '(no context)',
+      page_path:    window.location.pathname,
+      page_title:   document.title
+    });
+    // Fire EmailJS notification (existing behavior)
     sendNotificationEmail('Notes saved', noteContext || 'Notes saved on ' + window.location.pathname);
   };
 
@@ -328,11 +353,125 @@
     sendNotificationEmail('Manual test email', 'Triggered by CBSG_testEmail() from console at ' + new Date().toISOString());
   };
 
+  // ─── GA4 CUSTOM EVENT TRACKING (v1.6) ──────────────────────
+  // Generic helper: fires a custom event into GA4 via gtag(). Honors owner
+  // suppression so your own clicks don't pollute reports (unless you've
+  // turned owner mode off via ?owner=false). Silently no-ops if gtag is
+  // not yet loaded — events that arrive before GA finishes initializing
+  // are simply lost (acceptable for behavioral analytics).
+  function trackEvent(eventName, params) {
+    if (isOwner()) {
+      console.log('[CBSG Analytics] Owner mode — GA event suppressed: ' + eventName);
+      return;
+    }
+    if (typeof window.gtag !== 'function') {
+      console.log('[CBSG Analytics] gtag not ready — event dropped: ' + eventName);
+      return;
+    }
+    const safeParams = Object.assign({
+      page_path:  window.location.pathname,
+      page_title: document.title
+    }, params || {});
+    try {
+      window.gtag('event', eventName, safeParams);
+      console.log('[CBSG Analytics] ✓ GA event: ' + eventName, safeParams);
+    } catch (err) {
+      console.warn('[CBSG Analytics] ✗ GA event failed: ' + eventName, err);
+    }
+  }
+
+  // Expose globally so per-page code (e.g. sermons.html toggleRow) can fire.
+  window.CBSG_trackEvent = trackEvent;
+
+  // Convenience wrapper for sermon search — sermons.html calls this when
+  // the visitor types a search query (debounced). Tells you what topics
+  // people are looking for across the sermon library.
+  window.CBSG_trackSermonSearch = function(query) {
+    const q = (query || '').trim();
+    if (q.length < 2) return; // Skip empty / single-char noise
+    trackEvent('sermon_search', {
+      query: q.slice(0, 100)
+    });
+  };
+
+  // ─── DEBUG TEST HOOK (v1.6) ────────────────────────────────
+  // Run CBSG_testTrackEvent() from console to verify GA event pipeline.
+  window.CBSG_testTrackEvent = function() {
+    console.log('[CBSG Analytics] CBSG_testTrackEvent() triggered manually.');
+    trackEvent('debug_test_event', {
+      note: 'Manual test from console',
+      timestamp: new Date().toISOString()
+    });
+  };
+
+  // ─── PASSIVE OBSERVER 1: Strong's & Scripture link clicks ──
+  // Single document-level click listener catches every anchor click on the
+  // site without per-page hooks. Routes by destination domain.
+  function setupLinkClickTracking() {
+    document.addEventListener('click', function(evt) {
+      const anchor = evt.target.closest('a');
+      if (!anchor || !anchor.href) return;
+      const url = anchor.href;
+
+      // Strong's lexicon clicks → blueletterbible.org/lexicon/h*/ or g*/
+      if (/blueletterbible\.org\/lexicon\//i.test(url)) {
+        const match = url.match(/lexicon\/([hg]\d+)/i);
+        const strongsId = match ? match[1].toUpperCase() : '(unknown)';
+        trackEvent('strongs_link_click', {
+          strongs_id:  strongsId,
+          link_url:    url,
+          link_text:   (anchor.textContent || '').trim().slice(0, 100)
+        });
+        return;
+      }
+
+      // Scripture clicks → bible.com (any sub-path; all your NASB links live here)
+      if (/(?:^|\/\/)(?:www\.)?bible\.com\//i.test(url)) {
+        // Try to extract the verse reference from URL like .../GEN.6.9.NASB1995
+        const match = url.match(/\/(\d+)\/([A-Z0-9]+\.\d+(?:\.\d+(?:-\d+)?)?)\./);
+        const verseRef = match ? match[2] : '(unknown)';
+        trackEvent('scripture_link_click', {
+          verse_ref:   verseRef,
+          link_url:    url,
+          link_text:   (anchor.textContent || '').trim().slice(0, 100)
+        });
+      }
+    }, { passive: true, capture: true });
+  }
+
+  // ─── PASSIVE OBSERVER 2: Module completion ─────────────────
+  // We wrap localStorage.setItem to detect when any 'cbsg-complete-*' key
+  // flips from non-true to true. This catches main.js's toggleCompletion()
+  // without modifying main.js (locked contract preserved).
+  function setupCompletionTracking() {
+    const nativeSetItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = function(key, value) {
+      // Always do the real write first
+      const result = nativeSetItem.apply(this, arguments);
+      try {
+        if (typeof key === 'string' && /^cbsg-complete-/.test(key) && value === 'true') {
+          // Module just got marked complete (not unmarked)
+          const completeKey = key.replace(/^cbsg-/, '');
+          trackEvent('module_complete', {
+            complete_key:  completeKey,
+            module_path:   window.location.pathname,
+            module_title:  document.title
+          });
+        }
+      } catch (e) {
+        // Never let our observer break the original setItem
+      }
+      return result;
+    };
+  }
+
   // ─── INITIALIZE ON PAGE LOAD ───────────────────────────────
   function init() {
-    handleOwnerFlag();       // Check URL for ?owner=true/false first
-    loadGoogleAnalytics();   // GA always runs (tracks your own visits too)
-    fireVisitorHitEmail();   // Email fires only if not owner
+    handleOwnerFlag();           // Check URL for ?owner=true/false first
+    loadGoogleAnalytics();       // GA always runs (tracks your own visits too)
+    setupLinkClickTracking();    // v1.6: Strong's & scripture click tracking
+    setupCompletionTracking();   // v1.6: localStorage observer for completions
+    fireVisitorHitEmail();       // Email fires only if not owner
   }
 
   if (document.readyState === 'loading') {
