@@ -1,14 +1,13 @@
 /* ============================================================
    CAMPBELL BIBLE STUDY — ANALYTICS & NOTIFICATIONS
    File: assets/js/analytics.js
-   Updated: May 2, 2026 (v1.8 — name-entry email trigger)
+   Updated: April 26, 2026 (v1.7 — admin auto-suppression)
 
    HANDLES TWO SYSTEMS:
    1. Google Analytics 4 (GA4) page tracking
    2. EmailJS silent email notifications to Chris
 
    EMAIL TRIGGERS:
-   • Visitor enters their name (fires onblur of name field — v1.8, every entry)
    • Visitor lands on site (first page view this session, after 8s dwell + 1 interaction)
    • Visitor saves their notes (fires when saveVisitorNotes() runs)
 
@@ -97,24 +96,6 @@
    • New helper: isAdminMode() — internal-only, checks both signals
      defensively (sessionStorage + body class) so it works regardless of
      analytics.js vs main.js load order.
-
-   V1.8 CHANGES (2026-05-02):
-   • NAME-ENTRY EMAIL TRIGGER. New highest-confidence visitor signal: when
-     a visitor types their name into the 👤 name field and clicks/tabs out
-     (onblur), an email fires immediately with the name. No 8-second dwell,
-     no interaction guard, no session dedup — every name entry/change emits
-     a new email so Chris always knows who just identified themselves.
-   • New exposed function: window.CBSG_notifyNameEntry(name) — called from
-     main.js's onblur handler on the #cbsg-guest-name input. Empty/whitespace
-     names are ignored (no email). Owner suppression still applies by default
-     (so you don't email yourself while testing).
-   • New session-scoped bypass: window.CBSG_bypassOwnerForName(true|false)
-     — call from the browser console to force the name-entry email to fire
-     even on owner-flagged devices, for testing the pipeline end-to-end
-     without flipping URL params or clearing localStorage. Session-scoped
-     so it auto-clears when the browser closes (can't accidentally stay on).
-     Only affects name-entry emails — visit/note-save emails still respect
-     owner suppression normally.
    ============================================================ */
 
 (function() {
@@ -419,67 +400,6 @@
   window.CBSG_testEmail = function() {
     console.log('[CBSG Analytics] CBSG_testEmail() triggered manually.');
     sendNotificationEmail('Manual test email', 'Triggered by CBSG_testEmail() from console at ' + new Date().toISOString());
-  };
-
-  // ─── NAME-ENTRY EMAIL TRIGGER (v1.8) ───────────────────────
-  // Highest-confidence visitor signal. Called by main.js's onblur handler
-  // on the #cbsg-guest-name input. Fires every time a non-empty name is
-  // entered/changed — no dedup, no dwell guard, no interaction guard.
-  // Owner suppression still applies UNLESS the session-scoped bypass is on
-  // (see CBSG_bypassOwnerForName below).
-  const NAME_BYPASS_KEY = 'cbsg-name-bypass-owner';
-
-  window.CBSG_notifyNameEntry = function(name) {
-    const cleanName = (name && String(name).trim()) || '';
-    if (!cleanName) {
-      console.log('[CBSG Analytics] Name-entry skipped: empty name');
-      return;
-    }
-    console.log('[CBSG Analytics] CBSG_notifyNameEntry() fired. name="' + cleanName + '"');
-
-    // Owner suppression — but allow session bypass for testing
-    let bypassActive = false;
-    try { bypassActive = sessionStorage.getItem(NAME_BYPASS_KEY) === 'true'; }
-    catch (e) { /* sessionStorage may throw in some privacy modes */ }
-
-    if (isOwner() && !bypassActive) {
-      console.log('[CBSG Analytics] Owner mode — name-entry email suppressed. Run CBSG_bypassOwnerForName(true) to override for this session.');
-      return;
-    }
-    if (isOwner() && bypassActive) {
-      console.log('[CBSG Analytics] Owner mode active but bypass ON — name-entry email will fire.');
-    }
-
-    sendNotificationEmail('Visitor entered name', 'Name: ' + cleanName + ' | Page: ' + window.location.pathname);
-  };
-
-  // ─── OWNER BYPASS FOR NAME-ENTRY (v1.8) ────────────────────
-  // Session-scoped bypass for testing the name-entry email pipeline from
-  // an owner-flagged device. Auto-clears when the browser closes — can't
-  // accidentally stay on forever. Only affects name-entry emails; visit
-  // and note-save emails still respect owner suppression normally.
-  //   CBSG_bypassOwnerForName(true)  — turn bypass ON for this session
-  //   CBSG_bypassOwnerForName(false) — turn bypass OFF
-  //   CBSG_bypassOwnerForName()      — read current state
-  window.CBSG_bypassOwnerForName = function(enable) {
-    try {
-      if (enable === true) {
-        sessionStorage.setItem(NAME_BYPASS_KEY, 'true');
-        console.log('[CBSG Analytics] ✓ Owner bypass for name-entry: ON (this session only)');
-        return true;
-      }
-      if (enable === false) {
-        sessionStorage.removeItem(NAME_BYPASS_KEY);
-        console.log('[CBSG Analytics] ✓ Owner bypass for name-entry: OFF');
-        return false;
-      }
-      const current = sessionStorage.getItem(NAME_BYPASS_KEY) === 'true';
-      console.log('[CBSG Analytics] Owner bypass for name-entry currently: ' + (current ? 'ON' : 'OFF'));
-      return current;
-    } catch (e) {
-      console.log('[CBSG Analytics] sessionStorage unavailable: ' + e.message);
-      return false;
-    }
   };
 
   // ─── GA4 CUSTOM EVENT TRACKING (v1.6) ──────────────────────
