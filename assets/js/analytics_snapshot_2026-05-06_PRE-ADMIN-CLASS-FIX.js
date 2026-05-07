@@ -1,7 +1,7 @@
 /* ============================================================
    CAMPBELL BIBLE STUDY — ANALYTICS & NOTIFICATIONS
    File: assets/js/analytics.js
-   Updated: May 6, 2026 (v1.9 — admin-class detection bug fix)
+   Updated: May 2, 2026 (v1.8 — name-entry email trigger)
 
    HANDLES TWO SYSTEMS:
    1. Google Analytics 4 (GA4) page tracking
@@ -174,16 +174,16 @@
   }
 
   // Detect admin mode without depending on main.js load order.
-  // 2026-05-06 FIX: Only sessionStorage is the source of truth. Some HTML
-  // pages ship with class="admin-mode" baked into the <body> tag (artifact
-  // of editing the source while admin was unlocked), which was causing every
-  // first-time visitor to be auto-promoted to owner and have their hit email
-  // silently suppressed. The body-class signal is unreliable — it's a UI hint
-  // applied AFTER unlock, never a source of truth before it.
+  // Two signals, either is sufficient:
+  //   1. sessionStorage 'cbsg-admin' === 'true' (set by main.js on unlock)
+  //   2. document.body has 'admin-mode' class (applied by applyAdminUI)
   function isAdminMode() {
     try {
       if (sessionStorage.getItem('cbsg-admin') === 'true') return true;
     } catch (e) { /* sessionStorage may throw in some privacy modes */ }
+    try {
+      if (document.body && document.body.classList.contains('admin-mode')) return true;
+    } catch (e) { /* body may not exist yet */ }
     return false;
   }
 
@@ -594,35 +594,8 @@
     };
   }
 
-  // ─── ONE-TIME MIGRATION (2026-05-06) ───────────────────────
-  // Until today, isAdminMode() trusted document.body.classList.contains('admin-mode')
-  // as a signal that the user was admin-unlocked. But several HTML pages on the
-  // site ship with class="admin-mode" baked into the <body> tag (an artifact of
-  // editing source while admin was unlocked). That meant every visitor whose
-  // first page was a "leaking" page got auto-promoted to owner permanently in
-  // localStorage, which silently suppressed all their visitor-hit emails.
-  //
-  // This migration runs once per device. If cbsg-is-owner is set but the device
-  // is not currently in admin sessionStorage, we conservatively clear the flag
-  // — assuming it was written by the buggy auto-promote. Any real owner device
-  // (i.e. you, Chris) will simply re-promote next time you unlock admin.
-  function runOwnerFlagMigration() {
-    const MIGRATION_KEY = 'cbsg-owner-migration-v2026-05-06';
-    try {
-      if (localStorage.getItem(MIGRATION_KEY) === 'done') return;
-      const sessionAdmin = sessionStorage.getItem('cbsg-admin') === 'true';
-      const ownerFlag    = localStorage.getItem(OWNER_FLAG_KEY) === 'true';
-      if (ownerFlag && !sessionAdmin) {
-        localStorage.removeItem(OWNER_FLAG_KEY);
-        console.log('[CBSG Analytics] One-time migration: cleared stale owner flag (likely written by 2026-05-06 admin-class bug).');
-      }
-      localStorage.setItem(MIGRATION_KEY, 'done');
-    } catch (e) { /* storage may throw in privacy modes */ }
-  }
-
   // ─── INITIALIZE ON PAGE LOAD ───────────────────────────────
   function init() {
-    runOwnerFlagMigration();     // 2026-05-06: clear stale owner flags
     handleOwnerFlag();           // Check URL for ?owner=true/false first
     loadGoogleAnalytics();       // GA always runs (tracks your own visits too)
     setupLinkClickTracking();    // v1.6: Strong's & scripture click tracking
