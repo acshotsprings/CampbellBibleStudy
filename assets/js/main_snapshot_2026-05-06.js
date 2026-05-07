@@ -240,12 +240,6 @@ function saveWelcomeName() {
   if (!r.ok) { cbsgValidateLive(); return; }
   localStorage.setItem('cbsg-guest-name', r.name);
   localStorage.setItem('cbsg-guest-welcomed', 'true');
-  // 2026-05-06 — Fire visitor-registered email. The v1.8 onblur hook was
-  // wired to the (removed) My Notes panel input, so welcome-modal entries
-  // were never reported. This restores the highest-confidence visitor signal.
-  try {
-    if (window.CBSG_notifyNameEntry) window.CBSG_notifyNameEntry(r.name);
-  } catch (e) { /* never block the welcome flow on email failure */ }
   const modal = document.getElementById('cbsg-welcome-modal');
   if (modal) modal.remove();
   // Guest panel removed 2026-04-21 — visitors use the embedded Quill boxes on each page instead.
