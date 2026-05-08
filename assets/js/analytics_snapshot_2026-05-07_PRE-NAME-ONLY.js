@@ -1,7 +1,7 @@
 /* ============================================================
    CAMPBELL BIBLE STUDY — ANALYTICS & NOTIFICATIONS
    File: assets/js/analytics.js
-   Updated: May 7, 2026 (v2.1 — note content included in save email)
+   Updated: May 6, 2026 (v1.9 — admin-class detection bug fix)
 
    HANDLES TWO SYSTEMS:
    1. Google Analytics 4 (GA4) page tracking
@@ -127,7 +127,7 @@
   const EMAILJS_TEMPLATE_ID = 'template_275v5hl';
   const NOTIFY_EMAIL = 'acshotsprings@gmail.com';
   const OWNER_FLAG_KEY = 'cbsg-is-owner';
-  // SESSION_HIT_KEY removed 2026-05-07 — no longer needed since hit email was removed.
+  const SESSION_HIT_KEY = 'cbsg-session-hit-sent';
 
   // ─── OWNER DETECTION ───────────────────────────────────────
   function handleOwnerFlag() {
@@ -344,42 +344,66 @@
   }
 
   // ─── VISITOR HIT TRIGGER ───────────────────────────────────
-  // 2026-05-07 (v2.0): The 8-second-dwell-plus-interaction "hit email" was
-  // removed. It was firing for any visitor who lingered 8+ seconds and moved
-  // their mouse/scrolled, which produced "Anonymous Visitor" emails for
-  // anyone who hadn't yet entered their name through the welcome modal —
-  // including bots, prefetchers, and visitors mid-modal. The cleaner signal
-  // is CBSG_notifyNameEntry below: it fires only when a real visitor types
-  // and submits their actual name. No more anonymous noise.
+  // v1.2: This now requires BOTH (a) the page to stay open 8+ seconds AND
+  // (b) at least one real human interaction (mousemove, click, scroll, key).
+  // Bots and link-prefetchers rarely do either — this kills blank emails at
+  // the source. If the visitor closes the tab before the thresholds are met,
+  // no email is sent.
+  function fireVisitorHitEmail() {
+    console.log('[CBSG Analytics] fireVisitorHitEmail() called. isOwner=' + isOwner());
+
+    if (sessionStorage.getItem(SESSION_HIT_KEY)) {
+      console.log('[CBSG Analytics] Already fired this session — skipping.');
+      return;
+    }
+
+    const DWELL_MS = 8000;
+    let humanInteracted = false;
+    let dwellElapsed = false;
+
+    function markInteracted() {
+      if (humanInteracted) return;
+      humanInteracted = true;
+      console.log('[CBSG Analytics] ✓ Human interaction detected (dwellElapsed=' + dwellElapsed + ')');
+      maybeFire();
+    }
+    function markDwellDone() {
+      dwellElapsed = true;
+      console.log('[CBSG Analytics] ✓ 8-second dwell elapsed (humanInteracted=' + humanInteracted + ')');
+      maybeFire();
+    }
+    function maybeFire() {
+      if (!humanInteracted || !dwellElapsed) return;
+      if (sessionStorage.getItem(SESSION_HIT_KEY)) return;
+      sessionStorage.setItem(SESSION_HIT_KEY, 'true');
+      console.log('[CBSG Analytics] ✓ Both gates passed — firing hit email.');
+      sendNotificationEmail('Visitor hit site', `Landing page: ${window.location.pathname}`);
+      cleanup();
+    }
+    function cleanup() {
+      ['mousemove', 'click', 'scroll', 'keydown', 'touchstart'].forEach(evt => {
+        document.removeEventListener(evt, markInteracted, { passive: true });
+      });
+    }
+
+    ['mousemove', 'click', 'scroll', 'keydown', 'touchstart'].forEach(evt => {
+      document.addEventListener(evt, markInteracted, { passive: true });
+    });
+
+    console.log('[CBSG Analytics] Waiting for 8s dwell + 1 human interaction...');
+    setTimeout(markDwellDone, DWELL_MS);
+  }
 
   // ─── NOTE SAVE TRIGGER (exposed globally) ──────────────────
-  // 2026-05-07 (v2.1): Now accepts a second arg `noteContent` containing
-  // the actual notes the visitor typed. When provided, it gets included in
-  // the email body so Chris can read the visitor's notes directly from the
-  // notification — without this, the only signal was "someone saved" with
-  // no idea what they wrote, which defeated the whole point of a family
-  // Bible study site.
-  window.CBSG_notifyNoteSave = function(noteContext, noteContent) {
+  window.CBSG_notifyNoteSave = function(noteContext) {
     // Fire GA event (v1.6) — aggregate behavioral analytics
     trackEvent('notes_saved', {
       note_context: noteContext || '(no context)',
       page_path:    window.location.pathname,
       page_title:   document.title
     });
-    // Build email body — context line + notes content if available.
-    // Truncate at 8KB to stay well under EmailJS template field limits.
-    let body = noteContext || ('Notes saved on ' + window.location.pathname);
-    if (noteContent && typeof noteContent === 'string') {
-      const cleaned = noteContent.trim();
-      if (cleaned.length > 0) {
-        const MAX_LEN = 8000;
-        const truncated = cleaned.length > MAX_LEN
-          ? cleaned.slice(0, MAX_LEN) + '\n\n[...notes truncated — too long for email. Full version is in visitor\'s browser localStorage.]'
-          : cleaned;
-        body += '\n\n--- NOTES ---\n' + truncated;
-      }
-    }
-    sendNotificationEmail('Notes saved', body);
+    // Fire EmailJS notification (existing behavior)
+    sendNotificationEmail('Notes saved', noteContext || 'Notes saved on ' + window.location.pathname);
   };
 
   // ─── OWNER STATUS CHECK (exposed globally for debugging) ───
@@ -603,7 +627,7 @@
     loadGoogleAnalytics();       // GA always runs (tracks your own visits too)
     setupLinkClickTracking();    // v1.6: Strong's & scripture click tracking
     setupCompletionTracking();   // v1.6: localStorage observer for completions
-    // 2026-05-07: hit email removed — see comment block above CBSG_notifyNameEntry.
+    fireVisitorHitEmail();       // Email fires only if not owner
   }
 
   if (document.readyState === 'loading') {

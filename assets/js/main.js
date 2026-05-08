@@ -560,6 +560,8 @@ function getGuestPageKey() {
 function silentEmailGuest() {
   // CBSG-DISABLED-v5.1: direct EmailJS send delegated to analytics.js via
   // window.CBSG_notifyNoteSave. Preserves owner suppression from analytics.js v1.1.
+  // 2026-05-07: now passes the actual notes content as 2nd arg so Chris can
+  // read what the visitor wrote, not just be told "someone saved."
   try {
     const notesEl = document.getElementById('cbsg-guest-textarea');
     if (!notesEl) return;
@@ -567,7 +569,7 @@ function silentEmailGuest() {
     if (notes.length < 5) return;
     const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
     if (typeof window.CBSG_notifyNoteSave === 'function') {
-      window.CBSG_notifyNoteSave('Guest save from ' + pageName);
+      window.CBSG_notifyNoteSave('Guest save from ' + pageName, notes);
     }
   } catch(e) {}
   /* === CBSG-DISABLED-v5.1 === original inline send, preserved for reference ===
@@ -1243,9 +1245,11 @@ function _maybeEmailVisitorNotes(editorId, quill) {
         /* CBSG-DISABLED-v5.1: inline send delegated to analytics.js.
            Call window.CBSG_notifyNoteSave if you want the visitor note save
            to trigger an owner-suppressed email via analytics.js v1.1.
+           2026-05-07: now passes the actual Quill text as 2nd arg so the
+           email body contains what the visitor wrote.
            Preserved below for reference. */
         if (typeof window.CBSG_notifyNoteSave === 'function') {
-          window.CBSG_notifyNoteSave('Visitor Quill save');
+          window.CBSG_notifyNoteSave('Visitor Quill save: ' + pageName + ' (' + editorId + ')', text);
         }
         /* original: try { emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params).catch(()=>{}); } catch(e) {} */
       }
