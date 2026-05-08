@@ -995,51 +995,7 @@ async function saveToGitHub() {
   const tsBtn = document.getElementById('btn-timestamp'); if (tsBtn) { stripped.push({ parent: tsBtn.parentNode, el: tsBtn, next: tsBtn.nextSibling }); tsBtn.remove(); }
   const sidebar = document.getElementById('sidebar'); const sidebarBackup = sidebar ? sidebar.innerHTML : ''; if (sidebar) sidebar.innerHTML = '';
   const ghStatus = document.getElementById('gh-status'); const statusBackup = ghStatus ? ghStatus.innerHTML : ''; if (ghStatus) { ghStatus.innerHTML = ''; ghStatus.removeAttribute('style'); }
-
-  // ─── 2026-05-08: STRIP RUNTIME QUILL DOM BEFORE SAVE ─────────
-  // Without this, every Save to GitHub commits the rendered Quill toolbar
-  // and wrappers into the page source. Next page load, Quill mounts again
-  // ON TOP of that leftover DOM → a second toolbar appears. Save again
-  // → third toolbar. This was the "multiple Quill boxes" bug.
-  // We collect every top-level quill-wrapper, extract the clean editor +
-  // notes HTML, replace the wrapper with the clean form for the save, then
-  // restore the live DOM after so Quill keeps working without a refresh.
-  // Top-level only because already-corrupted pages may have nested wrappers
-  // from prior bad saves; processing nested ones would orphan parent nodes.
-  const quillRestores = [];
-  const allWrappers = Array.from(document.querySelectorAll('.quill-wrapper'));
-  const topLevelWrappers = allWrappers.filter(w => !w.parentNode || !w.parentNode.closest('.quill-wrapper'));
-  topLevelWrappers.forEach(wrapper => {
-    // Find the deepest quill-editor inside (handles nested wrappers from
-    // previously corrupted pages — that's the one with the actual notes).
-    const editorMounts = wrapper.querySelectorAll('.quill-editor');
-    if (!editorMounts.length) return;
-    const editorMount = editorMounts[editorMounts.length - 1];
-    const qlEditor = editorMount.querySelector('.ql-editor');
-    const notesHtml = qlEditor ? qlEditor.innerHTML : '';
-    const editorId = editorMount.id;
-    const placeholder = editorMount.getAttribute('data-placeholder') || '';
-    // Build the clean replacement: <div class="quill-editor" id="..." data-placeholder="...">notesHtml</div>
-    const clean = document.createElement('div');
-    clean.className = 'quill-editor';
-    if (editorId) clean.id = editorId;
-    if (placeholder) clean.setAttribute('data-placeholder', placeholder);
-    clean.innerHTML = notesHtml;
-    // Swap wrapper → clean in the DOM, remember how to restore
-    quillRestores.push({ parent: wrapper.parentNode, wrapper, replacement: clean, next: wrapper.nextSibling });
-    wrapper.parentNode.replaceChild(clean, wrapper);
-  });
-  // ─────────────────────────────────────────────────────────────
-
   const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-
-  // Restore Quill DOM so the live page keeps working without refresh
-  quillRestores.reverse().forEach(({ parent, wrapper, replacement, next }) => {
-    if (parent && replacement.parentNode === parent) {
-      parent.replaceChild(wrapper, replacement);
-    }
-  });
-
   Object.entries(savedValues).forEach(([id, val]) => { const el = document.getElementById(id); if (el) el.value = val; });
   if (sidebar) sidebar.innerHTML = sidebarBackup;
   if (ghStatus) ghStatus.innerHTML = statusBackup;
