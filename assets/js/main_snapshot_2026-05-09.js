@@ -596,9 +596,6 @@ function saveGuestNotes() {
   if (nameEl && nameEl.value.trim()) localStorage.setItem('cbsg-guest-name', nameEl.value.trim());
   const btn = document.getElementById('cbsg-guest-save-btn');
   if (btn) { btn.textContent = '✓ Saved'; btn.style.background = '#2E6B0E'; btn.style.color = 'white'; setTimeout(() => { btn.textContent = 'Save My Notes'; btn.style.background = '#FFD700'; btn.style.color = '#1F3864'; }, 1800); }
-  // 2026-05-09: explicit save clears the dirty flag so the page-leave
-  // handler in injectGuestPanel doesn't fire a duplicate "unsaved" email.
-  window.__cbsgGuestNotesDirty = false;
   silentEmailGuest();
 }
 
@@ -615,49 +612,6 @@ function injectGuestPanel() {
   panel.innerHTML = `<div id="cbsg-guest-header" onclick="toggleGuestPanel()" style="display:flex;align-items:center;justify-content:space-between;padding:8px 14px;cursor:pointer;user-select:none;"><span style="font-size:12px;font-weight:bold;color:#FFD700;letter-spacing:0.04em;">📝 My Notes</span><span id="cbsg-guest-chevron" style="font-size:10px;color:rgba(255,255,255,0.5);">▲</span></div><div id="cbsg-guest-body" style="padding:0 12px 12px;"><input id="cbsg-guest-name" type="text" placeholder="Your name (optional)" value="${safeName}" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:5px 8px;font-size:11px;margin-bottom:6px;font-family:Arial,sans-serif;" oninput="localStorage.setItem('cbsg-guest-name',this.value)" onblur="if(window.CBSG_notifyNameEntry)window.CBSG_notifyNameEntry(this.value)"><textarea id="cbsg-guest-textarea" placeholder="Add your thoughts, questions, or reflections on this page..." style="width:100%;box-sizing:border-box;height:110px;resize:vertical;background:rgba(255,255,255,0.08);color:white;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:7px 8px;font-size:12px;font-family:Arial,sans-serif;line-height:1.5;margin-bottom:8px;" oninput="localStorage.setItem('${getGuestPageKey()}',this.value)">${safeNotes}</textarea><button id="cbsg-guest-save-btn" style="width:100%;background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:7px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">Save My Notes</button></div>`;
   document.body.appendChild(panel);
   document.getElementById('cbsg-guest-save-btn').addEventListener('click', saveGuestNotes);
-
-  // ─── UNSAVED-NOTES FALLBACK EMAIL (2026-05-09) ─────────────
-  // If a visitor types ≥20 chars of notes and leaves the page WITHOUT
-  // clicking Save My Notes, fire one email per page so Chris doesn't
-  // miss thoughts that were typed but never saved. Guards:
-  //   • Tracks dirty state — typing sets dirty=true, saving sets dirty=false.
-  //   • Minimum 20 chars (skips typos / abandoned single words).
-  //   • Owner suppression handled downstream in CBSG_notifyNoteSave →
-  //     sendNotificationEmail → isOwner(); admin-mode users already
-  //     skip the panel entirely (isAdminUnlocked guard above).
-  //   • One email per pagehide event; flag flips to false after firing
-  //     so a quick back-and-forth tab switch doesn't double-fire.
-  //   • Uses pagehide rather than beforeunload — more reliable on
-  //     mobile Safari (Kimberly's iPad).
-  const MIN_UNSAVED_LEN = 20;
-  window.__cbsgGuestNotesDirty = false;
-  const ta = document.getElementById('cbsg-guest-textarea');
-  if (ta) {
-    ta.addEventListener('input', function() {
-      window.__cbsgGuestNotesDirty = true;
-    });
-  }
-  const handleUnsavedExit = function() {
-    try {
-      if (!window.__cbsgGuestNotesDirty) return;
-      const notesEl = document.getElementById('cbsg-guest-textarea');
-      if (!notesEl) return;
-      const notes = (notesEl.value || '').trim();
-      if (notes.length < MIN_UNSAVED_LEN) return;
-      // Persist to localStorage too so visitor doesn't lose the work.
-      try { localStorage.setItem(getGuestPageKey(), notesEl.value); } catch(e) {}
-      const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
-      if (typeof window.CBSG_notifyNoteSave === 'function') {
-        window.CBSG_notifyNoteSave('[Unsaved — visitor left page] ' + pageName, notes);
-      }
-      // Flip dirty off so a tab switch back/forward doesn't re-fire.
-      window.__cbsgGuestNotesDirty = false;
-    } catch(e) { /* swallow — never break unload */ }
-  };
-  window.addEventListener('pagehide', handleUnsavedExit);
-  // beforeunload as belt-and-suspenders for desktop browsers that don't
-  // always fire pagehide on close (older Edge/Firefox edge cases).
-  window.addEventListener('beforeunload', handleUnsavedExit);
 }
 
 let guestPanelOpen = true;
