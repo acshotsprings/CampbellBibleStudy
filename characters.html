@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Characters in Scripture · Campbell Bible Study</title>
+  <meta name="description" content="Deep studies on key figures from the Bible — their lives, their faith, their failures, their place in redemption history." />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    .characters-hero {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    .characters-hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.75rem;
+      color: #2d2d2d;
+    }
+    .characters-hero .lede {
+      font-size: 1.15rem;
+      color: #4a4a4a;
+      line-height: 1.7;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .characters-grid {
+      max-width: 1000px;
+      margin: 2rem auto 5rem;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .character-card {
+      background: #f7efdc;
+      border: 1px solid #e8e0d0;
+      border-radius: 8px;
+      padding: 1.75rem 1.6rem;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: relative;
+    }
+    .character-card.featured {
+      border-color: #b08a4a;
+      background: linear-gradient(135deg, #f7efdc 0%, #fdfaf3 100%);
+    }
+    .character-card:hover {
+      transform: translateY(-3px);
+      border-color: #b08a4a;
+      box-shadow: 0 10px 25px rgba(60, 40, 20, 0.1);
+    }
+    .character-card.placeholder {
+      background: #fdfaf3;
+      border-style: dashed;
+      pointer-events: none;
+      color: #8a7548;
+    }
+    .character-card .card-label {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #b08a4a;
+      font-weight: 700;
+    }
+    .character-card.placeholder .card-label {
+      color: #8a7548;
+    }
+    .character-card .card-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #2d2d2d;
+    }
+    .character-card.placeholder .card-name {
+      color: #6b5b3e;
+    }
+    .character-card .card-desc {
+      font-size: 0.95rem;
+      color: #4a4a4a;
+      line-height: 1.55;
+      margin-top: 0.4rem;
+    }
+    .character-card .card-meta {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(176, 138, 74, 0.25);
+      font-size: 0.8rem;
+      color: #8a7548;
+      letter-spacing: 0.03em;
+    }
+    .character-card .card-cta {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: #8a3a1a;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div id="site-nav"></div>
+
+  <main>
+    <section class="characters-hero">
+      <h1>Characters in Scripture</h1>
+      <p class="lede">Deep studies on key figures from the Bible — their lives, their faith, their failures, and their place in God's redemptive plan. Each character is approached as a complete reference: every detail, every battle, every prayer, every Psalm tied to its life-setting.</p>
+    </section>
+
+    <section class="characters-grid">
+
+      <a href="characters/david/index.html" class="character-card featured">
+        <span class="card-label">Featured · 17 Chapters</span>
+        <span class="card-name">David</span>
+        <span class="card-desc">The shepherd, the giant-killer, the fugitive, the king. A complete reference covering every recorded detail — origins, anointing, wars, mighty men, the covenant, the fall, the family collapse, the death, the Psalms, and his place in the messianic line.</span>
+        <span class="card-meta">1 Samuel 16 – 1 Kings 2 · 1 Chronicles 11 – 29 · 73 Psalms</span>
+        <span class="card-cta">Enter the library →</span>
+      </a>
+
+      <div class="character-card placeholder">
+        <span class="card-label">Coming · Planned</span>
+        <span class="card-name">Noah</span>
+        <span class="card-desc">The man who walked with God in a generation that did not. The ark, the flood, the covenant, the rainbow, the family afterward.</span>
+        <span class="card-meta">Genesis 5 – 10</span>
+      </div>
+
+      <div class="character-card placeholder">
+        <span class="card-label">Coming · Planned</span>
+        <span class="card-name">Joseph</span>
+        <span class="card-desc">From the pit to the palace — dreams, betrayal, prison, Pharaoh's right hand, and "you meant evil against me, but God meant it for good."</span>
+        <span class="card-meta">Genesis 37 – 50</span>
+      </div>
+
+      <div class="character-card placeholder">
+        <span class="card-label">Coming · Planned</span>
+        <span class="card-name">Ruth</span>
+        <span class="card-desc">A Moabite widow whose loyalty placed her in the messianic line. The kinsman-redeemer, the gleaning, the threshing floor.</span>
+        <span class="card-meta">Ruth 1 – 4</span>
+      </div>
+
+    </section>
+  </main>
+
+  <script src="assets/js/nav.js"></script>
+</body>
+</html>
