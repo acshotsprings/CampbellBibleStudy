@@ -5,119 +5,111 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Characters in Scripture · Campbell Bible Study</title>
   <meta name="description" content="Deep studies on key figures from the Bible — their lives, their faith, their failures, their place in redemption history." />
-  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
   <style>
     .characters-hero {
       max-width: 880px;
       margin: 0 auto;
-      padding: 40px 24px 24px;
+      padding: 5rem 1.5rem 2.5rem;
       text-align: center;
-      font-family: Arial, Helvetica, sans-serif;
     }
     .characters-hero h1 {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 32px;
-      font-weight: bold;
-      margin: 0 0 10px;
-      color: #1F3864;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.75rem;
+      color: #2d2d2d;
     }
     .characters-hero .lede {
-      font-size: 14px;
-      color: #444;
-      line-height: 1.8;
+      font-size: 1.15rem;
+      color: #4a4a4a;
+      line-height: 1.7;
       max-width: 640px;
       margin: 0 auto;
     }
     .characters-grid {
       max-width: 1000px;
-      margin: 16px auto 48px;
-      padding: 0 24px;
+      margin: 2rem auto 5rem;
+      padding: 0 1.5rem;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      font-family: Arial, Helvetica, sans-serif;
+      gap: 1.25rem;
     }
     .character-card {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      padding: 18px 20px;
+      background: #f7efdc;
+      border: 1px solid #e8e0d0;
+      border-radius: 8px;
+      padding: 1.75rem 1.6rem;
       text-decoration: none;
       color: inherit;
-      transition: all 0.15s ease;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 0.5rem;
+      position: relative;
     }
     .character-card.featured {
-      border: 1px solid #2E75B6;
-      border-left: 4px solid #2E75B6;
-      background: #EBF4FC;
+      border-color: #b08a4a;
+      background: linear-gradient(135deg, #f7efdc 0%, #fdfaf3 100%);
     }
     .character-card:hover {
-      border-color: #2E75B6;
-      box-shadow: 0 4px 14px rgba(31, 56, 100, 0.12);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      border-color: #b08a4a;
+      box-shadow: 0 10px 25px rgba(60, 40, 20, 0.1);
     }
     .character-card.placeholder {
-      background: #F8FAFD;
+      background: #fdfaf3;
       border-style: dashed;
       pointer-events: none;
-      color: #888;
+      color: #8a7548;
     }
     .character-card .card-label {
-      display: inline-block;
-      background: #1F3864;
-      color: #FFD700;
-      font-size: 9px;
-      font-weight: bold;
-      padding: 2px 8px;
-      border-radius: 12px;
-      letter-spacing: 0.05em;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      align-self: flex-start;
-      margin-bottom: 6px;
+      color: #b08a4a;
+      font-weight: 700;
     }
     .character-card.placeholder .card-label {
-      background: #999;
-      color: #fff;
+      color: #8a7548;
     }
     .character-card .card-name {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 22px;
-      font-weight: bold;
-      color: #1F3864;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #2d2d2d;
     }
     .character-card.placeholder .card-name {
-      color: #666;
+      color: #6b5b3e;
     }
     .character-card .card-desc {
-      font-size: 13px;
-      color: #444;
-      line-height: 1.65;
-      margin-top: 4px;
+      font-size: 0.95rem;
+      color: #4a4a4a;
+      line-height: 1.55;
+      margin-top: 0.4rem;
     }
     .character-card .card-meta {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(46, 117, 182, 0.25);
-      font-size: 11px;
-      color: #7A6600;
-      font-weight: bold;
-      letter-spacing: 0.02em;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(176, 138, 74, 0.25);
+      font-size: 0.8rem;
+      color: #8a7548;
+      letter-spacing: 0.03em;
     }
     .character-card .card-cta {
-      margin-top: 6px;
-      font-size: 12px;
-      color: #2E75B6;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: #8a3a1a;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
-  <div id="site-nav"></div>
+  <div id="app">
+    <div id="main">
 
   <main>
     <section class="characters-hero">
@@ -128,7 +120,7 @@
     <section class="characters-grid">
 
       <a href="characters/david/index.html" class="character-card featured">
-        <span class="card-label">Featured · 17 Chapters + 3 Appendices</span>
+        <span class="card-label">Featured · 17 Chapters</span>
         <span class="card-name">David</span>
         <span class="card-desc">The shepherd, the giant-killer, the fugitive, the king. A complete reference covering every recorded detail — origins, anointing, wars, mighty men, the covenant, the fall, the family collapse, the death, the Psalms, and his place in the messianic line.</span>
         <span class="card-meta">1 Samuel 16 – 1 Kings 2 · 1 Chronicles 11 – 29 · 73 Psalms</span>
@@ -159,6 +151,12 @@
     </section>
   </main>
 
+    </div><!-- /#main -->
+  </div><!-- /#app -->
+
+
   <script src="assets/js/nav.js"></script>
+
+  <script>buildSidebar('.');</script>
 </body>
 </html>
