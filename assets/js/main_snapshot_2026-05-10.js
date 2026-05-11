@@ -87,25 +87,6 @@ const COMPLETION_KEYS = {
   'theme3/module3':  'complete-t3m3',
 };
 
-/* ---- v5.1.1 (2026-05-10): sidebar-root depth helper ----
-   Replaces the broken `pathname.includes('/theme') ? '..' : '.'`
-   logic in three call sites below. Counts actual path depth so
-   pages at any depth (e.g. /characters/david/01-origins.html)
-   compute the correct relative root prefix.
-
-   /index.html                            -> '.'
-   /theme1/module1.html                   -> '..'
-   /characters/david/01-origins.html      -> '../..'
-*/
-function CBSG_getSidebarRoot() {
-  const path = window.location.pathname
-    .replace(/^\/(CampbellBibleStudy\/)?/, '')  // strip GH-Pages subpath if present
-    .replace(/\/+$/, '');                        // strip trailing slash
-  const segs = path.split('/').filter(Boolean);
-  const depth = Math.max(0, segs.length - 1);   // -1 to discount the filename
-  return depth === 0 ? '.' : new Array(depth).fill('..').join('/');
-}
-
 function isAdminUnlocked() { return sessionStorage.getItem('cbsg-admin') === 'true'; }
 
 function applyAdminUI() {
@@ -137,7 +118,8 @@ function applyAdminUI() {
     if (tokenInput) tokenInput.value = '';
   }
   if (typeof buildSidebar === 'function') {
-    buildSidebar(CBSG_getSidebarRoot());
+    const root = window.location.pathname.includes('/theme') ? '..' : '.';
+    buildSidebar(root);
   }
 }
 
@@ -710,7 +692,7 @@ function toggleCompletion() {
     btn.style.borderColor = nowComplete ? '#90EE90'  : 'rgba(255,255,255,0.3)';
     btn.style.color       = nowComplete ? '#90EE90'  : 'rgba(255,255,255,0.7)';
   }
-  if (typeof buildSidebar === 'function') { buildSidebar(CBSG_getSidebarRoot()); }
+  if (typeof buildSidebar === 'function') { const root = window.location.pathname.includes('/theme') ? '..' : '.'; buildSidebar(root); }
   setStatus(nowComplete ? '✅ Module marked complete!' : '↩️ Marked incomplete.', 'ok');
 }
 
@@ -876,80 +858,6 @@ function injectBarExtras() {
     if (barRight) bar.insertBefore(adminBtn, barRight); else bar.insertBefore(adminBtn, extras);
   }
   applyAdminUI();
-}
-
-/* ---- v5.1.1 (2026-05-10): site-wide feedback banner ----
-   A small friendly notice that appears below the github-bar
-   on every page, asking visitors to report broken pages or
-   weird visuals. Inserted via JS so the github-bar's locked
-   structure isn't modified. Anchors above #app so it sits
-   between the top bar and the main content. Dismissable
-   per-browser via localStorage flag 'cbsg-notice-dismissed'.
-*/
-function injectSiteNotice() {
-  if (document.getElementById('cbsg-site-notice')) return;
-  if (localStorage.getItem('cbsg-notice-dismissed') === 'true') return;
-
-  const notice = document.createElement('div');
-  notice.id = 'cbsg-site-notice';
-  notice.style.cssText = [
-    'position:fixed',
-    'top:40px',                 // sits right below the fixed github-bar (40px tall)
-    'left:0',
-    'right:0',
-    'z-index:150',              // above #app (which is below) but below modals if any
-    'background:#FFFBF0',
-    'border-bottom:1px solid #C8A800',
-    'color:#5a4a00',
-    'font-family:Arial,Helvetica,sans-serif',
-    'font-size:12px',
-    'line-height:1.4',
-    'padding:8px 16px',
-    'display:flex',
-    'align-items:center',
-    'justify-content:center',
-    'gap:10px',
-    'flex-wrap:wrap',
-    'text-align:center',
-    'box-shadow:0 1px 3px rgba(0,0,0,0.08)'
-  ].join(';');
-  notice.innerHTML = `
-    <span style="font-size:14px;">🛠️</span>
-    <span><strong>Active development:</strong>
-      please let me know if anything on the site is broken or doesn't look right —
-      <a href="mailto:acshotsprings@gmail.com?subject=Campbell Bible Study — Issue Report" style="color:#1F3864;font-weight:bold;text-decoration:underline;">acshotsprings@gmail.com</a>.
-      Thank you! :)
-    </span>
-    <button onclick="dismissSiteNotice()" title="Dismiss this notice on this device"
-      style="background:transparent;border:1px solid #C8A800;color:#7A6600;border-radius:3px;padding:2px 8px;font-size:11px;cursor:pointer;font-family:inherit;margin-left:6px;">
-      Dismiss
-    </button>
-  `;
-
-  document.body.appendChild(notice);
-
-  // After the notice renders, measure its height and shift #app down by that amount
-  // so content isn't hidden behind the notice. Re-measure on resize since the
-  // notice can wrap to a 2nd line on narrow screens.
-  function adjustAppOffset() {
-    const n = document.getElementById('cbsg-site-notice');
-    const app = document.getElementById('app');
-    if (!n || !app) return;
-    const h = n.getBoundingClientRect().height;
-    app.style.marginTop = (40 + h) + 'px';   // 40 = github-bar height
-  }
-  adjustAppOffset();
-  // small delay also handles fonts-loading reflow
-  setTimeout(adjustAppOffset, 100);
-  window.addEventListener('resize', adjustAppOffset);
-}
-
-function dismissSiteNotice() {
-  localStorage.setItem('cbsg-notice-dismissed', 'true');
-  const n = document.getElementById('cbsg-site-notice');
-  if (n) n.remove();
-  const app = document.getElementById('app');
-  if (app) app.style.marginTop = '40px';  // restore default
 }
 
 function openSidebar() {
@@ -1210,7 +1118,8 @@ async function loadFromGitHub() {
     let loaded = 0;
     for (const [key, value] of Object.entries(notes)) { if (value && value.trim()) { localStorage.setItem('cbsg-' + key, value); loaded++; } }
     loadNotes();
-    if (typeof buildSidebar === 'function') buildSidebar(CBSG_getSidebarRoot());
+    const root = window.location.pathname.includes('/theme') ? '..' : '.';
+    if (typeof buildSidebar === 'function') buildSidebar(root);
     refreshCompleteButton();
     setStatus(`✅ Loaded ${loaded} notes from GitHub.`, 'ok');
   } catch(e) { setStatus('❌ ' + e.message, 'error'); }
@@ -1523,7 +1432,6 @@ document.addEventListener('DOMContentLoaded', () => {
   injectMobileOverlay();
   markActivePage();
   injectBarExtras();
-  injectSiteNotice();
   injectCompleteButton();
   startTimer();
   updateVersionTimestamp();
