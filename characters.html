@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Characters in Scripture · Campbell Bible Study</title>
   <meta name="description" content="Deep studies on key figures from the Bible — their lives, their faith, their failures, their place in redemption history." />
-  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/analytics.js"></script>
   <style>
     .characters-hero {
       max-width: 880px;
@@ -108,9 +109,26 @@
   </style>
 </head>
 <body>
-  <div id="site-nav"></div>
 
-  <main>
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: March 27, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: May 10, 2026</span></span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+<main>
     <section class="characters-hero">
       <h1>Characters in Scripture</h1>
       <p class="lede">Deep studies on key figures from the Bible — their lives, their faith, their failures, and their place in God's redemptive plan. Each character is approached as a complete reference: every detail, every battle, every prayer, every Psalm tied to its life-setting.</p>
@@ -149,7 +167,14 @@
 
     </section>
   </main>
+    </div>
+  </div>
 
+  <script>window.PAGE_NOTE_IDS = [];</script>
   <script src="assets/js/nav.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>buildSidebar('.');</script>
+
+  <div id="sidebar-overlay" style="display: none;"></div>
 </body>
 </html>

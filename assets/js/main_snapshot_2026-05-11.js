@@ -1444,23 +1444,18 @@ function _maybeEmailVisitorNotes(editorId, quill) {
         page_name: pageName + ' — ' + editorId,
         message: text
       };
-      /* CBSG-FIX-v5.1.2 (2026-05-11): DEADLOCK FIX.
-         The previous wrapper `if (typeof emailjs !== 'undefined')` was a
-         vestigial leftover from the inline-EmailJS era. analytics.js loads
-         the EmailJS SDK lazily on the first sendNotificationEmail() call,
-         but the outer guard required the SDK to already be loaded — which
-         on pages that don't preload it created a chicken-and-egg deadlock:
-         the SDK only loaded if a notify fired, and a notify only fired if
-         the SDK had loaded. Effect: Quill auto-save emails were silently
-         dead on the majority of module pages. Fix: call CBSG_notifyNoteSave
-         unconditionally — it handles SDK loading itself.
-         2026-05-07: passes the actual Quill text as 2nd arg so the email
-         body contains what the visitor wrote. */
-      if (typeof window.CBSG_notifyNoteSave === 'function') {
-        window.CBSG_notifyNoteSave('Visitor Quill save: ' + pageName + ' (' + editorId + ')', text);
+      if (typeof emailjs !== 'undefined') {
+        /* CBSG-DISABLED-v5.1: inline send delegated to analytics.js.
+           Call window.CBSG_notifyNoteSave if you want the visitor note save
+           to trigger an owner-suppressed email via analytics.js v1.1.
+           2026-05-07: now passes the actual Quill text as 2nd arg so the
+           email body contains what the visitor wrote.
+           Preserved below for reference. */
+        if (typeof window.CBSG_notifyNoteSave === 'function') {
+          window.CBSG_notifyNoteSave('Visitor Quill save: ' + pageName + ' (' + editorId + ')', text);
+        }
+        /* original: try { emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params).catch(()=>{}); } catch(e) {} */
       }
-      /* original (pre-v5.1, removed v5.1.2): wrapped in `if (typeof emailjs !== 'undefined')`.
-         original inline send was: try { emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params).catch(()=>{}); } catch(e) {} */
       _quillEmailedThisSession[editorId] = true;
     } catch(e) {}
   }, 30000); // 30 seconds

@@ -115,18 +115,6 @@
      so it auto-clears when the browser closes (can't accidentally stay on).
      Only affects name-entry emails — visit/note-save emails still respect
      owner suppression normally.
-
-   V2.2 CHANGES (2026-05-11):
-   • NEW ?clear-owner=true URL SWITCH. Any device that visits
-     https://cbs2026.com/?clear-owner=true gets its persistent owner flag
-     and session admin marker wiped, so the next visit acts like a fresh
-     first-time visitor. Includes a visible alert() so non-technical users
-     get confirmation without needing dev tools. Fixes the long-standing
-     "stuck owner flag" problem: previously the only reset path was
-     localStorage.removeItem('cbsg-is-owner') from the browser console,
-     which isn't realistic on iPhone Safari or for non-technical visitors.
-     Implementation lives inside handleOwnerFlag() alongside the legacy
-     ?owner=true / ?owner=false handling.
    ============================================================ */
 
 (function() {
@@ -146,30 +134,6 @@
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const ownerParam = urlParams.get('owner');
-      const clearOwnerParam = urlParams.get('clear-owner');
-
-      // v2.2 (2026-05-11): NEW ?clear-owner=true SWITCH.
-      // The persistent owner flag has historically gotten "stuck" on
-      // devices that admin-logged-in once and were then permanently
-      // suppressed from email notifications. Pre-v2.2, the only fix
-      // was to open browser dev tools and run a localStorage command —
-      // not a workflow Chris could realistically explain to anyone else
-      // (and a pain on iPhone Safari). This URL switch gives a one-tap
-      // reset path for any device: just visit cbs2026.com/?clear-owner=true
-      // and the flag is wiped + sessionStorage admin-mode is cleared too,
-      // so the visit acts like a fresh first-time visitor.
-      // Includes a visible alert() so non-technical users get confirmation
-      // without needing to check the console.
-      if (clearOwnerParam === 'true') {
-        try { localStorage.removeItem(OWNER_FLAG_KEY); } catch (e) {}
-        try { sessionStorage.removeItem('cbsg-admin'); } catch (e) {}
-        console.log('[CBSG Analytics] ?clear-owner=true — owner flag cleared + admin session cleared. This device will now generate normal visitor emails.');
-        try {
-          alert('Owner flag cleared. This device will now behave as a normal visitor.\n\nTo restore admin mode, log in with the admin password as usual.');
-        } catch (e) { /* alert can fail in some embeds */ }
-        // Don't fall through to the legacy ?owner=true/false handling below
-        return;
-      }
 
       if (ownerParam === 'true') {
         localStorage.setItem(OWNER_FLAG_KEY, 'true');
