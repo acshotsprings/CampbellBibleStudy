@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Appendix D: David's Family Tree · The Life of David</title>
   <link rel="stylesheet" href="../../assets/css/style.css" />
+  <script src="../../assets/js/analytics.js"></script>
   <link rel="stylesheet" href="david.css" />
   <style>
     .tree-section {
@@ -209,11 +210,27 @@
     }
   </style>
 </head>
-<body>
-  <div id="app">
-    <div id="main">
+<body class="admin-mode">
 
-  <article>
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: March 27, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: May 10, 2026</span></span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+<article>
     <header class="chapter-hero">
       <p class="chapter-breadcrumb">
         <a href="../../characters.html">Characters</a> &nbsp;·&nbsp;
@@ -525,25 +542,15 @@
       </ul>
 
     </div>
-
-    <nav class="chapter-nav">
-      <a href="appendix-c-lost-books.html">
-        <span class="nav-label">← Appendix C</span>
-        <span class="nav-title">The Lost Books</span>
-      </a>
-      <a href="index.html" class="next">
-        <span class="nav-label">Library →</span>
-        <span class="nav-title">The Life of David</span>
-      </a>
-    </nav>
   </article>
+    </div>
+  </div>
 
-    </div><!-- /#main -->
-  </div><!-- /#app -->
-
-
+  <script>window.PAGE_NOTE_IDS = [];</script>
   <script src="../../assets/js/nav.js"></script>
-
+  <script src="../../assets/js/main.js"></script>
   <script>buildSidebar('../..');</script>
+
+  <div id="sidebar-overlay" style="display: none;"></div>
 </body>
 </html>

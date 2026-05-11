@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Appendix C: The Lost Books · The Life of David</title>
   <link rel="stylesheet" href="../../assets/css/style.css" />
+  <script src="../../assets/js/analytics.js"></script>
   <link rel="stylesheet" href="david.css" />
   <style>
     .book-card {
@@ -62,11 +63,27 @@
     .book-card .book-body p:last-child { margin-bottom: 0; }
   </style>
 </head>
-<body>
-  <div id="app">
-    <div id="main">
+<body class="admin-mode">
 
-  <article>
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: March 27, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: May 10, 2026</span></span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+<article>
     <header class="chapter-hero">
       <p class="chapter-breadcrumb">
         <a href="../../characters.html">Characters</a> &nbsp;·&nbsp;
@@ -394,25 +411,15 @@
       <p>The genuine ancient Book of Jashar is gone. Only the two excerpts preserved in Scripture (Joshua's sun command and David's Song of the Bow) remain of it.</p>
 
     </div>
-
-    <nav class="chapter-nav">
-      <a href="appendix-b-numbers.html">
-        <span class="nav-label">← Appendix B</span>
-        <span class="nav-title">Numbers Reference</span>
-      </a>
-      <a href="appendix-d-family.html" class="next">
-        <span class="nav-label">Appendix D →</span>
-        <span class="nav-title">Family Tree</span>
-      </a>
-    </nav>
   </article>
+    </div>
+  </div>
 
-    </div><!-- /#main -->
-  </div><!-- /#app -->
-
-
+  <script>window.PAGE_NOTE_IDS = [];</script>
   <script src="../../assets/js/nav.js"></script>
-
+  <script src="../../assets/js/main.js"></script>
   <script>buildSidebar('../..');</script>
+
+  <div id="sidebar-overlay" style="display: none;"></div>
 </body>
 </html>

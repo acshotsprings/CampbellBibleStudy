@@ -5,13 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chapter 12: Bathsheba & Uriah · The Life of David</title>
   <link rel="stylesheet" href="../../assets/css/style.css" />
+  <script src="../../assets/js/analytics.js"></script>
   <link rel="stylesheet" href="david.css" />
 </head>
-<body>
-  <div id="app">
-    <div id="main">
+<body class="admin-mode">
 
-  <article>
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: March 27, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: May 10, 2026</span></span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+<article>
     <header class="chapter-hero">
       <p class="chapter-breadcrumb">
         <a href="../../characters.html">Characters</a> &nbsp;·&nbsp;
@@ -348,25 +365,15 @@
       <p>From this point in the narrative, every major tragedy in David's life can be traced backward to what happened on that rooftop. The man after God's own heart had become a murderer and adulterer. He had repented. He had been forgiven. But the sword would not leave his house.</p>
 
     </div>
-
-    <nav class="chapter-nav">
-      <a href="11-mighty-men.html">
-        <span class="nav-label">← Chapter 11</span>
-        <span class="nav-title">The Mighty Men</span>
-      </a>
-      <a href="13-family-collapse.html" class="next">
-        <span class="nav-label">Chapter 13 →</span>
-        <span class="nav-title">Family Collapse</span>
-      </a>
-    </nav>
   </article>
+    </div>
+  </div>
 
-    </div><!-- /#main -->
-  </div><!-- /#app -->
-
-
+  <script>window.PAGE_NOTE_IDS = [];</script>
   <script src="../../assets/js/nav.js"></script>
-
+  <script src="../../assets/js/main.js"></script>
   <script>buildSidebar('../..');</script>
+
+  <div id="sidebar-overlay" style="display: none;"></div>
 </body>
 </html>

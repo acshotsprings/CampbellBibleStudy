@@ -6,13 +6,30 @@
   <title>The Life of David · Complete Reference · Campbell Bible Study</title>
   <meta name="description" content="A complete, chapter-by-chapter reference covering every recorded detail of David's life — from conception to final breath." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
+  <script src="../../assets/js/analytics.js"></script>
   <link rel="stylesheet" href="david.css" />
 </head>
-<body>
-  <div id="app">
-    <div id="main">
+<body class="admin-mode">
 
-  <main>
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: March 27, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: May 10, 2026</span></span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+<main>
     <section class="library-hero">
       <p class="chapter-num">Characters in Scripture · Reference Library</p>
       <h1>The Life of David</h1>
@@ -136,13 +153,14 @@
       </a>
     </section>
   </main>
+    </div>
+  </div>
 
-    </div><!-- /#main -->
-  </div><!-- /#app -->
-
-
+  <script>window.PAGE_NOTE_IDS = [];</script>
   <script src="../../assets/js/nav.js"></script>
-
+  <script src="../../assets/js/main.js"></script>
   <script>buildSidebar('../..');</script>
+
+  <div id="sidebar-overlay" style="display: none;"></div>
 </body>
 </html>
