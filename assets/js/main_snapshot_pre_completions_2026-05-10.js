@@ -85,28 +85,6 @@ const COMPLETION_KEYS = {
   'theme3/module1':  'complete-t3m1',
   'theme3/module2':  'complete-t3m2',
   'theme3/module3':  'complete-t3m3',
-  'theme3/module4':  'complete-t3m4',
-  'theme3/module5':  'complete-t3m5',
-
-  // David library chapters (Ch 01-18). Appendices intentionally excluded.
-  'characters/david/01-origins':           'complete-david-01',
-  'characters/david/02-anointing':         'complete-david-02',
-  'characters/david/03-saul-court':        'complete-david-03',
-  'characters/david/04-jonathan':          'complete-david-04',
-  'characters/david/05-fugitive':          'complete-david-05',
-  'characters/david/06-ziklag':            'complete-david-06',
-  'characters/david/07-king-of-judah':     'complete-david-07',
-  'characters/david/08-king-of-israel':    'complete-david-08',
-  'characters/david/09-covenant':          'complete-david-09',
-  'characters/david/10-wars-victories':    'complete-david-10',
-  'characters/david/11-mighty-men':        'complete-david-11',
-  'characters/david/12-bathsheba':         'complete-david-12',
-  'characters/david/13-family-collapse':   'complete-david-13',
-  'characters/david/14-final-years':       'complete-david-14',
-  'characters/david/15-last-words':        'complete-david-15',
-  'characters/david/16-psalms-journey':    'complete-david-16',
-  'characters/david/17-theology':          'complete-david-17',
-  'characters/david/18-cave-years':        'complete-david-18',
 };
 
 /* ---- v5.1.1 (2026-05-10): sidebar-root depth helper ----

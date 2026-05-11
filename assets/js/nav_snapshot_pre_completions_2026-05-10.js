@@ -1,15 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.12 (2026-05-10)
-
-   v5.12: Added Chapter 18 (The Cave Years) to both NAV_STRUCTURE
-   (David sub-tree) and READING_CHAIN (between Ch 17 and Appendix
-   A). Added completable: true + completeKey to all 18 David
-   chapters (Ch 01-18). Appendices remain non-completable per
-   user preference (they're reference, not study).
-
-   Companion change in main.js: COMPLETION_KEYS gained Theme 3
-   M4/M5 (previously missing) plus 18 David chapter entries.
+   Sidebar Navigation Builder — v5.11 (2026-05-10)
 
    v5.11: Site-wide prev/next navigation. Defines an explicit
    READING_CHAIN of 50 study pages (Themes 1-3 + Characters
@@ -193,24 +184,23 @@ const NAV_STRUCTURE = [
     items: [
       { label: 'Characters Overview',                  href: 'characters.html' },
       { label: '↳ The Life of David',                  href: 'characters/david/index.html', sub: true, hasSubCollapse: true, subKey: 'david' },
-      { label: '↳↳ Ch 01 — Origins',                   href: 'characters/david/01-origins.html',          sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-01' },
-      { label: '↳↳ Ch 02 — The Anointing',             href: 'characters/david/02-anointing.html',        sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-02' },
-      { label: '↳↳ Ch 03 — Saul\'s Court',             href: 'characters/david/03-saul-court.html',       sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-03' },
-      { label: '↳↳ Ch 04 — Jonathan',                  href: 'characters/david/04-jonathan.html',         sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-04' },
-      { label: '↳↳ Ch 05 — The Fugitive',              href: 'characters/david/05-fugitive.html',         sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-05' },
-      { label: '↳↳ Ch 06 — Ziklag',                    href: 'characters/david/06-ziklag.html',           sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-06' },
-      { label: '↳↳ Ch 07 — King of Judah',             href: 'characters/david/07-king-of-judah.html',    sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-07' },
-      { label: '↳↳ Ch 08 — King of Israel',            href: 'characters/david/08-king-of-israel.html',   sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-08' },
-      { label: '↳↳ Ch 09 — The Davidic Covenant',      href: 'characters/david/09-covenant.html',         sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-09' },
-      { label: '↳↳ Ch 10 — Wars & Victories',          href: 'characters/david/10-wars-victories.html',   sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-10' },
-      { label: '↳↳ Ch 11 — The Mighty Men',            href: 'characters/david/11-mighty-men.html',       sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-11' },
-      { label: '↳↳ Ch 12 — Bathsheba',                 href: 'characters/david/12-bathsheba.html',        sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-12' },
-      { label: '↳↳ Ch 13 — Family Collapse',           href: 'characters/david/13-family-collapse.html',  sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-13' },
-      { label: '↳↳ Ch 14 — Final Years',               href: 'characters/david/14-final-years.html',      sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-14' },
-      { label: '↳↳ Ch 15 — Last Words',                href: 'characters/david/15-last-words.html',       sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-15' },
-      { label: '↳↳ Ch 16 — Psalms Journey',            href: 'characters/david/16-psalms-journey.html',   sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-16' },
-      { label: '↳↳ Ch 17 — David & Christ',            href: 'characters/david/17-theology.html',         sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-17' },
-      { label: '↳↳ Ch 18 — The Cave Years',            href: 'characters/david/18-cave-years.html',       sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-18' },
+      { label: '↳↳ Ch 01 — Origins',                   href: 'characters/david/01-origins.html',          sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 02 — The Anointing',             href: 'characters/david/02-anointing.html',        sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 03 — Saul\'s Court',             href: 'characters/david/03-saul-court.html',       sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 04 — Jonathan',                  href: 'characters/david/04-jonathan.html',         sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 05 — The Fugitive',              href: 'characters/david/05-fugitive.html',         sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 06 — Ziklag',                    href: 'characters/david/06-ziklag.html',           sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 07 — King of Judah',             href: 'characters/david/07-king-of-judah.html',    sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 08 — King of Israel',            href: 'characters/david/08-king-of-israel.html',   sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 09 — The Davidic Covenant',      href: 'characters/david/09-covenant.html',         sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 10 — Wars & Victories',          href: 'characters/david/10-wars-victories.html',   sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 11 — The Mighty Men',            href: 'characters/david/11-mighty-men.html',       sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 12 — Bathsheba',                 href: 'characters/david/12-bathsheba.html',        sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 13 — Family Collapse',           href: 'characters/david/13-family-collapse.html',  sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 14 — Final Years',               href: 'characters/david/14-final-years.html',      sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 15 — Last Words',                href: 'characters/david/15-last-words.html',       sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 16 — Psalms Journey',            href: 'characters/david/16-psalms-journey.html',   sub: true, underSubKey: 'david' },
+      { label: '↳↳ Ch 17 — David & Christ',            href: 'characters/david/17-theology.html',         sub: true, underSubKey: 'david' },
       { label: '↳↳ Appendix A — Timeline',             href: 'characters/david/appendix-a-timeline.html', sub: true, underSubKey: 'david' },
       { label: '↳↳ Appendix B — Numbers',              href: 'characters/david/appendix-b-numbers.html',  sub: true, underSubKey: 'david' },
       { label: '↳↳ Appendix C — Lost Books',           href: 'characters/david/appendix-c-lost-books.html', sub: true, underSubKey: 'david' },
@@ -512,7 +502,6 @@ const READING_CHAIN = [
   ['characters/david/15-last-words.html',            'Ch 15 — Last Words',           'David'],
   ['characters/david/16-psalms-journey.html',        'Ch 16 — Psalms Journey',       'David'],
   ['characters/david/17-theology.html',              'Ch 17 — David & Christ',       'David'],
-  ['characters/david/18-cave-years.html',            'Ch 18 — The Cave Years',       'David'],
   ['characters/david/appendix-a-timeline.html',      'Appendix A — Timeline',        'David'],
   ['characters/david/appendix-b-numbers.html',       'Appendix B — Numbers',         'David'],
   ['characters/david/appendix-c-lost-books.html',    'Appendix C — Lost Books',      'David'],
