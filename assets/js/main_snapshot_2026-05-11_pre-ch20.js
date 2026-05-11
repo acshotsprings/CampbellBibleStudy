@@ -108,7 +108,6 @@ const COMPLETION_KEYS = {
   'characters/david/17-theology':          'complete-david-17',
   'characters/david/18-cave-years':        'complete-david-18',
   'characters/david/19-david-vs-saul':     'complete-david-19',
-  'characters/david/20-repentance':        'complete-david-20',
 };
 
 /* ---- v5.1.1 (2026-05-10): sidebar-root depth helper ----
