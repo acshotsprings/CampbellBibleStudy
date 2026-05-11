@@ -1,24 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.10 (2026-05-10)
-
-   v5.10: First-visit nav state is fully collapsed. A persistent
-   flag 'cbsg-nav-visited' is written on first sidebar build;
-   while absent, all sections render closed and the usual
-   "auto-open the section containing the active page" override
-   is suppressed for that single load. On every subsequent page
-   load, behavior is unchanged from v5.9 (sections remember the
-   visitor's last expand/collapse choice; the section containing
-   the current page auto-opens if not already remembered open).
-
-   v5.9: Added new top-level "📖 Characters in Scripture" section
-   between "Themes 4–8" and "🌍 Current Events". Two-level nested:
-   parent "Characters in Scripture" → "The Life of David" (with
-   hasSubCollapse) → 17 chapters + 4 appendices as sub-items.
-   Noah / Joseph / Ruth are placeholder character cards on the
-   characters.html landing page; not in nav until pages exist.
-   Removed "✝️ My Growing Convictions" from My Study (page still
-   exists at convictions.html, just not linked from sidebar).
+   Sidebar Navigation Builder — v5.8 (2026-04-23)
 
    v5.8: Added new top-level "🌍 Current Events" section between
    "Themes 4–8" and "My Study". Red/amber color palette (header
@@ -69,7 +51,6 @@ const NAV_COLORS = {
   theme2:    { header: '#4a7c59', item: '#7BB593' },   // green
   theme3:    { header: '#7E57C2', item: '#A389D4' },   // purple
   themes48:  { header: '#888888', item: '#AAAAAA' },   // gray
-  characters: { header: '#C8A800', item: '#D9B838' },  // warm gold — figures of scripture (v5.9)
   mystudy:   { header: '#FFD700', item: null        }, // gold header; items use per-item colors below
   getstarted:{ header: 'rgba(255,255,255,0.4)', item: null },
   currentevents: { header: '#E57373', item: '#F4A6A6' }, // red/amber — urgency/watchfulness (v5.8)
@@ -166,38 +147,6 @@ const NAV_STRUCTURE = [
   },
   {
     type: 'section',
-    label: '📖 Characters in Scripture',
-    collapsible: true,
-    key: 'characters',
-    colorKey: 'characters',
-    items: [
-      { label: 'Characters Overview',                  href: 'characters.html' },
-      { label: '↳ The Life of David',                  href: 'characters/david/index.html', sub: true, hasSubCollapse: true, subKey: 'david' },
-      { label: '↳↳ Ch 01 — Origins',                   href: 'characters/david/01-origins.html',          sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 02 — The Anointing',             href: 'characters/david/02-anointing.html',        sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 03 — Saul\'s Court',             href: 'characters/david/03-saul-court.html',       sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 04 — Jonathan',                  href: 'characters/david/04-jonathan.html',         sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 05 — The Fugitive',              href: 'characters/david/05-fugitive.html',         sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 06 — Ziklag',                    href: 'characters/david/06-ziklag.html',           sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 07 — King of Judah',             href: 'characters/david/07-king-of-judah.html',    sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 08 — King of Israel',            href: 'characters/david/08-king-of-israel.html',   sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 09 — The Davidic Covenant',      href: 'characters/david/09-covenant.html',         sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 10 — Wars & Victories',          href: 'characters/david/10-wars-victories.html',   sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 11 — The Mighty Men',            href: 'characters/david/11-mighty-men.html',       sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 12 — Bathsheba',                 href: 'characters/david/12-bathsheba.html',        sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 13 — Family Collapse',           href: 'characters/david/13-family-collapse.html',  sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 14 — Final Years',               href: 'characters/david/14-final-years.html',      sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 15 — Last Words',                href: 'characters/david/15-last-words.html',       sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 16 — Psalms Journey',            href: 'characters/david/16-psalms-journey.html',   sub: true, underSubKey: 'david' },
-      { label: '↳↳ Ch 17 — David & Christ',            href: 'characters/david/17-theology.html',         sub: true, underSubKey: 'david' },
-      { label: '↳↳ Appendix A — Timeline',             href: 'characters/david/appendix-a-timeline.html', sub: true, underSubKey: 'david' },
-      { label: '↳↳ Appendix B — Numbers',              href: 'characters/david/appendix-b-numbers.html',  sub: true, underSubKey: 'david' },
-      { label: '↳↳ Appendix C — Lost Books',           href: 'characters/david/appendix-c-lost-books.html', sub: true, underSubKey: 'david' },
-      { label: '↳↳ Appendix D — Family',               href: 'characters/david/appendix-d-family.html',   sub: true, underSubKey: 'david' },
-    ]
-  },
-  {
-    type: 'section',
     label: '🌍 Current Events',
     collapsible: true,
     key: 'currentevents',
@@ -219,6 +168,7 @@ const NAV_STRUCTURE = [
       { label: '📔 Personal Journal',       href: 'journal.html',       itemColor: 'mystudy-journal', hasSubCollapse: true, subKey: 'journal' },
       { label: '↳ ⭐ Hearing God\'s Voice',  href: 'hearing-gods-voice.html',  sub: true, underSubKey: 'journal', itemColor: 'mystudy-hearing' },
       { label: '↳ ⚖️ Gematria Skepticism',  href: 'numbers-skepticism.html',  sub: true, underSubKey: 'journal', itemColor: 'mystudy-skepticism' },
+      { label: '✝️ My Growing Convictions', href: 'convictions.html',   itemColor: 'mystudy-convictions' },
       { label: '💾 Save History',           href: 'history.html',       itemColor: 'mystudy-history'     },
       { label: '🔬 Deep Dives',             href: 'DeepDives.html',     itemColor: 'mystudy-deepdives', hasSubCollapse: true, subKey: 'deepdives' },
       { label: '↳ 📅 Prophetic Calendars',  href: 'DeepDive-Calendars.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
@@ -318,17 +268,6 @@ function buildSidebar(root) {
 
   const adminUnlocked = sessionStorage.getItem('cbsg-admin') === 'true';
 
-  /* v5.10 — First-visit collapse:
-     On the very first time a visitor's browser builds the sidebar,
-     'cbsg-nav-visited' is absent. While it's absent, render every
-     section closed AND skip the usual "active section auto-opens"
-     override, so the visitor sees a clean, fully-collapsed nav.
-     Then set the flag so subsequent visits behave normally. */
-  const isFirstVisit = localStorage.getItem('cbsg-nav-visited') !== 'true';
-  if (isFirstVisit) {
-    localStorage.setItem('cbsg-nav-visited', 'true');
-  }
-
   NAV_STRUCTURE.forEach(section => {
     const palette  = NAV_COLORS[section.colorKey] || {};
     // Section headers get their theme color via inline text color.
@@ -344,9 +283,9 @@ function buildSidebar(root) {
       });
     } else {
       const key           = section.key;
-      const hasActivePage = !isFirstVisit && isActiveSection(section);
+      const hasActivePage = isActiveSection(section);
       if (hasActivePage) setCollapsed(key, false);
-      const collapsed     = isFirstVisit ? true : isCollapsed(key);
+      const collapsed     = isCollapsed(key);
 
       const completable    = section.items.filter(i => i.completable);
       const completedCount = completable.filter(i => isModuleComplete(i.completeKey)).length;

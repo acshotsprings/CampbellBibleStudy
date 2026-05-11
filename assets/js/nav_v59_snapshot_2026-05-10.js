@@ -1,15 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.10 (2026-05-10)
-
-   v5.10: First-visit nav state is fully collapsed. A persistent
-   flag 'cbsg-nav-visited' is written on first sidebar build;
-   while absent, all sections render closed and the usual
-   "auto-open the section containing the active page" override
-   is suppressed for that single load. On every subsequent page
-   load, behavior is unchanged from v5.9 (sections remember the
-   visitor's last expand/collapse choice; the section containing
-   the current page auto-opens if not already remembered open).
+   Sidebar Navigation Builder — v5.9 (2026-05-10)
 
    v5.9: Added new top-level "📖 Characters in Scripture" section
    between "Themes 4–8" and "🌍 Current Events". Two-level nested:
@@ -318,17 +309,6 @@ function buildSidebar(root) {
 
   const adminUnlocked = sessionStorage.getItem('cbsg-admin') === 'true';
 
-  /* v5.10 — First-visit collapse:
-     On the very first time a visitor's browser builds the sidebar,
-     'cbsg-nav-visited' is absent. While it's absent, render every
-     section closed AND skip the usual "active section auto-opens"
-     override, so the visitor sees a clean, fully-collapsed nav.
-     Then set the flag so subsequent visits behave normally. */
-  const isFirstVisit = localStorage.getItem('cbsg-nav-visited') !== 'true';
-  if (isFirstVisit) {
-    localStorage.setItem('cbsg-nav-visited', 'true');
-  }
-
   NAV_STRUCTURE.forEach(section => {
     const palette  = NAV_COLORS[section.colorKey] || {};
     // Section headers get their theme color via inline text color.
@@ -344,9 +324,9 @@ function buildSidebar(root) {
       });
     } else {
       const key           = section.key;
-      const hasActivePage = !isFirstVisit && isActiveSection(section);
+      const hasActivePage = isActiveSection(section);
       if (hasActivePage) setCollapsed(key, false);
-      const collapsed     = isFirstVisit ? true : isCollapsed(key);
+      const collapsed     = isCollapsed(key);
 
       const completable    = section.items.filter(i => i.completable);
       const completedCount = completable.filter(i => isModuleComplete(i.completeKey)).length;
