@@ -255,7 +255,6 @@ function showWelcomeModal() {
     <div id="cbsg-welcome-err" style="font-size:11px;color:#C62828;min-height:14px;margin-bottom:10px;font-family:Arial,sans-serif;"></div>
     <button id="cbsg-welcome-btn" onclick="saveWelcomeName()" disabled style="width:100%;background:#888;color:#ddd;border:none;border-radius:6px;padding:11px;font-size:14px;font-weight:bold;cursor:not-allowed;font-family:Arial,sans-serif;letter-spacing:0.03em;transition:all 0.2s;">Let's Study ✝</button>
     <p style="margin:12px 0 0;font-size:11px;color:#aaa;">Your name is required to continue.</p>
-    <p style="margin:6px 0 0;font-size:10px;color:#aaa;line-height:1.5;">Notes you save sync to the study's backup system so they're not lost if your browser data is cleared.</p>
   </div>`;
   document.body.appendChild(modal);
   setTimeout(() => { const inp = document.getElementById('cbsg-welcome-name'); if (inp) inp.focus(); }, 150);
@@ -1487,147 +1486,6 @@ function _loadQuillContent(editorId, quill) {
   }
 }
 
-/* ---- SAVE & SYNC BUTTON (2026-05-12) ----------------------
-   Injected at top AND bottom of any page that has at least one
-   Quill editor. Clicking saves all Quill content to localStorage
-   AND syncs it off-device via existing CBSG_notifyNoteSave
-   pipeline (which emails it to Chris). Toast confirms.
-
-   Framing intent: "Save & sync" reads to the visitor as a normal
-   cloud-save operation — honest (notes ARE going off-device) but
-   not surveillance-feeling. The fact that Chris is the sync
-   destination is disclosed once in the welcome modal, not on every
-   page.
-
-   Backup behavior unchanged: 30-second auto-send-on-typing-pause
-   continues to work via _maybeEmailVisitorNotes (line ~1433).
-
-   Visible to everyone (admin too) per design decision.
-   ------------------------------------------------------------ */
-function injectSyncButton() {
-  // Only inject on pages that have Quill editors
-  const editors = document.querySelectorAll('.quill-editor');
-  if (editors.length === 0) return;
-  // Idempotent — only run once per page
-  if (document.getElementById('cbsg-sync-top') || document.getElementById('cbsg-sync-bottom')) return;
-
-  const buttonHTML = (id) =>
-    '<div class="cbsg-sync-wrapper" id="' + id + '" style="text-align:center;margin:24px 0;font-family:Arial,sans-serif;">' +
-      '<button onclick="cbsgSaveAndSync(this)" ' +
-        'style="background:#1F3864;color:#FFD700;border:2px solid #FFD700;border-radius:6px;' +
-        'padding:10px 22px;font-size:14px;font-weight:bold;cursor:pointer;' +
-        'letter-spacing:0.03em;font-family:Arial,sans-serif;' +
-        'box-shadow:0 2px 6px rgba(0,0,0,0.15);transition:all 0.15s ease;" ' +
-        'onmouseover="this.style.background=\'#2A4A7A\';this.style.transform=\'translateY(-1px)\';" ' +
-        'onmouseout="this.style.background=\'#1F3864\';this.style.transform=\'translateY(0)\';">' +
-        '💾 Save &amp; sync my notes' +
-      '</button>' +
-    '</div>';
-
-  // Top button: inject right after the chapter-hero or page-title
-  const topAnchor = document.querySelector('.chapter-hero')
-                 || document.querySelector('.page-title')
-                 || document.querySelector('h1.chapter-title')
-                 || document.querySelector('#main h1');
-  if (topAnchor) {
-    const topWrapper = document.createElement('div');
-    topWrapper.innerHTML = buttonHTML('cbsg-sync-top');
-    topAnchor.parentNode.insertBefore(topWrapper.firstChild, topAnchor.nextSibling);
-  }
-
-  // Bottom button: inject right after the LAST quill-editor on the page
-  const lastEditor = editors[editors.length - 1];
-  const lastWrapper = lastEditor.closest('.quill-wrapper') || lastEditor.parentNode;
-  if (lastWrapper && lastWrapper.parentNode) {
-    const bottomWrapper = document.createElement('div');
-    bottomWrapper.innerHTML = buttonHTML('cbsg-sync-bottom');
-    lastWrapper.parentNode.insertBefore(bottomWrapper.firstChild, lastWrapper.nextSibling);
-  }
-}
-
-function cbsgSaveAndSync(buttonEl) {
-  const name = getGuestName();
-
-  // Save all Quill content to localStorage (the "Save" half)
-  let allNotes = '';
-  let editorCount = 0;
-  if (quillInstances) {
-    Object.entries(quillInstances).forEach(([id, quill]) => {
-      try {
-        _saveQuillContent(id, quill);   // local save
-        const text = quill.getText().trim();
-        if (text.length > 0) {
-          allNotes += '--- ' + id + ' ---\n' + text + '\n\n';
-          editorCount++;
-        }
-      } catch(e) {}
-    });
-  }
-
-  // Disable button briefly to prevent double-clicks
-  if (buttonEl) {
-    buttonEl.disabled = true;
-    buttonEl.style.opacity = '0.6';
-    buttonEl.style.cursor = 'wait';
-    buttonEl.innerHTML = 'Syncing...';
-  }
-
-  // Sync off-device (the "sync" half) — only if there's a name and content
-  // If no name, still save locally but skip the sync silently
-  let synced = false;
-  if (name && editorCount > 0) {
-    try {
-      const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
-      if (typeof window.CBSG_notifyNoteSave === 'function') {
-        window.CBSG_notifyNoteSave('Manual sync: ' + pageName, allNotes);
-        synced = true;
-      }
-    } catch(e) {}
-  }
-
-  // Toast feedback — neutral framing whether or not sync ran
-  if (editorCount === 0) {
-    _showSyncToast('Nothing to save yet', '#888');
-  } else if (synced) {
-    _showSyncToast('Saved & synced ✓', '#2E6B0E');
-  } else {
-    // Saved locally but sync didn't run (no name, or no email pipeline)
-    _showSyncToast('Saved ✓', '#2E6B0E');
-  }
-
-  // Re-enable button after 2.5s
-  setTimeout(() => {
-    if (buttonEl) {
-      buttonEl.disabled = false;
-      buttonEl.style.opacity = '1';
-      buttonEl.style.cursor = 'pointer';
-      buttonEl.innerHTML = '💾 Save &amp; sync my notes';
-    }
-  }, 2500);
-}
-
-function _showSyncToast(message, color) {
-  // Remove any existing toast first
-  const existing = document.getElementById('cbsg-sync-toast');
-  if (existing) existing.remove();
-
-  const toast = document.createElement('div');
-  toast.id = 'cbsg-sync-toast';
-  toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);' +
-    'background:' + (color || '#1F3864') + ';color:white;padding:12px 24px;' +
-    'border-radius:6px;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;' +
-    'box-shadow:0 4px 16px rgba(0,0,0,0.3);z-index:10000;' +
-    'opacity:0;transition:opacity 0.25s ease;';
-  toast.textContent = message;
-  document.body.appendChild(toast);
-
-  setTimeout(() => { toast.style.opacity = '1'; }, 10);
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    setTimeout(() => { toast.remove(); }, 300);
-  }, 2200);
-}
-
 function initQuillEditors() {
   if (typeof Quill === 'undefined') return;
 
@@ -1697,7 +1555,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadNotes();
   wireAutoSave();
   initQuillEditors();    // init all .quill-editor divs
-  injectSyncButton();    // 2026-05-12 — adds 💾 Save & sync buttons to pages with Quill editors
   injectMobileOverlay();
   markActivePage();
   injectBarExtras();
