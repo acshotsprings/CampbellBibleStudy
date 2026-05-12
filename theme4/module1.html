@@ -260,9 +260,14 @@
   <!-- NOTES BOX — NEW ARCHITECTURE: BOTTOM, RIGHT ABOVE NAV FOOTER -->
   <!-- main.js will auto-inject the 💾 Save & sync button and the Mark-as-Complete button -->
   <!-- ============================================================ -->
+  <!-- ============================================================ -->
+  <!-- NOTES BOX — Quill editor (new architecture)                  -->
+  <!-- main.js initQuillEditors() mounts Quill on the .quill-editor -->
+  <!-- main.js injectSyncButton() adds 💾 Save & sync top+bottom    -->
+  <!-- ============================================================ -->
   <div class="notes-box">
     <div class="label">✏️ My notes &amp; convictions on Module 1 — The Abrahamic Covenant:</div>
-    <textarea class="notes-input" id="n-t4m1" placeholder="Write your convictions here. Date your entry."></textarea>
+    <div class="quill-editor" id="n-t4m1" data-placeholder="Write your convictions here. Date your entry."></div>
   </div>
 
   <!-- NAVIGATION FOOTER -->
