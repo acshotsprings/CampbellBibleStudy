@@ -110,11 +110,6 @@ const COMPLETION_KEYS = {
   'characters/david/19-david-vs-saul':     'complete-david-19',
   'characters/david/20-repentance':        'complete-david-20',
   'characters/david/21-worship':           'complete-david-21',
-  'characters/david/22-kingdom-type':      'complete-david-22',
-  'characters/david/23-prayer':            'complete-david-23',
-  'characters/david/24-friendship':        'complete-david-24',
-  'characters/david/25-enemies':           'complete-david-25',
-  'characters/david/26-strange-deaths':    'complete-david-26',
 };
 
 /* ---- v5.1.1 (2026-05-10): sidebar-root depth helper ----

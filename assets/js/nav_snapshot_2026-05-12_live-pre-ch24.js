@@ -1,23 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.15 (2026-05-12)
-
-   v5.15: Added Chapters 24 (David & Friendship), 25 (David &
-   Israel's Enemies), and 26 (The Strange Death Stories) to
-   both NAV_STRUCTURE and READING_CHAIN. All three completable
-   with the standard complete-david-NN key pattern. Ch 26
-   closes the 26-chapter Life of David encyclopedia.
-
-   Companion change in main.js: COMPLETION_KEYS gains
-   complete-david-24, complete-david-25, complete-david-26.
-
-   v5.14: Added Chapter 22 (Kingdom of David as Type) and
-   Chapter 23 (David & Prayer) to both NAV_STRUCTURE and
-   READING_CHAIN. Both completable with the standard
-   complete-david-NN key pattern.
-
-   Companion change in main.js: COMPLETION_KEYS gains
-   complete-david-22 and complete-david-23 entries.
+   Sidebar Navigation Builder — v5.13 (2026-05-12)
 
    v5.13: Added Chapters 19 (David vs. Saul), 20 (David &
    Repentance), and 21 (David & Worship) to both NAV_STRUCTURE
@@ -242,11 +225,6 @@ const NAV_STRUCTURE = [
       { label: '↳↳ Ch 19 — David vs. Saul',            href: 'characters/david/19-david-vs-saul.html',    sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-19' },
       { label: '↳↳ Ch 20 — David & Repentance',        href: 'characters/david/20-repentance.html',       sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-20' },
       { label: '↳↳ Ch 21 — David & Worship',           href: 'characters/david/21-worship.html',          sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-21' },
-      { label: '↳↳ Ch 22 — Kingdom of David as Type',  href: 'characters/david/22-kingdom-type.html',     sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-22' },
-      { label: '↳↳ Ch 23 — David & Prayer',            href: 'characters/david/23-prayer.html',           sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-23' },
-      { label: '↳↳ Ch 24 — David & Friendship',        href: 'characters/david/24-friendship.html',       sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-24' },
-      { label: '↳↳ Ch 25 — David & Israel\'s Enemies', href: 'characters/david/25-enemies.html',          sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-25' },
-      { label: '↳↳ Ch 26 — The Strange Death Stories', href: 'characters/david/26-strange-deaths.html',   sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-26' },
       { label: '↳↳ Appendix A — Timeline',             href: 'characters/david/appendix-a-timeline.html', sub: true, underSubKey: 'david' },
       { label: '↳↳ Appendix B — Numbers',              href: 'characters/david/appendix-b-numbers.html',  sub: true, underSubKey: 'david' },
       { label: '↳↳ Appendix C — Lost Books',           href: 'characters/david/appendix-c-lost-books.html', sub: true, underSubKey: 'david' },
@@ -552,11 +530,6 @@ const READING_CHAIN = [
   ['characters/david/19-david-vs-saul.html',         'Ch 19 — David vs. Saul',       'David'],
   ['characters/david/20-repentance.html',            'Ch 20 — David & Repentance',   'David'],
   ['characters/david/21-worship.html',               'Ch 21 — David & Worship',      'David'],
-  ['characters/david/22-kingdom-type.html',          'Ch 22 — Kingdom of David as Type', 'David'],
-  ['characters/david/23-prayer.html',                'Ch 23 — David & Prayer',       'David'],
-  ['characters/david/24-friendship.html',            'Ch 24 — David & Friendship',   'David'],
-  ['characters/david/25-enemies.html',               'Ch 25 — David & Israel\'s Enemies', 'David'],
-  ['characters/david/26-strange-deaths.html',        'Ch 26 — The Strange Death Stories', 'David'],
   ['characters/david/appendix-a-timeline.html',      'Appendix A — Timeline',        'David'],
   ['characters/david/appendix-b-numbers.html',       'Appendix B — Numbers',         'David'],
   ['characters/david/appendix-c-lost-books.html',    'Appendix C — Lost Books',      'David'],
