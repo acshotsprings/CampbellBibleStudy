@@ -1,17 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.13 (2026-05-12)
-
-   v5.13: Added Chapters 19 (David vs. Saul), 20 (David &
-   Repentance), and 21 (David & Worship) to both NAV_STRUCTURE
-   and READING_CHAIN. All three are completable with the standard
-   complete-david-NN key pattern. Header version comment had
-   drifted — Chs 19 and 20 were already present in the file from
-   prior sessions without a version bump; this entry consolidates
-   the accounting and brings the header in sync with reality.
-
-   Companion change in main.js: COMPLETION_KEYS gains
-   complete-david-21 entry.
+   Sidebar Navigation Builder — v5.12 (2026-05-10)
 
    v5.12: Added Chapter 18 (The Cave Years) to both NAV_STRUCTURE
    (David sub-tree) and READING_CHAIN (between Ch 17 and Appendix
@@ -224,7 +213,6 @@ const NAV_STRUCTURE = [
       { label: '↳↳ Ch 18 — The Cave Years',            href: 'characters/david/18-cave-years.html',       sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-18' },
       { label: '↳↳ Ch 19 — David vs. Saul',            href: 'characters/david/19-david-vs-saul.html',    sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-19' },
       { label: '↳↳ Ch 20 — David & Repentance',        href: 'characters/david/20-repentance.html',       sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-20' },
-      { label: '↳↳ Ch 21 — David & Worship',           href: 'characters/david/21-worship.html',          sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-21' },
       { label: '↳↳ Appendix A — Timeline',             href: 'characters/david/appendix-a-timeline.html', sub: true, underSubKey: 'david' },
       { label: '↳↳ Appendix B — Numbers',              href: 'characters/david/appendix-b-numbers.html',  sub: true, underSubKey: 'david' },
       { label: '↳↳ Appendix C — Lost Books',           href: 'characters/david/appendix-c-lost-books.html', sub: true, underSubKey: 'david' },
@@ -529,7 +517,6 @@ const READING_CHAIN = [
   ['characters/david/18-cave-years.html',            'Ch 18 — The Cave Years',       'David'],
   ['characters/david/19-david-vs-saul.html',         'Ch 19 — David vs. Saul',       'David'],
   ['characters/david/20-repentance.html',            'Ch 20 — David & Repentance',   'David'],
-  ['characters/david/21-worship.html',               'Ch 21 — David & Worship',      'David'],
   ['characters/david/appendix-a-timeline.html',      'Appendix A — Timeline',        'David'],
   ['characters/david/appendix-b-numbers.html',       'Appendix B — Numbers',         'David'],
   ['characters/david/appendix-c-lost-books.html',    'Appendix C — Lost Books',      'David'],
