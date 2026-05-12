@@ -352,11 +352,22 @@
       </div>
 
     </div>
-  </article>
+  
+      <!-- ============================================================ -->
+      <!-- NOTES BOX — site-wide rollout 2026-05-12                     -->
+      <!-- Quill editor: main.js initQuillEditors() mounts on this div  -->
+      <!-- main.js injectSyncButton() adds 💾 Save & sync top+bottom    -->
+      <!-- ============================================================ -->
+      <div class="notes-box">
+        <div class="label">✏️ My notes &amp; convictions on Chapter 26 — The Strange Death Stories:</div>
+        <div class="quill-editor" id="n-david-26" data-placeholder="Write your convictions here. Date your entry."></div>
+      </div>
+
+    </article>
     </div>
   </div>
 
-  <script>window.PAGE_NOTE_IDS = [];</script>
+  <script>window.PAGE_NOTE_IDS = ['n-david-26'];</script>
   <script src="../../assets/js/nav.js"></script>
   <script src="../../assets/js/main.js"></script>
   <script>buildSidebar('../..');</script>
