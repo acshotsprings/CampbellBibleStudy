@@ -929,30 +929,30 @@ function injectSiteNotice() {
     'left:0',
     'right:0',
     'z-index:150',              // above #app (which is below) but below modals if any
-    'background:#FFF4D6',
-    'border-left:4px solid #C8A800',
-    'border-bottom:1px solid #E8C870',
+    'background:#FFFBF0',
+    'border-bottom:1px solid #C8A800',
     'color:#5a4a00',
     'font-family:Arial,Helvetica,sans-serif',
-    'font-size:13px',
-    'line-height:1.45',
-    'padding:10px 18px 10px 14px',
+    'font-size:12px',
+    'line-height:1.4',
+    'padding:8px 16px',
     'display:flex',
     'align-items:center',
     'justify-content:center',
-    'gap:12px',
+    'gap:10px',
     'flex-wrap:wrap',
     'text-align:center',
     'box-shadow:0 1px 3px rgba(0,0,0,0.08)'
   ].join(';');
   notice.innerHTML = `
-    <span style="font-size:16px;">🛠️</span>
-    <span><span style="font-size:10px;font-weight:bold;letter-spacing:0.08em;text-transform:uppercase;color:#7A6600;margin-right:6px;">Active development</span>please let me know if anything on the site is broken or doesn't look right —
+    <span style="font-size:14px;">🛠️</span>
+    <span><strong>Active development:</strong>
+      please let me know if anything on the site is broken or doesn't look right —
       <a href="mailto:acshotsprings@gmail.com?subject=Campbell Bible Study — Issue Report" style="color:#1F3864;font-weight:bold;text-decoration:underline;">acshotsprings@gmail.com</a>.
       Thank you! :)
     </span>
     <button onclick="dismissSiteNotice()" title="Dismiss this notice on this device"
-      style="background:transparent;border:1px solid #C8A800;color:#7A6600;border-radius:3px;padding:2px 9px;font-size:11px;cursor:pointer;font-family:inherit;margin-left:4px;opacity:0.7;">
+      style="background:transparent;border:1px solid #C8A800;color:#7A6600;border-radius:3px;padding:2px 8px;font-size:11px;cursor:pointer;font-family:inherit;margin-left:6px;">
       Dismiss
     </button>
   `;
