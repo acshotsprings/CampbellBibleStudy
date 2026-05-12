@@ -1,30 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Theme 4: Covenant — Campbell Bible Study</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
-  <script src="../assets/js/analytics.js"></script>
-</head>
+  <title>Campbell Family Master Biblical Study Guide</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/analytics.js"></script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script><script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script></head>
 <body>
 
+<!-- GITHUB BAR -->
 <div id="github-bar">
   <span class="bar-title">Campbell Bible Study</span>
   <span class="bar-sep">|</span>
-  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
-  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
-  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
-  <span id="gh-status"></span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  <span id="gh-status" style=""></span>
   <div class="bar-right">
-    <span class="bar-originated">Originated: April 27, 2026</span>
+    <span class="bar-originated">Originated: March 27, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: May 12, 2026</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: May 8, 2026</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded 7:04 PM</span></span>
   </div>
 </div>
-
-<!-- SIDEBAR OVERLAY -->
-<div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <!-- SIDEBAR -->
 <div id="sidebar"></div>
@@ -33,95 +30,160 @@
 <div id="app">
 <div id="main">
 
-  <span class="page-tag" style="background:#7E57C2;">Theme 4 — Overview</span>
-  <h1 class="page-title">Covenant</h1>
-  <p class="page-subtitle">God's binding promises through Noah, Abraham, Moses, David, and Jesus</p>
+  <!-- ── INTRODUCTION ─────────────────────────────────── -->
+  <div id="intro">
+    <span class="page-tag">Introduction</span>
+    <h1 class="page-title">Campbell Family Master Biblical Study Guide</h1>
+    <p class="page-subtitle">"The secret things belong to the LORD our God, but the things revealed belong to us and to our children forever." — Deuteronomy 29:29</p>
 
-  <div class="info-box">
-    <div class="title">📖 What this theme is about</div>
-    <div class="line"><strong>The thread that runs through the entire Bible.</strong></div>
-  </div>
+    <!-- ============================================================ -->
+    <!-- ONE BOOK CALLOUT — added 2026-05-12                          -->
+    <!-- Chris Harrison / Christoph Römhild Bible cross-reference     -->
+    <!-- visualization (2007, KJV / Treasury of Scripture Knowledge)  -->
+    <!-- Linked, NOT embedded — respects Harrison's copyright         -->
+    <!-- ============================================================ -->
+    <div class="info-box" style="border-left:4px solid #7E57C2;background:#F5F0FA;margin-top:14px;">
+      <div class="title">📖 One Book, Forty Authors, Fifteen Centuries, One Story</div>
+      <div class="line"><strong>The Bible was written by roughly 40 different men, across about 1,500 years, on three continents, in three languages.</strong> Kings and fishermen, a tax collector, a doctor, shepherds, prophets, a tentmaker. Hebrew, Aramaic, and Greek. Africa, Asia, and Europe. Law, narrative, poetry, prophecy, gospel, epistle, apocalyptic.</div>
+      <div class="line" style="margin-top:8px;">And yet from Genesis to Revelation it tells <strong>one unified story</strong> — falling humanity, a redeeming God, a promised Seed, a coming Kingdom — with tens of thousands of internal cross-references between its books.</div>
+      <div class="line" style="margin-top:8px;">In 2007, Carnegie Mellon researcher Chris Harrison and Lutheran pastor Christoph Römhild mapped <strong>63,779 cross-references</strong> in the Bible (sourced from R.A. Torrey's <em>Treasury of Scripture Knowledge</em>) into a single visualization. The bar graph along the bottom represents every chapter in the Bible in order; the length of each bar is the number of verses in that chapter. Each arc above is a single cross-reference, color-coded by the distance it travels. The result is a rainbow of connection arcing across the entire canon.</div>
+      <div class="line" style="margin-top:8px;"><a href="https://www.chrisharrison.net/index.php/Visualizations/BibleViz" target="_blank" rel="noopener" style="color:#7E57C2;font-weight:bold;">→ See the full visualization on Chris Harrison's site</a></div>
+      <div class="line" style="margin-top:10px;font-style:italic;color:#555;">If a single author wrote a book this interwoven, you would call him a master. The Bible was written by forty. Across fifteen centuries. Without collaboration. There is no other book in human history that even approaches this. That is not coincidence. That is one Author behind many hands.</div>
+      <div class="line" style="margin-top:8px;font-size:11px;color:#888;">Visualization © Chris Harrison &amp; Christoph Römhild, 2007. Linked here with attribution. The 63,779 count reflects R.A. Torrey's Treasury of Scripture Knowledge applied to the KJV at the chapter-pair level; verse-level analyses of the same dataset yield well over 340,000 connections.</div>
+    </div>
 
-  <p class="body">A covenant is not a contract. A contract is a deal between equals; either side can walk away if the other side fails. A covenant is a binding promise rooted in the greater party's character, sealed by oath, attached to a sign, and impossible to renegotiate. It does not depend on the lesser party's performance. It depends on the One who swore it.</p>
+    <p class="body">This is not a theological textbook. It is a living, growing personal study companion with one purpose: to help you sit with the Holy Spirit and grow in your knowledge of — and likeness to — Jesus Christ.</p>
+    <p class="body">It is organized by biblical theme and narrative arc rather than by book order. Many themes weave through the entire Bible — from Genesis to Revelation — and this guide is designed to show those threads. Scriptures from different books cross-reference each other so you can see how God's story holds together as one coherent whole.</p>
+    <p class="body">This document is meant to grow. Every time a new theme is studied, a sermon is worth noting, a pastor says something worth keeping, or the Holy Spirit speaks something into your heart — it gets added here. Date your entries. Your convictions will develop over time, and that is healthy.</p>
 
-  <p class="body">Theme 3 ended with the Noahic covenant — God's first explicit binding promise to creation. Theme 4 picks up that thread and follows it forward through Scripture: Abraham (the call out and the seed promised), Moses (the law given and the nation formed), David (the kingdom and the throne that endures), and Jesus (the New Covenant in His blood, the fulfillment of all the rest). Each builds on the pattern Noah saw. Each is made by God's free initiative. Each one points forward to Christ.</p>
+    <div class="info-box">
+      <div class="title">📖 How to use each study module</div>
+      <div class="line"><strong>1. READ</strong> the scripture passage directly in your Bible before reading the study content below it.</div>
+      <div class="line"><strong>2. OBSERVE</strong> what the text actually says — not what you've heard about it. Look for repeated words, contrasts, commands, promises.</div>
+      <div class="line"><strong>3. STUDY</strong> the content in this guide — background, context, cross-references, interpretive views.</div>
+      <div class="line"><strong>4. PRAY</strong> through the reflection questions. Don't rush this step. Ask the Holy Spirit to give you clarity and discernment.</div>
+      <div class="line"><strong>5. WRITE</strong> your own convictions in the notes section. Date your entries. Your views may develop over time — that's healthy.</div>
+      <div class="line"><strong>6. HOLD</strong> your convictions humbly. The non-negotiables are Christ's lordship, His death and resurrection, and God's final victory.</div>
+    </div>
 
-  <p class="body">If you want to understand how the Bible holds together as one story rather than 66 separate books, the covenant pattern is the spine. Theme 4 walks that spine.</p>
+    <div class="info-box" style="margin-top:14px">
+      <div class="title">A note on the purpose of this guide</div>
+      <div class="line">The goal is not to become a Bible scholar. The goal is to <strong>know Christ better</strong> — because you cannot be like someone you do not know. Everything in this guide exists in service of one thing: a deeper, more honest, more Spirit-informed relationship with Jesus.</div>
+    </div>
 
-  <!-- CURRENTLY WORKING ON CALLOUT — M1 LIVE, M2 NEXT -->
-  <div class="info-box" style="border-left:4px solid #7E57C2; background:#F5F0FA;">
-    <div class="title">📍 Currently working on</div>
-    <div class="line"><strong>Theme 4 — In progress 🔨</strong></div>
-    <div class="line" style="margin-top:6px;">Module 1 (The Abrahamic Covenant) is complete and live. Up next: <strong>Module 2 — The Mosaic Covenant</strong> (Sinai, the law, the priestly nation).</div>
-    <div class="line" style="margin-top:6px;font-style:italic;color:#666;">Theme 4 is being built one module at a time. There is no rush. Better to do this slowly and well than to fill the slot with placeholder content. M1 was built on May 12, 2026.</div>
-  </div>
+    <div class="divider"></div>
 
-  <!-- ADD-FRIENDLY MAP — STATUS LEGEND -->
-  <h2 class="section-title">📚 The shape of this theme</h2>
-  <p class="body" style="color:#666;font-style:italic;">Five modules will trace the covenant pattern through Scripture: Abraham, Moses, David, the New Covenant prophesied, and the New Covenant in Christ. Status legend below.</p>
+    <h2 class="section-title">Before you begin</h2>
+    <div class="notes-box">
+      <div class="label">✏️ What do I currently believe? What am I hoping to discover?</div>
+      <textarea class="notes-input" id="n-intro" placeholder="Write your thoughts here..."></textarea>
+    </div>
 
-  <div class="info-box">
-    <div class="title">Status legend</div>
-    <div class="line">🔨 <strong>In Progress</strong> — currently being built or actively studied</div>
-    <div class="line">✅ <strong>Complete</strong> — finished and ready to study</div>
-    <div class="line">⏳ <strong>Coming</strong> — planned, not yet built</div>
-  </div>
-
-  <!-- MODULE MAP -->
-  <div class="info-box" style="border-left:4px solid #7E57C2;margin-top:14px;">
-    <div class="title">📖 Module map</div>
-    <div class="line">✅ <strong><a href="module1.html" style="color:#7E57C2;">Module 1 — The Abrahamic Covenant: God Walks Alone</a></strong> (Genesis 15)</div>
-    <div class="line" style="margin-top:6px;">⏳ <strong>Module 2 — The Mosaic Covenant</strong> (Exodus 19–20 — Sinai, the law, the priestly nation)</div>
-    <div class="line" style="margin-top:6px;">⏳ <strong>Module 3 — The Davidic Covenant</strong> (2 Samuel 7 — the throne that endures)</div>
-    <div class="line" style="margin-top:6px;">⏳ <strong>Module 4 — The New Covenant Prophesied</strong> (Jeremiah 31:31–34 — the heart-promise)</div>
-    <div class="line" style="margin-top:6px;">⏳ <strong>Module 5 — The New Covenant in Christ</strong> (Luke 22:20 + Hebrews 8 — where the Seed lands)</div>
-  </div>
-
-  <!-- ANCHOR PASSAGES — THE BOUNDARIES OF THE THEME -->
-  <div class="info-box" style="border-left:4px solid #2E75B6;margin-top:18px;">
-    <div class="title">📖 Anchor passages — the boundaries of Theme 4</div>
-    <div class="line">When the modules of this theme are built, they will be built within the boundaries of these passages. They are the scope of what Theme 4 will cover.</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/GEN.9.NASB1995" target="_blank" rel="noopener">Genesis 9</a> — the Noahic covenant — the first explicit covenant</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/GEN.15.NASB1995" target="_blank" rel="noopener">Genesis 15</a> — the Abrahamic covenant — God walking between the pieces alone</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/EXO.19-20.NASB1995" target="_blank" rel="noopener">Exodus 19–20</a> — the Mosaic covenant — Sinai, the law, the priestly nation</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/2SA.7.NASB1995" target="_blank" rel="noopener">2 Samuel 7</a> — the Davidic covenant — the throne that endures</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/JER.31.31-34.NASB1995" target="_blank" rel="noopener">Jeremiah 31:31–34</a> — the New Covenant prophesied</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/LUK.22.20.NASB1995" target="_blank" rel="noopener">Luke 22:20</a> — the New Covenant in Jesus' blood</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/HEB.8.NASB1995" target="_blank" rel="noopener">Hebrews 8</a> — the New Covenant explained</div>
-  </div>
-
-  <!-- CROSS-REFERENCES TO OTHER THEMES -->
-  <div class="cross-ref-box" style="margin-top:18px;">
-    <div class="title">🔗 Where this theme already touches the rest of the site</div>
-    <div class="line">• <strong><a href="../theme3/module3.html" style="color:#7E57C2;">Theme 3, Module 3 (The Rainbow Covenant)</a></strong> — The Noahic covenant in detail — Theme 4 begins where Theme 3 ends</div>
-    <div class="line">• <strong><a href="../theme1/module5.html" style="color:#7E57C2;">Theme 1, Module 5 (The New Covenant)</a></strong> — The New Covenant already lives in Theme 1 — Theme 4 will deepen it</div>
+    <button class="btn-print" onclick="window.print()">🖨️ Print this page</button>
   </div>
 
   <div class="divider"></div>
 
-  <!-- BEFORE YOU BEGIN — SAME PATTERN AS THEME 3 -->
-  <h2 class="section-title">Before any of this is built</h2>
-  <p class="body">If you are reading this overview before any modules exist, here is a question worth sitting with: <em>what would you want this theme to do for you?</em> The Bible is a deep enough book that any of these themes could be studied for a lifetime without exhausting them. The point of building modules is not to capture everything — it is to capture the things that move <strong>you</strong> closer to Christ. Bring that intention into the work when the time comes.</p>
+  <!-- ── THEMATIC INDEX ────────────────────────────────── -->
+  <div id="index">
+    <span class="page-tag">Thematic Index</span>
+    <h1 class="page-title">How This Guide Is Organized</h1>
+    <p class="body">This guide grows theme by theme. Each major theme has its own section with multiple modules inside it. Cross-references between themes are noted throughout so you can see how Scripture ties together across books and centuries.</p>
 
-  <div class="reflection-box" style="background:#F5F0FA;">
-    <div class="title">A pause</div>
-    <div class="reflection-item">What is the one question about this theme that you most want answered? Write it down. The answer to it will become a module.</div>
-    <div class="reflection-item">Where in your own walk with God does this theme already feel important? What experience is making it feel that way?</div>
-    <div class="reflection-item">Whose voice — pastor, teacher, author, friend — has helped you understand this theme so far? Their material may become source material here.</div>
-  </div>
+    <div class="info-box">
+      <div class="title">📚 Current themes in this guide</div>
+      <div class="line"><strong>THEME 1: THE END TIMES</strong> — Prophecy, the Tribulation, the Rapture, Israel, the Millennium, and how to live now — <a href="theme1/module1.html" style="color:#2E75B6">Modules 1–15</a></div>
+      <div class="line"><strong>THEME 2: BIBLICAL CALENDAR &amp; PROPHECY</strong> — God's original solar calendar, the Essene/Pharisee debate, the Dead Sea Scrolls, and why it matters for prophecy — <a href="theme2/index.html" style="color:#2E75B6">Theme 2 →</a></div>
+      <div class="line"><strong>THEME 3: JUDGMENT &amp; MERCY</strong> — Noah's Ark, the Flood, God's pattern of warning, grace, and rescue — <a href="theme3/index.html" style="color:#2E75B6">Theme 3 →</a></div>
+      <div class="line"><strong>THEME 4: COMING SOON</strong> — Covenant — God's binding promises through Noah, Abraham, Moses, David, and Jesus — <a href="theme4/index.html" style="color:#2E75B6">Theme 4 overview →</a></div>
+      <div class="line"><strong>THEME 5: COMING SOON</strong> — The Messiah — All the threads of Scripture that point to Christ, fulfilled and yet to come — <a href="theme5/index.html" style="color:#2E75B6">Theme 5 overview →</a></div>
+      <div class="line"><strong>THEME 6: COMING SOON</strong> — The Holy Spirit — His identity, work, indwelling, and role in your life today — <a href="theme6/index.html" style="color:#2E75B6">Theme 6 overview →</a></div>
+      <div class="line"><strong>THEME 7: COMING SOON</strong> — Kingdom of God — What it is, where it is, and how to live inside it now — <a href="theme7/index.html" style="color:#2E75B6">Theme 7 overview →</a></div>
+      <div class="line"><strong>THEME 8: COMING SOON</strong> — Prayer &amp; Intimacy with God — The biblical theology of prayer, with examples and reflection — <a href="theme8/index.html" style="color:#2E75B6">Theme 8 overview →</a></div>
+      <div class="line" style="margin-top:8px;color:#888;font-style:italic">ADD AS YOU GO: This list grows as you discover new areas to study. There is no rush. Let the Spirit lead.</div>
+    </div>
 
-  <!-- NAVIGATION FOOTER -->
-  <div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid #ddd;">
-    <a href="../index.html" class="btn-primary" style="font-size:12px;">← Home</a>
-    <a href="../index.html#index" class="btn-primary" style="font-size:12px;">All Themes</a>
+    <div class="cross-ref-box">
+      <div class="title">🔗 Key cross-theme connections</div>
+      <div class="line">The Serpent in Genesis 3 ↔ The Dragon in Revelation 12 &amp; 20 — same enemy, bookended by Scripture</div>
+      <div class="line">Noah's Ark as salvation through judgment ↔ The Rapture / God's rescue before the Tribulation</div>
+      <div class="line">God's covenant with Abraham (Gen 15) ↔ Israel's future in Romans 9–11 ↔ End Times prophecy</div>
+      <div class="line">The Garden of Eden lost (Gen 3) ↔ The New Jerusalem restored (Rev 21–22) — the whole Bible in two gardens</div>
+      <div class="line">The Holy Spirit in Ezekiel 36:27 ↔ Pentecost (Acts 2) ↔ The Restrainer (2 Thess 2) — one Spirit, many works</div>
+      <div class="line">The Messiah promised (Isa 7:14; 9:6; 53) ↔ Fulfilled in the Gospels ↔ Coming again in Revelation 19</div>
+      <div class="line">God's original calendar (Exod 12:2; Jubilees) ↔ The Feasts of Israel ↔ Millennial worship (Isa 66:23)</div>
+    </div>
+
+    <h2 class="section-title">Quick Start — Jump to a Module</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:16px 0;">
+
+      <a href="theme1/module1.html" style="text-decoration:none;">
+        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Theme 1 · Module 1</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4">Daniel's 70 Weeks</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif">The master prophetic timeline</div>
+        </div>
+      </a>
+
+      <a href="theme1/module6.html" style="text-decoration:none;">
+        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Theme 1 · Module 6</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4">The Rapture</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif">Scripture &amp; honest inquiry</div>
+        </div>
+      </a>
+
+      <a href="theme1/module12.html" style="text-decoration:none;">
+        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Theme 1 · Module 12</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4">The Millennium</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif">Christ's 1,000-year reign</div>
+        </div>
+      </a>
+
+      <a href="theme1/module14.html" style="text-decoration:none;">
+        <div style="background:#1F3864;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#2E4F8A'" onmouseout="this.style.background='#1F3864'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Theme 1 · Module 14</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4">Matt 24 ↔ Revelation</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif">Side-by-side parallel study</div>
+        </div>
+      </a>
+
+      <a href="theme2/module1.html" style="text-decoration:none;">
+        <div style="background:#2E6B0E;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#3A8A12'" onmouseout="this.style.background='#2E6B0E'">
+          <div style="font-size:10px;color:#C8DBA8;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Theme 2 · Module 1</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4">Calendar History</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif">From creation to the Dead Sea Scrolls</div>
+        </div>
+      </a>
+
+      <a href="journal.html" style="text-decoration:none;">
+        <div style="background:#7A6600;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#9A8200'" onmouseout="this.style.background='#7A6600'">
+          <div style="font-size:10px;color:#FFD700;font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">My Study</div>
+          <div style="font-size:14px;font-weight:bold;line-height:1.4">Personal Journal</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;font-family:Arial,sans-serif">Reflections &amp; observations</div>
+        </div>
+      </a>
+
+    </div>
+
   </div>
 
 </div>
 </div>
 
-<script src="../assets/js/nav.js"></script>
-<script src="../assets/js/main.js"></script>
-<script>buildSidebar('..');</script>
+<!-- PAGE NOTE IDS -->
+<script>
+  window.PAGE_NOTE_IDS = ['n-intro'];
+</script>
 
-</body>
-</html>
+<!-- SCRIPTS -->
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+  buildSidebar('.');
+</script>
+
+
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>
