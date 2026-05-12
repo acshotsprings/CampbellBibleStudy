@@ -209,12 +209,7 @@ const NAV_STRUCTURE = [
     key: 'themes48',
     colorKey: 'themes48',
     items: [
-      { label: '↳ Theme 4 Overview — Covenant',                  href: 'theme4/index.html', sub: true },
-      { label: '↳ Module 1 — The Abrahamic Covenant',            href: 'theme4/module1.html', sub: true, completable: true, completeKey: 'complete-t4m1' },
-      { label: '↳ Theme 5 Overview — The Messiah (coming)',       href: 'theme5/index.html', sub: true },
-      { label: '↳ Theme 6 Overview — The Holy Spirit (coming)',   href: 'theme6/index.html', sub: true },
-      { label: '↳ Theme 7 Overview — Kingdom of God (coming)',    href: 'theme7/index.html', sub: true },
-      { label: '↳ Theme 8 Overview — Prayer & Intimacy (coming)', href: 'theme8/index.html', sub: true },
+      { label: 'Themes 4–8 (Coming Soon)', href: 'index.html#index' },
     ]
   },
   {
@@ -532,16 +527,6 @@ const READING_CHAIN = [
   ['theme3/module3.html',   'Module 3 — The Rainbow Covenant',   'Theme 3 — Judgment & Mercy'],
   ['theme3/module4.html',   'Module 4 — The Days of Noah',       'Theme 3 — Judgment & Mercy'],
   ['theme3/module5.html',   'Module 5 — Salvation Through the Water', 'Theme 3 — Judgment & Mercy'],
-
-  // Theme 4 — Covenant (overview + M1 live; M2-M5 planned)
-  ['theme4/index.html',     'Theme 4 Overview',                       'Theme 4 — Covenant'],
-  ['theme4/module1.html',   'Module 1 — The Abrahamic Covenant',      'Theme 4 — Covenant'],
-
-  // Themes 5–8 overviews (modules not yet built)
-  ['theme5/index.html',     'Theme 5 Overview',                       'Theme 5 — The Messiah'],
-  ['theme6/index.html',     'Theme 6 Overview',                       'Theme 6 — The Holy Spirit'],
-  ['theme7/index.html',     'Theme 7 Overview',                       'Theme 7 — Kingdom of God'],
-  ['theme8/index.html',     'Theme 8 Overview',                       'Theme 8 — Prayer & Intimacy'],
 
   // Characters in Scripture (overview + David library)
   ['characters.html',                                'Characters Overview',          'Characters in Scripture'],
