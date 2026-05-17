@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-17T00:43:20.901Z",
+  "lastUpdated": "2026-05-17T00:44:56.911Z",
   "originDate": "March 27, 2026",
   "saveHistory": [
     {
@@ -181,15 +181,16 @@
       "isoTime": "2026-05-17T00:37:49.781Z"
     },
     {
-      "timestamp": "May 16, 2026 at 7:43 PM",
-      "summary": "Updated: complete-david-02, n-david-02b, laststamp-n-david-02b.",
+      "timestamp": "May 16, 2026 at 7:44 PM",
+      "summary": "Updated 6 note fields including complete-david-02, laststamp-n-david-03, n-david-02b, and more.",
       "pagesChanged": [],
-      "isoTime": "2026-05-17T00:43:20.901Z"
+      "isoTime": "2026-05-17T00:44:56.911Z"
     }
   ],
   "notes": {
     "n-david-01": "{\"ops\":[{\"insert\":\"\\n────────────────────────────────────────\\nMay 16, 2026 at 7:35 PM\\n────────────────────────────────────────\\n\"},{\"attributes\":{\"bold\":true},\"insert\":\"My Summary of Chapter 01 — Origins\"},{\"insert\":\"\\n\\nDavid came from Judah's line through Ruth and Boaz. Two Gentile women were in his bloodline — Rahab, a harlot, and Ruth, a Moabite widow. He was Jesse's youngest son, the eighth of eight, born in Bethlehem. Jesse was already an old man by then.\\nWhat got me was how David was treated like he didn't matter. When Samuel showed up to anoint the next king, Jesse didn't even bring David in from tending the sheep until Samuel asked if there were more sons. That's cold. And when Eliab rebuked David at the battlefield, it wasn't just older brother stuff — it was personal contempt.\\nI believe David was born out of wedlock. Psalm 51:5 says he was \\\"brought forth in iniquity,\\\" and his mother's name is never mentioned anywhere in Scripture. That feels deliberate to me. But here's the thing — it doesn't make him less. We're all born in sin. God looks at the heart, not the outside.\\nDavid's sisters had sons who became his greatest generals — Joab, Abishai, Asahel, and Amasa. His own nephews. That's wild.\\nHe was a shepherd. He fought lions and bears for his father's flock. And Bethlehem, his little hometown, would become known as David's city — and a thousand years later, Jesus would be born there.\\n\"}]}",
     "complete-david-02": "true",
+    "laststamp-n-david-03": "Sat May 16 2026",
     "complete-t2m1": "true",
     "is-owner": "true",
     "complete-t2m5": "true",
@@ -205,6 +206,8 @@
     "complete-david-05b": "true",
     "notice-dismissed": "true",
     "complete-t2m4": "true",
+    "n-david-03": "{\"ops\":[{\"insert\":\"\\n────────────────────────────────────────\\nMay 16, 2026 at 7:44 PM\\n────────────────────────────────────────\\n\"},{\"attributes\":{\"bold\":true},\"insert\":\"My Summary of Chapter 03 — Saul's Court\"},{\"insert\":\"\\nDavid comes to Saul's court as a harp player to soothe Saul's troubled spirit. The Spirit of the LORD left Saul, and an evil spirit torments him. David plays music, and it calms him down. Saul loves David and makes him his armor-bearer. So far so good.\\nBut then everything changes. After David kills Goliath and comes back victorious, the women of Israel start singing and dancing: \\\"Saul has slain his thousands, and David his ten thousands.\\\" Saul hears this and loses it. He realizes David's becoming more beloved and more powerful than he is. Saul thinks, \\\"What more can he have but the kingdom?\\\" He knows David's a threat.\\nFrom that moment on, Saul's jealous and afraid. When David plays the harp to calm him, Saul gets so mad that he throws a spear at David, trying to pin him to the wall. David escapes — twice. Saul tries to get rid of him by making him commander of a thousand soldiers, hoping he'll get killed in battle. But David prospers instead. Everything he does succeeds because the LORD is with him.\\nThe irony is brutal. Saul brought David to comfort him, and now David's the one he's trying to kill. David's rising, Saul's falling. The people love David more than they love Saul. And Saul knows the LORD is with David but has left him. It's the beginning of a long, dark chase — Saul hunting David because he's terrified of losing his throne.\\nWhat gets me is that David just keeps serving faithfully even though Saul's trying to murder him. David didn't ask for this conflict. He was just playing the harp. But because he carried God's Spirit and the people recognized it, Saul became his enemy. That's the price of being favored by God when the king isn't.\\n\"}]}",
+    "complete-david-02b": "true",
     "complete-t2m2": "true",
     "laststamp-n-david-01": "Sat May 16 2026",
     "laststamp-n-david-02b": "Sat May 16 2026",
