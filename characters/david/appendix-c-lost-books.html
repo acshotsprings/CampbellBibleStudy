@@ -62,6 +62,7 @@
     .book-card .book-body p { margin: 0 0 10px; }
     .book-card .book-body p:last-child { margin-bottom: 0; }
   </style>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 </head>
 <body>
 
@@ -411,12 +412,23 @@
       <p>The genuine ancient Book of Jashar is gone. Only the two excerpts preserved in Scripture (Joshua's sun command and David's Song of the Bow) remain of it.</p>
 
     </div>
+      <!-- ============================================================ -->
+      <!-- NOTES BOX - David Library Quill rollout 2026-05-16            -->
+      <!-- Quill editor: main.js initQuillEditors() mounts on this div  -->
+      <!-- ============================================================ -->
+      <div class="notes-box">
+        <div class="label">✏️ My notes &amp; convictions on Appendix C — The Lost Books:</div>
+        <div class="quill-editor" id="n-david-appx-c" data-placeholder="Write your convictions here. Date your entry."></div>
+      </div>
+
+
   </article>
     </div>
   </div>
 
-  <script>window.PAGE_NOTE_IDS = [];</script>
+  <script>window.PAGE_NOTE_IDS = ['n-david-appx-c'];</script>
   <script src="../../assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
   <script src="../../assets/js/main.js"></script>
   <script>buildSidebar('../..');</script>
 

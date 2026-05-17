@@ -209,6 +209,7 @@
       .origin-grid { grid-template-columns: 1fr; }
     }
   </style>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 </head>
 <body>
 
@@ -542,12 +543,23 @@
       </ul>
 
     </div>
+      <!-- ============================================================ -->
+      <!-- NOTES BOX - David Library Quill rollout 2026-05-16            -->
+      <!-- Quill editor: main.js initQuillEditors() mounts on this div  -->
+      <!-- ============================================================ -->
+      <div class="notes-box">
+        <div class="label">✏️ My notes &amp; convictions on Appendix D — Family Tree:</div>
+        <div class="quill-editor" id="n-david-appx-d" data-placeholder="Write your convictions here. Date your entry."></div>
+      </div>
+
+
   </article>
     </div>
   </div>
 
-  <script>window.PAGE_NOTE_IDS = [];</script>
+  <script>window.PAGE_NOTE_IDS = ['n-david-appx-d'];</script>
   <script src="../../assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
   <script src="../../assets/js/main.js"></script>
   <script>buildSidebar('../..');</script>
 
