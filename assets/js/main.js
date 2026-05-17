@@ -93,7 +93,7 @@ const COMPLETION_KEYS = {
   'characters/david/04-jonathan':            'complete-david-04',
   'characters/david/05-fugitive':            'complete-david-05',
   'characters/david/05b-abigail':            'complete-david-05b',
-  'characters/david/18-cave-years':          'complete-david-18',
+  'characters/david/05c-cave-years':         'complete-david-05c',
   'characters/david/06-ziklag':              'complete-david-06',
   'characters/david/07-king-of-judah':       'complete-david-07',
   'characters/david/08-king-of-israel':      'complete-david-08',
