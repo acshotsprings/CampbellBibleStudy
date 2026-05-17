@@ -1,0 +1,13 @@
+# Campbell Bible Study — .gitignore
+# Keeps local backup snapshots out of the published site.
+
+# Snapshot backups — kept locally for easy reference, never deployed.
+_snapshots/
+
+# Catch any snapshot files saved loose in theme/character folders by mistake.
+*_snapshot_*.html
+*_snapshot.html
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
