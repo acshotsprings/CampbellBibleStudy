@@ -1,13 +1,14 @@
 /* ============================================================
    CAMPBELL BIBLE STUDY — ANALYTICS & NOTIFICATIONS
    File: assets/js/analytics.js
-   Updated: April 26, 2026 (v1.7 — admin auto-suppression)
+   Updated: May 7, 2026 (v2.1 — note content included in save email)
 
    HANDLES TWO SYSTEMS:
    1. Google Analytics 4 (GA4) page tracking
    2. EmailJS silent email notifications to Chris
 
    EMAIL TRIGGERS:
+   • Visitor enters their name (fires onblur of name field — v1.8, every entry)
    • Visitor lands on site (first page view this session, after 8s dwell + 1 interaction)
    • Visitor saves their notes (fires when saveVisitorNotes() runs)
 
@@ -96,6 +97,36 @@
    • New helper: isAdminMode() — internal-only, checks both signals
      defensively (sessionStorage + body class) so it works regardless of
      analytics.js vs main.js load order.
+
+   V1.8 CHANGES (2026-05-02):
+   • NAME-ENTRY EMAIL TRIGGER. New highest-confidence visitor signal: when
+     a visitor types their name into the 👤 name field and clicks/tabs out
+     (onblur), an email fires immediately with the name. No 8-second dwell,
+     no interaction guard, no session dedup — every name entry/change emits
+     a new email so Chris always knows who just identified themselves.
+   • New exposed function: window.CBSG_notifyNameEntry(name) — called from
+     main.js's onblur handler on the #cbsg-guest-name input. Empty/whitespace
+     names are ignored (no email). Owner suppression still applies by default
+     (so you don't email yourself while testing).
+   • New session-scoped bypass: window.CBSG_bypassOwnerForName(true|false)
+     — call from the browser console to force the name-entry email to fire
+     even on owner-flagged devices, for testing the pipeline end-to-end
+     without flipping URL params or clearing localStorage. Session-scoped
+     so it auto-clears when the browser closes (can't accidentally stay on).
+     Only affects name-entry emails — visit/note-save emails still respect
+     owner suppression normally.
+
+   V2.2 CHANGES (2026-05-11):
+   • NEW ?clear-owner=true URL SWITCH. Any device that visits
+     https://cbs2026.com/?clear-owner=true gets its persistent owner flag
+     and session admin marker wiped, so the next visit acts like a fresh
+     first-time visitor. Includes a visible alert() so non-technical users
+     get confirmation without needing dev tools. Fixes the long-standing
+     "stuck owner flag" problem: previously the only reset path was
+     localStorage.removeItem('cbsg-is-owner') from the browser console,
+     which isn't realistic on iPhone Safari or for non-technical visitors.
+     Implementation lives inside handleOwnerFlag() alongside the legacy
+     ?owner=true / ?owner=false handling.
    ============================================================ */
 
 (function() {
@@ -108,13 +139,37 @@
   const EMAILJS_TEMPLATE_ID = 'template_275v5hl';
   const NOTIFY_EMAIL = 'acshotsprings@gmail.com';
   const OWNER_FLAG_KEY = 'cbsg-is-owner';
-  const SESSION_HIT_KEY = 'cbsg-session-hit-sent';
+  // SESSION_HIT_KEY removed 2026-05-07 — no longer needed since hit email was removed.
 
   // ─── OWNER DETECTION ───────────────────────────────────────
   function handleOwnerFlag() {
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const ownerParam = urlParams.get('owner');
+      const clearOwnerParam = urlParams.get('clear-owner');
+
+      // v2.2 (2026-05-11): NEW ?clear-owner=true SWITCH.
+      // The persistent owner flag has historically gotten "stuck" on
+      // devices that admin-logged-in once and were then permanently
+      // suppressed from email notifications. Pre-v2.2, the only fix
+      // was to open browser dev tools and run a localStorage command —
+      // not a workflow Chris could realistically explain to anyone else
+      // (and a pain on iPhone Safari). This URL switch gives a one-tap
+      // reset path for any device: just visit cbs2026.com/?clear-owner=true
+      // and the flag is wiped + sessionStorage admin-mode is cleared too,
+      // so the visit acts like a fresh first-time visitor.
+      // Includes a visible alert() so non-technical users get confirmation
+      // without needing to check the console.
+      if (clearOwnerParam === 'true') {
+        try { localStorage.removeItem(OWNER_FLAG_KEY); } catch (e) {}
+        try { sessionStorage.removeItem('cbsg-admin'); } catch (e) {}
+        console.log('[CBSG Analytics] ?clear-owner=true — owner flag cleared + admin session cleared. This device will now generate normal visitor emails.');
+        try {
+          alert('Owner flag cleared. This device will now behave as a normal visitor.\n\nTo restore admin mode, log in with the admin password as usual.');
+        } catch (e) { /* alert can fail in some embeds */ }
+        // Don't fall through to the legacy ?owner=true/false handling below
+        return;
+      }
 
       if (ownerParam === 'true') {
         localStorage.setItem(OWNER_FLAG_KEY, 'true');
@@ -155,16 +210,16 @@
   }
 
   // Detect admin mode without depending on main.js load order.
-  // Two signals, either is sufficient:
-  //   1. sessionStorage 'cbsg-admin' === 'true' (set by main.js on unlock)
-  //   2. document.body has 'admin-mode' class (applied by applyAdminUI)
+  // 2026-05-06 FIX: Only sessionStorage is the source of truth. Some HTML
+  // pages ship with class="admin-mode" baked into the <body> tag (artifact
+  // of editing the source while admin was unlocked), which was causing every
+  // first-time visitor to be auto-promoted to owner and have their hit email
+  // silently suppressed. The body-class signal is unreliable — it's a UI hint
+  // applied AFTER unlock, never a source of truth before it.
   function isAdminMode() {
     try {
       if (sessionStorage.getItem('cbsg-admin') === 'true') return true;
     } catch (e) { /* sessionStorage may throw in some privacy modes */ }
-    try {
-      if (document.body && document.body.classList.contains('admin-mode')) return true;
-    } catch (e) { /* body may not exist yet */ }
     return false;
   }
 
@@ -325,66 +380,42 @@
   }
 
   // ─── VISITOR HIT TRIGGER ───────────────────────────────────
-  // v1.2: This now requires BOTH (a) the page to stay open 8+ seconds AND
-  // (b) at least one real human interaction (mousemove, click, scroll, key).
-  // Bots and link-prefetchers rarely do either — this kills blank emails at
-  // the source. If the visitor closes the tab before the thresholds are met,
-  // no email is sent.
-  function fireVisitorHitEmail() {
-    console.log('[CBSG Analytics] fireVisitorHitEmail() called. isOwner=' + isOwner());
-
-    if (sessionStorage.getItem(SESSION_HIT_KEY)) {
-      console.log('[CBSG Analytics] Already fired this session — skipping.');
-      return;
-    }
-
-    const DWELL_MS = 8000;
-    let humanInteracted = false;
-    let dwellElapsed = false;
-
-    function markInteracted() {
-      if (humanInteracted) return;
-      humanInteracted = true;
-      console.log('[CBSG Analytics] ✓ Human interaction detected (dwellElapsed=' + dwellElapsed + ')');
-      maybeFire();
-    }
-    function markDwellDone() {
-      dwellElapsed = true;
-      console.log('[CBSG Analytics] ✓ 8-second dwell elapsed (humanInteracted=' + humanInteracted + ')');
-      maybeFire();
-    }
-    function maybeFire() {
-      if (!humanInteracted || !dwellElapsed) return;
-      if (sessionStorage.getItem(SESSION_HIT_KEY)) return;
-      sessionStorage.setItem(SESSION_HIT_KEY, 'true');
-      console.log('[CBSG Analytics] ✓ Both gates passed — firing hit email.');
-      sendNotificationEmail('Visitor hit site', `Landing page: ${window.location.pathname}`);
-      cleanup();
-    }
-    function cleanup() {
-      ['mousemove', 'click', 'scroll', 'keydown', 'touchstart'].forEach(evt => {
-        document.removeEventListener(evt, markInteracted, { passive: true });
-      });
-    }
-
-    ['mousemove', 'click', 'scroll', 'keydown', 'touchstart'].forEach(evt => {
-      document.addEventListener(evt, markInteracted, { passive: true });
-    });
-
-    console.log('[CBSG Analytics] Waiting for 8s dwell + 1 human interaction...');
-    setTimeout(markDwellDone, DWELL_MS);
-  }
+  // 2026-05-07 (v2.0): The 8-second-dwell-plus-interaction "hit email" was
+  // removed. It was firing for any visitor who lingered 8+ seconds and moved
+  // their mouse/scrolled, which produced "Anonymous Visitor" emails for
+  // anyone who hadn't yet entered their name through the welcome modal —
+  // including bots, prefetchers, and visitors mid-modal. The cleaner signal
+  // is CBSG_notifyNameEntry below: it fires only when a real visitor types
+  // and submits their actual name. No more anonymous noise.
 
   // ─── NOTE SAVE TRIGGER (exposed globally) ──────────────────
-  window.CBSG_notifyNoteSave = function(noteContext) {
+  // 2026-05-07 (v2.1): Now accepts a second arg `noteContent` containing
+  // the actual notes the visitor typed. When provided, it gets included in
+  // the email body so Chris can read the visitor's notes directly from the
+  // notification — without this, the only signal was "someone saved" with
+  // no idea what they wrote, which defeated the whole point of a family
+  // Bible study site.
+  window.CBSG_notifyNoteSave = function(noteContext, noteContent) {
     // Fire GA event (v1.6) — aggregate behavioral analytics
     trackEvent('notes_saved', {
       note_context: noteContext || '(no context)',
       page_path:    window.location.pathname,
       page_title:   document.title
     });
-    // Fire EmailJS notification (existing behavior)
-    sendNotificationEmail('Notes saved', noteContext || 'Notes saved on ' + window.location.pathname);
+    // Build email body — context line + notes content if available.
+    // Truncate at 8KB to stay well under EmailJS template field limits.
+    let body = noteContext || ('Notes saved on ' + window.location.pathname);
+    if (noteContent && typeof noteContent === 'string') {
+      const cleaned = noteContent.trim();
+      if (cleaned.length > 0) {
+        const MAX_LEN = 8000;
+        const truncated = cleaned.length > MAX_LEN
+          ? cleaned.slice(0, MAX_LEN) + '\n\n[...notes truncated — too long for email. Full version is in visitor\'s browser localStorage.]'
+          : cleaned;
+        body += '\n\n--- NOTES ---\n' + truncated;
+      }
+    }
+    sendNotificationEmail('Notes saved', body);
   };
 
   // ─── OWNER STATUS CHECK (exposed globally for debugging) ───
@@ -400,6 +431,67 @@
   window.CBSG_testEmail = function() {
     console.log('[CBSG Analytics] CBSG_testEmail() triggered manually.');
     sendNotificationEmail('Manual test email', 'Triggered by CBSG_testEmail() from console at ' + new Date().toISOString());
+  };
+
+  // ─── NAME-ENTRY EMAIL TRIGGER (v1.8) ───────────────────────
+  // Highest-confidence visitor signal. Called by main.js's onblur handler
+  // on the #cbsg-guest-name input. Fires every time a non-empty name is
+  // entered/changed — no dedup, no dwell guard, no interaction guard.
+  // Owner suppression still applies UNLESS the session-scoped bypass is on
+  // (see CBSG_bypassOwnerForName below).
+  const NAME_BYPASS_KEY = 'cbsg-name-bypass-owner';
+
+  window.CBSG_notifyNameEntry = function(name) {
+    const cleanName = (name && String(name).trim()) || '';
+    if (!cleanName) {
+      console.log('[CBSG Analytics] Name-entry skipped: empty name');
+      return;
+    }
+    console.log('[CBSG Analytics] CBSG_notifyNameEntry() fired. name="' + cleanName + '"');
+
+    // Owner suppression — but allow session bypass for testing
+    let bypassActive = false;
+    try { bypassActive = sessionStorage.getItem(NAME_BYPASS_KEY) === 'true'; }
+    catch (e) { /* sessionStorage may throw in some privacy modes */ }
+
+    if (isOwner() && !bypassActive) {
+      console.log('[CBSG Analytics] Owner mode — name-entry email suppressed. Run CBSG_bypassOwnerForName(true) to override for this session.');
+      return;
+    }
+    if (isOwner() && bypassActive) {
+      console.log('[CBSG Analytics] Owner mode active but bypass ON — name-entry email will fire.');
+    }
+
+    sendNotificationEmail('Visitor entered name', 'Name: ' + cleanName + ' | Page: ' + window.location.pathname);
+  };
+
+  // ─── OWNER BYPASS FOR NAME-ENTRY (v1.8) ────────────────────
+  // Session-scoped bypass for testing the name-entry email pipeline from
+  // an owner-flagged device. Auto-clears when the browser closes — can't
+  // accidentally stay on forever. Only affects name-entry emails; visit
+  // and note-save emails still respect owner suppression normally.
+  //   CBSG_bypassOwnerForName(true)  — turn bypass ON for this session
+  //   CBSG_bypassOwnerForName(false) — turn bypass OFF
+  //   CBSG_bypassOwnerForName()      — read current state
+  window.CBSG_bypassOwnerForName = function(enable) {
+    try {
+      if (enable === true) {
+        sessionStorage.setItem(NAME_BYPASS_KEY, 'true');
+        console.log('[CBSG Analytics] ✓ Owner bypass for name-entry: ON (this session only)');
+        return true;
+      }
+      if (enable === false) {
+        sessionStorage.removeItem(NAME_BYPASS_KEY);
+        console.log('[CBSG Analytics] ✓ Owner bypass for name-entry: OFF');
+        return false;
+      }
+      const current = sessionStorage.getItem(NAME_BYPASS_KEY) === 'true';
+      console.log('[CBSG Analytics] Owner bypass for name-entry currently: ' + (current ? 'ON' : 'OFF'));
+      return current;
+    } catch (e) {
+      console.log('[CBSG Analytics] sessionStorage unavailable: ' + e.message);
+      return false;
+    }
   };
 
   // ─── GA4 CUSTOM EVENT TRACKING (v1.6) ──────────────────────
@@ -514,13 +606,40 @@
     };
   }
 
+  // ─── ONE-TIME MIGRATION (2026-05-06) ───────────────────────
+  // Until today, isAdminMode() trusted document.body.classList.contains('admin-mode')
+  // as a signal that the user was admin-unlocked. But several HTML pages on the
+  // site ship with class="admin-mode" baked into the <body> tag (an artifact of
+  // editing source while admin was unlocked). That meant every visitor whose
+  // first page was a "leaking" page got auto-promoted to owner permanently in
+  // localStorage, which silently suppressed all their visitor-hit emails.
+  //
+  // This migration runs once per device. If cbsg-is-owner is set but the device
+  // is not currently in admin sessionStorage, we conservatively clear the flag
+  // — assuming it was written by the buggy auto-promote. Any real owner device
+  // (i.e. you, Chris) will simply re-promote next time you unlock admin.
+  function runOwnerFlagMigration() {
+    const MIGRATION_KEY = 'cbsg-owner-migration-v2026-05-06';
+    try {
+      if (localStorage.getItem(MIGRATION_KEY) === 'done') return;
+      const sessionAdmin = sessionStorage.getItem('cbsg-admin') === 'true';
+      const ownerFlag    = localStorage.getItem(OWNER_FLAG_KEY) === 'true';
+      if (ownerFlag && !sessionAdmin) {
+        localStorage.removeItem(OWNER_FLAG_KEY);
+        console.log('[CBSG Analytics] One-time migration: cleared stale owner flag (likely written by 2026-05-06 admin-class bug).');
+      }
+      localStorage.setItem(MIGRATION_KEY, 'done');
+    } catch (e) { /* storage may throw in privacy modes */ }
+  }
+
   // ─── INITIALIZE ON PAGE LOAD ───────────────────────────────
   function init() {
+    runOwnerFlagMigration();     // 2026-05-06: clear stale owner flags
     handleOwnerFlag();           // Check URL for ?owner=true/false first
     loadGoogleAnalytics();       // GA always runs (tracks your own visits too)
     setupLinkClickTracking();    // v1.6: Strong's & scripture click tracking
     setupCompletionTracking();   // v1.6: localStorage observer for completions
-    fireVisitorHitEmail();       // Email fires only if not owner
+    // 2026-05-07: hit email removed — see comment block above CBSG_notifyNameEntry.
   }
 
   if (document.readyState === 'loading') {

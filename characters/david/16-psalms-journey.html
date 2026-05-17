@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 16: The Psalms Journey · The Life of David</title>
+  <link rel="stylesheet" href="../../assets/css/style.css" />
+  <script src="../../assets/js/analytics.js"></script>
+  <link rel="stylesheet" href="david.css" />
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: March 27, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: May 10, 2026</span></span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+<article>
+    <header class="chapter-hero">
+      <p class="chapter-breadcrumb">
+        <a href="../../characters.html">Characters</a> &nbsp;·&nbsp;
+        <a href="index.html">The Life of David</a>
+      </p>
+      <p class="chapter-num">Chapter 16</p>
+      <h1 class="chapter-title">The Psalms Journey</h1>
+      <p class="chapter-subtitle">All 73 Davidic Psalms, organized against the life that produced them</p>
+      <div class="chapter-refs">
+        <strong>Primary Texts</strong>
+        <a href="https://www.bible.com/bible/100/PSA.3.NASB1995" target="_blank" rel="noopener">Psalms 3 – 145 (Davidic selections)</a> · <a href="https://www.bible.com/bible/100/2SA.22.NASB1995" target="_blank" rel="noopener">2 Samuel 22</a> / <a href="https://www.bible.com/bible/100/1CH.16.7-36.NASB1995" target="_blank" rel="noopener">1 Chronicles 16:7–36</a>
+      </div>
+    </header>
+
+    <div class="chapter-body">
+
+      <h2>How Many Psalms Did David Write?</h2>
+
+      <p>The Hebrew superscriptions attribute <strong>73 psalms</strong> to David in the Masoretic Text:</p>
+
+      <p><a href="https://www.bible.com/bible/100/PSA.3.NASB1995" target="_blank" rel="noopener">Psalms 3</a>–9, 11–32, 34–41, 51–65, 68–70, 86, 101, 103, 108–110, 122, 124, 131, 133, 138–145.</p>
+
+      <p>The Septuagint adds additional Davidic attributions (<a href="https://www.bible.com/bible/100/PSA.33.NASB1995" target="_blank" rel="noopener">Psalms 33</a>, 43, 71, 91, 93–99, 104, 137 in various manuscripts). Some psalms (<a href="https://www.bible.com/bible/100/PSA.2.NASB1995" target="_blank" rel="noopener">Psalms 2</a>, 95) are attributed to David in the New Testament <a href="https://www.bible.com/bible/100/ACT.4.25.NASB1995" target="_blank" rel="noopener"><span class="ref-inline">Acts 4:25; Heb 4:7</span></a> though their headings are unattributed in the Hebrew text.</p>
+
+      <p>The phrase "<em>l'David</em>" can mean "of David," "to David," "for David," or "in the David style" — but the dominant traditional reading takes it as authorial attribution.</p>
+
+      <p>David is also called <strong>"the sweet psalmist of Israel"</strong> in <a href="https://www.bible.com/bible/100/2SA.23.1.NASB1995" target="_blank" rel="noopener">2 Samuel 23:1</a>, and as a young man he was already "skillful in playing" the lyre <a href="https://www.bible.com/bible/100/1SA.16.18.NASB1995" target="_blank" rel="noopener"><span class="ref-inline">1 Sam 16:18</span></a>.</p>
+
+      <h2>Categories of Davidic Psalms</h2>
+
+      <table class="fact-table">
+        <thead><tr><th>Category</th><th>Function</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td>Laments (individual)</td><td>Personal distress, illness, betrayal, enemies</td><td>3, 4, 5, 6, 7, 13, 22, 25, 28, 31, 35, 38, 39, 42–43 (book III's first lament), 51, 54–57, 59, 61, 64, 69–70, 86, 109, 140, 141, 142, 143</td></tr>
+          <tr><td>Laments (national/communal)</td><td>National calamity</td><td>60, 144</td></tr>
+          <tr><td>Penitential</td><td>Confession of sin</td><td>6, 32, 38, 51, 102 (anonymous), 130 (anonymous), 143</td></tr>
+          <tr><td>Praise/Hymn</td><td>Direct praise of God</td><td>8, 9, 19, 29, 33, 65, 103, 104, 138, 139, 145</td></tr>
+          <tr><td>Thanksgiving</td><td>Thanks for deliverance</td><td>30, 32, 34, 40, 41, 116, 124, 138</td></tr>
+          <tr><td>Royal/Coronation</td><td>The king and the kingdom</td><td>2, 18, 20, 21, 45, 72, 89, 101, 110, 132, 144</td></tr>
+          <tr><td>Messianic</td><td>Pointing forward to the Messiah</td><td>2, 8, 16, 22, 40, 45, 69, 72, 89, 102, 110, 118</td></tr>
+          <tr><td>Wisdom/Torah</td><td>Reflection on God's law and human conduct</td><td>1, 19, 32, 34, 37, 49, 73, 78, 112, 119, 127, 128, 133</td></tr>
+          <tr><td>Imprecatory</td><td>Calling for justice on enemies</td><td>35, 55, 58, 59, 69, 79, 83, 109, 137, 140</td></tr>
+        </tbody>
+      </table>
+
+      <h2>The Psalms with Specific Life-Settings</h2>
+
+      <p>Thirteen Davidic psalms have superscriptions tying them to specific events:</p>
+
+      <table class="fact-table">
+        <thead><tr><th>Psalm</th><th>Superscription</th><th>Life Event</th></tr></thead>
+        <tbody>
+          <tr><td>3</td><td>When he fled from Absalom his son</td><td>Flight across the Jordan, c. 970s BC</td></tr>
+          <tr><td>7</td><td>Concerning Cush, a Benjamite</td><td>Likely related to a critic from Saul's tribe</td></tr>
+          <tr><td>18</td><td>When the LORD delivered him from the hand of all his enemies, and from the hand of Saul</td><td>Retrospective; near the end of the wars</td></tr>
+          <tr><td>30</td><td>A Song at the dedication of the temple (house)</td><td>Likely the dedication of the temple site (Araunah's threshing floor)</td></tr>
+          <tr><td>34</td><td>When he changed his behavior before Abimelech (Achish)</td><td>Feigning madness in Gath</td></tr>
+          <tr><td>51</td><td>When Nathan the prophet went to him, after he had gone in to Bathsheba</td><td>The confrontation</td></tr>
+          <tr><td>52</td><td>When Doeg the Edomite came and told Saul</td><td>Aftermath of Nob massacre</td></tr>
+          <tr><td>54</td><td>When the Ziphites went and told Saul</td><td>Wilderness of Ziph</td></tr>
+          <tr><td>56</td><td>When the Philistines seized him in Gath</td><td>Gath, before the madness feint</td></tr>
+          <tr><td>57</td><td>When he fled from Saul in the cave</td><td>Cave of Adullam or En-gedi</td></tr>
+          <tr><td>59</td><td>When Saul sent men to watch his house in order to kill him</td><td>Michal's escape, Gibeah</td></tr>
+          <tr><td>60</td><td>When he strove with Aram-naharaim and Aram-zobah, and when Joab struck down 12,000 of Edom in the Valley of Salt</td><td>Syrian/Edomite campaigns</td></tr>
+          <tr><td>63</td><td>When he was in the wilderness of Judah</td><td>Either fugitive years or Absalom's revolt</td></tr>
+          <tr><td>142</td><td>When he was in the cave</td><td>Cave of Adullam or En-gedi</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Chronological Walk-Through</h2>
+
+      <h3>Stage 1: Youth, Anointing, and Saul's Court</h3>
+
+      <p>No psalms are specifically tied to this period, though <a href="https://www.bible.com/bible/100/PSA.8.NASB1995" target="_blank" rel="noopener">Psalm 8</a> ("When I look at your heavens, the work of your fingers, the moon and the stars, which you have set in place — what is man that you are mindful of him?") is often associated with David's shepherding youth.</p>
+
+      <p><a href="https://www.bible.com/bible/100/PSA.23.NASB1995" target="_blank" rel="noopener">Psalm 23</a> — "The LORD is my shepherd" — is the most famous shepherd psalm. While not tied to a specific event, the shepherd imagery suggests it draws on David's own experience with sheep. The psalm's mature confidence ("Though I walk through the valley of the shadow of death, I will fear no evil... You prepare a table before me in the presence of my enemies") may reflect later reflection on early experiences.</p>
+
+      <h3>Stage 2: The Fugitive Years</h3>
+
+      <p>This period generated the largest concentration of Davidic psalms with specific life-settings. The themes: enemies pressing in, isolation, betrayal, desperate trust.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.7.NASB1995" target="_blank" rel="noopener">Psalm 7</a></strong> — "O LORD my God, in you do I take refuge; save me from all my pursuers and deliver me, lest like a lion they tear my soul apart."</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.11.NASB1995" target="_blank" rel="noopener">Psalm 11</a></strong> — Internal psalm against advice to flee: "In the LORD I take refuge; how can you say to my soul, 'Flee like a bird to your mountain'?"</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.13.NASB1995" target="_blank" rel="noopener">Psalm 13</a></strong> — The classic "How long, O LORD?" lament. Four times the phrase opens the psalm.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.17.NASB1995" target="_blank" rel="noopener">Psalm 17</a></strong> — "Hide me in the shadow of your wings" — protection imagery from a fugitive.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.22.NASB1995" target="_blank" rel="noopener">Psalm 22</a></strong> — Though messianic in its ultimate fulfillment, this psalm's intensity ("My God, my God, why have you forsaken me?... I can count all my bones — they stare and gloat over me") likely emerged from David's deepest distress. Jesus would quote its opening line on the cross <a href="https://www.bible.com/bible/100/MAT.27.46.NASB1995" target="_blank" rel="noopener"><span class="ref-inline">Matt 27:46</span></a>.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.25.NASB1995" target="_blank" rel="noopener">Psalm 25</a></strong> — Acrostic prayer for guidance.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.31.NASB1995" target="_blank" rel="noopener">Psalm 31</a></strong> — "Into your hand I commit my spirit; you have redeemed me, O LORD, faithful God" — Jesus quoted this from the cross <a href="https://www.bible.com/bible/100/LUK.23.46.NASB1995" target="_blank" rel="noopener"><span class="ref-inline">Luke 23:46</span></a>.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.34.NASB1995" target="_blank" rel="noopener">Psalm 34</a></strong> (acrostic) — After escaping from Achish at Gath. "I sought the LORD, and he answered me and delivered me from all my fears." Quoted in <a href="https://www.bible.com/bible/100/1PE.3.10-12.NASB1995" target="_blank" rel="noopener">1 Peter 3:10–12</a> and <a href="https://www.bible.com/bible/100/HEB.13.6.NASB1995" target="_blank" rel="noopener">Hebrews 13:6</a>.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.35.NASB1995" target="_blank" rel="noopener">Psalm 35</a></strong> — Prayer for judgment on false accusers.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.52.NASB1995" target="_blank" rel="noopener">Psalm 52</a></strong> — Against Doeg the Edomite, who reported Ahimelech's help.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.54.NASB1995" target="_blank" rel="noopener">Psalm 54</a></strong> — When the Ziphites betrayed him.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.56.NASB1995" target="_blank" rel="noopener">Psalm 56</a></strong> — Gath, just before the madness ruse. "When I am afraid, I put my trust in you."</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.57.NASB1995" target="_blank" rel="noopener">Psalm 57</a></strong> — In the cave. "Be merciful to me, O God, be merciful to me, for in you my soul takes refuge; in the shadow of your wings I will take refuge."</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.59.NASB1995" target="_blank" rel="noopener">Psalm 59</a></strong> — When Saul's men watched the house. "O God, do not be silent."</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.63.NASB1995" target="_blank" rel="noopener">Psalm 63</a></strong> — Wilderness of Judah. "O God, you are my God; earnestly I seek you; my soul thirsts for you; my flesh faints for you, as in a dry and weary land where there is no water."</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.64.NASB1995" target="_blank" rel="noopener">Psalm 64</a></strong> — Prayer against secret enemies.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.70.NASB1995" target="_blank" rel="noopener">Psalm 70</a></strong> — Urgent plea; nearly identical to the last verses of <a href="https://www.bible.com/bible/100/PSA.40.NASB1995" target="_blank" rel="noopener">Psalm 40</a>.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.142.NASB1995" target="_blank" rel="noopener">Psalm 142</a></strong> — In the cave. "I cry to you, O LORD; I say, 'You are my refuge, my portion in the land of the living.'"</p>
+
+      <h3>Stage 3: Ziklag and the Death of Saul</h3>
+
+      <p>No psalms are specifically tied to this period (the Song of the Bow in <a href="https://www.bible.com/bible/100/2SA.1.NASB1995" target="_blank" rel="noopener">2 Sam 1</a> is the lament for Saul and Jonathan, preserved separately).</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.18.NASB1995" target="_blank" rel="noopener">Psalm 18</a></strong> (= <a href="https://www.bible.com/bible/100/2SA.22.NASB1995" target="_blank" rel="noopener">2 Samuel 22</a>) — composed "on the day when the LORD delivered him from the hand of all his enemies, and from the hand of Saul." Often dated to the period after Ziklag when Saul was dead but the full kingdom not yet established.</p>
+
+      <h3>Stage 4: King at Hebron</h3>
+
+      <p>No psalms are specifically tied to this period. The civil war and political consolidation produced no preserved Davidic psalms with explicit superscriptions.</p>
+
+      <h3>Stage 5: King in Jerusalem — Ark and Covenant</h3>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.24.NASB1995" target="_blank" rel="noopener">Psalm 24</a></strong> — "Lift up your heads, O gates! And be lifted up, O ancient doors, that the King of glory may come in." Likely composed for the Ark's procession into Jerusalem.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.68.NASB1995" target="_blank" rel="noopener">Psalm 68</a></strong> — Opens with the same words spoken when the Ark moved in the wilderness <a href="https://www.bible.com/bible/100/NUM.10.35.NASB1995" target="_blank" rel="noopener"><span class="ref-inline">Num 10:35</span></a>. The psalm celebrates God's presence among His people.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.105.NASB1995" target="_blank" rel="noopener">Psalm 105</a></strong> (sung at the Ark's installation, per <a href="https://www.bible.com/bible/100/1CH.16.8-22.NASB1995" target="_blank" rel="noopener">1 Chr 16:8–22</a>) — recital of God's covenant faithfulness from Abraham forward.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.96.NASB1995" target="_blank" rel="noopener">Psalm 96</a></strong> (sung at the Ark's installation, per <a href="https://www.bible.com/bible/100/1CH.16.23-33.NASB1995" target="_blank" rel="noopener">1 Chr 16:23–33</a>) — "Sing to the LORD a new song; sing to the LORD, all the earth!"</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.132.NASB1995" target="_blank" rel="noopener">Psalm 132</a></strong> — David's oath to find a dwelling for the LORD and the LORD's oath in response. Likely associated with the Ark transfer.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.89.NASB1995" target="_blank" rel="noopener">Psalm 89</a></strong> (attributed to Ethan the Ezrahite) — the great covenant-poem on the Davidic promise.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.101.NASB1995" target="_blank" rel="noopener">Psalm 101</a></strong> — David's coronation pledge: "I will sing of steadfast love and justice... I will ponder the way that is blameless. Oh when will you come to me?... I will walk with integrity of heart within my house."</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.110.NASB1995" target="_blank" rel="noopener">Psalm 110</a></strong> — The most quoted Old Testament passage in the New Testament. "The LORD says to my Lord: 'Sit at my right hand, until I make your enemies your footstool'... You are a priest forever after the order of Melchizedek." Jesus appealed to this psalm to confound the Pharisees <a href="https://www.bible.com/bible/100/MAT.22.41-46.NASB1995" target="_blank" rel="noopener"><span class="ref-inline">Matt 22:41–46</span></a>.</p>
+
+      <h3>Stage 6: Wars and Victories</h3>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.20.NASB1995" target="_blank" rel="noopener">Psalm 20</a></strong> — Prayer for the king as he goes out to battle.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.21.NASB1995" target="_blank" rel="noopener">Psalm 21</a></strong> — Thanksgiving for victory.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.60.NASB1995" target="_blank" rel="noopener">Psalm 60</a></strong> — Lament after a setback in the Edom/Aram campaigns.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.108.NASB1995" target="_blank" rel="noopener">Psalm 108</a></strong> — Composed of <a href="https://www.bible.com/bible/100/PSA.57.7-11.NASB1995" target="_blank" rel="noopener">Psalm 57:7–11</a> and <a href="https://www.bible.com/bible/100/PSA.60.5-12.NASB1995" target="_blank" rel="noopener">Psalm 60:5–12</a> — possibly a victory celebration combining earlier psalms.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.144.NASB1995" target="_blank" rel="noopener">Psalm 144</a></strong> — "Blessed be the LORD, my rock, who trains my hands for war, and my fingers for battle."</p>
+
+      <h3>Stage 7: The Sin and Its Aftermath</h3>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.6.NASB1995" target="_blank" rel="noopener">Psalm 6</a></strong> — Pleading in physical and emotional distress.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.32.NASB1995" target="_blank" rel="noopener">Psalm 32</a></strong> — After confession. "Blessed is the one whose transgression is forgiven, whose sin is covered."</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.38.NASB1995" target="_blank" rel="noopener">Psalm 38</a></strong> — Penitential lament during the period of unconfessed sin. "There is no soundness in my flesh because of your indignation."</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.39.NASB1995" target="_blank" rel="noopener">Psalm 39</a></strong> — Reflection on the brevity of life.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.40.NASB1995" target="_blank" rel="noopener">Psalm 40</a></strong> — Thanksgiving after deliverance; quoted in <a href="https://www.bible.com/bible/100/HEB.10.5-7.NASB1995" target="_blank" rel="noopener">Hebrews 10:5–7</a> as messianic.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.41.NASB1995" target="_blank" rel="noopener">Psalm 41</a></strong> — "Even my close friend in whom I trusted, who ate my bread, has lifted his heel against me." Jesus would quote this of Judas <a href="https://www.bible.com/bible/100/JHN.13.18.NASB1995" target="_blank" rel="noopener"><span class="ref-inline">John 13:18</span></a>. The reference may originally have been to Ahithophel.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.51.NASB1995" target="_blank" rel="noopener">Psalm 51</a></strong> — The great penitential psalm of confession after Nathan's confrontation.</p>
+
+      <h3>Stage 8: Absalom's Revolt</h3>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.3.NASB1995" target="_blank" rel="noopener">Psalm 3</a></strong> — "When he fled from Absalom his son." "O LORD, how many are my foes! Many are rising against me; many are saying of my soul, 'There is no salvation for him in God.'"</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.4.NASB1995" target="_blank" rel="noopener">Psalm 4</a></strong> — Evening companion to <a href="https://www.bible.com/bible/100/PSA.3.NASB1995" target="_blank" rel="noopener">Psalm 3</a>. "In peace I will both lie down and sleep; for you alone, O LORD, make me dwell in safety."</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.55.NASB1995" target="_blank" rel="noopener">Psalm 55</a></strong> — The lament of betrayal by an intimate friend, almost certainly Ahithophel. "It is not an enemy who taunts me... But it is you, a man, my equal, my companion, my familiar friend. We used to take sweet counsel together; within God's house we walked in the throng."</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.63.NASB1995" target="_blank" rel="noopener">Psalm 63</a></strong> — May also fit this period (the wilderness of Judah east of Jerusalem).</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.143.NASB1995" target="_blank" rel="noopener">Psalm 143</a></strong> — Possible context: the desperation during the revolt.</p>
+
+      <h3>Stage 9: Final Years</h3>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.30.NASB1995" target="_blank" rel="noopener">Psalm 30</a></strong> — "A Song at the dedication of the house" — likely the dedication of the temple site after the plague.</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.139.NASB1995" target="_blank" rel="noopener">Psalm 139</a></strong> — Mature reflection on God's omniscience. "Search me, O God, and know my heart!"</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.145.NASB1995" target="_blank" rel="noopener">Psalm 145</a></strong> — Acrostic praise psalm. "Great is the LORD, and greatly to be praised, and his greatness is unsearchable."</p>
+
+      <p><strong><a href="https://www.bible.com/bible/100/PSA.138.NASB1995" target="_blank" rel="noopener">Psalms 138</a>, 141, 144</strong> — Late reflective psalms.</p>
+
+      <h2>The Messianic Psalms in David's Writing</h2>
+
+      <p>Several Davidic psalms — though arising from David's own experiences — point beyond him to the Messiah. These are the "messianic psalms" most heavily quoted in the New Testament.</p>
+
+      <h3>Psalm 2 — The Anointed King</h3>
+
+      <p>Though not formally attributed to David in its Hebrew superscription, <a href="https://www.bible.com/bible/100/ACT.4.25.NASB1995" target="_blank" rel="noopener">Acts 4:25</a> identifies David as its author. "You are my Son; today I have begotten you... Kiss the Son, lest he be angry."</p>
+
+      <p>Quoted in the New Testament more than 18 times.</p>
+
+      <h3>Psalm 8 — The Son of Man</h3>
+
+      <p>"What is man that you are mindful of him, and the son of man that you care for him?... You have given him dominion over the works of your hands; you have put all things under his feet."</p>
+
+      <p>Applied to Christ in <a href="https://www.bible.com/bible/100/1CO.15.27.NASB1995" target="_blank" rel="noopener">1 Corinthians 15:27</a>, <a href="https://www.bible.com/bible/100/EPH.1.22.NASB1995" target="_blank" rel="noopener">Ephesians 1:22</a>, <a href="https://www.bible.com/bible/100/HEB.2.6-9.NASB1995" target="_blank" rel="noopener">Hebrews 2:6–9</a>.</p>
+
+      <h3>Psalm 16 — The Resurrection</h3>
+
+      <p>"For you will not abandon my soul to Sheol, or let your holy one see corruption."</p>
+
+      <p>Peter at Pentecost specifically argued that this verse could not refer to David — "David died and was buried, and his tomb is with us to this day" — but must refer to the resurrected Christ <a href="https://www.bible.com/bible/100/ACT.2.25-32.NASB1995" target="_blank" rel="noopener"><span class="ref-inline">Acts 2:25–32</span></a>. Paul made the same argument at Pisidian Antioch <a href="https://www.bible.com/bible/100/ACT.13.35-37.NASB1995" target="_blank" rel="noopener"><span class="ref-inline">Acts 13:35–37</span></a>.</p>
+
+      <h3>Psalm 22 — The Crucifixion</h3>
+
+      <p>The most extensive prophetic passage of the crucifixion in the Hebrew Bible:</p>
+
+      <ul>
+        <li>v. 1 — "My God, my God, why have you forsaken me?" (Jesus on the cross)</li>
+        <li>v. 7–8 — "All who see me mock me; they make mouths at me; they wag their heads; 'He trusts in the LORD; let him deliver him'"</li>
+        <li>v. 14 — "I am poured out like water, and all my bones are out of joint"</li>
+        <li>v. 16 — "They have pierced my hands and feet" (debated translation, but consistent with crucifixion)</li>
+        <li>v. 18 — "They divide my garments among them, and for my clothing they cast lots"</li>
+      </ul>
+
+      <p>Written approximately 1000 years before crucifixion was invented as a method of execution.</p>
+
+      <h3>Psalm 40 — Christ's Obedience</h3>
+
+      <p>"Sacrifice and offering you have not desired, but you have given me an open ear. Burnt offering and sin offering you have not required. Then I said, 'Behold, I have come; in the scroll of the book it is written of me: I delight to do your will, O my God; your law is within my heart.'"</p>
+
+      <p><a href="https://www.bible.com/bible/100/HEB.10.5-10.NASB1995" target="_blank" rel="noopener">Hebrews 10:5–10</a> applies this directly to Christ's incarnation and obedient sacrifice.</p>
+
+      <h3>Psalm 45 — The Royal Wedding</h3>
+
+      <p>A messianic royal wedding psalm. "Your throne, O God, is forever and ever" — quoted in <a href="https://www.bible.com/bible/100/HEB.1.8.NASB1995" target="_blank" rel="noopener">Hebrews 1:8</a> as a divine address to the Son.</p>
+
+      <h3>Psalm 69 — The Suffering Servant</h3>
+
+      <p>"Zeal for your house has consumed me" (cited of Jesus cleansing the temple, <a href="https://www.bible.com/bible/100/JHN.2.17.NASB1995" target="_blank" rel="noopener">John 2:17</a>). "They gave me poison for food, and for my thirst they gave me sour wine to drink" (cited at the crucifixion, <a href="https://www.bible.com/bible/100/JHN.19.28-30.NASB1995" target="_blank" rel="noopener">John 19:28–30</a>).</p>
+
+      <h3>Psalm 110 — The Priest-King</h3>
+
+      <p>"The LORD said to my Lord: 'Sit at my right hand, until I make your enemies your footstool.'... 'You are a priest forever after the order of Melchizedek.'"</p>
+
+      <p>The most quoted OT passage in the NT (over 25 times). Establishes:</p>
+
+      <ul>
+        <li>The Messiah is David's Lord — therefore more than David's son</li>
+        <li>The Messiah is enthroned at God's right hand</li>
+        <li>The Messiah is a priest of a non-Levitical order</li>
+      </ul>
+
+      <h2>The Psalms in Jesus' Mouth</h2>
+
+      <p>Jesus quoted or alluded to the Psalms repeatedly. Most notably:</p>
+
+      <table class="fact-table">
+        <thead><tr><th>Saying of Jesus</th><th>Psalm</th></tr></thead>
+        <tbody>
+          <tr><td>"My God, my God, why have you forsaken me?"</td><td>Psalm 22:1</td></tr>
+          <tr><td>"Into your hand I commit my spirit"</td><td>Psalm 31:5</td></tr>
+          <tr><td>"I thirst" (alluding to the suffering of the psalmist)</td><td>Psalm 22:15; 69:21</td></tr>
+          <tr><td>"It is finished" (echoes the end of Psalm 22)</td><td>Psalm 22:31</td></tr>
+          <tr><td>"He who eats my bread has lifted his heel against me"</td><td>Psalm 41:9</td></tr>
+          <tr><td>"How then does David in the Spirit call him Lord?"</td><td>Psalm 110:1</td></tr>
+          <tr><td>"The stone that the builders rejected has become the cornerstone"</td><td>Psalm 118:22</td></tr>
+        </tbody>
+      </table>
+
+      <p>Three of these come from David's psalms specifically (22, 31, 41, 110). On the cross, the dying Son quoted the songs his ancestor wrote in his own dying-by-inches experiences. David's anguish became the prophetic prayer-book of his greater Son.</p>
+
+      <h2>The Psalms of Ascent</h2>
+
+      <p>Of the 15 Psalms of Ascent (<a href="https://www.bible.com/bible/100/PSA.120.NASB1995" target="_blank" rel="noopener">Psalms 120</a>–134), four are attributed to David: <strong><a href="https://www.bible.com/bible/100/PSA.122.NASB1995" target="_blank" rel="noopener">Psalms 122</a>, 124, 131, 133</strong>. These were sung by pilgrims approaching Jerusalem for the three annual feasts.</p>
+
+      <ul>
+        <li><strong><a href="https://www.bible.com/bible/100/PSA.122.NASB1995" target="_blank" rel="noopener">Psalm 122</a></strong> — "I was glad when they said to me, 'Let us go to the house of the LORD!'... Jerusalem—built as a city that is bound firmly together"</li>
+        <li><strong><a href="https://www.bible.com/bible/100/PSA.124.NASB1995" target="_blank" rel="noopener">Psalm 124</a></strong> — "If it had not been the LORD who was on our side... then the flood would have swept us away"</li>
+        <li><strong><a href="https://www.bible.com/bible/100/PSA.131.NASB1995" target="_blank" rel="noopener">Psalm 131</a></strong> — "O LORD, my heart is not lifted up; my eyes are not raised too high"</li>
+        <li><strong><a href="https://www.bible.com/bible/100/PSA.133.NASB1995" target="_blank" rel="noopener">Psalm 133</a></strong> — "Behold, how good and pleasant it is when brothers dwell in unity!"</li>
+      </ul>
+
+      <h2>What the Catalog Reveals</h2>
+
+      <p>The 73 psalms attributed to David cover every category of human spiritual experience:</p>
+
+      <ul>
+        <li>Joy</li>
+        <li>Sorrow</li>
+        <li>Praise</li>
+        <li>Confession</li>
+        <li>Fear</li>
+        <li>Trust</li>
+        <li>Doubt</li>
+        <li>Hope</li>
+        <li>Anger</li>
+        <li>Gratitude</li>
+        <li>Worship</li>
+        <li>Petition</li>
+        <li>Lament</li>
+        <li>Vengeance</li>
+        <li>Restoration</li>
+      </ul>
+
+      <p>His prayers in their range of emotion — from the heights of <a href="https://www.bible.com/bible/100/PSA.145.NASB1995" target="_blank" rel="noopener">Psalm 145</a> to the depths of <a href="https://www.bible.com/bible/100/PSA.22.NASB1995" target="_blank" rel="noopener">Psalm 22</a> — became Israel's prayer book, the early Church's prayer book, and the prayer book of believers for three thousand years. Athanasius, the early church father, wrote that all of Scripture speaks to us, but in the Psalms, we speak back to God.</p>
+
+      <p>What Saul lost — the Spirit's presence — David received and never lost. What David lost — peace, family, integrity — he confessed and brought to God in song. The man who shed too much blood to build the temple built instead the prayer-temple of the people of God: songs that needed no architect, no Hiram, no cedar, no carved cherubim. Just a tongue and a heart and the willingness to bring the whole self before the throne.</p>
+
+    </div>
+  </article>
+    </div>
+  </div>
+
+  <script>window.PAGE_NOTE_IDS = [];</script>
+  <script src="../../assets/js/nav.js"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script>buildSidebar('../..');</script>
+
+  <div id="sidebar-overlay" style="display: none;"></div>
+</body>
+</html>

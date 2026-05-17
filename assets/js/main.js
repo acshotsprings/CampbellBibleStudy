@@ -85,7 +85,56 @@ const COMPLETION_KEYS = {
   'theme3/module1':  'complete-t3m1',
   'theme3/module2':  'complete-t3m2',
   'theme3/module3':  'complete-t3m3',
+  'theme3/module4':  'complete-t3m4',
+  'theme3/module5':  'complete-t3m5',
+
+  // David library chapters (Ch 01-18). Appendices intentionally excluded.
+  'characters/david/01-origins':           'complete-david-01',
+  'characters/david/02-anointing':         'complete-david-02',
+  'characters/david/03-saul-court':        'complete-david-03',
+  'characters/david/04-jonathan':          'complete-david-04',
+  'characters/david/05-fugitive':          'complete-david-05',
+  'characters/david/06-ziklag':            'complete-david-06',
+  'characters/david/07-king-of-judah':     'complete-david-07',
+  'characters/david/08-king-of-israel':    'complete-david-08',
+  'characters/david/09-covenant':          'complete-david-09',
+  'characters/david/10-wars-victories':    'complete-david-10',
+  'characters/david/11-mighty-men':        'complete-david-11',
+  'characters/david/12-bathsheba':         'complete-david-12',
+  'characters/david/13-family-collapse':   'complete-david-13',
+  'characters/david/14-final-years':       'complete-david-14',
+  'characters/david/15-last-words':        'complete-david-15',
+  'characters/david/16-psalms-journey':    'complete-david-16',
+  'characters/david/17-theology':          'complete-david-17',
+  'characters/david/18-cave-years':        'complete-david-18',
+  'characters/david/19-david-vs-saul':     'complete-david-19',
+  'characters/david/20-repentance':        'complete-david-20',
+  'characters/david/21-worship':           'complete-david-21',
+  'characters/david/22-kingdom-type':      'complete-david-22',
+  'characters/david/23-prayer':            'complete-david-23',
+  'characters/david/24-friendship':        'complete-david-24',
+  'characters/david/25-enemies':           'complete-david-25',
+  'characters/david/26-strange-deaths':    'complete-david-26',
 };
+
+/* ---- v5.1.1 (2026-05-10): sidebar-root depth helper ----
+   Replaces the broken `pathname.includes('/theme') ? '..' : '.'`
+   logic in three call sites below. Counts actual path depth so
+   pages at any depth (e.g. /characters/david/01-origins.html)
+   compute the correct relative root prefix.
+
+   /index.html                            -> '.'
+   /theme1/module1.html                   -> '..'
+   /characters/david/01-origins.html      -> '../..'
+*/
+function CBSG_getSidebarRoot() {
+  const path = window.location.pathname
+    .replace(/^\/(CampbellBibleStudy\/)?/, '')  // strip GH-Pages subpath if present
+    .replace(/\/+$/, '');                        // strip trailing slash
+  const segs = path.split('/').filter(Boolean);
+  const depth = Math.max(0, segs.length - 1);   // -1 to discount the filename
+  return depth === 0 ? '.' : new Array(depth).fill('..').join('/');
+}
 
 function isAdminUnlocked() { return sessionStorage.getItem('cbsg-admin') === 'true'; }
 
@@ -118,8 +167,7 @@ function applyAdminUI() {
     if (tokenInput) tokenInput.value = '';
   }
   if (typeof buildSidebar === 'function') {
-    const root = window.location.pathname.includes('/theme') ? '..' : '.';
-    buildSidebar(root);
+    buildSidebar(CBSG_getSidebarRoot());
   }
 }
 
@@ -207,6 +255,7 @@ function showWelcomeModal() {
     <div id="cbsg-welcome-err" style="font-size:11px;color:#C62828;min-height:14px;margin-bottom:10px;font-family:Arial,sans-serif;"></div>
     <button id="cbsg-welcome-btn" onclick="saveWelcomeName()" disabled style="width:100%;background:#888;color:#ddd;border:none;border-radius:6px;padding:11px;font-size:14px;font-weight:bold;cursor:not-allowed;font-family:Arial,sans-serif;letter-spacing:0.03em;transition:all 0.2s;">Let's Study ✝</button>
     <p style="margin:12px 0 0;font-size:11px;color:#aaa;">Your name is required to continue.</p>
+    <p style="margin:6px 0 0;font-size:10px;color:#aaa;line-height:1.5;">Notes you save sync to the study's backup system so they're not lost if your browser data is cleared.</p>
   </div>`;
   document.body.appendChild(modal);
   setTimeout(() => { const inp = document.getElementById('cbsg-welcome-name'); if (inp) inp.focus(); }, 150);
@@ -240,6 +289,12 @@ function saveWelcomeName() {
   if (!r.ok) { cbsgValidateLive(); return; }
   localStorage.setItem('cbsg-guest-name', r.name);
   localStorage.setItem('cbsg-guest-welcomed', 'true');
+  // 2026-05-06 — Fire visitor-registered email. The v1.8 onblur hook was
+  // wired to the (removed) My Notes panel input, so welcome-modal entries
+  // were never reported. This restores the highest-confidence visitor signal.
+  try {
+    if (window.CBSG_notifyNameEntry) window.CBSG_notifyNameEntry(r.name);
+  } catch (e) { /* never block the welcome flow on email failure */ }
   const modal = document.getElementById('cbsg-welcome-modal');
   if (modal) modal.remove();
   // Guest panel removed 2026-04-21 — visitors use the embedded Quill boxes on each page instead.
@@ -554,6 +609,8 @@ function getGuestPageKey() {
 function silentEmailGuest() {
   // CBSG-DISABLED-v5.1: direct EmailJS send delegated to analytics.js via
   // window.CBSG_notifyNoteSave. Preserves owner suppression from analytics.js v1.1.
+  // 2026-05-07: now passes the actual notes content as 2nd arg so Chris can
+  // read what the visitor wrote, not just be told "someone saved."
   try {
     const notesEl = document.getElementById('cbsg-guest-textarea');
     if (!notesEl) return;
@@ -561,7 +618,7 @@ function silentEmailGuest() {
     if (notes.length < 5) return;
     const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
     if (typeof window.CBSG_notifyNoteSave === 'function') {
-      window.CBSG_notifyNoteSave('Guest save from ' + pageName);
+      window.CBSG_notifyNoteSave('Guest save from ' + pageName, notes);
     }
   } catch(e) {}
   /* === CBSG-DISABLED-v5.1 === original inline send, preserved for reference ===
@@ -588,6 +645,9 @@ function saveGuestNotes() {
   if (nameEl && nameEl.value.trim()) localStorage.setItem('cbsg-guest-name', nameEl.value.trim());
   const btn = document.getElementById('cbsg-guest-save-btn');
   if (btn) { btn.textContent = '✓ Saved'; btn.style.background = '#2E6B0E'; btn.style.color = 'white'; setTimeout(() => { btn.textContent = 'Save My Notes'; btn.style.background = '#FFD700'; btn.style.color = '#1F3864'; }, 1800); }
+  // 2026-05-09: explicit save clears the dirty flag so the page-leave
+  // handler in injectGuestPanel doesn't fire a duplicate "unsaved" email.
+  window.__cbsgGuestNotesDirty = false;
   silentEmailGuest();
 }
 
@@ -601,9 +661,52 @@ function injectGuestPanel() {
   panel.style.cssText = 'position:fixed;bottom:0;right:0;width:310px;background:#1F3864;border-top:2px solid #FFD700;border-left:2px solid #FFD700;border-radius:8px 0 0 0;font-family:Arial,sans-serif;z-index:1000;box-shadow:-4px -4px 16px rgba(0,0,0,0.3);';
   const safeName  = savedName.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
   const safeNotes = savedNotes.replace(/</g,'&lt;').replace(/&/g,'&amp;');
-  panel.innerHTML = `<div id="cbsg-guest-header" onclick="toggleGuestPanel()" style="display:flex;align-items:center;justify-content:space-between;padding:8px 14px;cursor:pointer;user-select:none;"><span style="font-size:12px;font-weight:bold;color:#FFD700;letter-spacing:0.04em;">📝 My Notes</span><span id="cbsg-guest-chevron" style="font-size:10px;color:rgba(255,255,255,0.5);">▲</span></div><div id="cbsg-guest-body" style="padding:0 12px 12px;"><input id="cbsg-guest-name" type="text" placeholder="Your name (optional)" value="${safeName}" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:5px 8px;font-size:11px;margin-bottom:6px;font-family:Arial,sans-serif;" oninput="localStorage.setItem('cbsg-guest-name',this.value)"><textarea id="cbsg-guest-textarea" placeholder="Add your thoughts, questions, or reflections on this page..." style="width:100%;box-sizing:border-box;height:110px;resize:vertical;background:rgba(255,255,255,0.08);color:white;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:7px 8px;font-size:12px;font-family:Arial,sans-serif;line-height:1.5;margin-bottom:8px;" oninput="localStorage.setItem('${getGuestPageKey()}',this.value)">${safeNotes}</textarea><button id="cbsg-guest-save-btn" style="width:100%;background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:7px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">Save My Notes</button></div>`;
+  panel.innerHTML = `<div id="cbsg-guest-header" onclick="toggleGuestPanel()" style="display:flex;align-items:center;justify-content:space-between;padding:8px 14px;cursor:pointer;user-select:none;"><span style="font-size:12px;font-weight:bold;color:#FFD700;letter-spacing:0.04em;">📝 My Notes</span><span id="cbsg-guest-chevron" style="font-size:10px;color:rgba(255,255,255,0.5);">▲</span></div><div id="cbsg-guest-body" style="padding:0 12px 12px;"><input id="cbsg-guest-name" type="text" placeholder="Your name (optional)" value="${safeName}" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:5px 8px;font-size:11px;margin-bottom:6px;font-family:Arial,sans-serif;" oninput="localStorage.setItem('cbsg-guest-name',this.value)" onblur="if(window.CBSG_notifyNameEntry)window.CBSG_notifyNameEntry(this.value)"><textarea id="cbsg-guest-textarea" placeholder="Add your thoughts, questions, or reflections on this page..." style="width:100%;box-sizing:border-box;height:110px;resize:vertical;background:rgba(255,255,255,0.08);color:white;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:7px 8px;font-size:12px;font-family:Arial,sans-serif;line-height:1.5;margin-bottom:8px;" oninput="localStorage.setItem('${getGuestPageKey()}',this.value)">${safeNotes}</textarea><button id="cbsg-guest-save-btn" style="width:100%;background:#FFD700;color:#1F3864;border:none;border-radius:4px;padding:7px;font-size:12px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;">Save My Notes</button></div>`;
   document.body.appendChild(panel);
   document.getElementById('cbsg-guest-save-btn').addEventListener('click', saveGuestNotes);
+
+  // ─── UNSAVED-NOTES FALLBACK EMAIL (2026-05-09) ─────────────
+  // If a visitor types ≥20 chars of notes and leaves the page WITHOUT
+  // clicking Save My Notes, fire one email per page so Chris doesn't
+  // miss thoughts that were typed but never saved. Guards:
+  //   • Tracks dirty state — typing sets dirty=true, saving sets dirty=false.
+  //   • Minimum 20 chars (skips typos / abandoned single words).
+  //   • Owner suppression handled downstream in CBSG_notifyNoteSave →
+  //     sendNotificationEmail → isOwner(); admin-mode users already
+  //     skip the panel entirely (isAdminUnlocked guard above).
+  //   • One email per pagehide event; flag flips to false after firing
+  //     so a quick back-and-forth tab switch doesn't double-fire.
+  //   • Uses pagehide rather than beforeunload — more reliable on
+  //     mobile Safari (Kimberly's iPad).
+  const MIN_UNSAVED_LEN = 20;
+  window.__cbsgGuestNotesDirty = false;
+  const ta = document.getElementById('cbsg-guest-textarea');
+  if (ta) {
+    ta.addEventListener('input', function() {
+      window.__cbsgGuestNotesDirty = true;
+    });
+  }
+  const handleUnsavedExit = function() {
+    try {
+      if (!window.__cbsgGuestNotesDirty) return;
+      const notesEl = document.getElementById('cbsg-guest-textarea');
+      if (!notesEl) return;
+      const notes = (notesEl.value || '').trim();
+      if (notes.length < MIN_UNSAVED_LEN) return;
+      // Persist to localStorage too so visitor doesn't lose the work.
+      try { localStorage.setItem(getGuestPageKey(), notesEl.value); } catch(e) {}
+      const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
+      if (typeof window.CBSG_notifyNoteSave === 'function') {
+        window.CBSG_notifyNoteSave('[Unsaved — visitor left page] ' + pageName, notes);
+      }
+      // Flip dirty off so a tab switch back/forward doesn't re-fire.
+      window.__cbsgGuestNotesDirty = false;
+    } catch(e) { /* swallow — never break unload */ }
+  };
+  window.addEventListener('pagehide', handleUnsavedExit);
+  // beforeunload as belt-and-suspenders for desktop browsers that don't
+  // always fire pagehide on close (older Edge/Firefox edge cases).
+  window.addEventListener('beforeunload', handleUnsavedExit);
 }
 
 let guestPanelOpen = true;
@@ -638,7 +741,7 @@ function toggleCompletion() {
     btn.style.borderColor = nowComplete ? '#90EE90'  : 'rgba(255,255,255,0.3)';
     btn.style.color       = nowComplete ? '#90EE90'  : 'rgba(255,255,255,0.7)';
   }
-  if (typeof buildSidebar === 'function') { const root = window.location.pathname.includes('/theme') ? '..' : '.'; buildSidebar(root); }
+  if (typeof buildSidebar === 'function') { buildSidebar(CBSG_getSidebarRoot()); }
   setStatus(nowComplete ? '✅ Module marked complete!' : '↩️ Marked incomplete.', 'ok');
 }
 
@@ -804,6 +907,80 @@ function injectBarExtras() {
     if (barRight) bar.insertBefore(adminBtn, barRight); else bar.insertBefore(adminBtn, extras);
   }
   applyAdminUI();
+}
+
+/* ---- v5.1.1 (2026-05-10): site-wide feedback banner ----
+   A small friendly notice that appears below the github-bar
+   on every page, asking visitors to report broken pages or
+   weird visuals. Inserted via JS so the github-bar's locked
+   structure isn't modified. Anchors above #app so it sits
+   between the top bar and the main content. Dismissable
+   per-browser via localStorage flag 'cbsg-notice-dismissed'.
+*/
+function injectSiteNotice() {
+  if (document.getElementById('cbsg-site-notice')) return;
+  if (localStorage.getItem('cbsg-notice-dismissed') === 'true') return;
+
+  const notice = document.createElement('div');
+  notice.id = 'cbsg-site-notice';
+  notice.style.cssText = [
+    'position:fixed',
+    'top:40px',                 // sits right below the fixed github-bar (40px tall)
+    'left:0',
+    'right:0',
+    'z-index:150',              // above #app (which is below) but below modals if any
+    'background:#FFF4D6',
+    'border-left:4px solid #C8A800',
+    'border-bottom:1px solid #E8C870',
+    'color:#5a4a00',
+    'font-family:Arial,Helvetica,sans-serif',
+    'font-size:13px',
+    'line-height:1.45',
+    'padding:10px 18px 10px 14px',
+    'display:flex',
+    'align-items:center',
+    'justify-content:center',
+    'gap:12px',
+    'flex-wrap:wrap',
+    'text-align:center',
+    'box-shadow:0 1px 3px rgba(0,0,0,0.08)'
+  ].join(';');
+  notice.innerHTML = `
+    <span style="font-size:16px;">🛠️</span>
+    <span><span style="font-size:10px;font-weight:bold;letter-spacing:0.08em;text-transform:uppercase;color:#7A6600;margin-right:6px;">Active development</span>please let me know if anything on the site is broken or doesn't look right —
+      <a href="mailto:acshotsprings@gmail.com?subject=Campbell Bible Study — Issue Report" style="color:#1F3864;font-weight:bold;text-decoration:underline;">acshotsprings@gmail.com</a>.
+      Thank you! :)
+    </span>
+    <button onclick="dismissSiteNotice()" title="Dismiss this notice on this device"
+      style="background:transparent;border:1px solid #C8A800;color:#7A6600;border-radius:3px;padding:2px 9px;font-size:11px;cursor:pointer;font-family:inherit;margin-left:4px;opacity:0.7;">
+      Dismiss
+    </button>
+  `;
+
+  document.body.appendChild(notice);
+
+  // After the notice renders, measure its height and shift #app down by that amount
+  // so content isn't hidden behind the notice. Re-measure on resize since the
+  // notice can wrap to a 2nd line on narrow screens.
+  function adjustAppOffset() {
+    const n = document.getElementById('cbsg-site-notice');
+    const app = document.getElementById('app');
+    if (!n || !app) return;
+    const h = n.getBoundingClientRect().height;
+    app.style.marginTop = (40 + h) + 'px';   // 40 = github-bar height
+  }
+  adjustAppOffset();
+  // small delay also handles fonts-loading reflow
+  setTimeout(adjustAppOffset, 100);
+  window.addEventListener('resize', adjustAppOffset);
+}
+
+function dismissSiteNotice() {
+  localStorage.setItem('cbsg-notice-dismissed', 'true');
+  const n = document.getElementById('cbsg-site-notice');
+  if (n) n.remove();
+  const app = document.getElementById('app');
+  if (app) app.style.marginTop = '40px';  // restore default
 }
 
 function openSidebar() {
@@ -987,7 +1164,51 @@ async function saveToGitHub() {
   const tsBtn = document.getElementById('btn-timestamp'); if (tsBtn) { stripped.push({ parent: tsBtn.parentNode, el: tsBtn, next: tsBtn.nextSibling }); tsBtn.remove(); }
   const sidebar = document.getElementById('sidebar'); const sidebarBackup = sidebar ? sidebar.innerHTML : ''; if (sidebar) sidebar.innerHTML = '';
   const ghStatus = document.getElementById('gh-status'); const statusBackup = ghStatus ? ghStatus.innerHTML : ''; if (ghStatus) { ghStatus.innerHTML = ''; ghStatus.removeAttribute('style'); }
+
+  // ─── 2026-05-08: STRIP RUNTIME QUILL DOM BEFORE SAVE ─────────
+  // Without this, every Save to GitHub commits the rendered Quill toolbar
+  // and wrappers into the page source. Next page load, Quill mounts again
+  // ON TOP of that leftover DOM → a second toolbar appears. Save again
+  // → third toolbar. This was the "multiple Quill boxes" bug.
+  // We collect every top-level quill-wrapper, extract the clean editor +
+  // notes HTML, replace the wrapper with the clean form for the save, then
+  // restore the live DOM after so Quill keeps working without a refresh.
+  // Top-level only because already-corrupted pages may have nested wrappers
+  // from prior bad saves; processing nested ones would orphan parent nodes.
+  const quillRestores = [];
+  const allWrappers = Array.from(document.querySelectorAll('.quill-wrapper'));
+  const topLevelWrappers = allWrappers.filter(w => !w.parentNode || !w.parentNode.closest('.quill-wrapper'));
+  topLevelWrappers.forEach(wrapper => {
+    // Find the deepest quill-editor inside (handles nested wrappers from
+    // previously corrupted pages — that's the one with the actual notes).
+    const editorMounts = wrapper.querySelectorAll('.quill-editor');
+    if (!editorMounts.length) return;
+    const editorMount = editorMounts[editorMounts.length - 1];
+    const qlEditor = editorMount.querySelector('.ql-editor');
+    const notesHtml = qlEditor ? qlEditor.innerHTML : '';
+    const editorId = editorMount.id;
+    const placeholder = editorMount.getAttribute('data-placeholder') || '';
+    // Build the clean replacement: <div class="quill-editor" id="..." data-placeholder="...">notesHtml</div>
+    const clean = document.createElement('div');
+    clean.className = 'quill-editor';
+    if (editorId) clean.id = editorId;
+    if (placeholder) clean.setAttribute('data-placeholder', placeholder);
+    clean.innerHTML = notesHtml;
+    // Swap wrapper → clean in the DOM, remember how to restore
+    quillRestores.push({ parent: wrapper.parentNode, wrapper, replacement: clean, next: wrapper.nextSibling });
+    wrapper.parentNode.replaceChild(clean, wrapper);
+  });
+  // ─────────────────────────────────────────────────────────────
+
   const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  // Restore Quill DOM so the live page keeps working without refresh
+  quillRestores.reverse().forEach(({ parent, wrapper, replacement, next }) => {
+    if (parent && replacement.parentNode === parent) {
+      parent.replaceChild(wrapper, replacement);
+    }
+  });
+
   Object.entries(savedValues).forEach(([id, val]) => { const el = document.getElementById(id); if (el) el.value = val; });
   if (sidebar) sidebar.innerHTML = sidebarBackup;
   if (ghStatus) ghStatus.innerHTML = statusBackup;
@@ -1020,8 +1241,7 @@ async function loadFromGitHub() {
     let loaded = 0;
     for (const [key, value] of Object.entries(notes)) { if (value && value.trim()) { localStorage.setItem('cbsg-' + key, value); loaded++; } }
     loadNotes();
-    const root = window.location.pathname.includes('/theme') ? '..' : '.';
-    if (typeof buildSidebar === 'function') buildSidebar(root);
+    if (typeof buildSidebar === 'function') buildSidebar(CBSG_getSidebarRoot());
     refreshCompleteButton();
     setStatus(`✅ Loaded ${loaded} notes from GitHub.`, 'ok');
   } catch(e) { setStatus('❌ ' + e.message, 'error'); }
@@ -1233,16 +1453,23 @@ function _maybeEmailVisitorNotes(editorId, quill) {
         page_name: pageName + ' — ' + editorId,
         message: text
       };
-      if (typeof emailjs !== 'undefined') {
-        /* CBSG-DISABLED-v5.1: inline send delegated to analytics.js.
-           Call window.CBSG_notifyNoteSave if you want the visitor note save
-           to trigger an owner-suppressed email via analytics.js v1.1.
-           Preserved below for reference. */
-        if (typeof window.CBSG_notifyNoteSave === 'function') {
-          window.CBSG_notifyNoteSave('Visitor Quill save');
-        }
-        /* original: try { emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params).catch(()=>{}); } catch(e) {} */
+      /* CBSG-FIX-v5.1.2 (2026-05-11): DEADLOCK FIX.
+         The previous wrapper `if (typeof emailjs !== 'undefined')` was a
+         vestigial leftover from the inline-EmailJS era. analytics.js loads
+         the EmailJS SDK lazily on the first sendNotificationEmail() call,
+         but the outer guard required the SDK to already be loaded — which
+         on pages that don't preload it created a chicken-and-egg deadlock:
+         the SDK only loaded if a notify fired, and a notify only fired if
+         the SDK had loaded. Effect: Quill auto-save emails were silently
+         dead on the majority of module pages. Fix: call CBSG_notifyNoteSave
+         unconditionally — it handles SDK loading itself.
+         2026-05-07: passes the actual Quill text as 2nd arg so the email
+         body contains what the visitor wrote. */
+      if (typeof window.CBSG_notifyNoteSave === 'function') {
+        window.CBSG_notifyNoteSave('Visitor Quill save: ' + pageName + ' (' + editorId + ')', text);
       }
+      /* original (pre-v5.1, removed v5.1.2): wrapped in `if (typeof emailjs !== 'undefined')`.
+         original inline send was: try { emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params).catch(()=>{}); } catch(e) {} */
       _quillEmailedThisSession[editorId] = true;
     } catch(e) {}
   }, 30000); // 30 seconds
@@ -1258,6 +1485,147 @@ function _loadQuillContent(editorId, quill) {
     // Legacy plain text fallback
     try { quill.setText(saved, 'silent'); } catch(e2) {}
   }
+}
+
+/* ---- SAVE & SYNC BUTTON (2026-05-12) ----------------------
+   Injected at top AND bottom of any page that has at least one
+   Quill editor. Clicking saves all Quill content to localStorage
+   AND syncs it off-device via existing CBSG_notifyNoteSave
+   pipeline (which emails it to Chris). Toast confirms.
+
+   Framing intent: "Save & sync" reads to the visitor as a normal
+   cloud-save operation — honest (notes ARE going off-device) but
+   not surveillance-feeling. The fact that Chris is the sync
+   destination is disclosed once in the welcome modal, not on every
+   page.
+
+   Backup behavior unchanged: 30-second auto-send-on-typing-pause
+   continues to work via _maybeEmailVisitorNotes (line ~1433).
+
+   Visible to everyone (admin too) per design decision.
+   ------------------------------------------------------------ */
+function injectSyncButton() {
+  // Only inject on pages that have Quill editors
+  const editors = document.querySelectorAll('.quill-editor');
+  if (editors.length === 0) return;
+  // Idempotent — only run once per page
+  if (document.getElementById('cbsg-sync-top') || document.getElementById('cbsg-sync-bottom')) return;
+
+  const buttonHTML = (id) =>
+    '<div class="cbsg-sync-wrapper" id="' + id + '" style="text-align:center;margin:24px 0;font-family:Arial,sans-serif;">' +
+      '<button onclick="cbsgSaveAndSync(this)" ' +
+        'style="background:#1F3864;color:#FFD700;border:2px solid #FFD700;border-radius:6px;' +
+        'padding:10px 22px;font-size:14px;font-weight:bold;cursor:pointer;' +
+        'letter-spacing:0.03em;font-family:Arial,sans-serif;' +
+        'box-shadow:0 2px 6px rgba(0,0,0,0.15);transition:all 0.15s ease;" ' +
+        'onmouseover="this.style.background=\'#2A4A7A\';this.style.transform=\'translateY(-1px)\';" ' +
+        'onmouseout="this.style.background=\'#1F3864\';this.style.transform=\'translateY(0)\';">' +
+        '💾 Save &amp; sync my notes' +
+      '</button>' +
+    '</div>';
+
+  // Top button: inject right after the chapter-hero or page-title
+  const topAnchor = document.querySelector('.chapter-hero')
+                 || document.querySelector('.page-title')
+                 || document.querySelector('h1.chapter-title')
+                 || document.querySelector('#main h1');
+  if (topAnchor) {
+    const topWrapper = document.createElement('div');
+    topWrapper.innerHTML = buttonHTML('cbsg-sync-top');
+    topAnchor.parentNode.insertBefore(topWrapper.firstChild, topAnchor.nextSibling);
+  }
+
+  // Bottom button: inject right after the LAST quill-editor on the page
+  const lastEditor = editors[editors.length - 1];
+  const lastWrapper = lastEditor.closest('.quill-wrapper') || lastEditor.parentNode;
+  if (lastWrapper && lastWrapper.parentNode) {
+    const bottomWrapper = document.createElement('div');
+    bottomWrapper.innerHTML = buttonHTML('cbsg-sync-bottom');
+    lastWrapper.parentNode.insertBefore(bottomWrapper.firstChild, lastWrapper.nextSibling);
+  }
+}
+
+function cbsgSaveAndSync(buttonEl) {
+  const name = getGuestName();
+
+  // Save all Quill content to localStorage (the "Save" half)
+  let allNotes = '';
+  let editorCount = 0;
+  if (quillInstances) {
+    Object.entries(quillInstances).forEach(([id, quill]) => {
+      try {
+        _saveQuillContent(id, quill);   // local save
+        const text = quill.getText().trim();
+        if (text.length > 0) {
+          allNotes += '--- ' + id + ' ---\n' + text + '\n\n';
+          editorCount++;
+        }
+      } catch(e) {}
+    });
+  }
+
+  // Disable button briefly to prevent double-clicks
+  if (buttonEl) {
+    buttonEl.disabled = true;
+    buttonEl.style.opacity = '0.6';
+    buttonEl.style.cursor = 'wait';
+    buttonEl.innerHTML = 'Syncing...';
+  }
+
+  // Sync off-device (the "sync" half) — only if there's a name and content
+  // If no name, still save locally but skip the sync silently
+  let synced = false;
+  if (name && editorCount > 0) {
+    try {
+      const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
+      if (typeof window.CBSG_notifyNoteSave === 'function') {
+        window.CBSG_notifyNoteSave('Manual sync: ' + pageName, allNotes);
+        synced = true;
+      }
+    } catch(e) {}
+  }
+
+  // Toast feedback — neutral framing whether or not sync ran
+  if (editorCount === 0) {
+    _showSyncToast('Nothing to save yet', '#888');
+  } else if (synced) {
+    _showSyncToast('Saved & synced ✓', '#2E6B0E');
+  } else {
+    // Saved locally but sync didn't run (no name, or no email pipeline)
+    _showSyncToast('Saved ✓', '#2E6B0E');
+  }
+
+  // Re-enable button after 2.5s
+  setTimeout(() => {
+    if (buttonEl) {
+      buttonEl.disabled = false;
+      buttonEl.style.opacity = '1';
+      buttonEl.style.cursor = 'pointer';
+      buttonEl.innerHTML = '💾 Save &amp; sync my notes';
+    }
+  }, 2500);
+}
+
+function _showSyncToast(message, color) {
+  // Remove any existing toast first
+  const existing = document.getElementById('cbsg-sync-toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.id = 'cbsg-sync-toast';
+  toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);' +
+    'background:' + (color || '#1F3864') + ';color:white;padding:12px 24px;' +
+    'border-radius:6px;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;' +
+    'box-shadow:0 4px 16px rgba(0,0,0,0.3);z-index:10000;' +
+    'opacity:0;transition:opacity 0.25s ease;';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  setTimeout(() => { toast.style.opacity = '1'; }, 10);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => { toast.remove(); }, 300);
+  }, 2200);
 }
 
 function initQuillEditors() {
@@ -1329,9 +1697,11 @@ document.addEventListener('DOMContentLoaded', () => {
   loadNotes();
   wireAutoSave();
   initQuillEditors();    // init all .quill-editor divs
+  injectSyncButton();    // 2026-05-12 — adds 💾 Save & sync buttons to pages with Quill editors
   injectMobileOverlay();
   markActivePage();
   injectBarExtras();
+  injectSiteNotice();
   injectCompleteButton();
   startTimer();
   updateVersionTimestamp();

@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appendix A: Timeline · The Life of David</title>
+  <link rel="stylesheet" href="../../assets/css/style.css" />
+  <script src="../../assets/js/analytics.js"></script>
+  <link rel="stylesheet" href="david.css" />
+  <style>
+    /* Timeline-specific styles */
+    .timeline-track {
+      max-width: 760px;
+      margin: 24px auto 48px;
+      padding: 0 24px;
+      position: relative;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .timeline-track::before {
+      content: '';
+      position: absolute;
+      left: 8rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, transparent 0%, #2E75B6 8%, #2E75B6 92%, transparent 100%);
+    }
+    .tl-era {
+      margin: 32px 0 14px;
+      padding-left: 8rem;
+    }
+    .tl-era h2 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      color: #1F3864;
+      margin: 0 0 4px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #2E75B6;
+      font-weight: bold;
+    }
+    .tl-era .era-range {
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #7A6600;
+      margin-bottom: 14px;
+      font-weight: bold;
+    }
+    .tl-event {
+      position: relative;
+      padding: 10px 0 10px 8rem;
+      margin: 0;
+    }
+    .tl-event::before {
+      content: '';
+      position: absolute;
+      left: calc(8rem - 7px);
+      top: 16px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #2E75B6;
+      z-index: 1;
+    }
+    .tl-event.major::before {
+      background: #1F3864;
+      border-color: #FFD700;
+      border-width: 2px;
+      width: 14px;
+      height: 14px;
+      left: calc(8rem - 8px);
+    }
+    .tl-date {
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 7rem;
+      text-align: right;
+      padding-right: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+      color: #1F3864;
+      letter-spacing: 0.02em;
+    }
+    .tl-date .age {
+      display: block;
+      font-size: 11px;
+      font-weight: normal;
+      font-style: italic;
+      color: #7A6600;
+      margin-top: 2px;
+    }
+    .tl-title {
+      font-weight: bold;
+      color: #333;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .tl-event.major .tl-title {
+      font-size: 15px;
+      color: #1F3864;
+    }
+    .tl-desc {
+      font-size: 13px;
+      color: #444;
+      margin-top: 4px;
+      line-height: 1.65;
+    }
+    .tl-ref {
+      font-size: 11px;
+      color: #7A6600;
+      margin-top: 4px;
+      font-style: italic;
+      font-weight: bold;
+    }
+    .dating-note {
+      max-width: 720px;
+      margin: 24px auto;
+      padding: 14px 18px;
+      background: #FFFBF0;
+      border: 1px solid #C8A800;
+      border-left: 4px solid #C8A800;
+      border-radius: 0 6px 6px 0;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #333;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .dating-note strong {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #7A6600;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    @media (max-width: 600px) {
+      .timeline-track::before { left: 3.5rem; }
+      .tl-era { padding-left: 3.5rem; }
+      .tl-event { padding-left: 3.5rem; }
+      .tl-event::before { left: calc(3.5rem - 7px); }
+      .tl-event.major::before { left: calc(3.5rem - 8px); }
+      .tl-date {
+        position: static;
+        width: auto;
+        text-align: left;
+        padding-right: 0;
+        margin-bottom: 4px;
+      }
+      .tl-date .age { display: inline; margin-left: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: March 27, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: May 10, 2026</span></span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+<article>
+    <header class="chapter-hero">
+      <p class="chapter-breadcrumb">
+        <a href="../../characters.html">Characters</a> &nbsp;·&nbsp;
+        <a href="index.html">The Life of David</a>
+      </p>
+      <p class="chapter-num">Appendix A</p>
+      <h1 class="chapter-title">Timeline of David's Life</h1>
+      <p class="chapter-subtitle">Every dateable event from birth to death, c. 1040 – 970 BC</p>
+      <div class="chapter-refs">
+        <strong>Reckoned From</strong>
+        2 Samuel 5:4–5 anchors the chronology: David was 30 at his Hebron anointing and reigned 40 years. Birth c. 1040 BC; death c. 970 BC.
+      </div>
+    </header>
+
+    <div class="dating-note">
+      <strong>A Note on Dating</strong>
+      All dates are approximations. The biblical chronology is anchored by 1 Kings 6:1 (Solomon's temple began 480 years after the Exodus) and 2 Samuel 5:4–5 (David's reign). Most evangelical chronologies place David's reign at roughly 1010–970 BC, putting his birth around 1040 BC. Different scholarly systems vary by 5–10 years. Ages given here assume birth in 1040 BC and follow the biblical reign-length numbers literally.
+    </div>
+
+    <div class="timeline-track">
+
+      <!-- ============ ERA 1: HIDDEN YEARS ============ -->
+      <section class="tl-era">
+        <h2>I. The Hidden Years</h2>
+        <p class="era-range">c. 1040 – c. 1025 BC · Ages 0 – 15</p>
+      </section>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 1040 BC<span class="age">birth</span></div>
+        <div class="tl-title">David born in Bethlehem</div>
+        <div class="tl-desc">Eighth son of Jesse the Ephrathite, of the tribe of Judah. Born during the late period of Samuel's judgeship and the early reign of King Saul.</div>
+        <div class="tl-ref">1 Samuel 17:12 · Ruth 4:18–22</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1035 BC<span class="age">~5</span></div>
+        <div class="tl-title">Tending sheep</div>
+        <div class="tl-desc">By his own later testimony, David grew up keeping his father's flocks, defending them from lions and bears.</div>
+        <div class="tl-ref">1 Samuel 16:11; 17:34–36</div>
+      </div>
+
+      <!-- ============ ERA 2: ANOINTING & RISE ============ -->
+      <section class="tl-era">
+        <h2>II. Anointing & Rise</h2>
+        <p class="era-range">c. 1025 – c. 1020 BC · Ages 15 – 20</p>
+      </section>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 1025 BC<span class="age">~15</span></div>
+        <div class="tl-title">Anointed by Samuel</div>
+        <div class="tl-desc">Samuel travels to Bethlehem in secret. After rejecting Jesse's seven older sons, David is summoned from the field and anointed with oil. The Spirit of the LORD rushes upon him.</div>
+        <div class="tl-ref">1 Samuel 16:1–13</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1024 BC<span class="age">~16</span></div>
+        <div class="tl-title">Summoned to Saul's court</div>
+        <div class="tl-desc">Saul's servants recommend David as a skillful harpist. He becomes Saul's armor-bearer and lyre-player, returning home periodically to tend the sheep.</div>
+        <div class="tl-ref">1 Samuel 16:14–23</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 1023 BC<span class="age">~17</span></div>
+        <div class="tl-title">Goliath at the Valley of Elah</div>
+        <div class="tl-desc">David kills the Philistine giant of Gath with a sling and a stone, then beheads him with his own sword. The Philistines flee. David is brought permanently into Saul's service.</div>
+        <div class="tl-ref">1 Samuel 17</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1023 BC<span class="age">~17</span></div>
+        <div class="tl-title">Covenant with Jonathan</div>
+        <div class="tl-desc">Saul's son and crown prince makes a covenant with David, giving him his royal robe, armor, sword, bow, and belt — the symbols of his own succession.</div>
+        <div class="tl-ref">1 Samuel 18:1–4</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1022 BC<span class="age">~18</span></div>
+        <div class="tl-title">Marries Michal</div>
+        <div class="tl-desc">David pays a bride-price of 200 Philistine foreskins (double the 100 Saul demanded) and marries Saul's younger daughter.</div>
+        <div class="tl-ref">1 Samuel 18:20–27</div>
+      </div>
+
+      <!-- ============ ERA 3: FUGITIVE ============ -->
+      <section class="tl-era">
+        <h2>III. The Fugitive Years</h2>
+        <p class="era-range">c. 1020 – c. 1012 BC · Ages 20 – 28</p>
+      </section>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 1020 BC<span class="age">~20</span></div>
+        <div class="tl-title">Flight from Saul</div>
+        <div class="tl-desc">After repeated assassination attempts (spears, ambushes, the watch on his house), David escapes through Michal's window and begins the fugitive years.</div>
+        <div class="tl-ref">1 Samuel 19</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1020 BC<span class="age">~20</span></div>
+        <div class="tl-title">Final parting from Jonathan</div>
+        <div class="tl-desc">The arrow signal in the field confirms Saul's intent to kill David. The two friends weep together and part.</div>
+        <div class="tl-ref">1 Samuel 20</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1020 BC<span class="age">~20</span></div>
+        <div class="tl-title">Nob and the showbread</div>
+        <div class="tl-desc">Fleeing alone, David receives consecrated showbread from Ahimelech the priest, and takes Goliath's sword. Doeg the Edomite witnesses.</div>
+        <div class="tl-ref">1 Samuel 21:1–9</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1020 BC<span class="age">~20</span></div>
+        <div class="tl-title">Feigns madness at Gath</div>
+        <div class="tl-desc">Fleeing south into Philistine territory, David pretends to be insane before King Achish. Psalms 34 and 56 emerge from this episode.</div>
+        <div class="tl-ref">1 Samuel 21:10–15</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 1019 BC<span class="age">~21</span></div>
+        <div class="tl-title">Cave of Adullam · 400 men</div>
+        <div class="tl-desc">David's family and "everyone in distress, in debt, or bitter in soul" gather to him. He becomes their commander. The number will grow to 600.</div>
+        <div class="tl-ref">1 Samuel 22:1–2</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1019 BC<span class="age">~21</span></div>
+        <div class="tl-title">Parents secured in Moab</div>
+        <div class="tl-desc">David places Jesse and his mother in the protection of the king of Moab.</div>
+        <div class="tl-ref">1 Samuel 22:3–4</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1019 BC<span class="age">~21</span></div>
+        <div class="tl-title">Massacre at Nob</div>
+        <div class="tl-desc">Doeg reports to Saul. Saul orders the execution of 85 priests and the destruction of the entire town. Only Abiathar escapes, fleeing to David with the ephod.</div>
+        <div class="tl-ref">1 Samuel 22:6–23</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1018 BC<span class="age">~22</span></div>
+        <div class="tl-title">Saves Keilah from Philistines</div>
+        <div class="tl-desc">David inquires of the LORD through the ephod, attacks the Philistines threshing at Keilah, and saves the city — then escapes before its citizens betray him to Saul.</div>
+        <div class="tl-ref">1 Samuel 23:1–13</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1017 BC<span class="age">~23</span></div>
+        <div class="tl-title">Jonathan's last visit at Horesh</div>
+        <div class="tl-desc">In the Wilderness of Ziph, Jonathan visits David and renews their covenant: "You shall be king over Israel, and I shall be next to you."</div>
+        <div class="tl-ref">1 Samuel 23:16–18</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 1016 BC<span class="age">~24</span></div>
+        <div class="tl-title">First sparing of Saul · the cave at En-gedi</div>
+        <div class="tl-desc">Saul enters a cave where David and his men are hiding. David cuts off the corner of Saul's robe but refuses to kill him.</div>
+        <div class="tl-ref">1 Samuel 24</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1015 BC<span class="age">~25</span></div>
+        <div class="tl-title">Death of Samuel</div>
+        <div class="tl-desc">The prophet who anointed David — and judged Israel for forty years — dies and is buried at Ramah.</div>
+        <div class="tl-ref">1 Samuel 25:1</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1015 BC<span class="age">~25</span></div>
+        <div class="tl-title">Nabal, Abigail, marriage</div>
+        <div class="tl-desc">Nabal refuses to provision David's men. Abigail intercepts David's revenge with wisdom and gifts. Nabal dies ten days later. David marries Abigail and also Ahinoam of Jezreel.</div>
+        <div class="tl-ref">1 Samuel 25</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1014 BC<span class="age">~26</span></div>
+        <div class="tl-title">Second sparing of Saul · Ziph</div>
+        <div class="tl-desc">David and Abishai enter Saul's camp at night. The LORD has put Saul's men into a deep sleep. David takes only the spear and water jar from beside Saul's head.</div>
+        <div class="tl-ref">1 Samuel 26</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1014 BC<span class="age">~26</span></div>
+        <div class="tl-title">Returns to Achish at Gath</div>
+        <div class="tl-desc">Concluding Saul will eventually kill him, David takes 600 men and their families to King Achish, who gives him the town of Ziklag.</div>
+        <div class="tl-ref">1 Samuel 27</div>
+      </div>
+
+      <!-- ============ ERA 4: ZIKLAG ============ -->
+      <section class="tl-era">
+        <h2>IV. Ziklag · 16 Months</h2>
+        <p class="era-range">c. 1014 – c. 1012 BC · Ages 26 – 28</p>
+      </section>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1013 BC<span class="age">~27</span></div>
+        <div class="tl-title">Raids against Amalekites, Geshurites, Girzites</div>
+        <div class="tl-desc">David deceives Achish by raiding peoples south and east, leaving no survivors to report. Achish believes David has been raiding Israel.</div>
+        <div class="tl-ref">1 Samuel 27:8–12</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1012 BC<span class="age">~28</span></div>
+        <div class="tl-title">Dismissed by the Philistine lords</div>
+        <div class="tl-desc">Marching with Achish toward Mount Gilboa, David is rejected by the other Philistine commanders. He marches home to Ziklag — and is spared the impossible choice of fighting his own people.</div>
+        <div class="tl-ref">1 Samuel 29</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 1012 BC<span class="age">~28</span></div>
+        <div class="tl-title">Ziklag burned by Amalekites</div>
+        <div class="tl-desc">David arrives home to find the town destroyed and his wives and children captured. His men threaten to stone him. He "strengthens himself in the LORD," pursues, and recovers everything.</div>
+        <div class="tl-ref">1 Samuel 30</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 1012 BC<span class="age">~28</span></div>
+        <div class="tl-title">Death of Saul & Jonathan at Gilboa</div>
+        <div class="tl-desc">Saul, Jonathan, Abinadab, and Malchi-shua all killed by the Philistines on Mount Gilboa. Saul falls on his own sword. The men of Jabesh-gilead rescue the bodies.</div>
+        <div class="tl-ref">1 Samuel 31</div>
+      </div>
+
+      <!-- ============ ERA 5: KING OF JUDAH ============ -->
+      <section class="tl-era">
+        <h2>V. King of Judah at Hebron</h2>
+        <p class="era-range">c. 1010 – 1003 BC · Ages 30 – 37</p>
+      </section>
+
+      <div class="tl-event major">
+        <div class="tl-date">1010 BC<span class="age">30</span></div>
+        <div class="tl-title">Anointed king over Judah at Hebron</div>
+        <div class="tl-desc">After mourning Saul and Jonathan, David inquires of the LORD and is directed to Hebron, where the men of Judah anoint him their king. Begins his 7.5-year reign over the southern tribes.</div>
+        <div class="tl-ref">2 Samuel 2:1–4</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1010 BC<span class="age">~30</span></div>
+        <div class="tl-title">Ish-bosheth made king at Mahanaim</div>
+        <div class="tl-desc">Abner takes Saul's surviving son Ish-bosheth (40 years old) across the Jordan and crowns him king over the northern tribes. Civil war begins.</div>
+        <div class="tl-ref">2 Samuel 2:8–11</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1009 BC<span class="age">~31</span></div>
+        <div class="tl-title">Battle at the Pool of Gibeon · Asahel killed</div>
+        <div class="tl-desc">Twelve-on-twelve combat ends in mutual slaughter. The wider battle goes to Joab. Abner kills Asahel in self-defense — a blood debt Joab will not forget.</div>
+        <div class="tl-ref">2 Samuel 2:12–32</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1005 BC<span class="age">~35</span></div>
+        <div class="tl-title">Abner defects · Michal returned</div>
+        <div class="tl-desc">After Ish-bosheth confronts him about Rizpah, Abner negotiates with David to deliver the northern kingdom. David demands Michal back from her second husband Palti.</div>
+        <div class="tl-ref">2 Samuel 3:6–21</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1004 BC<span class="age">~36</span></div>
+        <div class="tl-title">Joab murders Abner at Hebron's gate</div>
+        <div class="tl-desc">Joab takes Abner aside privately and stabs him in revenge for Asahel. David disavows publicly and mourns.</div>
+        <div class="tl-ref">2 Samuel 3:22–39</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1004 BC<span class="age">~36</span></div>
+        <div class="tl-title">Ish-bosheth assassinated</div>
+        <div class="tl-desc">Baanah and Rechab kill Ish-bosheth during his afternoon rest. David executes them for the act.</div>
+        <div class="tl-ref">2 Samuel 4</div>
+      </div>
+
+      <!-- ============ ERA 6: KING OF ISRAEL ============ -->
+      <section class="tl-era">
+        <h2>VI. King of All Israel</h2>
+        <p class="era-range">1003 – 970 BC · Ages 37 – 70</p>
+      </section>
+
+      <div class="tl-event major">
+        <div class="tl-date">1003 BC<span class="age">37</span></div>
+        <div class="tl-title">Anointed king over all Israel at Hebron</div>
+        <div class="tl-desc">All twelve tribes come to Hebron. Over 300,000 warriors feast for three days. David is anointed king over all Israel — his third anointing.</div>
+        <div class="tl-ref">2 Samuel 5:1–5 · 1 Chronicles 12:23–40</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 1003 BC<span class="age">~37</span></div>
+        <div class="tl-title">Jerusalem captured · the water shaft</div>
+        <div class="tl-desc">Joab leads the assault into the Jebusite city through the water tunnel. David makes Jerusalem the political and spiritual capital.</div>
+        <div class="tl-ref">2 Samuel 5:6–10 · 1 Chronicles 11:4–9</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1002 BC<span class="age">~38</span></div>
+        <div class="tl-title">Hiram of Tyre builds David's palace</div>
+        <div class="tl-desc">Cedar trees, carpenters, and masons sent from Tyre. David's house of cedar is built on Mount Zion.</div>
+        <div class="tl-ref">2 Samuel 5:11</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1002 BC<span class="age">~38</span></div>
+        <div class="tl-title">Two Philistine victories in the Valley of Rephaim</div>
+        <div class="tl-desc">Baal-perazim ("Lord of breakthroughs") and the battle of the balsam trees. David inquires of the LORD before each.</div>
+        <div class="tl-ref">2 Samuel 5:17–25</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 1001 BC<span class="age">~39</span></div>
+        <div class="tl-title">First attempt to bring the Ark · Uzzah killed</div>
+        <div class="tl-desc">The Ark is placed on a new cart in violation of Mosaic command. Uzzah touches it to steady it and dies. David, afraid, leaves the Ark with Obed-edom for three months.</div>
+        <div class="tl-ref">2 Samuel 6:1–11</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 1001 BC<span class="age">~39</span></div>
+        <div class="tl-title">Ark brought to Jerusalem · David dances</div>
+        <div class="tl-desc">Carried by Levites on poles. Sacrifices every six steps. David, wearing a linen ephod, dances with all his might. Michal despises him from the window.</div>
+        <div class="tl-ref">2 Samuel 6:12–23</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 1000 BC<span class="age">~40</span></div>
+        <div class="tl-title">The Davidic Covenant</div>
+        <div class="tl-desc">Nathan delivers God's word: David will not build the temple, but his offspring will. His throne and house will be established forever. The seven promises of 2 Samuel 7.</div>
+        <div class="tl-ref">2 Samuel 7 · 1 Chronicles 17</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 998 BC<span class="age">~42</span></div>
+        <div class="tl-title">Wars: Philistines, Moab, Zobah, Damascus</div>
+        <div class="tl-desc">Hadadezer of Zobah defeated. 22,000 Syrians of Damascus killed. Garrisons established. Toi of Hamath voluntarily allies.</div>
+        <div class="tl-ref">2 Samuel 8</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 997 BC<span class="age">~43</span></div>
+        <div class="tl-title">Edom subjugated · Valley of Salt</div>
+        <div class="tl-desc">18,000 Edomites killed. Garrisons throughout Edom. Hadad the young prince escapes to Egypt.</div>
+        <div class="tl-ref">2 Samuel 8:13–14 · 1 Chronicles 18:12–13</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 995 BC<span class="age">~45</span></div>
+        <div class="tl-title">Kindness to Mephibosheth</div>
+        <div class="tl-desc">David seeks out Jonathan's crippled son and gives him a permanent place at the king's table, restoring all of Saul's land to him.</div>
+        <div class="tl-ref">2 Samuel 9</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 994 BC<span class="age">~46</span></div>
+        <div class="tl-title">Ammonite war · Hanun's insult</div>
+        <div class="tl-desc">Hanun shaves David's ambassadors and cuts their garments. The Ammonites hire Syrian mercenaries. Joab and Abishai win on two fronts.</div>
+        <div class="tl-ref">2 Samuel 10</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 993 BC<span class="age">~47</span></div>
+        <div class="tl-title">Bathsheba and Uriah</div>
+        <div class="tl-desc">Spring, "the time when kings go out to battle." Joab besieges Rabbah; David remains in Jerusalem. The rooftop sighting, the summons, the pregnancy, the cover-up failures, the murder letter carried by Uriah himself.</div>
+        <div class="tl-ref">2 Samuel 11</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 992 BC<span class="age">~48</span></div>
+        <div class="tl-title">Nathan confronts · "You are the man"</div>
+        <div class="tl-desc">The parable of the ewe lamb. David's verdict on himself. The fourfold judgment pronounced. The first son dies. Solomon (Jedidiah) born.</div>
+        <div class="tl-ref">2 Samuel 12 · Psalm 51</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 992 BC<span class="age">~48</span></div>
+        <div class="tl-title">Rabbah captured · Ammonite crown taken</div>
+        <div class="tl-desc">David finally goes to the front. The crown of Milcom (75 lbs of gold) placed on his head.</div>
+        <div class="tl-ref">2 Samuel 12:26–31</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 990 BC<span class="age">~50</span></div>
+        <div class="tl-title">Amnon rapes Tamar</div>
+        <div class="tl-desc">Jonadab's plot. David is angry but does not punish his firstborn. Absalom takes Tamar into his house and waits.</div>
+        <div class="tl-ref">2 Samuel 13:1–22</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 988 BC<span class="age">~52</span></div>
+        <div class="tl-title">Absalom murders Amnon at sheep-shearing</div>
+        <div class="tl-desc">Two years after the rape. Absalom invites all the king's sons to Baal-hazor. His servants kill Amnon when his heart is merry with wine. Absalom flees to Geshur.</div>
+        <div class="tl-ref">2 Samuel 13:23–39</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 985 BC<span class="age">~55</span></div>
+        <div class="tl-title">Absalom returns from Geshur · two years without seeing David</div>
+        <div class="tl-desc">Joab arranges the return via the wise woman of Tekoa. David allows Absalom back to Jerusalem but refuses to see him for two more years.</div>
+        <div class="tl-ref">2 Samuel 14</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 980 BC<span class="age">~60</span></div>
+        <div class="tl-title">Absalom's revolt · David flees Jerusalem</div>
+        <div class="tl-desc">After four years of stealing the hearts of Israel, Absalom proclaims himself king at Hebron. David flees with his household, the royal guard, 600 Gittites under Ittai, and the priests. He goes up the Mount of Olives weeping.</div>
+        <div class="tl-ref">2 Samuel 15</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 980 BC<span class="age">~60</span></div>
+        <div class="tl-title">Ahithophel defects · Hushai sent back as a mole</div>
+        <div class="tl-desc">David's chief counselor joins Absalom. David prays the LORD will turn his counsel into foolishness. Hushai pretends loyalty to Absalom to counter Ahithophel from within.</div>
+        <div class="tl-ref">2 Samuel 15:30–37; 16:15–17:23</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 980 BC<span class="age">~60</span></div>
+        <div class="tl-title">Ahithophel's suicide</div>
+        <div class="tl-desc">When his urgent counsel to strike David immediately is rejected, Ahithophel goes home, sets his house in order, and hangs himself.</div>
+        <div class="tl-ref">2 Samuel 17:23</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 980 BC<span class="age">~60</span></div>
+        <div class="tl-title">Battle of the Forest of Ephraim · Absalom killed</div>
+        <div class="tl-desc">20,000 die in the battle. Absalom is caught in an oak by his head. Joab thrusts three javelins into his heart against David's explicit order. "O my son Absalom, my son, my son Absalom! Would I had died instead of you."</div>
+        <div class="tl-ref">2 Samuel 18</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 979 BC<span class="age">~61</span></div>
+        <div class="tl-title">Sheba's revolt · Amasa murdered</div>
+        <div class="tl-desc">A Benjaminite leads a brief secession attempt. Joab murders his cousin Amasa at the great stone of Gibeon. The wise woman of Abel of Beth-maacah delivers Sheba's head.</div>
+        <div class="tl-ref">2 Samuel 20</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 978 BC<span class="age">~62</span></div>
+        <div class="tl-title">Three-year famine · Gibeonites' demand · Rizpah's vigil</div>
+        <div class="tl-desc">Saul's bloodguilt against the Gibeonites avenged. Seven of Saul's descendants hanged. Rizpah guards their bodies until rain falls.</div>
+        <div class="tl-ref">2 Samuel 21:1–14</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 976 BC<span class="age">~64</span></div>
+        <div class="tl-title">Final Philistine battles · Ishbi-benob nearly kills David</div>
+        <div class="tl-desc">David grows weary in battle. Abishai saves his life. David's men swear he must no longer go out to battle, "lest you quench the lamp of Israel." Four Philistine giants killed in subsequent campaigns.</div>
+        <div class="tl-ref">2 Samuel 21:15–22</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 975 BC<span class="age">~65</span></div>
+        <div class="tl-title">The census · 70,000 die in plague</div>
+        <div class="tl-desc">David numbers Israel against Joab's objection. The plague is stopped at the threshing floor of Araunah the Jebusite — which David buys and where Solomon will build the temple.</div>
+        <div class="tl-ref">2 Samuel 24 · 1 Chronicles 21</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 974 BC<span class="age">~66</span></div>
+        <div class="tl-title">Temple preparations begin</div>
+        <div class="tl-desc">David accumulates massive materials: 100,000 talents of gold, 1,000,000 talents of silver, bronze and iron beyond measure. He receives the plans by divine revelation.</div>
+        <div class="tl-ref">1 Chronicles 22:1–19; 28:11–19</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 972 BC<span class="age">~68</span></div>
+        <div class="tl-title">Levitical orders organized</div>
+        <div class="tl-desc">38,000 Levites of military age. 24 priestly divisions established. Musician divisions under Asaph, Heman, Jeduthun. Twelve monthly military rotations.</div>
+        <div class="tl-ref">1 Chronicles 23–27</div>
+      </div>
+
+      <!-- ============ ERA 7: FINAL DAYS ============ -->
+      <section class="tl-era">
+        <h2>VII. Final Days</h2>
+        <p class="era-range">c. 971 – 970 BC · Ages 69 – 70</p>
+      </section>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 971 BC<span class="age">~69</span></div>
+        <div class="tl-title">Abishag the Shunammite brought to nurse David</div>
+        <div class="tl-desc">David can no longer get warm. A beautiful young woman is sought throughout Israel to care for him. "The king knew her not."</div>
+        <div class="tl-ref">1 Kings 1:1–4</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 970 BC<span class="age">~70</span></div>
+        <div class="tl-title">Adonijah's coup at En-rogel</div>
+        <div class="tl-desc">David's fourth son holds a feast and proclaims himself king, with Joab and Abiathar supporting. Nathan and Bathsheba bring word to David.</div>
+        <div class="tl-ref">1 Kings 1:5–27</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 970 BC<span class="age">~70</span></div>
+        <div class="tl-title">Solomon anointed at Gihon</div>
+        <div class="tl-desc">Zadok anoints Solomon. The trumpet is sounded. The crowd shouts "Long live King Solomon!" The sound carries to En-rogel and Adonijah's feast dissolves.</div>
+        <div class="tl-ref">1 Kings 1:28–53</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 970 BC<span class="age">~70</span></div>
+        <div class="tl-title">Deathbed charge to Solomon</div>
+        <div class="tl-desc">"Be strong, and show yourself a man." Personal instructions on Joab, the sons of Barzillai, and Shimei. The plans for the temple delivered.</div>
+        <div class="tl-ref">1 Kings 2:1–9 · 1 Chronicles 28:9–10</div>
+      </div>
+
+      <div class="tl-event">
+        <div class="tl-date">c. 970 BC<span class="age">~70</span></div>
+        <div class="tl-title">Public dedication offering</div>
+        <div class="tl-desc">1,000 bulls, 1,000 rams, 1,000 lambs sacrificed. David's final public prayer: "Yours, O LORD, is the greatness and the power and the glory and the victory and the majesty."</div>
+        <div class="tl-ref">1 Chronicles 29:10–25</div>
+      </div>
+
+      <div class="tl-event major">
+        <div class="tl-date">c. 970 BC<span class="age">70</span></div>
+        <div class="tl-title">David dies · buried in the City of David</div>
+        <div class="tl-desc">"Then David slept with his fathers and was buried in the city of David." 40 years of reign — 7.5 in Hebron, 32.5 in Jerusalem. The kingdom passes to Solomon.</div>
+        <div class="tl-ref">1 Kings 2:10–12 · 1 Chronicles 29:26–28</div>
+      </div>
+
+    </div>
+  </article>
+    </div>
+  </div>
+
+  <script>window.PAGE_NOTE_IDS = [];</script>
+  <script src="../../assets/js/nav.js"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script>buildSidebar('../..');</script>
+
+  <div id="sidebar-overlay" style="display: none;"></div>
+</body>
+</html>

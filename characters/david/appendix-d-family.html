@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appendix D: David's Family Tree · The Life of David</title>
+  <link rel="stylesheet" href="../../assets/css/style.css" />
+  <script src="../../assets/js/analytics.js"></script>
+  <link rel="stylesheet" href="david.css" />
+  <style>
+    .tree-section {
+      max-width: 880px;
+      margin: 20px auto 32px;
+      padding: 0 24px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .tree-section h2 {
+      font-size: 18px;
+      color: #1F3864;
+      font-weight: bold;
+      margin: 28px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #2E75B6;
+    }
+    .tree-section h3 {
+      font-size: 15px;
+      color: #1F3864;
+      font-weight: bold;
+      margin: 18px 0 8px;
+    }
+    /* Wife card with her children stacked below */
+    .wife-block {
+      background: #EBF4FC;
+      border: 1px solid #2E75B6;
+      border-left: 4px solid #2E75B6;
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 14px 0;
+    }
+    .wife-block .wife-name {
+      font-size: 17px;
+      font-weight: bold;
+      color: #1F3864;
+      margin-bottom: 4px;
+    }
+    .wife-block .wife-tag {
+      display: inline-block;
+      background: #1F3864;
+      color: #FFD700;
+      font-size: 9px;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 12px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .wife-block .wife-meta {
+      font-size: 12px;
+      color: #7A6600;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .wife-block .wife-summary {
+      font-size: 13px;
+      color: #444;
+      line-height: 1.65;
+      margin-bottom: 10px;
+    }
+    .children-list {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(46, 117, 182, 0.25);
+    }
+    .children-list .children-label {
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #1F3864;
+      margin-bottom: 6px;
+    }
+    .child {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 8px 12px;
+      margin: 6px 0;
+      font-size: 13px;
+      line-height: 1.55;
+      color: #333;
+    }
+    .child .child-name {
+      font-weight: bold;
+      color: #1F3864;
+    }
+    .child .child-fate {
+      display: inline-block;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 3px;
+      margin-left: 6px;
+      vertical-align: middle;
+      font-weight: bold;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .fate-died { background: #FFEBEE; color: #B71C1C; border: 1px solid #B71C1C; }
+    .fate-killed { background: #FFEBEE; color: #B71C1C; border: 1px solid #B71C1C; }
+    .fate-king { background: #FFFBF0; color: #7A6600; border: 1px solid #C8A800; }
+    .fate-line { background: #F4F8EE; color: #3B5E1A; border: 1px solid #6B8E3A; }
+    .fate-obscure { background: #F5F5F5; color: #666; border: 1px solid #ccc; }
+    .child .child-desc {
+      display: block;
+      margin-top: 3px;
+      font-size: 12px;
+      color: #666;
+    }
+    /* Quick navigator */
+    .quick-nav {
+      background: #F4F8EE;
+      border: 1px solid #6B8E3A;
+      border-left: 4px solid #6B8E3A;
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .quick-nav .nav-label {
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #3B5E1A;
+      margin-bottom: 8px;
+    }
+    .quick-nav .nav-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .quick-nav .nav-items a {
+      display: inline-block;
+      background: #fff;
+      border: 1px solid #6B8E3A;
+      color: #3B5E1A;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .quick-nav .nav-items a:hover {
+      background: #6B8E3A;
+      color: #fff;
+    }
+    /* Concubines section */
+    .concubines-box {
+      background: #FFFBF0;
+      border: 1px solid #C8A800;
+      border-left: 4px solid #C8A800;
+      padding: 14px 18px;
+      border-radius: 0 6px 6px 0;
+      margin: 14px 0;
+      font-size: 13px;
+      color: #333;
+      line-height: 1.7;
+    }
+    .concubines-box strong {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #7A6600;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    /* Parents/siblings block */
+    .origin-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 14px 0;
+    }
+    .origin-grid .origin-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+    .origin-grid .origin-card h4 {
+      margin: 0 0 8px;
+      font-size: 12px;
+      color: #1F3864;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .origin-grid .origin-card ul {
+      margin: 0;
+      padding-left: 20px;
+      font-size: 13px;
+      line-height: 1.75;
+      color: #333;
+    }
+    @media (max-width: 600px) {
+      .origin-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: March 27, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: May 10, 2026</span></span>
+  </div>
+</div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+<article>
+    <header class="chapter-hero">
+      <p class="chapter-breadcrumb">
+        <a href="../../characters.html">Characters</a> &nbsp;·&nbsp;
+        <a href="index.html">The Life of David</a>
+      </p>
+      <p class="chapter-num">Appendix D</p>
+      <h1 class="chapter-title">David's Family Tree</h1>
+      <p class="chapter-subtitle">His parents, siblings, eight wives, ten concubines, twenty named children, and what became of each</p>
+      <div class="chapter-refs">
+        <strong>This Chart vs External Sites</strong>
+        For the broader Adam → David and David → Christ genealogies, see <a href="https://lineage.bible" target="_blank" rel="noopener">lineage.bible</a> or <a href="https://biblequick.com/familytree" target="_blank" rel="noopener">biblequick.com</a>. This page focuses specifically on <em>David's own household</em> — what's scattered across 2 Samuel and 1 Chronicles, consolidated.
+      </div>
+    </header>
+
+    <div class="tree-section">
+
+      <div class="quick-nav">
+        <div class="nav-label">Jump to</div>
+        <div class="nav-items">
+          <a href="#origins">Parents & Siblings</a>
+          <a href="#hebron-wives">Hebron Wives</a>
+          <a href="#jerusalem-wives">Jerusalem Wives</a>
+          <a href="#concubines">Concubines</a>
+          <a href="#daughter">His Daughter</a>
+          <a href="#totals">Summary</a>
+        </div>
+      </div>
+
+      <h2 id="origins">Parents & Siblings</h2>
+
+      <div class="origin-grid">
+        <div class="origin-card">
+          <h4>Father</h4>
+          <ul>
+            <li><strong>Jesse</strong> — son of Obed, grandson of Boaz and Ruth, of Bethlehem-Ephrathah. Described as "old, advanced in years" already during David's youth (1 Sam 17:12). Last appears in the narrative when David secures his refuge in Moab (1 Sam 22:3–4).</li>
+          </ul>
+        </div>
+        <div class="origin-card">
+          <h4>Mother</h4>
+          <ul>
+            <li><strong>Unnamed</strong> — never identified in Scripture. David refers to himself as "son of your handmaid" in Ps 86:16 and 116:16. Some rabbinic traditions name her Nitzevet bat Adael, but this is not in the biblical text.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="origin-card" style="background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 14px 16px; margin-bottom: 14px;">
+        <h4 style="margin: 0 0 8px; font-size: 12px; color: #1F3864; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">Brothers (Jesse's Eight Sons)</h4>
+        <ul style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.8; color: #333;">
+          <li><strong>1. Eliab</strong> — eldest; rebuked David at the front lines before Goliath (1 Sam 17:28); had been Samuel's initial guess for the anointing</li>
+          <li><strong>2. Abinadab</strong> — served in Saul's army</li>
+          <li><strong>3. Shimea / Shammah</strong> — served in Saul's army; father of Jonadab (Amnon's manipulator) and Jonathan (slew a Gath giant, 2 Sam 21:21)</li>
+          <li><strong>4. Nethanel</strong> — name only (1 Chr 2:14)</li>
+          <li><strong>5. Raddai</strong> — name only (1 Chr 2:14)</li>
+          <li><strong>6. Ozem</strong> — name only (1 Chr 2:15)</li>
+          <li><strong>7. Elihu</strong> — likely became a tribal leader; or possibly identified with Eliab in another tradition. The discrepancy between "eight sons" in 1 Sam 17:12 and seven sons in 1 Chr 2:13–15 is usually explained as one son dying childless.</li>
+          <li><strong>8. David</strong> — the youngest</li>
+        </ul>
+      </div>
+
+      <div class="origin-card" style="background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 14px 16px;">
+        <h4 style="margin: 0 0 8px; font-size: 12px; color: #1F3864; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">Sisters</h4>
+        <ul style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.8; color: #333;">
+          <li><strong>Zeruiah</strong> — mother of <em>Joab</em> (David's commander), <em>Abishai</em> (chief of the Thirty), and <em>Asahel</em> (killed by Abner)</li>
+          <li><strong>Abigail</strong> — wife of Jether the Ishmaelite; mother of <em>Amasa</em> (commander of Absalom's rebel army, briefly David's commander, killed by Joab)</li>
+        </ul>
+      </div>
+
+      <p style="font-size: 13px; color: #666; font-style: italic; margin-top: 10px;">
+        Notable: the four highest-ranking military figures in David's life — for him and against him — were all his nephews through his sisters. Joab, Abishai, Asahel (all loyal); Amasa (defected to Absalom, then killed).
+      </p>
+
+      <h2 id="hebron-wives">Wives Acquired in Hebron Era</h2>
+
+      <p style="font-size: 14px; line-height: 1.7; color: #444; margin: 10px 0 18px;">
+        David's first six sons were born during his 7.5 years reigning in Hebron over Judah — to six different wives. The polygamy was largely political: each marriage created an alliance with a different clan or kingdom.
+      </p>
+
+      <!-- MICHAL -->
+      <div class="wife-block">
+        <div><span class="wife-tag">Wife 1</span><span class="wife-name">Michal</span></div>
+        <div class="wife-meta">Daughter of Saul · Bride price: 200 Philistine foreskins</div>
+        <div class="wife-summary">
+          The tragic figure. As Saul's younger daughter, she loved David and saved his life by lowering him through a window and putting a household idol in his bed. After David's flight, Saul gave her to <strong>Palti son of Laish</strong>. Years later, as a condition of Abner's defection, David demanded her return. Palti followed her weeping all the way to Bahurim. Reunited with David in Jerusalem, she watched him dance before the Ark and despised him in her heart. After the confrontation, "Michal the daughter of Saul had no child to the day of her death."
+        </div>
+        <div class="children-list">
+          <div class="children-label">Children</div>
+          <div class="child"><span class="child-name">None</span><span class="child-desc">She was childless. The five sons "of Michal" mentioned in 2 Sam 21:8 were actually her sister Merab's sons, raised by Michal — and they were among the seven of Saul's house given to the Gibeonites.</span></div>
+        </div>
+      </div>
+
+      <!-- AHINOAM -->
+      <div class="wife-block">
+        <div><span class="wife-tag">Wife 2</span><span class="wife-name">Ahinoam of Jezreel</span></div>
+        <div class="wife-meta">Married during fugitive years · Mother of David's firstborn</div>
+        <div class="wife-summary">
+          Mentioned alongside Abigail as one of the two wives taken during the fugitive period. Captured at Ziklag by the Amalekites and rescued. Mother of David's firstborn son — the one who would rape his half-sister and be murdered by his half-brother.
+        </div>
+        <div class="children-list">
+          <div class="children-label">Children</div>
+          <div class="child">
+            <span class="child-name">Amnon</span><span class="child-fate fate-killed">Murdered by Absalom</span>
+            <span class="child-desc">David's firstborn. Raped his half-sister Tamar. Murdered by Absalom two years later at the sheep-shearing feast at Baal-hazor.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABIGAIL -->
+      <div class="wife-block">
+        <div><span class="wife-tag">Wife 3</span><span class="wife-name">Abigail of Carmel</span></div>
+        <div class="wife-meta">Widow of Nabal the Calebite · "Discerning and beautiful" (1 Sam 25:3)</div>
+        <div class="wife-summary">
+          Intercepted David's vengeance against her foolish husband Nabal with wisdom, gifts, and a remarkable theological speech. After Nabal died ten days later, she became David's wife. Also captured at Ziklag and rescued.
+        </div>
+        <div class="children-list">
+          <div class="children-label">Children</div>
+          <div class="child">
+            <span class="child-name">Chileab (Daniel in 1 Chr 3:1)</span><span class="child-fate fate-obscure">Disappears</span>
+            <span class="child-desc">Second son. Not mentioned again after birth. Likely died young, since he would otherwise have had standing for the throne ahead of Absalom.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAACAH -->
+      <div class="wife-block">
+        <div><span class="wife-tag">Wife 4</span><span class="wife-name">Maacah</span></div>
+        <div class="wife-meta">Daughter of Talmai, king of Geshur · Foreign royal marriage / political alliance</div>
+        <div class="wife-summary">
+          The only foreign princess among David's named wives. Geshur was a small Aramean kingdom east of the Sea of Galilee. Through her, two of David's most beautiful and most troubled children entered the family. After murdering Amnon, Absalom fled to her father's house at Geshur and stayed three years.
+        </div>
+        <div class="children-list">
+          <div class="children-label">Children</div>
+          <div class="child">
+            <span class="child-name">Absalom</span><span class="child-fate fate-killed">Killed by Joab</span>
+            <span class="child-desc">Third son. Killed Amnon for raping his sister Tamar. Led a four-year revolt against David. Caught in an oak tree by his head; Joab thrust three javelins into his heart against David's order.</span>
+          </div>
+          <div class="child">
+            <span class="child-name">Tamar</span><span class="child-fate fate-obscure">Desolate</span>
+            <span class="child-desc">David's only named daughter. Raped by her half-brother Amnon. Lived in her brother Absalom's house as "a desolate woman." Absalom named his own daughter after her.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- HAGGITH -->
+      <div class="wife-block">
+        <div><span class="wife-tag">Wife 5</span><span class="wife-name">Haggith</span></div>
+        <div class="wife-meta">Mother of David's eventual coup attempter</div>
+        <div class="wife-summary">
+          Little is known about her. Mother of Adonijah, who as the eldest surviving son after Absalom's death assumed the throne was his.
+        </div>
+        <div class="children-list">
+          <div class="children-label">Children</div>
+          <div class="child">
+            <span class="child-name">Adonijah</span><span class="child-fate fate-killed">Executed by Solomon</span>
+            <span class="child-desc">Fourth son. Held a coup feast at En-rogel during David's final illness. After Solomon's succession, requested Abishag the Shunammite as wife — an implicit claim to the throne. Solomon had Benaiah execute him.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABITAL -->
+      <div class="wife-block">
+        <div><span class="wife-tag">Wife 6</span><span class="wife-name">Abital</span></div>
+        <div class="wife-meta">Brief mention only</div>
+        <div class="wife-summary">
+          Named only in the Hebron sons list (2 Sam 3:4; 1 Chr 3:3). No further details preserved.
+        </div>
+        <div class="children-list">
+          <div class="children-label">Children</div>
+          <div class="child">
+            <span class="child-name">Shephatiah</span><span class="child-fate fate-obscure">No further record</span>
+            <span class="child-desc">Fifth son. Name only.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EGLAH -->
+      <div class="wife-block">
+        <div><span class="wife-tag">Wife 7</span><span class="wife-name">Eglah</span></div>
+        <div class="wife-meta">"David's wife" — possibly his first / earliest</div>
+        <div class="wife-summary">
+          The text adds the unusual qualifier "David's wife" specifically for her (2 Sam 3:5). Some traditions identify her with Michal; others see her as a distinct earliest wife.
+        </div>
+        <div class="children-list">
+          <div class="children-label">Children</div>
+          <div class="child">
+            <span class="child-name">Ithream</span><span class="child-fate fate-obscure">No further record</span>
+            <span class="child-desc">Sixth son. Name only.</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="jerusalem-wives">Wives in the Jerusalem Era</h2>
+
+      <p style="font-size: 14px; line-height: 1.7; color: #444; margin: 10px 0 18px;">
+        2 Samuel 5:13 records that David took more concubines and wives from Jerusalem. Most are unnamed, but one — taken in violation of God's law — is named in detail.
+      </p>
+
+      <!-- BATHSHEBA -->
+      <div class="wife-block">
+        <div><span class="wife-tag">Wife 8 (named)</span><span class="wife-name">Bathsheba (Bathshua)</span></div>
+        <div class="wife-meta">Daughter of Eliam · Granddaughter of Ahithophel · Widow of Uriah the Hittite</div>
+        <div class="wife-summary">
+          Taken by David from her husband Uriah. Their first child died. She bore three more sons and watched the youngest become king. In David's final illness, Nathan coached her to intercede before David to confirm Solomon's succession against Adonijah's coup. She became <em>gebirah</em> — Queen Mother — during Solomon's reign.
+        </div>
+        <div class="children-list">
+          <div class="children-label">Children (all four sons listed in 1 Chr 3:5)</div>
+          <div class="child">
+            <span class="child-name">Unnamed firstborn</span><span class="child-fate fate-died">Died as infant</span>
+            <span class="child-desc">Conceived during the affair. Died seven days after birth as the first of four judgments Nathan announced.</span>
+          </div>
+          <div class="child">
+            <span class="child-name">Shammua (Shimea)</span><span class="child-fate fate-obscure">No further record</span>
+            <span class="child-desc">Name only.</span>
+          </div>
+          <div class="child">
+            <span class="child-name">Shobab</span><span class="child-fate fate-obscure">No further record</span>
+            <span class="child-desc">Name only.</span>
+          </div>
+          <div class="child">
+            <span class="child-name">Nathan</span><span class="child-fate fate-line">Line to Mary</span>
+            <span class="child-desc">Critical: Luke's genealogy traces Mary's bloodline (and therefore Jesus's biological Davidic descent) through Nathan, <em>not</em> through Solomon. This bypasses the Jeconiah curse of Jeremiah 22:30 that fell on Solomon's royal line. Not named after the prophet Nathan; some traditions suggest he was, since the prophet was so close to the family.</span>
+          </div>
+          <div class="child">
+            <span class="child-name">Solomon (Jedidiah)</span><span class="child-fate fate-king">King · Built temple</span>
+            <span class="child-desc">"Solomon" given by David ("peaceful"); "Jedidiah" given through Nathan the prophet ("beloved of the LORD"). Succeeded David. Built the temple. His royal line continued through Rehoboam to the kings of Judah and ultimately Joseph (legal father of Jesus).</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>Other Sons Born in Jerusalem (mothers not specified)</h3>
+
+      <p style="font-size: 13px; color: #444; line-height: 1.75;">
+        Nine additional sons are listed in 1 Chronicles 3:6–8 and 14:5–7 with no mother named. They were likely born to various unnamed Jerusalem wives or concubines:
+      </p>
+
+      <ul style="font-size: 13px; line-height: 1.85; color: #333; padding-left: 22px;">
+        <li><strong>Ibhar</strong> — name only</li>
+        <li><strong>Elishua (Elishama)</strong> — name only</li>
+        <li><strong>Eliphelet</strong> (sometimes Elpalet) — name only</li>
+        <li><strong>Nogah</strong> — appears only in Chronicles, not in 2 Samuel 5</li>
+        <li><strong>Nepheg</strong> — name only</li>
+        <li><strong>Japhia</strong> — name only</li>
+        <li><strong>Elishama</strong> (second of this name) — name only</li>
+        <li><strong>Eliada (Beeliada)</strong> — name only</li>
+        <li><strong>Eliphelet</strong> (second of this name) — name only</li>
+      </ul>
+
+      <h2 id="concubines">Concubines</h2>
+
+      <div class="concubines-box">
+        <strong>The Ten Concubines</strong>
+        2 Samuel 15:16 records that when David fled Jerusalem before Absalom, he left "ten concubines to keep the house." Absalom, on Ahithophel's advice, publicly violated these ten women on the rooftop — the same rooftop from which David had first seen Bathsheba (2 Sam 16:22). After the rebellion, David provided for them but had no further relations with them. They were "shut up until the day of their death, living as if in widowhood" (2 Sam 20:3). None of them are named in Scripture.
+      </div>
+
+      <div class="concubines-box">
+        <strong>Additional Concubines (Numbers Not Specified)</strong>
+        2 Samuel 5:13 mentions that David took "more concubines and wives from Jerusalem" — distinct from the ten above. 1 Chronicles 3:9 ends the list of David's sons with: "all these were David's sons, besides the sons of the concubines, and Tamar was their sister." This suggests additional unnamed concubines bore additional unnamed sons — David's full family was larger than the named records preserve.
+      </div>
+
+      <div class="concubines-box">
+        <strong>Abishag the Shunammite — Not a Wife</strong>
+        Abishag, the beautiful young woman brought to nurse David in his final illness, is explicitly distinguished: "The king knew her not" (1 Kings 1:4). She was an attendant, not a concubine. After David's death, Adonijah requested her in marriage from Solomon — and Solomon executed him for it, recognizing the request as an implicit claim to the throne (since taking a former king's woman was equivalent to claiming his throne).
+      </div>
+
+      <h2 id="daughter">David's Daughter</h2>
+
+      <p style="font-size: 14px; line-height: 1.7; color: #444; margin: 10px 0 18px;">
+        Only one daughter is named in Scripture, though 1 Chronicles 3:9 indicates there were others ("Tamar was their sister" — implying multiple sisters of the listed sons).
+      </p>
+
+      <div class="wife-block">
+        <div><span class="wife-tag">Daughter</span><span class="wife-name">Tamar</span></div>
+        <div class="wife-meta">Daughter of Maacah · Full sister of Absalom</div>
+        <div class="wife-summary">
+          Beautiful enough to capture her half-brother Amnon's obsession. Wore the long-sleeved robe (<em>k'tonet passim</em>, the same garment Joseph wore) marking her as a virgin daughter of the king. After being raped by Amnon and rejected, she tore the robe, put ashes on her head, and went away crying aloud. Lived "as a desolate woman" in her brother Absalom's house. Two years later, Absalom killed Amnon. Absalom later named his own daughter after his sister (2 Sam 14:27).
+        </div>
+      </div>
+
+      <h2 id="totals">Family Summary Totals</h2>
+
+      <table class="fact-table">
+        <thead>
+          <tr><th>Category</th><th>Count</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Named wives</td><td>8</td><td>Michal, Ahinoam, Abigail, Maacah, Haggith, Abital, Eglah, Bathsheba</td></tr>
+          <tr><td>The ten reserved concubines</td><td>10</td><td>Left to keep the house; violated by Absalom; lived as widows after</td></tr>
+          <tr><td>Other Jerusalem concubines</td><td>Unknown number</td><td>Implied by 2 Sam 5:13 and 1 Chr 3:9</td></tr>
+          <tr><td>Named sons born at Hebron</td><td>6</td><td>One mother each</td></tr>
+          <tr><td>Named sons born at Jerusalem</td><td>13</td><td>Four to Bathsheba; nine others</td></tr>
+          <tr><td>Total named sons</td><td>19</td><td>Plus unnamed firstborn of Bathsheba = 20 known male children</td></tr>
+          <tr><td>Sons of concubines</td><td>Unknown number</td><td>Mentioned but not enumerated (1 Chr 3:9)</td></tr>
+          <tr><td>Named daughter</td><td>1</td><td>Tamar — additional daughters implied</td></tr>
+          <tr><td>Sons who died violently</td><td>4</td><td>Bathsheba's firstborn, Amnon, Absalom, Adonijah — fulfilling Nathan's fourfold judgment (2 Sam 12:6)</td></tr>
+          <tr><td>Son who succeeded</td><td>1</td><td>Solomon</td></tr>
+          <tr><td>Son in Mary's bloodline</td><td>1</td><td>Nathan (not the prophet)</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Looking Outward</h2>
+
+      <p style="font-size: 14px; line-height: 1.7; color: #444;">
+        For David's ancestors (the line from Adam through Abraham, Boaz, Ruth, and Jesse), and his descendants beyond his immediate sons (the kings of Judah through Joseph and Mary), the genealogies are too extensive to render here. Two excellent external resources cover this well:
+      </p>
+
+      <ul style="font-size: 14px; line-height: 1.85; color: #333; padding-left: 22px;">
+        <li><a href="https://lineage.bible" target="_blank" rel="noopener" style="color: #2E75B6; font-weight: bold;">lineage.bible</a> — an interactive journey through 185+ figures from Adam to David</li>
+        <li><a href="https://biblequick.com/familytree" target="_blank" rel="noopener" style="color: #2E75B6; font-weight: bold;">biblequick.com/familytree</a> — searchable biblical family trees with verse references</li>
+        <li><a href="https://viz.bible/interactive-bible-genealogies-gallery/" target="_blank" rel="noopener" style="color: #2E75B6; font-weight: bold;">viz.bible</a> — click, zoom, and search through the genealogy of Jesus from Adam through Mary and Joseph</li>
+      </ul>
+
+    </div>
+  </article>
+    </div>
+  </div>
+
+  <script>window.PAGE_NOTE_IDS = [];</script>
+  <script src="../../assets/js/nav.js"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script>buildSidebar('../..');</script>
+
+  <div id="sidebar-overlay" style="display: none;"></div>
+</body>
+</html>

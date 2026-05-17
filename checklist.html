@@ -115,6 +115,65 @@
       color: #8a5a00;
       border: 1px solid #d4a017;
     }
+
+    /* ─── 2026-05-08: INTENSITY GRADIENT ─────────────────────────
+       FORMING and NEARLY FINISHED categories support 5 intensity
+       levels (intensity-1 = baseline, intensity-5 = at the edge of
+       graduating to the next category). The visual flows from the
+       category's anchor color toward fire-red so a "loud" Forming
+       reads visibly more intense than a "quiet" Forming, even
+       though both are still in the same prophetic stage.
+
+       Items without an intensity-N class default to intensity-1
+       (the existing pale anchor color), so untouched items render
+       identically to before this CSS was added.
+
+       NOT YET, PREREQUISITE, FULFILLED do NOT receive gradients
+       — they are discrete states, not trending patterns. ─────── */
+
+    /* FORMING: pale yellow → deep yellow → orange-tinged */
+    .status-forming.intensity-2 {
+      background: linear-gradient(135deg, #fff0b3 0%, #ffe283 100%);
+      color: #7a4f00;
+    }
+    .status-forming.intensity-3 {
+      background: linear-gradient(135deg, #ffe283 0%, #ffce5c 100%);
+      color: #6e3d00;
+    }
+    .status-forming.intensity-4 {
+      background: linear-gradient(135deg, #ffce5c 0%, #ffb84d 100%);
+      color: #5e2d00;
+      border: 1px solid #d4a017;
+    }
+    .status-forming.intensity-5 {
+      background: linear-gradient(135deg, #ffb84d 0%, #ff9a3c 100%);
+      color: #4a2000;
+      border: 1px solid #c97a0c;
+    }
+
+    /* NEARLY FINISHED: light orange → deep orange → red-tinged */
+    .status-nearlyfinished.intensity-2 {
+      background: linear-gradient(135deg, #ffd699 0%, #ffb870 100%);
+      color: #7a3d00;
+      border: 1px solid #d4830f;
+    }
+    .status-nearlyfinished.intensity-3 {
+      background: linear-gradient(135deg, #ffb870 0%, #ff9447 100%);
+      color: #6a2900;
+      border: 1px solid #c46a05;
+    }
+    .status-nearlyfinished.intensity-4 {
+      background: linear-gradient(135deg, #ff9447 0%, #ff6e3a 100%);
+      color: #5a1500;
+      border: 1px solid #b04400;
+    }
+    .status-nearlyfinished.intensity-5 {
+      background: linear-gradient(135deg, #ff6e3a 0%, #e83a1c 100%);
+      color: #fff5e6;
+      border: 1px solid #8a1a00;
+    }
+    /* ──────────────────────────────────────────────────────────── */
+
     .status-fulfilled {
       background: #d4edda;
       color: #155724;
@@ -228,7 +287,7 @@
   </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="assets/js/analytics.js"></script></head>
-<body class="admin-mode">
+<body>
 
 <div id="github-bar">
   <span class="bar-title">Campbell Bible Study</span>
@@ -260,6 +319,11 @@
     <div class="legend-item"><div class="legend-dot" style="background:#fff3cd;border:1px solid #ffc107;"></div> Forming / In Progress</div>
     <div class="legend-item"><div class="legend-dot" style="background:#f0f0f0;border:1px solid #ccc;"></div> Not Yet</div>
     <div class="legend-item" style="color:#dc3545;font-weight:bold;">● LIVE — Current news connection</div>
+  </div>
+
+  <div class="info-box" style="background:#fff8e1;border-left:4px solid #d4a017;margin-bottom:14px;">
+    <div class="title" style="color:#8a5a00;">About the intensity gradient</div>
+    <p class="body" style="margin:6px 0 0;">Items in <strong>FORMING</strong> and <strong>NEARLY FINISHED</strong> stages may show a deeper background color when the underlying pattern is more intensely visible in current events. This is <em>not</em> a measure of "how close we are to the end" — Scripture explicitly warns against reading intensity as a closeness signal (Matthew 24:6). The shade only reflects how loudly that specific pattern is manifesting right now. A bright red badge does not mean fulfillment is imminent. It means current events are surfacing this pattern more visibly than usual.</p>
   </div>
 
   <div class="info-box">
