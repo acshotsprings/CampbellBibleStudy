@@ -94,12 +94,15 @@
         the Troy Brewer framework, built to live alongside
         but separate from the Deep Dive on Gematria itself)
 
-   Deep Dives is now 5 items (Hearing God's Voice removed):
-     1. Prophetic Calendars
-     2. H7620 — What Does "Weeks" Mean in Daniel 9?
-     3. The Willow in Scripture
-     4. Gematria (Hebrew/Greek)
-     5. Mormonism (LDS)
+   Deep Dives is now 6 items (Hearing God's Voice removed,
+   Joseph Smith added admin-only 2026-05-23). All 6 are
+   completable as of 2026-05-23 retrofit:
+     1. Prophetic Calendars       (complete-dd-calendars)
+     2. H7620 — "Weeks" in Daniel 9 (complete-dd-shabua)
+     3. The Willow in Scripture   (complete-dd-willow)
+     4. Gematria (Hebrew/Greek)   (complete-dd-gematria)
+     5. Mormonism (LDS)           (complete-dd-mormonism)
+     6. Joseph Smith (adminOnly)  (complete-dd-josephsmith)
 
    Rationale: Hearing God's Voice is spiritual practice, not
    topical study. Gematria Skepticism is personal conviction,
@@ -300,11 +303,12 @@ const NAV_STRUCTURE = [
       { label: '↳ ⚖️ Gematria Skepticism',  href: 'numbers-skepticism.html',  sub: true, underSubKey: 'journal', itemColor: 'mystudy-skepticism' },
       { label: '💾 Save History',           href: 'history.html',       itemColor: 'mystudy-history'     },
       { label: '🔬 Deep Dives',             href: 'DeepDives.html',     itemColor: 'mystudy-deepdives', hasSubCollapse: true, subKey: 'deepdives' },
-      { label: '↳ 📅 Prophetic Calendars',  href: 'DeepDive-Calendars.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
-      { label: '↳ 📖 H7620 — "Weeks" in Daniel 9', href: 'DeepDive-Shabua.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
-      { label: '↳ 🌿 Willow in Scripture',  href: 'DeepDive-Willow.html',    sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
-      { label: '↳ 🔢 Gematria (Hebrew/Greek)', href: 'DeepDive-Gematria.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-gematria' },
-      { label: '↳ ⛰️ Mormonism (LDS)',      href: 'DeepDive-Mormonism.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
+      { label: '↳ 📅 Prophetic Calendars',  href: 'DeepDive-Calendars.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-calendars' },
+      { label: '↳ 📖 H7620 — "Weeks" in Daniel 9', href: 'DeepDive-Shabua.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-shabua' },
+      { label: '↳ 🌿 Willow in Scripture',  href: 'DeepDive-Willow.html',    sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-willow' },
+      { label: '↳ 🔢 Gematria (Hebrew/Greek)', href: 'DeepDive-Gematria.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-gematria', completable: true, completeKey: 'complete-dd-gematria' },
+      { label: '↳ ⛰️ Mormonism (LDS)',      href: 'DeepDive-Mormonism.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-mormonism' },
+      { label: '↳ 👤 Joseph Smith',         href: 'DeepDive-JosephSmith.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', adminOnly: true, completable: true, completeKey: 'complete-dd-josephsmith' },
       { label: '🎧 Listening Notes',        href: 'listening-notes.html', adminOnly: true, itemColor: 'mystudy-listening' },
     ]
   }
