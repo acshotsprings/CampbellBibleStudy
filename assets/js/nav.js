@@ -94,11 +94,12 @@
         the Troy Brewer framework, built to live alongside
         but separate from the Deep Dive on Gematria itself)
 
-   Deep Dives is now 4 items (Hearing God's Voice removed):
+   Deep Dives is now 5 items (Hearing God's Voice removed):
      1. Prophetic Calendars
      2. H7620 — What Does "Weeks" Mean in Daniel 9?
      3. The Willow in Scripture
      4. Gematria (Hebrew/Greek)
+     5. Mormonism (LDS)
 
    Rationale: Hearing God's Voice is spiritual practice, not
    topical study. Gematria Skepticism is personal conviction,
@@ -303,6 +304,7 @@ const NAV_STRUCTURE = [
       { label: '↳ 📖 H7620 — "Weeks" in Daniel 9', href: 'DeepDive-Shabua.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
       { label: '↳ 🌿 Willow in Scripture',  href: 'DeepDive-Willow.html',    sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
       { label: '↳ 🔢 Gematria (Hebrew/Greek)', href: 'DeepDive-Gematria.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-gematria' },
+      { label: '↳ ⛰️ Mormonism (LDS)',      href: 'DeepDive-Mormonism.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
       { label: '🎧 Listening Notes',        href: 'listening-notes.html', adminOnly: true, itemColor: 'mystudy-listening' },
     ]
   }
