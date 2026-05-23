@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <script src="../../assets/js/analytics.js"></script>
   <link rel="stylesheet" href="david.css" />
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 </head>
 <body>
 
@@ -306,12 +307,23 @@
       </div>
 
     </div>
+      <!-- ============================================================ -->
+      <!-- NOTES BOX - David Library Quill rollout 2026-05-16            -->
+      <!-- Quill editor: main.js initQuillEditors() mounts on this div  -->
+      <!-- ============================================================ -->
+      <div class="notes-box">
+        <div class="label">✏️ My notes &amp; convictions on Chapter 20 — David & Repentance:</div>
+        <div class="quill-editor" id="n-david-20" data-placeholder="Write your convictions here. Date your entry."></div>
+      </div>
+
+
   </article>
     </div>
   </div>
 
-  <script>window.PAGE_NOTE_IDS = [];</script>
+  <script>window.PAGE_NOTE_IDS = ['n-david-20'];</script>
   <script src="../../assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
   <script src="../../assets/js/main.js"></script>
   <script>buildSidebar('../..');</script>
 

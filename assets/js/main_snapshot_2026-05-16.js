@@ -1,15 +1,63 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Shared JavaScript — v5.0
-   Admin persistence · Guest notes · Silent EmailJS
+   Shared JavaScript — v5.1 (Restored + Analytics Delegated)
+   ============================================================
+   UPDATED: April 23, 2026
+   RESTORED FROM: commit 94ab4880 (April 22, 2026 "v5.0")
+   PRIOR STATE: stripped to v3.1 (282 lines, missing all locked contracts)
+
+   CHANGES from v5.0:
+   • DISABLED inline GA tracking — now handled by assets/js/analytics.js (v1.1+)
+   • DISABLED inline EmailJS init/send — now handled by analytics.js
+   • DISABLED cbsgSession* heartbeat/session tracking — analytics.js handles it
+   • Added v3.1-style email hook inside saveAllNotes() and saveToGitHub()
+     (calls window.CBSG_notifyNoteSave() which is defined by analytics.js)
+
+   NOTHING IS DELETED — all disabled code is preserved inside comment blocks
+   marked with:
+       // CBSG-DISABLED-v5.1 ... END CBSG-DISABLED
+   To re-enable any block, uncomment it AND remove the corresponding call
+   from analytics.js (to avoid duplicate GA events / duplicate emails).
+
+   LOCKED CONTRACTS PRESERVED (all active):
+   • Top bar rebuild (injectBarExtras) — per 2026-04-12 contract
+   • Quill toolbar + timestamp button — per 2026-04-11 contract
+   • Timer pills, Log & Stamp button — per 2026-04-12 contract
+   • Admin login/logout (Campbell2026 password) — per 2026-04-12 contract
+   • Completion button (injectCompleteButton) — per 2026-04-12 contract
+   • Visitor welcome modal + guest name system — per 2026-04-12 contract
+   • Sidebar active state, mobile overlay — per 2026-04-11 contract
+
+   LOAD ORDER (required):
+   1. assets/js/analytics.js  (defines window.CBSG_notifyNoteSave)
+   2. assets/js/nav.js
+   3. assets/js/main.js       (this file)
    ============================================================ */
 
 const OWNER = 'acshotsprings';
 const REPO  = 'CampbellBibleStudy';
 
+/* === CBSG-DISABLED-v5.1 === inline EmailJS config ===
+   Disabled 2026-04-23: these constants are now owned by assets/js/analytics.js
+   which handles all email sends (including owner suppression). Leaving here
+   preserves original config values for reference / future revival.
 const EMAILJS_PUBLIC_KEY  = '2duGE838Bx6BcJXTF';
 const EMAILJS_SERVICE_ID  = 'service_6mi6r6r';
 const EMAILJS_TEMPLATE_ID = 'template_275v5hl';
+=== END CBSG-DISABLED === */
+
+/* === CBSG-DISABLED-v5.1 === inline GA config ===
+   Disabled 2026-04-23: GA is now initialized by assets/js/analytics.js.
+   The measurement ID below matches what analytics.js uses. Leaving here
+   for reference only; do not re-enable without removing GA init from
+   analytics.js to avoid double tracking.
+---- GOOGLE ANALYTICS --------------------------------------
+   Property: Campbell Bible Study (CBS)
+   Added 2026-04-21: Tracks all page visits with visitor name
+   as user_id, enabling per-person page-view + dwell time
+   analytics in the GA4 dashboard.
+const GA_MEASUREMENT_ID = 'G-P44J6HEJYG';
+=== END CBSG-DISABLED === */
 
 const ADMIN_PASSWORD = 'Campbell2026';
 
@@ -33,6 +81,10 @@ const COMPLETION_KEYS = {
   'theme2/module2':  'complete-t2m2',
   'theme2/module3':  'complete-t2m3',
   'theme2/module4':  'complete-t2m4',
+  'theme2/module5':  'complete-t2m5',
+  'theme3/module1':  'complete-t3m1',
+  'theme3/module2':  'complete-t3m2',
+  'theme3/module3':  'complete-t3m3',
 };
 
 function isAdminUnlocked() { return sessionStorage.getItem('cbsg-admin') === 'true'; }
@@ -44,7 +96,11 @@ function applyAdminUI() {
   const btnLoad    = document.getElementById('btn-load')    || document.querySelector('.btn-load');
   const btnStamp   = document.getElementById('btn-timestamp');
   const tokenInput = document.getElementById('gh-token');
-  if (btnAdmin)   btnAdmin.textContent     = unlocked ? '🔓 Admin ON' : '🔒 Admin';
+  if (btnAdmin) {
+    btnAdmin.textContent = unlocked ? '🔓 Admin ON' : '🔒 Admin';
+    btnAdmin.style.color = unlocked ? '#4ADE80' : '#FFD700';
+    btnAdmin.style.borderColor = unlocked ? 'rgba(74,222,128,0.5)' : 'rgba(255,215,0,0.4)';
+  }
   if (btnSave)    btnSave.style.display    = unlocked ? 'inline-block' : 'none';
   if (btnLoad)    btnLoad.style.display    = unlocked ? 'inline-block' : 'none';
   if (btnStamp)   btnStamp.style.display   = unlocked ? 'inline-block' : 'none';
@@ -107,38 +163,408 @@ function injectAdminModal() {
 
 function getGuestName() { return localStorage.getItem('cbsg-guest-name') || ''; }
 
+/* ---- NAME VALIDATION ---------------------------------------
+   Blocks obvious junk entries. Cannot verify a name is "real"
+   (e.g., block "Bob" but allow "Danielle") — that would require
+   a massive database. Instead, blocks patterns that clearly
+   aren't names: too short, no letters, all-same-character,
+   common junk strings, pure numbers.
+   ------------------------------------------------------------ */
+const CBSG_JUNK_NAMES = [
+  'test','testing','tester','asdf','asdfasdf','qwerty','qwertyuiop',
+  'anonymous','anon','user','visitor','guest','admin','name',
+  'none','na','nope','xxx','yyy','zzz','abc','abcabc','hello',
+  'fuck','fuckyou','shit','poop','butt','dick','ass','sex',
+  'xyz','aaa','bbb','ccc','ddd','eee','fff','ggg','hhh','iii',
+  'jjj','kkk','lll','mmm','nnn','ooo','ppp','qqq','rrr','sss',
+  'ttt','uuu','vvv','www','xxxx','yyyy','zzzz'
+];
+function validateGuestName(raw) {
+  const n = (raw || '').trim();
+  if (n.length < 3) return { ok:false, reason:'Please enter at least 3 characters.' };
+  if (n.length > 40) return { ok:false, reason:'That name is too long.' };
+  const letters = (n.match(/[A-Za-zÀ-ÿ]/g) || []).length;
+  if (letters < 2) return { ok:false, reason:'Please enter a real name (letters required).' };
+  if (/^(.)\1+$/.test(n)) return { ok:false, reason:'Please enter a real name.' };
+  if (/^\d+$/.test(n)) return { ok:false, reason:'Please enter a real name, not numbers.' };
+  const lc = n.toLowerCase().replace(/[^a-z0-9]/g,'');
+  if (CBSG_JUNK_NAMES.includes(lc)) return { ok:false, reason:'Please enter your real name.' };
+  if (/^[a-z]{1,3}(\d+)?$/i.test(n)) return { ok:false, reason:'Please enter your real name.' };
+  return { ok:true, name:n };
+}
+
 function showWelcomeModal() {
   if (document.getElementById('cbsg-welcome-modal')) return;
   const modal = document.createElement('div');
   modal.id = 'cbsg-welcome-modal';
-  modal.style.cssText = 'display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.65);z-index:9998;align-items:center;justify-content:center;font-family:Arial,sans-serif;';
-  modal.innerHTML = `<div style="background:#fff;border-radius:12px;padding:32px 36px;width:340px;box-shadow:0 12px 40px rgba(0,0,0,0.35);text-align:center;"><div style="font-size:36px;margin-bottom:10px;">✝️</div><h2 style="margin:0 0 8px;font-size:20px;color:#1F3864;">Welcome!</h2><p style="margin:0 0 6px;font-size:13px;color:#555;line-height:1.6;">This is the Campbell Family Biblical Study Guide — a personal resource for growing in the knowledge of Christ.</p><p style="margin:0 0 20px;font-size:13px;color:#555;line-height:1.6;">What's your name? We'd love to know who's studying with us.</p><input id="cbsg-welcome-name" type="text" placeholder="Your name..." onkeydown="if(event.key==='Enter')saveWelcomeName()" style="width:100%;box-sizing:border-box;border:2px solid #1F3864;border-radius:6px;padding:10px 14px;font-size:15px;margin-bottom:16px;text-align:center;font-family:Arial,sans-serif;"><button onclick="saveWelcomeName()" style="width:100%;background:#1F3864;color:#FFD700;border:none;border-radius:6px;padding:11px;font-size:14px;font-weight:bold;cursor:pointer;font-family:Arial,sans-serif;letter-spacing:0.03em;">Let's Study ✝</button><p style="margin:12px 0 0;font-size:11px;color:#aaa;">You can leave this blank — just press the button.</p></div>`;
+  modal.style.cssText = 'display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;font-family:Arial,sans-serif;backdrop-filter:blur(3px);';
+  modal.innerHTML = `<div style="background:#fff;border-radius:12px;padding:32px 36px;width:360px;box-shadow:0 12px 40px rgba(0,0,0,0.45);text-align:center;">
+    <div style="font-size:36px;margin-bottom:10px;">✝️</div>
+    <h2 style="margin:0 0 8px;font-size:20px;color:#1F3864;">Welcome!</h2>
+    <p style="margin:0 0 6px;font-size:13px;color:#555;line-height:1.6;">This is the Campbell Family Biblical Study Guide — a personal resource for growing in the knowledge of Christ.</p>
+    <p style="margin:0 0 20px;font-size:13px;color:#555;line-height:1.6;">Please enter your name to continue.</p>
+    <input id="cbsg-welcome-name" type="text" placeholder="Your name..." autocomplete="off" oninput="cbsgValidateLive()" onkeydown="if(event.key==='Enter')saveWelcomeName()" style="width:100%;box-sizing:border-box;border:2px solid #1F3864;border-radius:6px;padding:10px 14px;font-size:15px;margin-bottom:8px;text-align:center;font-family:Arial,sans-serif;">
+    <div id="cbsg-welcome-err" style="font-size:11px;color:#C62828;min-height:14px;margin-bottom:10px;font-family:Arial,sans-serif;"></div>
+    <button id="cbsg-welcome-btn" onclick="saveWelcomeName()" disabled style="width:100%;background:#888;color:#ddd;border:none;border-radius:6px;padding:11px;font-size:14px;font-weight:bold;cursor:not-allowed;font-family:Arial,sans-serif;letter-spacing:0.03em;transition:all 0.2s;">Let's Study ✝</button>
+    <p style="margin:12px 0 0;font-size:11px;color:#aaa;">Your name is required to continue.</p>
+  </div>`;
   document.body.appendChild(modal);
   setTimeout(() => { const inp = document.getElementById('cbsg-welcome-name'); if (inp) inp.focus(); }, 150);
 }
 
+function cbsgValidateLive() {
+  const inp = document.getElementById('cbsg-welcome-name');
+  const btn = document.getElementById('cbsg-welcome-btn');
+  const err = document.getElementById('cbsg-welcome-err');
+  if (!inp || !btn) return;
+  const r = validateGuestName(inp.value);
+  if (r.ok) {
+    btn.disabled = false;
+    btn.style.background = '#1F3864';
+    btn.style.color = '#FFD700';
+    btn.style.cursor = 'pointer';
+    if (err) err.textContent = '';
+  } else {
+    btn.disabled = true;
+    btn.style.background = '#888';
+    btn.style.color = '#ddd';
+    btn.style.cursor = 'not-allowed';
+    if (err) err.textContent = (inp.value.trim().length > 0) ? r.reason : '';
+  }
+}
+
 function saveWelcomeName() {
-  const inp  = document.getElementById('cbsg-welcome-name');
-  const name = inp ? inp.value.trim() : '';
-  localStorage.setItem('cbsg-guest-name', name || 'Guest');
+  const inp = document.getElementById('cbsg-welcome-name');
+  if (!inp) return;
+  const r = validateGuestName(inp.value);
+  if (!r.ok) { cbsgValidateLive(); return; }
+  localStorage.setItem('cbsg-guest-name', r.name);
   localStorage.setItem('cbsg-guest-welcomed', 'true');
   const modal = document.getElementById('cbsg-welcome-modal');
   if (modal) modal.remove();
-  injectGuestPanel();
+  // Guest panel removed 2026-04-21 — visitors use the embedded Quill boxes on each page instead.
+  // CBSG-DISABLED-v5.1: inline GA/session bootstrap moved to analytics.js
+  // cbsgConfigureGAUser();
+  // cbsgSessionStart();
+  // cbsgSessionRecordPageEntry();
 }
 
 function checkFirstVisit() {
   if (isAdminUnlocked()) return;
   const welcomed = localStorage.getItem('cbsg-guest-welcomed');
-  if (!welcomed) showWelcomeModal(); else injectGuestPanel();
+  if (!welcomed) {
+    showWelcomeModal();
+  } else {
+    // Guest panel removed 2026-04-21 — visitors use embedded Quill boxes.
+    // CBSG-DISABLED-v5.1: page entry tracking moved to analytics.js
+    // cbsgSessionRecordPageEntry();
+  }
 }
 
+// ============================================================
+// CBSG-DISABLED-v5.1 === Google Analytics + Session Tracking
+// ============================================================
+// Disabled 2026-04-23: This entire block (GA init, session heartbeat,
+// per-page dwell time tracking, session summary emails) is superseded by
+// assets/js/analytics.js (v1.1), which handles GA page views and email
+// notifications with owner suppression.
+//
+// TO RE-ENABLE (if you want the richer session tracking back — per-page
+// seconds, session summary emails): remove the "// " prefix from every
+// line below, AND remove the GA init and email send calls from
+// analytics.js — otherwise you'll get duplicate GA events and duplicate
+// emails.
+//
+// Functions disabled below:
+//   cbsgInitGA, cbsgConfigureGAUser
+//   cbsgSessionGet/Set/Clear/Start
+//   cbsgSessionRecordPageEntry/TickCurrentPage/ClosePage
+//   cbsgFmtSecs, cbsgSessionFinalizeAndSend
+//   cbsgStartHeartbeat
+// Constants disabled: CBSG_IDLE_TIMEOUT_MS
+// ============================================================
+// /* ============================================================
+//    GOOGLE ANALYTICS + SESSION TRACKING
+//    Added 2026-04-21. Two layers of tracking:
+//
+//    1. Google Analytics (gtag.js) — loads on every page, silently
+//       tracks pageviews. When a visitor name is set, it's used as
+//       the GA user_id so all pageviews are tied to that person in
+//       the GA dashboard.
+//
+//    2. Session tracking — builds a list of {page, seconds} entries
+//       across the visitor's browsing session. When they close the
+//       tab OR go idle for 15 minutes, ONE email summary is sent
+//       with the full session (start time, pages visited, dwell
+//       time per page, total session duration).
+//
+//    Session data lives in sessionStorage (survives page navigation
+//    within the same tab) under key 'cbsg-session'. Shape:
+//    {
+//      name: "Matt",
+//      sessionId: "abc123",
+//      startTs: 1729500000000,
+//      lastActiveTs: 1729500120000,
+//      pages: [{page:"index", path:"/", enterTs:..., seconds:45}, ...]
+//    }
+//    ============================================================ */
+//
+// const CBSG_IDLE_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
+//
+// function cbsgInitGA() {
+//   if (window.cbsgGALoaded) return;
+//   window.cbsgGALoaded = true;
+//   window.dataLayer = window.dataLayer || [];
+//   window.gtag = function(){ window.dataLayer.push(arguments); };
+//   const s = document.createElement('script');
+//   s.async = true;
+//   s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
+//   document.head.appendChild(s);
+//   gtag('js', new Date());
+//   cbsgConfigureGAUser();
+// }
+//
+// function cbsgConfigureGAUser() {
+//   if (typeof gtag !== 'function') return;
+//   const cfg = { send_page_view: true };
+//   const name = getGuestName();
+//   if (name) cfg.user_id = name;
+//   gtag('config', GA_MEASUREMENT_ID, cfg);
+// }
+//
+// function cbsgSessionGet() {
+//   try {
+//     const raw = sessionStorage.getItem('cbsg-session');
+//     return raw ? JSON.parse(raw) : null;
+//   } catch(e) { return null; }
+// }
+// function cbsgSessionSet(s) {
+//   try { sessionStorage.setItem('cbsg-session', JSON.stringify(s)); } catch(e) {}
+// }
+// function cbsgSessionClear() {
+//   try { sessionStorage.removeItem('cbsg-session'); } catch(e) {}
+// }
+//
+// function cbsgSessionStart() {
+//   const name = getGuestName();
+//   if (!name) return;
+//   const now = Date.now();
+//   const s = {
+//     name: name,
+//     sessionId: 's_' + now.toString(36) + Math.random().toString(36).slice(2,6),
+//     startTs: now,
+//     lastActiveTs: now,
+//     pages: []
+//   };
+//   cbsgSessionSet(s);
+// }
+//
+// /* Records the current page as a new entry in the session.
+//    Called on every page load (once a name is present). Before
+//    adding, it closes out any previous page's timer (finalizing
+//    its seconds). Also starts a new session if none exists or
+//    the last one went idle past the timeout. */
+// function cbsgSessionRecordPageEntry() {
+//   const name = getGuestName();
+//   if (!name) return;
+//   if (typeof gtag === 'function') {
+//     gtag('event', 'page_view_named', {
+//       visitor_name: name,
+//       page_title: document.title,
+//       page_path: window.location.pathname
+//     });
+//   }
+//   let s = cbsgSessionGet();
+//   const now = Date.now();
+//   // If no session or stale (idle past timeout), close previous and start new
+//   if (!s || (now - (s.lastActiveTs || s.startTs)) > CBSG_IDLE_TIMEOUT_MS) {
+//     if (s) cbsgSessionFinalizeAndSend(s, 'idle_timeout_on_new_visit');
+//     cbsgSessionStart();
+//     s = cbsgSessionGet();
+//     if (!s) return;
+//   }
+//   // Close out the previous page's timer (if any)
+//   if (s.pages.length) {
+//     const last = s.pages[s.pages.length - 1];
+//     if (last && !last.closed) {
+//       last.seconds = Math.max(0, Math.round((now - last.enterTs) / 1000));
+//       last.closed = true;
+//     }
+//   }
+//   // Add this page
+//   const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
+//   s.pages.push({
+//     page: pageName,
+//     path: window.location.pathname,
+//     enterTs: now,
+//     seconds: 0,
+//     closed: false
+//   });
+//   s.lastActiveTs = now;
+//   cbsgSessionSet(s);
+// }
+//
+// /* Updates the current (open) page's seconds count. Called
+//    periodically by the heartbeat and on visibility/unload. */
+// function cbsgSessionTickCurrentPage() {
+//   const s = cbsgSessionGet();
+//   if (!s || !s.pages.length) return;
+//   const last = s.pages[s.pages.length - 1];
+//   if (!last || last.closed) return;
+//   const now = Date.now();
+//   last.seconds = Math.max(0, Math.round((now - last.enterTs) / 1000));
+//   s.lastActiveTs = now;
+//   cbsgSessionSet(s);
+// }
+//
+// /* Closes the current page (marks as closed, finalizes its
+//    seconds). Called on pagehide/beforeunload. */
+// function cbsgSessionClosePage() {
+//   const s = cbsgSessionGet();
+//   if (!s || !s.pages.length) return;
+//   const last = s.pages[s.pages.length - 1];
+//   if (!last || last.closed) return;
+//   const now = Date.now();
+//   last.seconds = Math.max(0, Math.round((now - last.enterTs) / 1000));
+//   last.closed = true;
+//   s.lastActiveTs = now;
+//   cbsgSessionSet(s);
+// }
+//
+// /* Formats seconds as "Nm Ss" or "Ss" */
+// function cbsgFmtSecs(sec) {
+//   sec = Math.max(0, Math.round(sec));
+//   if (sec < 60) return sec + 's';
+//   const m = Math.floor(sec / 60);
+//   const s = sec % 60;
+//   return s > 0 ? m + 'm ' + s + 's' : m + 'm';
+// }
+//
+// /* Finalizes the session and emails a summary to Chris.
+//    Uses emailjs.send with the existing template. The message
+//    body is a formatted session report. Also clears the session
+//    from sessionStorage so a new one starts on next visit. */
+// function cbsgSessionFinalizeAndSend(session, reason) {
+//   try {
+//     const s = session || cbsgSessionGet();
+//     if (!s || !s.pages.length) { cbsgSessionClear(); return; }
+//     // Ensure last page is closed
+//     const last = s.pages[s.pages.length - 1];
+//     if (last && !last.closed) {
+//       last.seconds = Math.max(0, Math.round((Date.now() - last.enterTs) / 1000));
+//       last.closed = true;
+//     }
+//     const start = new Date(s.startTs);
+//     const end   = new Date(s.lastActiveTs || Date.now());
+//     const totalSecs = s.pages.reduce((a,p) => a + (p.seconds || 0), 0);
+//     const lines = [];
+//     lines.push('Visitor: ' + s.name);
+//     lines.push('Session start: ' + start.toLocaleString());
+//     lines.push('Session end:   ' + end.toLocaleString());
+//     lines.push('Total time:    ' + cbsgFmtSecs(totalSecs));
+//     lines.push('Pages visited: ' + s.pages.length);
+//     lines.push('End reason:    ' + (reason || 'unload'));
+//     lines.push('');
+//     lines.push('--- PAGES ---');
+//     s.pages.forEach((p,i) => {
+//       lines.push((i+1) + '. ' + p.page + '  (' + cbsgFmtSecs(p.seconds || 0) + ')  [' + p.path + ']');
+//     });
+//     const body = lines.join('\n');
+//     const params = {
+//       name: s.name,
+//       from_email: '(visitor session)',
+//       page_name: 'SESSION SUMMARY — ' + s.pages.length + ' pages, ' + cbsgFmtSecs(totalSecs),
+//       message: body
+//     };
+//     // Use sendBeacon-friendly approach: try emailjs normally, but we can't
+//     // truly guarantee delivery on unload. This is a best-effort send.
+//     if (typeof emailjs !== 'undefined') {
+//       try { emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params).catch(()=>{}); } catch(e) {}
+//     }
+//     // Also fire a GA event capturing the total session
+//     if (typeof gtag === 'function') {
+//       gtag('event', 'session_summary', {
+//         visitor_name: s.name,
+//         total_seconds: totalSecs,
+//         pages_count: s.pages.length,
+//         end_reason: reason || 'unload'
+//       });
+//     }
+//     cbsgSessionClear();
+//   } catch(e) {}
+// }
+//
+// /* Heartbeat: every 30s while page is active, ticks the current
+//    page's timer. Also checks for idle timeout (if the user has
+//    been away for 15+ min, finalize the session). */
+// function cbsgStartHeartbeat() {
+//   if (window.cbsgHeartbeatStarted) return;
+//   window.cbsgHeartbeatStarted = true;
+//   setInterval(() => {
+//     if (document.hidden) return;
+//     const s = cbsgSessionGet();
+//     if (!s) return;
+//     const now = Date.now();
+//     // Idle check: if last activity was over timeout ago, finalize
+//     if ((now - (s.lastActiveTs || s.startTs)) > CBSG_IDLE_TIMEOUT_MS) {
+//       cbsgSessionFinalizeAndSend(s, 'idle_timeout');
+//       return;
+//     }
+//     cbsgSessionTickCurrentPage();
+//   }, 30000);
+//
+//   // pagehide fires on tab close / navigation away — most reliable unload event
+//   window.addEventListener('pagehide', () => {
+//     cbsgSessionClosePage();
+//     const s = cbsgSessionGet();
+//     if (s) cbsgSessionFinalizeAndSend(s, 'pagehide');
+//   });
+//
+//   // visibilitychange to 'hidden' — fires on mobile when user switches apps
+//   document.addEventListener('visibilitychange', () => {
+//     if (document.hidden) {
+//       cbsgSessionTickCurrentPage();
+//     } else {
+//       // Came back — check if session went idle
+//       const s = cbsgSessionGet();
+//       if (s && (Date.now() - (s.lastActiveTs || s.startTs)) > CBSG_IDLE_TIMEOUT_MS) {
+//         cbsgSessionFinalizeAndSend(s, 'idle_timeout_on_return');
+//       }
+//     }
+//   });
+//
+//   // Activity listeners to keep lastActiveTs fresh (detects real engagement)
+//   ['mousemove','keydown','click','scroll','touchstart'].forEach(ev => {
+//     window.addEventListener(ev, () => {
+//       const s = cbsgSessionGet();
+//       if (s) { s.lastActiveTs = Date.now(); cbsgSessionSet(s); }
+//     }, { passive: true });
+//   });
+// }
+//
+// ============================================================
+// END CBSG-DISABLED === Google Analytics + Session Tracking
+// ============================================================
+
 function getGuestPageKey() {
-  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\/?/, '').replace(/\.html$/, '') || 'index';
+  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\/?/, '').replace(/^\//, '').replace(/\.html$/, '') || 'index';
   return 'cbsg-guest-' + path;
 }
 
 function silentEmailGuest() {
+  // CBSG-DISABLED-v5.1: direct EmailJS send delegated to analytics.js via
+  // window.CBSG_notifyNoteSave. Preserves owner suppression from analytics.js v1.1.
+  try {
+    const notesEl = document.getElementById('cbsg-guest-textarea');
+    if (!notesEl) return;
+    const notes = notesEl.value.trim();
+    if (notes.length < 5) return;
+    const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
+    if (typeof window.CBSG_notifyNoteSave === 'function') {
+      window.CBSG_notifyNoteSave('Guest save from ' + pageName);
+    }
+  } catch(e) {}
+  /* === CBSG-DISABLED-v5.1 === original inline send, preserved for reference ===
   try {
     const notesEl = document.getElementById('cbsg-guest-textarea');
     const nameEl  = document.getElementById('cbsg-guest-name');
@@ -151,6 +577,7 @@ function silentEmailGuest() {
     if (typeof emailjs !== 'undefined') { doSend(); }
     else { let a = 0; const r = setInterval(() => { a++; if (typeof emailjs !== 'undefined') { clearInterval(r); doSend(); } else if (a > 10) clearInterval(r); }, 500); }
   } catch(e) {}
+  === END CBSG-DISABLED === */
 }
 
 function saveGuestNotes() {
@@ -189,7 +616,7 @@ function toggleGuestPanel() {
 }
 
 function getCompleteKey() {
-  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\//, '').replace(/\.html$/, '');
+  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\//, '').replace(/^\//, '').replace(/\.html$/, '');
   return COMPLETION_KEYS[path] || null;
 }
 
@@ -229,13 +656,21 @@ function injectCompleteButton() {
 }
 
 function getPageKey() {
-  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\/?/, '').replace(/\.html$/, '');
+  const path = window.location.pathname.replace(/^\/CampbellBibleStudy\/?/, '').replace(/^\//, '').replace(/\.html$/, '');
   return 'timer-' + (path || 'index');
 }
 
 function getPageLabel() { return document.title.replace(' — Campbell Bible Study', '').trim() || 'This page'; }
 
 let sessionStart = null, sessionSeconds = 0, timerInterval = null;
+
+// ─── IDLE PAUSE STATE (added 2026-04-24) ─────────────────────
+// Timer pauses after IDLE_MS of no activity; any mousemove/keydown/
+// click/scroll/touchstart resumes it. Activity listeners stay attached.
+const IDLE_MS = 3 * 60 * 1000; // 3 minutes
+let lastActivityAt = Date.now();
+let timerPaused = false;
+let idleCheckInterval = null;
 
 function getStoredSeconds() { return parseInt(localStorage.getItem('cbsg-' + getPageKey()) || '0', 10); }
 function addStoredSeconds(s) { const prev = getStoredSeconds(); localStorage.setItem('cbsg-' + getPageKey(), String(prev + s)); }
@@ -248,7 +683,11 @@ function formatTime(t) {
 }
 
 function startTimer() {
+  // Defensive: clear any lingering interval before creating a new one (stall fix)
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   sessionStart = Date.now(); sessionSeconds = 0;
+  timerPaused = false;
+  lastActivityAt = Date.now();
   timerInterval = setInterval(() => {
     sessionSeconds = Math.floor((Date.now() - sessionStart) / 1000);
     const total = getStoredSeconds() + sessionSeconds;
@@ -260,14 +699,76 @@ function startTimer() {
 }
 
 function stopTimer() {
-  if (timerInterval) clearInterval(timerInterval);
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   if (sessionSeconds > 2) addStoredSeconds(sessionSeconds);
 }
 
+// ─── IDLE PAUSE / RESUME ─────────────────────────────────────
+function pauseTimerForIdle() {
+  if (timerPaused || !timerInterval) return;
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  timerPaused = true;
+  // Banked seconds stay in sessionSeconds; we resume from there.
+}
+
+function resumeTimerFromIdle() {
+  if (!timerPaused) return;
+  timerPaused = false;
+  // Rebase sessionStart so elapsed = sessionSeconds already banked.
+  sessionStart = Date.now() - (sessionSeconds * 1000);
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  timerInterval = setInterval(() => {
+    sessionSeconds = Math.floor((Date.now() - sessionStart) / 1000);
+    const total = getStoredSeconds() + sessionSeconds;
+    const sEl = document.getElementById('bar-session-time');
+    const tEl = document.getElementById('bar-total-time');
+    if (sEl) sEl.textContent = formatTime(sessionSeconds);
+    if (tEl) tEl.textContent = formatTime(total);
+  }, 1000);
+}
+
+function markActivity() {
+  lastActivityAt = Date.now();
+  if (timerPaused) resumeTimerFromIdle();
+}
+
+// Attach activity listeners once (document-level, passive for perf)
+['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(evt => {
+  document.addEventListener(evt, markActivity, { passive: true });
+});
+
+// Idle checker: every 10s, see if we've crossed the idle threshold
+idleCheckInterval = setInterval(() => {
+  if (document.hidden) return; // visibilitychange handles hidden tabs
+  if (timerPaused) return;
+  if (!timerInterval) return;
+  if (Date.now() - lastActivityAt >= IDLE_MS) {
+    pauseTimerForIdle();
+  }
+}, 10000);
+
 window.addEventListener('beforeunload', stopTimer);
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) { stopTimer(); }
-  else { sessionStart = Date.now() - (sessionSeconds * 1000); if (!timerInterval) startTimer(); }
+  if (document.hidden) {
+    // Tab hidden → stop timer, preserve banked seconds
+    stopTimer();
+  } else {
+    // Tab visible again → restart cleanly (stall fix)
+    // Reset activity timestamp so we don't immediately re-idle on return
+    lastActivityAt = Date.now();
+    timerPaused = false;
+    if (!timerInterval) {
+      sessionStart = Date.now() - (sessionSeconds * 1000);
+      timerInterval = setInterval(() => {
+        sessionSeconds = Math.floor((Date.now() - sessionStart) / 1000);
+        const total = getStoredSeconds() + sessionSeconds;
+        const sEl = document.getElementById('bar-session-time');
+        const tEl = document.getElementById('bar-total-time');
+        if (sEl) sEl.textContent = formatTime(sessionSeconds);
+        if (tEl) tEl.textContent = formatTime(total);
+      }, 1000);
+    }
+  }
 });
 
 function injectBarExtras() {
@@ -386,9 +887,60 @@ function logAndStamp() {
   }
 
   const logEntry = `\n${'─'.repeat(40)}\n📚 ${date} at ${time}\nPage: ${getPageLabel()}\nSession: ${formatTime(sessionSeconds)} | Total: ${formatTime(total)}\n${'─'.repeat(40)}\n`;
+
+  // --- Quill-aware target resolution (fix 2026-04-18) -----------------
+  // Priority:
+  //   1. If focus is inside a Quill editor → stamp THAT editor
+  //   2. Else if any Quill editors exist on this page → stamp the first
+  //   3. Else if active element is a textarea → stamp it
+  //   4. Else fall back to PAGE_NOTE_IDS[0] textarea
+  // --------------------------------------------------------------------
+  let stamped = false;
   const active = document.activeElement;
-  if (active && active.tagName === 'TEXTAREA' && active.id) { const stamp = buildStamp(active.id); active.value += stamp; active.scrollTop = active.scrollHeight; localStorage.setItem('cbsg-' + active.id, active.value); }
-  else { const ids = window.PAGE_NOTE_IDS || []; if (ids.length > 0) { const el = document.getElementById(ids[0]); if (el) { const stamp = buildStamp(ids[0]); el.value += stamp; el.scrollTop = el.scrollHeight; localStorage.setItem('cbsg-' + ids[0], el.value); } } }
+
+  // (1) focus inside a Quill editor?
+  if (!stamped && active && quillInstances) {
+    for (const [editorId, quill] of Object.entries(quillInstances)) {
+      const editorEl = document.getElementById(editorId);
+      if (editorEl && editorEl.contains(active)) {
+        _insertQuillStamp(quill, editorId);
+        stamped = true;
+        break;
+      }
+    }
+  }
+
+  // (2) any Quill editors present on the page?
+  if (!stamped && quillInstances && Object.keys(quillInstances).length > 0) {
+    const [editorId, quill] = Object.entries(quillInstances)[0];
+    _insertQuillStamp(quill, editorId);
+    stamped = true;
+  }
+
+  // (3) active textarea?
+  if (!stamped && active && active.tagName === 'TEXTAREA' && active.id) {
+    const stamp = buildStamp(active.id);
+    active.value += stamp;
+    active.scrollTop = active.scrollHeight;
+    localStorage.setItem('cbsg-' + active.id, active.value);
+    stamped = true;
+  }
+
+  // (4) fallback to PAGE_NOTE_IDS[0]
+  if (!stamped) {
+    const ids = window.PAGE_NOTE_IDS || [];
+    if (ids.length > 0) {
+      const el = document.getElementById(ids[0]);
+      if (el && el.tagName === 'TEXTAREA') {
+        const stamp = buildStamp(ids[0]);
+        el.value += stamp;
+        el.scrollTop = el.scrollHeight;
+        localStorage.setItem('cbsg-' + ids[0], el.value);
+      }
+    }
+  }
+
+  // Journal log entry (unchanged — only applies where n-journal-new textarea exists)
   const jEl = document.getElementById('n-journal-new');
   if (jEl) { jEl.value += logEntry; localStorage.setItem('cbsg-n-journal-new', jEl.value); }
   setStatus('📅 Stamped & logged!', 'ok');
@@ -418,7 +970,7 @@ async function saveToGitHub() {
   if (!token) { setStatus('⚠️ Paste your GitHub token first.', 'warn'); return; }
   localStorage.setItem('cbsg-gh-token', token);
   saveAllNotes();
-  const rawPath  = window.location.pathname.replace(/^\/CampbellBibleStudy\//, '');
+  const rawPath  = window.location.pathname.replace(/^\/CampbellBibleStudy\//, '').replace(/^\//, '');
   const filePath = rawPath || 'index.html';
   setStatus('📡 Saving...', 'info');
   const sensitiveIds = ['gh-token', 'gemini-key'];
@@ -442,7 +994,16 @@ async function saveToGitHub() {
   if (aiOut) aiOut.innerHTML = aiOutBackup;
   if (aiBox && aiBoxHadVisible) aiBox.classList.add('visible');
   stripped.reverse().forEach(({ parent, el, next }) => { if (parent) parent.insertBefore(el, next); });
-  try { await putFile(token, filePath, html); await saveNotesJson(token); setStatus('✅ Saved! Live in ~30 seconds.', 'ok'); updateVersionTimestamp(); }
+  try {
+    await putFile(token, filePath, html);
+    await saveNotesJson(token);
+    setStatus('✅ Saved! Live in ~30 seconds.', 'ok');
+    updateVersionTimestamp();
+    // v3.1 EMAIL HOOK: notify via analytics.js (owner-suppressed, de-duped)
+    if (typeof window.CBSG_notifyNoteSave === 'function') {
+      window.CBSG_notifyNoteSave('GitHub save from ' + filePath);
+    }
+  }
   catch(e) { setStatus('❌ ' + e.message, 'error'); }
 }
 
@@ -551,8 +1112,27 @@ function updateVersionTimestamp() {
 }
 
 function saveAllNotes() {
-  (window.PAGE_NOTE_IDS || []).forEach(id => { const el = document.getElementById(id); if (el) localStorage.setItem('cbsg-' + id, el.value); });
+  let saved = 0;
+  (window.PAGE_NOTE_IDS || []).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      localStorage.setItem('cbsg-' + id, el.value);
+      saved++;
+    }
+  });
   saveAllQuillNotes();
+
+  // v3.1 EMAIL HOOK: fire silent email notification (throttled 60s).
+  // Only fires when there's actually something to save. analytics.js handles
+  // owner suppression.
+  if (saved > 0 && typeof window.CBSG_notifyNoteSave === 'function') {
+    const now = Date.now();
+    const lastFire = parseInt(sessionStorage.getItem('cbsg-last-save-email') || '0', 10);
+    if (now - lastFire > 60000) {
+      sessionStorage.setItem('cbsg-last-save-email', String(now));
+      window.CBSG_notifyNoteSave('Local save from ' + window.location.pathname);
+    }
+  }
 }
 
 function loadNotes() {
@@ -623,6 +1203,51 @@ function _saveQuillContent(editorId, quill) {
   localStorage.setItem('cbsg-' + editorId, delta);
 }
 
+/* ---- VISITOR NOTES EMAIL ON SAVE ---------------------------
+   When a visitor (non-admin) types in a Quill editor, after a
+   30-second pause in typing, silently email the notes to Chris.
+   Only one email per editor per session to avoid spam.
+   ------------------------------------------------------------ */
+const _quillEmailTimers = {};    // editorId → debounce timeout handle
+const _quillEmailedThisSession = {}; // editorId → true once emailed
+
+function _maybeEmailVisitorNotes(editorId, quill) {
+  if (isAdminUnlocked()) return;               // Admin (you) — no self-email
+  const name = getGuestName();
+  if (!name) return;                            // No name yet — skip
+  // Get plain text content
+  let text = '';
+  try { text = quill.getText().trim(); } catch(e) { return; }
+  if (text.length < 10) return;                 // Too short to bother
+  // Clear any existing timer for this editor
+  if (_quillEmailTimers[editorId]) {
+    clearTimeout(_quillEmailTimers[editorId]);
+  }
+  // Debounce — wait 30 seconds of inactivity, then email
+  _quillEmailTimers[editorId] = setTimeout(() => {
+    try {
+      const pageName = document.title.replace(' — Campbell Bible Study', '').trim() || window.location.pathname;
+      const params = {
+        name: name,
+        from_email: '(visitor notes)',
+        page_name: pageName + ' — ' + editorId,
+        message: text
+      };
+      if (typeof emailjs !== 'undefined') {
+        /* CBSG-DISABLED-v5.1: inline send delegated to analytics.js.
+           Call window.CBSG_notifyNoteSave if you want the visitor note save
+           to trigger an owner-suppressed email via analytics.js v1.1.
+           Preserved below for reference. */
+        if (typeof window.CBSG_notifyNoteSave === 'function') {
+          window.CBSG_notifyNoteSave('Visitor Quill save');
+        }
+        /* original: try { emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params).catch(()=>{}); } catch(e) {} */
+      }
+      _quillEmailedThisSession[editorId] = true;
+    } catch(e) {}
+  }, 30000); // 30 seconds
+}
+
 function _loadQuillContent(editorId, quill) {
   const saved = localStorage.getItem('cbsg-' + editorId);
   if (!saved) return;
@@ -678,8 +1303,11 @@ function initQuillEditors() {
     // Load saved content
     _loadQuillContent(editorId, quill);
 
-    // Auto-save on change
-    quill.on('text-change', () => _saveQuillContent(editorId, quill));
+    // Auto-save on change (and email visitor notes after 30s of inactivity)
+    quill.on('text-change', () => {
+      _saveQuillContent(editorId, quill);
+      _maybeEmailVisitorNotes(editorId, quill);
+    });
 
     quillInstances[editorId] = quill;
   });
@@ -708,11 +1336,15 @@ document.addEventListener('DOMContentLoaded', () => {
   startTimer();
   updateVersionTimestamp();
   document.querySelectorAll('.bar-originated').forEach(el => { el.textContent = 'Originated: March 27, 2026'; });
+  // CBSG-DISABLED-v5.1: GA init and session heartbeat moved to analytics.js
+  // cbsgInitGA();
+  // cbsgStartHeartbeat();
   setTimeout(() => { if (!isAdminUnlocked()) checkFirstVisit(); }, 400);
-  if (typeof emailjs === 'undefined') {
-    const s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-    s.onload = () => { try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) {} };
-    document.head.appendChild(s);
-  } else { try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) {} }
+  // CBSG-DISABLED-v5.1: EmailJS lazy-load + init moved to analytics.js
+  // if (typeof emailjs === 'undefined') {
+  //   const s = document.createElement('script');
+  //   s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+  //   s.onload = () => { try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) {} };
+  //   document.head.appendChild(s);
+  // } else { try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) {} }
 });

@@ -1,6 +1,16 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.15 (2026-05-12)
+   Sidebar Navigation Builder — v5.16 (2026-05-16)
+
+   v5.16: Renumbered Chapter 18 (The Cave Years) to Chapter 05c
+   to place it in chronological narrative order. Updated label,
+   href (18-cave-years.html -> 05c-cave-years.html), and
+   completeKey (complete-david-18 -> complete-david-05c) in both
+   NAV_STRUCTURE and READING_CHAIN. Position in both was already
+   correct (after 05b, before 06) — this is a relabel only.
+   Companion changes: file renamed in characters/david/ with
+   internal IDs updated (n-david-18 -> n-david-05c); main.js
+   COMPLETION_KEYS entry complete-david-18 -> complete-david-05c.
 
    v5.15: Added Chapters 24 (David & Friendship), 25 (David &
    Israel's Enemies), and 26 (The Strange Death Stories) to
@@ -234,7 +244,7 @@ const NAV_STRUCTURE = [
       { label: '↳↳ Ch 04 — Jonathan', href: 'characters/david/04-jonathan.html', sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-04' },
       { label: '↳↳ Ch 05 — The Fugitive', href: 'characters/david/05-fugitive.html', sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-05' },
       { label: '↳↳ Ch 05b — Abigail', href: 'characters/david/05b-abigail.html', sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-05b' },
-      { label: '↳↳ Ch 18 — The Cave Years', href: 'characters/david/18-cave-years.html', sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-18' },
+      { label: '↳↳ Ch 05c — The Cave Years', href: 'characters/david/05c-cave-years.html', sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-05c' },
       { label: '↳↳ Ch 06 — Ziklag', href: 'characters/david/06-ziklag.html', sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-06' },
       { label: '↳↳ Ch 07 — King of Judah', href: 'characters/david/07-king-of-judah.html', sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-07' },
       { label: '↳↳ Ch 08 — King of Israel', href: 'characters/david/08-king-of-israel.html', sub: true, underSubKey: 'david', completable: true, completeKey: 'complete-david-08' },
@@ -560,7 +570,7 @@ const READING_CHAIN = [
   ['characters/david/04-jonathan.html', 'Ch 04 — Jonathan', 'David'],
   ['characters/david/05-fugitive.html', 'Ch 05 — The Fugitive', 'David'],
   ['characters/david/05b-abigail.html', 'Ch 05b — Abigail', 'David'],
-  ['characters/david/18-cave-years.html', 'Ch 18 — The Cave Years', 'David'],
+  ['characters/david/05c-cave-years.html', 'Ch 05c — The Cave Years', 'David'],
   ['characters/david/06-ziklag.html', 'Ch 06 — Ziklag', 'David'],
   ['characters/david/07-king-of-judah.html', 'Ch 07 — King of Judah', 'David'],
   ['characters/david/08-king-of-israel.html', 'Ch 08 — King of Israel', 'David'],

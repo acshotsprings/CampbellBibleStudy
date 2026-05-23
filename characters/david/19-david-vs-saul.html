@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <script src="../../assets/js/analytics.js"></script>
   <link rel="stylesheet" href="david.css" />
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 </head>
 <body>
 
@@ -266,7 +267,7 @@
 
       <h2>The Wilderness Psalms of This Season</h2>
 
-      <p>Three Psalms carry superscriptions that anchor them to the Saul-era conflict specifically. They are not the same Psalms covered in Chapter 18 (which were about the internal life of the cave years); these are explicitly about the relationship with Saul as the human threat.</p>
+      <p>Three Psalms carry superscriptions that anchor them to the Saul-era conflict specifically. They are not the same Psalms covered in Chapter 05c (which were about the internal life of the cave years); these are explicitly about the relationship with Saul as the human threat.</p>
 
       <ul>
         <li><strong><a href="https://www.bible.com/bible/100/PSA.7.NASB1995" target="_blank" rel="noopener">Psalm 7</a></strong> — "concerning Cush, a Benjamite" — a Saul partisan unknown elsewhere. David appeals to God as the righteous judge: "If I have rewarded evil to my friend, or have plundered him who without cause was my adversary ... let the enemy pursue my soul and overtake it."</li>
@@ -292,7 +293,7 @@
 
       <ul>
         <li><strong>Chapter 5 — The Fugitive Years:</strong> the external events of this whole period</li>
-        <li><strong>Chapter 18 — The Cave Years:</strong> David's internal life during the same season, mapped through the wilderness Psalms</li>
+        <li><strong>Chapter 05c — The Cave Years:</strong> David's internal life during the same season, mapped through the wilderness Psalms</li>
         <li><strong>Chapter 4 — Jonathan:</strong> the third figure in this triangle, the love that made the persecution survivable</li>
         <li><strong>Chapter 17 — Theology of David:</strong> the doctrinal frame "the LORD's anointed" feeds into the larger Davidic-Messianic structure</li>
         <li><strong><a href="https://www.bible.com/bible/100/1PE.2.13-17.NASB1995" target="_blank" rel="noopener">1 Peter 2:13–23</a>:</strong> the apostolic application of this whole doctrine to suffering Christians under unjust authority</li>
@@ -304,12 +305,23 @@
       </div>
 
     </div>
+      <!-- ============================================================ -->
+      <!-- NOTES BOX - David Library Quill rollout 2026-05-16            -->
+      <!-- Quill editor: main.js initQuillEditors() mounts on this div  -->
+      <!-- ============================================================ -->
+      <div class="notes-box">
+        <div class="label">✏️ My notes &amp; convictions on Chapter 19 — David vs. Saul:</div>
+        <div class="quill-editor" id="n-david-19" data-placeholder="Write your convictions here. Date your entry."></div>
+      </div>
+
+
   </article>
     </div>
   </div>
 
-  <script>window.PAGE_NOTE_IDS = [];</script>
+  <script>window.PAGE_NOTE_IDS = ['n-david-19'];</script>
   <script src="../../assets/js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
   <script src="../../assets/js/main.js"></script>
   <script>buildSidebar('../..');</script>
 
