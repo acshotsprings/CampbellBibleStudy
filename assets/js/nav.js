@@ -1,6 +1,17 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.16 (2026-05-16)
+   Sidebar Navigation Builder — v5.17 (2026-05-24)
+
+   v5.17: Added 'The Life of Joseph' character library as a
+   sibling to 'The Life of David' under Characters in Scripture.
+   Landing-only build today: parent entry in NAV_STRUCTURE with
+   hasSubCollapse and subKey 'joseph', pointing to
+   characters/joseph/index.html (non-completable per the
+   reference-page rule — landings/overviews/indexes are not
+   completable). No chapter pages yet; sub-items will be added
+   incrementally as chapters are built. READING_CHAIN gains the
+   joseph index entry only. main.js COMPLETION_KEYS untouched
+   for this revision (no completable Joseph pages exist yet).
 
    v5.16: Renumbered Chapter 18 (The Cave Years) to Chapter 05c
    to place it in chronological narrative order. Updated label,
@@ -276,6 +287,7 @@ const NAV_STRUCTURE = [
       { label: '↳↳ Appendix B — Numbers', href: 'characters/david/appendix-b-numbers.html', sub: true, underSubKey: 'david' },
       { label: '↳↳ Appendix C — Lost Books', href: 'characters/david/appendix-c-lost-books.html', sub: true, underSubKey: 'david' },
       { label: '↳↳ Appendix D — Family', href: 'characters/david/appendix-d-family.html', sub: true, underSubKey: 'david' },
+      { label: '↳ The Life of Joseph',                 href: 'characters/joseph/index.html', sub: true, hasSubCollapse: true, subKey: 'joseph' },
     ]
   },
   {
@@ -604,6 +616,7 @@ const READING_CHAIN = [
   ['characters/david/appendix-b-numbers.html', 'Appendix B — Numbers', 'David'],
   ['characters/david/appendix-c-lost-books.html', 'Appendix C — Lost Books', 'David'],
   ['characters/david/appendix-d-family.html', 'Appendix D — Family', 'David'],
+  ['characters/joseph/index.html',                   'The Life of Joseph',           'Joseph'],
 ];
 
 /* ============================================================
