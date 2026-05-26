@@ -338,6 +338,7 @@ const NAV_STRUCTURE = [
       { label: '💾 Save History',           href: 'history.html',       itemColor: 'mystudy-history'     },
       { label: '🔬 Deep Dives',             href: 'DeepDives.html',     itemColor: 'mystudy-deepdives', hasSubCollapse: true, subKey: 'deepdives' },
       { label: '↳ 📅 Prophetic Calendars',  href: 'DeepDive-Calendars.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-calendars' },
+      { label: '↳ 🌍 Four Power Blocs',     href: 'DeepDive-PowerBlocs.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-powerblocs' },
       { label: '↳ 📖 H7620 — "Weeks" in Daniel 9', href: 'DeepDive-Shabua.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-shabua' },
       { label: '↳ 🌿 Willow in Scripture',  href: 'DeepDive-Willow.html',    sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-willow' },
       { label: '↳ 🔢 Gematria (Hebrew/Greek)', href: 'DeepDive-Gematria.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-gematria', completable: true, completeKey: 'complete-dd-gematria' },

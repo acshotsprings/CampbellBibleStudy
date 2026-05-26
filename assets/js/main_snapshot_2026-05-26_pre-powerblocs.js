@@ -172,14 +172,6 @@ const COMPLETION_KEYS = {
   'characters/david/24-friendship':        'complete-david-24',
   'characters/david/25-enemies':           'complete-david-25',
   'characters/david/26-strange-deaths':    'complete-david-26',
-
-  // Deep Dives (study/content pages, completable per nav.js).
-  // 2026-05-26: Added 'DeepDive-PowerBlocs'. The 6 existing Deep Dives
-  // (Calendars, Shabua, Willow, Gematria, Mormonism, JosephSmith) are
-  // marked completable: true in nav.js but missing entries here — silent
-  // bug, Mark-as-Complete button does nothing. Same pattern as the David
-  // alphabetic chapter fix (5/26). Deferred for a future cleanup pass.
-  'DeepDive-PowerBlocs':                   'complete-dd-powerblocs',
 };
 
 /* ---- v5.1.1 (2026-05-10): sidebar-root depth helper ----
