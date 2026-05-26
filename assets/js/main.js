@@ -187,6 +187,37 @@ const COMPLETION_KEYS = {
   'DeepDive-Mormonism':                    'complete-dd-mormonism',
   'DeepDive-JosephSmith':                  'complete-dd-josephsmith',
   'DeepDive-PowerBlocs':                   'complete-dd-powerblocs',
+
+  // Joseph Library chapters (15 chronological + 7 thematic + 4 appendices).
+  // Per Chris's decision 2026-05-26, ALL 26 are completable including appendices
+  // (deviates from David convention where App A-D are non-completable reference pages).
+  // Pages built as scaffolds with 'Coming Soon' content + working nav/completion infrastructure.
+  'characters/joseph/01-origins':          'complete-joseph-01',
+  'characters/joseph/02-the-dreams':       'complete-joseph-02',
+  'characters/joseph/03-sold-by-his-brothers': 'complete-joseph-03',
+  'characters/joseph/03b-judah-and-tamar': 'complete-joseph-03b',
+  'characters/joseph/04-potiphars-house':  'complete-joseph-04',
+  'characters/joseph/05-potiphars-wife-and-prison': 'complete-joseph-05',
+  'characters/joseph/06-the-prisoners-dreams': 'complete-joseph-06',
+  'characters/joseph/07-pharaohs-dreams-and-the-rise': 'complete-joseph-07',
+  'characters/joseph/08-the-seven-years-of-plenty': 'complete-joseph-08',
+  'characters/joseph/09-the-brothers-come': 'complete-joseph-09',
+  'characters/joseph/09b-benjamin-and-the-silver-cup': 'complete-joseph-09b',
+  'characters/joseph/10-i-am-joseph':      'complete-joseph-10',
+  'characters/joseph/11-jacob-comes-to-egypt': 'complete-joseph-11',
+  'characters/joseph/12-the-blessing-and-burial-of-jacob': 'complete-joseph-12',
+  'characters/joseph/13-final-reckoning-and-josephs-death': 'complete-joseph-13',
+  'characters/joseph/14-joseph-as-type-of-christ': 'complete-joseph-14',
+  'characters/joseph/15-what-do-you-see':  'complete-joseph-15',
+  'characters/joseph/16-gods-hidden-hand': 'complete-joseph-16',
+  'characters/joseph/17-joseph-and-covenant-preservation': 'complete-joseph-17',
+  'characters/joseph/18-the-forgiveness-question': 'complete-joseph-18',
+  'characters/joseph/19-joseph-in-the-new-testament': 'complete-joseph-19',
+  'characters/joseph/20-two-josephs':      'complete-joseph-20',
+  'characters/joseph/appendix-a-timeline': 'complete-joseph-appA',
+  'characters/joseph/appendix-b-family-tree': 'complete-joseph-appB',
+  'characters/joseph/appendix-c-egyptian-context': 'complete-joseph-appC',
+  'characters/joseph/appendix-d-josephs-bones': 'complete-joseph-appD',
 };
 
 /* ---- v5.1.1 (2026-05-10): sidebar-root depth helper ----
