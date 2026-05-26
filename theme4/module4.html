@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 4: The New Covenant Prophesied — Theme 4 — Campbell Bible Study</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/analytics.js"></script>
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: May 26, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version">Version: May 26, 2026</span>
+  </div>
+</div>
+
+<!-- SIDEBAR OVERLAY -->
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<div id="sidebar"></div>
+
+<!-- MAIN -->
+<div id="app">
+<div id="main">
+
+  <span class="page-tag" style="background:#7E57C2;">Module 4 — Theme 4: Covenant</span>
+  <h1 class="page-title">The New Covenant Prophesied: A Law Written on the Heart</h1>
+  <p class="page-subtitle">Jeremiah 31:31–34 — a covenant promised in the dark, six hundred years before its blood was spilled</p>
+
+  <!-- MODULE OVERVIEW -->
+  <div class="info-box">
+    <div class="title">📖 Module Overview</div>
+    <div class="line">By the time we reach this module, three covenants are already on the table. The Abrahamic gave the promise. The Mosaic gave the form. The Davidic located the promise on a throne. And yet — in spite of all three covenants, in spite of a redeemed nation walking out of Egypt, in spite of a law given on a mountain, in spite of a king after God's own heart — the same problem keeps showing up. The people cannot keep their end of it. The kings break the law. The priests defile the temple. The prophets call them back, and they slide away again. The cycle does not stop.</div>
+    <div class="line" style="margin-top:8px;">Jeremiah is the last prophet to watch the cycle complete. He is in Jerusalem in 587 BC, watching Nebuchadnezzar's army press against the walls. He has been telling his people for forty years that the exile is coming. He has been ignored, beaten, thrown into a cistern, called a traitor. And now, in the middle of the most painful chapter in Israel's history, the LORD gives Jeremiah a glimpse of something genuinely new. Not new <em>laws</em> — the law was never the problem. Something deeper. God will solve the underlying issue. He will reach inside the people themselves and rewrite the place from which their obedience flows.</div>
+    <div class="line" style="margin-top:8px;">The New Covenant Jeremiah promises is — for now — only a promise. It will not be ratified for another six centuries, and its ratification will require a death. Module 5 walks through that ratification. This module sits with the promise itself: what God said He would do, why He said the previous arrangement had failed, who exactly the covenant is with, and how the rest of Scripture (Ezekiel, Hebrews, the Upper Room, Paul) builds on what Jeremiah heard.</div>
+  </div>
+
+  <!-- READ FIRST BLOCK -->
+  <div class="info-box" style="border-left:4px solid #2E75B6;">
+    <div class="title">📖 Read First — Anchor Passages (NASB 1995)</div>
+    <div class="line">Read these passages before working through the module. Jeremiah 31:31–34 is the anchor. Ezekiel 36 is the parallel prophecy with the heart-and-spirit emphasis. Hebrews 8 is the New Testament quoting Jeremiah and applying the promise.</div>
+    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/JER.31.NASB1995" target="_blank" rel="noopener">Jeremiah 31</a> — the whole chapter; the New Covenant in context of restoration promises</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/JER.31.31-34.NASB1995" target="_blank" rel="noopener">Jeremiah 31:31–34</a> — the four promises of the New Covenant</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/EZK.36.22-32.NASB1995" target="_blank" rel="noopener">Ezekiel 36:22–32</a> — the parallel: new heart, new spirit, the name of God vindicated</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/DEU.30.6.NASB1995" target="_blank" rel="noopener">Deuteronomy 30:6</a> — &ldquo;The LORD your God will circumcise your heart&rdquo; — the seed of this idea, in the Torah itself</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/LUK.22.20.NASB1995" target="_blank" rel="noopener">Luke 22:20</a> — &ldquo;This cup is the new covenant in My blood&rdquo; — the ratification, in Christ's own words</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/HEB.8.7-13.NASB1995" target="_blank" rel="noopener">Hebrews 8:7–13</a> — the New Testament quoting Jeremiah back, applied to believers in Christ</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/2CO.3.6.NASB1995" target="_blank" rel="noopener">2 Corinthians 3:6</a> — Paul calling himself a &ldquo;minister of a new covenant&rdquo;</div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4.1 — THE TEXT IN CONTEXT -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">4.1 — The Text in Context: A Prophet Watching His World Burn</h2>
+
+  <p class="body">Jeremiah 31 does not start in Jeremiah 31. To understand why this oracle is so radically hopeful, you have to understand how radically dark the moment is. Jeremiah has been prophesying for roughly forty years by the time these words are given. He started under King Josiah — a good king, a reformer, the last good king Judah will ever have. He has watched Josiah die in battle at Megiddo, and four bad kings cycle through the throne after him. He has watched the Babylonians arrive at the walls of Jerusalem, withdraw, and arrive again. He has begged his people to repent. He has begged them to surrender to Babylon and submit to the discipline of God rather than die fighting. He has been beaten, thrown into stocks, accused of treason, lowered into a muddy cistern and left to die, rescued, and put back under arrest. The book that bears his name is the longest sustained lament in the Old Testament.</p>
+
+  <p class="body">And it is in <em>this</em> setting — the city about to fall, the temple about to be burned, the people about to be marched to Babylon in chains — that the LORD gives Jeremiah chapters 30 to 33. Scholars sometimes call these the &ldquo;Book of Consolation&rdquo; or the &ldquo;Book of Comfort&rdquo; — four chapters of pure hope embedded in the most painful section of the book. The placement is the point. God is not giving Jeremiah good news <em>instead of</em> the bad news. He is giving Jeremiah good news <em>in the middle of</em> the bad news, while the bad news is still landing.</p>
+
+  <p class="body">Read 31:27–30 first. It is the immediate setup. Jeremiah says a day is coming when the proverb &ldquo;The fathers have eaten sour grapes, and the children's teeth are set on edge&rdquo; will no longer be heard. Everyone will die for his own iniquity. The cycle of inherited guilt — the pattern that has been crushing this people for centuries — is going to be broken. And then immediately after that promise, verse 31:</p>
+
+  <div class="info-box" style="border-left:4px solid #2E75B6;">
+    <div class="title">📖 Jeremiah 31:31–34 (NASB 1995)</div>
+    <div class="line" style="font-style:italic;color:#666;">[Paste Jeremiah 31:31–34 from e-Sword here]</div>
+  </div>
+
+  <p class="body">Four verses. They will be quoted in full, twice, in the book of Hebrews. They are the longest single Old Testament quotation in the entire New Testament. The early church recognized something in this passage that they could not find anywhere else in the prophets — a promise of something so radically new that the old arrangement is explicitly described as <em>obsolete</em> by comparison (Hebrews 8:13). For a Jewish-Christian audience being asked to leave the Mosaic system behind, Jeremiah 31 was the warrant. The prophet himself had said the old covenant was provisional.</p>
+
+  <div class="info-box">
+    <div class="title">📍 Where this module is going</div>
+    <div class="line">Section 4.2 sits with the &ldquo;not like&rdquo; clause — what was wrong with the previous arrangement. Section 4.3 unpacks the four specific promises God makes in verses 33–34. Section 4.4 walks the Hebrew vocabulary that carries the oracle. Section 4.5 reads the parallel prophecies in Ezekiel and Deuteronomy. Section 4.6 follows the promise into the New Testament and looks at how different Christian traditions understand its fulfillment. Section 4.7 is space for your own convictions.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4.2 — NOT LIKE THE COVENANT I MADE WITH THEIR FATHERS -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">4.2 — &ldquo;Not Like the Covenant I Made with Their Fathers&rdquo;</h2>
+
+  <p class="body">The most important phrase in the oracle is in verse 32. The covenant God is about to describe is <em>&ldquo;not like the covenant which I made with their fathers in the day I took them by the hand to bring them out of the land of Egypt, My covenant which they broke, although I was a husband to them.&rdquo;</em> Read that sentence slowly. God names the Mosaic covenant directly — &ldquo;the day I took them by the hand to bring them out of Egypt&rdquo; — and says the new one is going to be different in some fundamental way. He also names what went wrong with the old one: they <em>broke it</em>.</p>
+
+  <p class="body">Notice what He does <em>not</em> say. He does not say the law was bad. He does not say Sinai was a mistake. He does not say He is going to lower the standard. Paul will defend the goodness of the law explicitly in Romans 7 — &ldquo;the Law is holy, and the commandment is holy and righteous and good&rdquo; (7:12). The problem was never the law. The problem was that the law sat outside the people, written on stone, while the people themselves were &ldquo;a stiff-necked people&rdquo; (Exodus 33:5) whose hearts pulled them away from it faster than the law could correct them. Sinai was a true covenant from God's side. It was broken from theirs.</p>
+
+  <p class="body">There is a tender phrase in verse 32 that is easy to miss. <em>&ldquo;My covenant which they broke, although I was a husband to them.&rdquo;</em> The word for &ldquo;husband&rdquo; is <em>ba'al</em> — owner, master, husband. God is describing the Mosaic covenant in marriage language. He took Israel to be His wife at Sinai. She did not stay faithful. Hosea will spend a whole book working this metaphor out. Jeremiah here is using it almost in passing. The implication is sharp: the broken covenant was not a contract that expired. It was a marriage that failed because one party would not stay in it.</p>
+
+  <p class="body">So what is the New Covenant going to do differently? Verse 33: <em>&ldquo;I will put My law within them and on their heart I will write it.&rdquo;</em> Same law. Different location. The Mosaic covenant put the law on stone tablets outside the people. The New Covenant puts the law inside them, written on the organ from which their will and their desire and their decisions actually flow. The standard does not change. The standard moves inside the person.</p>
+
+  <p class="body">This is one of the most important theological observations in the Old Testament. The prophets have been diagnosing the heart problem for centuries. Deuteronomy 10:16 commanded Israel to &ldquo;circumcise the foreskin of your heart.&rdquo; Deuteronomy 30:6 promised that someday <em>God Himself</em> would do it for them. Psalm 51 had David asking God to <em>create</em> a clean heart in him because David knew his own heart could not produce one. Ezekiel 11 and 36 would promise that God would <em>take out</em> the heart of stone and give a heart of flesh. The diagnosis has been consistent for hundreds of years: the heart is the problem. Jeremiah here is the prophet who articulates the cure.</p>
+
+  <div class="reflection-box">
+    <div class="title">Sit with this</div>
+    <div class="reflection-item">The law was not the problem. The heart was the problem. Where in your own life have you tried to fix a heart issue by tightening a rule, and discovered that the rule did not reach far enough down?</div>
+    <div class="reflection-item">God describes the broken Mosaic covenant using marriage language — a relationship Israel walked out of even though He was a faithful husband. What does that tell you about how God experiences covenant unfaithfulness?</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4.3 — THE FOUR PROMISES -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">4.3 — The Four Promises of Jeremiah 31:33–34</h2>
+
+  <p class="body">Strip verses 33 and 34 down and four distinct promises remain. They are interlocked, but each one carries its own theological weight, and the rest of the New Testament picks them up one at a time.</p>
+
+  <h3 class="subsection-title">1. &ldquo;I will put My law within them and on their heart I will write it&rdquo;</h3>
+  <p class="body">The first promise is the relocation of the law. Stone to flesh. External to internal. Imposed from outside to flowing from inside. The Hebrew verb translated &ldquo;put&rdquo; is the same root used for placing something carefully — not <em>imposing</em>, not <em>commanding</em>, but <em>setting in place</em> as a gift. The grammar suggests gentleness. God is not threatening to install the law inside His people. He is offering to.</p>
+
+  <p class="body">Paul picks this up directly in 2 Corinthians 3:3 when he says the Corinthians are <em>&ldquo;a letter of Christ... written not with ink but with the Spirit of the living God, not on tablets of stone but on tablets of human hearts.&rdquo;</em> The Spirit is the agent who does the writing. The believer is the surface He writes on. The content is the law of God. This is what makes Christian obedience different in kind from law-keeping under the Mosaic system. The Spirit-written law produces desire to obey, not just duty.</p>
+
+  <h3 class="subsection-title">2. &ldquo;I will be their God, and they shall be My people&rdquo;</h3>
+  <p class="body">This is the oldest covenant formula in the Bible. God said it to Abraham (Genesis 17:7), to Israel at Sinai (Exodus 6:7, Leviticus 26:12), and He will say it again to the redeemed in the new heavens and new earth (Revelation 21:3). The formula does not change. What changes here is what makes it <em>actually true</em>. Under the Mosaic system, the formula was offered, but the people kept walking away from being God's people. Under the New Covenant, the relationship will hold because the people themselves have been changed at the level of the heart, so that being God's people becomes who they are, not just what they were called.</p>
+
+  <h3 class="subsection-title">3. &ldquo;They will all know Me, from the least of them to the greatest of them&rdquo;</h3>
+  <p class="body">This is the promise that most thoroughly transforms how the people of God function. Under the Mosaic system, the knowledge of God flowed through mediators — priests who taught the law, prophets who delivered the word, scribes who copied and explained. The average Israelite knew God largely <em>through</em> these intermediaries. The New Covenant changes that. <em>All</em> of them, <em>from least to greatest</em>, will know Him directly. The professional class of mediators between God and the regular believer becomes obsolete — not because mediators were bad, but because the new arrangement makes them unnecessary.</p>
+
+  <p class="body">This is what Hebrews 8 specifically lingers on, and it is one of the most underappreciated revolutions in religious history. Every person in the covenant community has direct, personal, immediate access to God. The shape of the people of God shifts from a hierarchy of access to a community of brothers and sisters who all know the same Father.</p>
+
+  <h3 class="subsection-title">4. &ldquo;I will forgive their iniquity, and their sin I will remember no more&rdquo;</h3>
+  <p class="body">The fourth promise is the foundation that makes the other three possible. The Hebrew verb for &ldquo;forgive&rdquo; — <em>salach</em> — is used almost exclusively of God in the Old Testament. Humans can pardon other humans, but only God can <em>salach</em>. And the verb &ldquo;remember no more&rdquo; is not passive forgetting. It is a deliberate divine choice. God is committing to never again use the believer's sin as the basis for any decision He makes about them.</p>
+
+  <p class="body">Hebrews 10:17 quotes this line and then comments: <em>&ldquo;Now where there is forgiveness of these things, there is no longer any offering for sin.&rdquo;</em> The whole sacrificial system existed because sin needed dealing with year after year. If God has chosen to remember sin no more, the system that existed to keep dealing with it has reached its goal. That is the argument the writer of Hebrews uses to explain why Jesus' one sacrifice is sufficient and why the Levitical system has been retired.</p>
+
+  <p class="body">Four promises. Law internalized. Relationship secured. Knowledge universalized. Sin forgiven for good. Each one is staggering. Together they describe an arrangement so different from Sinai that the writer of Hebrews calls the old one &ldquo;obsolete&rdquo; (8:13) — not because it was bad, but because what it pointed toward had finally arrived.</p>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4.4 — HEBREW WORD STUDIES -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">4.4 — Four Words That Carry the Oracle</h2>
+
+  <p class="body">Four Hebrew terms do most of the theological lifting in Jeremiah 31:31–34. Each one is worth slowing down for.</p>
+
+  <h3 class="subsection-title">New covenant — <em>berit chadashah</em></h3>
+  <p class="body">The phrase &ldquo;new covenant&rdquo; in 31:31 is <em>berit chadashah</em>. The first word — <em>berit</em>, <a href="https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=h1285&t=kjv&wlc=wlc&page=0-1" target="_blank" rel="noopener"><strong>Strong's H1285</strong></a> — is the same Hebrew word used for the Abrahamic covenant in Module 1 and the Mosaic covenant in Module 2. The vocabulary is consistent. God is making another <em>berit</em>. The second word — <em>chadash</em>, <a href="https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=h2319&t=kjv&wlc=wlc&page=0-1" target="_blank" rel="noopener"><strong>Strong's H2319</strong></a> — means &ldquo;new, fresh,&rdquo; but in a particular sense. It is not the word for &ldquo;another&rdquo; (as in another of the same kind). It is the word for &ldquo;new&rdquo; in the sense of qualitatively different, never before seen, freshly emerging. The same root produces the word for the &ldquo;new moon&rdquo; — the moon that appears after being absent, recognizably the same body but starting a fresh cycle.</p>
+
+  <p class="body">This is the only place in the Old Testament where the phrase <em>berit chadashah</em> appears. The Hebrew Bible has covenant after covenant — Noah, Abraham, Moses, David — but only here, only in Jeremiah, does a prophet use the specific phrase &ldquo;new covenant.&rdquo; That linguistic uniqueness is part of why the early Christian writers treated this passage as foundational. <em>Berit chadashah</em> shows up exactly once in the prophets, and the writer of Hebrews uses it as the title of the entire Christian arrangement.</p>
+
+  <h3 class="subsection-title">Within them — <em>qereb</em></h3>
+  <p class="body">The phrase &ldquo;within them&rdquo; in verse 33 is the Hebrew preposition <em>be-</em> attached to the noun <em>qereb</em>, <a href="https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=h7130&t=kjv&wlc=wlc&page=0-1" target="_blank" rel="noopener"><strong>Strong's H7130</strong></a>. <em>Qereb</em> means the inward part — the middle, the inside, the deep interior. It is the word used of God dwelling &ldquo;in the midst&rdquo; of His people, but also of the inward organs of a sacrificial animal, the seat of thought and emotion in a person. When Jeremiah says God will put the law <em>be-qirbam</em> — &ldquo;in their inward parts&rdquo; — he is being anatomically specific. Not on them. Not above them. Not even merely with them. In their gut, in their seat of decision, in the place where what they want gets generated.</p>
+
+  <p class="body">Pair this with the phrase that follows — <em>&ldquo;and on their heart I will write it.&rdquo;</em> The Hebrew <em>lev</em> (heart) in biblical usage is not the seat of emotion the way modern English uses the word. It is the seat of <em>thought, will, and moral decision</em> — what we would today call &ldquo;the mind&rdquo; or &ldquo;the will&rdquo; together. So the New Covenant promises the law will be in the inward parts (<em>qereb</em>) and written on the heart (<em>lev</em>) — the place where decisions and desires come from. The transformation reaches all the way down.</p>
+
+  <h3 class="subsection-title">Know — <em>yada</em></h3>
+  <p class="body">The verb &ldquo;know&rdquo; in verse 34 — &ldquo;they will all know Me&rdquo; — is <em>yada</em>, <a href="https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=h3045&t=kjv&wlc=wlc&page=0-1" target="_blank" rel="noopener"><strong>Strong's H3045</strong></a>. This is one of the richest words in the Hebrew Bible. It does not mean intellectual awareness of facts. It means experiential, relational, intimate knowledge — the same verb used of Adam &ldquo;knowing&rdquo; Eve, of God &ldquo;knowing&rdquo; Moses face to face, of the Lord &ldquo;knowing&rdquo; His people. <em>Yada</em> is the verb of relationship, not the verb of information.</p>
+
+  <p class="body">When Jeremiah says everyone in the New Covenant will <em>yada</em> God, he is not saying everyone will pass a theology exam. He is saying every member of the covenant will <em>be in relationship with</em> God personally. The implication is enormous: there is no second-class citizenship in the New Covenant. There are no members who know God less intimately than the leaders. The least and the greatest stand in the same relational space.</p>
+
+  <h3 class="subsection-title">Forgive — <em>salach</em></h3>
+  <p class="body">The verb translated &ldquo;forgive&rdquo; in verse 34 is <em>salach</em>, <a href="https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=h5545&t=kjv&wlc=wlc&page=0-1" target="_blank" rel="noopener"><strong>Strong's H5545</strong></a>. This is one of those rare Hebrew words whose subject is almost always God Himself. Humans use other words for pardoning, releasing, letting go. <em>Salach</em> is reserved, with very few exceptions, for what God does to sin. It carries a sense of decisive, complete release — not minimizing the offense, but cleanly removing it from between the offender and God.</p>
+
+  <p class="body">Paired with <em>&ldquo;their sin I will remember no more,&rdquo;</em> the verb describes a forgiveness that is also chosen forgetfulness. God is not promising to overlook sin. He is promising to choose, by an act of His own will, to never again use the believer's sin as the basis for any judgment against them. This is the foundation Hebrews builds on when it argues that Christ's one sacrifice has done what the daily sacrifices of the temple could not.</p>
+
+  <p class="body">Four words. <em>Berit chadashah</em> says what kind of arrangement is being promised — a new one in kind, not just another in series. <em>Qereb</em> says where it will be located — inside the person. <em>Yada</em> says what the relationship will be — direct, personal, intimate knowledge. <em>Salach</em> says what God will do with the sin that used to stand between Him and His people — choose to forget it.</p>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4.5 — THE PARALLEL PROPHECIES -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">4.5 — The Parallel Prophecies: Jeremiah Is Not Alone</h2>
+
+  <p class="body">One of the things that confirms the importance of Jeremiah's oracle is that he is not the only prophet who heard it. Three other texts in the Old Testament describe the same general shape of promise from different angles. None of them uses Jeremiah's exact phrase <em>berit chadashah</em>, but each one promises God will do for the people internally what the law could not do for them externally.</p>
+
+  <h3 class="subsection-title">Ezekiel 36:25–28 — the parallel from the exile</h3>
+  <p class="body">Ezekiel is Jeremiah's younger contemporary. While Jeremiah is in Jerusalem watching the city fall, Ezekiel is already in Babylon among the first wave of exiles. The same Spirit speaks to both prophets in the same general time window, and Ezekiel 36 reads like the same promise translated through a different temperament.</p>
+
+  <div class="info-box" style="border-left:4px solid #2E75B6;">
+    <div class="title">📖 Ezekiel 36:25–28 (NASB 1995)</div>
+    <div class="line" style="font-style:italic;color:#666;">[Paste Ezekiel 36:25–28 from e-Sword here]</div>
+  </div>
+
+  <p class="body">The vocabulary is different but the promise is the same. Where Jeremiah says &ldquo;law on the heart,&rdquo; Ezekiel says &ldquo;heart of stone replaced with heart of flesh.&rdquo; Where Jeremiah says &ldquo;I will be their God and they shall be My people,&rdquo; Ezekiel says &ldquo;you shall be My people, and I will be your God.&rdquo; Where Jeremiah promises forgiveness, Ezekiel promises cleansing with water. Ezekiel adds something Jeremiah does not — <em>&ldquo;I will put My Spirit within you and cause you to walk in My statutes.&rdquo;</em> The Spirit is named explicitly as the agent who makes obedience possible. Jeremiah and Ezekiel are looking at the same promise from different angles. Read them side by side.</p>
+
+  <h3 class="subsection-title">Deuteronomy 30:6 — the seed of the idea in the Torah</h3>
+  <p class="body">Surprisingly, the earliest hint of this promise is not in the prophets at all. It is in Deuteronomy, near the end of Moses' final sermon. <em>&ldquo;Moreover the LORD your God will circumcise your heart and the heart of your descendants, to love the LORD your God with all your heart and with all your soul, so that you may live&rdquo;</em> (Deuteronomy 30:6). Moses, in the same book that delivers the Mosaic covenant, already knows the covenant he is giving will not be enough. He looks ahead and says God Himself will eventually do internal heart-surgery on this people so they can finally love Him with the kind of devotion the law requires.</p>
+
+  <p class="body">That is striking. The same Moses who delivered the law from Sinai is the one who tells the people the law will not be enough — that God will eventually do something inside them that the law cannot do. The New Covenant was not a Plan B. It was always part of the arc.</p>
+
+  <h3 class="subsection-title">Joel 2:28–29 — &ldquo;I will pour out My Spirit&rdquo;</h3>
+  <p class="body">The prophet Joel adds another piece. He promises that &ldquo;in the last days&rdquo; God will pour out His Spirit on <em>all flesh</em> — sons, daughters, old men, young men, slaves, free. The democratization Jeremiah promises (everyone, least to greatest, knows God) shows up in Joel as the democratization of the Spirit. Peter quotes Joel 2 on the day of Pentecost in Acts 2 to explain what just happened — and what just happened was the inauguration of the arrangement Jeremiah, Ezekiel, Moses, and Joel had all been pointing toward.</p>
+
+  <p class="body">Four prophets, four angles, one promise. The consistency is the point. God did not surprise His people with the New Covenant. He told them — through Moses, through Jeremiah, through Ezekiel, through Joel — that it was coming, what it would do, and what it would feel like. By the time the Upper Room arrives in Luke 22, the cup Jesus lifts is the cup of a covenant that had been promised for centuries.</p>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4.6 — WHERE THE PROMISE LANDS -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">4.6 — Where the Promise Lands — and How Christians Read It</h2>
+
+  <p class="body">The New Testament does not leave the New Covenant as an unfulfilled promise. It explicitly identifies Jesus as the One who ratifies it and the Spirit as the One who applies it. Several texts do the heavy lifting.</p>
+
+  <p class="body"><strong>Luke 22:20.</strong> In the Upper Room, the night before His death, Jesus lifts the cup and says, <em>&ldquo;This cup which is poured out for you is the new covenant in My blood.&rdquo;</em> He uses Jeremiah's phrase directly. Every adult Jew in that room would have recognized the citation. Jesus is claiming that the covenant Jeremiah prophesied six hundred years earlier is being ratified, in His blood, that night. This is the moment the promise becomes operational.</p>
+
+  <p class="body"><strong>Hebrews 8 and 10.</strong> The writer of Hebrews quotes Jeremiah 31:31–34 in full — twice — and uses it as the central text of his argument that the Mosaic system has reached its purpose and is being retired. Hebrews 8:13 contains the most blunt statement: <em>&ldquo;When He said, 'A new covenant,' He has made the first obsolete. But whatever is becoming obsolete and growing old is ready to disappear.&rdquo;</em> The argument is not that the Mosaic covenant was wrong; it is that the Mosaic covenant was provisional, pointing forward to something that has now arrived.</p>
+
+  <p class="body"><strong>2 Corinthians 3:6.</strong> Paul, defending his ministry, calls himself a &ldquo;minister of a new covenant — not of the letter but of the Spirit; for the letter kills, but the Spirit gives life.&rdquo; Paul understands his own apostolic vocation in New Covenant terms. He is not preaching a renewed Mosaic system. He is preaching the arrangement Jeremiah promised, ratified in Christ's blood, applied by the Spirit, written on living hearts.</p>
+
+  <div class="info-box" style="border-left:4px solid #2E75B6;">
+    <div class="title">📖 Hebrews 8:7–13 (NASB 1995)</div>
+    <div class="line" style="font-style:italic;color:#666;">[Paste Hebrews 8:7–13 from e-Sword here]</div>
+  </div>
+
+  <h3 class="subsection-title">A complication: Israel and the Church</h3>
+  <p class="body">There is an interpretive question worth sitting with honestly. Jeremiah 31:31 says the New Covenant will be made <em>&ldquo;with the house of Israel and with the house of Judah.&rdquo;</em> The text names ethnic Israel specifically. But Hebrews 8 quotes that exact line and applies it to a primarily Gentile-Christian church. And in Romans 11, Paul argues that ethnic Israel has a still-future restoration — &ldquo;all Israel will be saved&rdquo; (11:26) — and uses covenant language to describe it. How does that fit together?</p>
+
+  <p class="body">Christians have read this differently for two thousand years. None of the readings is fringe. Each one is held by serious, godly people working honestly with the same text. The major approaches:</p>
+
+  <p class="body"><strong>Covenant theology</strong> generally reads the Church as the continuation and fulfillment of Israel. The New Covenant was promised to &ldquo;Israel,&rdquo; and the Church — which includes believing Jews and Gentiles together — <em>is</em> the true Israel as Jeremiah envisioned it. The promise to ethnic Israel was always pointing toward this multinational covenant community. Romans 11's &ldquo;all Israel&rdquo; refers to the full number of elect Jews and Gentiles together throughout history.</p>
+
+  <p class="body"><strong>Classical dispensationalism</strong> reads Israel and the Church as two distinct peoples of God with two distinct programs. The New Covenant in Jeremiah 31 was made specifically with ethnic Israel and will be fulfilled with them in a future kingdom age. The Church participates in the <em>blessings</em> of the New Covenant through Christ's blood, but the covenant itself awaits its proper fulfillment when ethnic Israel turns to her Messiah.</p>
+
+  <p class="body"><strong>Progressive dispensationalism</strong> (a newer position) and similar &ldquo;both/and&rdquo; readings see the New Covenant as having been <em>inaugurated</em> at the cross and Pentecost — operational for the Church now — but not yet <em>consummated</em> in its fullest sense with ethnic Israel until a future restoration. The same covenant has two phases, present and future, with the Church and Israel both real participants in the same promise.</p>
+
+  <p class="body">Each reading wrestles with the same texts. Each one is honest in its own way. Hebrews 8 clearly applies Jeremiah's language to believers in Christ. Romans 11 clearly speaks of a future restoration of ethnic Israel. The question is whether those are two different fulfillments of the same promise, two phases of one fulfillment, or one fulfillment in which Israel is read as the Church. This module will not settle that question for you. It will name it. The text itself is the standard — and it is rich enough that thoughtful Christians, working in good faith, have arrived at different conclusions about how the pieces fit together.</p>
+
+  <p class="body">A modest observation: whichever reading you land on, the four core promises of Jeremiah 31:33–34 remain the same. The law is internalized. The relationship is secured. The knowledge of God is direct. Sin is forgiven and remembered no more. Those four are not in dispute among Christian traditions. The question is who, when, and in what sequence — not what.</p>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4.7 — REFLECTION -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">4.7 — Reflection</h2>
+
+  <div class="reflection-box">
+    <div class="title">Sit with this</div>
+    <div class="reflection-item">The oracle was given in the darkest moment of Israel's history — the city falling, the temple about to burn. Why might God choose <em>that</em> moment to make His most hopeful promise? What does that pattern tell you about how God works in your own dark seasons?</div>
+    <div class="reflection-item">Moses said in Deuteronomy 30:6 that God Himself would eventually circumcise the heart of His people. Jeremiah promised it. Ezekiel promised it. Joel promised the Spirit. Then a thousand years passed before any of it happened. What does the timeline tell you about the difference between a promise made and a promise visibly kept?</div>
+    <div class="reflection-item">The fourth promise — &ldquo;I will remember their sin no more&rdquo; — uses a verb of deliberate divine forgetting. What is the difference between God overlooking sin and God choosing to remember it no more? Why does that difference matter for how you approach Him?</div>
+    <div class="reflection-item">If multiple thoughtful Christian traditions read the Israel-and-Church question differently, what posture should you take toward your own developing convictions on it? When is it right to hold a view firmly, and when is it right to hold it loosely?</div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CROSS-REFERENCES -->
+  <!-- ============================================================ -->
+  <div class="cross-ref-box">
+    <div class="title">🔗 Cross-References</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/JER.31.NASB1995" target="_blank" rel="noopener">Jeremiah 31</a></strong> — the whole chapter, the New Covenant in its restoration setting</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/JER.31.27-30.NASB1995" target="_blank" rel="noopener">Jeremiah 31:27–30</a></strong> — the &ldquo;sour grapes&rdquo; preamble; the cycle of inherited guilt broken</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/JER.31.31-34.NASB1995" target="_blank" rel="noopener">Jeremiah 31:31–34</a></strong> — the covenant passage itself</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/JER.31.35-37.NASB1995" target="_blank" rel="noopener">Jeremiah 31:35–37</a></strong> — &ldquo;If the fixed order departs from before Me... then the offspring of Israel also will cease&rdquo; — the irrevocability seal</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/JER.32.36-44.NASB1995" target="_blank" rel="noopener">Jeremiah 32:36–44</a></strong> — the New Covenant amplified: &ldquo;an everlasting covenant&rdquo;</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/DEU.30.6.NASB1995" target="_blank" rel="noopener">Deuteronomy 30:6</a></strong> — &ldquo;The LORD your God will circumcise your heart&rdquo; — the seed in the Torah</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/EZK.11.19-20.NASB1995" target="_blank" rel="noopener">Ezekiel 11:19–20</a></strong> — heart of stone replaced; the first time Ezekiel hears it</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/EZK.36.22-32.NASB1995" target="_blank" rel="noopener">Ezekiel 36:22–32</a></strong> — the fuller parallel: water, new heart, new spirit, the Spirit indwelling</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/LUK.22.20.NASB1995" target="_blank" rel="noopener">Luke 22:20</a></strong> — &ldquo;This cup is the new covenant in My blood&rdquo; — the ratification</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/HEB.8.7-13.NASB1995" target="_blank" rel="noopener">Hebrews 8:7–13</a></strong> — Jeremiah quoted in full; the Mosaic called obsolete</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/HEB.10.15-18.NASB1995" target="_blank" rel="noopener">Hebrews 10:15–18</a></strong> — Jeremiah quoted again; &ldquo;where there is forgiveness, there is no longer any offering for sin&rdquo;</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/2CO.3.6.NASB1995" target="_blank" rel="noopener">2 Corinthians 3:6</a></strong> — Paul as &ldquo;minister of a new covenant&rdquo;</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/ROM.11.25-27.NASB1995" target="_blank" rel="noopener">Romans 11:25–27</a></strong> — the future restoration of ethnic Israel; covenant language</div>
+    <div class="line">• <strong><a href="module1.html" style="color:#7E57C2;">Theme 4, Module 1 (The Abrahamic Covenant)</a></strong> — the seed-promise whose ultimate fruit is being described here</div>
+    <div class="line">• <strong><a href="module2.html" style="color:#7E57C2;">Theme 4, Module 2 (The Mosaic Covenant)</a></strong> — the covenant whose failures the New Covenant addresses</div>
+    <div class="line">• <strong><a href="module3.html" style="color:#7E57C2;">Theme 4, Module 3 (The Davidic Covenant)</a></strong> — the throne whose Son will ratify this covenant in His blood</div>
+    <div class="line">• <strong><a href="index.html" style="color:#7E57C2;">Theme 4 — Covenant (Overview)</a></strong> — the shape of the whole theme</div>
+    <div class="line">• <strong>Theme 4, Module 5 — The New Covenant in Christ</strong> (coming) — where the prophecy becomes blood, bread, and a cup</div>
+    <div class="line">• <strong><a href="../theme1/module5.html" style="color:#7E57C2;">Theme 1, Module 5 (The New Covenant — End Times angle)</a></strong> — the same covenant from the end-times perspective</div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- NOTES BOX — Quill editor (new architecture)                  -->
+  <!-- main.js initQuillEditors() mounts Quill on the .quill-editor -->
+  <!-- main.js injectSyncButton() adds 💾 Save & sync top+bottom    -->
+  <!-- ============================================================ -->
+  <div class="notes-box">
+    <div class="label">✏️ My notes &amp; convictions on Module 4 — The New Covenant Prophesied:</div>
+    <div class="quill-editor" id="n-t4m4" data-placeholder="Write your convictions here. Date your entry."></div>
+  </div>
+
+  <!-- NAVIGATION FOOTER -->
+  <div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid #ddd;">
+    <a href="module3.html" class="btn-primary" style="font-size:12px;">← Module 3 — Davidic Covenant</a>
+    <a href="index.html" class="btn-primary" style="font-size:12px;">Theme 4 Overview</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-t4m4'];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+
+</body>
+</html>

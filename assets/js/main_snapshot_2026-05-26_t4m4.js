@@ -131,7 +131,6 @@ const COMPLETION_KEYS = {
   'theme4/module1':  'complete-t4m1',
   'theme4/module2':  'complete-t4m2',
   'theme4/module3':  'complete-t4m3',
-  'theme4/module4':  'complete-t4m4',
 
   // David library chapters (Ch 01-17, plus alphabetic insertions, plus topical 19-26).
   // Appendices intentionally excluded (reference pages, not completable).

@@ -1,12 +1,6 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.19 (2026-05-26)
-
-   v5.19: Added Theme 4 Module 4 (The New Covenant Prophesied —
-   Jeremiah 31:31-34) to both NAV_STRUCTURE and READING_CHAIN.
-   Completable with the standard complete-t4m4 key pattern.
-   Companion change in main.js: COMPLETION_KEYS gains
-   theme4/module4 entry.
+   Sidebar Navigation Builder — v5.18 (2026-05-26)
 
    v5.18: Added Theme 4 Module 3 (The Davidic Covenant) to both
    NAV_STRUCTURE and READING_CHAIN. Completable with the standard
@@ -251,7 +245,6 @@ const NAV_STRUCTURE = [
       { label: '↳ Module 1 — The Abrahamic Covenant',            href: 'theme4/module1.html', sub: true, completable: true, completeKey: 'complete-t4m1' },
       { label: '↳ Module 2 — The Mosaic Covenant',               href: 'theme4/module2.html', sub: true, completable: true, completeKey: 'complete-t4m2' },
       { label: '↳ Module 3 — The Davidic Covenant',              href: 'theme4/module3.html', sub: true, completable: true, completeKey: 'complete-t4m3' },
-      { label: '↳ Module 4 — The New Covenant Prophesied',       href: 'theme4/module4.html', sub: true, completable: true, completeKey: 'complete-t4m4' },
       { label: '↳ Theme 5 Overview — The Messiah (coming)',       href: 'theme5/index.html', sub: true },
       { label: '↳ Theme 6 Overview — The Holy Spirit (coming)',   href: 'theme6/index.html', sub: true },
       { label: '↳ Theme 7 Overview — Kingdom of God (coming)',    href: 'theme7/index.html', sub: true },
@@ -587,7 +580,6 @@ const READING_CHAIN = [
   ['theme4/module1.html',   'Module 1 — The Abrahamic Covenant',      'Theme 4 — Covenant'],
   ['theme4/module2.html',   'Module 2 — The Mosaic Covenant',         'Theme 4 — Covenant'],
   ['theme4/module3.html',   'Module 3 — The Davidic Covenant',        'Theme 4 — Covenant'],
-  ['theme4/module4.html',   'Module 4 — The New Covenant Prophesied', 'Theme 4 — Covenant'],
 
   // Themes 5–8 overviews (modules not yet built)
   ['theme5/index.html',     'Theme 5 Overview',                       'Theme 5 — The Messiah'],
