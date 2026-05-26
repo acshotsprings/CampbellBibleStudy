@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 3: The Davidic Covenant — Theme 4 — Campbell Bible Study</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/analytics.js"></script>
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)">
+  <button class="btn-save" onclick="saveToGitHub()">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: May 26, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version">Version: May 26, 2026</span>
+  </div>
+</div>
+
+<!-- SIDEBAR OVERLAY -->
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<div id="sidebar"></div>
+
+<!-- MAIN -->
+<div id="app">
+<div id="main">
+
+  <span class="page-tag" style="background:#7E57C2;">Module 3 — Theme 4: Covenant</span>
+  <h1 class="page-title">The Davidic Covenant: A House, a Throne, and a Kingdom That Will Not End</h1>
+  <p class="page-subtitle">2 Samuel 7 — the night God promised David a son whose throne would never fall</p>
+
+  <!-- MODULE OVERVIEW -->
+  <div class="info-box">
+    <div class="title">📖 Module Overview</div>
+    <div class="line">In Module 1, God walked alone between the pieces and swore Himself to a man named Abram. In Module 2, He thundered on Sinai and bound an entire nation to a covenant of stipulations. Five hundred years later, a former shepherd is sitting in a cedar palace in Jerusalem, troubled that he lives in a finer house than the God who put him on the throne. He decides he is going to build God a temple. Through the prophet Nathan, God answers — and the answer flips David's plan inside out.</div>
+    <div class="line" style="margin-top:8px;">David says, <em>&ldquo;I will build You a house.&rdquo;</em> God says, <em>&ldquo;I will build you a house.&rdquo;</em> Same Hebrew word, opposite direction. David was thinking of a building. God was promising a dynasty, a throne, and a kingdom that would outlast every cedar in Lebanon. The covenant given that night narrows the seed-promise from Abraham down to one bloodline. From this point forward, the question of who the Messiah is becomes the question of <em>which son of David</em> God has in view.</div>
+    <div class="line" style="margin-top:8px;">The Davidic Covenant is unconditional, like the Abrahamic. The dynasty itself cannot be revoked. But it is administered <em>through</em> sons who can be disciplined, deposed, and even sent into exile when they fail. Solomon will fail. Rehoboam will fail. The whole line will eventually be carried off to Babylon, and a psalmist will look at the ruins and cry, <em>&ldquo;You have renounced the covenant of Your servant&rdquo;</em> (Psalm 89:39). And yet — five centuries after the throne sits empty — Gabriel will stand in front of a teenage girl in Nazareth and say the line that ends the suspense: <em>&ldquo;The Lord God will give Him the throne of His father David... and His kingdom will have no end.&rdquo;</em></div>
+  </div>
+
+  <!-- READ FIRST BLOCK -->
+  <div class="info-box" style="border-left:4px solid #2E75B6;">
+    <div class="title">📖 Read First — Anchor Passages (NASB 1995)</div>
+    <div class="line">Read these passages before working through the module. 2 Samuel 7 is the anchor. 1 Chronicles 17 is the parallel record. Psalm 89 is the poetic re-statement plus the exile-era lament. The New Testament passages show where the promise lands.</div>
+    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/2SA.7.NASB1995" target="_blank" rel="noopener">2 Samuel 7</a> — Nathan's oracle; the covenant itself</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/1CH.17.NASB1995" target="_blank" rel="noopener">1 Chronicles 17</a> — the parallel account from the Chronicler's perspective</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/PSA.89.NASB1995" target="_blank" rel="noopener">Psalm 89</a> — the covenant celebrated, then the covenant lamented</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/PSA.132.NASB1995" target="_blank" rel="noopener">Psalm 132</a> — the covenant remembered in worship</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/ISA.9.6-7.NASB1995" target="_blank" rel="noopener">Isaiah 9:6–7</a> — the throne of David promised to a son who is also called Mighty God</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/LUK.1.31-33.NASB1995" target="_blank" rel="noopener">Luke 1:31–33</a> — Gabriel to Mary: the throne of His father David, forever</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/ACT.2.29-36.NASB1995" target="_blank" rel="noopener">Acts 2:29–36</a> — Peter at Pentecost: David's promised heir has been raised and seated</div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3.1 — THE TEXT IN CONTEXT -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">3.1 — &ldquo;I Will Build You a House&rdquo;: The Text in Context</h2>
+
+  <p class="body">Second Samuel 7 does not start in 2 Samuel 7. To understand what is happening that night, you have to track what God has just done. A shepherd boy was anointed in his father's backyard in Bethlehem. He killed a giant in front of two armies. He served and was hunted by a king who hated him. He hid in caves. He spared the life of the man who wanted to kill him — twice. He buried his best friend Jonathan and his own anointer Saul on the same battlefield. He was crowned king over Judah in Hebron. Seven and a half years later he was crowned king over all twelve tribes. He took Jerusalem from the Jebusites and made it his capital. He brought the ark of God up to the city with shouting and dancing and the sound of the trumpet. And finally — finally — the wars stop long enough for him to sit down inside his own house and rest.</p>
+
+  <p class="body">That is when the discomfort hits him. He is sitting in a palace of cedar that Hiram of Tyre built for him (2 Samuel 5:11). The ark of the covenant — the visible throne of God in Israel — is still inside a tent. Two cedar walls and a roof for the king of Israel; goat-hair curtains for the King of Israel. David finds this intolerable, and he says so to Nathan the prophet: <em>&ldquo;See now, I dwell in a house of cedar, but the ark of God dwells within tent curtains&rdquo;</em> (2 Samuel 7:2). Nathan, like any good friend, says go for it: <em>&ldquo;Go, do all that is in your mind, for the LORD is with you.&rdquo;</em></p>
+
+  <p class="body">Nathan was wrong. Or at least he had not heard from God yet. That same night, the word of the LORD comes to Nathan and reverses everything. The answer God sends back is not no exactly — it is something better than yes. David is not going to build God a house of cedar. God is going to build David a house of a different kind entirely.</p>
+
+  <div class="info-box" style="border-left:4px solid #2E75B6;">
+    <div class="title">📖 2 Samuel 7:1–7 (NASB 1995)</div>
+    <div class="line" style="font-style:italic;color:#666;">[Paste 2 Samuel 7:1–7 from e-Sword here]</div>
+  </div>
+
+  <p class="body">The first thing God does in His reply is push back on the assumption underneath David's plan. <em>&ldquo;Are you the one who should build Me a house to dwell in?&rdquo;</em> God has been content with a tent from the day He brought Israel out of Egypt. He has never once asked for a building. He has walked with His people. The tabernacle was always mobile because Israel was always moving. David's instinct is generous and reverent, but it is not a command — and God will not let a king put Him in a box.</p>
+
+  <div class="info-box" style="border-left:4px solid #2E75B6;">
+    <div class="title">📖 2 Samuel 7:8–17 (NASB 1995)</div>
+    <div class="line" style="font-style:italic;color:#666;">[Paste 2 Samuel 7:8–17 from e-Sword here]</div>
+  </div>
+
+  <p class="body">And then comes the covenant. Verses 8 through 17 contain one of the most important paragraphs in the entire Old Testament. The Hebrew word <em>bayit</em> — house — is the hinge of the whole oracle. David offered God a <em>bayit</em>. God promises David a <em>bayit</em>. It is the same word used in two opposite directions, and the wordplay is the point.</p>
+
+  <div class="info-box">
+    <div class="title">📍 Where this module is going</div>
+    <div class="line">Section 3.2 unpacks the three specific promises God makes in verses 11–16. Section 3.3 looks at the father–son language and how it stretches from Solomon to Christ. Section 3.4 walks through the four Hebrew words that carry the theological weight of the oracle. Section 3.5 sits with Psalm 89 — the same covenant celebrated in the first half of the psalm and lamented in the second half. Section 3.6 follows the promise through the prophets and into the New Testament. Section 3.7 is space for your own convictions.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3.2 — THE THREE PROMISES -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">3.2 — The Three Promises of 2 Samuel 7</h2>
+
+  <p class="body">Strip the oracle down to its core and three concrete promises remain. They are interlocked but distinct.</p>
+
+  <h3 class="subsection-title">1. A house — a dynasty</h3>
+  <p class="body"><em>&ldquo;The LORD also declares to you that the LORD will make a house for you&rdquo;</em> (2 Samuel 7:11). The <em>bayit</em> in this clause is not a building. It is a household, a line, a dynasty. God is not promising David a temple; He is promising him descendants who will sit where David sits. The promise is not <em>I will give you a son</em> (David already has sons). The promise is <em>I will make the rule of your descendants the rule that defines the kingdom</em>. From this point forward, when Israel asks who has the right to sit on the throne in Jerusalem, the answer is always: a son of David.</p>
+
+  <h3 class="subsection-title">2. A throne — established forever</h3>
+  <p class="body"><em>&ldquo;Your house and your kingdom shall endure before Me forever; your throne shall be established forever&rdquo;</em> (2 Samuel 7:16). Three times in two verses the language of forever shows up. The Hebrew word is <em>olam</em> — age-lasting, perpetual, with no foreseeable end. The throne itself, not just the family, is what God commits to. There will always be a legitimate Davidic seat. Even when the throne sits empty after the exile, the seat itself is not abolished. It is waiting.</p>
+
+  <h3 class="subsection-title">3. A son — to build the house God refused to let David build</h3>
+  <p class="body"><em>&ldquo;When your days are complete and you lie down with your fathers, I will raise up your descendant after you, who will come forth from you, and I will establish his kingdom. He shall build a house for My name, and I will establish the throne of his kingdom forever&rdquo;</em> (2 Samuel 7:12–13). David wanted to build God a house. God says no — but your son will. The temple that David is forbidden to build becomes Solomon's project. And yet the language is doubled. Verse 13 talks about a son who builds a temple (Solomon, near-term). Verse 16 talks about a kingdom that endures forever (the messianic Son, ultimate). The oracle is layered — short-term Solomon, long-term Messiah — and the New Testament will spend chapters showing how the two are related.</p>
+
+  <p class="body">Hold the three together. A dynasty. A throne. A son. The covenant given to David takes the seed-promise spoken to Abraham — <em>&ldquo;in your seed all the nations of the earth shall be blessed&rdquo;</em> (Genesis 22:18) — and locates it. The seed that will bless the nations will sit on David's throne. The question is no longer <em>which tribe</em> (Genesis 49:10 has already narrowed it to Judah). The question is now <em>which son of David</em>.</p>
+
+  <div class="reflection-box">
+    <div class="title">Sit with this</div>
+    <div class="reflection-item">David wanted to give God a gift. God reversed it and gave David a covenant. What does that pattern teach about how God responds to honest devotion?</div>
+    <div class="reflection-item">The promise is unconditional in its overall shape (the dynasty cannot be revoked) but conditional in its administration (specific sons can be disciplined). Where else in Scripture do you see that same shape — a sure promise worked out through fallible people?</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3.3 — FATHER AND SON -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">3.3 — &ldquo;I Will Be His Father, and He Shall Be My Son&rdquo;</h2>
+
+  <p class="body">One sentence in the oracle does heavier theological work than any other: <em>&ldquo;I will be a father to him and he will be a son to Me; when he commits iniquity, I will correct him with the rod of men and the strokes of the sons of men, but My lovingkindness shall not depart from him&rdquo;</em> (2 Samuel 7:14–15).</p>
+
+  <p class="body">In the immediate horizon, the son is Solomon. Solomon will commit iniquity — many of them. He will accumulate seven hundred wives. He will let them turn his heart toward foreign gods. He will tax his own people into rebellion. The kingdom will tear in half within a generation of his death because of him. And yet the lovingkindness of God will not depart from his line. The discipline will be severe — exile severe — but the covenant itself will not be abolished. That is the Solomon layer of verse 14.</p>
+
+  <p class="body">But the New Testament reads verse 14 as also pointing somewhere else. Hebrews 1:5 picks up the line <em>&ldquo;I will be a Father to Him, and He shall be a Son to Me&rdquo;</em> and applies it directly to Jesus. The author of Hebrews argues that no angel was ever spoken to this way — only the Davidic Son ultimately fulfilled in Christ. The father–son language is the language of a king who is also genuinely a son of God. Israel as a whole is called God's son in Exodus 4:22. The Davidic king inherits that sonship in a sharper, more personal way. And Jesus inherits it in the sharpest way of all — not adopted into sonship, but <em>begotten</em>.</p>
+
+  <p class="body">Notice what verse 15 says about Saul. <em>&ldquo;My lovingkindness shall not depart from him, as I took it away from Saul, whom I removed from before you.&rdquo;</em> Saul's house was conditional. When Saul sinned, his house was cut off. David's house is different. When sons of David sin, the discipline comes, but the house remains. The contrast between Saul and David is the contrast between a conditional promise and an unconditional one — and it is the answer to a question that has been hanging since 1 Samuel 13: <em>why did Saul's dynasty get one chance, while David's gets recovery from every failure?</em> The answer is in this verse. Saul received a kingdom. David received a covenant.</p>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3.4 — HEBREW WORD STUDIES -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">3.4 — Four Words That Carry the Oracle</h2>
+
+  <p class="body">Four Hebrew words do most of the theological work in 2 Samuel 7. Each one is worth slowing down for.</p>
+
+  <h3 class="subsection-title">House — <em>bayit</em></h3>
+  <p class="body">The Hebrew word <em>bayit</em> — <a href="https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=h1004&t=kjv&wlc=wlc&page=0-1" target="_blank" rel="noopener"><strong>Strong's H1004</strong></a> — is the hinge of the whole oracle. It can mean a literal building (David's cedar palace, Solomon's future temple), or it can mean a household, a family, a lineage, a dynasty. Both meanings are in play in 2 Samuel 7. David offers God a <em>bayit</em> of cedar; God promises David a <em>bayit</em> of descendants. The wordplay is intentional and dense. The same word that describes the building David wants to put up for God describes the dynasty God is going to raise up through David. The point is that the dynastic <em>bayit</em> is the more permanent of the two. Solomon's temple will be burned by Nebuchadnezzar in 586 BC. David's <em>bayit</em> will still be standing when Gabriel mentions it to Mary five centuries later.</p>
+
+  <h3 class="subsection-title">Established — <em>kun</em></h3>
+  <p class="body">The verb translated <em>establish</em> in the oracle — &ldquo;I will establish his kingdom,&rdquo; &ldquo;your throne shall be established&rdquo; — is <em>kun</em>, <a href="https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=h3559&t=kjv&wlc=wlc&page=0-1" target="_blank" rel="noopener"><strong>Strong's H3559</strong></a>. The root carries the sense of being firmly set up, made stable, fixed in place so it will not be shaken. It is the word used of mountains established by God's power, of the heavens fixed above, of a heart steadied in trust. When God says He will <em>kun</em> David's throne, He is using construction language — pillars driven deep, foundations set, a structure that will hold under any pressure. The throne is built into the order of things. It is not propped up by political circumstance. The same God who fixed the mountains has fixed this throne.</p>
+
+  <h3 class="subsection-title">Forever — <em>olam</em></h3>
+  <p class="body">The word for <em>forever</em> in the oracle is <em>olam</em>, <a href="https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=h5769&t=kjv&wlc=wlc&page=0-1" target="_blank" rel="noopener"><strong>Strong's H5769</strong></a>. Its root meaning is &ldquo;hidden, vanishing point, beyond the horizon.&rdquo; It does not always mean <em>eternal</em> in the modern philosophical sense; sometimes it means &ldquo;for a very long age,&rdquo; an indefinite future stretching beyond what the speaker can see. But context matters, and in 2 Samuel 7 the word shows up three times in two verses, paired with a covenant God explicitly says cannot be revoked. The early Christian writers were not stretching the text when they read <em>olam</em> here as eternal. Hebrews 1:8 quotes Psalm 45 — <em>&ldquo;Your throne, O God, is forever and ever&rdquo;</em> — and applies it to Jesus precisely because the Davidic throne, when it finally landed on its right Son, became the throne that <em>cannot</em> end.</p>
+
+  <h3 class="subsection-title">Seed — <em>zera</em></h3>
+  <p class="body">The same word that carried the Abrahamic promise — <em>zera</em>, seed, <a href="https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=h2233&t=kjv&wlc=wlc&page=0-1" target="_blank" rel="noopener"><strong>Strong's H2233</strong></a> — shows up in 2 Samuel 7:12: <em>&ldquo;I will raise up your seed after you.&rdquo;</em> In Genesis 15 the seed was promised to Abraham and pointed forward to a nation. In Genesis 22 it narrowed to a singular blessing for the nations. In Genesis 49 it narrowed to the tribe of Judah. Now in 2 Samuel 7 it narrows again — to the line of David within Judah. Paul will pick this word up in Galatians 3:16 and argue that the singular <em>seed</em> language ultimately points to one specific descendant: Christ. The seed-promise has been getting more specific for two thousand years by the time it reaches David, and it will keep narrowing until it lands on one Person.</p>
+
+  <p class="body">Four words. <em>Bayit</em> says what God is building — a dynasty. <em>Kun</em> says how solidly He is building it — fixed, set, immovable. <em>Olam</em> says how long it will last — beyond every horizon. <em>Zera</em> says where it is going — to one specific Son in whom the whole Abrahamic blessing will be carried to the nations. The oracle is short. The vocabulary is loaded.</p>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3.5 — PSALM 89 -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">3.5 — Psalm 89: When the Promise Looks Broken</h2>
+
+  <p class="body">There is one psalm in the Psalter that exists almost entirely to wrestle with the Davidic covenant. It is Psalm 89. The first thirty-seven verses are some of the most exuberant covenant-celebrating poetry in the Old Testament. The last fifteen verses are some of the most painful covenant-lamenting words in Scripture. Reading them in sequence is the experience of watching faith collide with history.</p>
+
+  <p class="body">The first half quotes the oracle and amplifies it. <em>&ldquo;I have made a covenant with My chosen; I have sworn to David My servant, I will establish your seed forever and build up your throne to all generations&rdquo;</em> (Psalm 89:3–4). The psalmist piles on language — God's faithfulness, His sworn oath, His refusal to lie to David, the throne set up like the sun, the moon as a faithful witness in the sky. By verse 37, the throne of David is being compared to the most permanent things in creation.</p>
+
+  <div class="info-box" style="border-left:4px solid #2E75B6;">
+    <div class="title">📖 Psalm 89:34–37 (NASB 1995)</div>
+    <div class="line" style="font-style:italic;color:#666;">[Paste Psalm 89:34–37 from e-Sword here]</div>
+  </div>
+
+  <p class="body">And then verse 38 happens. <em>&ldquo;But You have cast off and rejected, You have been full of wrath against Your anointed.&rdquo;</em> The tone breaks. The covenant has just been celebrated; now the psalmist is staring at a throne that has been overthrown, a crown lying in the dust, walls broken down, the king's enemies rejoicing. He is almost certainly writing during or after the Babylonian exile, when Jerusalem has fallen and the line of David has been carried off in chains. He has the oracle in one hand and the rubble in the other. And he ends the psalm with a question he does not answer: <em>&ldquo;Where are Your former lovingkindnesses, O Lord, which You swore to David in Your faithfulness?&rdquo;</em></p>
+
+  <p class="body">Psalm 89 is in the canon on purpose. It does not pretend the gap is not there. It will not let the reader off easy. Between 2 Samuel 7 and Luke 1, there is roughly a thousand years of history in which the Davidic throne fails, splits, totters, and finally vanishes — and the people who trust the covenant have to live in that gap. Psalm 89 gives them permission to mourn it honestly. The covenant is not broken; the psalmist will say as much in other psalms. But the appearance of the covenant in his lifetime is a wreck. So he prays the gap.</p>
+
+  <p class="body">This is worth holding on to. Promises of God are not the same as visible fulfillments of those promises. There is often a long stretch between the word given and the word kept, and the gap can be brutal. The Davidic Covenant was sworn around 1000 BC. The Son who would fulfill it would not be born for about a thousand years. That is forty generations of waiting. The psalmist did not see it. Neither did the ones who exiled in Babylon. Neither did the ones who came back and rebuilt the temple. Neither did the ones who watched Antiochus desecrate that second temple. Neither did the ones who watched Pompey ride into Jerusalem in 63 BC. The covenant was working the whole time. They just could not see it from inside the gap.</p>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3.6 — WHERE THE PROMISE LANDS -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">3.6 — Where the Promise Lands</h2>
+
+  <p class="body">The Davidic Covenant is not a closed loop inside the Old Testament. It is an open question that the entire New Testament treats as answered. Track the line of texts that pick the covenant up and you can see the answer being assembled.</p>
+
+  <p class="body"><strong>Isaiah 9:6–7.</strong> Written roughly 700 BC, when the throne is still occupied but the kingdom is fraying. Isaiah promises a child whose names include <em>Mighty God</em> and whose government will rest on the throne of David — and there will be no end of the increase of His government and peace. The same throne 2 Samuel 7 promised will not end is now described with no end of increase. The promise is being elevated. The Son in view is no ordinary king.</p>
+
+  <p class="body"><strong>Isaiah 11:1.</strong> &ldquo;A shoot will spring from the stem of Jesse.&rdquo; Jesse, David's father. The line will be cut down — Isaiah saw the exile coming — but a shoot will spring from what looks like a dead stump. The covenant will reach beyond the visible failure of the dynasty.</p>
+
+  <p class="body"><strong>Jeremiah 23:5.</strong> &ldquo;I will raise up for David a righteous Branch.&rdquo; Same image, same hope, decades closer to the fall of Jerusalem. The Davidic line will produce one more King, and this one will reign in righteousness.</p>
+
+  <p class="body"><strong>Ezekiel 37:24–25.</strong> Written in exile. &ldquo;My servant David will be king over them.&rdquo; David is already dead by Ezekiel's time. The prophet is using David's name as shorthand for the promised Son. The shepherd-king motif is being collapsed into the messianic horizon.</p>
+
+  <div class="info-box" style="border-left:4px solid #2E75B6;">
+    <div class="title">📖 Luke 1:31–33 (NASB 1995)</div>
+    <div class="line" style="font-style:italic;color:#666;">[Paste Luke 1:31–33 from e-Sword here]</div>
+  </div>
+
+  <p class="body">Gabriel uses every word from the oracle. <em>Son. House of Jacob. Throne of David. Kingdom. No end.</em> A first-century Jewish girl raised on the Psalms would have recognized every clause as a quotation. The angel is not improvising. He is telling Mary that the gap is closing — the covenant sworn to David a thousand years earlier is about to be born in her body.</p>
+
+  <p class="body"><strong>Acts 2:29–36.</strong> Peter, on the day of Pentecost, stands in front of a Jerusalem crowd and argues the covenant directly. He quotes Psalm 16 — <em>&ldquo;You will not abandon my soul to Hades&rdquo;</em> — and points out that David said this, but David's tomb is right down the street. So David must have been speaking about a descendant. And Peter says it out loud: <em>&ldquo;He looked ahead and spoke of the resurrection of the Christ, that He was neither abandoned to Hades, nor did His flesh suffer decay&rdquo;</em> (Acts 2:31). The promised Son of David has been raised. He is now seated. The throne is no longer empty.</p>
+
+  <p class="body"><strong>Revelation 22:16.</strong> The last paragraph of the Bible. Jesus identifies Himself: <em>&ldquo;I am the root and the descendant of David, the bright morning star.&rdquo;</em> The covenant has been driven all the way through Scripture and lands here, in the mouth of the One it was always pointing to.</p>
+
+  <p class="body">A thousand years. Forty generations. An exile, a return, a second temple, a Roman occupation, and a teenage girl in a Galilean village. The covenant did not fail. It just took longer to land than anyone could see from inside the gap.</p>
+
+  <div class="divider"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3.7 — REFLECTION -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">3.7 — Reflection</h2>
+
+  <div class="reflection-box">
+    <div class="title">Sit with this</div>
+    <div class="reflection-item">David wanted to give. God reversed it and gave more. When in your own life have you offered God something He did not need, and discovered He had something bigger for you instead?</div>
+    <div class="reflection-item">The covenant was unconditional in its overall shape but conditional in its administration. Specific sons could be disciplined; the line itself could not be revoked. How does that shape the way you think about God's discipline in the life of someone He has truly called His own?</div>
+    <div class="reflection-item">Psalm 89 sits inside the canon as permission to mourn the gap between a promise made and a promise visibly kept. What gap are you currently sitting in? What promise of God have you been holding without yet seeing it?</div>
+    <div class="reflection-item">Gabriel's announcement in Luke 1:31–33 is the moment the gap began to close after a thousand years of waiting. What does it tell you about God's pace that He is willing to wait forty generations to keep one word He swore?</div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CROSS-REFERENCES -->
+  <!-- ============================================================ -->
+  <div class="cross-ref-box">
+    <div class="title">🔗 Cross-References</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/2SA.7.NASB1995" target="_blank" rel="noopener">2 Samuel 7</a></strong> — Nathan's oracle; the covenant itself</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/1CH.17.NASB1995" target="_blank" rel="noopener">1 Chronicles 17</a></strong> — the parallel record, written after the exile</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/PSA.89.NASB1995" target="_blank" rel="noopener">Psalm 89</a></strong> — the covenant celebrated and lamented in one psalm</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/PSA.132.NASB1995" target="_blank" rel="noopener">Psalm 132</a></strong> — &ldquo;The LORD has sworn to David a truth from which He will not turn back&rdquo;</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/ISA.9.6-7.NASB1995" target="_blank" rel="noopener">Isaiah 9:6–7</a></strong> — the throne of David promised to a Son who is also Mighty God</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/ISA.11.1-10.NASB1995" target="_blank" rel="noopener">Isaiah 11:1–10</a></strong> — the shoot from the stem of Jesse</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/JER.23.5-6.NASB1995" target="_blank" rel="noopener">Jeremiah 23:5–6</a></strong> — the righteous Branch raised up for David</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/EZK.37.24-25.NASB1995" target="_blank" rel="noopener">Ezekiel 37:24–25</a></strong> — &ldquo;My servant David will be king over them&rdquo;</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/AMO.9.11.NASB1995" target="_blank" rel="noopener">Amos 9:11</a></strong> — &ldquo;I will raise up the fallen booth of David&rdquo; (quoted by James in Acts 15:16)</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/LUK.1.31-33.NASB1995" target="_blank" rel="noopener">Luke 1:31–33</a></strong> — Gabriel to Mary: the throne of His father David, forever</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/ACT.2.29-36.NASB1995" target="_blank" rel="noopener">Acts 2:29–36</a></strong> — Peter at Pentecost: David's heir resurrected and seated</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/ACT.13.32-37.NASB1995" target="_blank" rel="noopener">Acts 13:32–37</a></strong> — Paul preaching: the promise made to the fathers fulfilled in Jesus</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/ROM.1.3-4.NASB1995" target="_blank" rel="noopener">Romans 1:3–4</a></strong> — &ldquo;born of a descendant of David according to the flesh&rdquo;</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/HEB.1.5.NASB1995" target="_blank" rel="noopener">Hebrews 1:5</a></strong> — 2 Samuel 7:14 applied directly to Christ</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/REV.5.5-6.NASB1995" target="_blank" rel="noopener">Revelation 5:5</a></strong> — &ldquo;the Lion that is from the tribe of Judah, the Root of David, has overcome&rdquo;</div>
+    <div class="line">• <strong><a href="https://www.bible.com/bible/100/REV.22.16.NASB1995" target="_blank" rel="noopener">Revelation 22:16</a></strong> — &ldquo;I am the root and the descendant of David&rdquo;</div>
+    <div class="line">• <strong><a href="module1.html" style="color:#7E57C2;">Theme 4, Module 1 (The Abrahamic Covenant)</a></strong> — the seed-promise that narrows to David's line in this module</div>
+    <div class="line">• <strong><a href="module2.html" style="color:#7E57C2;">Theme 4, Module 2 (The Mosaic Covenant)</a></strong> — the covenant David's kingship is administered under</div>
+    <div class="line">• <strong><a href="index.html" style="color:#7E57C2;">Theme 4 — Covenant (Overview)</a></strong> — the shape of the whole theme</div>
+    <div class="line">• <strong>Theme 4, Module 4 — The New Covenant Prophesied</strong> (coming) — Jeremiah's solution to the heart problem the Davidic line could not solve</div>
+    <div class="line">• <strong>Theme 4, Module 5 — The New Covenant in Christ</strong> (coming) — the throne of David finally and forever occupied</div>
+    <div class="line">• <strong><a href="../characters/david/09-covenant.html" style="color:#7E57C2;">David Library, Chapter 09 — The Davidic Covenant</a></strong> — the same passage in narrative context</div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- NOTES BOX — Quill editor (new architecture)                  -->
+  <!-- main.js initQuillEditors() mounts Quill on the .quill-editor -->
+  <!-- main.js injectSyncButton() adds 💾 Save & sync top+bottom    -->
+  <!-- ============================================================ -->
+  <div class="notes-box">
+    <div class="label">✏️ My notes &amp; convictions on Module 3 — The Davidic Covenant:</div>
+    <div class="quill-editor" id="n-t4m3" data-placeholder="Write your convictions here. Date your entry."></div>
+  </div>
+
+  <!-- NAVIGATION FOOTER -->
+  <div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid #ddd;">
+    <a href="module2.html" class="btn-primary" style="font-size:12px;">← Module 2 — Mosaic Covenant</a>
+    <a href="index.html" class="btn-primary" style="font-size:12px;">Theme 4 Overview</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-t4m3'];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+
+</body>
+</html>

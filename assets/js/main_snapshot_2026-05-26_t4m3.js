@@ -87,9 +87,6 @@ const COMPLETION_KEYS = {
   'theme3/module3':  'complete-t3m3',
   'theme3/module4':  'complete-t3m4',
   'theme3/module5':  'complete-t3m5',
-  'theme4/module1':  'complete-t4m1',
-  'theme4/module2':  'complete-t4m2',
-  'theme4/module3':  'complete-t4m3',
 
   // David library chapters (Ch 01-18). Appendices intentionally excluded.
   'characters/david/01-origins':           'complete-david-01',
