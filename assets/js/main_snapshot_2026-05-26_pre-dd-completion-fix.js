@@ -174,18 +174,11 @@ const COMPLETION_KEYS = {
   'characters/david/26-strange-deaths':    'complete-david-26',
 
   // Deep Dives (study/content pages, completable per nav.js).
-  // 2026-05-26 (initial): Added 'DeepDive-PowerBlocs'.
-  // 2026-05-26 (cleanup): Added the 6 pre-existing Deep Dives whose Mark-as-Complete
-  // buttons were silently broken (completable:true in nav.js but missing here).
-  // Path keys derived from URL: getCompleteKey() strips /CampbellBibleStudy/, leading
-  // /, and trailing .html — so 'DeepDive-Calendars.html' becomes 'DeepDive-Calendars'.
-  // Same bug class and same fix shape as the David alphabetic chapter cleanup.
-  'DeepDive-Calendars':                    'complete-dd-calendars',
-  'DeepDive-Shabua':                       'complete-dd-shabua',
-  'DeepDive-Willow':                       'complete-dd-willow',
-  'DeepDive-Gematria':                     'complete-dd-gematria',
-  'DeepDive-Mormonism':                    'complete-dd-mormonism',
-  'DeepDive-JosephSmith':                  'complete-dd-josephsmith',
+  // 2026-05-26: Added 'DeepDive-PowerBlocs'. The 6 existing Deep Dives
+  // (Calendars, Shabua, Willow, Gematria, Mormonism, JosephSmith) are
+  // marked completable: true in nav.js but missing entries here — silent
+  // bug, Mark-as-Complete button does nothing. Same pattern as the David
+  // alphabetic chapter fix (5/26). Deferred for a future cleanup pass.
   'DeepDive-PowerBlocs':                   'complete-dd-powerblocs',
 };
 
