@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Words of Mormon (1830) — 1830 Edition — Book of Mormon — Campbell Bible Study (Admin)</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:90px; font-family:Arial,sans-serif; font-size:12px; background:#fff; }
+    .ql-editor { min-height:90px; padding:7px 9px; }
+    /* Admin gate */
+    #admin-gate { display:none; max-width:560px; margin:80px auto; padding:32px; background:#5C1A1A; color:#fff; border-radius:10px; font-family:Arial,sans-serif; }
+    #admin-gate h2 { margin:0 0 14px; color:#FFD54F; font-family:Georgia,serif; }
+    #admin-gate p { line-height:1.7; margin:8px 0; }
+    #admin-gate a { color:#FFD54F; }
+    /* 1830 page styles — distinct visual identity from modern */
+    .bom-admin-banner { background:linear-gradient(135deg,#3D1F0F,#5C2E18); color:#fff; padding:14px 20px; border-radius:8px; margin:16px 0 24px; font-family:Arial,sans-serif; font-size:13px; line-height:1.6; border-left:5px solid #C49B3A; }
+    .bom-admin-banner strong { color:#FFD54F; }
+    .ocr-warning { background:#FFF3CD; border:2px solid #B8923F; border-left:5px solid #B8923F; border-radius:8px; padding:14px 18px; margin:16px 0; font-family:Arial,sans-serif; font-size:13px; color:#5C3A0F; line-height:1.65; }
+    .ocr-warning strong { color:#8A6A1F; }
+    .bom-chap-nav { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 20px; padding:12px; background:#F5F0E5; border:1px solid #C49B3A; border-radius:8px; }
+    .bom-chap-nav a { display:inline-block; padding:6px 10px; background:#fff; border:1px solid #C49B3A; border-radius:5px; font-family:Georgia,serif; font-size:13px; color:#3D1F0F; text-decoration:none; min-width:36px; text-align:center; font-style:italic; }
+    .bom-chap-nav a:hover { background:#3D1F0F; color:#FFD54F; }
+    .bom-1830-chapter { margin:32px 0; padding:24px 26px; background:#FBF6E9; border:1px solid #C49B3A; border-radius:8px; }
+    .bom-1830-chapter h3 { font-family:Georgia,serif; color:#3D1F0F; margin:0 0 6px; font-size:24px; font-style:italic; font-weight:normal; text-align:center; letter-spacing:0.05em; }
+    .bom-1830-chapter .modern-ref { font-family:Arial,sans-serif; font-size:11px; color:#8A6A1F; text-align:center; text-transform:uppercase; letter-spacing:0.10em; margin-bottom:18px; padding-bottom:12px; border-bottom:1px solid #C49B3A; }
+    .bom-1830-chapter .modern-ref strong { color:#3D1F0F; }
+    .bom-1830-text { font-family:'Times New Roman', Georgia, serif; font-size:16px; line-height:1.85; color:#2C1810; text-align:justify; }
+    .bom-1830-text p { margin:14px 0; text-indent:1.5em; }
+    .bom-1830-text p:first-child { text-indent:0; }
+    .bom-1830-text p:first-child::first-letter { font-size:38px; line-height:1; float:left; margin:4px 8px 0 0; font-family:Georgia,serif; color:#5C2E18; }
+    .bom-preamble { background:#F0E8D0; border-left:4px solid #8A6A1F; padding:14px 18px; margin:14px 0; font-family:Georgia,serif; font-style:italic; color:#5C2E18; border-radius:0 6px 6px 0; }
+    .bom-book-card { display:block; padding:14px 18px; margin:8px 0; background:#FBF6E9; border:1px solid #C49B3A; border-left:4px solid #3D1F0F; border-radius:6px; text-decoration:none; color:#3D1F0F; font-family:Georgia,serif; }
+    .bom-book-card:hover { background:#F5E9C7; border-left-color:#C49B3A; }
+    .bom-book-card .bname { font-size:17px; font-weight:bold; font-style:italic; color:#3D1F0F; }
+    .bom-book-card .bmeta { font-size:12px; color:#8A6A1F; margin-top:3px; font-family:Arial,sans-serif; font-style:normal; }
+    .bom-section-head { font-family:Georgia,serif; color:#5C2E18; font-size:14px; text-transform:uppercase; letter-spacing:0.10em; margin:22px 0 8px; padding-bottom:4px; border-bottom:1px solid #C49B3A; font-style:italic; }
+    .cross-ref-callout { background:#FDF6E3; border:1px solid #B8923F; border-radius:6px; padding:12px 16px; margin:14px 0; font-family:Arial,sans-serif; font-size:13px; color:#3B2D1F; }
+    .cross-ref-callout a { color:#2E75B6; text-decoration:none; font-weight:bold; }
+    .source-callout { background:#F4F8EE; border-left:4px solid #6B8E3A; padding:10px 14px; margin:10px 0; font-family:Arial,sans-serif; font-size:12px; color:#3B5E1A; border-radius:4px; }
+    .key-passage { background:#FFEBE8; border:2px solid #B22222; border-radius:6px; padding:14px 18px; margin:18px 0; font-family:Georgia,serif; font-size:14px; color:#3D1F0F; }
+    .key-passage strong { color:#B22222; font-family:Arial,sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:0.10em; display:block; margin-bottom:6px; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+  <script>
+    (function() {
+      var ok = false;
+      try {
+        if (sessionStorage.getItem('cbsg-admin') === 'true') ok = true;
+      } catch(e) {}
+      if (!ok) {
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('app').style.display = 'none';
+          document.getElementById('admin-gate').style.display = 'block';
+        });
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<div id="admin-gate">
+  <h2>🔒 Admin only</h2>
+  <p>The Book of Mormon study tool is restricted to admin access on this site.</p>
+  <p>Return to the <a href="../index.html">home page</a> and log in via the 🔒 button in the top bar.</p>
+  <p style="margin-top:18px;">For the public theological analysis:</p>
+  <p>→ <a href="../DeepDive-BookOfMormon.html">📖 Book of Mormon — Text &amp; Evidence (Deep Dive)</a></p>
+</div>
+
+<div id="github-bar"></div>
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="1830-index.html" style="display:inline-block;margin-bottom:8px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to 1830 Index</a>
+  <a href="wom.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">📖 View modern edition of Words of Mormon →</a>
+  <div class="bom-admin-banner">
+    <strong>🔒 ADMIN · 1830 ORIGINAL EDITION</strong> &nbsp;|&nbsp; This is the text as Joseph Smith first published it (Palmyra, NY, 1830) — <em>before</em> the 1837 theological edits, the 1879 verse divisions by Orson Pratt, the 1920 reformat, or the 1981 racial wording change. Source: digital replica of the 1830 facsimile (Internet Archive, OCR'd from the Jenson edition). Compare with: <a href="wom.html" style="color:#FFD54F;">📖 Words of Mormon (modern)</a> &middot; <a href="compare.html" style="color:#FFD54F;">📋 Side-by-side</a> &middot; <a href="bible-parallels.html" style="color:#FFD54F;">📜 Bible parallels</a> &middot; <a href="bible-parallels-isaiah.html" style="color:#FFD54F;">📜 Isaiah parallels</a>.
+  </div>
+  <div class="ocr-warning">
+    <strong>⚠️ OCR DISCLAIMER:</strong> This text was OCR'd from a scanned facsimile of the 1830 printing. <em>Expect scan errors throughout</em> — e.g., "I, Neput" for "I, Nephi", "Anp" for "And", "L," for "I,", spurious punctuation. These are NOT changes I made; they are artifacts of the scanning process. The whole point of viewing the 1830 is to see the original 19th-century spelling, grammar, and word choices — so the spelling has been left as the OCR rendered it. <strong>For the critical theological readings</strong> (e.g., "mother of God" in 1 Nephi, "Eternal Father" without "Son of", "white and a delightsome people"), the OCR is accurate at the key phrases and these have been verified.
+  </div>
+  <h1 class="page-title" style="font-family:Georgia,serif;font-style:italic;color:#3D1F0F;">Words of Mormon</h1>
+  <p style="font-family:Arial,sans-serif;font-size:13px;color:#8A6A1F;margin:8px 0 16px;">1 chapter (Roman numerals as originally printed) · ~859 words · 1830 Palmyra edition</p>
+  <div class="bom-1830-chapter" id="ch1">
+    <h3>CHAPTER I</h3>
+    <div class="modern-ref">Modern reference: <strong>Words of Mormon 1:1 – 1:18</strong></div>
+    <div class="bom-1830-text">
+      <p>Anp now I, Mormon, being about to deliver up the record which I have been making, into the hands of my son Moroni, behold, I have witnessed almost all the destruction of my people, the Nephites. And it is many hundred years after the coming of Christ, that I deliver these records into the hands of my son; and it supposeth me that he will witness the entire destruction of my people. But may God grant that he may survive them, that he may write somewhat concerning them, and somewhat concerning Christ, that perhaps some day it may profit them.</p>
+      <p>And now, I speak somewhat concerning that which I have written: for after that I had made an abridgment from the plates of Nephi, down to the reign of this king Benjamin, of which Amaleki spake, I searched among the records which had been delivered into my hands, and I found these plates, which contained this small account of the Prophets, from Jacob, down to the reign of this king Benjamin; and also many of the words of Nephi. And the things which are upon these plates pleasing me, because of the prophecies of the coming of Christ; and my fathers knowing that many of them have</p>
+      <p>been fulfilled, yea, and I also know that as many things as have been prophesied concerning us down to this day, has been fulfilled; and as many as go beyond this day, must surely come to pass; wherefore, I chose these things, to finish my record upon them, which remainder of my record I shall take from the plates of Nephi; and I cannot write a hundredth part of the things of my people.</p>
+      <p>But behold, I shall take these plates, which contain these prophecyings and revelations, and put them with the remainder of my record, for they are choice unto me; and I know they will be choice unto my brethren. And I do this for a wise purpose; for thus it whispereth me, according to the workings of the spirit of the Lord which is in me. And now, I do not know all things; but the Lord knoweth all things which is to come; wherefore, he worketh in me to do according to his will. And my prayer to God, is concerning my brethren, that they may once again come to the knowledge of God; yea, the redemption of Christ; that they may once again be a delightsome people.</p>
+      <p>And now I, Mormon, proceed to finish out my record, which I take from the plates of Nephi; and I make it according to the knowledge and the understanding which God hath given me. Wherefore, it came to pass that after Amaleki had delivered up these plates into the hands of king Benjamin, he took them and put them with the other plates, which contained records which had been handed down by the kings, from generation to generation, until the days of king Benjamin; and they were handed down from king Benjamin, from generation to generation, until they have fallen into my hands. And I, Mormon, pray to God that they may be preserved, from this time hence forth. And I know that they will be preserved: for there are great things written upon them out of which my people and their brethren, shall be judged at the great and last day, according to the word of God which is written.</p>
+      <p>And now, concerning this king Benjamin: He had somewhat contentions among his own people. And it came to pass also, that the armies of the Lamanites came down out of the land of Nephi, to battle against his people. But behold, king Benjamin gathered together his armies, and he did stand against them; and he did fight with strength of his own arm, with the sword of Laban; and in the strength of the Lord they did contend against their enemies, until they had slain many thousands of the Lamanites. And it came to pass that they did</p>
+      <p>contend against the Lamanites, until they had driven them out of all the lands of their inheritance.</p>
+      <p>And it came to pass that after there had been false Christs, and their mouths had been shut, and they punished according to their crimes; and after there had been false prophets, and false preachers, and teachers among the people, and all these having been punished according to their crimes; and after there having been much contentions and many dissentions, away unto the Lamanites, behold, it came to pass that king Benjamin, with the assistance of the Holy Prophets which were among his people: for behold, king Benjamin was a holy man, and he did reign over his people in righteousness. And there were many holy men in the land; and they did speak the word of God, with power and with authority; and they did use much sharpness, because of the stiffneckedness of the people; wherefore, with the help of these, king Benjamin, by laboring with all the might of his body and the faculty of his whole soul and also the prophets, wherefore, they did once more establish peace in the land.</p>
+    </div>
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ My notes — Words of Mormon (1830):</div>
+    <div class="quill-editor" id="n-bom-1830-wom" data-placeholder="Notes, comparisons with the modern edition..." style="min-height:120px;"></div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <a href="1830-index.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to 1830 Index</a>
+    &nbsp;&nbsp;<a href="wom.html" style="font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">📖 Modern edition →</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-bom-1830-wom'];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>

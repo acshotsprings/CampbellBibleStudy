@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compare: 1830 ↔ Modern — Book of Mormon — Campbell Bible Study (Admin)</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:90px; font-family:Arial,sans-serif; font-size:12px; background:#fff; }
+    .ql-editor { min-height:90px; padding:7px 9px; }
+    /* Admin gate */
+    #admin-gate { display:none; max-width:560px; margin:80px auto; padding:32px; background:#5C1A1A; color:#fff; border-radius:10px; font-family:Arial,sans-serif; }
+    #admin-gate h2 { margin:0 0 14px; color:#FFD54F; font-family:Georgia,serif; }
+    #admin-gate p { line-height:1.7; margin:8px 0; }
+    #admin-gate a { color:#FFD54F; }
+    /* Comparison page styles */
+    .bom-admin-banner { background:linear-gradient(135deg,#5C1A1A,#7A2828); color:#fff; padding:14px 20px; border-radius:8px; margin:16px 0 24px; font-family:Arial,sans-serif; font-size:13px; line-height:1.6; border-left:5px solid #FFD54F; }
+    .bom-admin-banner strong { color:#FFD54F; }
+    .bom-admin-banner a { color:#FFD54F; }
+    .cat-filter-bar { background:#F6F9FC; border:1px solid #d0dce8; border-radius:8px; padding:14px 18px; margin:16px 0 24px; }
+    .cat-filter-bar .cat-label { font-family:Arial,sans-serif; font-size:12px; font-weight:bold; color:#1F3864; text-transform:uppercase; letter-spacing:0.08em; margin-right:12px; }
+    .cat-filter-bar a { display:inline-block; padding:5px 10px; margin:3px 4px 3px 0; background:#fff; border:1px solid #c8d4e0; border-radius:5px; font-family:Arial,sans-serif; font-size:12px; color:#1F3864; text-decoration:none; }
+    .cat-filter-bar a:hover { background:#1F3864; color:#fff; }
+    .cat-section { margin:32px 0 16px; }
+    .cat-section h2 { font-family:Georgia,serif; color:#5C1A1A; font-size:22px; margin:0 0 4px; border-bottom:2px solid #5C1A1A; padding-bottom:6px; }
+    .cat-section .cat-desc { font-family:Arial,sans-serif; font-size:13px; color:#3B2D1F; line-height:1.65; margin:8px 0 18px; padding:10px 14px; background:#FFF8E8; border-left:4px solid #B8923F; border-radius:4px; }
+    .comparison-entry { background:#fff; border:1px solid #d0dce8; border-radius:8px; padding:16px 18px; margin:14px 0; }
+    .comp-meta { display:flex; flex-wrap:wrap; gap:14px; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid #e0e6ed; font-family:Arial,sans-serif; font-size:12px; }
+    .comp-cat { padding:3px 8px; border-radius:4px; font-weight:bold; text-transform:uppercase; letter-spacing:0.06em; font-size:11px; }
+    .comp-ref { color:#666; }
+    .comp-ref a { text-decoration:none; }
+    .comp-ref a:hover { text-decoration:underline; }
+    .comp-cols { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media (max-width: 700px) { .comp-cols { grid-template-columns: 1fr; } }
+    .comp-col { padding:14px 16px; border-radius:6px; }
+    .comp-1830 { background:#FBF6E9; border:1px solid #C49B3A; }
+    .comp-modern { background:#F0F5FB; border:1px solid #6F9CC4; }
+    .comp-col-label { font-family:Arial,sans-serif; font-size:11px; font-weight:bold; text-transform:uppercase; letter-spacing:0.10em; margin-bottom:8px; }
+    .comp-1830 .comp-col-label { color:#8B4513; }
+    .comp-modern .comp-col-label { color:#1F3864; }
+    .comp-col-text { font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#2C1810; }
+    .comp-1830 .comp-col-text { font-family:'Times New Roman', Georgia, serif; }
+    .comp-note { margin-top:12px; padding:10px 14px; background:#F4F8EE; border-left:3px solid #6B8E3A; border-radius:4px; font-family:Arial,sans-serif; font-size:12px; color:#3B5E1A; line-height:1.65; font-style:italic; }
+    .summary-stats { display:flex; flex-wrap:wrap; gap:14px; margin:14px 0 20px; }
+    .stat-box { flex:1; min-width:140px; padding:12px 16px; background:#F6F9FC; border:1px solid #d0dce8; border-radius:6px; text-align:center; font-family:Arial,sans-serif; }
+    .stat-box .stat-num { font-size:28px; font-weight:bold; color:#1F3864; font-family:Georgia,serif; }
+    .stat-box .stat-label { font-size:11px; color:#666; text-transform:uppercase; letter-spacing:0.08em; margin-top:4px; }
+    .ocr-warning { background:#FFF3CD; border:2px solid #B8923F; border-left:5px solid #B8923F; border-radius:8px; padding:14px 18px; margin:16px 0; font-family:Arial,sans-serif; font-size:13px; color:#5C3A0F; line-height:1.65; }
+    .ocr-warning strong { color:#8A6A1F; }
+    mark { background:#FFE082; padding:1px 3px; border-radius:2px; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+  <script>
+    (function() {
+      var ok = false;
+      try {
+        if (sessionStorage.getItem('cbsg-admin') === 'true') ok = true;
+      } catch(e) {}
+      if (!ok) {
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('app').style.display = 'none';
+          document.getElementById('admin-gate').style.display = 'block';
+        });
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<div id="admin-gate">
+  <h2>🔒 Admin only</h2>
+  <p>The Book of Mormon comparison tool is admin-restricted.</p>
+  <p>Return to the <a href="../index.html">home page</a> and log in via the 🔒 button in the top bar.</p>
+  <p style="margin-top:18px;">For the public theological analysis:</p>
+  <p>→ <a href="../DeepDive-BookOfMormon.html">📖 Book of Mormon — Text &amp; Evidence (Deep Dive)</a></p>
+</div>
+
+<div id="github-bar"></div>
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="index.html" style="display:inline-block;margin-bottom:8px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Modern Index</a>
+  <a href="1830-index.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#8B4513;text-decoration:none;font-family:Arial,sans-serif;">📜 1830 Index</a>
+  <a href="bible-parallels.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#3B5E1A;text-decoration:none;font-family:Arial,sans-serif;">📜 Bible Parallels</a>
+  <a href="bible-parallels-isaiah.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#8B4513;text-decoration:none;font-family:Arial,sans-serif;">📜 Isaiah Parallels →</a>
+
+  <div class="bom-admin-banner">
+    <strong>🔒 ADMIN · 1830 ↔ MODERN COMPARISON VIEWER</strong> &nbsp;|&nbsp; Side-by-side passages from both editions. Each row shows the same passage as it appeared in the 1830 Palmyra printing (Joseph Smith's original dictation) and as it appears in the modern LDS edition. For the theological framing, see <a href="../DeepDive-BookOfMormon.html">📖 the Deep Dive</a>.
+  </div>
+
+  <h1 class="page-title">📋 1830 ↔ Modern Comparison</h1>
+  <p style="font-family:Arial,sans-serif;font-size:13px;color:#666;margin:8px 0 16px;">47 verified passage comparisons · each one extracted directly from both editions</p>
+
+  <div class="summary-stats">
+    <div class="stat-box"><div class="stat-num">47</div><div class="stat-label">Total comparisons</div></div>
+    <div class="stat-box"><div class="stat-num">7</div><div class="stat-label">Theological edits</div></div>
+    <div class="stat-box"><div class="stat-num">3</div><div class="stat-label">Plot fixes</div></div>
+    <div class="stat-box"><div class="stat-num">7</div><div class="stat-label">Grammar edits</div></div>
+    <div class="stat-box"><div class="stat-num">1</div><div class="stat-label">Racial-wording edits</div></div>
+  </div>
+
+  <div class="ocr-warning">
+    <strong>⚠️ About the 1830 text shown here:</strong> The 1830 column is OCR'd from a scanned facsimile of the original Palmyra printing. Expect scattered scan errors (e.g., "Neput" for "Nephi", "Anp" for "And", "L," for "I,") throughout the 1830 text. These are NOT real textual changes — they're OCR artifacts. The yellow highlights mark the specific phrase that's being compared between editions. Use the chapter-level links (📜 and 📖) to verify any comparison against the full source text.
+  </div>
+
+  <div class="ocr-warning" style="background:#E8F4F8;border-color:#1F6F95;color:#0F3D5F;">
+    <strong>How to read each entry:</strong> The yellow highlight in each column shows the phrase being compared. Where the modern phrase differs from the 1830 phrase, that's the documented change. Where the phrases match closely, the entry is a control sample showing what was NOT changed. Click the chapter links above each entry to jump to the surrounding context in the full edition pages.
+  </div>
+
+  <div class="cat-filter-bar">
+    <div class="cat-label">Jump to category:</div>
+    <a href="#cat-theological-1837">Theological (1837) (5)</a>
+    <a href="#cat-theological">Theological (2)</a>
+    <a href="#cat-plot-continuity">Plot / Continuity (3)</a>
+    <a href="#cat-racial-wording-1981">Racial Wording (1981) (1)</a>
+    <a href="#cat-grammar-style-change">Grammar / Style change (1)</a>
+    <a href="#cat-grammar-which-who">Grammar: &#x27;which&#x27; → &#x27;who&#x27; (4)</a>
+    <a href="#cat-grammar-archaic-verbs">Grammar: archaic verbs (2)</a>
+    <a href="#cat-isaiah-verbatim-parallel">Isaiah verbatim parallel (2)</a>
+    <a href="#cat-sermon-on-the-mount-parallel">Sermon on the Mount parallel (2)</a>
+    <a href="#cat-doctrinal-compare">Doctrinal (compare) (7)</a>
+    <a href="#cat-style">Style (17)</a>
+    <a href="#cat-ocr-artifact-original-spelling">OCR Artifact / Original Spelling (1)</a>
+  </div>
+  <div class="cat-section" id="cat-theological-1837">
+    <h2>Theological (1837) <span style="font-size:14px;color:#999;font-weight:normal;font-family:Arial,sans-serif;">(5)</span></h2>
+    <div class="cat-desc">The four 1837 &#x27;Son of&#x27; insertions in 1 Nephi 11–13. The 1830 text identified Jesus with the Father (echoing modalism); the 1837 edit inserted &#x27;the Son of&#x27; to distinguish them.</div>
+    <div class="comparison-entry" id="entry-0" data-category="Theological (1837)">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Theological (1837)</span>
+    <span class="comp-ref"><a href="1ne.html#ch11" style="color:#1F3864;font-weight:bold;">1 Nephi 11:18</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch3" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch III</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">I do not know the meaning of all things. And he said unto me, Behold, the virgin which thou seest, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">is the mother of God</mark>, after the manner of flesh. And it came to pass I beheld that she was carried away in the spirit;</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And he said unto me: Behold, the virgin whom thou seest <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">is the mother of the Son of God</mark>, after the manner of the flesh.</div>
+    </div>
+  </div>
+  <div class="comp-note">1837 edit inserted &#x27;the Son of&#x27; — theologically separating Father from Son. This is the most famous textual change.</div>
+</div>
+    <div class="comparison-entry" id="entry-1" data-category="Theological (1837)">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Theological (1837)</span>
+    <span class="comp-ref"><a href="1ne.html#ch11" style="color:#1F3864;font-weight:bold;">1 Nephi 11:21</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch3" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch III</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">again, bearing a chid in her arms. And the angel said unto me, behold the Lamb of God, yea, even <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">the Eternal Father! Knowest thou</mark> the meaning of the tree which thy father saw? And I answered him, saying: Yea, it is the love of</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And the angel said unto me: Behold the Lamb of God, yea, even <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">the Son of the Eternal Father! Knowest</mark> thou the meaning of the tree which thy father saw?</div>
+    </div>
+  </div>
+  <div class="comp-note">1837 edit inserted &#x27;the Son of&#x27; before &#x27;the Eternal Father&#x27;.</div>
+</div>
+    <div class="comparison-entry" id="entry-2" data-category="Theological (1837)">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Theological (1837)</span>
+    <span class="comp-ref"><a href="1ne.html#ch11" style="color:#1F3864;font-weight:bold;">1 Nephi 11:32</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch3" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch III</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">again, saying, look! And I looked and beheld the Lamb of God, that he was taken by the people; yea, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">the Everlasting God, was judged of the world</mark>; and I saw and bear record. And L, Nephi, saw that he was lifted up upon the cross, and slain</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And it came to pass that the angel spake unto me again, saying: Look! And I looked and beheld the Lamb of God, that he was taken by the people; yea, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">the Son of the everlasting God was judged of the world</mark>; and I saw and bear record.</div>
+    </div>
+  </div>
+  <div class="comp-note">1837 edit inserted &#x27;the Son of&#x27;. The 1830 wording said Christ was &#x27;the Everlasting God&#x27;.</div>
+</div>
+    <div class="comparison-entry" id="entry-3" data-category="Theological (1837)">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Theological (1837)</span>
+    <span class="comp-ref"><a href="1ne.html#ch13" style="color:#1F3864;font-weight:bold;">1 Nephi 13:40</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch3" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch III</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">precious things which have been taken away from them; and shall make known to all kindreds, tongues, and people, that <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">the Lamb of God is the Eternal Father</mark> and the Saviour of the world; and that all men must come unto Him, or they cannot be sav ed;</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And the angel spake unto me, saying: These last records, which thou hast seen among the Gentiles, shall establish the truth of the first, which are of the twelve apostles of the Lamb, and shall make known the plain and precious things which have been taken away from them; and shall make known to all kindreds, tongues, and people, that <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">the Lamb of God is the Son of the Eternal Father</mark>, and the Savior of the world; and that all men must come unto him, or they cannot be saved.</div>
+    </div>
+  </div>
+  <div class="comp-note">1837 edit inserted &#x27;the Son of&#x27; — the fourth of four &#x27;Son of&#x27; insertions in 1 Nephi.</div>
+</div>
+    <div class="comparison-entry" id="entry-4" data-category="Theological (1837)">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Theological (1837)</span>
+    <span class="comp-ref"><a href="1ne.html#ch19" style="color:#1F3864;font-weight:bold;">1 Nephi 19:20</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch5" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch V</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">to the words of the angel, as a man, into the hands of wicked men, to be lifted up according to the words of Zenock, and to be crucified, according to the words of Neum, and to be buried in a sepulchre, and according to</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">For behold, I have workings in the spirit, which doth weary me even that all my joints are weak, for those who are at Jerusalem; for had not the Lord been merciful, to show unto me concerning them, even as he had prophets of old, I should have perished also.</div>
+    </div>
+  </div>
+  <div class="comp-note">1 Nephi 19:20 — a passage about Christ being lifted up. Verify if 1830 wording differs.</div>
+</div>
+  </div>
+  <div class="cat-section" id="cat-theological">
+    <h2>Theological <span style="font-size:14px;color:#999;font-weight:normal;font-family:Arial,sans-serif;">(2)</span></h2>
+    <div class="cat-desc">Other theological wording. Not all of these were edited — some are control samples showing what was left intact.</div>
+    <div class="comparison-entry" id="entry-5" data-category="Theological">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Theological</span>
+    <span class="comp-ref"><a href="alm.html#ch7" style="color:#1F3864;font-weight:bold;">Alma 7:10</a> &nbsp;|&nbsp; 
+    <a href="1830-alm.html#ch5" style="color:#8B4513;font-weight:bold;">1830 Alma Ch V</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">forefathers, she being a Virgin, a precious and chosen vessel, who shall be overshadowed, and conceive by the power of the Holy Ghost, and bring forth a son, yea, even the Son of God; and he shall go forth, suffering pains, and afflictions, and temptations of every kind;</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And behold, he shall be born of Mary, at Jerusalem which is the land of our forefathers, she being a virgin, a precious and chosen vessel, who shall be overshadowed and conceive by the power of the Holy Ghost, and bring forth a son, yea, even the Son of God.</div>
+    </div>
+  </div>
+  <div class="comp-note">Alma 7:10 (the famous &#x27;born at Jerusalem&#x27; passage). Compare across editions.</div>
+</div>
+    <div class="comparison-entry" id="entry-6" data-category="Theological">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Theological</span>
+    <span class="comp-ref"><a href="mos.html#ch15" style="color:#1F3864;font-weight:bold;">Mosiah 15:1</a> &nbsp;|&nbsp; 
+    <a href="1830-mos.html#ch1" style="color:#8B4513;font-weight:bold;">1830 Mosiah Ch I</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">the Lord Omnipotent who reigneth, which was, and is from all eternity to all eternity, shall come down from Heaven, among the children of men, and shall dwell in a tabernacle of clay, and shall go forth amongst men, working mighty miracles, such as healing</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And now Abinadi said unto them: I would that ye should understand that <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">God himself shall come down among the children of men</mark>, and shall redeem his people.</div>
+    </div>
+  </div>
+  <div class="comp-note">Mosiah 15:1 — Abinadi&#x27;s declaration. Compare for any &#x27;Son of God&#x27; insertions.</div>
+</div>
+  </div>
+  <div class="cat-section" id="cat-plot-continuity">
+    <h2>Plot / Continuity <span style="font-size:14px;color:#999;font-weight:normal;font-family:Arial,sans-serif;">(3)</span></h2>
+    <div class="cat-desc">Edits that fix narrative or naming errors in the 1830 (e.g., a dead king still performing actions, or a name used before it was supposedly revealed).</div>
+    <div class="comparison-entry" id="entry-7" data-category="Plot / Continuity">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Plot / Continuity</span>
+    <span class="comp-ref"><a href="1ne.html#ch12" style="color:#1F3864;font-weight:bold;">1 Nephi 12:18</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch3" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch III</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">men. And a great and terrible gulf divideth them; yea, even the word of the justice of the Eternal God, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">and Jesus Christ, which is the Lamb of God</mark>, of whom the Holy Ghost beareth record, from the beginning of the world until this time, and from this time</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And the large and spacious building, which thy father saw, is vain imaginations and the pride of the children of men. And a great and a terrible gulf divideth them; yea, even the word of the justice of the Eternal God, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">and the Messiah who is the Lamb of God</mark>, of whom the Holy Ghost beareth record, from the beginning of the world until this time, and from this time henceforth and forever.</div>
+    </div>
+  </div>
+  <div class="comp-note">1830 used the name &#x27;Jesus Christ&#x27; — but a later passage (2 Nephi 10:3) says that name had not yet been revealed to the prophets. Changed to &#x27;Messiah&#x27; to fix the continuity error. (&#x27;which&#x27; also changed to &#x27;who&#x27;.)</div>
+</div>
+    <div class="comparison-entry" id="entry-8" data-category="Plot / Continuity">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Plot / Continuity</span>
+    <span class="comp-ref"><a href="mos.html#ch21" style="color:#1F3864;font-weight:bold;">Mosiah 21:28</a> &nbsp;|&nbsp; 
+    <a href="1830-mos.html#ch5" style="color:#8B4513;font-weight:bold;">1830 Mosiah Ch V</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">for he hath wherewith that he can look, and translate all records that are of ancient date; and it is a gift from God. And the things are called interpreters; and no man can look in them, except he be commanded, lest he should</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And now Limhi was again filled with joy in learning from the mouth of Ammon that <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">king Mosiah had a gift from God</mark>, whereby he could interpret such engravings; yea, and Ammon also did rejoice.</div>
+    </div>
+  </div>
+  <div class="comp-note">King Benjamin had already died earlier in the narrative. &#x27;Benjamin&#x27; was changed to &#x27;Mosiah&#x27; (his son). The 1830 text had a dead king still performing translations.</div>
+</div>
+    <div class="comparison-entry" id="entry-9" data-category="Plot / Continuity">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Plot / Continuity</span>
+    <span class="comp-ref"><a href="eth.html#ch4" style="color:#1F3864;font-weight:bold;">Ether 4:1</a> &nbsp;|&nbsp; 
+    <a href="1830-eth.html#ch1" style="color:#8B4513;font-weight:bold;">1830 Ether Ch I</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">forbidden to come unto the children of men, until after that he should be lifted up upon the cross: and <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">for this cause did king Benjamin keep them</mark>, that they should not come unto the world until after Christ should shew himself unto his people. And after that</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And the Lord commanded the brother of Jared to go down out of the mount from the presence of the Lord, and write the things which he had seen; and they were forbidden to come unto the children of men until after that he should be lifted up upon the cross; and <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">for this cause did king Mosiah keep them</mark>, that they should not come unto the world until after Christ should show himself unto his people.</div>
+    </div>
+  </div>
+  <div class="comp-note">The same Benjamin→Mosiah fix in Ether 4:1 — a second instance of the same plot error in the 1830.</div>
+</div>
+  </div>
+  <div class="cat-section" id="cat-racial-wording-1981">
+    <h2>Racial Wording (1981) <span style="font-size:14px;color:#999;font-weight:normal;font-family:Arial,sans-serif;">(1)</span></h2>
+    <div class="cat-desc">The 1981 edit to 2 Nephi 30:6 changing &#x27;white&#x27; to &#x27;pure&#x27;. This is the only 1981 edit of this kind.</div>
+    <div class="comparison-entry" id="entry-10" data-category="Racial Wording (1981)">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Racial Wording (1981)</span>
+    <span class="comp-ref"><a href="2ne.html#ch30" style="color:#1F3864;font-weight:bold;">2 Nephi 30:6</a> &nbsp;|&nbsp; 
+    <a href="1830-2ne.html#ch12" style="color:#8B4513;font-weight:bold;">1830 2 Nephi Ch XII</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">scales of darkness shall begin to fall from their eyes; and many generations shall not pass away among them, save <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">they shall be a white and a delightsome people</mark>. And it shall come to pass that the Jews which are scattered, also shall begin to believe in Christ; and</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And then shall they rejoice; for they shall know that it is a blessing unto them from the hand of God; and their scales of darkness shall begin to fall from their eyes; and many generations shall not pass away among them, save they shall be a pure and delightsome people.</div>
+    </div>
+  </div>
+  <div class="comp-note">1981 edit changed &#x27;white&#x27; to &#x27;pure&#x27;. The verse describes a dark-skinned people becoming &#x27;white&#x27;/&#x27;pure&#x27; upon repentance. Other passages teaching the same skin-color doctrine (e.g., 2 Nephi 5:21) were NOT changed.</div>
+</div>
+  </div>
+  <div class="cat-section" id="cat-grammar-style-change">
+    <h2>Grammar / Style change <span style="font-size:14px;color:#999;font-weight:normal;font-family:Arial,sans-serif;">(1)</span></h2>
+    <div class="cat-desc">Substantive grammar/style edits beyond the routine &#x27;which&#x27; → &#x27;who&#x27; / &#x27;was&#x27; → &#x27;were&#x27; fixes.</div>
+    <div class="comparison-entry" id="entry-11" data-category="Grammar / Style change">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Grammar / Style change</span>
+    <span class="comp-ref"><a href="3ne.html#ch27" style="color:#1F3864;font-weight:bold;">3 Nephi 27:27</a> &nbsp;|&nbsp; 
+    <a href="1830-3ne.html#ch13" style="color:#8B4513;font-weight:bold;">1830 3 Nephi Ch XIII</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">be judges of this people, according to the judgement which I shall give unto you, which shall be just; therefore <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">what manner of men had ye ought to be</mark>? — Verily I say unto you, Even as am. And now I go unto the Father. And verily I say</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And know ye that ye shall be judges of this people, according to the judgment which I shall give unto you, which shall be just. Therefore, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">what manner of men ought ye to be</mark>? Verily I say unto you, even as I am.</div>
+    </div>
+  </div>
+  <div class="comp-note">1830 reads &#x27;what manner of men had ye ought to be?&#x27; Modern reads &#x27;what manner of men ought ye to be?&#x27; This is a substantive grammar/style edit, not just a spelling fix.</div>
+</div>
+  </div>
+  <div class="cat-section" id="cat-grammar-which-who">
+    <h2>Grammar: &#x27;which&#x27; → &#x27;who&#x27; <span style="font-size:14px;color:#999;font-weight:normal;font-family:Arial,sans-serif;">(4)</span></h2>
+    <div class="cat-desc">Editors changed &#x27;which&#x27; to &#x27;who&#x27; when referring to persons. ~900 such changes were made site-wide. Sample passages shown.</div>
+    <div class="comparison-entry" id="entry-12" data-category="Grammar: &#x27;which&#x27; → &#x27;who&#x27;">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Grammar: &#x27;which&#x27; → &#x27;who&#x27;</span>
+    <span class="comp-ref"><a href="1ne.html#ch11" style="color:#1F3864;font-weight:bold;">1 Nephi 11:31</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch3" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch III</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">look! And I looked, and beheld the Lamb of God going forth among the children of men. And I beheld <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">multitudes of people which were sick</mark>, and which were afflicted of all manner of diseases, and with devils, and unclean spirits; and the angel spake, and</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And he spake unto me again, saying: Look! And I looked, and I beheld the Lamb of God going forth among the children of men. And I beheld <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">multitudes of people who were sick</mark>, and who were afflicted with all manner of diseases, and with devils and unclean spirits; and the angel spake and showed all these things unto me. And they were healed by the power of the Lamb of God; and the devils and the unclean spirits were cast out.</div>
+    </div>
+  </div>
+  <div class="comp-note">&#x27;which&#x27; for persons was archaic by the 1830s. Editors changed it to &#x27;who&#x27; nearly 900 times across the Book of Mormon.</div>
+</div>
+    <div class="comparison-entry" id="entry-13" data-category="Grammar: &#x27;which&#x27; → &#x27;who&#x27;">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Grammar: &#x27;which&#x27; → &#x27;who&#x27;</span>
+    <span class="comp-ref"><a href="1ne.html#ch1" style="color:#1F3864;font-weight:bold;">1 Nephi 1:6</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch1" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch I</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">should dwindle and perish in unbelief. And now, when I, Nephi, had heard these words, I remembered the words of <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">the Lord which he spake unto me</mark> in the wilderness, saying, that inasmuch as thy seed shall keep my commandments, they shall prosper in the land of</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And it came to pass as he prayed unto the Lord, there came a pillar of fire and dwelt upon a rock before him; and he saw and heard much; and because of the things which he saw and heard he did quake and tremble exceedingly.</div>
+    </div>
+  </div>
+  <div class="comp-note">Search 1830 — see if &#x27;the Lord which&#x27; (referring to God) appears here</div>
+</div>
+    <div class="comparison-entry" id="entry-14" data-category="Grammar: &#x27;which&#x27; → &#x27;who&#x27;">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Grammar: &#x27;which&#x27; → &#x27;who&#x27;</span>
+    <span class="comp-ref"><a href="1ne.html#ch4" style="color:#1F3864;font-weight:bold;">1 Nephi 4:14</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch1" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch I</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">that a nation should dwindle and perish in unbelief. And now, when I, Nephi, had heard these words, I remembered <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">the words of the Lord which he spake</mark> unto me in the wilderness, saying, that inasmuch as thy seed shall keep my commandments, they shall prosper in the</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And now, when I, Nephi, had heard these words, I remembered <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">the words of the Lord which he spake</mark> unto me in the wilderness, saying that: Inasmuch as thy seed shall keep my commandments, they shall prosper in the land of promise.</div>
+    </div>
+  </div>
+  <div class="comp-note">Sample of &#x27;which&#x27; applied to the Lord — many such instances were edited.</div>
+</div>
+    <div class="comparison-entry" id="entry-15" data-category="Grammar: &#x27;which&#x27; → &#x27;who&#x27;">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Grammar: &#x27;which&#x27; → &#x27;who&#x27;</span>
+    <span class="comp-ref"><a href="alm.html#ch3" style="color:#1F3864;font-weight:bold;">Alma 3:1</a> &nbsp;|&nbsp; 
+    <a href="1830-alm.html#ch2" style="color:#8B4513;font-weight:bold;">1830 Alma Ch LI</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">the ground, or rather the bank, which was on the west of the river Sidon, throwing bodies of the Lamanites which had been slain, into the waters of Sidon, that thereby his people might have room to cross and contend with the Lamanites and</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And it came to pass that the Nephites who were not slain by the weapons of war, after having buried those who had been slain—now the number of the slain were not numbered, because of the greatness of their number—after they had finished burying their dead they all returned to their lands, and to their houses, and their wives, and their children.</div>
+    </div>
+  </div>
+  <div class="comp-note">Check Alma 3:1 — women and children reference.</div>
+</div>
+  </div>
+  <div class="cat-section" id="cat-grammar-archaic-verbs">
+    <h2>Grammar: archaic verbs <span style="font-size:14px;color:#999;font-weight:normal;font-family:Arial,sans-serif;">(2)</span></h2>
+    <div class="cat-desc">Other grammar standardization — verb conjugation, pronouns, etc.</div>
+    <div class="comparison-entry" id="entry-16" data-category="Grammar: archaic verbs">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Grammar: archaic verbs</span>
+    <span class="comp-ref"><a href="1ne.html#ch1" style="color:#1F3864;font-weight:bold;">1 Nephi 1:6</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch1" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch I</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">with all his heart, in behalf of his people. And it came to pass, as he prayed unto the Lord, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">there came a pillar of fire</mark> and dwelt upon a rock before him; and he saw and heard much; and because of the things which he</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And it came to pass as he prayed unto the Lord, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">there came a pillar of fire</mark> and dwelt upon a rock before him; and he saw and heard much; and because of the things which he saw and heard he did quake and tremble exceedingly.</div>
+    </div>
+  </div>
+  <div class="comp-note">Sample passage to compare punctuation and capitalization between editions.</div>
+</div>
+    <div class="comparison-entry" id="entry-17" data-category="Grammar: archaic verbs">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Grammar: archaic verbs</span>
+    <span class="comp-ref"><a href="alm.html#ch14" style="color:#1F3864;font-weight:bold;">Alma 14:8</a> &nbsp;|&nbsp; 
+    <a href="1830-alm.html#ch19" style="color:#8B4513;font-weight:bold;">1830 Alma Ch XIX</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">purposes, which was prepared from the foundation of the world. And thus cometh about the salvation and the redemption of men, and also their destruction and misery; therefore, O my son, whosoever will come, and partake of the waters of life freely; and whosoever</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And they brought their wives and children together, and whosoever believed or had been taught to believe in the word of God they caused that they should be cast into the fire, and they also brought forth their records which contained the holy scriptures, and cast them into the fire also, that they might be burned and destroyed by fire.</div>
+    </div>
+  </div>
+  <div class="comp-note">Alma 14:8 — believers being burned. &#x27;children which believed&#x27; check.</div>
+</div>
+  </div>
+  <div class="cat-section" id="cat-isaiah-verbatim-parallel">
+    <h2>Isaiah verbatim parallel <span style="font-size:14px;color:#999;font-weight:normal;font-family:Arial,sans-serif;">(2)</span></h2>
+    <div class="cat-desc">Passages where the Book of Mormon quotes Isaiah essentially word-for-word from the KJV. Compare to the original Isaiah text in your Bible.</div>
+    <div class="comparison-entry" id="entry-18" data-category="Isaiah verbatim parallel">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Isaiah verbatim parallel</span>
+    <span class="comp-ref"><a href="2ne.html#ch12" style="color:#1F3864;font-weight:bold;">2 Nephi 12:2</a> &nbsp;|&nbsp; 
+    <a href="1830-2ne.html#ch8" style="color:#8B4513;font-weight:bold;">1830 2 Nephi Ch VIII</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">men. The word that Isaiah, the son of Amoz, saw concerning Judah and Jerusalem: And it shall come to pass <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">in the last days, when the mountain</mark> of the Lord’s house shall be established in the top of the mountains, and shall be exalted above the hills,</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And it shall come to pass <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">in the last days, when the mountain</mark> of the Lord’s house shall be established in the top of the mountains, and shall be exalted above the hills, and all nations shall flow unto it.</div>
+    </div>
+  </div>
+  <div class="comp-note">2 Nephi 12 ≈ Isaiah 2 word-for-word from the KJV — including the italicized words KJV translators added that weren&#x27;t in the Hebrew.</div>
+</div>
+    <div class="comparison-entry" id="entry-19" data-category="Isaiah verbatim parallel">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Isaiah verbatim parallel</span>
+    <span class="comp-ref"><a href="2ne.html#ch16" style="color:#1F3864;font-weight:bold;">2 Nephi 16:1</a> &nbsp;|&nbsp; 
+    <a href="1830-2ne.html#ch9" style="color:#8B4513;font-weight:bold;">1830 2 Nephi Ch IX</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text"><mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">In the year that king Uzziah died</mark>, I saw also the Lord sitting upon a throne, high and lifted up, and his train filled the temple. Above</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text"><mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">In the year that king Uzziah died</mark>, I saw also the Lord sitting upon a throne, high and lifted up, and his train filled the temple.</div>
+    </div>
+  </div>
+  <div class="comp-note">2 Nephi 16 is Isaiah 6 verbatim (the throne-room vision).</div>
+</div>
+  </div>
+  <div class="cat-section" id="cat-sermon-on-the-mount-parallel">
+    <h2>Sermon on the Mount parallel <span style="font-size:14px;color:#999;font-weight:normal;font-family:Arial,sans-serif;">(2)</span></h2>
+    <div class="cat-desc">3 Nephi&#x27;s Sermon at the Temple echoes Jesus&#x27;s Sermon on the Mount from Matthew 5. Compare directly.</div>
+    <div class="comparison-entry" id="entry-20" data-category="Sermon on the Mount parallel">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Sermon on the Mount parallel</span>
+    <span class="comp-ref"><a href="3ne.html#ch12" style="color:#1F3864;font-weight:bold;">3 Nephi 12:3</a> &nbsp;|&nbsp; 
+    <a href="1830-3ne.html#ch5" style="color:#8B4513;font-weight:bold;">1830 3 Nephi Ch V</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">they shall be visited with fire and with the Holy Ghost, and shall receive a remission of their sins. Yea, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">blessed are the poor in spirit</mark>, which cometh unto me, for theirs is the kingdom of Heaven. And again, blessed are all they that mourn, for</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">Yea, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">blessed are the poor in spirit</mark> who come unto me, for theirs is the kingdom of heaven.</div>
+    </div>
+  </div>
+  <div class="comp-note">3 Nephi&#x27;s Sermon at the Temple closely echoes Matthew 5. Compare to KJV Matthew 5:3 — note how closely they match.</div>
+</div>
+    <div class="comparison-entry" id="entry-21" data-category="Sermon on the Mount parallel">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Sermon on the Mount parallel</span>
+    <span class="comp-ref"><a href="3ne.html#ch12" style="color:#1F3864;font-weight:bold;">3 Nephi 12:6</a> &nbsp;|&nbsp; 
+    <a href="1830-3ne.html#ch5" style="color:#8B4513;font-weight:bold;">1830 3 Nephi Ch V</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">blessed are the poor in spirit, which cometh unto me, for theirs is the kingdom of Heaven. And again, blessed are all they that mourn, for they shall be comforted; and blessed are the meek, for they shall inherit the earth. And blessed are</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And blessed are all they who do hunger and thirst after righteousness, for they shall be filled with the Holy Ghost.</div>
+    </div>
+  </div>
+  <div class="comp-note">Compare with Matthew 5:6 KJV — the BoM version differs by adding &#x27;all they that&#x27;.</div>
+</div>
+  </div>
+  <div class="cat-section" id="cat-doctrinal-compare">
+    <h2>Doctrinal (compare) <span style="font-size:14px;color:#999;font-weight:normal;font-family:Arial,sans-serif;">(7)</span></h2>
+    <div class="cat-desc">Famous doctrinal verses, shown for comparison. Most survived editing intact — these are control samples.</div>
+    <div class="comparison-entry" id="entry-22" data-category="Doctrinal (compare)">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Doctrinal (compare)</span>
+    <span class="comp-ref"><a href="mor.html#ch10" style="color:#1F3864;font-weight:bold;">Moroni 10:4</a> &nbsp;|&nbsp; 
+    <a href="1830-mor.html#ch2" style="color:#8B4513;font-weight:bold;">1830 Moroni Ch II</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">disciples, which were called the Elders of the church, ordained priests and teachers. After they had prayed unto the Father in the name of Christ, they laid their hands upon them, and said, In the name of Jesus Christ I ordain you to be a</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And when ye shall receive these things, I would exhort you that ye would <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">ask God, the Eternal Father, in the name of Christ</mark>, if these things are not true; and if ye shall ask with a sincere heart, with real intent, having faith in Christ, he will manifest the truth of it unto you, by the power of the Holy Ghost.</div>
+    </div>
+  </div>
+  <div class="comp-note">The Moroni 10:4 prayer-promise verse — central to LDS conversion. Compare wording (it survived editing intact).</div>
+</div>
+    <div class="comparison-entry" id="entry-23" data-category="Doctrinal (compare)">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Doctrinal (compare)</span>
+    <span class="comp-ref"><a href="2ne.html#ch9" style="color:#1F3864;font-weight:bold;">2 Nephi 9:7</a> &nbsp;|&nbsp; 
+    <a href="1830-2ne.html#ch6" style="color:#8B4513;font-weight:bold;">1830 2 Nephi Ch VI</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">because man became fallen, they were cut off from the presence of the Lord; wherefore it must needs be an <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">infinite atonement</mark>; save it should be an <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">infinite atonement</mark>, this corruption could not put on corruption. Wherefore, the first judgement which came</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">Wherefore, it must needs be an <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">infinite atonement</mark>—save it should be an <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">infinite atonement</mark> this corruption could not put on incorruption. Wherefore, the first judgment which came upon man must needs have remained to an endless duration. And if so, this flesh must have laid down to rot and to crumble to its mother earth, to rise no more.</div>
+    </div>
+  </div>
+  <div class="comp-note">The &#x27;infinite atonement&#x27; verse — compare to confirm wording stability.</div>
+</div>
+    <div class="comparison-entry" id="entry-24" data-category="Doctrinal (compare)">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Doctrinal (compare)</span>
+    <span class="comp-ref"><a href="alm.html#ch7" style="color:#1F3864;font-weight:bold;">Alma 7:11</a> &nbsp;|&nbsp; 
+    <a href="1830-alm.html#ch5" style="color:#8B4513;font-weight:bold;">1830 Alma Ch V</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">conceive by the power of the Holy Ghost, and bring forth a son, yea, even the Son of God; and <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">he shall go forth, suffering pains</mark>, and afflictions, and temptations of every kind; and this that the word might be fulfilled which saith, He will take</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">he shall go forth, suffering pains</mark> and afflictions and temptations of every kind; and this that the word might be fulfilled which saith he will take upon him the pains and the sicknesses of his people.</div>
+    </div>
+  </div>
+  <div class="comp-note">Alma 7:11 — the &#x27;in the garden&#x27; atonement verse referenced in LDS hymns.</div>
+</div>
+    <div class="comparison-entry" id="entry-25" data-category="Doctrinal (compare)">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Doctrinal (compare)</span>
+    <span class="comp-ref"><a href="2ne.html#ch25" style="color:#1F3864;font-weight:bold;">2 Nephi 25:23</a> &nbsp;|&nbsp; 
+    <a href="1830-2ne.html#ch11" style="color:#8B4513;font-weight:bold;">1830 2 Nephi Ch XI</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">also our brethren, to believe in Christ, and to be reconciled to God; for we know that it is by grace that we are saved, after all that we can do. And notwithstanding we believe in Christ, we keep the law of Moses, and</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">For we labor diligently to write, to persuade our children, and also our brethren, to believe in Christ, and to be reconciled to God; for we know that it is <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">by grace that we are saved, after all we can do</mark>.</div>
+    </div>
+  </div>
+  <div class="comp-note">2 Nephi 25:23 — the controversial &#x27;grace + works&#x27; verse. Verify wording.</div>
+</div>
+    <div class="comparison-entry" id="entry-26" data-category="Doctrinal (compare)">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Doctrinal (compare)</span>
+    <span class="comp-ref"><a href="mos.html#ch4" style="color:#1F3864;font-weight:bold;">Mosiah 4:30</a> &nbsp;|&nbsp; 
+    <a href="1830-mos.html#ch2" style="color:#8B4513;font-weight:bold;">1830 Mosiah Ch II</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">even so many, that I cannot number them. But this much I can tell you, that if ye do not <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">watch yourselves, and your thoughts, and your words, and your deeds</mark>, and observe to keep the commandments of God, and continue in the faith of what ye have heard concerning the</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">But this much I can tell you, that if ye do not <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">watch yourselves, and your thoughts, and your words, and your deeds</mark>, and observe the commandments of God, and continue in the faith of what ye have heard concerning the coming of our Lord, even unto the end of your lives, ye must perish. And now, O man, remember, and perish not.</div>
+    </div>
+  </div>
+  <div class="comp-note">Mosiah 4:30 — verify exact wording across editions.</div>
+</div>
+    <div class="comparison-entry" id="entry-27" data-category="Doctrinal (compare)">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Doctrinal (compare)</span>
+    <span class="comp-ref"><a href="mos.html#ch27" style="color:#1F3864;font-weight:bold;">Mosiah 27:25</a> &nbsp;|&nbsp; 
+    <a href="1830-mos.html#ch11" style="color:#8B4513;font-weight:bold;">1830 Mosiah Ch XI</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">of the spirit. And the Lord said unto me, Marvel not that all mankind, yea, men, and women, all nations, kindreds, tongues and people, must be born again; yea, born of God, changed from their carnal and fallen state, to a state of righteousness, being redeemed of God,</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And the Lord said unto me: Marvel not that <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">all mankind, yea, men and women, all nations, kindreds, tongues and people, must be born again</mark>; yea, born of God, changed from their carnal and fallen state, to a state of righteousness, being redeemed of God, becoming his sons and daughters;</div>
+    </div>
+  </div>
+  <div class="comp-note">Mosiah 27:25 — the &#x27;born again&#x27; verse. Compare.</div>
+</div>
+    <div class="comparison-entry" id="entry-28" data-category="Doctrinal (compare)">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Doctrinal (compare)</span>
+    <span class="comp-ref"><a href="mor.html#ch8" style="color:#1F3864;font-weight:bold;">Moroni 8:8</a> &nbsp;|&nbsp; 
+    <a href="1830-mor.html#ch8" style="color:#8B4513;font-weight:bold;">1830 Moroni Ch VIII</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">not to call the righteous, but sinners to repentance; the whole need no physician, but they that are sick; wherefore <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">little children are whole</mark>, for they are not capable of committing sin; wherefore the curse of Adam is taken from them in me, that</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">Listen to the words of Christ, your Redeemer, your Lord and your God. Behold, I came into the world not to call the righteous but sinners to repentance; the whole need no physician, but they that are sick; wherefore, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">little children are whole</mark>, for they are not capable of committing sin; wherefore the curse of Adam is taken from them in me, that it hath no power over them; and the law of circumcision is done away in me.</div>
+    </div>
+  </div>
+  <div class="comp-note">Moroni 8:8 — infant baptism rejected. Famous doctrinal verse.</div>
+</div>
+  </div>
+  <div class="cat-section" id="cat-style">
+    <h2>Style <span style="font-size:14px;color:#999;font-weight:normal;font-family:Arial,sans-serif;">(17)</span></h2>
+    <div class="cat-desc">Stylistic or punctuation variations. Many are minor.</div>
+    <div class="comparison-entry" id="entry-29" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="1ne.html#ch1" style="color:#1F3864;font-weight:bold;">1 Nephi 1:1</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch1" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch I</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">is according to the account of Nephi; or, in other words, I Nephi wrote this record. I, Neput, having been born of goodly parents, therefore I was taught somewhat in all the learning of my father; and having seen many afflictions in the course</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text"><mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">I, Nephi, having been born of goodly parents</mark>, therefore I was taught somewhat in all the learning of my father; and having seen many afflictions in the course of my days, nevertheless, having been highly favored of the Lord in all my days; yea, having had a great knowledge of the goodness and the mysteries of God, therefore I make a record of my proceedings in my days.</div>
+    </div>
+  </div>
+  <div class="comp-note">The famous opening verse — compare the punctuation, capitalization, and run-on structure between editions.</div>
+</div>
+    <div class="comparison-entry" id="entry-30" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="2ne.html#ch2" style="color:#1F3864;font-weight:bold;">2 Nephi 2:25</a> &nbsp;|&nbsp; 
+    <a href="1830-2ne.html#ch1" style="color:#8B4513;font-weight:bold;">1830 2 Nephi Ch I</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">sin. But, behold, all things have been done in the wisdom of Him who knoweth all things. Adam fell, that men might be; and men are, that they might have joy. And the Messiah cometh in the fulness of time, that he might</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text"><mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">Adam fell that men might be</mark>; and men are, that they might have joy.</div>
+    </div>
+  </div>
+  <div class="comp-note">One of the most-quoted Book of Mormon verses. Compare exact wording across editions.</div>
+</div>
+    <div class="comparison-entry" id="entry-31" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="mos.html#ch3" style="color:#1F3864;font-weight:bold;">Mosiah 3:19</a> &nbsp;|&nbsp; 
+    <a href="1830-mos.html#ch1" style="color:#8B4513;font-weight:bold;">1830 Mosiah Ch I</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">place for him, for he dwelleth not in unholy temples. Therefore, if that man repenteth not, and remaineth and dieth an enemy to God, the demands of Divine Justice doth awaken his immortal soul to a lively sense of his own guilt, which doth</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">For <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">the natural man is an enemy to God</mark>, and has been from the fall of Adam, and will be, forever and ever, unless he yields to the enticings of the Holy Spirit, and putteth off the natural man and becometh a saint through the atonement of Christ the Lord, and becometh as a child, submissive, meek, humble, patient, full of love, willing to submit to all things which the Lord seeth fit to inflict upon him, even as a child doth submit to his father.</div>
+    </div>
+  </div>
+  <div class="comp-note">Another famous verse. Compare textual fidelity.</div>
+</div>
+    <div class="comparison-entry" id="entry-32" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="1ne.html#ch17" style="color:#1F3864;font-weight:bold;">1 Nephi 17:50</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch1" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch I</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">that I have abridged the record of my father, then will I make an account of mine own life. Therefore, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">I would that ye should know</mark> that after the Lord had shewn so many marvellous things unto my father Lehi, yea, concerning the destruction of Jerusalem,</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And I said unto them: If God had commanded me to do all things I could do them. If he should command me that I should say unto this water, be thou earth, it should be earth; and if I should say it, it would be done.</div>
+    </div>
+  </div>
+  <div class="comp-note">Common phrase across the BoM — compare to see if &#x27;ye&#x27; / &#x27;thee&#x27; / &#x27;thou&#x27; usage differs.</div>
+</div>
+    <div class="comparison-entry" id="entry-33" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="alm.html#ch32" style="color:#1F3864;font-weight:bold;">Alma 32:21</a> &nbsp;|&nbsp; 
+    <a href="1830-alm.html#ch16" style="color:#8B4513;font-weight:bold;">1830 Alma Ch XVI</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">shall be unto every man according to his work. And now as I said concerning faith: Faith, is not to have a perfect knowledge of things; therefore if ye have faith, ye hope for things which is not seen, which are true. And now,</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And now as I said concerning faith—<mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">faith is not to have a perfect knowledge</mark> of things; therefore if ye have faith ye hope for things which are not seen, which are true.</div>
+    </div>
+  </div>
+  <div class="comp-note">Alma 32:21 — the famous faith definition. Compare across editions.</div>
+</div>
+    <div class="comparison-entry" id="entry-34" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="eth.html#ch12" style="color:#1F3864;font-weight:bold;">Ether 12:6</a> &nbsp;|&nbsp; 
+    <a href="1830-eth.html#ch5" style="color:#8B4513;font-weight:bold;">1830 Ether Ch V</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">them not. And Now I, Moroni, would speak some what concerning these things: I would shew unto the world that <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">faith is things which are hoped for</mark> and not seen; wherefore, dispute not because ye see not, for ye receive no witness until after the trial of</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And now, I, Moroni, would speak somewhat concerning these things; I would show unto the world that <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">faith is things which are hoped for</mark> and not seen; wherefore, dispute not because ye see not, for ye receive no witness until after the trial of your faith.</div>
+    </div>
+  </div>
+  <div class="comp-note">Ether 12:6 — another faith definition (echoing Hebrews 11). Compare.</div>
+</div>
+    <div class="comparison-entry" id="entry-35" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="alm.html#ch37" style="color:#1F3864;font-weight:bold;">Alma 37:38</a> &nbsp;|&nbsp; 
+    <a href="1830-alm.html#ch17" style="color:#8B4513;font-weight:bold;">1830 Alma Ch XVII</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">I have somewhat to say concerning the thing which our fathers call a ball, or director; our fathers called it <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">liahona</mark>, which is, being interpreted, a compass; and the Lord prepared it. And behold, there cannot any man work after the</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And now, my son, I have somewhat to say concerning the thing which our fathers call a ball, or director—or our fathers called it <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">Liahona</mark>, which is, being interpreted, a compass; and the Lord prepared it.</div>
+    </div>
+  </div>
+  <div class="comp-note">Alma 37:38 — the Liahona compass. Note 1830 spells it lowercase (&#x27;liahona&#x27;); the capitalization was standardized later.</div>
+</div>
+    <div class="comparison-entry" id="entry-36" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="1ne.html#ch13" style="color:#1F3864;font-weight:bold;">1 Nephi 13:26</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch3" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch III</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">in purity, unto the Gentiles, according to the truth which is in God; and after that they go forth by the hand of the twelve apostles of the Lamb, from the Jews unto the Gentiles; behold, after this, thou seest the foundation of a great and</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">after they go forth by the hand of the twelve apostles</mark> of the Lamb, from the Jews unto the Gentiles, thou seest the formation of a great and abominable church, which is most abominable above all other churches; for behold, they have taken away from the gospel of the Lamb many parts which are plain and most precious; and also many covenants of the Lord have they taken away.</div>
+    </div>
+  </div>
+  <div class="comp-note">1 Nephi 13:26 — about the Bible being corrupted. Compare wording carefully.</div>
+</div>
+    <div class="comparison-entry" id="entry-37" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="1ne.html#ch13" style="color:#1F3864;font-weight:bold;">1 Nephi 13:28</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch3" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch III</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">seest that after the Book hath gone forth through the hands of the great and abominable church, that there are <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">many plain and precious things</mark> taken away from the Book, which 1s the Book of the Lamb of God; and after that these plain and</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">Wherefore, thou seest that after the book hath gone forth through the hands of the great and abominable church, that there are <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">many plain and precious things</mark> taken away from the book, which is the book of the Lamb of God.</div>
+    </div>
+  </div>
+  <div class="comp-note">1 Nephi 13:28 — the &#x27;plain and precious truths removed from the Bible&#x27; verse. A core LDS apologetic verse.</div>
+</div>
+    <div class="comparison-entry" id="entry-38" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="3ne.html#ch11" style="color:#1F3864;font-weight:bold;">3 Nephi 11:25</a> &nbsp;|&nbsp; 
+    <a href="1830-3ne.html#ch2" style="color:#8B4513;font-weight:bold;">1830 3 Nephi Ch II</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">God of Isaac, and the God of Jacob, protect this people in righteousness, so long as they shall call on the name of their God for protection. And it came to pass that they did break forth, all as one, in singing and praising</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">Having authority given me of Jesus Christ, I baptize you <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">in the name of the Father, and of the Son, and of the Holy Ghost</mark>. Amen.</div>
+    </div>
+  </div>
+  <div class="comp-note">3 Nephi 11:25 — the baptismal formula. Trinitarian-sounding language; compare across editions.</div>
+</div>
+    <div class="comparison-entry" id="entry-39" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="alm.html#ch11" style="color:#1F3864;font-weight:bold;">Alma 11:39</a> &nbsp;|&nbsp; 
+    <a href="1830-alm.html#ch8" style="color:#8B4513;font-weight:bold;">1830 Alma Ch VIII</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">the Son of God the very Eternal Father? And Amulek saith unto him, Yea, he is the very KEternal Father of Heaven and of Earth, and all things which in them is; he is the beginning and the end, the first and the last; and</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And Amulek said unto him: Yea, he is <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">the very Eternal Father of heaven and of earth</mark>, and all things which in them are; he is the beginning and the end, the first and the last;</div>
+    </div>
+  </div>
+  <div class="comp-note">Alma 11:39 — calls Christ &#x27;the very Eternal Father&#x27; (no &#x27;Son of&#x27; insertion needed; this passage left as-is across editions).</div>
+</div>
+    <div class="comparison-entry" id="entry-40" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="1ne.html#ch1" style="color:#1F3864;font-weight:bold;">1 Nephi 1:8</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch1" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch I</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">overcome with the spirit and the things which he had seen; and being thus overcome with the spirit, he was <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">carried away in a Vision, even that he saw the Heavens open</mark>; and he thought he saw God sitting upon his throne, surrounded with numberless concourses of angels in the attitude of</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And being thus overcome with the Spirit, he was <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">carried away in a vision, even that he saw the heavens open</mark>, and he thought he saw God sitting upon his throne, surrounded with numberless concourses of angels in the attitude of singing and praising their God.</div>
+    </div>
+  </div>
+  <div class="comp-note">Lehi&#x27;s vision opening. Compare wording.</div>
+</div>
+    <div class="comparison-entry" id="entry-41" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="1ne.html#ch2" style="color:#1F3864;font-weight:bold;">1 Nephi 2:7</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch1" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch I</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">he pitched his tent in a valley beside a river of water. And it came to pass that he built <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">an altar of stones</mark>, and he made an offering unto the Lord, and gave thanks unto the Lord our God. And it came to</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And it came to pass that he built <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">an altar of stones</mark>, and made an offering unto the Lord, and gave thanks unto the Lord our God.</div>
+    </div>
+  </div>
+  <div class="comp-note">1 Nephi 2:7 — Lehi&#x27;s altar. Compare wording.</div>
+</div>
+    <div class="comparison-entry" id="entry-42" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="1ne.html#ch3" style="color:#1F3864;font-weight:bold;">1 Nephi 3:7</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch1" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch I</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">of the Lord, because thou hast not murmured. And it came to pass, that I, Nephi, said unto my father, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">I will go and do the things which the Lord hath commanded</mark>, for I know that the Lord giveth no commandments unto the children of men, save he shall prepare a way</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">And it came to pass that I, Nephi, said unto my father: <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">I will go and do the things which the Lord hath commanded</mark>, for I know that the Lord giveth no commandments unto the children of men, save he shall prepare a way for them that they may accomplish the thing which he commandeth them.</div>
+    </div>
+  </div>
+  <div class="comp-note">1 Nephi 3:7 — the famous &#x27;I will go and do&#x27; verse, a popular Sunday-school memorization. Should be largely unchanged.</div>
+</div>
+    <div class="comparison-entry" id="entry-43" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="alm.html#ch26" style="color:#1F3864;font-weight:bold;">Alma 26:12</a> &nbsp;|&nbsp; 
+    <a href="1830-alm.html#ch14" style="color:#8B4513;font-weight:bold;">1830 Alma Ch XIV</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">know that I am nothing; as to my strength, I am weak; therefore I will not boast of myself, but <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">I will boast of my God</mark>; for in his strength I can do all things; yea, behold, many mighty miracles we have wrought in this land,</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">Yea, I know that I am nothing; as to my strength I am weak; therefore I will not boast of myself, but <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">I will boast of my God</mark>, for in his strength I can do all things; yea, behold, many mighty miracles we have wrought in this land, for which we will praise his name forever.</div>
+    </div>
+  </div>
+  <div class="comp-note">Alma 26:12 — Ammon&#x27;s joy. Sample for style comparison.</div>
+</div>
+    <div class="comparison-entry" id="entry-44" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="mor.html#ch7" style="color:#1F3864;font-weight:bold;">Moroni 7:47</a> &nbsp;|&nbsp; 
+    <a href="1830-mor.html#ch54" style="color:#8B4513;font-weight:bold;">1830 Moroni Ch VIL</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">charity never faileth. W herefore, cleave unto charity, which is the greatest of all, for all things must fail; but <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">charity is the pure love of Christ</mark>, and it endureth forever; and whoso is found possessed of it, at the last day it shall be well with</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">But <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">charity is the pure love of Christ</mark>, and it endureth forever; and whoso is found possessed of it at the last day, it shall be well with him.</div>
+    </div>
+  </div>
+  <div class="comp-note">Moroni 7:47 — definition of charity (echoes 1 Cor 13). Compare.</div>
+</div>
+    <div class="comparison-entry" id="entry-45" data-category="Style">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">Style</span>
+    <span class="comp-ref"><a href="2ne.html#ch32" style="color:#1F3864;font-weight:bold;">2 Nephi 32:9</a> &nbsp;|&nbsp; 
+    <a href="1830-2ne.html#ch14" style="color:#8B4513;font-weight:bold;">1830 2 Nephi Ch XIV</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">not a man to pray, but teacheth him that he must not pray. But behold, I say unto you, that <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">ye must pray always</mark>, and not faint; that ye must not perform any thing unto the Lord, save in the first place ye shall</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">But behold, I say unto you that <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">ye must pray always</mark>, and not faint; that ye must not perform any thing unto the Lord save in the first place ye shall pray unto the Father in the name of Christ, that he will consecrate thy performance unto thee, that thy performance may be for the welfare of thy soul.</div>
+    </div>
+  </div>
+  <div class="comp-note">2 Nephi 32:9 — pray always. Compare.</div>
+</div>
+  </div>
+  <div class="cat-section" id="cat-ocr-artifact-original-spelling">
+    <h2>OCR Artifact / Original Spelling <span style="font-size:14px;color:#999;font-weight:normal;font-family:Arial,sans-serif;">(1)</span></h2>
+    <div class="cat-desc">Where differences may reflect either real 1830 spelling or OCR scan errors. Caution: these are the LEAST reliable comparisons.</div>
+    <div class="comparison-entry" id="entry-46" data-category="OCR Artifact / Original Spelling">
+  <div class="comp-meta">
+    <span class="comp-cat" style="background:#5C1A1A;color:#FFD54F;">OCR Artifact / Original Spelling</span>
+    <span class="comp-ref"><a href="1ne.html#ch1" style="color:#1F3864;font-weight:bold;">1 Nephi 1:1</a> &nbsp;|&nbsp; 
+    <a href="1830-1ne.html#ch1" style="color:#8B4513;font-weight:bold;">1830 1 Nephi Ch I</a></span>
+  </div>
+  <div class="comp-cols">
+    <div class="comp-col comp-1830">
+      <div class="comp-col-label">📜 1830 Original (Palmyra)</div>
+      <div class="comp-col-text">in all the learning of my father; and having seen many afflictions in the course of my day 5 —nevertheless, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">having been highly favored of the Lord</mark> in all my days; yea, having had a great knowledge of the goodness and the mysteries of God, therefore I</div>
+    </div>
+    <div class="comp-col comp-modern">
+      <div class="comp-col-label">📖 Modern LDS Edition</div>
+      <div class="comp-col-text">I, Nephi, having been born of goodly parents, therefore I was taught somewhat in all the learning of my father; and having seen many afflictions in the course of my days, nevertheless, <mark style="background:#FFE082;padding:1px 3px;border-radius:2px;">having been highly favored of the Lord</mark> in all my days; yea, having had a great knowledge of the goodness and the mysteries of God, therefore I make a record of my proceedings in my days.</div>
+    </div>
+  </div>
+  <div class="comp-note">Spot-check: 1830 may have non-standard spelling (&#x27;favoured&#x27;?). NOTE: differences here may reflect OCR errors rather than real textual changes.</div>
+</div>
+  </div>
+
+  <div class="bom-admin-banner" style="margin-top:32px;">
+    <strong>📚 Source notes:</strong> Modern text from Project Gutenberg #17 (LDS-approved public-domain text, post-1981 edition). 1830 text from the Jenson 2012 digital replica on Internet Archive (OCR'd from the original Palmyra facsimile). Phrase extraction tolerates moderate OCR noise; entries where the 1830 phrase couldn't be verified were dropped rather than fabricated. For the most exhaustive scholarly cataloging of textual variants, see Royal Skousen's <em>Analysis of Textual Variants of the Book of Mormon</em> (BYU Studies).
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ My notes — Comparison Viewer:</div>
+    <div class="quill-editor" id="n-bom-compare" data-placeholder="Notes on the comparisons..." style="min-height:120px;"></div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <a href="index.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Modern Index</a>
+    &nbsp;&nbsp;<a href="1830-index.html" style="font-size:13px;color:#8B4513;text-decoration:none;font-family:Arial,sans-serif;">📜 1830 Index →</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-bom-compare'];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Isaiah Parallels Index — Isaiah Parallels — Book of Mormon — Campbell Bible Study (Admin)</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:240px; font-family:'Times New Roman', Georgia, serif; font-size:14px; background:#fff; }
+    .ql-editor { min-height:240px; padding:10px 12px; line-height:1.75; }
+    /* Admin gate */
+    #admin-gate { display:none; max-width:560px; margin:80px auto; padding:32px; background:#5C1A1A; color:#fff; border-radius:10px; font-family:Arial,sans-serif; }
+    #admin-gate h2 { margin:0 0 14px; color:#FFD54F; font-family:Georgia,serif; }
+    #admin-gate p { line-height:1.7; margin:8px 0; }
+    #admin-gate a { color:#FFD54F; }
+    /* Isaiah parallels styles */
+    .bom-admin-banner { background:linear-gradient(135deg,#5C1A1A,#7A2828); color:#fff; padding:14px 20px; border-radius:8px; margin:16px 0 24px; font-family:Arial,sans-serif; font-size:13px; line-height:1.6; border-left:5px solid #FFD54F; }
+    .bom-admin-banner strong { color:#FFD54F; }
+    .bom-admin-banner a { color:#FFD54F; }
+    .section-intro { background:#FFF8E8; border-left:4px solid #B8923F; border-radius:6px; padding:14px 18px; margin:16px 0 24px; font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#3D1F0F; }
+    .parallel-entry { background:#fff; border:1px solid #d0dce8; border-radius:8px; padding:18px 20px; margin:24px 0; }
+    .par-meta { display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid #e0e6ed; font-family:Arial,sans-serif; font-size:12px; }
+    .par-cat { padding:4px 10px; border-radius:4px; font-weight:bold; text-transform:uppercase; letter-spacing:0.06em; font-size:11px; color:#fff; background:#5C1A1A; }
+    .par-refs a { color:#1F3864; text-decoration:none; font-weight:bold; }
+    .par-refs a:hover { text-decoration:underline; }
+    .par-cols { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media (max-width: 760px) { .par-cols { grid-template-columns:1fr; } }
+    .par-col { padding:14px 16px; border-radius:6px; }
+    .par-col-bom { background:#F0F5FB; border:1px solid #6F9CC4; }
+    .par-col-bible { background:#F4F8EE; border:1px solid #8FAE5A; }
+    .par-col-label { font-family:Arial,sans-serif; font-size:11px; font-weight:bold; text-transform:uppercase; letter-spacing:0.10em; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; }
+    .par-col-bom .par-col-label { color:#1F3864; }
+    .par-col-bible .par-col-label { color:#3B5E1A; }
+    .par-col-bible .par-col-label a { color:#2E75B6; text-decoration:none; padding:3px 8px; background:#fff; border:1px solid #8FAE5A; border-radius:4px; font-size:10px; }
+    .par-col-bible .par-col-label a:hover { background:#2E75B6; color:#fff; }
+    .par-verse { font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#2C1810; margin:6px 0; padding-left:36px; text-indent:-36px; }
+    .par-verse .vnum { display:inline-block; font-family:Arial,sans-serif; font-size:10px; font-weight:bold; color:#8B4513; background:#FFF8E8; padding:2px 5px; border-radius:3px; margin-right:6px; min-width:28px; text-align:center; vertical-align:baseline; }
+    .par-note { margin-top:12px; padding:10px 14px; background:#FFF8E8; border-left:3px solid #B8923F; border-radius:4px; font-family:Arial,sans-serif; font-size:13px; color:#5C3A0F; line-height:1.65; }
+    .par-note strong { color:#3D1F0F; }
+    .bible-paste-label { font-family:Arial,sans-serif; font-size:11px; color:#3B5E1A; font-style:italic; margin-bottom:6px; }
+    .toc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; margin:18px 0; }
+    .toc-card { display:block; padding:16px 18px; background:#fff; border:1px solid #d0dce8; border-left:5px solid #1F3864; border-radius:6px; text-decoration:none; color:#1F3864; font-family:Arial,sans-serif; }
+    .toc-card:hover { background:#F6F9FC; border-left-color:#FFD54F; }
+    .toc-card .toc-title { font-size:16px; font-weight:bold; color:#1F3864; }
+    .toc-card .toc-subtitle { font-size:13px; color:#666; margin-top:4px; font-style:italic; }
+    .toc-card .toc-count { font-size:11px; color:#8B4513; margin-top:6px; text-transform:uppercase; letter-spacing:0.08em; }
+    .scope-stats { display:flex; flex-wrap:wrap; gap:14px; margin:14px 0 20px; }
+    .stat-box { flex:1; min-width:140px; padding:12px 16px; background:#F6F9FC; border:1px solid #d0dce8; border-radius:6px; text-align:center; font-family:Arial,sans-serif; }
+    .stat-box .stat-num { font-size:28px; font-weight:bold; color:#1F3864; font-family:Georgia,serif; }
+    .stat-box .stat-label { font-size:11px; color:#666; text-transform:uppercase; letter-spacing:0.08em; margin-top:4px; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+  <script>
+    (function() {
+      var ok = false;
+      try { if (sessionStorage.getItem('cbsg-admin') === 'true') ok = true; } catch(e) {}
+      if (!ok) {
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('app').style.display = 'none';
+          document.getElementById('admin-gate').style.display = 'block';
+        });
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<div id="admin-gate">
+  <h2>🔒 Admin only</h2>
+  <p>The Isaiah parallels tool is admin-restricted.</p>
+  <p>Return to the <a href="../index.html">home page</a> and log in via the 🔒 button.</p>
+  <p>For the public theological analysis: <a href="../DeepDive-BookOfMormon.html">📖 Book of Mormon Deep Dive</a></p>
+</div>
+
+<div id="github-bar"></div>
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="bible-parallels.html" style="display:inline-block;margin-bottom:8px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← All Bible Parallels</a>
+  <a href="index.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">📖 BoM Modern Index</a>
+  <div class="bom-admin-banner">
+    <strong>🔒 ADMIN · ISAIAH PARALLELS</strong> &nbsp;|&nbsp; The Book of Mormon contains 19 chapters of Isaiah — the single largest body of Bible text quoted in it. This index links to two content pages covering Isaiah 2–14 (the big block in 2 Nephi) and Isaiah 48–54 (scattered across 1 Nephi, 2 Nephi, Mosiah, and 3 Nephi).
+  </div>
+  <h1 class="page-title">📜 Isaiah Parallels — Index</h1>
+  <p style="font-family:Arial,sans-serif;font-size:13px;color:#666;margin:8px 0 18px;">Stage 5 of the BoM Study Tool. Compare each Isaiah-parallel BoM chapter with its NASB 1995 source.</p>
+  <div class="scope-stats">
+    <div class="stat-box"><div class="stat-num">19</div><div class="stat-label">Isaiah chapters in BoM</div></div>
+    <div class="stat-box"><div class="stat-num">388</div><div class="stat-label">BoM verses paralleling Isaiah</div></div>
+    <div class="stat-box"><div class="stat-num">4</div><div class="stat-label">BoM books containing Isaiah</div></div>
+    <div class="stat-box"><div class="stat-num">2</div><div class="stat-label">Comparison pages (this section)</div></div>
+  </div>
+  <div class="section-intro">
+    <strong>Why Isaiah matters for the Deep Dive's argument:</strong>
+    <ul style="margin:8px 0 0 18px; padding:0;">
+      <li><strong>It's the largest single Bible block in the BoM</strong> — 19 chapters, 388 verses. No other prophet is quoted at this scale.</li>
+      <li><strong>It matches the KJV verbatim</strong> — including italicized words KJV translators added that weren't in the Hebrew. If the BoM is a translation from ancient Hebrew plates, why does it match the KJV's 17th-century English supplemental words?</li>
+      <li><strong>Including "Deutero-Isaiah" (chapters 40+)</strong> — most modern scholars hold that Isaiah 40–66 was written after the Babylonian exile (~540 BC). But the BoM includes Isaiah 48–54 as having been known to Nephi (who left Jerusalem c. 600 BC), 60+ years BEFORE Deutero-Isaiah was supposedly written.</li>
+      <li><strong>Isaiah 53 in Mosiah 14</strong> — Abinadi reads this Suffering Servant chapter to King Noah's court ~150 BC, ~115 years before Christ's actual Passion the chapter is read as prophesying.</li>
+    </ul>
+    See the <a href="../DeepDive-BookOfMormon.html" style="color:#2E75B6;font-weight:bold;">📖 Book of Mormon Deep Dive</a> for the full discussion.
+  </div>
+  <h2 class="section-title">The two Isaiah-parallel sections</h2>
+  <div class="toc-grid">
+    <a href="bible-parallels-isaiah-2-14.html" class="toc-card">
+      <div class="toc-title">Isaiah 2–14 in 2 Nephi 12–24</div>
+      <div class="toc-subtitle">The largest single Isaiah block in the Book of Mormon — 13 consecutive chapters</div>
+      <div class="toc-count">13 chapter pairs · 275 BoM verses</div>
+    </a>
+    <a href="bible-parallels-isaiah-48-54.html" class="toc-card">
+      <div class="toc-title">Other Isaiah Parallels (Isaiah 48–54)</div>
+      <div class="toc-subtitle">1 Nephi 20–21, 2 Nephi 7–8, Mosiah 14, 3 Nephi 22 ↔ Isaiah 48–54</div>
+      <div class="toc-count">6 chapter pairs · 113 BoM verses</div>
+    </a>
+  </div>
+
+  <div style="margin-top:18px;padding:12px 16px;background:#F6F9FC;border:1px solid #d0dce8;border-radius:6px;font-family:Arial,sans-serif;font-size:12px;color:#666;">
+    <strong>How to work through this:</strong> Open each comparison page, paste the NASB 1995 text for each Isaiah chapter from e-Sword into its paste box, and compare side-by-side with the BoM text. Notes save with your other Quill content. You can fill them in over multiple sessions — the Bible parallels tool is designed for slow, careful study, not a one-sitting read-through.
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ My notes — Isaiah Parallels Index:</div>
+    <div class="quill-editor" id="n-par-isaiah-index" data-placeholder="Overall notes on the Isaiah parallels..." style="min-height:120px;"></div>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-par-isaiah-index'];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>

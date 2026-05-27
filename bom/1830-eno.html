@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enos (1830) — 1830 Edition — Book of Mormon — Campbell Bible Study (Admin)</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:90px; font-family:Arial,sans-serif; font-size:12px; background:#fff; }
+    .ql-editor { min-height:90px; padding:7px 9px; }
+    /* Admin gate */
+    #admin-gate { display:none; max-width:560px; margin:80px auto; padding:32px; background:#5C1A1A; color:#fff; border-radius:10px; font-family:Arial,sans-serif; }
+    #admin-gate h2 { margin:0 0 14px; color:#FFD54F; font-family:Georgia,serif; }
+    #admin-gate p { line-height:1.7; margin:8px 0; }
+    #admin-gate a { color:#FFD54F; }
+    /* 1830 page styles — distinct visual identity from modern */
+    .bom-admin-banner { background:linear-gradient(135deg,#3D1F0F,#5C2E18); color:#fff; padding:14px 20px; border-radius:8px; margin:16px 0 24px; font-family:Arial,sans-serif; font-size:13px; line-height:1.6; border-left:5px solid #C49B3A; }
+    .bom-admin-banner strong { color:#FFD54F; }
+    .ocr-warning { background:#FFF3CD; border:2px solid #B8923F; border-left:5px solid #B8923F; border-radius:8px; padding:14px 18px; margin:16px 0; font-family:Arial,sans-serif; font-size:13px; color:#5C3A0F; line-height:1.65; }
+    .ocr-warning strong { color:#8A6A1F; }
+    .bom-chap-nav { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 20px; padding:12px; background:#F5F0E5; border:1px solid #C49B3A; border-radius:8px; }
+    .bom-chap-nav a { display:inline-block; padding:6px 10px; background:#fff; border:1px solid #C49B3A; border-radius:5px; font-family:Georgia,serif; font-size:13px; color:#3D1F0F; text-decoration:none; min-width:36px; text-align:center; font-style:italic; }
+    .bom-chap-nav a:hover { background:#3D1F0F; color:#FFD54F; }
+    .bom-1830-chapter { margin:32px 0; padding:24px 26px; background:#FBF6E9; border:1px solid #C49B3A; border-radius:8px; }
+    .bom-1830-chapter h3 { font-family:Georgia,serif; color:#3D1F0F; margin:0 0 6px; font-size:24px; font-style:italic; font-weight:normal; text-align:center; letter-spacing:0.05em; }
+    .bom-1830-chapter .modern-ref { font-family:Arial,sans-serif; font-size:11px; color:#8A6A1F; text-align:center; text-transform:uppercase; letter-spacing:0.10em; margin-bottom:18px; padding-bottom:12px; border-bottom:1px solid #C49B3A; }
+    .bom-1830-chapter .modern-ref strong { color:#3D1F0F; }
+    .bom-1830-text { font-family:'Times New Roman', Georgia, serif; font-size:16px; line-height:1.85; color:#2C1810; text-align:justify; }
+    .bom-1830-text p { margin:14px 0; text-indent:1.5em; }
+    .bom-1830-text p:first-child { text-indent:0; }
+    .bom-1830-text p:first-child::first-letter { font-size:38px; line-height:1; float:left; margin:4px 8px 0 0; font-family:Georgia,serif; color:#5C2E18; }
+    .bom-preamble { background:#F0E8D0; border-left:4px solid #8A6A1F; padding:14px 18px; margin:14px 0; font-family:Georgia,serif; font-style:italic; color:#5C2E18; border-radius:0 6px 6px 0; }
+    .bom-book-card { display:block; padding:14px 18px; margin:8px 0; background:#FBF6E9; border:1px solid #C49B3A; border-left:4px solid #3D1F0F; border-radius:6px; text-decoration:none; color:#3D1F0F; font-family:Georgia,serif; }
+    .bom-book-card:hover { background:#F5E9C7; border-left-color:#C49B3A; }
+    .bom-book-card .bname { font-size:17px; font-weight:bold; font-style:italic; color:#3D1F0F; }
+    .bom-book-card .bmeta { font-size:12px; color:#8A6A1F; margin-top:3px; font-family:Arial,sans-serif; font-style:normal; }
+    .bom-section-head { font-family:Georgia,serif; color:#5C2E18; font-size:14px; text-transform:uppercase; letter-spacing:0.10em; margin:22px 0 8px; padding-bottom:4px; border-bottom:1px solid #C49B3A; font-style:italic; }
+    .cross-ref-callout { background:#FDF6E3; border:1px solid #B8923F; border-radius:6px; padding:12px 16px; margin:14px 0; font-family:Arial,sans-serif; font-size:13px; color:#3B2D1F; }
+    .cross-ref-callout a { color:#2E75B6; text-decoration:none; font-weight:bold; }
+    .source-callout { background:#F4F8EE; border-left:4px solid #6B8E3A; padding:10px 14px; margin:10px 0; font-family:Arial,sans-serif; font-size:12px; color:#3B5E1A; border-radius:4px; }
+    .key-passage { background:#FFEBE8; border:2px solid #B22222; border-radius:6px; padding:14px 18px; margin:18px 0; font-family:Georgia,serif; font-size:14px; color:#3D1F0F; }
+    .key-passage strong { color:#B22222; font-family:Arial,sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:0.10em; display:block; margin-bottom:6px; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+  <script>
+    (function() {
+      var ok = false;
+      try {
+        if (sessionStorage.getItem('cbsg-admin') === 'true') ok = true;
+      } catch(e) {}
+      if (!ok) {
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('app').style.display = 'none';
+          document.getElementById('admin-gate').style.display = 'block';
+        });
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<div id="admin-gate">
+  <h2>🔒 Admin only</h2>
+  <p>The Book of Mormon study tool is restricted to admin access on this site.</p>
+  <p>Return to the <a href="../index.html">home page</a> and log in via the 🔒 button in the top bar.</p>
+  <p style="margin-top:18px;">For the public theological analysis:</p>
+  <p>→ <a href="../DeepDive-BookOfMormon.html">📖 Book of Mormon — Text &amp; Evidence (Deep Dive)</a></p>
+</div>
+
+<div id="github-bar"></div>
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="1830-index.html" style="display:inline-block;margin-bottom:8px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to 1830 Index</a>
+  <a href="eno.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">📖 View modern edition of Enos →</a>
+  <div class="bom-admin-banner">
+    <strong>🔒 ADMIN · 1830 ORIGINAL EDITION</strong> &nbsp;|&nbsp; This is the text as Joseph Smith first published it (Palmyra, NY, 1830) — <em>before</em> the 1837 theological edits, the 1879 verse divisions by Orson Pratt, the 1920 reformat, or the 1981 racial wording change. Source: digital replica of the 1830 facsimile (Internet Archive, OCR'd from the Jenson edition). Compare with: <a href="eno.html" style="color:#FFD54F;">📖 Enos (modern)</a> &middot; <a href="compare.html" style="color:#FFD54F;">📋 Side-by-side</a> &middot; <a href="bible-parallels.html" style="color:#FFD54F;">📜 Bible parallels</a> &middot; <a href="bible-parallels-isaiah.html" style="color:#FFD54F;">📜 Isaiah parallels</a>.
+  </div>
+  <div class="ocr-warning">
+    <strong>⚠️ OCR DISCLAIMER:</strong> This text was OCR'd from a scanned facsimile of the 1830 printing. <em>Expect scan errors throughout</em> — e.g., "I, Neput" for "I, Nephi", "Anp" for "And", "L," for "I,", spurious punctuation. These are NOT changes I made; they are artifacts of the scanning process. The whole point of viewing the 1830 is to see the original 19th-century spelling, grammar, and word choices — so the spelling has been left as the OCR rendered it. <strong>For the critical theological readings</strong> (e.g., "mother of God" in 1 Nephi, "Eternal Father" without "Son of", "white and a delightsome people"), the OCR is accurate at the key phrases and these have been verified.
+  </div>
+  <h1 class="page-title" style="font-family:Georgia,serif;font-style:italic;color:#3D1F0F;">Enos</h1>
+  <p style="font-family:Arial,sans-serif;font-size:13px;color:#8A6A1F;margin:8px 0 16px;">1 chapter (Roman numerals as originally printed) · ~1,168 words · 1830 Palmyra edition</p>
+  <div class="bom-1830-chapter" id="ch1">
+    <h3>CHAPTER I</h3>
+    <div class="modern-ref">Modern reference: <strong>Enos 1:1 – 1:27</strong></div>
+    <div class="bom-1830-text">
+      <p>BEHOLD, it came to pass that I, Enos, knowing my father, that he was a just man: for he taught me in his language, and also in the nurture and admonition of the Lord. And blessed be the name of my God for it. And I will tell you of the wrestle which I had before God, before that I received a remission of my sins: behold, I went to hunt beasts in the forest; and the words which I had often heard my father speak, concerning eternal life, and the joys of the saints, and the words of my father, sunk deep into my heart. And my soul hungered; and I kneeled down before my Maker, and I cried unto him in mighty prayer and supplication, for mine own soul; and all the day long did I cry unto him; yea, and when the night came, I did still raise my voice high, that it reached the heavens. And there came a voice unto me saying, Enos, thy sins are forgiven thee, and thou shalt be blessed. And I, Enos, knew that god could not be; wherefore, my guilt was swept away. And I sayeth, Lord, ‘how is it done? And he sayeth unto me, Because of thy faith in Christ, whom thou hast not heard nor seen. And many years passeth away, before that he shall manifest himself in the flesh; wherefore, go to it, thy faith hath made thee whole.</p>
+      <p>Now, it came to pass that when I had heard these words, I began to feel a desire for the welfare of my brethren, the Nephites; wherefore, I did pour out my whole soul unto God for them. And while I was thus struggling in the spirit, behold, the voice of the Lord came into my mind again, saying, I will visit thy brethren, according to their diligence in keeping my</p>
+      <p>commandments. I have given unto them this land; and it is a holy land; and I curse it not, save it be for the cause of iniquity; wherefore, I will visit thy brethren, according as I have said; and their transgressions will I bring down with sorrow upon their own heads. And after that I, Enos, had heard these words, my faith began to be unshaken in the Lord; and I prayed unto him with many long strugglings for my brethren the Lamanites.</p>
+      <p>And it came to pass, that after I had prayed, and labored with all diligence, the Lord said unto me, I will grant unto thee according to thy desires, because of thy faith. And now behold, this was the desire which I desired of him: That if it should so be, that my people, the Nephites, should fall into transgression, and by any means be destroyed, and the Lamanites should not be destroyed. that the Lord God would preserve a record of my people, the Nephites; even if it so be, by the power of his holy arm, that 1t might be brought forth, at some future day, unto the Lamanites, that perhaps they might be brought unto salvation: for at the present, our struggles were vain, in restoring them to the true faith. And they swore in their wrath, that if it were possible, they would destroy our records and us, and, also, all the traditions of our fathers.</p>
+      <p>Wherefore, I knowing that the Lord God was able to preserve our records, I cried unto him continually ; for he had said unto me, Whatsoever thing ye shall ask in faith, believing that ye shall recieve in the name of Christ, ye shall receive it. And I had faith, and I did cry unto God, that he would preserve the records; and he covenanted with me that he would bring them forth unto the Lamanites, in his own due time. — And I, Enos, knew it would be according to the covenant which he had made; wherefore, my soul did rest. And the Lord said unto me, Thy fathers have also required of me this thing; and it shall be done unto them according to their faith, for their faith was like unto thine.</p>
+      <p>And now it came to pass, that I, Enos, went about among the people of Nephi, prophesying of things to come, and testifying of the things which I had heard and seen. And I bare rerecord that the people of Nephi did seek diligently to restore the Lamanites unto the true faithinGod. Butour labors were vain ; their hatred was fixed, and they were led by their evil nature, that they became wild, and ferocious, and a blood-thirsty people; full of idolatry, and filthiness, feading upon beasts of prey,</p>
+      <p>dwelling in tents, and wandering about in the wilderness, with a short skin girded about their loins, and their heads shaven; and their skill was in the bow, and the cimeter, and the axe.— And many of them did eat nothing save it was raw meat; and they were continually seeking to destroy us.</p>
+      <p>And it came to pass that the people of Nephi did till the land, and raise all manner of grain, and of fruit, and flocks of herds, and flocks of all manner of cattle, of every kind, and goats, and wild goats, and also much horses. And there were exceeding many prophets among us. And the people were a stiff-necked people, hard to understand. And there was nothing save it was exceeding harshness, preaching, and prophesying of wars, and contentions, and destructions, and continually reminding them of death, and the duration of eternity, and the judgements and the power of God; and all these things stirring them up continually, to keep them in the fear of the Lord. I say there was nothing short of these things, and exceeding great plainness of speech, would keep them from going down speedily to destruction. And after this manner do I write concerning them. And I saw wars between the Nephites and the Lamanites, in the course of my days.</p>
+      <p>And it came to pass that I began to be old, and an hundred and seventy and nine years had passed away from the time that our father Lehi left Jerusalem. And as I saw that I must soon go down to my grave, having been wrought upon by the power of God, that I must preach and prophesy unto this people, and declare the word according to the truth, which is in Christ. And I have declared it in all my days, and have rejoiced in it, above that of the world. And I soon go to the place of my rest, which is with my Redeemer; for I know that in him I shall rest: I rejoice in the day when my mortal shall put on immortality, and shall stand before him: then I shall see his face with ‘pleasure, and he will say unto me, Come unto me ye blessed, there is a place prepared for you in the mansions of my FarHER. Amen.</p>
+    </div>
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ My notes — Enos (1830):</div>
+    <div class="quill-editor" id="n-bom-1830-eno" data-placeholder="Notes, comparisons with the modern edition..." style="min-height:120px;"></div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <a href="1830-index.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to 1830 Index</a>
+    &nbsp;&nbsp;<a href="eno.html" style="font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">📖 Modern edition →</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-bom-1830-eno'];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>

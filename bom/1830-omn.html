@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omni (1830) — 1830 Edition — Book of Mormon — Campbell Bible Study (Admin)</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:90px; font-family:Arial,sans-serif; font-size:12px; background:#fff; }
+    .ql-editor { min-height:90px; padding:7px 9px; }
+    /* Admin gate */
+    #admin-gate { display:none; max-width:560px; margin:80px auto; padding:32px; background:#5C1A1A; color:#fff; border-radius:10px; font-family:Arial,sans-serif; }
+    #admin-gate h2 { margin:0 0 14px; color:#FFD54F; font-family:Georgia,serif; }
+    #admin-gate p { line-height:1.7; margin:8px 0; }
+    #admin-gate a { color:#FFD54F; }
+    /* 1830 page styles — distinct visual identity from modern */
+    .bom-admin-banner { background:linear-gradient(135deg,#3D1F0F,#5C2E18); color:#fff; padding:14px 20px; border-radius:8px; margin:16px 0 24px; font-family:Arial,sans-serif; font-size:13px; line-height:1.6; border-left:5px solid #C49B3A; }
+    .bom-admin-banner strong { color:#FFD54F; }
+    .ocr-warning { background:#FFF3CD; border:2px solid #B8923F; border-left:5px solid #B8923F; border-radius:8px; padding:14px 18px; margin:16px 0; font-family:Arial,sans-serif; font-size:13px; color:#5C3A0F; line-height:1.65; }
+    .ocr-warning strong { color:#8A6A1F; }
+    .bom-chap-nav { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 20px; padding:12px; background:#F5F0E5; border:1px solid #C49B3A; border-radius:8px; }
+    .bom-chap-nav a { display:inline-block; padding:6px 10px; background:#fff; border:1px solid #C49B3A; border-radius:5px; font-family:Georgia,serif; font-size:13px; color:#3D1F0F; text-decoration:none; min-width:36px; text-align:center; font-style:italic; }
+    .bom-chap-nav a:hover { background:#3D1F0F; color:#FFD54F; }
+    .bom-1830-chapter { margin:32px 0; padding:24px 26px; background:#FBF6E9; border:1px solid #C49B3A; border-radius:8px; }
+    .bom-1830-chapter h3 { font-family:Georgia,serif; color:#3D1F0F; margin:0 0 6px; font-size:24px; font-style:italic; font-weight:normal; text-align:center; letter-spacing:0.05em; }
+    .bom-1830-chapter .modern-ref { font-family:Arial,sans-serif; font-size:11px; color:#8A6A1F; text-align:center; text-transform:uppercase; letter-spacing:0.10em; margin-bottom:18px; padding-bottom:12px; border-bottom:1px solid #C49B3A; }
+    .bom-1830-chapter .modern-ref strong { color:#3D1F0F; }
+    .bom-1830-text { font-family:'Times New Roman', Georgia, serif; font-size:16px; line-height:1.85; color:#2C1810; text-align:justify; }
+    .bom-1830-text p { margin:14px 0; text-indent:1.5em; }
+    .bom-1830-text p:first-child { text-indent:0; }
+    .bom-1830-text p:first-child::first-letter { font-size:38px; line-height:1; float:left; margin:4px 8px 0 0; font-family:Georgia,serif; color:#5C2E18; }
+    .bom-preamble { background:#F0E8D0; border-left:4px solid #8A6A1F; padding:14px 18px; margin:14px 0; font-family:Georgia,serif; font-style:italic; color:#5C2E18; border-radius:0 6px 6px 0; }
+    .bom-book-card { display:block; padding:14px 18px; margin:8px 0; background:#FBF6E9; border:1px solid #C49B3A; border-left:4px solid #3D1F0F; border-radius:6px; text-decoration:none; color:#3D1F0F; font-family:Georgia,serif; }
+    .bom-book-card:hover { background:#F5E9C7; border-left-color:#C49B3A; }
+    .bom-book-card .bname { font-size:17px; font-weight:bold; font-style:italic; color:#3D1F0F; }
+    .bom-book-card .bmeta { font-size:12px; color:#8A6A1F; margin-top:3px; font-family:Arial,sans-serif; font-style:normal; }
+    .bom-section-head { font-family:Georgia,serif; color:#5C2E18; font-size:14px; text-transform:uppercase; letter-spacing:0.10em; margin:22px 0 8px; padding-bottom:4px; border-bottom:1px solid #C49B3A; font-style:italic; }
+    .cross-ref-callout { background:#FDF6E3; border:1px solid #B8923F; border-radius:6px; padding:12px 16px; margin:14px 0; font-family:Arial,sans-serif; font-size:13px; color:#3B2D1F; }
+    .cross-ref-callout a { color:#2E75B6; text-decoration:none; font-weight:bold; }
+    .source-callout { background:#F4F8EE; border-left:4px solid #6B8E3A; padding:10px 14px; margin:10px 0; font-family:Arial,sans-serif; font-size:12px; color:#3B5E1A; border-radius:4px; }
+    .key-passage { background:#FFEBE8; border:2px solid #B22222; border-radius:6px; padding:14px 18px; margin:18px 0; font-family:Georgia,serif; font-size:14px; color:#3D1F0F; }
+    .key-passage strong { color:#B22222; font-family:Arial,sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:0.10em; display:block; margin-bottom:6px; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+  <script>
+    (function() {
+      var ok = false;
+      try {
+        if (sessionStorage.getItem('cbsg-admin') === 'true') ok = true;
+      } catch(e) {}
+      if (!ok) {
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('app').style.display = 'none';
+          document.getElementById('admin-gate').style.display = 'block';
+        });
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<div id="admin-gate">
+  <h2>🔒 Admin only</h2>
+  <p>The Book of Mormon study tool is restricted to admin access on this site.</p>
+  <p>Return to the <a href="../index.html">home page</a> and log in via the 🔒 button in the top bar.</p>
+  <p style="margin-top:18px;">For the public theological analysis:</p>
+  <p>→ <a href="../DeepDive-BookOfMormon.html">📖 Book of Mormon — Text &amp; Evidence (Deep Dive)</a></p>
+</div>
+
+<div id="github-bar"></div>
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="1830-index.html" style="display:inline-block;margin-bottom:8px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to 1830 Index</a>
+  <a href="omn.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">📖 View modern edition of Omni →</a>
+  <div class="bom-admin-banner">
+    <strong>🔒 ADMIN · 1830 ORIGINAL EDITION</strong> &nbsp;|&nbsp; This is the text as Joseph Smith first published it (Palmyra, NY, 1830) — <em>before</em> the 1837 theological edits, the 1879 verse divisions by Orson Pratt, the 1920 reformat, or the 1981 racial wording change. Source: digital replica of the 1830 facsimile (Internet Archive, OCR'd from the Jenson edition). Compare with: <a href="omn.html" style="color:#FFD54F;">📖 Omni (modern)</a> &middot; <a href="compare.html" style="color:#FFD54F;">📋 Side-by-side</a> &middot; <a href="bible-parallels.html" style="color:#FFD54F;">📜 Bible parallels</a> &middot; <a href="bible-parallels-isaiah.html" style="color:#FFD54F;">📜 Isaiah parallels</a>.
+  </div>
+  <div class="ocr-warning">
+    <strong>⚠️ OCR DISCLAIMER:</strong> This text was OCR'd from a scanned facsimile of the 1830 printing. <em>Expect scan errors throughout</em> — e.g., "I, Neput" for "I, Nephi", "Anp" for "And", "L," for "I,", spurious punctuation. These are NOT changes I made; they are artifacts of the scanning process. The whole point of viewing the 1830 is to see the original 19th-century spelling, grammar, and word choices — so the spelling has been left as the OCR rendered it. <strong>For the critical theological readings</strong> (e.g., "mother of God" in 1 Nephi, "Eternal Father" without "Son of", "white and a delightsome people"), the OCR is accurate at the key phrases and these have been verified.
+  </div>
+  <h1 class="page-title" style="font-family:Georgia,serif;font-style:italic;color:#3D1F0F;">Omni</h1>
+  <p style="font-family:Arial,sans-serif;font-size:13px;color:#8A6A1F;margin:8px 0 16px;">1 chapter (Roman numerals as originally printed) · ~1,399 words · 1830 Palmyra edition</p>
+  <div class="bom-1830-chapter" id="ch1">
+    <h3>CHAPTER I</h3>
+    <div class="modern-ref">Modern reference: <strong>Omni 1:1 – 1:30</strong></div>
+    <div class="bom-1830-text">
+      <p>BEHOLD, it came to pass that I, Omni, being commanded by my father Jarom, that I should write somewhat upon these plates, to preserve our genealogy; wherefore, in my days, I would that ye should know that I fought much with the sword, to preserve my people, the Nephites, from falling into the hands of their enemies, the Lamanites. But behold I, of myself, am a wicked man; and I have not kept the statutes and the commandments of the Lord, as I ought to have done.</p>
+      <p>And it came to pass that two hundred and seventy and six years had passed away, and we had many seasons of peace; and we had many seasons of serious war and bloodshed. — Yea, and in fine, two hundred and eighty and two years had passed away, and I kept these plates according to the commandments of my fathers; and I conferred them upon my son Amaron. AndI make an end.</p>
+      <p>And now I, Amaron, write these things whatsoever I write, which are few, in the book of my father. Behold, it came to pass that three hundred and twenty years had passed away, and the more wicked part of the Nephites were destroyed: for the Lord would not suffer, after he had led them out of the land of Jerusalem, and kept and preserved them from falling into the hands of their enemies; yea, he would not suffer that the words should not be verified, which he spake unto our fathers, saying, That inasmuch as ye will not keep my commandments, ye shall not prosper in the land. Wherefore, the Lord did visit them in great judgement; nevertheless, he did spare the righteous, that they should not perish, but did deliver them out of the hands of their enemies. And it came to pass that I did deliver the plates unto my brother Chemish.</p>
+      <p>Now I, Chemish, write what few things I write, in the same book with my brother: for behold, I saw the last which he</p>
+      <p>wrote, that he wrote it with his own hand; and he wrote it in the day that he delivered them unto me. And after this manner we keep the records: for it is according to the commandments of our fathers. And I make an end.</p>
+      <p>Behold, I, Abinadom, I am the son of Chemish. Behold, it came to pass that I saw much war and contention between my people, the Nephites, and the Lamanites; and I, with mine own sword, have taken the lives of many of the Lamanites, in the defence of my brethren. And behold, the record of this people is engraven upon the plates which is had by the kings, according to the generations; and I know of no revelations, save that which has been written, neither prophecy; wherefore, that which is sufficient, is written. And I make an end.</p>
+      <p>Behold, I am Amaleki, the son of Abinadom. Behold, I will speak unto you somewhat concerning Mosiah, which was made king over the land of Zarahemla: for behold, he being warned of the Lord that he should flee out of the land of Nephi, and as many as would hearken unto the voice of the Lord, should also depart out of the land with him, into the wilderness. And it came to pass that he did according as the Lord had commanded him. And they departed out of the land into the wilderness, as many as would hearken unto the voice of the Lord; and they were led by many preachings and prophesyings. And they were admonished continually by the word of God; and they were led by the power of his arm, through the wilderness, until they came down into the land which is called the land of Zarahemla. And they discovered a people which was called the people of Zarahemla. Now, there was great rejoicing among the people of Zarahemla; and also, Zarahemla did rejoice exceedingly, because that the Lord had sent the people of Mosiah with the plates of brass which contained the record of the Jews.</p>
+      <p>Behold, it came to pass that Mosiah discovered that the people of Zarahemla, came out from Jerusalem, at the time that Zedekiah, king of Judah, was carried away captive into Babylon. Andthey journied in the wilderness, and was brought by the hand of the Lord, across the great waters, into the land where Mosiah discovered them; and they had dwelt there from that time forth. And at the time that Mosiah discovered them, they had become exceeding numerous. Nevertheless, they had had many wars and serious contentions, and had fallen by the sword from time to time; and their language had become corrupted; and they had brought no records with them;</p>
+      <p>and they denied the being of their Creator, and Mosiah, nor the people of Mosiah, could not understand them.</p>
+      <p>But it came to pass that Mosiah caused that they should be taught in his language. And it came to pass that after they were taught in the language of Mosiah, Zarahemla gave a genealogy of his fathers, according to his memory: and they are written, but not in these plates.</p>
+      <p>And it came to pass that the people of Zarahemla, and of Mosiah did unite together; and Mosiah was appointed to be their king. And it came to pass in the days of Mosiah, there was a large stone brought unto him, with engravings on it; and he did interpret the engravings, by the gift and power of God.</p>
+      <p>And they gave an account of one Coriantumr, and the slain of his people. And Coriantumr was discovered by the people of Zarahemla; and he dwelt with them for the space of nine Moons. It also spake a few words concerning his fathers. And his first parents came out from the Tower, at the time the Lord confounded the language of the people; and the severity of the Lord fell upon them, according to his judgements, which is just; and their bones lay scattered in the land northward.</p>
+      <p>Behold, I, Amaleki, was born in the days of Mosiah; and I have lived to see his death; and Benjamin, his son, reigneth in his stead. And behold, I have seen in the days of the king Benjamin, a serious war, and much bloodshed, between the Nephites and the Lamanites. But behold, the Nephites did obtain much advantage over them; yea, insomuch that king Benjamin did drive them out of the land of Zarahemla.</p>
+      <p>And it came to pass that I began to be old; and, having no seed, and knowing king Benjamin to be a just man before the Lord, wherefore, I shall deliver up these plates unto him, exhorting all men to come unto God, the Holy One of Israel, and believe in prophesying, and in revelations, and in the ministering of Angels, and in the gift of speaking with tongues, and in the gift of interpreting languages in all things which is good: for there is nothing which is good, save it come from the Lord; and that which is evil, cometh from the Devil.</p>
+      <p>And now my beloved brethren, I would that ye should come unto Christ, which is the Holy One of Israel, and partake of his salvation, and the power of his redemption. Yea, come unto him, and offer your whole souls as an offering unto him, and continue in fasting and praying, and endure to the end; and as the Lord liveth, ye will be saved.</p>
+      <p>And now, I would speak somewhat concerning a certain number which went up into the wilderness, to return to the land of Nephi: for there was a large number which were desirous to possess the land of their inheritance; wherefore, they went up into the wilderness. And their leader being a strong and mighty man, and a stiffnecked man, wherefore, he caused a contention among them; and they were all slain, save fifty, in the wilderness, and they returned again to the land of Zarahemla.</p>
+      <p>And it came to pass that they also took others, to a considerable number, and took their journey again into the wilderness. And, I, Amaleki, had a brother, which also went with them; and I have, not since known concerning them. And I am about to lay down in my grave; and these plates are full. And I make an end of my speaking.</p>
+    </div>
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ My notes — Omni (1830):</div>
+    <div class="quill-editor" id="n-bom-1830-omn" data-placeholder="Notes, comparisons with the modern edition..." style="min-height:120px;"></div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <a href="1830-index.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to 1830 Index</a>
+    &nbsp;&nbsp;<a href="omn.html" style="font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">📖 Modern edition →</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-bom-1830-omn'];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>
