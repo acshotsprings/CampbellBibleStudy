@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Theme 4: Covenant — Campbell Bible Study</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <script src="../assets/js/analytics.js"></script>
 </head>
 <body>
@@ -17,13 +18,13 @@
   <button class="btn-load" onclick="loadFromGitHub()">Load from GitHub</button>
   <span id="gh-status"></span>
   <div class="bar-right">
-    <span class="bar-originated">Originated: April 27, 2026</span>
+    <span class="bar-originated">Originated: May 12, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version">Version: May 12, 2026</span>
+    <span id="gh-bar-version">Version: May 26, 2026</span>
   </div>
 </div>
 
-<!-- SIDEBAR OVERLAY -->
+<!-- SIDEBAR OVERLAY (mobile only) -->
 <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <!-- SIDEBAR -->
@@ -33,93 +34,168 @@
 <div id="app">
 <div id="main">
 
-  <span class="page-tag" style="background:#7E57C2;">Theme 4 — Overview</span>
+  <span class="page-tag" style="background:#C8932B;">Theme 4 — Covenant</span>
   <h1 class="page-title">Covenant</h1>
-  <p class="page-subtitle">God's binding promises through Noah, Abraham, Moses, David, and Jesus</p>
+  <p class="page-subtitle">"I will establish My covenant between Me and you and your descendants after you throughout their generations for an everlasting covenant, to be God to you and to your descendants after you." — Genesis 17:7</p>
 
-  <div class="info-box">
-    <div class="title">📖 What this theme is about</div>
-    <div class="line"><strong>The thread that runs through the entire Bible.</strong></div>
-  </div>
+  <p class="body">A covenant is not a contract. A contract is two parties exchanging value, balanced and conditional. A covenant is a binding promise sworn by God Himself — and when God is the one swearing, the covenant holds whether we hold up our end or not. From Abraham to Moses to David to the prophets to the Last Supper, the Bible's storyline is a sequence of covenants — each one building on the last, each one moving God's plan of redemption forward, each one pointing toward Christ.</p>
 
-  <p class="body">A covenant is not a contract. A contract is a deal between equals; either side can walk away if the other side fails. A covenant is a binding promise rooted in the greater party's character, sealed by oath, attached to a sign, and impossible to renegotiate. It does not depend on the lesser party's performance. It depends on the One who swore it.</p>
+  <p class="body">Theme 4 walks through five of these binding promises in order. The first two — Abraham and Moses — establish the people of God and the law that governs them. The third — David — establishes the throne and the line through which the Messiah will come. The fourth — Jeremiah's prophecy — anticipates a covenant that does what the old one could not: write God's law on the human heart. The fifth — Christ — fulfills it. By the end, the question becomes inescapable: if God has kept every covenant He has ever sworn, what does that say about the ones that have not yet been fulfilled?</p>
 
-  <p class="body">Theme 3 ended with the Noahic covenant — God's first explicit binding promise to creation. Theme 4 picks up that thread and follows it forward through Scripture: Abraham (the call out and the seed promised), Moses (the law given and the nation formed), David (the kingdom and the throne that endures), and Jesus (the New Covenant in His blood, the fulfillment of all the rest). Each builds on the pattern Noah saw. Each is made by God's free initiative. Each one points forward to Christ.</p>
-
-  <p class="body">If you want to understand how the Bible holds together as one story rather than 66 separate books, the covenant pattern is the spine. Theme 4 walks that spine.</p>
-
-  <!-- CURRENTLY WORKING ON CALLOUT — M1 LIVE, M2 NEXT -->
-  <div class="info-box" style="border-left:4px solid #7E57C2; background:#F5F0FA;">
+  <!-- CURRENTLY WORKING ON CALLOUT -->
+  <div class="info-box" style="border-left:4px solid #C8932B; background:#FBF6EA;">
     <div class="title">📍 Currently working on</div>
-    <div class="line"><strong>Theme 4 — In progress 🔨</strong></div>
-    <div class="line" style="margin-top:6px;">Module 1 (The Abrahamic Covenant) is complete and live. Up next: <strong>Module 2 — The Mosaic Covenant</strong> (Sinai, the law, the priestly nation).</div>
-    <div class="line" style="margin-top:6px;font-style:italic;color:#666;">Theme 4 is being built one module at a time. There is no rush. Better to do this slowly and well than to fill the slot with placeholder content. M1 was built on May 12, 2026.</div>
+    <div class="line"><strong>Theme 4 — All five modules built · Ready to study 📖</strong></div>
+    <div class="line" style="margin-top:6px;">Up next: <strong>Theme 5 — The Messiah</strong> (the threads of Scripture that point to Christ, fulfilled and yet to come)</div>
   </div>
 
-  <!-- ADD-FRIENDLY MAP — STATUS LEGEND -->
-  <h2 class="section-title">📚 The shape of this theme</h2>
-  <p class="body" style="color:#666;font-style:italic;">Five modules will trace the covenant pattern through Scripture: Abraham, Moses, David, the New Covenant prophesied, and the New Covenant in Christ. Status legend below.</p>
+  <!-- ADD-FRIENDLY MAP — ALL FIVE MODULES AT A GLANCE -->
+  <h2 class="section-title">📚 The Map — All five modules</h2>
+  <p class="body" style="color:#666;font-style:italic;">No need to remember what's next. Every module in this theme is shown here with its status. Work through them in any order, at any pace. There is no rush.</p>
 
   <div class="info-box">
     <div class="title">Status legend</div>
     <div class="line">🔨 <strong>In Progress</strong> — currently being built or actively studied</div>
-    <div class="line">✅ <strong>Complete</strong> — finished and ready to study</div>
+    <div class="line">📖 <strong>Ready to Study</strong> — module built, available to study</div>
+    <div class="line">✅ <strong>Complete</strong> — you have studied and marked this module as complete</div>
     <div class="line">⏳ <strong>Coming</strong> — planned, not yet built</div>
   </div>
 
-  <!-- MODULE MAP -->
-  <div class="info-box" style="border-left:4px solid #7E57C2;margin-top:14px;">
-    <div class="title">📖 Module map</div>
-    <div class="line">✅ <strong><a href="module1.html" style="color:#7E57C2;">Module 1 — The Abrahamic Covenant: God Walks Alone</a></strong> (Genesis 15)</div>
-    <div class="line" style="margin-top:6px;">⏳ <strong>Module 2 — The Mosaic Covenant</strong> (Exodus 19–20 — Sinai, the law, the priestly nation)</div>
-    <div class="line" style="margin-top:6px;">⏳ <strong>Module 3 — The Davidic Covenant</strong> (2 Samuel 7 — the throne that endures)</div>
-    <div class="line" style="margin-top:6px;">⏳ <strong>Module 4 — The New Covenant Prophesied</strong> (Jeremiah 31:31–34 — the heart-promise)</div>
-    <div class="line" style="margin-top:6px;">⏳ <strong>Module 5 — The New Covenant in Christ</strong> (Luke 22:20 + Hebrews 8 — where the Seed lands)</div>
+  <!-- MODULE MAP TABLE -->
+  <div style="margin:20px 0; overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; font-family:inherit;">
+      <thead>
+        <tr style="background:#C8932B; color:#fff;">
+          <th style="padding:10px; text-align:left; border:1px solid #ddd; width:55px;">#</th>
+          <th style="padding:10px; text-align:left; border:1px solid #ddd;">Module</th>
+          <th style="padding:10px; text-align:left; border:1px solid #ddd; width:130px;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd; font-weight:bold;">1</td>
+          <td style="padding:10px; border:1px solid #ddd;">
+            <strong><a href="module1.html" style="color:#C8932B;">The Abrahamic Covenant</a></strong><br>
+            <span style="color:#666; font-size:13px;">The promise that started a people — Genesis 15</span>
+          </td>
+          <td style="padding:10px; border:1px solid #ddd;">📖 Ready to Study</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd; font-weight:bold;">2</td>
+          <td style="padding:10px; border:1px solid #ddd;">
+            <strong><a href="module2.html" style="color:#C8932B;">The Mosaic Covenant</a></strong><br>
+            <span style="color:#666; font-size:13px;">The law that shaped a nation — Exodus 19–20, 24</span>
+          </td>
+          <td style="padding:10px; border:1px solid #ddd;">📖 Ready to Study</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd; font-weight:bold;">3</td>
+          <td style="padding:10px; border:1px solid #ddd;">
+            <strong><a href="module3.html" style="color:#C8932B;">The Davidic Covenant</a></strong><br>
+            <span style="color:#666; font-size:13px;">The throne that would not end — 2 Samuel 7</span>
+          </td>
+          <td style="padding:10px; border:1px solid #ddd;">📖 Ready to Study</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd; font-weight:bold;">4</td>
+          <td style="padding:10px; border:1px solid #ddd;">
+            <strong><a href="module4.html" style="color:#C8932B;">The New Covenant Prophesied</a></strong><br>
+            <span style="color:#666; font-size:13px;">A covenant written on the heart — Jeremiah 31:31–34</span>
+          </td>
+          <td style="padding:10px; border:1px solid #ddd;">📖 Ready to Study</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd; font-weight:bold;">5</td>
+          <td style="padding:10px; border:1px solid #ddd;">
+            <strong><a href="module5.html" style="color:#C8932B;">The New Covenant in Christ</a></strong><br>
+            <span style="color:#666; font-size:13px;">The promise fulfilled in blood — Luke 22 &amp; Hebrews 8–10</span>
+          </td>
+          <td style="padding:10px; border:1px solid #ddd;">📖 Ready to Study</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <!-- ANCHOR PASSAGES — THE BOUNDARIES OF THE THEME -->
-  <div class="info-box" style="border-left:4px solid #2E75B6;margin-top:18px;">
-    <div class="title">📖 Anchor passages — the boundaries of Theme 4</div>
-    <div class="line">When the modules of this theme are built, they will be built within the boundaries of these passages. They are the scope of what Theme 4 will cover.</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/GEN.9.NASB1995" target="_blank" rel="noopener">Genesis 9</a> — the Noahic covenant — the first explicit covenant</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/GEN.15.NASB1995" target="_blank" rel="noopener">Genesis 15</a> — the Abrahamic covenant — God walking between the pieces alone</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/EXO.19-20.NASB1995" target="_blank" rel="noopener">Exodus 19–20</a> — the Mosaic covenant — Sinai, the law, the priestly nation</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/2SA.7.NASB1995" target="_blank" rel="noopener">2 Samuel 7</a> — the Davidic covenant — the throne that endures</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/JER.31.31-34.NASB1995" target="_blank" rel="noopener">Jeremiah 31:31–34</a> — the New Covenant prophesied</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/LUK.22.20.NASB1995" target="_blank" rel="noopener">Luke 22:20</a> — the New Covenant in Jesus' blood</div>
-    <div class="line" style="margin-top:8px;">• <a href="https://www.bible.com/bible/100/HEB.8.NASB1995" target="_blank" rel="noopener">Hebrews 8</a> — the New Covenant explained</div>
-  </div>
-
-  <!-- CROSS-REFERENCES TO OTHER THEMES -->
-  <div class="cross-ref-box" style="margin-top:18px;">
-    <div class="title">🔗 Where this theme already touches the rest of the site</div>
-    <div class="line">• <strong><a href="../theme3/module3.html" style="color:#7E57C2;">Theme 3, Module 3 (The Rainbow Covenant)</a></strong> — The Noahic covenant in detail — Theme 4 begins where Theme 3 ends</div>
-    <div class="line">• <strong><a href="../theme1/module5.html" style="color:#7E57C2;">Theme 1, Module 5 (The New Covenant)</a></strong> — The New Covenant already lives in Theme 1 — Theme 4 will deepen it</div>
+  <div class="info-box" style="margin-top:14px;">
+    <div class="title">🔗 Key cross-references to other themes</div>
+    <div class="line"><strong>Theme 3, Module 3 (The Rainbow Covenant)</strong> — The Noahic covenant is the first of God's binding promises with humanity, the foundation Theme 4 builds on</div>
+    <div class="line"><strong>Theme 1, Module 1 (Daniel's 70 Weeks)</strong> — Built on the Abrahamic and Davidic land/throne promises that have not yet been fully fulfilled</div>
+    <div class="line"><strong>Theme 1, Module 12 (The Millennium)</strong> — The earthly fulfillment of the Davidic covenant — Christ reigning from Jerusalem on David's throne</div>
+    <div class="line"><strong>Characters: David</strong> — The man behind the covenant in Module 3; his life is the proving ground for the throne God promised would not end</div>
+    <div class="line"><strong>Theme 5 — The Messiah</strong> (coming) — Every covenant in this theme points toward Christ; Theme 5 traces those threads explicitly</div>
   </div>
 
   <div class="divider"></div>
 
-  <!-- BEFORE YOU BEGIN — SAME PATTERN AS THEME 3 -->
-  <h2 class="section-title">Before any of this is built</h2>
-  <p class="body">If you are reading this overview before any modules exist, here is a question worth sitting with: <em>what would you want this theme to do for you?</em> The Bible is a deep enough book that any of these themes could be studied for a lifetime without exhausting them. The point of building modules is not to capture everything — it is to capture the things that move <strong>you</strong> closer to Christ. Bring that intention into the work when the time comes.</p>
+  <h2 class="section-title">Before you begin</h2>
+  <p class="body">Covenant is the connective tissue of the Bible. Without it, Scripture is a collection of disconnected stories. With it, Scripture becomes one unified narrative — the story of a God who binds Himself to His people and refuses to let go, even when they fail Him. The Hebrew word <em>berit</em> appears more than 280 times in the Old Testament. The Greek word <em>diathēkē</em> appears 33 times in the New. Both translate as "covenant." Both point to the same reality: God keeps His word.</p>
 
-  <div class="reflection-box" style="background:#F5F0FA;">
-    <div class="title">A pause</div>
-    <div class="reflection-item">What is the one question about this theme that you most want answered? Write it down. The answer to it will become a module.</div>
-    <div class="reflection-item">Where in your own walk with God does this theme already feel important? What experience is making it feel that way?</div>
-    <div class="reflection-item">Whose voice — pastor, teacher, author, friend — has helped you understand this theme so far? Their material may become source material here.</div>
+  <p class="body">Before working through Module 1, sit with these questions for a moment.</p>
+
+  <div class="notes-box">
+    <div class="label">✏️ What do I currently understand about covenant — and what do I want to learn?</div>
+    <div class="quill-editor" id="n-t4-overview" data-placeholder="Write your thoughts here. Date your entry."></div>
   </div>
 
-  <!-- NAVIGATION FOOTER -->
+  <div class="divider"></div>
+
+  <!-- QUICK-START CARDS -->
+  <h2 class="section-title">Jump to a Module</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:16px 0;">
+
+    <a href="module1.html" style="text-decoration:none;">
+      <div style="background:#C8932B;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#D9A53D'" onmouseout="this.style.background='#C8932B'">
+        <div style="font-size:11px;opacity:0.85;">MODULE 1 — READY 📖</div>
+        <div style="font-weight:bold;margin-top:4px;">The Abrahamic Covenant</div>
+        <div style="font-size:12px;margin-top:6px;opacity:0.85;">Genesis 15 — the promise that started a people</div>
+      </div>
+    </a>
+
+    <a href="module2.html" style="text-decoration:none;">
+      <div style="background:#C8932B;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#D9A53D'" onmouseout="this.style.background='#C8932B'">
+        <div style="font-size:11px;opacity:0.85;">MODULE 2 — READY 📖</div>
+        <div style="font-weight:bold;margin-top:4px;">The Mosaic Covenant</div>
+        <div style="font-size:12px;margin-top:6px;opacity:0.85;">Exodus 19–20, 24 — the law that shaped a nation</div>
+      </div>
+    </a>
+
+    <a href="module3.html" style="text-decoration:none;">
+      <div style="background:#C8932B;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#D9A53D'" onmouseout="this.style.background='#C8932B'">
+        <div style="font-size:11px;opacity:0.85;">MODULE 3 — READY 📖</div>
+        <div style="font-weight:bold;margin-top:4px;">The Davidic Covenant</div>
+        <div style="font-size:12px;margin-top:6px;opacity:0.85;">2 Samuel 7 — the throne that would not end</div>
+      </div>
+    </a>
+
+    <a href="module4.html" style="text-decoration:none;">
+      <div style="background:#C8932B;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#D9A53D'" onmouseout="this.style.background='#C8932B'">
+        <div style="font-size:11px;opacity:0.85;">MODULE 4 — READY 📖</div>
+        <div style="font-weight:bold;margin-top:4px;">The New Covenant Prophesied</div>
+        <div style="font-size:12px;margin-top:6px;opacity:0.85;">Jeremiah 31:31–34 — written on the heart</div>
+      </div>
+    </a>
+
+    <a href="module5.html" style="text-decoration:none;">
+      <div style="background:#C8932B;color:#fff;border-radius:8px;padding:16px;transition:background 0.15s;" onmouseover="this.style.background='#D9A53D'" onmouseout="this.style.background='#C8932B'">
+        <div style="font-size:11px;opacity:0.85;">MODULE 5 — READY 📖</div>
+        <div style="font-weight:bold;margin-top:4px;">The New Covenant in Christ</div>
+        <div style="font-size:12px;margin-top:6px;opacity:0.85;">Luke 22 &amp; Hebrews 8–10 — the promise fulfilled</div>
+      </div>
+    </a>
+
+  </div>
+
   <div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid #ddd;">
     <a href="../index.html" class="btn-primary" style="font-size:12px;">← Home</a>
-    <a href="../index.html#index" class="btn-primary" style="font-size:12px;">All Themes</a>
+    <a href="module1.html" class="btn-primary" style="font-size:12px;background:#C8932B;">Start with Module 1 →</a>
   </div>
 
 </div>
 </div>
 
+<script>window.PAGE_NOTE_IDS = ['n-t4-overview'];</script>
 <script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="../assets/js/main.js"></script>
 <script>buildSidebar('..');</script>
 

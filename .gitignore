@@ -1,13 +1,34 @@
 # Campbell Bible Study — .gitignore
 # Keeps local backup snapshots out of the published site.
 
-# Snapshot backups — kept locally for easy reference, never deployed.
-_snapshots/
+# === SNAPSHOT FILES ===
+# Snapshots are local rollback copies kept on Chris's machine only.
+# Per the SNAPSHOT RULE: deliver to /outputs/, never push to repo.
 
-# Catch any snapshot files saved loose in theme/character folders by mistake.
+# HTML snapshots anywhere in the tree
 *_snapshot_*.html
 *_snapshot.html
+*_snapshot_*.htm
 
-# OS / editor cruft
+# JS snapshots in assets/js/
+assets/js/*snapshot*.js
+assets/js/*_snapshot*.js
+
+# Local snapshot folder pattern
+_snapshots/
+
+# === ZIP BACKUPS ===
+# Site backup archives — kept locally, never deployed.
+backups/
+*.zip
+
+# === OS / EDITOR CRUFT ===
 .DS_Store
 Thumbs.db
+*.swp
+*~
+
+# === LOCAL DEVELOPMENT ===
+node_modules/
+.env
+.env.local

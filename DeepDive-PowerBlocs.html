@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Four Power Blocs — Deep Dive — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:90px; font-family:Arial,sans-serif; font-size:12px; background:#fff; }
+    .ql-editor { min-height:90px; padding:7px 9px; }
+    /* Page-specific styling */
+    .bloc-box { background:#FAF6EE; border-left:5px solid #B8923F; border-radius:6px; padding:16px 20px; margin:18px 0; }
+    .bloc-box .bloc-num { font-size:11px; color:#8A6A1F; font-weight:bold; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:4px; font-family:Arial,sans-serif; }
+    .bloc-box .bloc-name { font-size:20px; color:#3B2D1F; font-family:Georgia,serif; font-weight:bold; margin-bottom:8px; }
+    .bloc-box .bloc-anchor { font-size:13px; color:#666; font-family:Arial,sans-serif; margin-bottom:10px; font-style:italic; }
+    .bloc-box .bloc-line { font-size:15px; color:#3B2D1F; line-height:1.75; font-family:Arial,sans-serif; margin-bottom:8px; }
+    .bloc-box .bloc-line strong { color:#1F3864; }
+    .endorse-table { width:100%; border-collapse:collapse; margin:14px 0 22px; font-family:Arial,sans-serif; font-size:13px; }
+    .endorse-table th, .endorse-table td { border:1px solid #c8d4e0; padding:10px 12px; vertical-align:top; text-align:left; }
+    .endorse-table thead th { background:#1F3864; color:#fff; font-family:Georgia,serif; font-weight:bold; }
+    .endorse-table tbody tr:nth-child(odd) { background:#F6F9FC; }
+    .endorse-table .scholar { font-weight:bold; color:#1F3864; width:22%; }
+    .endorse-table .position { width:18%; }
+    .endorse-table .summary { width:60%; }
+    .critic-box { background:#FEF6F0; border-left:4px solid #B8523F; border-radius:6px; padding:14px 18px; margin:14px 0; }
+    .critic-box .title { font-size:12px; color:#8A3A1F; font-weight:bold; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; font-family:Arial,sans-serif; }
+    .critic-box .line { font-size:14px; color:#3B201F; line-height:1.7; margin-bottom:6px; font-family:Arial,sans-serif; }
+    .verse-block { background:#fff; border:1px solid #d0dce8; border-radius:6px; padding:12px 14px; margin:10px 0; font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#1F3864; }
+    .verse-block .ref { display:block; font-family:Arial,sans-serif; font-size:11px; color:#666; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px; font-weight:bold; }
+    .verse-block sup.vn { font-size:10px; color:#888; font-weight:bold; vertical-align:super; margin-right:2px; }
+    .verse-block .lord { font-variant:small-caps; font-weight:bold; }
+    .key-quote { background:#F4F8EE; border-left:4px solid #6B8E3A; padding:12px 16px; margin:14px 0; font-family:Georgia,serif; font-style:italic; color:#3B2D1F; font-size:14px; line-height:1.7; border-radius:6px; }
+    .verdict-box { background:linear-gradient(135deg,#F7F4EC,#EEE8DA); border-left:5px solid #8B6F47; border-radius:8px; padding:20px 26px; margin:24px 0; font-family:Georgia,serif; }
+    .verdict-box .vtitle { font-size:13px; color:#8B6F47; font-weight:bold; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:10px; font-family:Arial,sans-serif; }
+    .verdict-box p { font-size:15px; color:#3B2D1F; line-height:1.75; margin:0 0 10px 0; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+</head>
+<body>
+
+<div id="github-bar"></div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="DeepDives.html" style="display:inline-block;margin-bottom:16px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Deep Dives</a>
+
+  <span class="page-tag">🔬 Deep Dive · End Times · Geopolitical Framework</span>
+  <h1 class="page-title">🌍 The Four Power Blocs — End-Times Geopolitical Framework</h1>
+  <p class="page-subtitle" style="font-style:italic;">What the framework claims, where it comes from in Scripture, and which scholars stand behind it — anchored in 2 Timothy 3:16–17.</p>
+
+  <div class="verdict-box">
+    <div class="vtitle">✨ Why this study matters</div>
+    <p>Pastor Haney teaches that the end-times geopolitical landscape can be organized into four major power blocs — the King of the North, the King of the South, the Kings of the East, and the Gog-Magog Coalition. The framework appears clean and powerful when laid out on a map. But the question worth asking is: <strong>where does the Bible explicitly teach the unified four-bloc structure</strong>, and <strong>which other scholars present it the same way?</strong></p>
+    <p>This Deep Dive walks through each bloc, its scriptural anchor, and what serious dispensational scholars (especially Mark Hitchcock of Dallas Theological Seminary) actually teach. It also includes the strongest critiques from historic premillennialists, amillennialists, and postmillennialists — because honest engagement with Scripture means holding good arguments up next to opposing ones and seeing which holds. Anchor verse: <em>"All Scripture is inspired by God and profitable for teaching, for reproof, for correction, for training in righteousness"</em> (2 Timothy 3:16). Frameworks get measured against Scripture, not the other way around.</p>
+  </div>
+
+  <h2 class="section-title">📋 The framework at a glance</h2>
+  <p class="body">The Four Power Blocs framework proposes that in the end times, four major geopolitical coalitions will be in play — each with a distinct geographic direction, a distinct biblical anchor, and a distinct prophetic role. Israel sits in the middle. The four blocs converge on Israel, conflict with each other, and ultimately fall under God's judgment.</p>
+
+  <p class="body">These four power centers are not laid out in a single verse. They are pulled from three different prophetic passages — Daniel 11, Revelation 16, and Ezekiel 38–39 — and arranged into one model. That synthesis is what makes the framework powerful for teaching, but it is also what makes it interpretively dependent rather than directly stated.</p>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">🌍 The Four Blocs — One at a Time</h2>
+
+  <!-- BLOC 1 -->
+  <div class="bloc-box">
+    <div class="bloc-num">Bloc 1 · North</div>
+    <div class="bloc-name">The King of the North</div>
+    <div class="bloc-anchor">Anchor: <a href="https://www.bible.com/bible/100/DAN.11.36-45.NASB1995" target="_blank" rel="noopener">Daniel 11:36–45</a></div>
+    <div class="bloc-line">Daniel 11 traces a long sequence of historical kings (most fulfilled in the Greek/Seleucid period, 200s–100s BC). Starting in verse 36, the description shifts to a figure who does not match any historical king cleanly: he exalts himself above every god, speaks monstrous things against the God of gods, prospers until "the indignation is finished," shows no regard for the gods of his fathers, and ultimately pitches his royal pavilion "between the seas and the beautiful Holy Mountain" — Jerusalem.</div>
+    <div class="bloc-line">Most pre-trib dispensationalists identify this final King of the North as the <strong>Antichrist</strong>. The geographic direction "north" of Israel covers Syria, Turkey, and ultimately Europe — which is why some teachers identify him with a revived Roman Empire (continuing Daniel 2 and 7's statue/beasts), while others identify him with a revived Islamic caliphate (since Daniel 11's historical sequence runs through Seleucid territory).</div>
+    <div class="bloc-line"><strong>Bloc 1 = the Antichrist's power center, headquartered north of Israel.</strong></div>
+  </div>
+
+  <!-- BLOC 2 -->
+  <div class="bloc-box">
+    <div class="bloc-num">Bloc 2 · South</div>
+    <div class="bloc-name">The King of the South</div>
+    <div class="bloc-anchor">Anchor: <a href="https://www.bible.com/bible/100/DAN.11.40.NASB1995" target="_blank" rel="noopener">Daniel 11:40</a></div>
+    <div class="bloc-line">Same chapter, four verses earlier: <em>"At the end time the king of the South will collide with him [the King of the North], and the king of the North will storm against him..."</em></div>
+    <div class="bloc-line">The "south" of Israel is Egypt and, by extension, North Africa and the Arab world. Most teachers identify the King of the South as an <strong>Arab-Islamic coalition</strong> — Egypt, Sudan, Libya, possibly Saudi Arabia and the broader Sunni Arab states.</div>
+    <div class="bloc-line">The picture: the King of the South attacks the King of the North; the King of the North counter-attacks and rolls through the Arab world, ending with his flag planted in Jerusalem (Daniel 11:45).</div>
+    <div class="bloc-line"><strong>Bloc 2 = the Arab/African southern coalition that gets crushed early in the Tribulation conflict.</strong></div>
+  </div>
+
+  <!-- BLOC 3 -->
+  <div class="bloc-box">
+    <div class="bloc-num">Bloc 3 · East</div>
+    <div class="bloc-name">The Kings of the East</div>
+    <div class="bloc-anchor">Anchor: <a href="https://www.bible.com/bible/100/REV.16.12.NASB1995" target="_blank" rel="noopener">Revelation 16:12</a></div>
+    <div class="bloc-line">In the sixth bowl judgment near the end of the Tribulation: <em>"The sixth angel poured out his bowl on the great river, the Euphrates; and its water was dried up, so that the way would be prepared for the kings from the east."</em></div>
+    <div class="bloc-line">The Euphrates River is the historical eastern boundary of the biblical world. Anything east of it is "the East" — which in the modern era points to <strong>Asia</strong>. Most teachers identify the Kings of the East as a Chinese-led Asian coalition, sometimes including Japan, India, and Southeast Asia. The 200-million-man army described in Revelation 9:16 is often connected to this bloc.</div>
+    <div class="bloc-line">These kings cross the dried-up Euphrates and march toward Israel for the final battle at Armageddon.</div>
+    <div class="bloc-line"><strong>Bloc 3 = the Asian/Chinese coalition arriving last, crossing into the Middle East for the climactic battle.</strong></div>
+  </div>
+
+  <!-- BLOC 4 -->
+  <div class="bloc-box">
+    <div class="bloc-num">Bloc 4 · Far North</div>
+    <div class="bloc-name">The Gog-Magog Coalition</div>
+    <div class="bloc-anchor">Anchor: <a href="https://www.bible.com/bible/100/EZK.38.NASB1995" target="_blank" rel="noopener">Ezekiel 38–39</a></div>
+    <div class="bloc-line">A coalition of nations led by <em>"Gog, of the land of Magog, the prince of Rosh, Meshech, and Tubal"</em> — usually identified as <strong>Russia, Iran (Persia), Turkey, Sudan, Libya, and allied northern nations</strong> — attacks Israel "in the latter years" when Israel is dwelling securely. God Himself defeats the coalition supernaturally before Israel fires a shot.</div>
+    <div class="bloc-line">Most pre-trib teachers place Gog-Magog as a <strong>separate event from Armageddon</strong> — happening either just before the Tribulation begins (some place it after the Rapture but before the seven-year period), or in the early part of the Tribulation. The point of the supernatural defeat in Ezekiel 38:23 is that <em>"the nations will know that I am the LORD."</em></div>
+    <div class="bloc-line"><strong>Bloc 4 = the Russia-Iran-Turkey-led northern coalition that gets supernaturally destroyed by God, removing a major player from the prophetic stage before or during the Tribulation.</strong></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">🗺️ The big picture Haney is painting</h2>
+  <p class="body">Four end-times power centers, four directions:</p>
+  <ul style="font-family:Arial,sans-serif;font-size:14px;line-height:1.8;color:#1F3864;">
+    <li><strong>North</strong> = Antichrist's empire (Europe / revived Rome / revived caliphate)</li>
+    <li><strong>South</strong> = Arab-Islamic coalition (Egypt and Africa)</li>
+    <li><strong>East</strong> = Asian coalition (China and allies)</li>
+    <li><strong>Far North (separate)</strong> = Russia-Iran-Turkey Gog-Magog coalition</li>
+  </ul>
+  <p class="body">Israel sits in the middle. The four blocs converge on Israel. God deals with each: Gog-Magog supernaturally early, the South gets crushed by the North, the East arrives for Armageddon, and the North (Antichrist) is destroyed at Christ's return.</p>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">👥 Who Teaches This Framework? The Scholarly Survey</h2>
+  <p class="body">The crucial question: <strong>is Pastor Haney's four-bloc synthesis original to him, or is it a widely-shared dispensational framework taught by other recognized scholars?</strong> The answer turns out to be the latter — though with significant variation in how each teacher presents it.</p>
+
+  <table class="endorse-table">
+    <thead>
+      <tr>
+        <th>Scholar / Source</th>
+        <th>Tradition</th>
+        <th>How they treat the framework</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="scholar">Mark Hitchcock, PhD</td>
+        <td class="position">Pre-trib dispensational (Dallas Theological Seminary)</td>
+        <td class="summary"><strong>Strongest endorser found.</strong> Hitchcock teaches a unified four-bloc model explicitly. In his Tipping Point Prophecy newsletter he writes: <em>"During the events of the end times, Bible prophecy indicates an 'alignment of nations.' In this scenario, the nations of the world will divide, geographically, into four major world powers."</em> Peer-reviewed academic work (Tristan Sturm, <em>Geopolitics</em> journal, 2006) confirms that Hitchcock <em>"identifies four geopolitical power blocs, including Russia and a Muslim coalition against Israel."</em> Hitchcock teaches Daniel and Revelation at DTS and pastors Faith Bible Church in Edmond, Oklahoma. His book <em>The End: A Complete Overview of Bible Prophecy and the End of Days</em> lays out the framework systematically.</td>
+      </tr>
+      <tr>
+        <td class="scholar">Ron Rhodes, ThD</td>
+        <td class="position">Pre-trib dispensational (periodic DTS faculty)</td>
+        <td class="summary">Teaches each of the four coalitions individually as distinct end-times powers — King of the North, Kings of the East, Gog-Magog — and connects them to current events ("Russia-Iran-Libya-Turkey alignment is happening before our eyes"). Less explicit about labeling them as a unified four-bloc <em>structural</em> framework, but the underlying content is consistent with Hitchcock. See <em>The End Times in Chronological Order</em> and <em>The 8 Great Debates of Bible Prophecy</em>.</td>
+      </tr>
+      <tr>
+        <td class="scholar">David Jeremiah</td>
+        <td class="position">Pre-trib dispensational</td>
+        <td class="summary">Major popular-level dispensational teacher. Covers each coalition in detail (Ezekiel 38–39, Daniel 11, Revelation 16) in works like <em>The Book of Signs</em> and <em>60 Days of Prophecies</em>, but generally treats them as separate prophetic events rather than as a single fourfold structural framework. The four are present in his teaching; the explicit "four-bloc" labeling is less so.</td>
+      </tr>
+      <tr>
+        <td class="scholar">Robert Jeffress</td>
+        <td class="position">Pre-trib dispensational</td>
+        <td class="summary">Pastor of First Baptist Dallas. Covers all four coalitions in his prophecy work (<em>The Perfect Ending</em>, <em>Are We Living in the End Times?</em>) but treats them as distinct prophetic events rather than collapsing them into a four-bloc map. Similar to Jeremiah in approach.</td>
+      </tr>
+      <tr>
+        <td class="scholar">Joel Rosenberg</td>
+        <td class="position">Pre-trib dispensational (Middle East analyst)</td>
+        <td class="summary">Focuses primarily on the Gog-Magog coalition (Bloc 4) in works like <em>The Ezekiel Option</em> and <em>Epicenter</em>. Doesn't typically present a unified four-bloc framework but does affirm each coalition's existence in current geopolitical reality. His Russia-Iran-Turkey identification of Gog-Magog is foundational for the framework's fourth bloc.</td>
+      </tr>
+      <tr>
+        <td class="scholar">John Walvoord</td>
+        <td class="position">Pre-trib dispensational (former DTS president)</td>
+        <td class="summary">Foundational mid-20th-century dispensational scholar. <em>The Nations in Prophecy</em> (1967) treats each coalition individually but provided the scholarly groundwork that later teachers (Hitchcock, Rhodes) built into a unified framework. The four-bloc synthesis is less explicit in Walvoord himself; more a structure his successors developed.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="key-quote">
+    "Hitchcock identifies four geopolitical power blocs, including Russia and a Muslim coalition against Israel." — Tristan Sturm, "Prophetic Eyes: The Theatricality of Mark Hitchcock's Premillennial Geopolitics," <em>Geopolitics</em> 11:2 (2006), p. 235.
+  </div>
+
+  <p class="body"><strong>Bottom line on endorsement:</strong> The four-bloc framework as a unified geopolitical model is most explicitly taught by Mark Hitchcock. Other major dispensationalists teach each individual bloc with scriptural backing, but vary in whether they present the four as a single structural framework or as four distinct prophetic events. Pastor Haney's teaching is consistent with mainstream pre-trib dispensational thought and falls closest to Hitchcock's approach.</p>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">⚠️ The Honest Critiques — What the Other Traditions Say</h2>
+  <p class="body">Every theological framework has objections. Walking through the strongest critiques is not an attack on Pastor Haney or Hitchcock; it is the work Scripture calls us to in 2 Timothy 3:16–17 — testing teaching against the Word. Three categories of critique deserve real engagement.</p>
+
+  <!-- CRITIQUE 1 -->
+  <div class="critic-box">
+    <div class="title">⚠️ Critique 1 — "Newspaper Exegesis"</div>
+    <div class="line"><strong>The objection:</strong> The four-bloc framework leans heavily on reading today's headlines (Russia-Iran-Turkey alignment, China's rise, Arab-Israeli conflict) back into ancient prophecy. New Testament scholar Gary Burge of Wheaton College coined the phrase <em>"newspaper exegesis"</em> — the practice of interpreting Scripture through the lens of current events rather than letting Scripture interpret itself in its own context.</div>
+    <div class="line"><strong>Specific example cited by critics:</strong> Hitchcock himself writes in <em>The Coming Islamic Invasion of Israel</em>: <em>"Ezekiel is God's war correspondent for today's newspapers. We have gone through his inspired prophecy in Ezekiel 38–39, with our Bibles in one hand and today's newspaper in the other."</em> Postmillennial scholar Gary DeMar (American Vision) argues this method has been used in every generation — Christopher Columbus thought he was fulfilling prophecy in 1492; the Reformers identified the pope as Antichrist; Cold War dispensationalists identified the Soviet Union as Magog. Each generation found its enemy in Ezekiel 38. When the Soviet Union fell in 1991, the framework had to be quickly updated to Russia-Iran-Turkey. DeMar's argument: a framework that requires constant retrofitting to match headlines may be reading the Bible through the news rather than the other way around.</div>
+    <div class="line"><strong>Honest response:</strong> Hitchcock and other dispensationalists would push back that <em>some</em> connection between current events and prophecy is unavoidable and even biblical — Jesus rebuked the Pharisees for not "discerning the signs of the times" (Matthew 16:3). The question is one of degree. There is a real difference between (a) recognizing that the literal nations Ezekiel named are now back on the geopolitical stage in alliances they have never historically held, and (b) forcing every front-page headline into a prophetic slot. The first is reasonable; the second is the actual error Burge and DeMar are pointing at.</div>
+  </div>
+
+  <!-- CRITIQUE 2 -->
+  <div class="critic-box">
+    <div class="title">⚠️ Critique 2 — The Daniel 11 / Antiochus Question</div>
+    <div class="line"><strong>The objection:</strong> Historic premillennialists, amillennialists, and postmillennialists largely agree that Daniel 11:36–45 — the "King of the North" passage that Bloc 1 depends on — was <strong>already fulfilled by Antiochus IV Epiphanes</strong> in the 160s BC, the Seleucid king who desecrated the temple. They argue there is no exegetical reason to suddenly transition from historical fulfillment in verses 1–35 to future fulfillment in verses 36–45 without a clear textual marker.</div>
+    <div class="line"><strong>Why this matters for the framework:</strong> If the King of the North in Daniel 11:36–45 is Antiochus rather than a future Antichrist, then Bloc 1 collapses — and with it, the King-of-the-South-vs-King-of-the-North end-times conflict that Bloc 2 depends on. The whole north/south axis becomes ancient history rather than future prophecy.</div>
+    <div class="line"><strong>Dispensational response:</strong> Pre-trib dispensationalists (including Hitchcock, John MacArthur, the DTS school) argue that the descriptions in Daniel 11:36–45 — especially verse 40's reference to "the end time" — cannot be made to fit Antiochus, who never invaded Egypt successfully, never pitched his tent in Jerusalem in the way described, and never met the end described in verses 44–45. The text itself, they argue, marks the transition by describing actions Antiochus never took. This is a real exegetical debate, and reasonable Christians disagree.</div>
+  </div>
+
+  <!-- CRITIQUE 3 -->
+  <div class="critic-box">
+    <div class="title">⚠️ Critique 3 — Bloc 4 Overlaps Bloc 1 Geographically</div>
+    <div class="line"><strong>The objection:</strong> The Gog-Magog coalition (Bloc 4) is described in Ezekiel 38:15 as coming from <em>"the remote parts of the north."</em> The King of the North (Bloc 1) is, by definition, also northern. Are they the same coalition? Two separate northern coalitions? Sequential phases of one northern threat? The framework requires them to be distinct — Gog-Magog is destroyed supernaturally <em>before or early in</em> the Tribulation, while the King of the North/Antichrist persists until Christ's return — but the geographic overlap is real and unresolved.</div>
+    <div class="line"><strong>The dispensational answer:</strong> The two are distinct events with distinct purposes. Gog-Magog (Bloc 4) is a regional invasion of Russia-Iran-Turkey aimed at plunder, supernaturally destroyed by God to show the nations that He is the LORD (Ezekiel 38:23). The King of the North (Bloc 1) is the global empire of the Antichrist, headquartered in Europe or a revived Roman/Islamic empire, defeated at Armageddon by Christ Himself (Revelation 19). Different scope, different timing, different agent of defeat.</div>
+    <div class="line"><strong>Honest acknowledgment:</strong> This is the framework's weakest seam. The biblical text does not explicitly distinguish "two different northern coalitions." That distinction is interpretive synthesis — defensible, but not directly stated. Holding this part of the framework <em>loosely</em>, as Chris noted in his Module 9 study, is the appropriate posture.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">⚖️ Where Honest Engagement Lands</h2>
+  <div class="verdict-box">
+    <div class="vtitle">📍 The honest picture</div>
+    <p><strong>1. The four blocs individually have strong scriptural anchors.</strong> Each one is grounded in real prophetic text — Daniel 11, Revelation 16, Ezekiel 38–39. The existence of end-times coalitions called King of the North, King of the South, Kings of the East, and Gog-Magog is not Pastor Haney's invention or Mark Hitchcock's; it is what Scripture explicitly says.</p>
+    <p><strong>2. The unified "four-bloc framework" is interpretive synthesis.</strong> The Bible never lists them together in one passage. Hitchcock pulls them from three different books and arranges them into one structural model. That synthesis is defensible and taught by serious dispensational scholars at major seminaries — but it is one step removed from direct biblical assertion.</p>
+    <p><strong>3. The framework has real weak seams.</strong> The Bloc 1 / Bloc 4 geographic overlap is genuinely unresolved. The "newspaper exegesis" risk is real even when dispensationalists try to discipline it. The Daniel 11 / Antiochus debate is unresolved across traditions. None of this destroys the framework; all of it argues for holding it as a <em>useful organizing map</em> rather than as Scripture itself.</p>
+    <p><strong>4. The right posture is the one Chris already landed on:</strong> hold the four-bloc framework loosely. Use it as a structure for thinking. Test every claim against the actual text. Be willing to revise as understanding grows. That is what 2 Timothy 3:16–17 calls Christians to — Scripture as standard, frameworks as servants.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">🔗 Where this connects in this guide</h2>
+  <div class="key-quote" style="font-style:normal;background:#EBF4FC;border-left-color:#2E75B6;color:#1F3864;">
+    <strong>Theme 1, Module 9 (Gog-Magog War)</strong> — the original module where Pastor Haney's framework came up; this Deep Dive is the natural companion.<br>
+    <strong>Theme 1, Module 8 (Daniel's 70 Weeks)</strong> — Daniel 11 emerges from the same prophetic line as Daniel 9; the same Antiochus-vs-future-Antichrist debate runs through both.<br>
+    <strong>Theme 1, Module 13 (The Second Coming)</strong> — Armageddon brings the Eastern bloc onto the stage; the King of the North (Antichrist) falls here.<br>
+    <strong>Theme 4, Module 1 (The Abrahamic Covenant)</strong> — the land promise to Abraham is the reason these coalitions are all converging on Israel in the first place.<br>
+    <strong>Deep Dive: Tyre &amp; Sidon</strong> — another worked example of God's prophetic pattern of warning and judgment applied to specific geopolitical actors.
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">📚 Sources &amp; further reading</h2>
+  <div class="info-box">
+    <div class="title">📖 Pro-framework (endorsers)</div>
+    <div class="line">• <strong>Mark Hitchcock</strong>, <em>The End: A Complete Overview of Bible Prophecy and the End of Days</em> (Tyndale, 2018) — most systematic statement of the four-bloc framework.</div>
+    <div class="line">• <strong>Mark Hitchcock</strong>, <em>The Coming Islamic Invasion of Israel</em> (Multnomah, 2002) — focused work on Gog-Magog (Bloc 4) with map of geopolitical blocs.</div>
+    <div class="line">• <strong>Mark Hitchcock</strong>, <em>Showdown with Iran</em> (Harvest House, 2020) — Iran's role within the framework.</div>
+    <div class="line">• <strong>Ron Rhodes</strong>, <em>The End Times in Chronological Order</em> (Harvest House, 2012) — each coalition treated as part of the broader timeline.</div>
+    <div class="line">• <strong>David Jeremiah</strong>, <em>The Book of Signs</em> (Thomas Nelson, 2020) — each coalition covered as a separate end-times sign.</div>
+    <div class="line">• <strong>Joel Rosenberg</strong>, <em>The Ezekiel Option</em> &amp; <em>Epicenter</em> — foundational work on the modern Russia-Iran-Turkey identification.</div>
+    <div class="line">• <strong>Tristan Sturm</strong>, "Prophetic Eyes: The Theatricality of Mark Hitchcock's Premillennial Geopolitics," <em>Geopolitics</em> 11:2 (2006) — peer-reviewed academic article documenting Hitchcock's four-bloc structure (critical in tone but useful for confirming the framework's existence).</div>
+  </div>
+
+  <div class="info-box">
+    <div class="title">⚠️ Critical voices (worth engaging honestly)</div>
+    <div class="line">• <strong>Gary Burge</strong> (Wheaton College, NT scholar) — originator of the "newspaper exegesis" critique; his work questions tight prophecy-to-headline correlations.</div>
+    <div class="line">• <strong>Gary DeMar</strong> (American Vision, postmillennial/preterist) — <em>Last Days Madness</em> and articles at americanvision.org argue dispensational prophecy frameworks have been retrofitted across generations.</div>
+    <div class="line">• <strong>George Eldon Ladd</strong> (historic premillennial, Fuller Seminary) — <em>The Blessed Hope</em> and <em>A Commentary on the Revelation of John</em>; argues for post-tribulational rapture and against dispensational geopolitical specificity.</div>
+    <div class="line">• <strong>Kim Riddlebarger</strong> (amillennial) — <em>A Case for Amillennialism</em>; treats Daniel 11 in line with the Antiochus interpretation and Gog-Magog symbolically.</div>
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ My notes — The Four Power Blocs Deep Dive:</div>
+    <div class="quill-editor" id="n-dd-powerblocs" data-placeholder="Write your notes here. What are you persuaded by? What still concerns you? Where do you want to dig further?" style="min-height:120px;"></div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <a href="DeepDives.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Deep Dives</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-dd-powerblocs'];</script>
+<script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>
