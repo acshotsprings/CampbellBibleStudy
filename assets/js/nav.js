@@ -1,6 +1,36 @@
 /* ============================================================
    CAMPBELL FAMILY MASTER BIBLICAL STUDY GUIDE
-   Sidebar Navigation Builder — v5.16 (2026-05-16)
+   Sidebar Navigation Builder — v5.20 (2026-05-26)
+
+   v5.20: Added Theme 4 Module 5 (The New Covenant in Christ —
+   Luke 22 + Hebrews 8-10) to both NAV_STRUCTURE and READING_CHAIN.
+   Completable with the standard complete-t4m5 key pattern.
+   Companion change in main.js: COMPLETION_KEYS gains
+   theme4/module5 entry. THEME 4 COMPLETE — all 5 modules live.
+
+   v5.19: Added Theme 4 Module 4 (The New Covenant Prophesied —
+   Jeremiah 31:31-34) to both NAV_STRUCTURE and READING_CHAIN.
+   Completable with the standard complete-t4m4 key pattern.
+   Companion change in main.js: COMPLETION_KEYS gains
+   theme4/module4 entry.
+
+   v5.18: Added Theme 4 Module 3 (The Davidic Covenant) to both
+   NAV_STRUCTURE and READING_CHAIN. Completable with the standard
+   complete-t4m3 key pattern. Companion change in main.js:
+   COMPLETION_KEYS gains theme4/module1, theme4/module2, AND
+   theme4/module3 entries (M1+M2 were previously missing — silent
+   bug discovered during M3 build, fixed in the same revision).
+
+   v5.17: Added 'The Life of Joseph' character library as a
+   sibling to 'The Life of David' under Characters in Scripture.
+   Landing-only build today: parent entry in NAV_STRUCTURE with
+   hasSubCollapse and subKey 'joseph', pointing to
+   characters/joseph/index.html (non-completable per the
+   reference-page rule — landings/overviews/indexes are not
+   completable). No chapter pages yet; sub-items will be added
+   incrementally as chapters are built. READING_CHAIN gains the
+   joseph index entry only. main.js COMPLETION_KEYS untouched
+   for this revision (no completable Joseph pages exist yet).
 
    v5.16: Renumbered Chapter 18 (The Cave Years) to Chapter 05c
    to place it in chronological narrative order. Updated label,
@@ -94,11 +124,15 @@
         the Troy Brewer framework, built to live alongside
         but separate from the Deep Dive on Gematria itself)
 
-   Deep Dives is now 4 items (Hearing God's Voice removed):
-     1. Prophetic Calendars
-     2. H7620 — What Does "Weeks" Mean in Daniel 9?
-     3. The Willow in Scripture
-     4. Gematria (Hebrew/Greek)
+   Deep Dives is now 6 items (Hearing God's Voice removed,
+   Joseph Smith added admin-only 2026-05-23). All 6 are
+   completable as of 2026-05-23 retrofit:
+     1. Prophetic Calendars       (complete-dd-calendars)
+     2. H7620 — "Weeks" in Daniel 9 (complete-dd-shabua)
+     3. The Willow in Scripture   (complete-dd-willow)
+     4. Gematria (Hebrew/Greek)   (complete-dd-gematria)
+     5. Mormonism (LDS)           (complete-dd-mormonism)
+     6. Joseph Smith (adminOnly)  (complete-dd-josephsmith)
 
    Rationale: Hearing God's Voice is spiritual practice, not
    topical study. Gematria Skepticism is personal conviction,
@@ -222,6 +256,9 @@ const NAV_STRUCTURE = [
       { label: '↳ Theme 4 Overview — Covenant',                  href: 'theme4/index.html', sub: true },
       { label: '↳ Module 1 — The Abrahamic Covenant',            href: 'theme4/module1.html', sub: true, completable: true, completeKey: 'complete-t4m1' },
       { label: '↳ Module 2 — The Mosaic Covenant',               href: 'theme4/module2.html', sub: true, completable: true, completeKey: 'complete-t4m2' },
+      { label: '↳ Module 3 — The Davidic Covenant',              href: 'theme4/module3.html', sub: true, completable: true, completeKey: 'complete-t4m3' },
+      { label: '↳ Module 4 — The New Covenant Prophesied',       href: 'theme4/module4.html', sub: true, completable: true, completeKey: 'complete-t4m4' },
+      { label: '↳ Module 5 — The New Covenant in Christ',        href: 'theme4/module5.html', sub: true, completable: true, completeKey: 'complete-t4m5' },
       { label: '↳ Theme 5 Overview — The Messiah (coming)',       href: 'theme5/index.html', sub: true },
       { label: '↳ Theme 6 Overview — The Holy Spirit (coming)',   href: 'theme6/index.html', sub: true },
       { label: '↳ Theme 7 Overview — Kingdom of God (coming)',    href: 'theme7/index.html', sub: true },
@@ -272,6 +309,33 @@ const NAV_STRUCTURE = [
       { label: '↳↳ Appendix B — Numbers', href: 'characters/david/appendix-b-numbers.html', sub: true, underSubKey: 'david' },
       { label: '↳↳ Appendix C — Lost Books', href: 'characters/david/appendix-c-lost-books.html', sub: true, underSubKey: 'david' },
       { label: '↳↳ Appendix D — Family', href: 'characters/david/appendix-d-family.html', sub: true, underSubKey: 'david' },
+      { label: '↳ The Life of Joseph',                 href: 'characters/joseph/index.html', sub: true, hasSubCollapse: true, subKey: 'joseph' },
+      { label: '↳↳ Ch 01 — Origins', href: 'characters/joseph/01-origins.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-01' },
+      { label: '↳↳ Ch 02 — The Dreams', href: 'characters/joseph/02-the-dreams.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-02' },
+      { label: '↳↳ Ch 03 — Sold by His Brothers', href: 'characters/joseph/03-sold-by-his-brothers.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-03' },
+      { label: '↳↳ Ch 03b — Judah and Tamar', href: 'characters/joseph/03b-judah-and-tamar.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-03b' },
+      { label: '↳↳ Ch 04 — Potiphar\'s House', href: 'characters/joseph/04-potiphars-house.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-04' },
+      { label: '↳↳ Ch 05 — Potiphar\'s Wife & Prison', href: 'characters/joseph/05-potiphars-wife-and-prison.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-05' },
+      { label: '↳↳ Ch 06 — The Prisoners\' Dreams', href: 'characters/joseph/06-the-prisoners-dreams.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-06' },
+      { label: '↳↳ Ch 07 — Pharaoh\'s Dreams & the Rise', href: 'characters/joseph/07-pharaohs-dreams-and-the-rise.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-07' },
+      { label: '↳↳ Ch 08 — The Seven Years of Plenty', href: 'characters/joseph/08-the-seven-years-of-plenty.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-08' },
+      { label: '↳↳ Ch 09 — The Brothers Come', href: 'characters/joseph/09-the-brothers-come.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-09' },
+      { label: '↳↳ Ch 09b — Benjamin & the Silver Cup', href: 'characters/joseph/09b-benjamin-and-the-silver-cup.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-09b' },
+      { label: '↳↳ Ch 10 — "I Am Joseph"', href: 'characters/joseph/10-i-am-joseph.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-10' },
+      { label: '↳↳ Ch 11 — Jacob Comes to Egypt', href: 'characters/joseph/11-jacob-comes-to-egypt.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-11' },
+      { label: '↳↳ Ch 12 — The Blessing & the Burial of Jacob', href: 'characters/joseph/12-the-blessing-and-burial-of-jacob.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-12' },
+      { label: '↳↳ Ch 13 — Final Reckoning & Joseph\'s Death', href: 'characters/joseph/13-final-reckoning-and-josephs-death.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-13' },
+      { label: '↳↳ Ch 14 — Joseph as a Type of Christ', href: 'characters/joseph/14-joseph-as-type-of-christ.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-14' },
+      { label: '↳↳ Ch 15 — "What Do You See?" — Joseph & Sight', href: 'characters/joseph/15-what-do-you-see.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-15' },
+      { label: '↳↳ Ch 16 — God\'s Hidden Hand', href: 'characters/joseph/16-gods-hidden-hand.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-16' },
+      { label: '↳↳ Ch 17 — Joseph & Covenant Preservation', href: 'characters/joseph/17-joseph-and-covenant-preservation.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-17' },
+      { label: '↳↳ Ch 18 — The Forgiveness Question', href: 'characters/joseph/18-the-forgiveness-question.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-18' },
+      { label: '↳↳ Ch 19 — Joseph in the New Testament', href: 'characters/joseph/19-joseph-in-the-new-testament.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-19' },
+      { label: '↳↳ Ch 20 — Two Josephs', href: 'characters/joseph/20-two-josephs.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-20' },
+      { label: '↳↳ Appendix A — Timeline', href: 'characters/joseph/appendix-a-timeline.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-appA' },
+      { label: '↳↳ Appendix B — Family Tree', href: 'characters/joseph/appendix-b-family-tree.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-appB' },
+      { label: '↳↳ Appendix C — Egyptian Context', href: 'characters/joseph/appendix-c-egyptian-context.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-appC' },
+      { label: '↳↳ Appendix D — Joseph\'s Bones', href: 'characters/joseph/appendix-d-josephs-bones.html', sub: true, underSubKey: 'joseph', completable: true, completeKey: 'complete-joseph-appD' },
     ]
   },
   {
@@ -299,10 +363,14 @@ const NAV_STRUCTURE = [
       { label: '↳ ⚖️ Gematria Skepticism',  href: 'numbers-skepticism.html',  sub: true, underSubKey: 'journal', itemColor: 'mystudy-skepticism' },
       { label: '💾 Save History',           href: 'history.html',       itemColor: 'mystudy-history'     },
       { label: '🔬 Deep Dives',             href: 'DeepDives.html',     itemColor: 'mystudy-deepdives', hasSubCollapse: true, subKey: 'deepdives' },
-      { label: '↳ 📅 Prophetic Calendars',  href: 'DeepDive-Calendars.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
-      { label: '↳ 📖 H7620 — "Weeks" in Daniel 9', href: 'DeepDive-Shabua.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
-      { label: '↳ 🌿 Willow in Scripture',  href: 'DeepDive-Willow.html',    sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
-      { label: '↳ 🔢 Gematria (Hebrew/Greek)', href: 'DeepDive-Gematria.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-gematria' },
+      { label: '↳ 📅 Prophetic Calendars',  href: 'DeepDive-Calendars.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-calendars' },
+      { label: '↳ 🌍 Four Power Blocs',     href: 'DeepDive-PowerBlocs.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-powerblocs' },
+      { label: '↳ 📖 H7620 — "Weeks" in Daniel 9', href: 'DeepDive-Shabua.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-shabua' },
+      { label: '↳ 🌿 Willow in Scripture',  href: 'DeepDive-Willow.html',    sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-willow' },
+      { label: '↳ 🔢 Gematria (Hebrew/Greek)', href: 'DeepDive-Gematria.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-gematria', completable: true, completeKey: 'complete-dd-gematria' },
+      { label: '↳ ⛰️ Mormonism (LDS)',      href: 'DeepDive-Mormonism.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-mormonism' },
+      { label: '↳ 💍 LDS Polygamy',          href: 'DeepDive-LDSPolygamy.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-ldspolygamy' },
+      { label: '↳ 👤 Joseph Smith',         href: 'DeepDive-JosephSmith.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', adminOnly: true, completable: true, completeKey: 'complete-dd-josephsmith' },
       { label: '🎧 Listening Notes',        href: 'listening-notes.html', adminOnly: true, itemColor: 'mystudy-listening' },
     ]
   }
@@ -553,6 +621,9 @@ const READING_CHAIN = [
   ['theme4/index.html',     'Theme 4 Overview',                       'Theme 4 — Covenant'],
   ['theme4/module1.html',   'Module 1 — The Abrahamic Covenant',      'Theme 4 — Covenant'],
   ['theme4/module2.html',   'Module 2 — The Mosaic Covenant',         'Theme 4 — Covenant'],
+  ['theme4/module3.html',   'Module 3 — The Davidic Covenant',        'Theme 4 — Covenant'],
+  ['theme4/module4.html',   'Module 4 — The New Covenant Prophesied', 'Theme 4 — Covenant'],
+  ['theme4/module5.html',   'Module 5 — The New Covenant in Christ',  'Theme 4 — Covenant'],
 
   // Themes 5–8 overviews (modules not yet built)
   ['theme5/index.html',     'Theme 5 Overview',                       'Theme 5 — The Messiah'],
@@ -598,6 +669,7 @@ const READING_CHAIN = [
   ['characters/david/appendix-b-numbers.html', 'Appendix B — Numbers', 'David'],
   ['characters/david/appendix-c-lost-books.html', 'Appendix C — Lost Books', 'David'],
   ['characters/david/appendix-d-family.html', 'Appendix D — Family', 'David'],
+  ['characters/joseph/index.html',                   'The Life of Joseph',           'Joseph'],
 ];
 
 /* ============================================================

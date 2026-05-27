@@ -61,6 +61,47 @@ const GA_MEASUREMENT_ID = 'G-P44J6HEJYG';
 
 const ADMIN_PASSWORD = 'Campbell2026';
 
+/* ============================================================
+   LEGACY_COMPLETION_MIGRATIONS (added 2026-05-26)
+   ============================================================
+   When a chapter file is renamed, its localStorage completion-state
+   key drifts away from the new file path's completeKey. Anyone who
+   marked the old name complete would silently lose their progress.
+
+   This block runs once per page load and idempotently migrates each
+   listed [oldKey, newKey] pair: if cbsg-{oldKey} === 'true' and
+   cbsg-{newKey} is not yet set, it copies the value forward and
+   removes the old one. Safe to run repeatedly — once migrated, the
+   old key is gone and subsequent runs no-op.
+
+   To add a future migration, append another tuple. Don't remove
+   tuples — the migration is idempotent, but each one protects a
+   user whose browser hasn't loaded the site since the rename.
+   ============================================================ */
+const LEGACY_COMPLETION_MIGRATIONS = [
+  // [oldKey, newKey, reason]
+  ['complete-david-18', 'complete-david-05c', 'Ch 18 Cave Years renamed to 05c (nav v5.16, 2026-05-16)'],
+];
+
+(function migrateLegacyCompletionKeys() {
+  try {
+    for (const [oldKey, newKey] of LEGACY_COMPLETION_MIGRATIONS) {
+      const oldVal = localStorage.getItem('cbsg-' + oldKey);
+      const newVal = localStorage.getItem('cbsg-' + newKey);
+      if (oldVal === 'true' && newVal !== 'true') {
+        localStorage.setItem('cbsg-' + newKey, 'true');
+      }
+      // Always clean up the old key if present (whether or not new key won)
+      if (oldVal !== null) {
+        localStorage.removeItem('cbsg-' + oldKey);
+      }
+    }
+  } catch (e) {
+    // localStorage can throw in private/incognito mode on some browsers.
+    // Silent fail is correct here — completion state is a convenience, not critical.
+  }
+})();
+
 const COMPLETION_KEYS = {
   'theme1/module1':  'complete-t1m1',
   'theme1/module2':  'complete-t1m2',
@@ -87,26 +128,42 @@ const COMPLETION_KEYS = {
   'theme3/module3':  'complete-t3m3',
   'theme3/module4':  'complete-t3m4',
   'theme3/module5':  'complete-t3m5',
+  'theme4/module1':  'complete-t4m1',
+  'theme4/module2':  'complete-t4m2',
+  'theme4/module3':  'complete-t4m3',
+  'theme4/module4':  'complete-t4m4',
+  'theme4/module5':  'complete-t4m5',
 
-  // David library chapters (Ch 01-18). Appendices intentionally excluded.
+  // David library chapters (Ch 01-17, plus alphabetic insertions, plus topical 19-26).
+  // Appendices intentionally excluded (reference pages, not completable).
+  // 2026-05-26: Fixed stale '18-cave-years' (renamed to '05c-cave-years' in nav v5.16).
+  // Added 02b, 05b, 05c, 08b, 09b, 13b — were marked completable in nav.js but
+  // missing from this dict (silent bug — Mark-as-Complete button did nothing).
+  // localStorage migration for legacy 'complete-david-18' → 'complete-david-05c'
+  // lives in the migration IIFE above (search 'LEGACY_COMPLETION_MIGRATIONS').
   'characters/david/01-origins':           'complete-david-01',
   'characters/david/02-anointing':         'complete-david-02',
+  'characters/david/02b-goliath':          'complete-david-02b',
   'characters/david/03-saul-court':        'complete-david-03',
   'characters/david/04-jonathan':          'complete-david-04',
   'characters/david/05-fugitive':          'complete-david-05',
+  'characters/david/05b-abigail':          'complete-david-05b',
+  'characters/david/05c-cave-years':       'complete-david-05c',
   'characters/david/06-ziklag':            'complete-david-06',
   'characters/david/07-king-of-judah':     'complete-david-07',
   'characters/david/08-king-of-israel':    'complete-david-08',
+  'characters/david/08b-uzzah':            'complete-david-08b',
   'characters/david/09-covenant':          'complete-david-09',
+  'characters/david/09b-mephibosheth':     'complete-david-09b',
   'characters/david/10-wars-victories':    'complete-david-10',
   'characters/david/11-mighty-men':        'complete-david-11',
   'characters/david/12-bathsheba':         'complete-david-12',
   'characters/david/13-family-collapse':   'complete-david-13',
+  'characters/david/13b-census':           'complete-david-13b',
   'characters/david/14-final-years':       'complete-david-14',
   'characters/david/15-last-words':        'complete-david-15',
   'characters/david/16-psalms-journey':    'complete-david-16',
   'characters/david/17-theology':          'complete-david-17',
-  'characters/david/18-cave-years':        'complete-david-18',
   'characters/david/19-david-vs-saul':     'complete-david-19',
   'characters/david/20-repentance':        'complete-david-20',
   'characters/david/21-worship':           'complete-david-21',
@@ -115,6 +172,53 @@ const COMPLETION_KEYS = {
   'characters/david/24-friendship':        'complete-david-24',
   'characters/david/25-enemies':           'complete-david-25',
   'characters/david/26-strange-deaths':    'complete-david-26',
+
+  // Deep Dives (study/content pages, completable per nav.js).
+  // 2026-05-26 (initial): Added 'DeepDive-PowerBlocs'.
+  // 2026-05-26 (cleanup): Added the 6 pre-existing Deep Dives whose Mark-as-Complete
+  // buttons were silently broken (completable:true in nav.js but missing here).
+  // Path keys derived from URL: getCompleteKey() strips /CampbellBibleStudy/, leading
+  // /, and trailing .html — so 'DeepDive-Calendars.html' becomes 'DeepDive-Calendars'.
+  // Same bug class and same fix shape as the David alphabetic chapter cleanup.
+  'DeepDive-Calendars':                    'complete-dd-calendars',
+  'DeepDive-Shabua':                       'complete-dd-shabua',
+  'DeepDive-Willow':                       'complete-dd-willow',
+  'DeepDive-Gematria':                     'complete-dd-gematria',
+  'DeepDive-Mormonism':                    'complete-dd-mormonism',
+  'DeepDive-LDSPolygamy':                  'complete-dd-ldspolygamy',
+  'DeepDive-JosephSmith':                  'complete-dd-josephsmith',
+  'DeepDive-PowerBlocs':                   'complete-dd-powerblocs',
+
+  // Joseph Library chapters (15 chronological + 7 thematic + 4 appendices).
+  // Per Chris's decision 2026-05-26, ALL 26 are completable including appendices
+  // (deviates from David convention where App A-D are non-completable reference pages).
+  // Pages built as scaffolds with 'Coming Soon' content + working nav/completion infrastructure.
+  'characters/joseph/01-origins':          'complete-joseph-01',
+  'characters/joseph/02-the-dreams':       'complete-joseph-02',
+  'characters/joseph/03-sold-by-his-brothers': 'complete-joseph-03',
+  'characters/joseph/03b-judah-and-tamar': 'complete-joseph-03b',
+  'characters/joseph/04-potiphars-house':  'complete-joseph-04',
+  'characters/joseph/05-potiphars-wife-and-prison': 'complete-joseph-05',
+  'characters/joseph/06-the-prisoners-dreams': 'complete-joseph-06',
+  'characters/joseph/07-pharaohs-dreams-and-the-rise': 'complete-joseph-07',
+  'characters/joseph/08-the-seven-years-of-plenty': 'complete-joseph-08',
+  'characters/joseph/09-the-brothers-come': 'complete-joseph-09',
+  'characters/joseph/09b-benjamin-and-the-silver-cup': 'complete-joseph-09b',
+  'characters/joseph/10-i-am-joseph':      'complete-joseph-10',
+  'characters/joseph/11-jacob-comes-to-egypt': 'complete-joseph-11',
+  'characters/joseph/12-the-blessing-and-burial-of-jacob': 'complete-joseph-12',
+  'characters/joseph/13-final-reckoning-and-josephs-death': 'complete-joseph-13',
+  'characters/joseph/14-joseph-as-type-of-christ': 'complete-joseph-14',
+  'characters/joseph/15-what-do-you-see':  'complete-joseph-15',
+  'characters/joseph/16-gods-hidden-hand': 'complete-joseph-16',
+  'characters/joseph/17-joseph-and-covenant-preservation': 'complete-joseph-17',
+  'characters/joseph/18-the-forgiveness-question': 'complete-joseph-18',
+  'characters/joseph/19-joseph-in-the-new-testament': 'complete-joseph-19',
+  'characters/joseph/20-two-josephs':      'complete-joseph-20',
+  'characters/joseph/appendix-a-timeline': 'complete-joseph-appA',
+  'characters/joseph/appendix-b-family-tree': 'complete-joseph-appB',
+  'characters/joseph/appendix-c-egyptian-context': 'complete-joseph-appC',
+  'characters/joseph/appendix-d-josephs-bones': 'complete-joseph-appD',
 };
 
 /* ---- v5.1.1 (2026-05-10): sidebar-root depth helper ----

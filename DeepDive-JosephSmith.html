@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joseph Smith — Deep Dive — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:90px; font-family:Arial,sans-serif; font-size:12px; background:#fff; }
+    .ql-editor { min-height:90px; padding:7px 9px; }
+    /* Page-specific styling */
+    .admin-banner {
+      background:linear-gradient(135deg,#5C1A1A,#7A2828);
+      color:#fff; padding:14px 20px; border-radius:8px; margin:16px 0 24px;
+      font-family:Arial,sans-serif; font-size:13px; line-height:1.6;
+      border-left:5px solid #FFD54F;
+    }
+    .admin-banner strong { color:#FFD54F; }
+    .doctrine-evolution { width:100%; border-collapse:collapse; margin:14px 0 22px; font-family:Arial,sans-serif; font-size:13px; }
+    .doctrine-evolution th, .doctrine-evolution td { border:1px solid #c8d4e0; padding:10px 12px; vertical-align:top; text-align:left; }
+    .doctrine-evolution thead th { background:#1F3864; color:#fff; font-family:Georgia,serif; font-weight:bold; }
+    .doctrine-evolution tbody tr:nth-child(odd) { background:#F6F9FC; }
+    .doctrine-evolution .topic { font-weight:bold; color:#1F3864; width:24%; }
+    .doctrine-evolution .early { width:38%; color:#3B5E1A; }
+    .doctrine-evolution .late { width:38%; color:#8B4513; }
+    .vision-compare { width:100%; border-collapse:collapse; margin:14px 0 22px; font-family:Arial,sans-serif; font-size:12px; }
+    .vision-compare th, .vision-compare td { border:1px solid #c8d4e0; padding:8px 10px; vertical-align:top; text-align:left; }
+    .vision-compare thead th { background:#1F3864; color:#fff; font-family:Georgia,serif; font-size:13px; }
+    .vision-compare tbody tr:nth-child(odd) { background:#F6F9FC; }
+    .vision-compare .year { font-weight:bold; color:#1F3864; width:10%; white-space:nowrap; }
+    .quote-block { background:#FFF8E8; border-left:4px solid #B8923F; border-radius:6px; padding:14px 18px; margin:14px 0; font-family:Georgia,serif; font-style:italic; color:#3B2D1F; font-size:14px; line-height:1.75; }
+    .quote-block .attrib { display:block; font-style:normal; font-size:12px; color:#8A6A1F; margin-top:8px; font-family:Arial,sans-serif; text-transform:uppercase; letter-spacing:0.08em; }
+    .source-callout { background:#F4F8EE; border-left:4px solid #6B8E3A; padding:10px 14px; margin:10px 0; font-family:Arial,sans-serif; font-size:12px; color:#3B5E1A; border-radius:4px; }
+    .source-callout strong { color:#2E5410; }
+    .verse-block { background:#fff; border:1px solid #d0dce8; border-radius:6px; padding:12px 14px; margin:10px 0; font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#1F3864; }
+    .verse-block .ref { display:block; font-family:Arial,sans-serif; font-size:11px; color:#666; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px; font-weight:bold; }
+    .timeline-event { display:flex; gap:14px; padding:10px 0; border-bottom:1px solid #e0e6ed; font-family:Arial,sans-serif; font-size:13px; }
+    .timeline-event:last-child { border-bottom:none; }
+    .timeline-event .date { font-weight:bold; color:#1F3864; min-width:90px; font-family:Georgia,serif; }
+    .timeline-event .desc { flex:1; color:#333; line-height:1.6; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+</head>
+<body>
+
+<div id="github-bar"></div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="DeepDives.html" style="display:inline-block;margin-bottom:16px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Deep Dives</a>
+
+  <div class="admin-banner">
+    <strong>🔒 ADMIN-ONLY STUDY PAGE.</strong> This page examines the life, claims, and character of Joseph Smith using primary sources and the LDS Church's own published essays. It is gated from public navigation because the material — though documented and accurate — could deeply hurt sincere LDS believers who encounter it cold. It exists for personal study, not for evangelism by ambush. Truth without love is just noise (<a href="https://www.bible.com/bible/100/1CO.13.1.NASB1995" target="_blank" rel="noopener" style="color:#FFD54F;">1 Corinthians 13:1</a>).
+  </div>
+
+  <span class="page-tag">🔬 Deep Dive · Comparative Doctrine · Admin Only</span>
+  <h1 class="page-title">👤 Joseph Smith — The Founder Examined</h1>
+  <p class="page-subtitle" style="font-style:italic;">Because Mormonism stands or falls on the man — and Scripture gives us tools to weigh him.</p>
+
+  <div style="background:linear-gradient(135deg,#F7F4EC,#EEE8DA);border-left:4px solid #8B6F47;border-radius:6px;padding:20px 26px;margin:20px 0 28px;font-family:Georgia,serif;">
+    <div style="font-size:12px;color:#8B6F47;font-weight:bold;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;font-family:Arial,sans-serif;">✨ Why this study matters</div>
+    <p style="font-size:15px;color:#3B2D1F;line-height:1.75;margin:0 0 10px 0;">Christianity rests on a public Jesus — born under a known emperor, examined by named witnesses, crucified at a documented Roman execution, attested by hundreds who saw Him alive. Mormonism rests on a private Joseph Smith — visions nobody else saw, golden plates nobody but a small circle ever held, translations of texts nobody else could check. That asymmetry isn't a minor detail. It IS the doctrine, because every LDS distinctive — the Trinity reframed, the three kingdoms, the temple ordinances, eternal marriage, the priesthood, men becoming gods — comes from Joseph Smith and nowhere else.</p>
+    <p style="font-size:15px;color:#3B2D1F;line-height:1.75;margin:0;">So the man himself must be examined. Scripture provides the tools: <em>"You shall know them by their fruits"</em> (<a href="https://www.bible.com/bible/100/MAT.7.15.NASB1995" target="_blank" rel="noopener">Matthew 7:15</a>); <em>"Beloved, do not believe every spirit, but test the spirits to see whether they are from God"</em> (<a href="https://www.bible.com/bible/100/1JN.4.1.NASB1995" target="_blank" rel="noopener">1 John 4:1</a>); and Moses' prophet-test in <a href="https://www.bible.com/bible/100/DEU.18.22.NASB1995" target="_blank" rel="noopener">Deuteronomy 18:21–22</a>. We are not commanded to be naive. We are commanded to discern.</p>
+  </div>
+
+  <div class="cross-ref-box">
+    <div class="title">🔗 Cross-References — Scripture's Tests for a Prophet</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/DEU.18.21.NASB1995" target="_blank" rel="noopener">Deuteronomy 18:21–22</a> — the prediction-fulfillment test</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/DEU.13.1.NASB1995" target="_blank" rel="noopener">Deuteronomy 13:1–3</a> — even signs &amp; wonders fail if the prophet pulls people from God</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/MAT.7.15.NASB1995" target="_blank" rel="noopener">Matthew 7:15–20</a> — known by fruits</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/GAL.1.8.NASB1995" target="_blank" rel="noopener">Galatians 1:8</a> — even an angel preaching another gospel is to be rejected</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/1JN.4.1.NASB1995" target="_blank" rel="noopener">1 John 4:1</a> — test the spirits</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/2CO.11.14.NASB1995" target="_blank" rel="noopener">2 Corinthians 11:14</a> — Satan disguises himself as an angel of light</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/2PE.2.1.NASB1995" target="_blank" rel="noopener">2 Peter 2:1</a> — false prophets among you, secretly introducing destructive heresies</div>
+  </div>
+
+  <h2 class="section-title">1. The Setting — The Burned-Over District</h2>
+
+  <p class="body">Joseph Smith was born December 23, 1805, in Sharon, Vermont, and moved with his family to Palmyra, New York, around 1816. The geography matters. Western New York in the 1820s was nicknamed the <em>Burned-Over District</em> — so swept by waves of religious revival, prophetic enthusiasm, and millennial expectation that, according to one observer, there was no fuel left to burn. Charles Finney preached there. The Shakers, Millerites, Spiritualists, and dozens of smaller sects sprang from or near that region in those decades. Restorationist preachers were everywhere, each claiming the historic churches had gone astray and that the true gospel was about to be restored.</p>
+
+  <p class="body">This is the soil. Joseph Smith did not invent the idea that all existing churches were corrupt — that claim was in the air around him. He did not invent the idea of new revelation, new scripture, new authority — those claims were being made by competing prophets throughout the region. What he did was synthesize the elements into a more durable institution than any of his contemporaries managed. Understanding the context is not an attack; it is honest history.</p>
+
+  <div class="source-callout">
+    <strong>Source:</strong> Whitney Cross, <em>The Burned-Over District: The Social and Intellectual History of Enthusiastic Religion in Western New York, 1800–1850</em> (Cornell University Press, 1950) — the standard academic treatment, sympathetic but unflinching.
+  </div>
+
+  <h2 class="section-title">2. The Smith Family — Folk Magic and the Seer Stone</h2>
+
+  <p class="body">The Smith family was poor, frequently uprooted, and deeply enmeshed in the folk-magic culture of early-19th-century rural America. Joseph's father, Joseph Smith Sr., was known to dig for buried Spanish treasure using divining rods. The family used seer stones — ordinary-looking river rocks believed to grant supernatural sight when placed in a hat to block the light — to locate lost objects, hidden treasure, and underground water.</p>
+
+  <p class="body">This is not anti-Mormon polemic. The LDS Church itself has publicly acknowledged it in its Gospel Topics essay on the translation of the Book of Mormon, which states that Joseph Smith used the same brown seer stone for treasure-hunting in his youth that he later used to translate the Book of Mormon — placing it in his hat and dictating the text while his face was buried in the hat. The detail has been quietly removed from most LDS art and Sunday-school portrayals (which show Joseph reading from gold plates on a table), but it is the historical record.</p>
+
+  <div class="quote-block">
+    "Joseph placed either the interpreters or the seer stone in a hat, pressed his face into the hat to block out extraneous light, and read aloud the English words that appeared on the instrument."
+    <span class="attrib">— LDS Gospel Topics Essay, "Book of Mormon Translation" (churchofjesuschrist.org, published 2013)</span>
+  </div>
+
+  <p class="body">The same boy who used the stone to find buried treasure — and was paid to do so by neighbors — later used the same stone to receive the foundational scripture of the LDS Church. This is the timeline the LDS Church itself now confirms.</p>
+
+  <h2 class="section-title">3. The 1826 Trial — "The Glass Looker"</h2>
+
+  <p class="body">In March 1826 — three years before he claimed to receive the golden plates — Joseph Smith was arrested in South Bainbridge, New York, on a complaint filed by Peter Bridgman, a nephew of Smith's employer Josiah Stowell. The charge: being a "disorderly person and impostor" under New York law, which defined disorderly conduct to include vagrancy and seeking "lost goods" by occult means.</p>
+
+  <p class="body">For decades, faithful LDS scholars (Hugh Nibley, Francis Kirkham) doubted the trial had even occurred, suspecting the story was a confusion with a different 1830 trial. Then in 1971, Reverend Wesley Walters discovered the actual court bills in the basement of the Norwich, New York, sheriff's office. The records are now beyond dispute. The LDS Church has subsequently acknowledged the 1826 trial in its own published history.</p>
+
+  <div class="quote-block">
+    "20 Mar. 1826: Tried and acquitted on fanciful charge of being a 'disorderly person,' South Bainbridge, Chenango County, New York. New York law defined a disorderly person as, among other things, a vagrant or a seeker of 'lost goods.' ... Joseph's use of a seer stone to see things that others could not see with the naked eye brought the second charge."
+    <span class="attrib">— LDS Church publication, "Highlights in the Prophet's Life," <em>Ensign</em>, June 1994; reaffirmed in 2018 Gospel Topics essay</span>
+  </div>
+
+  <p class="body">The court records contain testimony — under oath — that Joseph Smith claimed to find treasure by looking into a seer stone in his hat. Even by Joseph's own father's testimony and Josiah Stowell's testimony, the practice happened. The outcome of the hearing is disputed (some records say acquitted, some say "discharged" or "condemned but released because of his youth"). What is not disputed: the practice itself.</p>
+
+  <div class="source-callout">
+    <strong>Source:</strong> Marvin S. Hill, "Joseph Smith and the 1826 Trial: New Evidence and New Difficulties," <em>BYU Studies</em> 12, no. 2 (1972). Also: LDS Church History Topics, "Joseph Smith's 1826 Trial" (churchofjesuschrist.org, 2018).
+  </div>
+
+  <h2 class="section-title">4. The First Vision — Four Conflicting Accounts</h2>
+
+  <p class="body">Modern Mormons learn one version of the First Vision: in 1820, a 14-year-old Joseph Smith went into a grove of trees near his home to pray about which church to join. God the Father and Jesus Christ appeared as two distinct beings, told him all churches were wrong, and called him to restore the true gospel. This is the 1838 account, canonized in the Pearl of Great Price.</p>
+
+  <p class="body">What is not commonly taught: Joseph Smith gave at least four different first-hand accounts of the First Vision, across 1832, 1835, 1838, and 1842. They differ in striking ways. In 2013 the LDS Church publicly published all four accounts on its own website in a Gospel Topics essay titled "First Vision Accounts" — acknowledging the differences but framing them as complementary, not contradictory.</p>
+
+  <table class="vision-compare">
+    <thead>
+      <tr>
+        <th>Year</th>
+        <th>Joseph's Age &amp; Audience</th>
+        <th>Who appeared</th>
+        <th>Main reason for going to the grove</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="year">1832</td>
+        <td>26; private autobiography</td>
+        <td>"The Lord" — one being</td>
+        <td>To seek forgiveness of personal sin. Joseph says he had <em>already concluded</em> from Scripture that all churches were apostate before going to pray.</td>
+      </tr>
+      <tr>
+        <td class="year">1835</td>
+        <td>29; journal entry of conversation with visitor Robert Matthews</td>
+        <td>One personage, then another, plus "many angels"</td>
+        <td>To learn which church was true. No mention of seeking forgiveness.</td>
+      </tr>
+      <tr>
+        <td class="year">1838</td>
+        <td>32; official church history (now canonized)</td>
+        <td>Two personages — God the Father and Jesus Christ, named</td>
+        <td>To learn which church was true. Joseph did <em>not</em> know they were all wrong yet — that was the point of the prayer.</td>
+      </tr>
+      <tr>
+        <td class="year">1842</td>
+        <td>36; Wentworth letter, for non-Mormon newspaper</td>
+        <td>Two personages, one identified as Jesus</td>
+        <td>To learn which church was true.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="body">The 1832 account is the one that creates the most difficulty. It is in Joseph's own handwriting. It mentions only one divine being ("the Lord"). It says Joseph already knew all churches were false before he prayed — which directly contradicts the 1838 canonical account, where finding out which church was true is the entire reason for the prayer. The 1832 account also doesn't mention the religious revival as a trigger — a central detail in the 1838 version.</p>
+
+  <p class="body">LDS apologists argue these are complementary perspectives shaped by different audiences and changing emphases over time. Critics argue they look like an evolving story — refined and elaborated as Joseph's theology and church-leadership ambitions matured. Both readings are available; one of them better fits the pattern of a man recounting a literal, unforgettable event.</p>
+
+  <div class="source-callout">
+    <strong>Source:</strong> "First Vision Accounts," LDS Gospel Topics Essay (churchofjesuschrist.org). Also: Richard L. Bushman, <em>Joseph Smith: Rough Stone Rolling</em> (Knopf, 2005) — sympathetic LDS scholar who acknowledges the tensions openly.
+  </div>
+
+  <h2 class="section-title">5. The Golden Plates and the Witnesses</h2>
+
+  <p class="body">Joseph Smith claimed that on September 22, 1827, the angel Moroni delivered to him a set of golden plates buried in the Hill Cumorah near his home, inscribed in "Reformed Egyptian" and containing the religious history of ancient Hebrew migrants to the Americas. From these plates, he translated the Book of Mormon, published in 1830.</p>
+
+  <p class="body">No outside party ever examined or independently verified the plates. They were returned to the angel after translation. What we have is a printed text and a set of witness statements.</p>
+
+  <p class="body"><strong>The Three Witnesses.</strong> Oliver Cowdery, David Whitmer, and Martin Harris signed a statement (printed in every Book of Mormon since 1830) declaring they had seen the plates and the angel. All three later left or were excommunicated from the church Joseph Smith founded — though Cowdery and Harris eventually rejoined. Notably, when pressed in later life on whether they had seen the plates <em>physically</em> or only in vision, several gave evasive or shifting answers. Martin Harris reportedly said he saw them "with the eye of faith" or "with spiritual eyes."</p>
+
+  <p class="body"><strong>The Eight Witnesses.</strong> A second statement was signed by eight men (mostly Smith and Whitmer family members) declaring they had "hefted" the plates and seen the engravings. Their testimony is more physical, less mystical — but every one of them was inside Joseph Smith's family or close inner circle. There is no outside witness.</p>
+
+  <p class="body"><strong>The translation method.</strong> Multiple eyewitnesses — including Emma Smith (Joseph's wife) and the scribes who wrote down what he dictated — described the translation process the same way: Joseph placed his seer stone (the same one from his treasure-digging days) in a hat, pressed his face into the hat to block out light, and read off the English text that appeared on the stone. The plates themselves were often covered with a cloth, in another room, or not present at all during translation. This is now confirmed in the LDS Gospel Topics essay "Book of Mormon Translation" (2013).</p>
+
+  <div class="quote-block">
+    "Joseph Smith said that the Book of Mormon contains 'the fullness of the everlasting Gospel.' But the Book of Mormon, as written in 1830, does not contain: the plurality of gods, eternal marriage, baptism for the dead, temple endowment, the three kingdoms of glory, the pre-existence of spirits, the Aaronic and Melchizedek priesthood structure, men becoming gods, or polygamy. In fact, the Book of Mormon explicitly condemns polygamy (Jacob 2:24). All of those distinctively LDS doctrines came LATER, through Joseph's continuing 'revelations' — most of them codified in the Doctrine &amp; Covenants between 1830 and 1844."
+    <span class="attrib">— Synthesis of LDS scriptural texts</span>
+  </div>
+
+  <h2 class="section-title">6. The Book of Abraham — The Smoking Gun</h2>
+
+  <p class="body">If any single piece of evidence makes the Joseph Smith story testable, it is the Book of Abraham. Unlike the golden plates (returned to the angel) or the First Vision (private experience), the Book of Abraham was claimed to be a translation of <em>actual physical papyri</em> that Joseph purchased in 1835 from an Egyptian-antiquities dealer named Michael Chandler. Smith said the papyri contained writings "by the hand of Abraham" — and produced a translation now canonized in the Pearl of Great Price as the Book of Abraham, including three illustrations (called "Facsimiles") that Smith interpreted with detailed explanations.</p>
+
+  <p class="body">Most of the papyri were thought to have been destroyed in the Great Chicago Fire of 1871. But in 1966, eleven papyrus fragments — including the one corresponding to Facsimile 1 — were rediscovered in the archives of the Metropolitan Museum of Art in New York and returned to the LDS Church. For the first time, Joseph Smith's translation could be tested against the source.</p>
+
+  <p class="body"><strong>The result has been the same from every Egyptologist who has examined them — LDS and non-LDS alike.</strong> The papyri are standard Egyptian funerary documents from roughly the 1st century BC — a "Breathing Permit of Hôr" and fragments of the Book of the Dead. They were written about 2,000 years <em>after</em> Abraham would have lived. They have nothing to do with Abraham. They are not signed by Abraham. They are pagan Egyptian texts intended to guide a deceased man named Hôr through the afterlife.</p>
+
+  <p class="body">Joseph Smith's interpretations of the three Facsimiles are also demonstrably wrong by basic Egyptology. Where Smith identified "the angel of the Lord," Egyptologists identify the jackal-headed god Anubis. Where Smith identified "Abraham fastened upon an altar," Egyptologists identify a standard funerary embalming scene. Where Smith identified the patriarch Abraham reasoning with Pharaoh on a throne, the figure is the Egyptian god Osiris.</p>
+
+  <p class="body">The LDS Church's response, published in a 2014 Gospel Topics essay titled "Translation and Historicity of the Book of Abraham," takes one of several positions: either (a) the papyri we have are not the source — the real Abraham papyrus was lost; or (b) Joseph Smith received the text by revelation rather than literal translation, using the papyri only as a "catalyst." Both positions move significantly away from Joseph Smith's own claims, which were that he was directly translating the writings of Abraham from the physical papyri in his possession.</p>
+
+  <div class="source-callout">
+    <strong>Source:</strong> "Translation and Historicity of the Book of Abraham," LDS Gospel Topics Essay (churchofjesuschrist.org, 2014). For the Egyptological analysis: Robert K. Ritner, <em>The Joseph Smith Egyptian Papyri: A Complete Edition</em> (Smith-Pettit Foundation, 2011). Ritner was a University of Chicago Egyptologist — neutral, professional, devastating.
+  </div>
+
+  <h2 class="section-title">7. The Doctrinal Evolution — 1830 vs. 1844</h2>
+
+  <p class="body">A central LDS claim is that Joseph Smith restored the true gospel of Jesus Christ in 1830. But what Joseph taught in 1830 looks dramatically different from what he taught by his death in 1844. The trajectory is one of the strongest indicators that doctrine was being developed, not received intact.</p>
+
+  <table class="doctrine-evolution">
+    <thead>
+      <tr>
+        <th>Topic</th>
+        <th>Joseph in 1830 (Book of Mormon era)</th>
+        <th>Joseph in 1844 (Nauvoo era)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="topic">Nature of God</td>
+        <td class="early">Largely Trinitarian language. Book of Mormon (Alma 11) declares "there is only one God" and Father, Son, and Spirit are one. No suggestion God was once a man.</td>
+        <td class="late">King Follett Discourse (April 1844): God "was once as one of us" and dwelt on an earth. Plurality of gods explicitly taught. Lorenzo Snow's couplet: "As man now is, God once was; as God now is, man may become."</td>
+      </tr>
+      <tr>
+        <td class="topic">Polygamy</td>
+        <td class="early">Book of Mormon (Jacob 2:24): "the thing which is abominable before me" — God specifically condemns David and Solomon for having many wives and concubines. Plural marriage explicitly forbidden.</td>
+        <td class="late">D&amp;C 132 (recorded 1843): plural marriage required for exaltation. Joseph took an estimated 30–40 plural wives, including women already married to other men, between 1841 and 1844.</td>
+      </tr>
+      <tr>
+        <td class="topic">Marriage in eternity</td>
+        <td class="early">Not taught. Book of Mormon contains no doctrine of eternal marriage or temple sealings.</td>
+        <td class="late">D&amp;C 132: Marriage sealed by the proper priesthood authority is required for the highest exaltation. Single people cannot reach the top tier of Celestial Kingdom.</td>
+      </tr>
+      <tr>
+        <td class="topic">Three kingdoms of glory</td>
+        <td class="early">Not taught. Book of Mormon describes a binary afterlife — saved or damned (e.g. 2 Nephi 9:16, Mosiah 27:31).</td>
+        <td class="late">D&amp;C 76 (1832, expanded later): Celestial, Terrestrial, Telestial kingdoms. Almost universal salvation to some level of glory.</td>
+      </tr>
+      <tr>
+        <td class="topic">Pre-existence of souls</td>
+        <td class="early">Not taught in the Book of Mormon.</td>
+        <td class="late">Foundational doctrine — all humans existed as spirit-children of Heavenly Father before birth.</td>
+      </tr>
+      <tr>
+        <td class="topic">Temple ordinances</td>
+        <td class="early">Not present. No endowment, no sealing ceremony, no temple garments.</td>
+        <td class="late">Endowment ceremony introduced May 1842 (adapted from Masonic ritual, which Joseph joined two months earlier). Temple garments required.</td>
+      </tr>
+      <tr>
+        <td class="topic">Baptism for the dead</td>
+        <td class="early">Not taught.</td>
+        <td class="late">Introduced 1840. Living members baptized by proxy for deceased ancestors.</td>
+      </tr>
+      <tr>
+        <td class="topic">Men becoming gods</td>
+        <td class="early">Not taught. Book of Mormon teaches the standard biblical distinction between Creator and creature.</td>
+        <td class="late">King Follett Discourse: "You have got to learn how to make yourselves God, king and priest..."</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="body">A Mormon defender will say: God reveals truth "line upon line, precept upon precept" (Isaiah 28:10). New light was given as the Saints were ready for it. A critic will note: this is exactly the pattern you'd expect from a man developing a theological system in real time and dressing each new development as fresh revelation. The 1830 Joseph Smith would not recognize, and arguably would not have accepted, the doctrines the 1844 Joseph Smith was teaching.</p>
+
+  <h2 class="section-title">8. Plural Marriage Behind Closed Doors</h2>
+
+  <div style="background:#EBF4FC;border-left:4px solid #2E75B6;border-radius:6px;padding:14px 18px;margin:14px 0 22px;font-family:Arial,sans-serif;">
+    <div style="font-size:11px;color:#1F3864;font-weight:bold;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">📖 Related Deep Dive</div>
+    <div style="font-size:14px;color:#1F3864;font-weight:bold;"><a href="DeepDive-LDSPolygamy.html" style="color:#2E75B6;text-decoration:none;">LDS Polygamy — The Doctrine, the History, the Bible →</a></div>
+    <div style="font-size:13px;color:#1F3864;margin-top:4px;line-height:1.5;">For the full doctrinal story — what the Bible actually teaches about marriage, Doctrine and Covenants 132, the 1890 and 1904 Manifestos, and where polygamy still lives in current LDS theology — see the companion Deep Dive.</div>
+  </div>
+
+  <p class="body">For most of LDS history, mainstream Mormons were taught that Joseph Smith opposed polygamy, that Brigham Young introduced it after Joseph's death, and that the few plural marriages Joseph contracted (if any were admitted) were a small handful. In 2014, the LDS Church published a Gospel Topics essay titled "Plural Marriage in Kirtland and Nauvoo" that made the historical record explicit — and stunned many lifelong members.</p>
+
+  <p class="body"><strong>What the LDS Church now officially acknowledges:</strong></p>
+
+  <div class="quote-block">
+    "Joseph Smith was married to about 30 to 40 women during his lifetime. ... Helen Mar Kimball, a daughter of Joseph's close friends Heber C. and Vilate Murray Kimball, was sealed to Joseph several months before her 15th birthday. ... Some of these women were already married to other men. ... Most of those sealed to Joseph Smith were between 20 and 40 years of age at the time of their sealing to him. The oldest, Fanny Young, was 56 years old. The youngest was Helen Mar Kimball, daughter of Joseph's close friends Heber C. and Vilate Murray Kimball, who was sealed to Joseph several months before her 15th birthday."
+    <span class="attrib">— LDS Gospel Topics Essay, "Plural Marriage in Kirtland and Nauvoo" (churchofjesuschrist.org, 2014)</span>
+  </div>
+
+  <p class="body"><strong>Three details worth dwelling on:</strong></p>
+
+  <p class="body"><strong>Helen Mar Kimball.</strong> Helen was 14, Joseph was 37 — a 23-year age gap. The LDS Church's essay frames the marriage as "primarily dynastic" (intended to seal the Kimball family to Joseph for eternity) and notes there is no clear evidence the marriage was consummated. Helen later wrote, "I would never have been sealed to Joseph had I known it was anything more than ceremony. I was young, and they deceived me." Defenders point out that 14 was within marriageable age in some 19th-century contexts; critics note that even by 19th-century norms, this was unusual. The LDS Church's own essay acknowledges the marriage caused her significant anguish.</p>
+
+  <p class="body"><strong>Polyandry — marrying other men's wives.</strong> At least 11 of Joseph's plural wives were married to other living men at the time he sealed them to himself. In several cases, the husbands were sent on missions while Joseph contracted the marriages. This is not "biblical polygamy" (one man, multiple unmarried women) — it is something Scripture nowhere countenances. LDS apologists argue these were "dynastic sealings" only — not sexual — but no contemporary record explicitly confirms this, and at least some of the women bore children whose paternity has been questioned by historians.</p>
+
+  <p class="body"><strong>The secrecy.</strong> Joseph Smith publicly denied practicing polygamy throughout the entire period he was contracting plural marriages. In May 1844 — one month before his death and three years into the practice — he stood before the Nauvoo congregation and declared: "What a thing it is for a man to be accused of committing adultery, and having seven wives, when I can only find one. I am the same man, and as innocent as I was fourteen years ago; and I can prove them all perjurers." He had at the time at least 30 plural wives. Whether that constitutes outright deception or "spiritual" denial (because the marriages were sealed-not-civil) is a judgment call. Either way, the public statement was not the whole truth.</p>
+
+  <div class="source-callout">
+    <strong>Source:</strong> "Plural Marriage in Kirtland and Nauvoo," LDS Gospel Topics Essay (churchofjesuschrist.org, 2014). Comprehensive scholarly treatment: Todd Compton, <em>In Sacred Loneliness: The Plural Wives of Joseph Smith</em> (Signature Books, 1997) — a faithful LDS historian who nonetheless documents every known plural marriage in painful detail.
+  </div>
+
+  <h2 class="section-title">9. The Death at Carthage — The Martyr Narrative Examined</h2>
+
+  <p class="body">The standard LDS account: Joseph Smith was murdered by an evil mob at Carthage Jail, Illinois, on June 27, 1844, dying a martyr for his faith — comparable in some retellings to Christ Himself. This account is largely true, but missing important context that the LDS Church now publishes openly.</p>
+
+  <div style="margin:14px 0 20px;">
+    <div class="timeline-event">
+      <div class="date">June 7, 1844</div>
+      <div class="desc">The <em>Nauvoo Expositor</em> publishes its first and only issue. The newspaper, run by ex-Mormons (including former apostle William Law), exposes Joseph Smith's secret practice of polygamy, his teaching of plurality of gods, and his intent to establish himself as a theocratic king. The reporting is accurate.</div>
+    </div>
+    <div class="timeline-event">
+      <div class="date">June 10, 1844</div>
+      <div class="desc">Joseph Smith, as mayor of Nauvoo, leads the Nauvoo City Council to declare the <em>Expositor</em> a public nuisance. He orders the city marshal to destroy the printing press and burn the remaining copies. The action is widely seen, then and now, as a flagrant violation of freedom of the press.</div>
+    </div>
+    <div class="timeline-event">
+      <div class="date">June 12–18, 1844</div>
+      <div class="desc">Arrest warrants are issued. Joseph declares martial law in Nauvoo and calls out the Nauvoo Legion (his private militia, larger than the state's). Illinois Governor Thomas Ford intervenes and demands Joseph surrender.</div>
+    </div>
+    <div class="timeline-event">
+      <div class="date">June 25, 1844</div>
+      <div class="desc">Joseph and Hyrum Smith surrender at Carthage. Originally charged with riot, they are then additionally charged with <strong>treason</strong> against the State of Illinois for declaring martial law — a capital offense.</div>
+    </div>
+    <div class="timeline-event">
+      <div class="date">June 27, 1844</div>
+      <div class="desc">A mob of 150–200 men, including several members of the local "Carthage Greys" militia assigned to guard them, storms the jail. Hyrum is killed first, shot through the door. Joseph, who had been smuggled a six-shooter pepper-box pistol earlier that day, fires the weapon at the mob, wounding three (one of whom later died). Joseph empties the pistol, then is shot multiple times — apparently while attempting to escape through a window — and falls to the ground below, dying around 5:16 PM.</div>
+    </div>
+  </div>
+
+  <p class="body"><strong>What the martyr narrative usually omits:</strong></p>
+
+  <p class="body">Joseph Smith was killed in a gun battle while exchanging fire with his attackers — not while peacefully submitting like the Christian martyrs of antiquity. He had ordered the destruction of a newspaper that was, in essence, telling the truth about him. He was being held on a capital charge of treason for raising a private army against the state of Illinois. None of this justifies mob violence — vigilante murder is wrong, and his killers were never convicted (all five tried were acquitted). But it complicates the picture of an innocent prophet executed for righteousness' sake. The fuller picture is a religious leader who had concentrated political, military, and ecclesiastical power in himself, who had been exposed in serious deception, who responded by silencing the press, who was charged with treason, and who died fighting in a jailhouse gun battle.</p>
+
+  <div class="source-callout">
+    <strong>Source:</strong> Dallin H. Oaks (later LDS apostle) and Marvin S. Hill, <em>Carthage Conspiracy: The Trial of the Accused Assassins of Joseph Smith</em> (University of Illinois Press, 1979) — the standard scholarly account, written by faithful LDS historians. Also: "Killing of Joseph Smith" — National Park Service, Carthage Jail historic site.
+  </div>
+
+  <h2 class="section-title">10. Evaluating the Claims — Scripture's Tests Applied</h2>
+
+  <p class="body">The Bible does not leave believers defenseless against false prophets. It supplies four direct tests. Each test stands on its own; failure of even one is decisive.</p>
+
+  <div class="info-box" style="border-color:#1F3864;background:#EBF4FC;">
+    <div class="title" style="color:#1F3864;">📖 Test 1 — The Prediction Test (Deuteronomy 18:21–22)</div>
+    <div class="line"><em>"You may say in your heart, 'How will we know the word which the LORD has not spoken?' When a prophet speaks in the name of the LORD, if the thing does not come about or come true, that is the thing which the LORD has not spoken. The prophet has spoken it presumptuously; you shall not be afraid of him."</em></div>
+    <div class="line" style="margin-top:10px;"><strong>Application:</strong> Joseph Smith made numerous specific, dated predictions in the name of the Lord that did not come to pass. Examples:</div>
+    <div class="line">• D&amp;C 84:4–5 (Sept 1832) — prophesied a temple would be built "in this generation" in Independence, Missouri. The Mormons were violently expelled from Missouri in 1838; no temple was ever built there. The "this generation" who heard the prophecy all died without seeing it fulfilled.</div>
+    <div class="line">• D&amp;C 87 (Dec 1832) — predicted the American Civil War would begin in South Carolina (correct) and lead to "war shall be poured out upon all nations" with slavery causing the destruction of the United States (incorrect — the war was contained to the U.S. and ended within four years).</div>
+    <div class="line">• History of the Church 2:182 (Feb 1835) — Joseph declared that the Second Coming would occur within 56 years (by 1891). It did not.</div>
+    <div class="line">• 1843 prophecy that Stephen A. Douglas would become President if he treated the Saints well, and that the U.S. government would be "utterly overthrown" if Joseph's redress claims were not addressed. Neither came to pass.</div>
+  </div>
+
+  <div class="info-box" style="border-color:#8B4513;background:#FFF8F0;">
+    <div class="title" style="color:#8B4513;">📖 Test 2 — The Direction Test (Deuteronomy 13:1–3)</div>
+    <div class="line"><em>"If a prophet or a dreamer of dreams arises among you and gives you a sign or a wonder, and the sign or the wonder comes true, concerning which he spoke to you, saying, 'Let us go after other gods (whom you have not known) and let us serve them,' you shall not listen to the words of that prophet... for the LORD your God is testing you to find out if you love the LORD your God with all your heart and with all your soul."</em></div>
+    <div class="line" style="margin-top:10px;"><strong>Application:</strong> Even if Joseph Smith's signs or visions had been real, this test would still apply. Joseph taught:</div>
+    <div class="line">• A plurality of gods (King Follett Discourse, April 1844)</div>
+    <div class="line">• That God was once a man like us</div>
+    <div class="line">• That men can become gods themselves</div>
+    <div class="line">This is precisely "going after other gods" — adding new gods, redefining the God of the Bible, and offering worshipers the prospect of becoming gods themselves. Deuteronomy 13 says even genuine signs and wonders fail this test. Joseph fails it twice over — both his teachings and (per Test 1) his signs.</div>
+  </div>
+
+  <div class="info-box" style="border-color:#6B8E3A;background:#F4F8EE;">
+    <div class="title" style="color:#3B5E1A;">📖 Test 3 — The Fruit Test (Matthew 7:15–20)</div>
+    <div class="line"><em>"Beware of the false prophets, who come to you in sheep's clothing, but inwardly are ravenous wolves. You will know them by their fruits. ... So every good tree bears good fruit, but the bad tree bears bad fruit."</em></div>
+    <div class="line" style="margin-top:10px;"><strong>Application:</strong> The fruits worth weighing:</div>
+    <div class="line">• Secret polygamy contracted while publicly denying it</div>
+    <div class="line">• Marriage to a 14-year-old girl</div>
+    <div class="line">• Marriages to other men's wives</div>
+    <div class="line">• Destruction of a newspaper for telling the truth</div>
+    <div class="line">• Declaration of martial law and raising a private army</div>
+    <div class="line">• Death in a gun battle, not as a peaceful witness</div>
+    <div class="line">• A "translation" (Book of Abraham) demonstrably unrelated to its source text</div>
+    <div class="line">• A doctrine of God that changed radically over 14 years</div>
+    <div class="line" style="margin-top:8px;">Compare to the apostolic standard: <em>"the fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control"</em> (Galatians 5:22–23).</div>
+  </div>
+
+  <div class="info-box" style="border-color:#1F3864;background:#EBF4FC;">
+    <div class="title" style="color:#1F3864;">📖 Test 4 — The Gospel Test (Galatians 1:8)</div>
+    <div class="line"><em>"But even if we, or an angel from heaven, should preach to you a gospel contrary to what we have preached to you, he is to be accursed!"</em></div>
+    <div class="line" style="margin-top:10px;"><strong>Application:</strong> Joseph Smith's founding story is that an angel (Moroni) delivered to him a different gospel — one that includes priesthood ordinances, plural marriage, three kingdoms of glory, the pre-existence, and men becoming gods. None of this is in the New Testament. Paul anticipated this exact scenario by centuries: an angel delivering a different gospel. His verdict was final: <em>anathema</em>. Accursed. The angel was either lying or was not from God. There is no third option.</div>
+  </div>
+
+  <h2 class="section-title">The Honest Question</h2>
+
+  <p class="body">Was Joseph Smith a deliberate fraud, or a sincere man self-deceived? Christians do not have to answer that question. The Deuteronomy 18 test does not require us to determine the prophet's motives — only whether his predictions came true. Galatians 1:8 does not ask whether the angel was sincere — only whether the gospel matches. Matthew 7 does not ask whether the prophet meant well — only what the fruit looks like.</p>
+
+  <p class="body">Some honest possibilities:</p>
+
+  <p class="body"><strong>Sincere but mistaken.</strong> Joseph may have genuinely believed he was receiving revelation, and may have begun in good faith. The First Vision could have been a real religious experience (mystical, dream-state, deeply felt) that he then magnified and elaborated over time. The Book of Mormon could have been a sincere creative-religious work he came to believe was real. Most cult founders are sincere — that is part of what makes them effective.</p>
+
+  <p class="body"><strong>Sincere at the start, deteriorated over time.</strong> The early Joseph (1830) and the late Joseph (1844) look almost like two different men. Power, polygamy, growing political authority, and increasing theological ambition can corrupt even a sincere starter. Acts 8 records Simon Magus, who genuinely believed for a moment before being corrupted by ambition for power.</p>
+
+  <p class="body"><strong>Fraud from early on.</strong> The 1826 trial places Joseph squarely in the treasure-digger / glass-looker culture three years before the angel allegedly appeared. The same seer stone used to defraud neighbors out of treasure money was the stone used to translate the Book of Mormon. This is hard to wave away.</p>
+
+  <p class="body"><strong>Spiritual deception.</strong> Paul warns: <em>"even Satan disguises himself as an angel of light"</em> (<a href="https://www.bible.com/bible/100/2CO.11.14.NASB1995" target="_blank" rel="noopener">2 Corinthians 11:14</a>). A real visitation does not prove a divine visitation. The angel Moroni delivering a contradictory gospel fits Galatians 1:8 precisely.</p>
+
+  <p class="body">Christians don't need to settle which of these is closest to the truth. We need only apply the tests Scripture gives us and act accordingly. Joseph Smith fails all four. The kindness then owed to our Mormon neighbors is the same kindness any deceived person is owed — not contempt, not avoidance, but truth gently spoken, and the offer of the unchanging gospel preserved in Scripture itself.</p>
+
+  <div class="key-quote" style="background:#F4F8EE;border-left:4px solid #6B8E3A;padding:14px 18px;margin:18px 0;font-family:Georgia,serif;font-style:italic;color:#3B2D1F;font-size:14px;line-height:1.75;border-radius:6px;">
+    "speaking the truth in love, we are to grow up in all aspects into Him who is the head, even Christ" — Ephesians 4:15
+  </div>
+
+  <h2 class="section-title">A Final Word for Personal Study</h2>
+
+  <p class="body">This page is gated for a reason. The material in it is true and well-sourced — every section is anchored either in the LDS Church's own published essays or in standard scholarly work (much of it by faithful LDS historians). But truth in the wrong hands, at the wrong moment, can wound rather than free. A Mormon visitor stumbling onto this page from a Google search may have spent their entire life inside this story, with parents, grandparents, marriage, children, and friendships all woven through it. The right response to that person is not a takedown — it is patience, prayer, friendship, and the steady offer of Scripture's own gospel: that we are saved by grace, through faith, in Christ alone, and there is nothing more we need to add.</p>
+
+  <p class="body">For Chris's personal study: use what's here to be informed, to pray with understanding, and to engage Mormon friends and coworkers from a position of knowledge rather than caricature. Never lead with Joseph Smith. Lead with Jesus. The same Jesus who said <em>"I am the way, and the truth, and the life"</em> (<a href="https://www.bible.com/bible/100/JHN.14.6.NASB1995" target="_blank" rel="noopener">John 14:6</a>) — and meant exactly what He said.</p>
+
+  <h2 class="section-title">Further Study — Primary Sources</h2>
+
+  <div class="info-box">
+    <div class="title">📚 LDS Church's Own Gospel Topics Essays</div>
+    <div class="line">All published at <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays" target="_blank" rel="noopener">churchofjesuschrist.org</a>:</div>
+    <div class="line">• "First Vision Accounts" (2013) — acknowledges the four accounts</div>
+    <div class="line">• "Book of Mormon Translation" (2013) — acknowledges the seer-stone-in-hat method</div>
+    <div class="line">• "Translation and Historicity of the Book of Abraham" (2014) — acknowledges the Egyptological problems</div>
+    <div class="line">• "Plural Marriage in Kirtland and Nauvoo" (2014) — acknowledges the 30–40 wives, including Helen Mar Kimball at 14</div>
+    <div class="line">• "Joseph Smith's 1826 Trial" (2018) — acknowledges the glass-looker arrest</div>
+  </div>
+
+  <div class="info-box" style="border-color:#2E75B6;background:#EBF4FC;">
+    <div class="title" style="color:#1F3864;">📚 Scholarly Treatments (LDS and non-LDS)</div>
+    <div class="line">• Richard Bushman, <em>Joseph Smith: Rough Stone Rolling</em> (Knopf, 2005) — the definitive biography by a faithful LDS scholar; acknowledges nearly every difficulty discussed above</div>
+    <div class="line">• Todd Compton, <em>In Sacred Loneliness</em> (Signature Books, 1997) — every documented plural wife, by a believing LDS historian</div>
+    <div class="line">• Robert K. Ritner, <em>The Joseph Smith Egyptian Papyri: A Complete Edition</em> (Smith-Pettit Foundation, 2011) — University of Chicago Egyptologist; comprehensive translation</div>
+    <div class="line">• Fawn Brodie, <em>No Man Knows My History</em> (1945, rev. 1971) — the classic critical biography; LDS Church excommunicated her for writing it. Still considered indispensable by historians.</div>
+    <div class="line">• Sandra Tanner, utlm.org — primary-source documentation site run by Brigham Young's great-great-granddaughter, who left the LDS Church</div>
+    <div class="line">• The CES Letter (cesletter.org) — a former Mormon's open letter; widely circulated among Mormons re-examining their faith</div>
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ My notes — Joseph Smith Deep Dive:</div>
+    <div class="quill-editor" id="n-dd-josephsmith" data-placeholder="Write your notes here..." style="min-height:120px;"></div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <a href="DeepDives.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Deep Dives</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-dd-josephsmith'];</script>
+<script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>
