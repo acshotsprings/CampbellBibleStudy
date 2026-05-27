@@ -370,6 +370,7 @@ const NAV_STRUCTURE = [
       { label: '↳ 🔢 Gematria (Hebrew/Greek)', href: 'DeepDive-Gematria.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-gematria', completable: true, completeKey: 'complete-dd-gematria' },
       { label: '↳ ⛰️ Mormonism (LDS)',      href: 'DeepDive-Mormonism.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-mormonism' },
       { label: '↳ 💍 LDS Polygamy',          href: 'DeepDive-LDSPolygamy.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-ldspolygamy' },
+      { label: '↳ 📜 The CES Letter',         href: 'DeepDive-CESLetter.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-cesletter' },
       { label: '↳ 👤 Joseph Smith',         href: 'DeepDive-JosephSmith.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', adminOnly: true, completable: true, completeKey: 'complete-dd-josephsmith' },
       { label: '🎧 Listening Notes',        href: 'listening-notes.html', adminOnly: true, itemColor: 'mystudy-listening' },
     ]
