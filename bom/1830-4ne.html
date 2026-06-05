@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4 Nephi (1830) (1830) — 1830 Edition — Book of Mormon — Campbell Bible Study (Admin)</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:90px; font-family:Arial,sans-serif; font-size:12px; background:#fff; }
+    .ql-editor { min-height:90px; padding:7px 9px; }
+    /* Admin gate */
+    #admin-gate { display:none; max-width:560px; margin:80px auto; padding:32px; background:#5C1A1A; color:#fff; border-radius:10px; font-family:Arial,sans-serif; }
+    #admin-gate h2 { margin:0 0 14px; color:#FFD54F; font-family:Georgia,serif; }
+    #admin-gate p { line-height:1.7; margin:8px 0; }
+    #admin-gate a { color:#FFD54F; }
+    /* 1830 page styles — distinct visual identity from modern */
+    .bom-admin-banner { background:linear-gradient(135deg,#3D1F0F,#5C2E18); color:#fff; padding:14px 20px; border-radius:8px; margin:16px 0 24px; font-family:Arial,sans-serif; font-size:13px; line-height:1.6; border-left:5px solid #C49B3A; }
+    .bom-admin-banner strong { color:#FFD54F; }
+    .ocr-warning { background:#FFF3CD; border:2px solid #B8923F; border-left:5px solid #B8923F; border-radius:8px; padding:14px 18px; margin:16px 0; font-family:Arial,sans-serif; font-size:13px; color:#5C3A0F; line-height:1.65; }
+    .ocr-warning strong { color:#8A6A1F; }
+    .bom-chap-nav { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 20px; padding:12px; background:#F5F0E5; border:1px solid #C49B3A; border-radius:8px; }
+    .bom-chap-nav a { display:inline-block; padding:6px 10px; background:#fff; border:1px solid #C49B3A; border-radius:5px; font-family:Georgia,serif; font-size:13px; color:#3D1F0F; text-decoration:none; min-width:36px; text-align:center; font-style:italic; }
+    .bom-chap-nav a:hover { background:#3D1F0F; color:#FFD54F; }
+    .bom-1830-chapter { margin:32px 0; padding:24px 26px; background:#FBF6E9; border:1px solid #C49B3A; border-radius:8px; }
+    .bom-1830-chapter h3 { font-family:Georgia,serif; color:#3D1F0F; margin:0 0 6px; font-size:24px; font-style:italic; font-weight:normal; text-align:center; letter-spacing:0.05em; }
+    .bom-1830-chapter .modern-ref { font-family:Arial,sans-serif; font-size:11px; color:#8A6A1F; text-align:center; text-transform:uppercase; letter-spacing:0.10em; margin-bottom:18px; padding-bottom:12px; border-bottom:1px solid #C49B3A; }
+    .bom-1830-chapter .modern-ref strong { color:#3D1F0F; }
+    .bom-1830-text { font-family:'Times New Roman', Georgia, serif; font-size:16px; line-height:1.85; color:#2C1810; text-align:justify; }
+    .bom-1830-text p { margin:14px 0; text-indent:1.5em; }
+    .bom-1830-text p:first-child { text-indent:0; }
+    .bom-1830-text p:first-child::first-letter { font-size:38px; line-height:1; float:left; margin:4px 8px 0 0; font-family:Georgia,serif; color:#5C2E18; }
+    .bom-preamble { background:#F0E8D0; border-left:4px solid #8A6A1F; padding:14px 18px; margin:14px 0; font-family:Georgia,serif; font-style:italic; color:#5C2E18; border-radius:0 6px 6px 0; }
+    .bom-book-card { display:block; padding:14px 18px; margin:8px 0; background:#FBF6E9; border:1px solid #C49B3A; border-left:4px solid #3D1F0F; border-radius:6px; text-decoration:none; color:#3D1F0F; font-family:Georgia,serif; }
+    .bom-book-card:hover { background:#F5E9C7; border-left-color:#C49B3A; }
+    .bom-book-card .bname { font-size:17px; font-weight:bold; font-style:italic; color:#3D1F0F; }
+    .bom-book-card .bmeta { font-size:12px; color:#8A6A1F; margin-top:3px; font-family:Arial,sans-serif; font-style:normal; }
+    .bom-section-head { font-family:Georgia,serif; color:#5C2E18; font-size:14px; text-transform:uppercase; letter-spacing:0.10em; margin:22px 0 8px; padding-bottom:4px; border-bottom:1px solid #C49B3A; font-style:italic; }
+    .cross-ref-callout { background:#FDF6E3; border:1px solid #B8923F; border-radius:6px; padding:12px 16px; margin:14px 0; font-family:Arial,sans-serif; font-size:13px; color:#3B2D1F; }
+    .cross-ref-callout a { color:#2E75B6; text-decoration:none; font-weight:bold; }
+    .source-callout { background:#F4F8EE; border-left:4px solid #6B8E3A; padding:10px 14px; margin:10px 0; font-family:Arial,sans-serif; font-size:12px; color:#3B5E1A; border-radius:4px; }
+    .key-passage { background:#FFEBE8; border:2px solid #B22222; border-radius:6px; padding:14px 18px; margin:18px 0; font-family:Georgia,serif; font-size:14px; color:#3D1F0F; }
+    .key-passage strong { color:#B22222; font-family:Arial,sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:0.10em; display:block; margin-bottom:6px; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+  <script>
+    (function() {
+      var ok = false;
+      try {
+        if (sessionStorage.getItem('cbsg-admin') === 'true') ok = true;
+      } catch(e) {}
+      if (!ok) {
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('app').style.display = 'none';
+          document.getElementById('admin-gate').style.display = 'block';
+        });
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<div id="admin-gate">
+  <h2>🔒 Admin only</h2>
+  <p>The Book of Mormon study tool is restricted to admin access on this site.</p>
+  <p>Return to the <a href="../index.html">home page</a> and log in via the 🔒 button in the top bar.</p>
+  <p style="margin-top:18px;">For the public theological analysis:</p>
+  <p>→ <a href="../DeepDive-BookOfMormon.html">📖 Book of Mormon — Text &amp; Evidence (Deep Dive)</a></p>
+</div>
+
+<div id="github-bar"></div>
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="1830-index.html" style="display:inline-block;margin-bottom:8px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to 1830 Index</a>
+  <a href="4ne.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">📖 View modern edition of 4 Nephi →</a>
+  <div class="bom-admin-banner">
+    <strong>🔒 ADMIN · 1830 ORIGINAL EDITION</strong> &nbsp;|&nbsp; This is the text as Joseph Smith first published it (Palmyra, NY, 1830) — <em>before</em> the 1837 theological edits, the 1879 verse divisions by Orson Pratt, the 1920 reformat, or the 1981 racial wording change. Source: digital replica of the 1830 facsimile (Internet Archive, OCR'd from the Jenson edition). Compare with: <a href="4ne.html" style="color:#FFD54F;">📖 4 Nephi (modern)</a> &middot; <a href="compare.html" style="color:#FFD54F;">📋 Side-by-side</a> &middot; <a href="bible-parallels.html" style="color:#FFD54F;">📜 Bible parallels</a> &middot; <a href="bible-parallels-isaiah.html" style="color:#FFD54F;">📜 Isaiah parallels</a>.
+  </div>
+  <div class="ocr-warning">
+    <strong>⚠️ OCR DISCLAIMER:</strong> This text was OCR'd from a scanned facsimile of the 1830 printing. <em>Expect scan errors throughout</em> — e.g., "I, Neput" for "I, Nephi", "Anp" for "And", "L," for "I,", spurious punctuation. These are NOT changes I made; they are artifacts of the scanning process. The whole point of viewing the 1830 is to see the original 19th-century spelling, grammar, and word choices — so the spelling has been left as the OCR rendered it. <strong>For the critical theological readings</strong> (e.g., "mother of God" in 1 Nephi, "Eternal Father" without "Son of", "white and a delightsome people"), the OCR is accurate at the key phrases and these have been verified.
+  </div>
+  <h1 class="page-title" style="font-family:Georgia,serif;font-style:italic;color:#3D1F0F;">4 Nephi (1830)</h1>
+  <p style="font-family:Arial,sans-serif;font-size:13px;color:#8A6A1F;margin:8px 0 16px;">1 chapter (Roman numerals as originally printed) · ~1,973 words · 1830 Palmyra edition</p>
+  <div class="bom-preamble">WHICH IS THE SON OF NEPHI, ONE OF THE 
+DISCIPLES OF JESUS CHRIST.</div>
+  <div class="bom-1830-chapter" id="ch1">
+    <h3>CHAPTER I</h3>
+    <div class="modern-ref">Modern reference: <strong>4 Nephi 1:1 – 1:49</strong></div>
+    <div class="bom-1830-text">
+      <p>An account of the people of Nephi, according to his Record.</p>
+      <p>AND it came to pass that the thirty and fourth year passed away, and also the thirty and fifth, and behold the disciples of Jesus had formed a church of Christ in all the lands round about. And as many as did come unto them, and did truly repent of their sins, were baptized in the name of Jesus; and they did also receive the Holy Ghost.</p>
+      <p>And it came to pass in the thirty and sixth year, the people were converted unto the Lord, upon all the face of the land, both Nephites and Lamanites, and there was no contentions and disputations among them, and every man did deal justly one with another; and they had all things common among them, therefore there were not rich and poor, bond and free, but they were all made free, and partakers of the Heavenly</p>
+      <p>ift. : And it came to pass that the thirty and seventh year passed away also, and there still continued to be peace in the land. And there were great and marvellous works wrought by the disciples of Jesus, insomuch that they did heal the sick, and raise the dead, and cause the lame to walk, and the blind to receive their sight, and the deaf to hear; and all manner of miracles did they work among the children of men; and in nothing did they work miracles save it were in the name of Jesus. And thus did the thirty and eighth year pass away, and also the thirty and ninth, and the forty and first, and the forty and second; yea, even until forty and nine years had passed away, and also the fifty and first, and the fifty and second; yea, and even until fifty and nine years had passed away; and the Lord did</p>
+      <p>prosper them exceedingly, in the land; yea, insomuch that they did fill cities again where there had been cities burned; yea, even that great city Zarahemla did they cause to be built again. But there were many cities which had been sunk, and waters came up in the stead thereof; therefore these cities could not be renewed.</p>
+      <p>And now behold it came to pass that the people of Nephi did wax strong, and did multiply exceeding fast, and became an exceeding fair and delightsome people. And they were married, and given in marriage, and were blessed according to the multitude of the promises which the Lord had made unto them. And they did not walk any more after the performances and ordinances of the law of Moses, but they did walk after the commandments which they had received from their Lord and their God, continuing in fasting and prayer, and in meeting together oft, both to pray and to hear the word of the Lord. And it came to pass that there was no contention among all the people, in all the land, but there were mighty miracles wrought among the disciples of Jesus.</p>
+      <p>And it came to pass that the seventy and first year passed away, and also the seventy and second year; yea, and in fine till the seventy and ninth year had passed away; yea, even an hundred years had passed away, and the disciples of Jesus, whom he had chosen, had all gone to the paradise of God, save it were the three which should tarry: And there were other disciples ordained in their stead; and also many of that generation which had passed away. And it came to pass that there was no contention in the land, because of the love of God which did dwell in the hearts of the people. And there were no envyings, nor strifes, nor tumults, nor whoredoms, nor lying, nor murders, nor no manner of lasciviousness: and surely there could not bea happier people among all the people which had been created by the hand of God: There were no robbers, nor no murderers, neither were there Lamanites, nor no manner of Ites; but they were in one, the children of Christ, and heirs to the kingdom of God: And now blessed were they, for the Lord did bless them in all their doings; yea, even they were blessed and prospered, until an hundred and ten years had passed away: And the first generation from Christ had passed away, and there was no contention in all the land.</p>
+      <p>And it came to pass that Nephi, he that kept this last record, (and he kept it upon the plates of Nephi,) died, and his son</p>
+      <p>Amos kept it in his stead; and he kept it upon the plates of Nephi also; and he kept it eighty and four years, and there was still peace in the land, save it were a small part of the people, which had revolted from the church, and took upon them the name of Lamanites; therefore there began to be Lamanites again in the land.</p>
+      <p>And it came to pass that Amos died also, (and it was an hundred and ninety and four years from the coming of Christ,) and his son Amos kept the record in his stead; and he also kept it upon the plates of Nephi; and it was also written in the book of Nephi, which is in this book. And it came to pass that two hundred years had passed away: And the second generation had all passed away save it were a few. And now I, Mormon, would that ye should know that the people had multiplied, ‘insomuch that they were spread upon all the face of the land, and that they had become exceeding rich, because of their prosperity in Christ. And now in this two hundred and first year, there began to be among them those which were lifted up in pride, such as the wearing of costly apparel, and all manner of fine pearls, and of the fine things of the world. And from that time forth they did have their goods and their substance no more common among them, and they began to be divided into classes, and they began to build up churches unto themselves, to get gain, and began to deny the true church of Christ.</p>
+      <p>And it came to pass that when two hundred and ten years had passed away there were many churches in the land; yea, there were churches which professed to know the Christ, and yet they did deny the more parts of his gospel, insomuch that they did receive all manner of wickedness, and did administer that which was sacred unto him to whom it had been forbidden, because of unworthiness. And this church did multiply exceedingly, because of iniquity, and because of the power of satan which did get hold upon their hearts. And again, there was another church, which denied the Christ; and they did persecute the true church of Christ, because of their humility, and their belief in Christ; and they did despise them, because of the many miracles which were wrought among them; therefore they did exercise power and authority over the disciples of Jesus which did tarry with them, and they did cast them into prison; but by the power of the word of God, which was in them, the prisons were rent in twain, and they went forth doing mighty miracles among them. Nevertheless, and notwithstanding all these miracles the people did harden their hearts, and did seek to kill them, even as the Jews at Jerusalem sought to kill Jesus, according to his word, and they did cast them into furnace of fire, and they came forth receiving no harm; and they also cast them into dens of wild beasts, and they did play with the wild beasts even as a child with a lamb; and they did come forth from among them, receiving no harm. Nevertheless, the people did harden their hearts, for they were led by many priests and false prophets to build up many churches, and to do all manner of iniquity. And they did smite upon the people of Jesus; but the people of Jesus did not smite again. And thus they did dwindle in unbelief and wickedness, from year to year, even until two hundred and thirty years had passed away. And now it came to pass in this year, yea, in the two hundred and thirty and first year there were a great division among the people. And it came to pass that in this year there arose a people which was called the Nephites, and they were true believers in Christ; and among them were they which was called by the Lamanites, Jacobites, and Josephites, and Zoramites; therefore the true believers in Christ, and the true worshippers of Christ, (among whom were the three disciples of Jesus which should tarry,) were called Nephites and Jacobites, and Josephites, and Zoramites. And it came to pass that they which rejected the gospel, were called Lamanites, and Lemuclites, and Ishmaelites; and they did not dwindle in unbelief, but they did wilfully rebel against the gospel of Christ; and they did teach their children that they should not believe, even as their fathers, from the beginning, did dwindle. And it was because of the wickedness and abominations of their fathers, even as it was in the beginning. And they were taught to hate the children of God, even as the Lamanites were taught to hate the children of Nephi, from the beginning.</p>
+      <p>And it came to pass that two hundred and forty and four years had passed away, and thus were the affairs of the people. And the more wicked part of the people did wax strong, and became exceeding more numerous than were the people of God. And they did still continue to build up churches unto themselves, and adorn them with all manner of precious things. And thus did two hundred and fifty years pass away, and also two hundred and sixty years. And it came to pass that the wicked part of the people began again to build up the secret oaths and combinations of Gaddianton. And also the</p>
+      <p>people which were called the people of Nephi, began to be proud in their hearts, because of their exceeding riches, and become vain, like unto their brethren, the Lamanites. and from this time, the disciples began to sorrow for the sins of the world.</p>
+      <p>And it came to pass that when three hundred years had passed away, both the people of Nephi and the Lamanites had become exceeding wicked, one like unto another. And it came to pass that the robbers of Gaddianton did spread over all the face of the land; and there were none that were righteous, save it were the disciples of Jesus. And gold and silver did they lay up in store in abundance, and did traffic in all manner of traffic.</p>
+      <p>And it came to pass that after three hundred and five years had passed away, (and the people did still remain in wickedness,) Amos died, and his brother, Ammaron, did keep the record, in his stead. And it came to pass that when three hundred and twenty years had passed away, Ammaron, being constrained by the Holy Ghost, did hide up the records which were sacred; yea, even all the sacred records which had been handed down from generation to generation, which were sacred, even until the three hundred and twentieth year from the coming of Christ. And he did hide them up unto the Lord, that they might come again unto the remnant of the house of Jacob, according to the prophecies and the promises of the Lord. And thus is the end of the record of Ammaron.</p>
+    </div>
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ My notes — 4 Nephi (1830) (1830):</div>
+    <div class="quill-editor" id="n-bom-1830-4ne" data-placeholder="Notes, comparisons with the modern edition..." style="min-height:120px;"></div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <a href="1830-index.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to 1830 Index</a>
+    &nbsp;&nbsp;<a href="4ne.html" style="font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">📖 Modern edition →</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-bom-1830-4ne'];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>

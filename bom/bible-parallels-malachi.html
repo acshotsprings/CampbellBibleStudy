@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malachi Parallels — Bible Parallels — Book of Mormon — Campbell Bible Study (Admin)</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:100px; font-family:'Times New Roman', Georgia, serif; font-size:14px; background:#fff; }
+    .ql-editor { min-height:100px; padding:10px 12px; line-height:1.7; }
+    /* Admin gate */
+    #admin-gate { display:none; max-width:560px; margin:80px auto; padding:32px; background:#5C1A1A; color:#fff; border-radius:10px; font-family:Arial,sans-serif; }
+    #admin-gate h2 { margin:0 0 14px; color:#FFD54F; font-family:Georgia,serif; }
+    #admin-gate p { line-height:1.7; margin:8px 0; }
+    #admin-gate a { color:#FFD54F; }
+    /* Parallels page styles */
+    .bom-admin-banner { background:linear-gradient(135deg,#5C1A1A,#7A2828); color:#fff; padding:14px 20px; border-radius:8px; margin:16px 0 24px; font-family:Arial,sans-serif; font-size:13px; line-height:1.6; border-left:5px solid #FFD54F; }
+    .bom-admin-banner strong { color:#FFD54F; }
+    .bom-admin-banner a { color:#FFD54F; }
+    .section-intro { background:#FFF8E8; border-left:4px solid #B8923F; border-radius:6px; padding:14px 18px; margin:16px 0 24px; font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#3D1F0F; }
+    .parallel-entry { background:#fff; border:1px solid #d0dce8; border-radius:8px; padding:18px 20px; margin:20px 0; }
+    .par-meta { display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid #e0e6ed; font-family:Arial,sans-serif; font-size:12px; }
+    .par-cat { padding:4px 10px; border-radius:4px; font-weight:bold; text-transform:uppercase; letter-spacing:0.06em; font-size:11px; color:#fff; }
+    .par-cat-direct { background:#B22222; }
+    .par-cat-strong { background:#8B4513; }
+    .par-cat-doctrinal { background:#1F3864; }
+    .par-cat-parallel { background:#5C2E18; }
+    .par-refs a { color:#1F3864; text-decoration:none; font-weight:bold; }
+    .par-refs a:hover { text-decoration:underline; }
+    .par-cols { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media (max-width: 760px) { .par-cols { grid-template-columns:1fr; } }
+    .par-col { padding:14px 16px; border-radius:6px; }
+    .par-col-bom { background:#F0F5FB; border:1px solid #6F9CC4; }
+    .par-col-bible { background:#F4F8EE; border:1px solid #8FAE5A; }
+    .par-col-label { font-family:Arial,sans-serif; font-size:11px; font-weight:bold; text-transform:uppercase; letter-spacing:0.10em; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; }
+    .par-col-bom .par-col-label { color:#1F3864; }
+    .par-col-bible .par-col-label { color:#3B5E1A; }
+    .par-col-bible .par-col-label a { color:#2E75B6; text-decoration:none; padding:3px 8px; background:#fff; border:1px solid #8FAE5A; border-radius:4px; font-size:10px; }
+    .par-col-bible .par-col-label a:hover { background:#2E75B6; color:#fff; }
+    .par-verse { font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#2C1810; margin:6px 0; padding-left:36px; text-indent:-36px; }
+    .par-verse .vnum { display:inline-block; font-family:Arial,sans-serif; font-size:10px; font-weight:bold; color:#8B4513; background:#FFF8E8; padding:2px 5px; border-radius:3px; margin-right:6px; min-width:28px; text-align:center; vertical-align:baseline; }
+    .par-note { margin-top:12px; padding:10px 14px; background:#FFF8E8; border-left:3px solid #B8923F; border-radius:4px; font-family:Arial,sans-serif; font-size:13px; color:#5C3A0F; line-height:1.65; }
+    .par-note strong { color:#3D1F0F; }
+    .bible-paste-label { font-family:Arial,sans-serif; font-size:11px; color:#3B5E1A; font-style:italic; margin-bottom:6px; }
+    .toc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; margin:18px 0; }
+    .toc-card { display:block; padding:16px 18px; background:#fff; border:1px solid #d0dce8; border-left:5px solid #1F3864; border-radius:6px; text-decoration:none; color:#1F3864; font-family:Arial,sans-serif; }
+    .toc-card:hover { background:#F6F9FC; border-left-color:#FFD54F; }
+    .toc-card .toc-title { font-size:16px; font-weight:bold; color:#1F3864; }
+    .toc-card .toc-subtitle { font-size:13px; color:#666; margin-top:4px; font-style:italic; }
+    .toc-card .toc-count { font-size:11px; color:#8B4513; margin-top:6px; text-transform:uppercase; letter-spacing:0.08em; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+  <script>
+    (function() {
+      var ok = false;
+      try { if (sessionStorage.getItem('cbsg-admin') === 'true') ok = true; } catch(e) {}
+      if (!ok) {
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('app').style.display = 'none';
+          document.getElementById('admin-gate').style.display = 'block';
+        });
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<div id="admin-gate">
+  <h2>🔒 Admin only</h2>
+  <p>The Bible parallels tool is admin-restricted.</p>
+  <p>Return to the <a href="../index.html">home page</a> and log in via the 🔒 button.</p>
+  <p>For the public theological analysis: <a href="../DeepDive-BookOfMormon.html">📖 Book of Mormon Deep Dive</a></p>
+</div>
+
+<div id="github-bar"></div>
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="bible-parallels.html" style="display:inline-block;margin-bottom:8px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Bible Parallels Index</a>
+  <a href="bible-parallels-isaiah.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#8B4513;text-decoration:none;font-family:Arial,sans-serif;">📜 Isaiah Parallels</a>
+  <a href="index.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">📖 BoM Modern Index</a>
+  <div class="bom-admin-banner">
+    <strong>🔒 ADMIN · BIBLE PARALLELS</strong> &nbsp;|&nbsp; Compare BoM passages with the Bible passages they quote or echo. <strong>NASB 1995</strong> is the comparison standard. Use the paste box on the right of each entry to add NASB text from e-Sword. Notes save with the rest of your Quill content.
+  </div>
+  <h1 class="page-title">Malachi Parallels</h1>
+  <p style="font-family:Arial,sans-serif;font-size:14px;color:#666;font-style:italic;margin:0 0 6px;">3 Nephi 24–25 ↔ Malachi 3–4</p>
+  <p style="font-family:Arial,sans-serif;font-size:12px;color:#888;margin:0 0 18px;">6 parallel passages</p>
+  <div class="section-intro">In 3 Nephi 24, Jesus tells the Nephites that He commands them to record the words of Malachi (chapters 3–4), and the text follows verbatim. This is unusual because Malachi was the LAST OT prophet — writing around 430 BC — by which time the Nephites (who left Jerusalem c. 600 BC) would not have had access to Malachi&#x27;s writings. Compare the passages directly.</div>
+  <div style="margin:18px 0; padding:10px 14px; background:#F6F9FC; border:1px solid #d0dce8; border-radius:6px; font-family:Arial,sans-serif; font-size:12px;">
+    <strong style="color:#1F3864;">Quick jump:</strong>
+    <a href="#entry-0" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 24:1</a>
+    <a href="#entry-1" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 24:7</a>
+    <a href="#entry-2" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 24:13</a>
+    <a href="#entry-3" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 25:1</a>
+    <a href="#entry-4" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">1 Nephi 22:15</a>
+    <a href="#entry-5" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">2 Nephi 26:4</a>
+  </div>
+<div class="parallel-entry" id="entry-0">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch24">3 Nephi 24:1-6</a> &nbsp;↔&nbsp; 📜 Malachi 3:1-6</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 24:1-6</span></div>
+      <div class="par-verse"><span class="vnum">24:1</span>And it came to pass that he commanded them that they should write the words which the Father had given unto Malachi, which he should tell unto them. And it came to pass that after they were written he expounded them. And these are the words which he did tell unto them, saying: Thus said the Father unto Malachi—Behold, I will send my messenger, and he shall prepare the way before me, and the Lord whom ye seek shall suddenly come to his temple, even the messenger of the covenant, whom ye delight in; behold, he shall come, saith the Lord of Hosts.</div>
+      <div class="par-verse"><span class="vnum">24:2</span>But who may abide the day of his coming, and who shall stand when he appeareth? For he is like a refiner’s fire, and like fuller’s soap.</div>
+      <div class="par-verse"><span class="vnum">24:3</span>And he shall sit as a refiner and purifier of silver; and he shall purify the sons of Levi, and purge them as gold and silver, that they may offer unto the Lord an offering in righteousness.</div>
+      <div class="par-verse"><span class="vnum">24:4</span>Then shall the offering of Judah and Jerusalem be pleasant unto the Lord, as in the days of old, and as in former years.</div>
+      <div class="par-verse"><span class="vnum">24:5</span>And I will come near to you to judgment; and I will be a swift witness against the sorcerers, and against the adulterers, and against false swearers, and against those that oppress the hireling in his wages, the widow and the fatherless, and that turn aside the stranger, and fear not me, saith the Lord of Hosts.</div>
+      <div class="par-verse"><span class="vnum">24:6</span>For I am the Lord, I change not; therefore ye sons of Jacob are not consumed.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Malachi 3:1-6 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAL.3.1-6.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-malachi-0" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> &#x27;Behold, I send my messenger…&#x27; — the prophecy of John the Baptist.</div>
+</div>
+<div class="parallel-entry" id="entry-1">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch24">3 Nephi 24:7-12</a> &nbsp;↔&nbsp; 📜 Malachi 3:7-12</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 24:7-12</span></div>
+      <div class="par-verse"><span class="vnum">24:7</span>Even from the days of your fathers ye are gone away from mine ordinances, and have not kept them. Return unto me and I will return unto you, saith the Lord of Hosts. But ye say: Wherein shall we return?</div>
+      <div class="par-verse"><span class="vnum">24:8</span>Will a man rob God? Yet ye have robbed me. But ye say: Wherein have we robbed thee? In tithes and offerings.</div>
+      <div class="par-verse"><span class="vnum">24:9</span>Ye are cursed with a curse, for ye have robbed me, even this whole nation.</div>
+      <div class="par-verse"><span class="vnum">24:10</span>Bring ye all the tithes into the storehouse, that there may be meat in my house; and prove me now herewith, saith the Lord of Hosts, if I will not open you the windows of heaven, and pour you out a blessing that there shall not be room enough to receive it.</div>
+      <div class="par-verse"><span class="vnum">24:11</span>And I will rebuke the devourer for your sakes, and he shall not destroy the fruits of your ground; neither shall your vine cast her fruit before the time in the fields, saith the Lord of Hosts.</div>
+      <div class="par-verse"><span class="vnum">24:12</span>And all nations shall call you blessed, for ye shall be a delightsome land, saith the Lord of Hosts.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Malachi 3:7-12 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAL.3.7-12.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-malachi-1" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Tithes and offerings, &#x27;will a man rob God?&#x27;, the windows of heaven.</div>
+</div>
+<div class="parallel-entry" id="entry-2">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch24">3 Nephi 24:13-18</a> &nbsp;↔&nbsp; 📜 Malachi 3:13-18</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 24:13-18</span></div>
+      <div class="par-verse"><span class="vnum">24:13</span>Your words have been stout against me, saith the Lord. Yet ye say: What have we spoken against thee?</div>
+      <div class="par-verse"><span class="vnum">24:14</span>Ye have said: It is vain to serve God, and what doth it profit that we have kept his ordinances and that we have walked mournfully before the Lord of Hosts?</div>
+      <div class="par-verse"><span class="vnum">24:15</span>And now we call the proud happy; yea, they that work wickedness are set up; yea, they that tempt God are even delivered.</div>
+      <div class="par-verse"><span class="vnum">24:16</span>Then they that feared the Lord spake often one to another, and the Lord hearkened and heard; and a book of remembrance was written before him for them that feared the Lord, and that thought upon his name.</div>
+      <div class="par-verse"><span class="vnum">24:17</span>And they shall be mine, saith the Lord of Hosts, in that day when I make up my jewels; and I will spare them as a man spareth his own son that serveth him.</div>
+      <div class="par-verse"><span class="vnum">24:18</span>Then shall ye return and discern between the righteous and the wicked, between him that serveth God and him that serveth him not.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Malachi 3:13-18 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAL.3.13-18.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-malachi-2" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> &#x27;Your words have been stout against me&#x27; — the book of remembrance.</div>
+</div>
+<div class="parallel-entry" id="entry-3">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch25">3 Nephi 25:1-6</a> &nbsp;↔&nbsp; 📜 Malachi 4:1-6</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 25:1-6</span></div>
+      <div class="par-verse"><span class="vnum">25:1</span>For behold, the day cometh that shall burn as an oven; and all the proud, yea, and all that do wickedly, shall be stubble; and the day that cometh shall burn them up, saith the Lord of Hosts, that it shall leave them neither root nor branch.</div>
+      <div class="par-verse"><span class="vnum">25:2</span>But unto you that fear my name, shall the Son of Righteousness arise with healing in his wings; and ye shall go forth and grow up as calves in the stall.</div>
+      <div class="par-verse"><span class="vnum">25:3</span>And ye shall tread down the wicked; for they shall be ashes under the soles of your feet in the day that I shall do this, saith the Lord of Hosts.</div>
+      <div class="par-verse"><span class="vnum">25:4</span>Remember ye the law of Moses, my servant, which I commanded unto him in Horeb for all Israel, with the statutes and judgments.</div>
+      <div class="par-verse"><span class="vnum">25:5</span>Behold, I will send you Elijah the prophet before the coming of the great and dreadful day of the Lord;</div>
+      <div class="par-verse"><span class="vnum">25:6</span>And he shall turn the heart of the fathers to the children, and the heart of the children to their fathers, lest I come and smite the earth with a curse.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Malachi 4:1-6 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAL.4.1-6.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-malachi-3" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> The day shall burn as an oven, sun of righteousness, Elijah turning hearts. Famous LDS verse on temple work in 25:6.</div>
+</div>
+<div class="parallel-entry" id="entry-4">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="1ne.html#ch22">1 Nephi 22:15-17</a> &nbsp;↔&nbsp; 📜 Malachi 4:1</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 1 Nephi 22:15-17</span></div>
+      <div class="par-verse"><span class="vnum">22:15</span>For behold, saith the prophet, the time cometh speedily that Satan shall have no more power over the hearts of the children of men; for the day soon cometh that all the proud and they who do wickedly shall be as stubble; and the day cometh that they must be burned.</div>
+      <div class="par-verse"><span class="vnum">22:16</span>For the time soon cometh that the fulness of the wrath of God shall be poured out upon all the children of men; for he will not suffer that the wicked shall destroy the righteous.</div>
+      <div class="par-verse"><span class="vnum">22:17</span>Wherefore, he will preserve the righteous by his power, even if it so be that the fulness of his wrath must come, and the righteous be preserved, even unto the destruction of their enemies by fire. Wherefore, the righteous need not fear; for thus saith the prophet, they shall be saved, even if it so be as by fire.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Malachi 4:1 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAL.4.1.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-malachi-4" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> 1 Nephi 22 (c. 570 BC) echoes Malachi 4:1 (written c. 430 BC) — same &#x27;day cometh that shall burn as an oven&#x27; imagery, ~140 years before Malachi wrote it. The chronology problem is noted by critics.</div>
+</div>
+<div class="parallel-entry" id="entry-5">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="2ne.html#ch26">2 Nephi 26:4-6</a> &nbsp;↔&nbsp; 📜 Malachi 4:1</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 2 Nephi 26:4-6</span></div>
+      <div class="par-verse"><span class="vnum">26:4</span>Wherefore, all those who are proud, and that do wickedly, the day that cometh shall burn them up, saith the Lord of Hosts, for they shall be as stubble.</div>
+      <div class="par-verse"><span class="vnum">26:5</span>And they that kill the prophets, and the saints, the depths of the earth shall swallow them up, saith the Lord of Hosts; and mountains shall cover them, and whirlwinds shall carry them away, and buildings shall fall upon them and crush them to pieces and grind them to powder.</div>
+      <div class="par-verse"><span class="vnum">26:6</span>And they shall be visited with thunderings, and lightnings, and earthquakes, and all manner of destructions, for the fire of the anger of the Lord shall be kindled against them, and they shall be as stubble, and the day that cometh shall consume them, saith the Lord of Hosts.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Malachi 4:1 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAL.4.1.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-malachi-5" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Another pre-Malachi echo: 2 Nephi 26 (c. 559 BC) mentions &#x27;the day that cometh shall burn them up.&#x27; Anchor critics ask: how does Nephi quote a prophet who hasn&#x27;t yet been born?</div>
+</div>
+
+  <div style="margin-top:32px;">
+    <a href="bible-parallels.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Bible Parallels Index</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ["n-par-malachi-0", "n-par-malachi-1", "n-par-malachi-2", "n-par-malachi-3", "n-par-malachi-4", "n-par-malachi-5"];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>

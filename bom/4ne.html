@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4 Nephi — Book of Mormon — Campbell Bible Study (Admin)</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:90px; font-family:Arial,sans-serif; font-size:12px; background:#fff; }
+    .ql-editor { min-height:90px; padding:7px 9px; }
+    /* Admin gate */
+    #admin-gate { display:none; max-width:560px; margin:80px auto; padding:32px; background:#5C1A1A; color:#fff; border-radius:10px; font-family:Arial,sans-serif; }
+    #admin-gate h2 { margin:0 0 14px; color:#FFD54F; font-family:Georgia,serif; }
+    #admin-gate p { line-height:1.7; margin:8px 0; }
+    #admin-gate a { color:#FFD54F; }
+    /* BoM page styles */
+    .bom-admin-banner { background:linear-gradient(135deg,#5C1A1A,#7A2828); color:#fff; padding:14px 20px; border-radius:8px; margin:16px 0 24px; font-family:Arial,sans-serif; font-size:13px; line-height:1.6; border-left:5px solid #FFD54F; }
+    .bom-admin-banner strong { color:#FFD54F; }
+    .bom-chap-nav { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 20px; padding:12px; background:#F6F9FC; border-radius:8px; }
+    .bom-chap-nav a { display:inline-block; padding:6px 10px; background:#fff; border:1px solid #c8d4e0; border-radius:5px; font-family:Arial,sans-serif; font-size:12px; color:#1F3864; text-decoration:none; min-width:28px; text-align:center; }
+    .bom-chap-nav a:hover { background:#1F3864; color:#fff; }
+    .bom-chap-nav a.active { background:#1F3864; color:#fff; font-weight:bold; }
+    .bom-chapter { margin:24px 0; padding:18px 22px; background:#fff; border:1px solid #d0dce8; border-radius:8px; }
+    .bom-chapter h3 { font-family:Georgia,serif; color:#1F3864; margin:0 0 12px; padding-bottom:8px; border-bottom:2px solid #1F3864; font-size:18px; }
+    .bom-verse { font-family:Georgia,serif; font-size:15px; line-height:1.75; color:#2C3E50; margin:6px 0; padding-left:32px; text-indent:-32px; }
+    .bom-verse .vnum { display:inline-block; font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#8B4513; background:#FFF8E8; padding:2px 6px; border-radius:3px; margin-right:8px; min-width:24px; text-align:center; vertical-align:baseline; }
+    .bom-book-card { display:block; padding:14px 18px; margin:8px 0; background:#fff; border:1px solid #d0dce8; border-left:4px solid #5C1A1A; border-radius:6px; text-decoration:none; color:#1F3864; font-family:Arial,sans-serif; }
+    .bom-book-card:hover { background:#F6F9FC; border-left-color:#FFD54F; }
+    .bom-book-card .bname { font-size:16px; font-weight:bold; color:#1F3864; }
+    .bom-book-card .bmeta { font-size:12px; color:#666; margin-top:3px; }
+    .bom-section-head { font-family:Georgia,serif; color:#5C1A1A; font-size:14px; text-transform:uppercase; letter-spacing:0.10em; margin:22px 0 8px; padding-bottom:4px; border-bottom:1px solid #d0dce8; }
+    .source-callout { background:#F4F8EE; border-left:4px solid #6B8E3A; padding:10px 14px; margin:10px 0; font-family:Arial,sans-serif; font-size:12px; color:#3B5E1A; border-radius:4px; }
+    .cross-ref-callout { background:#FDF6E3; border:1px solid #B8923F; border-radius:6px; padding:12px 16px; margin:14px 0; font-family:Arial,sans-serif; font-size:13px; color:#3B2D1F; }
+    .cross-ref-callout a { color:#2E75B6; text-decoration:none; font-weight:bold; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+  <script>
+    // Admin gate — must run before anything else loads.
+    // Checks for the admin session token set by the main site's admin login flow.
+    (function() {
+      // The site uses sessionStorage key 'cbsg-admin' = 'true' after admin login (set by main.js).
+      // Admin password 'Campbell2026' is checked by main.js, not here.
+      var ok = false;
+      try {
+        if (sessionStorage.getItem('cbsg-admin') === 'true') ok = true;
+      } catch(e) { /* private mode etc */ }
+      if (!ok) {
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('app').style.display = 'none';
+          document.getElementById('admin-gate').style.display = 'block';
+        });
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<!-- Admin gate (shown only if not admin) -->
+<div id="admin-gate">
+  <h2>🔒 Admin only</h2>
+  <p>The Book of Mormon study tool is restricted to admin access on this site, as part of a careful research workbench rather than a public-facing scripture page.</p>
+  <p>To access this section, return to the <a href="../index.html">home page</a> and log in as admin using the 🔒 button in the top bar.</p>
+  <p style="margin-top:18px;">For the public theological analysis (no full BoM text), see:</p>
+  <p>→ <a href="../DeepDive-BookOfMormon.html">📖 Book of Mormon — Text &amp; Evidence (Deep Dive)</a><br>
+  → <a href="../DeepDive-Mormonism.html">⛰️ Mormonism (LDS) — Deep Dive</a></p>
+</div>
+
+<div id="github-bar"></div>
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="index.html" style="display:inline-block;margin-bottom:16px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Book of Mormon Index</a>
+
+  <div class="bom-admin-banner">
+    <strong>🔒 ADMIN RESEARCH WORKBENCH</strong> &nbsp;|&nbsp; <strong>Modern LDS edition</strong> (text source: Project Gutenberg #17, public domain). Compare with: <a href="1830-index.html" style="color:#FFD54F;">📜 1830 original</a> &middot; <a href="compare.html" style="color:#FFD54F;">📋 Side-by-side</a> &middot; <a href="bible-parallels.html" style="color:#FFD54F;">📜 Bible parallels</a> &middot; <a href="bible-parallels-isaiah.html" style="color:#FFD54F;">📜 Isaiah parallels</a> &middot; <a href="../DeepDive-BookOfMormon.html" style="color:#FFD54F;">📖 Deep Dive</a>.
+  </div>
+
+  <h1 class="page-title">📖 4 Nephi</h1>
+  <p style="font-family:Arial,sans-serif;font-size:13px;color:#666;margin:8px 0 8px;">1 chapter · 49 verses · Modern LDS edition</p>
+  <p style="font-family:Arial,sans-serif;font-size:13px;margin:0 0 18px;"><a href="1830-4ne.html" style="color:#8B4513;text-decoration:none;font-weight:bold;">📜 View 1830 original of 4 Nephi →</a></p>
+  <div class="bom-chapter" id="ch1">
+    <h3>4 Nephi (1 chapter)</h3>
+    <div class="bom-verse"><span class="vnum">1:1</span>And it came to pass that the thirty and fourth year passed away, and also the thirty and fifth, and behold the disciples of Jesus had formed a church of Christ in all the lands round about. And as many as did come unto them, and did truly repent of their sins, were baptized in the name of Jesus; and they did also receive the Holy Ghost.</div>
+    <div class="bom-verse"><span class="vnum">1:2</span>And it came to pass in the thirty and sixth year, the people were all converted unto the Lord, upon all the face of the land, both Nephites and Lamanites, and there were no contentions and disputations among them, and every man did deal justly one with another.</div>
+    <div class="bom-verse"><span class="vnum">1:3</span>And they had all things common among them; therefore there were not rich and poor, bond and free, but they were all made free, and partakers of the heavenly gift.</div>
+    <div class="bom-verse"><span class="vnum">1:4</span>And it came to pass that the thirty and seventh year passed away also, and there still continued to be peace in the land.</div>
+    <div class="bom-verse"><span class="vnum">1:5</span>And there were great and marvelous works wrought by the disciples of Jesus, insomuch that they did heal the sick, and raise the dead, and cause the lame to walk, and the blind to receive their sight, and the deaf to hear; and all manner of miracles did they work among the children of men; and in nothing did they work miracles save it were in the name of Jesus.</div>
+    <div class="bom-verse"><span class="vnum">1:6</span>And thus did the thirty and eighth year pass away, and also the thirty and ninth, and forty and first, and the forty and second, yea, even until forty and nine years had passed away, and also the fifty and first, and the fifty and second; yea, and even until fifty and nine years had passed away.</div>
+    <div class="bom-verse"><span class="vnum">1:7</span>And the Lord did prosper them exceedingly in the land; yea, insomuch that they did build cities again where there had been cities burned.</div>
+    <div class="bom-verse"><span class="vnum">1:8</span>Yea, even that great city Zarahemla did they cause to be built again.</div>
+    <div class="bom-verse"><span class="vnum">1:9</span>But there were many cities which had been sunk, and waters came up in the stead thereof; therefore these cities could not be renewed.</div>
+    <div class="bom-verse"><span class="vnum">1:10</span>And now, behold, it came to pass that the people of Nephi did wax strong, and did multiply exceedingly fast, and became an exceedingly fair and delightsome people.</div>
+    <div class="bom-verse"><span class="vnum">1:11</span>And they were married, and given in marriage, and were blessed according to the multitude of the promises which the Lord had made unto them.</div>
+    <div class="bom-verse"><span class="vnum">1:12</span>And they did not walk any more after the performances and ordinances of the law of Moses; but they did walk after the commandments which they had received from their Lord and their God, continuing in fasting and prayer, and in meeting together oft both to pray and to hear the word of the Lord.</div>
+    <div class="bom-verse"><span class="vnum">1:13</span>And it came to pass that there was no contention among all the people, in all the land; but there were mighty miracles wrought among the disciples of Jesus.</div>
+    <div class="bom-verse"><span class="vnum">1:14</span>And it came to pass that the seventy and first year passed away, and also the seventy and second year, yea, and in fine, till the seventy and ninth year had passed away; yea, even an hundred years had passed away, and the disciples of Jesus, whom he had chosen, had all gone to the paradise of God, save it were the three who should tarry; and there were other disciples ordained in their stead; and also many of that generation had passed away.</div>
+    <div class="bom-verse"><span class="vnum">1:15</span>And it came to pass that there was no contention in the land, because of the love of God which did dwell in the hearts of the people.</div>
+    <div class="bom-verse"><span class="vnum">1:16</span>And there were no envyings, nor strifes, nor tumults, nor whoredoms, nor lyings, nor murders, nor any manner of lasciviousness; and surely there could not be a happier people among all the people who had been created by the hand of God.</div>
+    <div class="bom-verse"><span class="vnum">1:17</span>There were no robbers, nor murderers, neither were there Lamanites, nor any manner of —ites; but they were in one, the children of Christ, and heirs to the kingdom of God.</div>
+    <div class="bom-verse"><span class="vnum">1:18</span>And how blessed were they! For the Lord did bless them in all their doings; yea, even they were blessed and prospered until an hundred and ten years had passed away; and the first generation from Christ had passed away, and there was no contention in all the land.</div>
+    <div class="bom-verse"><span class="vnum">1:19</span>And it came to pass that Nephi, he that kept this last record, (and he kept it upon the plates of Nephi) died, and his son Amos kept it in his stead; and he kept it upon the plates of Nephi also.</div>
+    <div class="bom-verse"><span class="vnum">1:20</span>And he kept it eighty and four years, and there was still peace in the land, save it were a small part of the people who had revolted from the church and taken upon them the name of Lamanites; therefore there began to be Lamanites again in the land.</div>
+    <div class="bom-verse"><span class="vnum">1:21</span>And it came to pass that Amos died also, (and it was an hundred and ninety and four years from the coming of Christ) and his son Amos kept the record in his stead; and he also kept it upon the plates of Nephi; and it was also written in the book of Nephi, which is this book.</div>
+    <div class="bom-verse"><span class="vnum">1:22</span>And it came to pass that two hundred years had passed away; and the second generation had all passed away save it were a few.</div>
+    <div class="bom-verse"><span class="vnum">1:23</span>And now I, Mormon, would that ye should know that the people had multiplied, insomuch that they were spread upon all the face of the land, and that they had become exceedingly rich, because of their prosperity in Christ.</div>
+    <div class="bom-verse"><span class="vnum">1:24</span>And now, in this two hundred and first year there began to be among them those who were lifted up in pride, such as the wearing of costly apparel, and all manner of fine pearls, and of the fine things of the world.</div>
+    <div class="bom-verse"><span class="vnum">1:25</span>And from that time forth they did have their goods and their substance no more common among them.</div>
+    <div class="bom-verse"><span class="vnum">1:26</span>And they began to be divided into classes; and they began to build up churches unto themselves to get gain, and began to deny the true church of Christ.</div>
+    <div class="bom-verse"><span class="vnum">1:27</span>And it came to pass that when two hundred and ten years had passed away there were many churches in the land; yea, there were many churches which professed to know the Christ, and yet they did deny the more parts of his gospel, insomuch that they did receive all manner of wickedness, and did administer that which was sacred unto him to whom it had been forbidden because of unworthiness.</div>
+    <div class="bom-verse"><span class="vnum">1:28</span>And this church did multiply exceedingly because of iniquity, and because of the power of Satan who did get hold upon their hearts.</div>
+    <div class="bom-verse"><span class="vnum">1:29</span>And again, there was another church which denied the Christ; and they did persecute the true church of Christ, because of their humility and their belief in Christ; and they did despise them because of the many miracles which were wrought among them.</div>
+    <div class="bom-verse"><span class="vnum">1:30</span>Therefore they did exercise power and authority over the disciples of Jesus who did tarry with them, and they did cast them into prison; but by the power of the word of God, which was in them, the prisons were rent in twain, and they went forth doing mighty miracles among them.</div>
+    <div class="bom-verse"><span class="vnum">1:31</span>Nevertheless, and notwithstanding all these miracles, the people did harden their hearts, and did seek to kill them, even as the Jews at Jerusalem sought to kill Jesus, according to his word.</div>
+    <div class="bom-verse"><span class="vnum">1:32</span>And they did cast them into furnaces of fire, and they came forth receiving no harm.</div>
+    <div class="bom-verse"><span class="vnum">1:33</span>And they also cast them into dens of wild beasts, and they did play with the wild beasts even as a child with a lamb; and they did come forth from among them, receiving no harm.</div>
+    <div class="bom-verse"><span class="vnum">1:34</span>Nevertheless, the people did harden their hearts, for they were led by many priests and false prophets to build up many churches, and to do all manner of iniquity. And they did smite upon the people of Jesus; but the people of Jesus did not smite again. And thus they did dwindle in unbelief and wickedness, from year to year, even until two hundred and thirty years had passed away.</div>
+    <div class="bom-verse"><span class="vnum">1:35</span>And now it came to pass in this year, yea, in the two hundred and thirty and first year, there was a great division among the people.</div>
+    <div class="bom-verse"><span class="vnum">1:36</span>And it came to pass that in this year there arose a people who were called the Nephites, and they were true believers in Christ; and among them there were those who were called by the Lamanites—Jacobites, and Josephites, and Zoramites;</div>
+    <div class="bom-verse"><span class="vnum">1:37</span>Therefore the true believers in Christ, and the true worshipers of Christ, (among whom were the three disciples of Jesus who should tarry) were called Nephites, and Jacobites, and Josephites, and Zoramites.</div>
+    <div class="bom-verse"><span class="vnum">1:38</span>And it came to pass that they who rejected the gospel were called Lamanites, and Lemuelites, and Ishmaelites; and they did not dwindle in unbelief, but they did wilfully rebel against the gospel of Christ; and they did teach their children that they should not believe, even as their fathers, from the beginning, did dwindle.</div>
+    <div class="bom-verse"><span class="vnum">1:39</span>And it was because of the wickedness and abomination of their fathers, even as it was in the beginning. And they were taught to hate the children of God, even as the Lamanites were taught to hate the children of Nephi from the beginning.</div>
+    <div class="bom-verse"><span class="vnum">1:40</span>And it came to pass that two hundred and forty and four years had passed away, and thus were the affairs of the people. And the more wicked part of the people did wax strong, and became exceedingly more numerous than were the people of God.</div>
+    <div class="bom-verse"><span class="vnum">1:41</span>And they did still continue to build up churches unto themselves, and adorn them with all manner of precious things. And thus did two hundred and fifty years pass away, and also two hundred and sixty years.</div>
+    <div class="bom-verse"><span class="vnum">1:42</span>And it came to pass that the wicked part of the people began again to build up the secret oaths and combinations of Gadianton.</div>
+    <div class="bom-verse"><span class="vnum">1:43</span>And also the people who were called the people of Nephi began to be proud in their hearts, because of their exceeding riches, and become vain like unto their brethren, the Lamanites.</div>
+    <div class="bom-verse"><span class="vnum">1:44</span>And from this time the disciples began to sorrow for the sins of the world.</div>
+    <div class="bom-verse"><span class="vnum">1:45</span>And it came to pass that when three hundred years had passed away, both the people of Nephi and the Lamanites had become exceedingly wicked one like unto another.</div>
+    <div class="bom-verse"><span class="vnum">1:46</span>And it came to pass that the robbers of Gadianton did spread over all the face of the land; and there were none that were righteous save it were the disciples of Jesus. And gold and silver did they lay up in store in abundance, and did traffic in all manner of traffic.</div>
+    <div class="bom-verse"><span class="vnum">1:47</span>And it came to pass that after three hundred and five years had passed away, (and the people did still remain in wickedness) Amos died; and his brother, Ammaron, did keep the record in his stead.</div>
+    <div class="bom-verse"><span class="vnum">1:48</span>And it came to pass that when three hundred and twenty years had passed away, Ammaron, being constrained by the Holy Ghost, did hide up the records which were sacred—yea, even all the sacred records which had been handed down from generation to generation, which were sacred—even until the three hundred and twentieth year from the coming of Christ.</div>
+    <div class="bom-verse"><span class="vnum">1:49</span>And he did hide them up unto the Lord that they might come again unto the remnant of the house of Jacob according to the prophecies and the promises of the Lord. And thus is the end of the record of Ammaron.</div>
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ My notes — 4 Nephi:</div>
+    <div class="quill-editor" id="n-bom-4ne" data-placeholder="Notes, cross-references, comparisons with Scripture..." style="min-height:120px;"></div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <a href="index.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Book of Mormon Index</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-bom-4ne'];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>

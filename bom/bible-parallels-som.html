@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sermon on the Mount Parallels — Bible Parallels — Book of Mormon — Campbell Bible Study (Admin)</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:100px; font-family:'Times New Roman', Georgia, serif; font-size:14px; background:#fff; }
+    .ql-editor { min-height:100px; padding:10px 12px; line-height:1.7; }
+    /* Admin gate */
+    #admin-gate { display:none; max-width:560px; margin:80px auto; padding:32px; background:#5C1A1A; color:#fff; border-radius:10px; font-family:Arial,sans-serif; }
+    #admin-gate h2 { margin:0 0 14px; color:#FFD54F; font-family:Georgia,serif; }
+    #admin-gate p { line-height:1.7; margin:8px 0; }
+    #admin-gate a { color:#FFD54F; }
+    /* Parallels page styles */
+    .bom-admin-banner { background:linear-gradient(135deg,#5C1A1A,#7A2828); color:#fff; padding:14px 20px; border-radius:8px; margin:16px 0 24px; font-family:Arial,sans-serif; font-size:13px; line-height:1.6; border-left:5px solid #FFD54F; }
+    .bom-admin-banner strong { color:#FFD54F; }
+    .bom-admin-banner a { color:#FFD54F; }
+    .section-intro { background:#FFF8E8; border-left:4px solid #B8923F; border-radius:6px; padding:14px 18px; margin:16px 0 24px; font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#3D1F0F; }
+    .parallel-entry { background:#fff; border:1px solid #d0dce8; border-radius:8px; padding:18px 20px; margin:20px 0; }
+    .par-meta { display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid #e0e6ed; font-family:Arial,sans-serif; font-size:12px; }
+    .par-cat { padding:4px 10px; border-radius:4px; font-weight:bold; text-transform:uppercase; letter-spacing:0.06em; font-size:11px; color:#fff; }
+    .par-cat-direct { background:#B22222; }
+    .par-cat-strong { background:#8B4513; }
+    .par-cat-doctrinal { background:#1F3864; }
+    .par-cat-parallel { background:#5C2E18; }
+    .par-refs a { color:#1F3864; text-decoration:none; font-weight:bold; }
+    .par-refs a:hover { text-decoration:underline; }
+    .par-cols { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media (max-width: 760px) { .par-cols { grid-template-columns:1fr; } }
+    .par-col { padding:14px 16px; border-radius:6px; }
+    .par-col-bom { background:#F0F5FB; border:1px solid #6F9CC4; }
+    .par-col-bible { background:#F4F8EE; border:1px solid #8FAE5A; }
+    .par-col-label { font-family:Arial,sans-serif; font-size:11px; font-weight:bold; text-transform:uppercase; letter-spacing:0.10em; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; }
+    .par-col-bom .par-col-label { color:#1F3864; }
+    .par-col-bible .par-col-label { color:#3B5E1A; }
+    .par-col-bible .par-col-label a { color:#2E75B6; text-decoration:none; padding:3px 8px; background:#fff; border:1px solid #8FAE5A; border-radius:4px; font-size:10px; }
+    .par-col-bible .par-col-label a:hover { background:#2E75B6; color:#fff; }
+    .par-verse { font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#2C1810; margin:6px 0; padding-left:36px; text-indent:-36px; }
+    .par-verse .vnum { display:inline-block; font-family:Arial,sans-serif; font-size:10px; font-weight:bold; color:#8B4513; background:#FFF8E8; padding:2px 5px; border-radius:3px; margin-right:6px; min-width:28px; text-align:center; vertical-align:baseline; }
+    .par-note { margin-top:12px; padding:10px 14px; background:#FFF8E8; border-left:3px solid #B8923F; border-radius:4px; font-family:Arial,sans-serif; font-size:13px; color:#5C3A0F; line-height:1.65; }
+    .par-note strong { color:#3D1F0F; }
+    .bible-paste-label { font-family:Arial,sans-serif; font-size:11px; color:#3B5E1A; font-style:italic; margin-bottom:6px; }
+    .toc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; margin:18px 0; }
+    .toc-card { display:block; padding:16px 18px; background:#fff; border:1px solid #d0dce8; border-left:5px solid #1F3864; border-radius:6px; text-decoration:none; color:#1F3864; font-family:Arial,sans-serif; }
+    .toc-card:hover { background:#F6F9FC; border-left-color:#FFD54F; }
+    .toc-card .toc-title { font-size:16px; font-weight:bold; color:#1F3864; }
+    .toc-card .toc-subtitle { font-size:13px; color:#666; margin-top:4px; font-style:italic; }
+    .toc-card .toc-count { font-size:11px; color:#8B4513; margin-top:6px; text-transform:uppercase; letter-spacing:0.08em; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+  <script>
+    (function() {
+      var ok = false;
+      try { if (sessionStorage.getItem('cbsg-admin') === 'true') ok = true; } catch(e) {}
+      if (!ok) {
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('app').style.display = 'none';
+          document.getElementById('admin-gate').style.display = 'block';
+        });
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<div id="admin-gate">
+  <h2>🔒 Admin only</h2>
+  <p>The Bible parallels tool is admin-restricted.</p>
+  <p>Return to the <a href="../index.html">home page</a> and log in via the 🔒 button.</p>
+  <p>For the public theological analysis: <a href="../DeepDive-BookOfMormon.html">📖 Book of Mormon Deep Dive</a></p>
+</div>
+
+<div id="github-bar"></div>
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="bible-parallels.html" style="display:inline-block;margin-bottom:8px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Bible Parallels Index</a>
+  <a href="bible-parallels-isaiah.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#8B4513;text-decoration:none;font-family:Arial,sans-serif;">📜 Isaiah Parallels</a>
+  <a href="index.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">📖 BoM Modern Index</a>
+  <div class="bom-admin-banner">
+    <strong>🔒 ADMIN · BIBLE PARALLELS</strong> &nbsp;|&nbsp; Compare BoM passages with the Bible passages they quote or echo. <strong>NASB 1995</strong> is the comparison standard. Use the paste box on the right of each entry to add NASB text from e-Sword. Notes save with the rest of your Quill content.
+  </div>
+  <h1 class="page-title">Sermon on the Mount Parallels</h1>
+  <p style="font-family:Arial,sans-serif;font-size:14px;color:#666;font-style:italic;margin:0 0 6px;">3 Nephi 12–14 ↔ Matthew 5–7</p>
+  <p style="font-family:Arial,sans-serif;font-size:12px;color:#888;margin:0 0 18px;">15 parallel passages</p>
+  <div class="section-intro">When Jesus appears to the Nephites in 3 Nephi after His resurrection, He delivers a sermon that closely parallels the Sermon on the Mount recorded in Matthew 5–7. The parallel is so close that scholars on both sides of the LDS debate agree the texts are linked. The question is whether this represents Christ delivering a similar sermon in two locations (the LDS position), or whether Joseph Smith was incorporating Matthew&#x27;s text into his dictation (the critical position). Compare the passages directly using your NASB 1995.</div>
+  <div style="margin:18px 0; padding:10px 14px; background:#F6F9FC; border:1px solid #d0dce8; border-radius:6px; font-family:Arial,sans-serif; font-size:12px;">
+    <strong style="color:#1F3864;">Quick jump:</strong>
+    <a href="#entry-0" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 12:1</a>
+    <a href="#entry-1" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 12:3</a>
+    <a href="#entry-2" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 12:13</a>
+    <a href="#entry-3" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 12:17</a>
+    <a href="#entry-4" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 12:21</a>
+    <a href="#entry-5" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 12:27</a>
+    <a href="#entry-6" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 12:33</a>
+    <a href="#entry-7" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 12:38</a>
+    <a href="#entry-8" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 13:1</a>
+    <a href="#entry-9" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 13:19</a>
+    <a href="#entry-10" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 13:25</a>
+    <a href="#entry-11" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 14:1</a>
+    <a href="#entry-12" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 14:7</a>
+    <a href="#entry-13" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 14:15</a>
+    <a href="#entry-14" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 14:24</a>
+  </div>
+<div class="parallel-entry" id="entry-0">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch12">3 Nephi 12:1-2</a> &nbsp;↔&nbsp; 📜 Matthew 5:1-2</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 12:1-2</span></div>
+      <div class="par-verse"><span class="vnum">12:1</span>And it came to pass that when Jesus had spoken these words unto Nephi, and to those who had been called, (now the number of them who had been called, and received power and authority to baptize, was twelve) and behold, he stretched forth his hand unto the multitude, and cried unto them, saying: Blessed are ye if ye shall give heed unto the words of these twelve whom I have chosen from among you to minister unto you, and to be your servants; and unto them I have given power that they may baptize you with water; and after that ye are baptized with water, behold, I will baptize you with fire and with the Holy Ghost; therefore blessed are ye if ye shall believe in me and be baptized, after that ye have seen me and know that I am.</div>
+      <div class="par-verse"><span class="vnum">12:2</span>And again, more blessed are they who shall believe in your words because that ye shall testify that ye have seen me, and that ye know that I am. Yea, blessed are they who shall believe in your words, and come down into the depths of humility and be baptized, for they shall be visited with fire and with the Holy Ghost, and shall receive a remission of their sins.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 5:1-2 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.5.1-2.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-0" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Opening of the sermon — gathering of the disciples.</div>
+</div>
+<div class="parallel-entry" id="entry-1">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch12">3 Nephi 12:3-12</a> &nbsp;↔&nbsp; 📜 Matthew 5:3-12</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 12:3-12</span></div>
+      <div class="par-verse"><span class="vnum">12:3</span>Yea, blessed are the poor in spirit who come unto me, for theirs is the kingdom of heaven.</div>
+      <div class="par-verse"><span class="vnum">12:4</span>And again, blessed are all they that mourn, for they shall be comforted.</div>
+      <div class="par-verse"><span class="vnum">12:5</span>And blessed are the meek, for they shall inherit the earth.</div>
+      <div class="par-verse"><span class="vnum">12:6</span>And blessed are all they who do hunger and thirst after righteousness, for they shall be filled with the Holy Ghost.</div>
+      <div class="par-verse"><span class="vnum">12:7</span>And blessed are the merciful, for they shall obtain mercy.</div>
+      <div class="par-verse"><span class="vnum">12:8</span>And blessed are all the pure in heart, for they shall see God.</div>
+      <div class="par-verse"><span class="vnum">12:9</span>And blessed are all the peacemakers, for they shall be called the children of God.</div>
+      <div class="par-verse"><span class="vnum">12:10</span>And blessed are all they who are persecuted for my name’s sake, for theirs is the kingdom of heaven.</div>
+      <div class="par-verse"><span class="vnum">12:11</span>And blessed are ye when men shall revile you and persecute, and shall say all manner of evil against you falsely, for my sake;</div>
+      <div class="par-verse"><span class="vnum">12:12</span>For ye shall have great joy and be exceedingly glad, for great shall be your reward in heaven; for so persecuted they the prophets who were before you.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 5:3-12 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.5.3-12.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-1" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> The Beatitudes. Note 3 Nephi adds &#x27;who come unto me&#x27; to the &#x27;poor in spirit&#x27; clause and &#x27;all they&#x27; / &#x27;all who&#x27; to several others.</div>
+</div>
+<div class="parallel-entry" id="entry-2">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch12">3 Nephi 12:13-16</a> &nbsp;↔&nbsp; 📜 Matthew 5:13-16</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 12:13-16</span></div>
+      <div class="par-verse"><span class="vnum">12:13</span>Verily, verily, I say unto you, I give unto you to be the salt of the earth; but if the salt shall lose its savor wherewith shall the earth be salted? The salt shall be thenceforth good for nothing, but to be cast out and to be trodden under foot of men.</div>
+      <div class="par-verse"><span class="vnum">12:14</span>Verily, verily, I say unto you, I give unto you to be the light of this people. A city that is set on a hill cannot be hid.</div>
+      <div class="par-verse"><span class="vnum">12:15</span>Behold, do men light a candle and put it under a bushel? Nay, but on a candlestick, and it giveth light to all that are in the house;</div>
+      <div class="par-verse"><span class="vnum">12:16</span>Therefore let your light so shine before this people, that they may see your good works and glorify your Father who is in heaven.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 5:13-16 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.5.13-16.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-2" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Salt of the earth and light of the world.</div>
+</div>
+<div class="parallel-entry" id="entry-3">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch12">3 Nephi 12:17-20</a> &nbsp;↔&nbsp; 📜 Matthew 5:17-20</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 12:17-20</span></div>
+      <div class="par-verse"><span class="vnum">12:17</span>Think not that I am come to destroy the law or the prophets. I am not come to destroy but to fulfil;</div>
+      <div class="par-verse"><span class="vnum">12:18</span>For verily I say unto you, one jot nor tittle hath not passed away from the law, but in me it hath all been fulfilled.</div>
+      <div class="par-verse"><span class="vnum">12:19</span>And behold, I have given you the law and the commandments of my Father, that ye shall believe in me, and that ye shall repent of your sins, and come unto me with a broken heart and a contrite spirit. Behold, ye have the commandments before you, and the law is fulfilled.</div>
+      <div class="par-verse"><span class="vnum">12:20</span>Therefore come unto me and be ye saved; for verily I say unto you, that except ye shall keep my commandments, which I have commanded you at this time, ye shall in no case enter into the kingdom of heaven.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 5:17-20 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.5.17-20.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-3" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> On fulfilling the Law — but 3 Nephi removes the &#x27;scribes and Pharisees&#x27; reference in v.20 since they had no place in the Nephite context.</div>
+</div>
+<div class="parallel-entry" id="entry-4">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch12">3 Nephi 12:21-26</a> &nbsp;↔&nbsp; 📜 Matthew 5:21-26</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 12:21-26</span></div>
+      <div class="par-verse"><span class="vnum">12:21</span>Ye have heard that it hath been said by them of old time, and it is also written before you, that thou shalt not kill, and whosoever shall kill shall be in danger of the judgment of God;</div>
+      <div class="par-verse"><span class="vnum">12:22</span>But I say unto you, that whosoever is angry with his brother shall be in danger of his judgment. And whosoever shall say to his brother, Raca, shall be in danger of the council; and whosoever shall say, Thou fool, shall be in danger of hell fire.</div>
+      <div class="par-verse"><span class="vnum">12:23</span>Therefore, if ye shall come unto me, or shall desire to come unto me, and rememberest that thy brother hast aught against thee—</div>
+      <div class="par-verse"><span class="vnum">12:24</span>Go thy way unto thy brother, and first be reconciled to thy brother, and then come unto me with full purpose of heart, and I will receive you.</div>
+      <div class="par-verse"><span class="vnum">12:25</span>Agree with thine adversary quickly while thou art in the way with him, lest at any time he shall get thee, and thou shalt be cast into prison.</div>
+      <div class="par-verse"><span class="vnum">12:26</span>Verily, verily, I say unto thee, thou shalt by no means come out thence until thou hast paid the uttermost senine. And while ye are in prison can ye pay even one senine? Verily, verily, I say unto you, Nay.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 5:21-26 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.5.21-26.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-4" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> On anger — &#x27;whosoever is angry with his brother…&#x27;</div>
+</div>
+<div class="parallel-entry" id="entry-5">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch12">3 Nephi 12:27-32</a> &nbsp;↔&nbsp; 📜 Matthew 5:27-32</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 12:27-32</span></div>
+      <div class="par-verse"><span class="vnum">12:27</span>Behold, it is written by them of old time, that thou shalt not commit adultery;</div>
+      <div class="par-verse"><span class="vnum">12:28</span>But I say unto you, that whosoever looketh on a woman, to lust after her, hath committed adultery already in his heart.</div>
+      <div class="par-verse"><span class="vnum">12:29</span>Behold, I give unto you a commandment, that ye suffer none of these things to enter into your heart;</div>
+      <div class="par-verse"><span class="vnum">12:30</span>For it is better that ye should deny yourselves of these things, wherein ye will take up your cross, than that ye should be cast into hell.</div>
+      <div class="par-verse"><span class="vnum">12:31</span>It hath been written, that whosoever shall put away his wife, let him give her a writing of divorcement.</div>
+      <div class="par-verse"><span class="vnum">12:32</span>Verily, verily, I say unto you, that whosoever shall put away his wife, saving for the cause of fornication, causeth her to commit adultery; and whoso shall marry her who is divorced committeth adultery.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 5:27-32 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.5.27-32.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-5" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> On adultery, divorce, oaths.</div>
+</div>
+<div class="parallel-entry" id="entry-6">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch12">3 Nephi 12:33-37</a> &nbsp;↔&nbsp; 📜 Matthew 5:33-37</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 12:33-37</span></div>
+      <div class="par-verse"><span class="vnum">12:33</span>And again it is written, thou shalt not forswear thyself, but shalt perform unto the Lord thine oaths;</div>
+      <div class="par-verse"><span class="vnum">12:34</span>But verily, verily, I say unto you, swear not at all; neither by heaven, for it is God’s throne;</div>
+      <div class="par-verse"><span class="vnum">12:35</span>Nor by the earth, for it is his footstool;</div>
+      <div class="par-verse"><span class="vnum">12:36</span>Neither shalt thou swear by thy head, because thou canst not make one hair black or white;</div>
+      <div class="par-verse"><span class="vnum">12:37</span>But let your communication be Yea, yea; Nay, nay; for whatsoever cometh of more than these is evil.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 5:33-37 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.5.33-37.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-6" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> On swearing and oaths.</div>
+</div>
+<div class="parallel-entry" id="entry-7">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch12">3 Nephi 12:38-48</a> &nbsp;↔&nbsp; 📜 Matthew 5:38-48</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 12:38-48</span></div>
+      <div class="par-verse"><span class="vnum">12:38</span>And behold, it is written, an eye for an eye, and a tooth for a tooth;</div>
+      <div class="par-verse"><span class="vnum">12:39</span>But I say unto you, that ye shall not resist evil, but whosoever shall smite thee on thy right cheek, turn to him the other also;</div>
+      <div class="par-verse"><span class="vnum">12:40</span>And if any man will sue thee at the law and take away thy coat, let him have thy cloak also;</div>
+      <div class="par-verse"><span class="vnum">12:41</span>And whosoever shall compel thee to go a mile, go with him twain.</div>
+      <div class="par-verse"><span class="vnum">12:42</span>Give to him that asketh thee, and from him that would borrow of thee turn not away.</div>
+      <div class="par-verse"><span class="vnum">12:43</span>And behold it is written also, that thou shalt love thy neighbor and hate thine enemy;</div>
+      <div class="par-verse"><span class="vnum">12:44</span>But I say unto you, love your enemies, bless them that curse you, do good to them that hate you, and pray for them who despitefully use you and persecute you;</div>
+      <div class="par-verse"><span class="vnum">12:45</span>That ye may be the children of your Father who is in heaven; for he maketh his sun to rise on the evil and on the good.</div>
+      <div class="par-verse"><span class="vnum">12:46</span>Therefore those things which were of old time, which were under the law, in me are all fulfilled.</div>
+      <div class="par-verse"><span class="vnum">12:47</span>Old things are done away, and all things have become new.</div>
+      <div class="par-verse"><span class="vnum">12:48</span>Therefore I would that ye should be perfect even as I, or your Father who is in heaven is perfect.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 5:38-48 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.5.38-48.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-7" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Turn the other cheek, love your enemies. 3 Nephi 12:48 ends &#x27;even as I, or your Father who is in heaven, is perfect&#x27; — adding &#x27;I&#x27; since this is the resurrected Christ speaking.</div>
+</div>
+<div class="parallel-entry" id="entry-8">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch13">3 Nephi 13:1-18</a> &nbsp;↔&nbsp; 📜 Matthew 6:1-18</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 13:1-18</span></div>
+      <div class="par-verse"><span class="vnum">13:1</span>Verily, verily, I say that I would that ye should do alms unto the poor; but take heed that ye do not your alms before men to be seen of them; otherwise ye have no reward of your Father who is in heaven.</div>
+      <div class="par-verse"><span class="vnum">13:2</span>Therefore, when ye shall do your alms do not sound a trumpet before you, as will hypocrites do in the synagogues and in the streets, that they may have glory of men. Verily I say unto you, they have their reward.</div>
+      <div class="par-verse"><span class="vnum">13:3</span>But when thou doest alms let not thy left hand know what thy right hand doeth;</div>
+      <div class="par-verse"><span class="vnum">13:4</span>That thine alms may be in secret; and thy Father who seeth in secret, himself shall reward thee openly.</div>
+      <div class="par-verse"><span class="vnum">13:5</span>And when thou prayest thou shalt not do as the hypocrites, for they love to pray, standing in the synagogues and in the corners of the streets, that they may be seen of men. Verily I say unto you, they have their reward.</div>
+      <div class="par-verse"><span class="vnum">13:6</span>But thou, when thou prayest, enter into thy closet, and when thou hast shut thy door, pray to thy Father who is in secret; and thy Father, who seeth in secret, shall reward thee openly.</div>
+      <div class="par-verse"><span class="vnum">13:7</span>But when ye pray, use not vain repetitions, as the heathen, for they think that they shall be heard for their much speaking.</div>
+      <div class="par-verse"><span class="vnum">13:8</span>Be not ye therefore like unto them, for your Father knoweth what things ye have need of before ye ask him.</div>
+      <div class="par-verse"><span class="vnum">13:9</span>After this manner therefore pray ye: Our Father who art in heaven, hallowed be thy name.</div>
+      <div class="par-verse"><span class="vnum">13:10</span>Thy will be done on earth as it is in heaven.</div>
+      <div class="par-verse"><span class="vnum">13:11</span>And forgive us our debts, as we forgive our debtors.</div>
+      <div class="par-verse"><span class="vnum">13:12</span>And lead us not into temptation, but deliver us from evil.</div>
+      <div class="par-verse"><span class="vnum">13:13</span>For thine is the kingdom, and the power, and the glory, forever. Amen.</div>
+      <div class="par-verse"><span class="vnum">13:14</span>For, if ye forgive men their trespasses your heavenly Father will also forgive you;</div>
+      <div class="par-verse"><span class="vnum">13:15</span>But if ye forgive not men their trespasses neither will your Father forgive your trespasses.</div>
+      <div class="par-verse"><span class="vnum">13:16</span>Moreover, when ye fast be not as the hypocrites, of a sad countenance, for they disfigure their faces that they may appear unto men to fast. Verily I say unto you, they have their reward.</div>
+      <div class="par-verse"><span class="vnum">13:17</span>But thou, when thou fastest, anoint thy head, and wash thy face;</div>
+      <div class="par-verse"><span class="vnum">13:18</span>That thou appear not unto men to fast, but unto thy Father, who is in secret; and thy Father, who seeth in secret, shall reward thee openly.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 6:1-18 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.6.1-18.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-8" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> On almsgiving, prayer (including the Lord&#x27;s Prayer), and fasting. Compare 3 Nephi 13:9-13 with Matthew 6:9-13.</div>
+</div>
+<div class="parallel-entry" id="entry-9">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch13">3 Nephi 13:19-24</a> &nbsp;↔&nbsp; 📜 Matthew 6:19-24</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 13:19-24</span></div>
+      <div class="par-verse"><span class="vnum">13:19</span>Lay not up for yourselves treasures upon earth, where moth and rust doth corrupt, and thieves break through and steal;</div>
+      <div class="par-verse"><span class="vnum">13:20</span>But lay up for yourselves treasures in heaven, where neither moth nor rust doth corrupt, and where thieves do not break through nor steal.</div>
+      <div class="par-verse"><span class="vnum">13:21</span>For where your treasure is, there will your heart be also.</div>
+      <div class="par-verse"><span class="vnum">13:22</span>The light of the body is the eye; if, therefore, thine eye be single, thy whole body shall be full of light.</div>
+      <div class="par-verse"><span class="vnum">13:23</span>But if thine eye be evil, thy whole body shall be full of darkness. If, therefore, the light that is in thee be darkness, how great is that darkness!</div>
+      <div class="par-verse"><span class="vnum">13:24</span>No man can serve two masters; for either he will hate the one and love the other, or else he will hold to the one and despise the other. Ye cannot serve God and Mammon.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 6:19-24 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.6.19-24.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-9" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> On treasures in heaven, the eye as the lamp, serving two masters.</div>
+</div>
+<div class="parallel-entry" id="entry-10">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch13">3 Nephi 13:25-34</a> &nbsp;↔&nbsp; 📜 Matthew 6:25-34</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 13:25-34</span></div>
+      <div class="par-verse"><span class="vnum">13:25</span>And now it came to pass that when Jesus had spoken these words he looked upon the twelve whom he had chosen, and said unto them: Remember the words which I have spoken. For behold, ye are they whom I have chosen to minister unto this people. Therefore I say unto you, take no thought for your life, what ye shall eat, or what ye shall drink; nor yet for your body, what ye shall put on. Is not the life more than meat, and the body than raiment?</div>
+      <div class="par-verse"><span class="vnum">13:26</span>Behold the fowls of the air, for they sow not, neither do they reap nor gather into barns; yet your heavenly Father feedeth them. Are ye not much better than they?</div>
+      <div class="par-verse"><span class="vnum">13:27</span>Which of you by taking thought can add one cubit unto his stature?</div>
+      <div class="par-verse"><span class="vnum">13:28</span>And why take ye thought for raiment? Consider the lilies of the field how they grow; they toil not, neither do they spin;</div>
+      <div class="par-verse"><span class="vnum">13:29</span>And yet I say unto you, that even Solomon, in all his glory, was not arrayed like one of these.</div>
+      <div class="par-verse"><span class="vnum">13:30</span>Wherefore, if God so clothe the grass of the field, which today is, and tomorrow is cast into the oven, even so will he clothe you, if ye are not of little faith.</div>
+      <div class="par-verse"><span class="vnum">13:31</span>Therefore take no thought, saying, What shall we eat? or, What shall we drink? or, Wherewithal shall we be clothed?</div>
+      <div class="par-verse"><span class="vnum">13:32</span>For your heavenly Father knoweth that ye have need of all these things.</div>
+      <div class="par-verse"><span class="vnum">13:33</span>But seek ye first the kingdom of God and his righteousness, and all these things shall be added unto you.</div>
+      <div class="par-verse"><span class="vnum">13:34</span>Take therefore no thought for the morrow, for the morrow shall take thought for the things of itself. Sufficient is the day unto the evil thereof.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 6:25-34 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.6.25-34.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-10" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Consider the lilies, take no thought. Note: 3 Nephi 13:25 begins &#x27;And now it came to pass that when Jesus had spoken these words he looked upon the twelve whom he had chosen, and said unto them…&#x27; inserting a narrative bridge.</div>
+</div>
+<div class="parallel-entry" id="entry-11">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch14">3 Nephi 14:1-6</a> &nbsp;↔&nbsp; 📜 Matthew 7:1-6</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 14:1-6</span></div>
+      <div class="par-verse"><span class="vnum">14:1</span>And now it came to pass that when Jesus had spoken these words he turned again to the multitude, and did open his mouth unto them again, saying: Verily, verily, I say unto you, Judge not, that ye be not judged.</div>
+      <div class="par-verse"><span class="vnum">14:2</span>For with what judgment ye judge, ye shall be judged; and with what measure ye mete, it shall be measured to you again.</div>
+      <div class="par-verse"><span class="vnum">14:3</span>And why beholdest thou the mote that is in thy brother’s eye, but considerest not the beam that is in thine own eye?</div>
+      <div class="par-verse"><span class="vnum">14:4</span>Or how wilt thou say to thy brother: Let me pull the mote out of thine eye—and behold, a beam is in thine own eye?</div>
+      <div class="par-verse"><span class="vnum">14:5</span>Thou hypocrite, first cast the beam out of thine own eye; and then shalt thou see clearly to cast the mote out of thy brother’s eye.</div>
+      <div class="par-verse"><span class="vnum">14:6</span>Give not that which is holy unto the dogs, neither cast ye your pearls before swine, lest they trample them under their feet, and turn again and rend you.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 7:1-6 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.7.1-6.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-11" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Judge not, the mote and the beam, pearls before swine.</div>
+</div>
+<div class="parallel-entry" id="entry-12">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch14">3 Nephi 14:7-14</a> &nbsp;↔&nbsp; 📜 Matthew 7:7-14</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 14:7-14</span></div>
+      <div class="par-verse"><span class="vnum">14:7</span>Ask, and it shall be given unto you; seek, and ye shall find; knock, and it shall be opened unto you.</div>
+      <div class="par-verse"><span class="vnum">14:8</span>For every one that asketh, receiveth; and he that seeketh, findeth; and to him that knocketh, it shall be opened.</div>
+      <div class="par-verse"><span class="vnum">14:9</span>Or what man is there of you, who, if his son ask bread, will give him a stone?</div>
+      <div class="par-verse"><span class="vnum">14:10</span>Or if he ask a fish, will he give him a serpent?</div>
+      <div class="par-verse"><span class="vnum">14:11</span>If ye then, being evil, know how to give good gifts unto your children, how much more shall your Father who is in heaven give good things to them that ask him?</div>
+      <div class="par-verse"><span class="vnum">14:12</span>Therefore, all things whatsoever ye would that men should do to you, do ye even so to them, for this is the law and the prophets.</div>
+      <div class="par-verse"><span class="vnum">14:13</span>Enter ye in at the strait gate; for wide is the gate, and broad is the way, which leadeth to destruction, and many there be who go in thereat;</div>
+      <div class="par-verse"><span class="vnum">14:14</span>Because strait is the gate, and narrow is the way, which leadeth unto life, and few there be that find it.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 7:7-14 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.7.7-14.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-12" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Ask and ye shall receive, the Golden Rule, the narrow gate.</div>
+</div>
+<div class="parallel-entry" id="entry-13">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch14">3 Nephi 14:15-23</a> &nbsp;↔&nbsp; 📜 Matthew 7:15-23</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 14:15-23</span></div>
+      <div class="par-verse"><span class="vnum">14:15</span>Beware of false prophets, who come to you in sheep’s clothing, but inwardly they are ravening wolves.</div>
+      <div class="par-verse"><span class="vnum">14:16</span>Ye shall know them by their fruits. Do men gather grapes of thorns, or figs of thistles?</div>
+      <div class="par-verse"><span class="vnum">14:17</span>Even so every good tree bringeth forth good fruit; but a corrupt tree bringeth forth evil fruit.</div>
+      <div class="par-verse"><span class="vnum">14:18</span>A good tree cannot bring forth evil fruit, neither a corrupt tree bring forth good fruit.</div>
+      <div class="par-verse"><span class="vnum">14:19</span>Every tree that bringeth not forth good fruit is hewn down, and cast into the fire.</div>
+      <div class="par-verse"><span class="vnum">14:20</span>Wherefore, by their fruits ye shall know them.</div>
+      <div class="par-verse"><span class="vnum">14:21</span>Not every one that saith unto me, Lord, Lord, shall enter into the kingdom of heaven; but he that doeth the will of my Father who is in heaven.</div>
+      <div class="par-verse"><span class="vnum">14:22</span>Many will say to me in that day: Lord, Lord, have we not prophesied in thy name, and in thy name have cast out devils, and in thy name done many wonderful works?</div>
+      <div class="par-verse"><span class="vnum">14:23</span>And then will I profess unto them: I never knew you; depart from me, ye that work iniquity.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 7:15-23 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.7.15-23.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-13" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Beware of false prophets, by their fruits ye shall know them, &#x27;Lord, Lord&#x27; / &#x27;I never knew you.&#x27;</div>
+</div>
+<div class="parallel-entry" id="entry-14">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch14">3 Nephi 14:24-27</a> &nbsp;↔&nbsp; 📜 Matthew 7:24-27</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 14:24-27</span></div>
+      <div class="par-verse"><span class="vnum">14:24</span>Therefore, whoso heareth these sayings of mine and doeth them, I will liken him unto a wise man, who built his house upon a rock—</div>
+      <div class="par-verse"><span class="vnum">14:25</span>And the rain descended, and the floods came, and the winds blew, and beat upon that house; and it fell not, for it was founded upon a rock.</div>
+      <div class="par-verse"><span class="vnum">14:26</span>And every one that heareth these sayings of mine and doeth them not shall be likened unto a foolish man, who built his house upon the sand—</div>
+      <div class="par-verse"><span class="vnum">14:27</span>And the rain descended, and the floods came, and the winds blew, and beat upon that house; and it fell, and great was the fall of it.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 7:24-27 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.7.24-27.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-som-14" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> The wise and foolish builders (rock vs sand) — closing of the sermon.</div>
+</div>
+
+  <div style="margin-top:32px;">
+    <a href="bible-parallels.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Bible Parallels Index</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ["n-par-som-0", "n-par-som-1", "n-par-som-2", "n-par-som-3", "n-par-som-4", "n-par-som-5", "n-par-som-6", "n-par-som-7", "n-par-som-8", "n-par-som-9", "n-par-som-10", "n-par-som-11", "n-par-som-12", "n-par-som-13", "n-par-som-14"];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>

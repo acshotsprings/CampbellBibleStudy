@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Old Testament Echoes — Bible Parallels — Book of Mormon — Campbell Bible Study (Admin)</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:100px; font-family:'Times New Roman', Georgia, serif; font-size:14px; background:#fff; }
+    .ql-editor { min-height:100px; padding:10px 12px; line-height:1.7; }
+    /* Admin gate */
+    #admin-gate { display:none; max-width:560px; margin:80px auto; padding:32px; background:#5C1A1A; color:#fff; border-radius:10px; font-family:Arial,sans-serif; }
+    #admin-gate h2 { margin:0 0 14px; color:#FFD54F; font-family:Georgia,serif; }
+    #admin-gate p { line-height:1.7; margin:8px 0; }
+    #admin-gate a { color:#FFD54F; }
+    /* Parallels page styles */
+    .bom-admin-banner { background:linear-gradient(135deg,#5C1A1A,#7A2828); color:#fff; padding:14px 20px; border-radius:8px; margin:16px 0 24px; font-family:Arial,sans-serif; font-size:13px; line-height:1.6; border-left:5px solid #FFD54F; }
+    .bom-admin-banner strong { color:#FFD54F; }
+    .bom-admin-banner a { color:#FFD54F; }
+    .section-intro { background:#FFF8E8; border-left:4px solid #B8923F; border-radius:6px; padding:14px 18px; margin:16px 0 24px; font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#3D1F0F; }
+    .parallel-entry { background:#fff; border:1px solid #d0dce8; border-radius:8px; padding:18px 20px; margin:20px 0; }
+    .par-meta { display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid #e0e6ed; font-family:Arial,sans-serif; font-size:12px; }
+    .par-cat { padding:4px 10px; border-radius:4px; font-weight:bold; text-transform:uppercase; letter-spacing:0.06em; font-size:11px; color:#fff; }
+    .par-cat-direct { background:#B22222; }
+    .par-cat-strong { background:#8B4513; }
+    .par-cat-doctrinal { background:#1F3864; }
+    .par-cat-parallel { background:#5C2E18; }
+    .par-refs a { color:#1F3864; text-decoration:none; font-weight:bold; }
+    .par-refs a:hover { text-decoration:underline; }
+    .par-cols { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media (max-width: 760px) { .par-cols { grid-template-columns:1fr; } }
+    .par-col { padding:14px 16px; border-radius:6px; }
+    .par-col-bom { background:#F0F5FB; border:1px solid #6F9CC4; }
+    .par-col-bible { background:#F4F8EE; border:1px solid #8FAE5A; }
+    .par-col-label { font-family:Arial,sans-serif; font-size:11px; font-weight:bold; text-transform:uppercase; letter-spacing:0.10em; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; }
+    .par-col-bom .par-col-label { color:#1F3864; }
+    .par-col-bible .par-col-label { color:#3B5E1A; }
+    .par-col-bible .par-col-label a { color:#2E75B6; text-decoration:none; padding:3px 8px; background:#fff; border:1px solid #8FAE5A; border-radius:4px; font-size:10px; }
+    .par-col-bible .par-col-label a:hover { background:#2E75B6; color:#fff; }
+    .par-verse { font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#2C1810; margin:6px 0; padding-left:36px; text-indent:-36px; }
+    .par-verse .vnum { display:inline-block; font-family:Arial,sans-serif; font-size:10px; font-weight:bold; color:#8B4513; background:#FFF8E8; padding:2px 5px; border-radius:3px; margin-right:6px; min-width:28px; text-align:center; vertical-align:baseline; }
+    .par-note { margin-top:12px; padding:10px 14px; background:#FFF8E8; border-left:3px solid #B8923F; border-radius:4px; font-family:Arial,sans-serif; font-size:13px; color:#5C3A0F; line-height:1.65; }
+    .par-note strong { color:#3D1F0F; }
+    .bible-paste-label { font-family:Arial,sans-serif; font-size:11px; color:#3B5E1A; font-style:italic; margin-bottom:6px; }
+    .toc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; margin:18px 0; }
+    .toc-card { display:block; padding:16px 18px; background:#fff; border:1px solid #d0dce8; border-left:5px solid #1F3864; border-radius:6px; text-decoration:none; color:#1F3864; font-family:Arial,sans-serif; }
+    .toc-card:hover { background:#F6F9FC; border-left-color:#FFD54F; }
+    .toc-card .toc-title { font-size:16px; font-weight:bold; color:#1F3864; }
+    .toc-card .toc-subtitle { font-size:13px; color:#666; margin-top:4px; font-style:italic; }
+    .toc-card .toc-count { font-size:11px; color:#8B4513; margin-top:6px; text-transform:uppercase; letter-spacing:0.08em; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+  <script>
+    (function() {
+      var ok = false;
+      try { if (sessionStorage.getItem('cbsg-admin') === 'true') ok = true; } catch(e) {}
+      if (!ok) {
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('app').style.display = 'none';
+          document.getElementById('admin-gate').style.display = 'block';
+        });
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<div id="admin-gate">
+  <h2>🔒 Admin only</h2>
+  <p>The Bible parallels tool is admin-restricted.</p>
+  <p>Return to the <a href="../index.html">home page</a> and log in via the 🔒 button.</p>
+  <p>For the public theological analysis: <a href="../DeepDive-BookOfMormon.html">📖 Book of Mormon Deep Dive</a></p>
+</div>
+
+<div id="github-bar"></div>
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="bible-parallels.html" style="display:inline-block;margin-bottom:8px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Bible Parallels Index</a>
+  <a href="bible-parallels-isaiah.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#8B4513;text-decoration:none;font-family:Arial,sans-serif;">📜 Isaiah Parallels</a>
+  <a href="index.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">📖 BoM Modern Index</a>
+  <div class="bom-admin-banner">
+    <strong>🔒 ADMIN · BIBLE PARALLELS</strong> &nbsp;|&nbsp; Compare BoM passages with the Bible passages they quote or echo. <strong>NASB 1995</strong> is the comparison standard. Use the paste box on the right of each entry to add NASB text from e-Sword. Notes save with the rest of your Quill content.
+  </div>
+  <h1 class="page-title">Old Testament Echoes</h1>
+  <p style="font-family:Arial,sans-serif;font-size:14px;color:#666;font-style:italic;margin:0 0 6px;">BoM passages that quote or echo OT texts</p>
+  <p style="font-family:Arial,sans-serif;font-size:12px;color:#888;margin:0 0 18px;">12 parallel passages</p>
+  <div class="section-intro">Beyond the major Isaiah blocks (covered separately in Stage 5), the Book of Mormon contains numerous shorter OT quotations and allusions. Since the BoM&#x27;s protagonists were Israelites who supposedly carried the brass plates (containing the OT up through Jeremiah) with them, OT echoes are expected — but the precise KJV wording of those echoes is what raises questions.</div>
+  <div style="margin:18px 0; padding:10px 14px; background:#F6F9FC; border:1px solid #d0dce8; border-radius:6px; font-family:Arial,sans-serif; font-size:12px;">
+    <strong style="color:#1F3864;">Quick jump:</strong>
+    <a href="#entry-0" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">2 Nephi 2:17</a>
+    <a href="#entry-1" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">2 Nephi 2:25</a>
+    <a href="#entry-2" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">1 Nephi 17:23</a>
+    <a href="#entry-3" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">Alma 12:21</a>
+    <a href="#entry-4" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">2 Nephi 26:24</a>
+    <a href="#entry-5" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">Alma 33:11</a>
+    <a href="#entry-6" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 22:1</a>
+    <a href="#entry-7" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">Alma 42:2</a>
+    <a href="#entry-8" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 20:23</a>
+    <a href="#entry-9" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 21:1</a>
+    <a href="#entry-10" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">1 Nephi 20:1</a>
+    <a href="#entry-11" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">1 Nephi 21:1</a>
+  </div>
+<div class="parallel-entry" id="entry-0">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="2ne.html#ch2">2 Nephi 2:17-18</a> &nbsp;↔&nbsp; 📜 Genesis 3:1-5</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 2 Nephi 2:17-18</span></div>
+      <div class="par-verse"><span class="vnum">2:17</span>And I, Lehi, according to the things which I have read, must needs suppose that an angel of God, according to that which is written, had fallen from heaven; wherefore, he became a devil, having sought that which was evil before God.</div>
+      <div class="par-verse"><span class="vnum">2:18</span>And because he had fallen from heaven, and had become miserable forever, he sought also the misery of all mankind. Wherefore, he said unto Eve, yea, even that old serpent, who is the devil, who is the father of all lies, wherefore he said: Partake of the forbidden fruit, and ye shall not die, but ye shall be as God, knowing good and evil.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Genesis 3:1-5 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/GEN.3.1-5.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-ot-0" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Lehi&#x27;s account of the Fall echoes the Genesis serpent narrative. The &#x27;eyes shall be opened, knowing good and evil&#x27; wording closely follows Genesis 3:5.</div>
+</div>
+<div class="parallel-entry" id="entry-1">
+  <div class="par-meta">
+    <span class="par-cat par-cat-doctrinal">Doctrinal Echo</span>
+    <span class="par-refs">📖 <a href="2ne.html#ch2">2 Nephi 2:25</a> &nbsp;↔&nbsp; 📜 Genesis 3 (theological reflection)</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 2 Nephi 2:25</span></div>
+      <div class="par-verse"><span class="vnum">2:25</span>Adam fell that men might be; and men are, that they might have joy.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Genesis 3 (theological reflection) (NASB 1995)</span> <a href="https://www.bible.com/bible/100/GEN.3.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-ot-1" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> &#x27;Adam fell that men might be; and men are, that they might have joy.&#x27; Reframes Genesis 3 as a fortunate fall — distinctively LDS theology, but contrast with NASB&#x27;s portrayal of the fall.</div>
+</div>
+<div class="parallel-entry" id="entry-2">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="1ne.html#ch17">1 Nephi 17:23-31</a> &nbsp;↔&nbsp; 📜 Exodus 14-16</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 1 Nephi 17:23-31</span></div>
+      <div class="par-verse"><span class="vnum">17:23</span>And it came to pass that I, Nephi, spake unto them, saying: Do ye believe that our fathers, who were the children of Israel, would have been led away out of the hands of the Egyptians if they had not hearkened unto the words of the Lord?</div>
+      <div class="par-verse"><span class="vnum">17:24</span>Yea, do ye suppose that they would have been led out of bondage, if the Lord had not commanded Moses that he should lead them out of bondage?</div>
+      <div class="par-verse"><span class="vnum">17:25</span>Now ye know that the children of Israel were in bondage; and ye know that they were laden with tasks, which were grievous to be borne; wherefore, ye know that it must needs be a good thing for them, that they should be brought out of bondage.</div>
+      <div class="par-verse"><span class="vnum">17:26</span>Now ye know that Moses was commanded of the Lord to do that great work; and ye know that by his word the waters of the Red Sea were divided hither and thither, and they passed through on dry ground.</div>
+      <div class="par-verse"><span class="vnum">17:27</span>But ye know that the Egyptians were drowned in the Red Sea, who were the armies of Pharaoh.</div>
+      <div class="par-verse"><span class="vnum">17:28</span>And ye also know that they were fed with manna in the wilderness.</div>
+      <div class="par-verse"><span class="vnum">17:29</span>Yea, and ye also know that Moses, by his word according to the power of God which was in him, smote the rock, and there came forth water, that the children of Israel might quench their thirst.</div>
+      <div class="par-verse"><span class="vnum">17:30</span>And notwithstanding they being led, the Lord their God, their Redeemer, going before them, leading them by day and giving light unto them by night, and doing all things for them which were expedient for man to receive, they hardened their hearts and blinded their minds, and reviled against Moses and against the true and living God.</div>
+      <div class="par-verse"><span class="vnum">17:31</span>And it came to pass that according to his word he did destroy them; and according to his word he did lead them; and according to his word he did do all things for them; and there was not any thing done save it were by his word.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Exodus 14-16 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/EXO.14.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-ot-2" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Nephi recounts the Exodus narrative — the Red Sea crossing, manna, water from the rock. Compare with the Exodus account.</div>
+</div>
+<div class="parallel-entry" id="entry-3">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="alm.html#ch12">Alma 12:21-23</a> &nbsp;↔&nbsp; 📜 Genesis 3:22-24</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — Alma 12:21-23</span></div>
+      <div class="par-verse"><span class="vnum">12:21</span>What does the scripture mean, which saith that God placed cherubim and a flaming sword on the east of the garden of Eden, lest our first parents should enter and partake of the fruit of the tree of life, and live forever? And thus we see that there was no possible chance that they should live forever.</div>
+      <div class="par-verse"><span class="vnum">12:22</span>Now Alma said unto him: This is the thing which I was about to explain, now we see that Adam did fall by the partaking of the forbidden fruit, according to the word of God; and thus we see, that by his fall, all mankind became a lost and fallen people.</div>
+      <div class="par-verse"><span class="vnum">12:23</span>And now behold, I say unto you that if it had been possible for Adam to have partaken of the fruit of the tree of life at that time, there would have been no death, and the word would have been void, making God a liar, for he said: If thou eat thou shalt surely die.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Genesis 3:22-24 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/GEN.3.22-24.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-ot-3" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Alma quotes Genesis 3:24 on the cherubim and flaming sword guarding the way to the tree of life.</div>
+</div>
+<div class="parallel-entry" id="entry-4">
+  <div class="par-meta">
+    <span class="par-cat par-cat-doctrinal">Doctrinal Echo</span>
+    <span class="par-refs">📖 <a href="2ne.html#ch26">2 Nephi 26:24-33</a> &nbsp;↔&nbsp; 📜 Hosea, Joel themes</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 2 Nephi 26:24-33</span></div>
+      <div class="par-verse"><span class="vnum">26:24</span>He doeth not anything save it be for the benefit of the world; for he loveth the world, even that he layeth down his own life that he may draw all men unto him. Wherefore, he commandeth none that they shall not partake of his salvation.</div>
+      <div class="par-verse"><span class="vnum">26:25</span>Behold, doth he cry unto any, saying: Depart from me? Behold, I say unto you, Nay; but he saith: Come unto me all ye ends of the earth, buy milk and honey, without money and without price.</div>
+      <div class="par-verse"><span class="vnum">26:26</span>Behold, hath he commanded any that they should depart out of the synagogues, or out of the houses of worship? Behold, I say unto you, Nay.</div>
+      <div class="par-verse"><span class="vnum">26:27</span>Hath he commanded any that they should not partake of his salvation? Behold I say unto you, Nay; but he hath given it free for all men; and he hath commanded his people that they should persuade all men to repentance.</div>
+      <div class="par-verse"><span class="vnum">26:28</span>Behold, hath the Lord commanded any that they should not partake of his goodness? Behold I say unto you, Nay; but all men are privileged the one like unto the other, and none are forbidden.</div>
+      <div class="par-verse"><span class="vnum">26:29</span>He commandeth that there shall be no priestcrafts; for, behold priestcrafts are that men preach and set themselves up for a light unto the world, that they may get gain and praise of the world; but they seek not the welfare of Zion.</div>
+      <div class="par-verse"><span class="vnum">26:30</span>Behold, the Lord hath forbidden this thing; wherefore, the Lord God hath given a commandment that all men should have charity, which charity is love, and except they should have charity they were nothing. Wherefore, if they should have charity they would not suffer the laborer in Zion to perish.</div>
+      <div class="par-verse"><span class="vnum">26:31</span>But the laborer in Zion shall labor for Zion; for if they labor for money they shall perish.</div>
+      <div class="par-verse"><span class="vnum">26:32</span>And again, the Lord God hath commanded that men should not murder; that they should not lie; that they should not steal; that they should not take the name of the Lord their God in vain; that they should not envy; that they should not have malice; that they should not contend one with another; that they should not commit whoredoms; and that they should do none of these things; for whoso doeth them shall perish.</div>
+      <div class="par-verse"><span class="vnum">26:33</span>For none of these iniquities come of the Lord; for he doeth that which is good among the children of men; and he doeth nothing save it be plain unto the children of men; and he inviteth them all to come unto him and partake of his goodness; and he denieth none that come unto him, black and white, bond and free, male and female; and he remembereth the heathen; and all are alike unto God, both Jew and Gentile.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Hosea, Joel themes (NASB 1995)</span> <a href="https://www.bible.com/bible/100/HOS.6.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-ot-4" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Universal-salvation language echoing prophetic Hosea/Joel themes.</div>
+</div>
+<div class="parallel-entry" id="entry-5">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="alm.html#ch33">Alma 33:11</a> &nbsp;↔&nbsp; 📜 Psalm 23 / divine deliverance</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — Alma 33:11</span></div>
+      <div class="par-verse"><span class="vnum">33:11</span>And thou didst hear me because of mine afflictions and my sincerity; and it is because of thy Son that thou hast been thus merciful unto me, therefore I will cry unto thee in all mine afflictions, for in thee is my joy; for thou hast turned thy judgments away from me, because of thy Son.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Psalm 23 / divine deliverance (NASB 1995)</span> <a href="https://www.bible.com/bible/100/PSA.23.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-ot-5" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Zenos&#x27;s prayer (only preserved in the BoM): &#x27;Thou art merciful, O God, for thou hast heard my prayer.&#x27;</div>
+</div>
+<div class="parallel-entry" id="entry-6">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch22">3 Nephi 22:1-17</a> &nbsp;↔&nbsp; 📜 Isaiah 54 (full chapter)</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 22:1-17</span></div>
+      <div class="par-verse"><span class="vnum">22:1</span>And then shall that which is written come to pass: Sing, O barren, thou that didst not bear; break forth into singing, and cry aloud, thou that didst not travail with child; for more are the children of the desolate than the children of the married wife, saith the Lord.</div>
+      <div class="par-verse"><span class="vnum">22:2</span>Enlarge the place of thy tent, and let them stretch forth the curtains of thy habitations; spare not, lengthen thy cords and strengthen thy stakes;</div>
+      <div class="par-verse"><span class="vnum">22:3</span>For thou shalt break forth on the right hand and on the left, and thy seed shall inherit the Gentiles and make the desolate cities to be inhabited.</div>
+      <div class="par-verse"><span class="vnum">22:4</span>Fear not, for thou shalt not be ashamed; neither be thou confounded, for thou shalt not be put to shame; for thou shalt forget the shame of thy youth, and shalt not remember the reproach of thy youth, and shalt not remember the reproach of thy widowhood any more.</div>
+      <div class="par-verse"><span class="vnum">22:5</span>For thy maker, thy husband, the Lord of Hosts is his name; and thy Redeemer, the Holy One of Israel—the God of the whole earth shall he be called.</div>
+      <div class="par-verse"><span class="vnum">22:6</span>For the Lord hath called thee as a woman forsaken and grieved in spirit, and a wife of youth, when thou wast refused, saith thy God.</div>
+      <div class="par-verse"><span class="vnum">22:7</span>For a small moment have I forsaken thee, but with great mercies will I gather thee.</div>
+      <div class="par-verse"><span class="vnum">22:8</span>In a little wrath I hid my face from thee for a moment, but with everlasting kindness will I have mercy on thee, saith the Lord thy Redeemer.</div>
+      <div class="par-verse"><span class="vnum">22:9</span>For this, the waters of Noah unto me, for as I have sworn that the waters of Noah should no more go over the earth, so have I sworn that I would not be wroth with thee.</div>
+      <div class="par-verse"><span class="vnum">22:10</span>For the mountains shall depart and the hills be removed, but my kindness shall not depart from thee, neither shall the covenant of my peace be removed, saith the Lord that hath mercy on thee.</div>
+      <div class="par-verse"><span class="vnum">22:11</span>O thou afflicted, tossed with tempest, and not comforted! Behold, I will lay thy stones with fair colors, and lay thy foundations with sapphires.</div>
+      <div class="par-verse"><span class="vnum">22:12</span>And I will make thy windows of agates, and thy gates of carbuncles, and all thy borders of pleasant stones.</div>
+      <div class="par-verse"><span class="vnum">22:13</span>And all thy children shall be taught of the Lord; and great shall be the peace of thy children.</div>
+      <div class="par-verse"><span class="vnum">22:14</span>In righteousness shalt thou be established; thou shalt be far from oppression for thou shalt not fear, and from terror for it shall not come near thee.</div>
+      <div class="par-verse"><span class="vnum">22:15</span>Behold, they shall surely gather together against thee, not by me; whosoever shall gather together against thee shall fall for thy sake.</div>
+      <div class="par-verse"><span class="vnum">22:16</span>Behold, I have created the smith that bloweth the coals in the fire, and that bringeth forth an instrument for his work; and I have created the waster to destroy.</div>
+      <div class="par-verse"><span class="vnum">22:17</span>No weapon that is formed against thee shall prosper; and every tongue that shall revile against thee in judgment thou shalt condemn. This is the heritage of the servants of the Lord, and their righteousness is of me, saith the Lord.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Isaiah 54 (full chapter) (NASB 1995)</span> <a href="https://www.bible.com/bible/100/ISA.54.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-ot-6" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> 3 Nephi 22 is the full text of Isaiah 54 word-for-word from KJV. Listed here for completeness; the major Isaiah parallels are covered in Stage 5.</div>
+</div>
+<div class="parallel-entry" id="entry-7">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="alm.html#ch42">Alma 42:2</a> &nbsp;↔&nbsp; 📜 Genesis 3:24</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — Alma 42:2</span></div>
+      <div class="par-verse"><span class="vnum">42:2</span>Now behold, my son, I will explain this thing unto thee. For behold, after the Lord God sent our first parents forth from the garden of Eden, to till the ground, from whence they were taken—yea, he drew out the man, and he placed at the east end of the garden of Eden, cherubim, and a flaming sword which turned every way, to keep the tree of life—</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Genesis 3:24 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/GEN.3.24.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-ot-7" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Cherubim with flaming sword. Alma 42:2 cites Genesis directly.</div>
+</div>
+<div class="parallel-entry" id="entry-8">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch20">3 Nephi 20:23</a> &nbsp;↔&nbsp; 📜 Deuteronomy 18:15-19</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 20:23</span></div>
+      <div class="par-verse"><span class="vnum">20:23</span>Behold, I am he of whom Moses spake, saying: A prophet shall the Lord your God raise up unto you of your brethren, like unto me; him shall ye hear in all things whatsoever he shall say unto you. And it shall come to pass that every soul who will not hear that prophet shall be cut off from among the people.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Deuteronomy 18:15-19 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/DEU.18.15-19.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-ot-8" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> &#x27;A prophet shall the Lord your God raise up unto you, like unto me&#x27; — Christ applies Moses&#x27; Deuteronomy 18 prophecy to Himself.</div>
+</div>
+<div class="parallel-entry" id="entry-9">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch21">3 Nephi 21:1-6</a> &nbsp;↔&nbsp; 📜 Micah 4-5 themes</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 21:1-6</span></div>
+      <div class="par-verse"><span class="vnum">21:1</span>And verily I say unto you, I give unto you a sign, that ye may know the time when these things shall be about to take place—that I shall gather in, from their long dispersion, my people, O house of Israel, and shall establish again among them my Zion;</div>
+      <div class="par-verse"><span class="vnum">21:2</span>And behold, this is the thing which I will give unto you for a sign—for verily I say unto you that when these things which I declare unto you, and which I shall declare unto you hereafter of myself, and by the power of the Holy Ghost which shall be given unto you of the Father, shall be made known unto the Gentiles that they may know concerning this people who are a remnant of the house of Jacob, and concerning this my people who shall be scattered by them;</div>
+      <div class="par-verse"><span class="vnum">21:3</span>Verily, verily, I say unto you, when these things shall be made known unto them of the Father, and shall come forth of the Father, from them unto you;</div>
+      <div class="par-verse"><span class="vnum">21:4</span>For it is wisdom in the Father that they should be established in this land, and be set up as a free people by the power of the Father, that these things might come forth from them unto a remnant of your seed, that the covenant of the Father may be fulfilled which he hath covenanted with his people, O house of Israel;</div>
+      <div class="par-verse"><span class="vnum">21:5</span>Therefore, when these works and the works which shall be wrought among you hereafter shall come forth from the Gentiles, unto your seed which shall dwindle in unbelief because of iniquity;</div>
+      <div class="par-verse"><span class="vnum">21:6</span>For thus it behooveth the Father that it should come forth from the Gentiles, that he may show forth his power unto the Gentiles, for this cause that the Gentiles, if they will not harden their hearts, that they may repent and come unto me and be baptized in my name and know of the true points of my doctrine, that they may be numbered among my people, O house of Israel;</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Micah 4-5 themes (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MIC.4.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-ot-9" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Latter-day gathering language echoing Micah.</div>
+</div>
+<div class="parallel-entry" id="entry-10">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="1ne.html#ch20">1 Nephi 20:1-22</a> &nbsp;↔&nbsp; 📜 Isaiah 48 (full chapter)</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 1 Nephi 20:1-22</span></div>
+      <div class="par-verse"><span class="vnum">20:1</span>Hearken and hear this, O house of Jacob, who are called by the name of Israel, and are come forth out of the waters of Judah, or out of the waters of baptism, who swear by the name of the Lord, and make mention of the God of Israel, yet they swear not in truth nor in righteousness.</div>
+      <div class="par-verse"><span class="vnum">20:2</span>Nevertheless, they call themselves of the holy city, but they do not stay themselves upon the God of Israel, who is the Lord of Hosts; yea, the Lord of Hosts is his name.</div>
+      <div class="par-verse"><span class="vnum">20:3</span>Behold, I have declared the former things from the beginning; and they went forth out of my mouth, and I showed them. I did show them suddenly.</div>
+      <div class="par-verse"><span class="vnum">20:4</span>And I did it because I knew that thou art obstinate, and thy neck is an iron sinew, and thy brow brass;</div>
+      <div class="par-verse"><span class="vnum">20:5</span>And I have even from the beginning declared to thee; before it came to pass I showed them thee; and I showed them for fear lest thou shouldst say—mine idol hath done them, and my graven image, and my molten image hath commanded them.</div>
+      <div class="par-verse"><span class="vnum">20:6</span>Thou hast seen and heard all this; and will ye not declare them? And that I have showed thee new things from this time, even hidden things, and thou didst not know them.</div>
+      <div class="par-verse"><span class="vnum">20:7</span>They are created now, and not from the beginning, even before the day when thou heardest them not they were declared unto thee, lest thou shouldst say—Behold I knew them.</div>
+      <div class="par-verse"><span class="vnum">20:8</span>Yea, and thou heardest not; yea, thou knewest not; yea, from that time thine ear was not opened; for I knew that thou wouldst deal very treacherously, and wast called a transgressor from the womb.</div>
+      <div class="par-verse"><span class="vnum">20:9</span>Nevertheless, for my name’s sake will I defer mine anger, and for my praise will I refrain from thee, that I cut thee not off.</div>
+      <div class="par-verse"><span class="vnum">20:10</span>For, behold, I have refined thee, I have chosen thee in the furnace of affliction.</div>
+      <div class="par-verse"><span class="vnum">20:11</span>For mine own sake, yea, for mine own sake will I do this, for I will not suffer my name to be polluted, and I will not give my glory unto another.</div>
+      <div class="par-verse"><span class="vnum">20:12</span>Hearken unto me, O Jacob, and Israel my called, for I am he; I am the first, and I am also the last.</div>
+      <div class="par-verse"><span class="vnum">20:13</span>Mine hand hath also laid the foundation of the earth, and my right hand hath spanned the heavens. I call unto them and they stand up together.</div>
+      <div class="par-verse"><span class="vnum">20:14</span>All ye, assemble yourselves, and hear; who among them hath declared these things unto them? The Lord hath loved him; yea, and he will fulfill his word which he hath declared by them; and he will do his pleasure on Babylon, and his arm shall come upon the Chaldeans.</div>
+      <div class="par-verse"><span class="vnum">20:15</span>Also, saith the Lord; I the Lord, yea, I have spoken; yea, I have called him to declare, I have brought him, and he shall make his way prosperous.</div>
+      <div class="par-verse"><span class="vnum">20:16</span>Come ye near unto me; I have not spoken in secret; from the beginning, from the time that it was declared have I spoken; and the Lord God, and his Spirit, hath sent me.</div>
+      <div class="par-verse"><span class="vnum">20:17</span>And thus saith the Lord, thy Redeemer, the Holy One of Israel; I have sent him, the Lord thy God who teacheth thee to profit, who leadeth thee by the way thou shouldst go, hath done it.</div>
+      <div class="par-verse"><span class="vnum">20:18</span>O that thou hadst hearkened to my commandments—then had thy peace been as a river, and thy righteousness as the waves of the sea.</div>
+      <div class="par-verse"><span class="vnum">20:19</span>Thy seed also had been as the sand; the offspring of thy bowels like the gravel thereof; his name should not have been cut off nor destroyed from before me.</div>
+      <div class="par-verse"><span class="vnum">20:20</span>Go ye forth of Babylon, flee ye from the Chaldeans, with a voice of singing declare ye, tell this, utter to the end of the earth; say ye: The Lord hath redeemed his servant Jacob.</div>
+      <div class="par-verse"><span class="vnum">20:21</span>And they thirsted not; he led them through the deserts; he caused the waters to flow out of the rock for them; he clave the rock also and the waters gushed out.</div>
+      <div class="par-verse"><span class="vnum">20:22</span>And notwithstanding he hath done all this, and greater also, there is no peace, saith the Lord, unto the wicked.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Isaiah 48 (full chapter) (NASB 1995)</span> <a href="https://www.bible.com/bible/100/ISA.48.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-ot-10" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> 1 Nephi 20 is Isaiah 48 word-for-word. Brief mention here; Stage 5 will cover Isaiah parallels in depth.</div>
+</div>
+<div class="parallel-entry" id="entry-11">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="1ne.html#ch21">1 Nephi 21:1-26</a> &nbsp;↔&nbsp; 📜 Isaiah 49 (full chapter)</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 1 Nephi 21:1-26</span></div>
+      <div class="par-verse"><span class="vnum">21:1</span>And again: Hearken, O ye house of Israel, all ye that are broken off and are driven out because of the wickedness of the pastors of my people; yea, all ye that are broken off, that are scattered abroad, who are of my people, O house of Israel. Listen, O isles, unto me, and hearken ye people from far; the Lord hath called me from the womb; from the bowels of my mother hath he made mention of my name.</div>
+      <div class="par-verse"><span class="vnum">21:2</span>And he hath made my mouth like a sharp sword; in the shadow of his hand hath he hid me, and made me a polished shaft; in his quiver hath he hid me;</div>
+      <div class="par-verse"><span class="vnum">21:3</span>And said unto me: Thou art my servant, O Israel, in whom I will be glorified.</div>
+      <div class="par-verse"><span class="vnum">21:4</span>Then I said, I have labored in vain, I have spent my strength for naught and in vain; surely my judgment is with the Lord, and my work with my God.</div>
+      <div class="par-verse"><span class="vnum">21:5</span>And now, saith the Lord—that formed me from the womb that I should be his servant, to bring Jacob again to him—though Israel be not gathered, yet shall I be glorious in the eyes of the Lord, and my God shall be my strength.</div>
+      <div class="par-verse"><span class="vnum">21:6</span>And he said: It is a light thing that thou shouldst be my servant to raise up the tribes of Jacob, and to restore the preserved of Israel. I will also give thee for a light to the Gentiles, that thou mayest be my salvation unto the ends of the earth.</div>
+      <div class="par-verse"><span class="vnum">21:7</span>Thus saith the Lord, the Redeemer of Israel, his Holy One, to him whom man despiseth, to him whom the nation abhorreth, to servant of rulers: Kings shall see and arise, princes also shall worship, because of the Lord that is faithful.</div>
+      <div class="par-verse"><span class="vnum">21:8</span>Thus saith the Lord: In an acceptable time have I heard thee, O isles of the sea, and in a day of salvation have I helped thee; and I will preserve thee, and give thee my servant for a covenant of the people, to establish the earth, to cause to inherit the desolate heritages;</div>
+      <div class="par-verse"><span class="vnum">21:9</span>That thou mayest say to the prisoners: Go forth; to them that sit in darkness: Show yourselves. They shall feed in the ways, and their pastures shall be in all high places.</div>
+      <div class="par-verse"><span class="vnum">21:10</span>They shall not hunger nor thirst, neither shall the heat nor the sun smite them; for he that hath mercy on them shall lead them, even by the springs of water shall he guide them.</div>
+      <div class="par-verse"><span class="vnum">21:11</span>And I will make all my mountains a way, and my highways shall be exalted.</div>
+      <div class="par-verse"><span class="vnum">21:12</span>And then, O house of Israel, behold, these shall come from far; and lo, these from the north and from the west; and these from the land of Sinim.</div>
+      <div class="par-verse"><span class="vnum">21:13</span>Sing, O heavens; and be joyful, O earth; for the feet of those who are in the east shall be established; and break forth into singing, O mountains; for they shall be smitten no more; for the Lord hath comforted his people, and will have mercy upon his afflicted.</div>
+      <div class="par-verse"><span class="vnum">21:14</span>But, behold, Zion hath said: The Lord hath forsaken me, and my Lord hath forgotten me—but he will show that he hath not.</div>
+      <div class="par-verse"><span class="vnum">21:15</span>For can a woman forget her sucking child, that she should not have compassion on the son of her womb? Yea, they may forget, yet will I not forget thee, O house of Israel.</div>
+      <div class="par-verse"><span class="vnum">21:16</span>Behold, I have graven thee upon the palms of my hands; thy walls are continually before me.</div>
+      <div class="par-verse"><span class="vnum">21:17</span>Thy children shall make haste against thy destroyers; and they that made thee waste shall go forth of thee.</div>
+      <div class="par-verse"><span class="vnum">21:18</span>Lift up thine eyes round about and behold; all these gather themselves together, and they shall come to thee. And as I live, saith the Lord, thou shalt surely clothe thee with them all, as with an ornament, and bind them on even as a bride.</div>
+      <div class="par-verse"><span class="vnum">21:19</span>For thy waste and thy desolate places, and the land of thy destruction, shall even now be too narrow by reason of the inhabitants; and they that swallowed thee up shall be far away.</div>
+      <div class="par-verse"><span class="vnum">21:20</span>The children whom thou shalt have, after thou hast lost the first, shall again in thine ears say: The place is too strait for me; give place to me that I may dwell.</div>
+      <div class="par-verse"><span class="vnum">21:21</span>Then shalt thou say in thine heart: Who hath begotten me these, seeing I have lost my children, and am desolate, a captive, and removing to and fro? And who hath brought up these? Behold, I was left alone; these, where have they been?</div>
+      <div class="par-verse"><span class="vnum">21:22</span>Thus saith the Lord God: Behold, I will lift up mine hand to the Gentiles, and set up my standard to the people; and they shall bring thy sons in their arms, and thy daughters shall be carried upon their shoulders.</div>
+      <div class="par-verse"><span class="vnum">21:23</span>And kings shall be thy nursing fathers, and their queens thy nursing mothers; they shall bow down to thee with their face towards the earth, and lick up the dust of thy feet; and thou shalt know that I am the Lord; for they shall not be ashamed that wait for me.</div>
+      <div class="par-verse"><span class="vnum">21:24</span>For shall the prey be taken from the mighty, or the lawful captives delivered?</div>
+      <div class="par-verse"><span class="vnum">21:25</span>But thus saith the Lord, even the captives of the mighty shall be taken away, and the prey of the terrible shall be delivered; for I will contend with him that contendeth with thee, and I will save thy children.</div>
+      <div class="par-verse"><span class="vnum">21:26</span>And I will feed them that oppress thee with their own flesh; they shall be drunken with their own blood as with sweet wine; and all flesh shall know that I, the Lord, am thy Savior and thy Redeemer, the Mighty One of Jacob.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Isaiah 49 (full chapter) (NASB 1995)</span> <a href="https://www.bible.com/bible/100/ISA.49.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-ot-11" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> 1 Nephi 21 is Isaiah 49. Brief mention here; Stage 5 will cover Isaiah parallels.</div>
+</div>
+
+  <div style="margin-top:32px;">
+    <a href="bible-parallels.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Bible Parallels Index</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ["n-par-ot-0", "n-par-ot-1", "n-par-ot-2", "n-par-ot-3", "n-par-ot-4", "n-par-ot-5", "n-par-ot-6", "n-par-ot-7", "n-par-ot-8", "n-par-ot-9", "n-par-ot-10", "n-par-ot-11"];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>

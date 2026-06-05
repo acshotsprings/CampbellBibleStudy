@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LDS Polygamy — Deep Dive — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:90px; font-family:Arial,sans-serif; font-size:12px; background:#fff; }
+    .ql-editor { min-height:90px; padding:7px 9px; }
+    /* Page-specific styling */
+    .verdict-box { background:linear-gradient(135deg,#F7F4EC,#EEE8DA); border-left:5px solid #8B6F47; border-radius:8px; padding:20px 26px; margin:24px 0; font-family:Georgia,serif; }
+    .verdict-box .vtitle { font-size:13px; color:#8B6F47; font-weight:bold; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:10px; font-family:Arial,sans-serif; }
+    .verdict-box p { font-size:15px; color:#3B2D1F; line-height:1.75; margin:0 0 10px 0; }
+    .related-callout { background:#EBF4FC; border-left:4px solid #2E75B6; border-radius:6px; padding:14px 18px; margin:18px 0 28px; font-family:Arial,sans-serif; }
+    .related-callout .rc-tag { font-size:11px; color:#1F3864; font-weight:bold; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px; }
+    .related-callout .rc-title { font-size:14px; color:#1F3864; font-weight:bold; }
+    .related-callout .rc-desc { font-size:13px; color:#1F3864; margin-top:4px; line-height:1.5; }
+    .related-callout a { color:#2E75B6; text-decoration:none; font-weight:bold; }
+    .related-callout a:hover { text-decoration:underline; }
+    .verse-block { background:#fff; border:1px solid #d0dce8; border-radius:6px; padding:12px 14px; margin:12px 0; font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#1F3864; }
+    .verse-block .ref { display:block; font-family:Arial,sans-serif; font-size:11px; color:#666; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px; font-weight:bold; }
+    .verse-block a { color:#2E75B6; text-decoration:none; }
+    .verse-block a:hover { text-decoration:underline; }
+    .verse-block sup.vn { font-size:10px; color:#888; font-weight:bold; vertical-align:super; margin-right:2px; }
+    .verse-block .lord { font-variant:small-caps; font-weight:bold; }
+    .fact-table { width:100%; border-collapse:collapse; margin:14px 0 22px; font-family:Arial,sans-serif; font-size:13px; }
+    .fact-table th, .fact-table td { border:1px solid #c8d4e0; padding:10px 12px; vertical-align:top; text-align:left; }
+    .fact-table thead th { background:#1F3864; color:#fff; font-family:Georgia,serif; font-weight:bold; }
+    .fact-table tbody tr:nth-child(odd) { background:#F6F9FC; }
+    .fact-table .label-col { width:30%; font-weight:bold; color:#1F3864; }
+    .contrast-table { width:100%; border-collapse:collapse; margin:14px 0 24px; font-family:Arial,sans-serif; font-size:13px; }
+    .contrast-table th, .contrast-table td { border:1px solid #c8d4e0; padding:12px 14px; vertical-align:top; }
+    .contrast-table thead th { background:#1F3864; color:#fff; font-family:Georgia,serif; font-weight:bold; text-align:center; }
+    .contrast-table .bible-col { background:#F4F8EE; }
+    .contrast-table .lds-col { background:#FEF6F0; }
+    .contrast-table .label { font-weight:bold; color:#1F3864; width:22%; }
+    .key-quote { background:#F4F8EE; border-left:4px solid #6B8E3A; padding:12px 16px; margin:14px 0; font-family:Georgia,serif; font-style:italic; color:#3B2D1F; font-size:14px; line-height:1.7; border-radius:6px; }
+    .timeline-box { background:#FFFBF0; border-left:5px solid #C8932B; border-radius:6px; padding:14px 18px; margin:12px 0; font-family:Arial,sans-serif; }
+    .timeline-box .year { font-size:13px; font-weight:bold; color:#8A6A1F; letter-spacing:0.06em; margin-bottom:4px; }
+    .timeline-box .event { font-size:14px; color:#3B2D1F; line-height:1.65; }
+    .timeline-box .event strong { color:#1F3864; }
+    .difficult-box { background:#FEF6F0; border-left:4px solid #B8523F; border-radius:6px; padding:14px 18px; margin:14px 0; }
+    .difficult-box .title { font-size:12px; color:#8A3A1F; font-weight:bold; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; font-family:Arial,sans-serif; }
+    .difficult-box .line { font-size:14px; color:#3B201F; line-height:1.7; margin-bottom:6px; font-family:Arial,sans-serif; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+</head>
+<body>
+
+<div id="github-bar"></div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="DeepDives.html" style="display:inline-block;margin-bottom:16px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Deep Dives</a>
+
+  <span class="page-tag">🔬 Deep Dive · Apologetics · LDS Theology</span>
+  <h1 class="page-title">💍 LDS Polygamy — The Doctrine, the History, the Bible</h1>
+  <p class="page-subtitle" style="font-style:italic;">What the Bible actually says about plural marriage, how the LDS Church practiced it, why it ended (sort of), and where it still lives in Mormon theology today — anchored in 2 Timothy 3:16–17.</p>
+
+  <div class="related-callout">
+    <div class="rc-tag">📖 Related Deep Dive</div>
+    <div class="rc-title"><a href="DeepDive-JosephSmith.html">Joseph Smith — The Founder Examined →</a></div>
+    <div class="rc-desc">This page focuses on the doctrine and history of LDS polygamy. For Joseph Smith's biography — the First Vision accounts, the Golden Plates, the Book of Abraham, and the death at Carthage — read the companion Deep Dive.</div>
+  </div>
+
+  <div class="verdict-box">
+    <div class="vtitle">✨ Why this study matters</div>
+    <p>LDS polygamy is one of the clearest test cases for measuring a religious claim against Scripture. The LDS Church teaches that polygamy was commanded by God through Joseph Smith — that Abraham and David were models, that practicing it was once a requirement for the highest level of heaven, and that the doctrine remains active in the afterlife even though it ended on earth. The Bible records polygamy as something humans practiced and suffered from — never something God commanded — and consistently teaches monogamy as the design from creation. Both claims can't be true.</p>
+    <p>This study walks the actual biblical text, the documented history of Smith's plural marriages, the slow and messy retreat from polygamy after his death, and the doctrinal split that exists in current LDS theology between earth and heaven. Anchor verse: <em>"All Scripture is inspired by God and profitable for teaching, for reproof, for correction, for training in righteousness"</em> (2 Timothy 3:16). Where Scripture and a later revelation conflict, Scripture is the standard.</p>
+  </div>
+
+  <h2 class="section-title">📜 What the Bible Actually Teaches About Marriage</h2>
+
+  <h3 style="color:#1F3864;font-family:Georgia,serif;margin-top:24px;">1. The Creation Pattern — One Man, One Woman</h3>
+  <p class="body">From the first marriage in Scripture, the design is monogamous. Genesis describes Eve as one woman for one man, and the verse that defines marriage uses singular language throughout.</p>
+
+  <div class="verse-block">
+    <span class="ref">Genesis 2:24 (NASB 1995) · <a href="https://www.bible.com/bible/100/GEN.2.24.NASB1995" target="_blank" rel="noopener">Read on bible.com</a></span>
+    For this reason a man shall leave his father and his mother, and be joined to <strong>his wife</strong> [singular]; and they shall become one flesh.
+  </div>
+
+  <p class="body">Every term in this verse is singular — <em>his wife</em>, <em>one flesh</em>. There is no biblical category for "his wives" or "many fleshes." Two thousand years after Moses wrote Genesis, Jesus quoted this exact verse when teaching about marriage — affirming that the creation pattern, not the later cultural compromises, was God's original and standing design.</p>
+
+  <div class="verse-block">
+    <span class="ref">Matthew 19:4–6 (NASB 1995) · <a href="https://www.bible.com/bible/100/MAT.19.4-6.NASB1995" target="_blank" rel="noopener">Read on bible.com</a></span>
+    And He answered and said, "Have you not read that He who created them from the beginning <span class="lord">MADE THEM MALE AND FEMALE</span>, and said, '<span class="lord">FOR THIS REASON A MAN SHALL LEAVE HIS FATHER AND MOTHER AND BE JOINED TO HIS WIFE, AND THE TWO SHALL BECOME ONE FLESH</span>'? So they are no longer two, but one flesh. What therefore God has joined together, let no man separate."
+  </div>
+
+  <p class="body">Jesus's word choice is precise: <em>"the two shall become one flesh"</em> — not the three, not the five, not the forty. The creation standard is monogamy.</p>
+
+  <h3 style="color:#1F3864;font-family:Georgia,serif;margin-top:32px;">2. Old Testament Polygamy — Permitted, But Always Problematic</h3>
+  <p class="body">The Bible does not hide that some of its most prominent figures practiced polygamy. It also does not endorse it. Two patterns are unmistakable across the Old Testament:</p>
+
+  <p class="body"><strong>Pattern one: the first polygamist is a villain.</strong> The first man recorded with multiple wives is not Abraham — it is Lamech, a descendant of Cain, who boasts about murdering a young man (<a href="https://www.bible.com/bible/100/GEN.4.19.NASB1995" target="_blank" rel="noopener">Genesis 4:19</a>). The Bible introduces polygamy in the context of escalating wickedness in Cain's line, not as something positive God instituted.</p>
+
+  <p class="body"><strong>Pattern two: every patriarchal polygamy story is a disaster.</strong> When Abraham took Hagar alongside Sarah, the result was lifelong family strife and a divided inheritance (<a href="https://www.bible.com/bible/100/GEN.16.NASB1995" target="_blank" rel="noopener">Genesis 16</a>). When Jacob ended up with Leah and Rachel, the result was bitter rivalry between sisters that scarred the next generation (<a href="https://www.bible.com/bible/100/GEN.29.30-31.NASB1995" target="_blank" rel="noopener">Genesis 29:30–31</a>). Solomon's seven hundred wives literally turned his heart from God and led to the dividing of the kingdom (<a href="https://www.bible.com/bible/100/1KI.11.1-8.NASB1995" target="_blank" rel="noopener">1 Kings 11:1–8</a>). The narrative voice of Scripture never says "see how God blessed this arrangement." It shows the pain, the jealousy, the family-destroying consequences.</p>
+
+  <p class="body"><strong>And God explicitly restricted it for kings.</strong> Long before Solomon's failure, God commanded through Moses that the king of Israel was not to do what Solomon would later do:</p>
+
+  <div class="verse-block">
+    <span class="ref">Deuteronomy 17:17 (NASB 1995) · <a href="https://www.bible.com/bible/100/DEU.17.17.NASB1995" target="_blank" rel="noopener">Read on bible.com</a></span>
+    He shall not multiply wives for himself, or else his heart will turn away; nor shall he greatly increase silver and gold for himself.
+  </div>
+
+  <p class="body">The Old Testament permits polygamy as a cultural reality the law allows for, but never as a divine ideal. Every time it is recorded, it is recorded with the cost.</p>
+
+  <h3 style="color:#1F3864;font-family:Georgia,serif;margin-top:32px;">3. The New Testament — A Strict Monogamous Standard</h3>
+  <p class="body">By the time of the New Testament, Jewish culture had largely abandoned polygamy, and the apostles closed any remaining gap. Three different New Testament texts establish monogamy as the universal Christian standard.</p>
+
+  <div class="verse-block">
+    <span class="ref">1 Timothy 3:2 (NASB 1995) · <a href="https://www.bible.com/bible/100/1TI.3.2.NASB1995" target="_blank" rel="noopener">Read on bible.com</a></span>
+    An overseer, then, must be above reproach, <strong>the husband of one wife</strong>, temperate, prudent, respectable, hospitable, able to teach,
+  </div>
+
+  <div class="verse-block">
+    <span class="ref">Titus 1:6 (NASB 1995) · <a href="https://www.bible.com/bible/100/TIT.1.6.NASB1995" target="_blank" rel="noopener">Read on bible.com</a></span>
+    namely, if any man is above reproach, <strong>the husband of one wife</strong>, having children who believe, not accused of dissipation or rebellion.
+  </div>
+
+  <div class="verse-block">
+    <span class="ref">1 Corinthians 7:2 (NASB 1995) · <a href="https://www.bible.com/bible/100/1CO.7.2.NASB1995" target="_blank" rel="noopener">Read on bible.com</a></span>
+    But because of immoralities, each man is to have <strong>his own wife</strong>, and each woman is to have <strong>her own husband</strong>.
+  </div>
+
+  <p class="body">Paul addresses the universal Christian standard in 1 Corinthians 7:2 — <em>each man... his own wife</em> (singular), <em>each woman... her own husband</em> (singular). And for the qualifications of every overseer and elder, monogamy is non-negotiable. The New Testament standard for Christian marriage is one man, one wife — no exceptions, no hidden allowances, no doctrinal loopholes.</p>
+
+  <div class="key-quote">
+    The Bible's relationship with polygamy is complex but consistent: it records many prominent figures practicing it, but it never commands it, never blesses it as an ideal, and consistently shows it producing disaster. The arc of Scripture moves from creation monogamy → patriarchal compromise → restricted toleration → New Testament strict standard. The trajectory is unmistakable: away from polygamy, not toward it.
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">🏛️ Joseph Smith's Plural Marriages — The Documented Facts</h2>
+  <p class="body">The LDS Church publicly downplayed or denied the full extent of Joseph Smith's polygamy for over a century. In recent decades the church has officially acknowledged the details in a series of essays called <em>"Plural Marriage in Kirtland and Nauvoo"</em> and related Gospel Topics documents. The historical record, by the church's own admission, includes the following facts:</p>
+
+  <table class="fact-table">
+    <thead>
+      <tr><th>What</th><th>The documented fact</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="label-col">Total plural wives</td>
+        <td>Between <strong>30 and 40</strong> plural wives, in addition to his first and legal wife Emma Hale Smith</td>
+      </tr>
+      <tr>
+        <td class="label-col">Youngest wife</td>
+        <td><strong>Helen Mar Kimball, age 14</strong>, sealed to Smith in 1843 when he was 37 years old</td>
+      </tr>
+      <tr>
+        <td class="label-col">Teenage wives</td>
+        <td>Approximately <strong>one-third</strong> of Smith's plural wives were teenagers</td>
+      </tr>
+      <tr>
+        <td class="label-col">Oldest plural wife</td>
+        <td>Fanny Young, age 56</td>
+      </tr>
+      <tr>
+        <td class="label-col">Polyandry (marrying other men's wives)</td>
+        <td><strong>Between 12 and 14</strong> of Smith's plural wives were already legally married to other living men at the time of their sealing to Smith</td>
+      </tr>
+      <tr>
+        <td class="label-col">Pattern with absent husbands</td>
+        <td>In some cases, Smith married women whose legal husbands he had sent away on mandatory long-distance missionary trips</td>
+      </tr>
+      <tr>
+        <td class="label-col">Secrecy from Emma</td>
+        <td>Smith kept the vast majority of his plural marriages hidden from his first wife Emma; when she discovered some, it caused severe lifelong marital distress</td>
+      </tr>
+      <tr>
+        <td class="label-col">The "angel with a sword"</td>
+        <td>Church records preserve Smith telling associates that an angel with a drawn sword threatened to destroy him unless he proceeded with plural marriage</td>
+      </tr>
+      <tr>
+        <td class="label-col">Public denials</td>
+        <td>While actively marrying dozens of women in the 1840s, Smith and other leaders published official statements denying polygamy and calling the rumors a "slanderous lie." The practice was only publicly admitted in <strong>1852</strong>, eight years after Smith's death.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="difficult-box">
+    <div class="title">⚠️ The hardest data point to face</div>
+    <div class="line">The Helen Mar Kimball marriage — a fourteen-year-old girl sealed to a thirty-seven-year-old man — is not an outlier in critical sources alone. It appears in the LDS Church's own published Gospel Topics essays. Any honest evaluation of LDS polygamy must reckon with the specific, documented age and circumstance of this and other marriages, not just the abstract doctrine.</div>
+    <div class="line">The polyandry data is equally difficult. Between 12 and 14 plural wives were already legally married to other living men. Several of those husbands were active members of the LDS Church who had been sent away on missionary trips at the time of their wives' sealing to Smith.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">📖 Doctrine and Covenants 132 — The Revelation That Started It</h2>
+  <p class="body">The doctrinal anchor for LDS polygamy is Doctrine and Covenants Section 132, a revelation Joseph Smith dictated in July 1843, about a year before his death. The text makes several claims that put it in direct conflict with the biblical pattern:</p>
+
+  <table class="contrast-table">
+    <thead>
+      <tr>
+        <th>Question</th>
+        <th class="bible-col" style="background:#4a7c59;">What the Bible Says</th>
+        <th class="lds-col" style="background:#9B4A2E;">What D&amp;C 132 Says</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="label">Was polygamy commanded by God?</td>
+        <td class="bible-col">No. Scripture records prominent figures practicing it, but never commands it. The creation pattern (Gen 2:24) is one man, one wife.</td>
+        <td class="lds-col">Yes. The revelation claims Abraham, Isaac, Jacob, David, and Solomon were "commanded" to take multiple wives, and that this practice was justified by God.</td>
+      </tr>
+      <tr>
+        <td class="label">Was practicing polygamy a requirement for salvation?</td>
+        <td class="bible-col">No. Salvation is by grace through faith in Christ (Eph 2:8–9). Marriage status is never tied to salvific standing.</td>
+        <td class="lds-col">In effect, yes. D&amp;C 132 teaches that those who reject the doctrine of plural marriage cannot enter into the highest exaltation (the celestial kingdom's top level).</td>
+      </tr>
+      <tr>
+        <td class="label">What about Solomon's 700 wives?</td>
+        <td class="bible-col">Explicitly condemned. 1 Kings 11:1–8 records that his wives turned his heart away from the <span class="lord">LORD</span>. God had specifically forbidden kings from multiplying wives (Deut 17:17).</td>
+        <td class="lds-col">D&amp;C 132 cites Solomon along with the patriarchs as a recipient of divine sanction for polygamy.</td>
+      </tr>
+      <tr>
+        <td class="label">What does the New Testament require?</td>
+        <td class="bible-col">Strict monogamy as the universal standard: "the husband of one wife" (1 Tim 3:2, Titus 1:6); "each man... his own wife, each woman... her own husband" (1 Cor 7:2).</td>
+        <td class="lds-col">D&amp;C 132 does not address the New Testament's explicit monogamy requirements. The revelation pre-dates the LDS Church's modern essays on this question.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="body"><strong>The structural problem:</strong> D&amp;C 132 is not a difficult passage that can be harmonized with a careful reading of Scripture. It is a revelation that <em>contradicts</em> the explicit biblical record. The Bible never says "polygamy was commanded." D&amp;C 132 says it was. The Bible never says "rejecting polygamy bars you from heaven's highest level." D&amp;C 132 says it does. Both texts cannot be from the same God.</p>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">⏰ The Retreat From Polygamy — A Long, Messy Process</h2>
+  <p class="body">Polygamy did not quietly end in the LDS Church. It was driven out by sustained federal pressure across roughly fourteen years, and even then it took two separate Manifestos to actually close the practice.</p>
+
+  <div class="timeline-box">
+    <div class="year">1862</div>
+    <div class="event">U.S. Congress passes the <strong>Morrill Anti-Bigamy Act</strong>, making polygamy a federal crime in the territories. The LDS Church largely ignores it.</div>
+  </div>
+
+  <div class="timeline-box">
+    <div class="year">1882</div>
+    <div class="event"><strong>Edmunds Act</strong> escalates penalties, disenfranchises polygamists, and disqualifies them from public office.</div>
+  </div>
+
+  <div class="timeline-box">
+    <div class="year">1887</div>
+    <div class="event"><strong>Edmunds-Tucker Act</strong> dissolves the LDS Church as a legal corporation and authorizes the federal government to seize church property — including temples.</div>
+  </div>
+
+  <div class="timeline-box">
+    <div class="year">1890</div>
+    <div class="event"><strong>First Manifesto</strong> (Official Declaration 1). Facing financial and legal destruction, Church President Wilford Woodruff issues a document advising members to submit to civil laws and refrain from entering future plural marriages.</div>
+    <div class="event" style="margin-top:6px;"><strong>The loophole:</strong> For the next 14 years, church leaders secretly continued performing and authorizing hundreds of new plural marriages in Mexico, Canada, and "on the high seas" — places where U.S. law did not apply.</div>
+  </div>
+
+  <div class="timeline-box">
+    <div class="year">1903</div>
+    <div class="event">LDS Apostle <strong>Reed Smoot</strong> is elected to the U.S. Senate. The Senate holds years of grueling public hearings investigating whether Mormons are still secretly practicing polygamy. The evidence becomes a national scandal.</div>
+  </div>
+
+  <div class="timeline-box">
+    <div class="year">1904</div>
+    <div class="event"><strong>Second Manifesto</strong>. Church President Joseph F. Smith issues a hard-line declaration: anyone who enters or performs a new plural marriage anywhere in the world will be excommunicated. This finally closes the practice on earth.</div>
+  </div>
+
+  <p class="body"><strong>The critical theological point about the Manifestos:</strong> The LDS Church never declared that historical polygamy was wrong or sinful. The official position is that God simply <em>changed the commandment</em>. The original revelation in D&amp;C 132 remains in the LDS canon. The doctrine was suspended for earth-life, not repudiated.</p>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">⚖️ The Modern LDS Position — A Split Between Earth and Heaven</h2>
+  <p class="body">Today the LDS Church teaches two simultaneous positions on polygamy that operate in different domains.</p>
+
+  <h3 style="color:#1F3864;font-family:Georgia,serif;margin-top:24px;">On Earth — Polygamy is a Serious Sin</h3>
+  <p class="body">A modern LDS member who enters a plural marriage is promptly excommunicated. The Church teaches that monogamy is "God's standard for marriage" on earth. Members who break this are removed from the church.</p>
+
+  <h3 style="color:#1F3864;font-family:Georgia,serif;margin-top:24px;">In Heaven — Polygamy Is Still Active Doctrine</h3>
+  <p class="body">D&amp;C 132 was never removed from the LDS canon. Eternal sealings to multiple women are still performed in LDS temples in one specific circumstance: <strong>if a Mormon man's wife dies, he can be legally remarried on earth and then "sealed" to his second wife for eternity</strong>. In LDS theology, this means he will live with multiple wives in heaven — both his deceased first wife (still sealed to him eternally) and his living second wife (newly sealed). The practice is not advertised but it is technically active doctrine.</p>
+
+  <div class="key-quote">
+    The LDS position can be summarized this way: polygamy was once required for the highest exaltation, was then suspended on earth under government pressure, was never declared wrong, and remains active doctrine for the afterlife.
+  </div>
+
+  <div class="difficult-box">
+    <div class="title">⚠️ The unresolved doctrinal tension</div>
+    <div class="line">If polygamy is sinful on earth today, then either (a) it was always sinful — including when Joseph Smith practiced it — or (b) God's moral standards genuinely changed mid-stream. The LDS Church's official position is that (b) is true: God changed the commandment.</div>
+    <div class="line">The biblical objection is that this contradicts Malachi 3:6 ("I, the <span class="lord">LORD</span>, do not change") and Hebrews 13:8 ("Jesus Christ is the same yesterday and today and forever"). God's commandments may apply differently in different covenants (Mosaic law vs. New Covenant), but Scripture does not present moral truth as something God arbitrarily reverses.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">🛡️ How Early Mormons Defended Polygamy Biblically</h2>
+  <p class="body">When polygamy was publicly introduced in the 1840s, Mormons faced intense backlash from traditional Christian neighbors. The defense they mounted leaned heavily on a specific reading of the Old Testament — one worth engaging directly because some forms of it still circulate.</p>
+
+  <h3 style="color:#1F3864;font-family:Georgia,serif;margin-top:24px;">The Mormon Argument</h3>
+  <p class="body"><em>Abraham was called "Father of the Faithful" and a friend of God. Yet he had multiple wives and concubines — Sarah, Hagar, Keturah. How can a practice be inherently sinful if the most revered biblical patriarchs engaged in it with apparent divine blessing?</em></p>
+
+  <h3 style="color:#1F3864;font-family:Georgia,serif;margin-top:24px;">The Christian Response</h3>
+  <p class="body"><strong>1. Descriptive ≠ prescriptive.</strong> Scripture records many things its heroes did without endorsing them. Abraham also lied about his wife (twice). David committed adultery and murder. Jacob deceived his blind father. The fact that a patriarch did something is not evidence God commanded it. The biblical narrative consistently distinguishes between what people did and what God told them to do.</p>
+
+  <p class="body"><strong>2. Read the family results.</strong> Abraham's polygamy with Hagar produced family disaster, two grieving women, and a divided inheritance line that still reverberates in the Middle East. Jacob's two wives produced bitter rivalry between sisters and twelve sons who later sold their own brother into slavery. David's polygamy produced rape, fratricide, and Absalom's rebellion. Solomon's polygamy literally turned his heart from God. The Bible's polygamy stories read like cautionary tales, not endorsement narratives.</p>
+
+  <p class="body"><strong>3. The trajectory matters.</strong> Scripture moves <em>away from</em> polygamy, not toward it. From the creation pattern of one-and-one, through the patriarchal compromises, through the explicit restriction on kings, through the rebuke of Solomon, to the New Testament's strict universal monogamy. If God were planning to command polygamy through a 19th-century prophet, the entire prior trajectory of Scripture would be misleading.</p>
+
+  <p class="body"><strong>4. The New Testament was already settled.</strong> By the time of Christ, monogamy was the Jewish norm. Jesus pointed back to Genesis 2:24 — not to Abraham — as the creation standard. Paul commanded monogamy for every Christian, not just leaders. The New Testament closes any window for plural marriage as a Christian practice. A revelation contradicting that closure cannot be from the same God who inspired it.</p>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">⚖️ Where Honest Engagement Lands</h2>
+  <div class="verdict-box">
+    <div class="vtitle">📍 The honest picture</div>
+    <p><strong>1. The Bible's testimony is unified, not ambiguous.</strong> From Genesis to Revelation, monogamy is the creation pattern, the apostolic standard, and the consistent ideal. Polygamy appears in Scripture as a recorded historical reality that always produced suffering — never as a divine command.</p>
+    <p><strong>2. Doctrine and Covenants 132 cannot be harmonized with Scripture.</strong> The conflict is not interpretive; it is direct. The Bible never commands polygamy. D&amp;C 132 says God did. The Bible never makes polygamy a requirement for any level of heaven. D&amp;C 132 makes it a requirement for the highest exaltation. The two texts make incompatible claims about the same God.</p>
+    <p><strong>3. The documented facts about Joseph Smith's marriages are difficult.</strong> A 14-year-old wife. Twelve to fourteen wives already legally married to other living men. Public denials while privately practicing. Secrecy from Emma. These facts are no longer disputed by the LDS Church itself. They form the historical record that any apologetic must engage honestly.</p>
+    <p><strong>4. The doctrine is suspended on earth, not repudiated.</strong> Modern LDS practice excommunicates polygamists, but the original revelation remains canonical and the doctrine remains active for the afterlife. The LDS position requires that God's moral standards on this question changed mid-stream — first commanding polygamy, then suspending it without declaring it wrong.</p>
+    <p><strong>5. The right posture is the one 2 Timothy 3:16–17 calls for:</strong> measure every claimed revelation against Scripture, with love for those caught in difficult systems and respect for sincere people who believe what they have been taught. The doctrine fails the biblical test; the people deserve gentle, honest engagement.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">🔗 Where this connects in this guide</h2>
+  <div class="key-quote" style="font-style:normal;background:#EBF4FC;border-left-color:#2E75B6;color:#1F3864;">
+    <strong>Joseph Smith — The Founder Examined (Deep Dive)</strong> — the companion page covering Smith's life, the First Vision accounts, the Book of Abraham, and the death at Carthage.<br>
+    <strong>Mormonism (LDS) Deep Dive</strong> — broader doctrinal study of the LDS Church beyond polygamy: theology of God, scripture, salvation.<br>
+    <strong>Theme 4 (Covenant)</strong> — the biblical pattern of covenant marriage, especially as it relates to Genesis 2:24 and the New Covenant's universal monogamous standard.<br>
+    <strong>Characters: David</strong> — David's polygamy is the case study Scripture itself uses to show the painful family consequences of multiplying wives (2 Samuel 11–18 trajectory).
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">📚 Sources &amp; further reading</h2>
+  <div class="info-box">
+    <div class="title">📖 LDS Church official sources</div>
+    <div class="line">• <strong>The Church of Jesus Christ of Latter-day Saints</strong>, "Plural Marriage in Kirtland and Nauvoo" (Gospel Topics Essay, churchofjesuschrist.org) — the church's own published acknowledgment of Smith's plural marriages, including the Helen Mar Kimball marriage and polyandrous unions.</div>
+    <div class="line">• <strong>Doctrine and Covenants 132</strong> — the canonical revelation establishing plural marriage as a commandment with eternal implications.</div>
+    <div class="line">• <strong>Official Declarations 1 (1890) and 2 (1904)</strong> — the two Manifestos ending plural marriage on earth.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="title">📚 Historical scholarship</div>
+    <div class="line">• <strong>Richard Lyman Bushman</strong>, <em>Joseph Smith: Rough Stone Rolling</em> (Knopf, 2005) — the definitive biography by an LDS historian, includes detailed treatment of plural marriages.</div>
+    <div class="line">• <strong>Todd Compton</strong>, <em>In Sacred Loneliness: The Plural Wives of Joseph Smith</em> (Signature Books, 1997) — biographical sketches of each of Smith's documented plural wives.</div>
+    <div class="line">• <strong>Kathleen Flake</strong>, <em>The Politics of American Religious Identity: The Seating of Senator Reed Smoot, Mormon Apostle</em> (UNC Press, 2004) — the Senate hearings that triggered the Second Manifesto.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="title">🕊️ Christian responses</div>
+    <div class="line">• <strong>Walter Martin</strong>, <em>The Kingdom of the Cults</em> — the classic evangelical apologetic engagement with LDS theology, including polygamy.</div>
+    <div class="line">• <strong>Sandra Tanner</strong> (Utah Lighthouse Ministry) — decades of detailed primary-source documentation on LDS history.</div>
+    <div class="line">• <strong>Ron Rhodes</strong>, <em>Reasoning from the Scriptures with the Mormons</em> — biblical engagement with LDS doctrinal claims.</div>
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ My notes — LDS Polygamy Deep Dive:</div>
+    <div class="quill-editor" id="n-dd-ldspolygamy" data-placeholder="Write your notes here. What surprised you? What questions remain? Where do you want to dig further?" style="min-height:120px;"></div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <a href="DeepDives.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Deep Dives</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-dd-ldspolygamy'];</script>
+<script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>

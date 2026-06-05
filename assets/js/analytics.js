@@ -1,7 +1,7 @@
 /* ============================================================
    CAMPBELL BIBLE STUDY — ANALYTICS & NOTIFICATIONS
    File: assets/js/analytics.js
-   Updated: May 7, 2026 (v2.1 — note content included in save email)
+   Updated: May 29, 2026 (v2.3 — bot/automation email guard)
 
    HANDLES TWO SYSTEMS:
    1. Google Analytics 4 (GA4) page tracking
@@ -127,6 +127,35 @@
      which isn't realistic on iPhone Safari or for non-technical visitors.
      Implementation lives inside handleOwnerFlag() alongside the legacy
      ?owner=true / ?owner=false handling.
+
+   V2.3 CHANGES (2026-05-29):
+   • BOT / AUTOMATION EMAIL GUARD. Notification emails ("visitor entered
+     name", "notes saved", etc.) were firing for automated visitors — most
+     visibly a spoofed Android user-agent (OPR/99 reporting Chrome/148, which
+     is an impossible pairing: Opera 99 is built on Chromium 113, not 148)
+     that also carried the WebView 'wv' token alongside the standalone Opera
+     brand — two contradictions no real browser produces. New isLikelyBot()
+     check now runs at the top of sendNotificationEmail() (the single point
+     every email passes through), so ONE guard covers all event types.
+   • Three signals, all low-false-positive. A real reader on a real
+     phone/computer is never flagged:
+       (1) navigator.webdriver === true  — set by Selenium/Puppeteer/
+           Playwright-driven browsers (the most common name-field auto-fillers).
+       (2) Self-declared crawler/scraper/monitor/HTTP-library tokens in the
+           UA (googlebot, ahrefsbot, headless, curl/, python-requests, the
+           social link-preview fetchers, etc.).
+       (3) Self-contradictory UA: Android WebView ('wv') combined with a
+           standalone desktop/cross-platform browser brand (Opera/Edge/
+           Vivaldi/Brave/etc.). A genuine WebView is embedded in an app and
+           never carries those brands; a real Opera/Edge is never a WebView.
+           This is the exact rule that catches the OPR/99 + 'wv' string.
+   • Suppressed sends are logged to console with the trigger reason but send
+     NO email, so the inbox only sees real people.
+   • New console helper: window.CBSG_isLikelyBot() — returns the bot reason
+     string (or false). Run it in the browser console on any device to confirm
+     your own browser is NOT flagged before trusting the filter.
+   • ADD-only: no existing logic removed or reordered. GA4 tracking is
+     untouched (bots still appear in GA reports; only the email is skipped).
    ============================================================ */
 
 (function() {
@@ -272,6 +301,61 @@
     });
   }
 
+  // ─── BOT / AUTOMATION DETECTION (v2.3) ─────────────────────
+  // Returns a short reason string if the current visitor looks automated,
+  // or false if it looks like a real human browser. Deliberately conservative
+  // — every check targets an explicit automation signal or a self-contradictory
+  // user-agent, so a real reader on a real phone/computer is never flagged.
+  // Exposed as window.CBSG_isLikelyBot() so it can be tested from the console.
+  function isLikelyBot() {
+    var ua = (navigator.userAgent || '').toLowerCase();
+
+    // (1) Automation flag — Selenium / Puppeteer / Playwright set this true.
+    //     These are the tools that actually fill the name field and trip the
+    //     "visitor entered name" email.
+    try { if (navigator.webdriver === true) return 'navigator.webdriver=true'; }
+    catch (e) { /* some privacy modes throw on access */ }
+
+    // (2) Missing or absurdly short UA — no real browser sends this.
+    if (!ua || ua.length < 16) return 'missing/short user-agent';
+
+    // (3) Self-declared crawlers, scrapers, monitors, headless runners, HTTP
+    //     libraries, and social link-preview fetchers. Explicit named bots plus
+    //     a boundary-safe generic "...bot..." pattern (so real device brands
+    //     like "Cubot" are NOT caught).
+    var BOT_REGEX = new RegExp([
+      'crawl', 'spider', 'slurp', 'headless', 'phantomjs', 'puppeteer',
+      'playwright', 'selenium', 'scrapy', 'python-requests', 'python-urllib',
+      'curl\\/', 'wget', 'libwww', 'okhttp', 'go-http-client',
+      'apache-httpclient', 'java\\/', 'facebookexternalhit', 'embedly',
+      'googlebot', 'bingbot', 'bingpreview', 'yandexbot', 'baiduspider',
+      'duckduckbot', 'sogou', 'exabot', 'telegrambot', 'discordbot',
+      'slackbot', 'twitterbot', 'linkedinbot', 'whatsapp\\/', 'ahrefsbot',
+      'semrushbot', 'mj12bot', 'dotbot', 'petalbot', 'bytespider', 'gptbot',
+      'claudebot', 'ccbot', 'amazonbot', 'applebot', 'lighthouse', 'gtmetrix',
+      'pagespeed', 'pingdom', 'statuscake', 'uptimerobot', 'dataprovider',
+      '[ /+_-]bot[ /;)]'
+    ].join('|'), 'i');
+    if (BOT_REGEX.test(ua)) return 'crawler/automation token in UA';
+
+    // (4) Impossible UA — Android WebView ('wv') combined with a standalone
+    //     desktop/cross-platform browser brand. A genuine WebView is embedded
+    //     inside an app and never carries an Opera/Edge/Vivaldi/Brave token; a
+    //     real one of those browsers is never a WebView. Both at once = spoof.
+    //     This is the exact OPR/99 + 'wv' agent that caused the false alerts.
+    if (ua.indexOf(';wv') !== -1 || ua.indexOf('; wv') !== -1 || ua.indexOf(' wv)') !== -1) {
+      var STANDALONE_BRANDS = ['opr/', 'edg/', 'edga/', 'vivaldi', 'yabrowser', 'brave', 'maxthon'];
+      for (var k = 0; k < STANDALONE_BRANDS.length; k++) {
+        if (ua.indexOf(STANDALONE_BRANDS[k]) !== -1) {
+          return 'impossible UA: WebView + ' + STANDALONE_BRANDS[k];
+        }
+      }
+    }
+
+    return false; // looks like a real human browser
+  }
+  window.CBSG_isLikelyBot = isLikelyBot;
+
   // ─── SEND EMAIL ────────────────────────────────────────────
   async function sendNotificationEmail(eventType, extraInfo) {
     console.log('[CBSG Analytics] sendNotificationEmail() called. eventType=' + eventType);
@@ -286,6 +370,16 @@
     // This prevents the "nobody / nobody / nobody" emails seen in v1.1.
     if (!eventType || typeof eventType !== 'string' || eventType.trim().length === 0) {
       console.log('[CBSG Analytics] Email skipped: missing eventType');
+      return;
+    }
+
+    // BOT / AUTOMATION GUARD (v2.3) — skip emails from automated visitors
+    // (headless browsers, crawlers, link-preview fetchers, spoofed agents).
+    // Single chokepoint: covers name-entry AND note-save AND any future event.
+    // GA4 tracking is unaffected — only the email is suppressed. See isLikelyBot().
+    var botReason = isLikelyBot();
+    if (botReason) {
+      console.log('[CBSG Analytics] Bot suppressed — no email sent. Reason: ' + botReason + ' | eventType=' + eventType);
       return;
     }
 

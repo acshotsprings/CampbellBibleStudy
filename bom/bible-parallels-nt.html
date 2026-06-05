@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Testament Echoes — Bible Parallels — Book of Mormon — Campbell Bible Study (Admin)</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:100px; font-family:'Times New Roman', Georgia, serif; font-size:14px; background:#fff; }
+    .ql-editor { min-height:100px; padding:10px 12px; line-height:1.7; }
+    /* Admin gate */
+    #admin-gate { display:none; max-width:560px; margin:80px auto; padding:32px; background:#5C1A1A; color:#fff; border-radius:10px; font-family:Arial,sans-serif; }
+    #admin-gate h2 { margin:0 0 14px; color:#FFD54F; font-family:Georgia,serif; }
+    #admin-gate p { line-height:1.7; margin:8px 0; }
+    #admin-gate a { color:#FFD54F; }
+    /* Parallels page styles */
+    .bom-admin-banner { background:linear-gradient(135deg,#5C1A1A,#7A2828); color:#fff; padding:14px 20px; border-radius:8px; margin:16px 0 24px; font-family:Arial,sans-serif; font-size:13px; line-height:1.6; border-left:5px solid #FFD54F; }
+    .bom-admin-banner strong { color:#FFD54F; }
+    .bom-admin-banner a { color:#FFD54F; }
+    .section-intro { background:#FFF8E8; border-left:4px solid #B8923F; border-radius:6px; padding:14px 18px; margin:16px 0 24px; font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#3D1F0F; }
+    .parallel-entry { background:#fff; border:1px solid #d0dce8; border-radius:8px; padding:18px 20px; margin:20px 0; }
+    .par-meta { display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid #e0e6ed; font-family:Arial,sans-serif; font-size:12px; }
+    .par-cat { padding:4px 10px; border-radius:4px; font-weight:bold; text-transform:uppercase; letter-spacing:0.06em; font-size:11px; color:#fff; }
+    .par-cat-direct { background:#B22222; }
+    .par-cat-strong { background:#8B4513; }
+    .par-cat-doctrinal { background:#1F3864; }
+    .par-cat-parallel { background:#5C2E18; }
+    .par-refs a { color:#1F3864; text-decoration:none; font-weight:bold; }
+    .par-refs a:hover { text-decoration:underline; }
+    .par-cols { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media (max-width: 760px) { .par-cols { grid-template-columns:1fr; } }
+    .par-col { padding:14px 16px; border-radius:6px; }
+    .par-col-bom { background:#F0F5FB; border:1px solid #6F9CC4; }
+    .par-col-bible { background:#F4F8EE; border:1px solid #8FAE5A; }
+    .par-col-label { font-family:Arial,sans-serif; font-size:11px; font-weight:bold; text-transform:uppercase; letter-spacing:0.10em; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; }
+    .par-col-bom .par-col-label { color:#1F3864; }
+    .par-col-bible .par-col-label { color:#3B5E1A; }
+    .par-col-bible .par-col-label a { color:#2E75B6; text-decoration:none; padding:3px 8px; background:#fff; border:1px solid #8FAE5A; border-radius:4px; font-size:10px; }
+    .par-col-bible .par-col-label a:hover { background:#2E75B6; color:#fff; }
+    .par-verse { font-family:Georgia,serif; font-size:14px; line-height:1.7; color:#2C1810; margin:6px 0; padding-left:36px; text-indent:-36px; }
+    .par-verse .vnum { display:inline-block; font-family:Arial,sans-serif; font-size:10px; font-weight:bold; color:#8B4513; background:#FFF8E8; padding:2px 5px; border-radius:3px; margin-right:6px; min-width:28px; text-align:center; vertical-align:baseline; }
+    .par-note { margin-top:12px; padding:10px 14px; background:#FFF8E8; border-left:3px solid #B8923F; border-radius:4px; font-family:Arial,sans-serif; font-size:13px; color:#5C3A0F; line-height:1.65; }
+    .par-note strong { color:#3D1F0F; }
+    .bible-paste-label { font-family:Arial,sans-serif; font-size:11px; color:#3B5E1A; font-style:italic; margin-bottom:6px; }
+    .toc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; margin:18px 0; }
+    .toc-card { display:block; padding:16px 18px; background:#fff; border:1px solid #d0dce8; border-left:5px solid #1F3864; border-radius:6px; text-decoration:none; color:#1F3864; font-family:Arial,sans-serif; }
+    .toc-card:hover { background:#F6F9FC; border-left-color:#FFD54F; }
+    .toc-card .toc-title { font-size:16px; font-weight:bold; color:#1F3864; }
+    .toc-card .toc-subtitle { font-size:13px; color:#666; margin-top:4px; font-style:italic; }
+    .toc-card .toc-count { font-size:11px; color:#8B4513; margin-top:6px; text-transform:uppercase; letter-spacing:0.08em; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+  <script>
+    (function() {
+      var ok = false;
+      try { if (sessionStorage.getItem('cbsg-admin') === 'true') ok = true; } catch(e) {}
+      if (!ok) {
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('app').style.display = 'none';
+          document.getElementById('admin-gate').style.display = 'block';
+        });
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<div id="admin-gate">
+  <h2>🔒 Admin only</h2>
+  <p>The Bible parallels tool is admin-restricted.</p>
+  <p>Return to the <a href="../index.html">home page</a> and log in via the 🔒 button.</p>
+  <p>For the public theological analysis: <a href="../DeepDive-BookOfMormon.html">📖 Book of Mormon Deep Dive</a></p>
+</div>
+
+<div id="github-bar"></div>
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="bible-parallels.html" style="display:inline-block;margin-bottom:8px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Bible Parallels Index</a>
+  <a href="bible-parallels-isaiah.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#8B4513;text-decoration:none;font-family:Arial,sans-serif;">📜 Isaiah Parallels</a>
+  <a href="index.html" style="display:inline-block;margin-bottom:16px;margin-left:14px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">📖 BoM Modern Index</a>
+  <div class="bom-admin-banner">
+    <strong>🔒 ADMIN · BIBLE PARALLELS</strong> &nbsp;|&nbsp; Compare BoM passages with the Bible passages they quote or echo. <strong>NASB 1995</strong> is the comparison standard. Use the paste box on the right of each entry to add NASB text from e-Sword. Notes save with the rest of your Quill content.
+  </div>
+  <h1 class="page-title">New Testament Echoes</h1>
+  <p style="font-family:Arial,sans-serif;font-size:14px;color:#666;font-style:italic;margin:0 0 6px;">BoM passages that echo NT verses</p>
+  <p style="font-family:Arial,sans-serif;font-size:12px;color:#888;margin:0 0 18px;">15 parallel passages</p>
+  <div class="section-intro">The Book of Mormon contains numerous passages that closely echo New Testament wording — though the Nephites supposedly lost contact with the Old World centuries before the New Testament was written. These parallels are most pronounced where the BoM uses distinctively Pauline language (1 Corinthians 13, Hebrews 11), Johannine themes (John 10&#x27;s &#x27;other sheep&#x27;), or apostolic doctrines that hadn&#x27;t yet been articulated in OT times.</div>
+  <div style="margin:18px 0; padding:10px 14px; background:#F6F9FC; border:1px solid #d0dce8; border-radius:6px; font-family:Arial,sans-serif; font-size:12px;">
+    <strong style="color:#1F3864;">Quick jump:</strong>
+    <a href="#entry-0" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">Moroni 7:45</a>
+    <a href="#entry-1" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">Ether 12:6</a>
+    <a href="#entry-2" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 15:21</a>
+    <a href="#entry-3" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 11:25</a>
+    <a href="#entry-4" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 11:33</a>
+    <a href="#entry-5" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 18:18</a>
+    <a href="#entry-6" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 27:27</a>
+    <a href="#entry-7" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">Alma 7:11</a>
+    <a href="#entry-8" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">Mosiah 3:19</a>
+    <a href="#entry-9" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">2 Nephi 9:39</a>
+    <a href="#entry-10" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">Alma 36:18</a>
+    <a href="#entry-11" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 9:18</a>
+    <a href="#entry-12" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">3 Nephi 14:7</a>
+    <a href="#entry-13" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">Moroni 10:8</a>
+    <a href="#entry-14" style="display:inline-block;margin:3px 6px 3px 0;padding:3px 8px;background:#fff;border:1px solid #c8d4e0;border-radius:4px;color:#1F3864;text-decoration:none;">Moroni 8:23</a>
+  </div>
+<div class="parallel-entry" id="entry-0">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="mor.html#ch7">Moroni 7:45-47</a> &nbsp;↔&nbsp; 📜 1 Corinthians 13:4-8</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — Moroni 7:45-47</span></div>
+      <div class="par-verse"><span class="vnum">7:45</span>And charity suffereth long, and is kind, and envieth not, and is not puffed up, seeketh not her own, is not easily provoked, thinketh no evil, and rejoiceth not in iniquity but rejoiceth in the truth, beareth all things, believeth all things, hopeth all things, endureth all things.</div>
+      <div class="par-verse"><span class="vnum">7:46</span>Wherefore, my beloved brethren, if ye have not charity, ye are nothing, for charity never faileth. Wherefore, cleave unto charity, which is the greatest of all, for all things must fail—</div>
+      <div class="par-verse"><span class="vnum">7:47</span>But charity is the pure love of Christ, and it endureth forever; and whoso is found possessed of it at the last day, it shall be well with him.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 1 Corinthians 13:4-8 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/1CO.13.4-8.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-0" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Mormon (writing c. AD 400) defines charity using language nearly identical to Paul&#x27;s &#x27;love chapter&#x27; (1 Cor 13). Multiple specific phrasings overlap with KJV wording.</div>
+</div>
+<div class="parallel-entry" id="entry-1">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="eth.html#ch12">Ether 12:6</a> &nbsp;↔&nbsp; 📜 Hebrews 11:1</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — Ether 12:6</span></div>
+      <div class="par-verse"><span class="vnum">12:6</span>And now, I, Moroni, would speak somewhat concerning these things; I would show unto the world that faith is things which are hoped for and not seen; wherefore, dispute not because ye see not, for ye receive no witness until after the trial of your faith.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Hebrews 11:1 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/HEB.11.1.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-1" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Moroni&#x27;s definition: &#x27;faith is things which are hoped for and not seen&#x27; — closely matches Hebrews 11:1 KJV. Hebrews was written c. AD 60-70; Moroni wrote ~AD 400 in the Americas.</div>
+</div>
+<div class="parallel-entry" id="entry-2">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch15">3 Nephi 15:21-24</a> &nbsp;↔&nbsp; 📜 John 10:14-16</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 15:21-24</span></div>
+      <div class="par-verse"><span class="vnum">15:21</span>And verily I say unto you, that ye are they of whom I said: Other sheep I have which are not of this fold; them also I must bring, and they shall hear my voice; and there shall be one fold, and one shepherd.</div>
+      <div class="par-verse"><span class="vnum">15:22</span>And they understood me not, for they supposed it had been the Gentiles; for they understood not that the Gentiles should be converted through their preaching.</div>
+      <div class="par-verse"><span class="vnum">15:23</span>And they understood me not that I said they shall hear my voice; and they understood me not that the Gentiles should not at any time hear my voice—that I should not manifest myself unto them save it were by the Holy Ghost.</div>
+      <div class="par-verse"><span class="vnum">15:24</span>But behold, ye have both heard my voice, and seen me; and ye are my sheep, and ye are numbered among those whom the Father hath given me.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 John 10:14-16 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/JHN.10.14-16.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-2" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Jesus identifies the Nephites as the &#x27;other sheep&#x27; mentioned in John 10:16. The interpretive move is theologically significant — and the verbal echo is direct.</div>
+</div>
+<div class="parallel-entry" id="entry-3">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch11">3 Nephi 11:25</a> &nbsp;↔&nbsp; 📜 Matthew 28:19</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 11:25</span></div>
+      <div class="par-verse"><span class="vnum">11:25</span>Having authority given me of Jesus Christ, I baptize you in the name of the Father, and of the Son, and of the Holy Ghost. Amen.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 28:19 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.28.19.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-3" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> The baptismal formula: &#x27;in the name of the Father, and of the Son, and of the Holy Ghost.&#x27; Mirrors the Great Commission language.</div>
+</div>
+<div class="parallel-entry" id="entry-4">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch11">3 Nephi 11:33-34</a> &nbsp;↔&nbsp; 📜 Mark 16:16</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 11:33-34</span></div>
+      <div class="par-verse"><span class="vnum">11:33</span>And whoso believeth in me, and is baptized, the same shall be saved; and they are they who shall inherit the kingdom of God.</div>
+      <div class="par-verse"><span class="vnum">11:34</span>And whoso believeth not in me, and is not baptized, shall be damned.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Mark 16:16 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MRK.16.16.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-4" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> &#x27;He that believeth and is baptized shall be saved&#x27; — exact echo of Mark 16:16.</div>
+</div>
+<div class="parallel-entry" id="entry-5">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch18">3 Nephi 18:18</a> &nbsp;↔&nbsp; 📜 Luke 22:31-32</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 18:18</span></div>
+      <div class="par-verse"><span class="vnum">18:18</span>Behold, verily, verily, I say unto you, ye must watch and pray always lest ye enter into temptation; for Satan desireth to have you, that he may sift you as wheat.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Luke 22:31-32 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/LUK.22.31-32.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-5" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> &#x27;Satan desireth to have you, that he may sift you as wheat&#x27; — echoes Jesus&#x27; words to Peter at the Last Supper.</div>
+</div>
+<div class="parallel-entry" id="entry-6">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch27">3 Nephi 27:27</a> &nbsp;↔&nbsp; 📜 Matthew 5:48</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 27:27</span></div>
+      <div class="par-verse"><span class="vnum">27:27</span>And know ye that ye shall be judges of this people, according to the judgment which I shall give unto you, which shall be just. Therefore, what manner of men ought ye to be? Verily I say unto you, even as I am.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Matthew 5:48 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/MAT.5.48.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-6" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> &#x27;What manner of men ought ye to be? Verily I say unto you, even as I am&#x27; — extends the Matthew 5:48 perfection command. (Note: the 1830 wording was different — see compare.html.)</div>
+</div>
+<div class="parallel-entry" id="entry-7">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="alm.html#ch7">Alma 7:11</a> &nbsp;↔&nbsp; 📜 Isaiah 53:4-5</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — Alma 7:11</span></div>
+      <div class="par-verse"><span class="vnum">7:11</span>And he shall go forth, suffering pains and afflictions and temptations of every kind; and this that the word might be fulfilled which saith he will take upon him the pains and the sicknesses of his people.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Isaiah 53:4-5 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/ISA.53.4-5.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-7" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Alma&#x27;s description of Christ&#x27;s suffering &#x27;pains and afflictions and temptations&#x27; echoes Isaiah&#x27;s Suffering Servant — though Alma writes ~83 BC, before Christ&#x27;s actual passion.</div>
+</div>
+<div class="parallel-entry" id="entry-8">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="mos.html#ch3">Mosiah 3:19</a> &nbsp;↔&nbsp; 📜 1 Corinthians 2:14</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — Mosiah 3:19</span></div>
+      <div class="par-verse"><span class="vnum">3:19</span>For the natural man is an enemy to God, and has been from the fall of Adam, and will be, forever and ever, unless he yields to the enticings of the Holy Spirit, and putteth off the natural man and becometh a saint through the atonement of Christ the Lord, and becometh as a child, submissive, meek, humble, patient, full of love, willing to submit to all things which the Lord seeth fit to inflict upon him, even as a child doth submit to his father.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 1 Corinthians 2:14 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/1CO.2.14.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-8" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> &#x27;The natural man is an enemy to God&#x27; — distinctively Pauline &#x27;natural man&#x27; theology, articulated by Benjamin&#x27;s angel ~124 BC, ~175 years before Paul wrote 1 Corinthians.</div>
+</div>
+<div class="parallel-entry" id="entry-9">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="2ne.html#ch9">2 Nephi 9:39</a> &nbsp;↔&nbsp; 📜 Romans 8:6</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 2 Nephi 9:39</span></div>
+      <div class="par-verse"><span class="vnum">9:39</span>O, my beloved brethren, remember the awfulness in transgressing against that Holy God, and also the awfulness of yielding to the enticings of that cunning one. Remember, to be carnally-minded is death, and to be spiritually-minded is life eternal.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Romans 8:6 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/ROM.8.6.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-9" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> &#x27;To be carnally-minded is death, and to be spiritually-minded is life eternal&#x27; — Jacob c. 559 BC echoes Paul&#x27;s language from Romans 8 (c. AD 57).</div>
+</div>
+<div class="parallel-entry" id="entry-10">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="alm.html#ch36">Alma 36:18-21</a> &nbsp;↔&nbsp; 📜 Acts 9 / Paul&#x27;s conversion</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — Alma 36:18-21</span></div>
+      <div class="par-verse"><span class="vnum">36:18</span>Now, as my mind caught hold upon this thought, I cried within my heart: O Jesus, thou Son of God, have mercy on me, who am in the gall of bitterness, and am encircled about by the everlasting chains of death.</div>
+      <div class="par-verse"><span class="vnum">36:19</span>And now, behold, when I thought this, I could remember my pains no more; yea, I was harrowed up by the memory of my sins no more.</div>
+      <div class="par-verse"><span class="vnum">36:20</span>And oh, what joy, and what marvelous light I did behold; yea, my soul was filled with joy as exceeding as was my pain!</div>
+      <div class="par-verse"><span class="vnum">36:21</span>Yea, I say unto you, my son, that there could be nothing so exquisite and so bitter as were my pains. Yea, and again I say unto you, my son, that on the other hand, there can be nothing so exquisite and sweet as was my joy.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Acts 9 / Paul&#x27;s conversion (NASB 1995)</span> <a href="https://www.bible.com/bible/100/ACT.9.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-10" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Alma&#x27;s conversion account closely mirrors Saul&#x27;s Damascus-road experience: bright light, hearing God&#x27;s voice, three days of darkness, repentance, transformed into a preacher.</div>
+</div>
+<div class="parallel-entry" id="entry-11">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch9">3 Nephi 9:18</a> &nbsp;↔&nbsp; 📜 Revelation 1:8</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 9:18</span></div>
+      <div class="par-verse"><span class="vnum">9:18</span>I am the light and the life of the world. I am Alpha and Omega, the beginning and the end.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Revelation 1:8 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/REV.1.8.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-11" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> &#x27;I am the Alpha and Omega, the beginning and the end&#x27; — Christ&#x27;s self-identification echoes Revelation 1:8 word-for-word. (Revelation was written ~AD 95.)</div>
+</div>
+<div class="parallel-entry" id="entry-12">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="3ne.html#ch14">3 Nephi 14:7-11</a> &nbsp;↔&nbsp; 📜 Luke 11:9-13</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — 3 Nephi 14:7-11</span></div>
+      <div class="par-verse"><span class="vnum">14:7</span>Ask, and it shall be given unto you; seek, and ye shall find; knock, and it shall be opened unto you.</div>
+      <div class="par-verse"><span class="vnum">14:8</span>For every one that asketh, receiveth; and he that seeketh, findeth; and to him that knocketh, it shall be opened.</div>
+      <div class="par-verse"><span class="vnum">14:9</span>Or what man is there of you, who, if his son ask bread, will give him a stone?</div>
+      <div class="par-verse"><span class="vnum">14:10</span>Or if he ask a fish, will he give him a serpent?</div>
+      <div class="par-verse"><span class="vnum">14:11</span>If ye then, being evil, know how to give good gifts unto your children, how much more shall your Father who is in heaven give good things to them that ask him?</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Luke 11:9-13 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/LUK.11.9-13.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-12" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> &#x27;Ask, and it shall be given you&#x27; passage — appears in both Matthew 7 and Luke 11. 3 Nephi follows Matthew but compare with Luke as well.</div>
+</div>
+<div class="parallel-entry" id="entry-13">
+  <div class="par-meta">
+    <span class="par-cat par-cat-direct">Direct Quote</span>
+    <span class="par-refs">📖 <a href="mor.html#ch10">Moroni 10:8-17</a> &nbsp;↔&nbsp; 📜 1 Corinthians 12:4-11</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — Moroni 10:8-17</span></div>
+      <div class="par-verse"><span class="vnum">10:8</span>And again, I exhort you, my brethren, that ye deny not the gifts of God, for they are many; and they come from the same God. And there are different ways that these gifts are administered; but it is the same God who worketh all in all; and they are given by the manifestations of the Spirit of God unto men, to profit them.</div>
+      <div class="par-verse"><span class="vnum">10:9</span>For behold, to one is given by the Spirit of God, that he may teach the word of wisdom;</div>
+      <div class="par-verse"><span class="vnum">10:10</span>And to another, that he may teach the word of knowledge by the same Spirit;</div>
+      <div class="par-verse"><span class="vnum">10:11</span>And to another, exceedingly great faith; and to another, the gifts of healing by the same Spirit;</div>
+      <div class="par-verse"><span class="vnum">10:12</span>And again, to another, that he may work mighty miracles;</div>
+      <div class="par-verse"><span class="vnum">10:13</span>And again, to another, that he may prophesy concerning all things;</div>
+      <div class="par-verse"><span class="vnum">10:14</span>And again, to another, the beholding of angels and ministering spirits;</div>
+      <div class="par-verse"><span class="vnum">10:15</span>And again, to another, all kinds of tongues;</div>
+      <div class="par-verse"><span class="vnum">10:16</span>And again, to another, the interpretation of languages and of divers kinds of tongues.</div>
+      <div class="par-verse"><span class="vnum">10:17</span>And all these gifts come by the Spirit of Christ; and they come unto every man severally, according as he will.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 1 Corinthians 12:4-11 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/1CO.12.4-11.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-13" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Moroni&#x27;s list of spiritual gifts closely parallels Paul&#x27;s list in 1 Corinthians 12 — including the same gifts in similar order (wisdom, knowledge, faith, healing, miracles, prophecy, discerning of spirits, tongues, interpretation).</div>
+</div>
+<div class="parallel-entry" id="entry-14">
+  <div class="par-meta">
+    <span class="par-cat par-cat-strong">Strong Echo</span>
+    <span class="par-refs">📖 <a href="mor.html#ch8">Moroni 8:23</a> &nbsp;↔&nbsp; 📜 Hebrews 11:33-34</span>
+  </div>
+  <div class="par-cols">
+    <div class="par-col par-col-bom">
+      <div class="par-col-label"><span>📖 Book of Mormon — Moroni 8:23</span></div>
+      <div class="par-verse"><span class="vnum">8:23</span>But it is mockery before God, denying the mercies of Christ, and the power of his Holy Spirit, and putting trust in dead works.</div>
+    </div>
+    <div class="par-col par-col-bible">
+      <div class="par-col-label"><span>📜 Hebrews 11:33-34 (NASB 1995)</span> <a href="https://www.bible.com/bible/100/HEB.11.33-34.NASB1995" target="_blank" rel="noopener">Open NASB →</a></div>
+      <div class="bible-paste-label">Paste NASB 1995 text from e-Sword below, or use the link above to read it on bible.com:</div>
+      <div class="quill-editor" id="n-par-nt-14" data-placeholder="Paste NASB 1995 text here..." style="min-height:120px;"></div>
+    </div>
+  </div>
+  <div class="par-note"><strong>Note:</strong> Mormon&#x27;s appeal to faithful saints by name echoes the Hebrews 11 &#x27;roll call of faith.&#x27;</div>
+</div>
+
+  <div style="margin-top:32px;">
+    <a href="bible-parallels.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Bible Parallels Index</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ["n-par-nt-0", "n-par-nt-1", "n-par-nt-2", "n-par-nt-3", "n-par-nt-4", "n-par-nt-5", "n-par-nt-6", "n-par-nt-7", "n-par-nt-8", "n-par-nt-9", "n-par-nt-10", "n-par-nt-11", "n-par-nt-12", "n-par-nt-13", "n-par-nt-14"];</script>
+<script src="../assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>buildSidebar('..');</script>
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>

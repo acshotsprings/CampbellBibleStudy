@@ -185,6 +185,7 @@ const COMPLETION_KEYS = {
   'DeepDive-Willow':                       'complete-dd-willow',
   'DeepDive-Gematria':                     'complete-dd-gematria',
   'DeepDive-Mormonism':                    'complete-dd-mormonism',
+  'DeepDive-LDSPolygamy':                  'complete-dd-ldspolygamy',
   'DeepDive-JosephSmith':                  'complete-dd-josephsmith',
   'DeepDive-PowerBlocs':                   'complete-dd-powerblocs',
 

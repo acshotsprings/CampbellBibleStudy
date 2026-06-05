@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The CES Letter — Deep Dive — Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/analytics.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style id="cbsg-quill-styles">
+    .ql-toolbar.ql-snow { border:1px solid #ccc; border-radius:6px 6px 0 0; background:#f9f9f9; padding:3px 5px; }
+    .ql-toolbar.ql-snow .ql-formats { margin-right:6px; }
+    .ql-toolbar.ql-snow button { width:22px; height:20px; padding:1px; }
+    .ql-toolbar.ql-snow .ql-picker { font-size:11px; height:20px; }
+    .ql-toolbar.ql-snow .ql-picker-label { padding:1px 4px; }
+    .ql-container.ql-snow { border:1px solid #ccc; border-top:none; border-radius:0 0 6px 6px; min-height:90px; font-family:Arial,sans-serif; font-size:12px; background:#fff; }
+    .ql-editor { min-height:90px; padding:7px 9px; }
+    /* Page-specific styling */
+    .claim-box { background:#FAF6EE; border-left:5px solid #B8923F; border-radius:6px; padding:16px 20px; margin:18px 0; }
+    .claim-box .claim-num { font-size:11px; color:#8A6A1F; font-weight:bold; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:4px; font-family:Arial,sans-serif; }
+    .claim-box .claim-name { font-size:18px; color:#3B2D1F; font-family:Georgia,serif; font-weight:bold; margin-bottom:8px; }
+    .claim-box .claim-line { font-size:14.5px; color:#3B2D1F; line-height:1.7; font-family:Arial,sans-serif; margin-bottom:8px; }
+    .claim-box .claim-line strong { color:#1F3864; }
+    .claim-box ul { font-family:Arial,sans-serif; font-size:14px; line-height:1.7; color:#3B2D1F; margin:6px 0 8px 0; padding-left:22px; }
+    .claim-box ul li { margin-bottom:4px; }
+    .analysis-box { background:#F0F4F8; border-left:4px solid #1F3864; border-radius:6px; padding:14px 18px; margin:14px 0 22px; }
+    .analysis-box .title { font-size:12px; color:#1F3864; font-weight:bold; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; font-family:Arial,sans-serif; }
+    .analysis-box .line { font-size:14px; color:#1F2D3B; line-height:1.7; margin-bottom:8px; font-family:Arial,sans-serif; }
+    .analysis-box .line strong { color:#1F3864; }
+    .response-box { background:#FEF6F0; border-left:4px solid #B8523F; border-radius:6px; padding:12px 16px; margin:10px 0; }
+    .response-box .title { font-size:11px; color:#8A3A1F; font-weight:bold; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px; font-family:Arial,sans-serif; }
+    .response-box .line { font-size:13.5px; color:#3B201F; line-height:1.65; margin-bottom:5px; font-family:Arial,sans-serif; }
+    .section-header { background:#1F3864; color:#fff; padding:14px 20px; border-radius:6px; margin:30px 0 14px 0; font-family:Georgia,serif; font-size:20px; font-weight:bold; display:flex; justify-content:space-between; align-items:center; }
+    .section-header .num { font-family:Arial,sans-serif; font-size:11px; opacity:0.7; text-transform:uppercase; letter-spacing:0.15em; font-weight:normal; }
+    .source-link { display:inline-block; margin-top:6px; padding:4px 10px; background:#fff; border:1px solid #1F3864; border-radius:4px; font-size:12px; color:#1F3864; text-decoration:none; font-family:Arial,sans-serif; }
+    .source-link:hover { background:#1F3864; color:#fff; }
+    .key-quote { background:#F4F8EE; border-left:4px solid #6B8E3A; padding:12px 16px; margin:14px 0; font-family:Georgia,serif; font-style:italic; color:#3B2D1F; font-size:14px; line-height:1.7; border-radius:6px; }
+    .verdict-box { background:linear-gradient(135deg,#F7F4EC,#EEE8DA); border-left:5px solid #8B6F47; border-radius:8px; padding:20px 26px; margin:24px 0; font-family:Georgia,serif; }
+    .verdict-box .vtitle { font-size:13px; color:#8B6F47; font-weight:bold; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:10px; font-family:Arial,sans-serif; }
+    .verdict-box p { font-size:15px; color:#3B2D1F; line-height:1.75; margin:0 0 10px 0; }
+    .toc-box { background:#fff; border:2px solid #1F3864; border-radius:8px; padding:16px 22px; margin:20px 0; font-family:Arial,sans-serif; }
+    .toc-box .toc-title { font-size:13px; color:#1F3864; font-weight:bold; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:10px; }
+    .toc-box ol { font-size:14px; line-height:1.85; color:#3B2D1F; margin:0; padding-left:22px; }
+    .toc-box ol li a { color:#2E75B6; text-decoration:none; }
+    .toc-box ol li a:hover { text-decoration:underline; }
+    .copyright-notice { background:#FFF8E1; border:1px solid #D4A847; border-radius:6px; padding:12px 16px; margin:18px 0; font-family:Arial,sans-serif; font-size:13px; color:#5C4A1A; line-height:1.65; }
+    .copyright-notice strong { color:#8A6A1F; }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+</head>
+<body>
+
+<div id="github-bar"></div>
+
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+
+  <a href="DeepDives.html" style="display:inline-block;margin-bottom:16px;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Deep Dives</a>
+
+  <span class="page-tag">🔬 Deep Dive · World Religions · Mormonism</span>
+  <h1 class="page-title">📜 The CES Letter — A Critical Walkthrough</h1>
+  <p class="page-subtitle" style="font-style:italic;">What Jeremy Runnells actually argues, what holds up under scrutiny, and what doesn't — anchored in 2 Timothy 3:16–17.</p>
+
+  <div class="verdict-box">
+    <div class="vtitle">✨ Why this study matters</div>
+    <p>In 2013, a seventh-generation Latter-day Saint named <strong>Jeremy Runnells</strong> was offered the chance by a Church Educational System (CES) director to share his doubts about LDS history and origins. Runnells wrote a long, carefully-sourced letter cataloging the problems he had found. The CES director promised a response. None ever came. The letter spread, became <em>CES Letter — My Search for Answers to my Mormon Doubts</em>, and has become arguably the single most influential internal critique of Mormonism in the internet era. It lives at <a href="https://cesletter.org" target="_blank" rel="noopener">cesletter.org</a>, where it can be read for free in full.</p>
+    <p>The point of this Deep Dive is not to attack LDS people — many are sincere, kind, and hungry for truth — and it is not to simply hand Runnells a victory. The point is to do what 2 Timothy 3:16–17 commands: hold every claim up to Scripture and to evidence, and let the honest reader decide. Runnells makes some claims that are factually airtight and confirmed by the LDS Church itself. He makes others that are weaker, or where his framework (modern secular skepticism) cuts against historic Christianity just as hard as it cuts against Mormonism. Both deserve honest engagement.</p>
+    <p>Anchor verse: <em>"All Scripture is inspired by God and profitable for teaching, for reproof, for correction, for training in righteousness"</em> (2 Timothy 3:16). The standard is Scripture. Frameworks — Runnells' and LDS apologists' alike — get measured against the Word.</p>
+  </div>
+
+  <div class="copyright-notice">
+    <strong>⚖️ A note on sources:</strong> The CES Letter is copyrighted by Jeremy Runnells and the CES Letter Foundation. This Deep Dive does not reproduce the letter verbatim. Each section summarizes the <em>essence</em> of Runnells' claims in our own words, with direct links to the original at <a href="https://cesletter.org" target="_blank" rel="noopener">cesletter.org</a> so readers can verify everything for themselves. That is how Runnells himself asks the material to be engaged: <em>"with all of the facts and information on the table."</em>
+  </div>
+
+  <div class="toc-box">
+    <div class="toc-title">📋 The 16 sections walked through below</div>
+    <ol>
+      <li><a href="#s1-bom">Book of Mormon</a> — KJV errors, anachronisms, DNA, archaeology, View of the Hebrews</li>
+      <li><a href="#s2-translation">Book of Mormon Translation</a> — the seer stone in the hat</li>
+      <li><a href="#s3-first-vision">First Vision</a> — four+ conflicting accounts</li>
+      <li><a href="#s4-boa">Book of Abraham</a> — papyri vs. Egyptology</li>
+      <li><a href="#s5-polygamy">Polygamy / Polyandry</a> — 34+ wives, including teens and other men's wives</li>
+      <li><a href="#s6-prophets">Prophets</a> — Adam-God, Blood Atonement, racial doctrines</li>
+      <li><a href="#s7-kinderhook">Kinderhook Plates &amp; Translator Claims</a></li>
+      <li><a href="#s8-testimony">Testimony &amp; Spiritual Witness</a> — the epistemology problem</li>
+      <li><a href="#s9-priesthood">Priesthood Restoration</a> — timeline inconsistencies</li>
+      <li><a href="#s10-witnesses">Witnesses</a> — magical worldview and folk magic</li>
+      <li><a href="#s11-temples">Temples &amp; Freemasonry</a> — 7 weeks after Joseph's initiation</li>
+      <li><a href="#s12-science">Science</a> — death before the fall, hominids, DNA</li>
+      <li><a href="#s13-other">Other</a> — censorship, whitewashing, dishonesty over history</li>
+      <li><a href="#s14-conclusion">Conclusion</a> — Runnells' summation</li>
+      <li><a href="#s15-epilogue">Epilogue</a> — what happened after</li>
+      <li><a href="#s16-preface">Preface &amp; Introduction</a> — Runnells' framing</li>
+    </ol>
+  </div>
+
+  <h2 class="section-title">📖 How each section is laid out</h2>
+  <p class="body">For each of Runnells' 16 sections, the Deep Dive presents three things in order:</p>
+  <ul class="body">
+    <li><strong>The Claim Box (tan):</strong> a clear, fair summary of what Runnells actually argues in that section — in his own framing, not a strawman.</li>
+    <li><strong>The Analysis Box (blue):</strong> a factual and historical check. Is the claim accurate? What's the evidence on both sides? Has the LDS Church confirmed or denied it?</li>
+    <li><strong>The Response Box (red, when applicable):</strong> the strongest LDS apologetic responses — and where they hold, where they don't.</li>
+  </ul>
+  <p class="body">The goal is steelmanning both sides, with light theological weighing only where Scripture clearly speaks.</p>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTION 1: BOOK OF MORMON ============ -->
+  <div class="section-header" id="s1-bom"><span>📘 1. Book of Mormon</span><span class="num">Section 1 of 16</span></div>
+  <p class="body">President Ezra Taft Benson called the Book of Mormon the <em>"keystone of our religion."</em> President Jeffrey R. Holland framed it as a <em>"sudden death proposition"</em> — either it is what Joseph Smith claimed, or the entire LDS Church is false. Runnells holds the LDS Church to its own standard and presents a stack of problems.</p>
+
+  <a class="source-link" href="https://read.cesletter.org/bom/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 1.1</div>
+    <div class="claim-name">1769 KJV Errors and 17th-Century Italics</div>
+    <div class="claim-line">The Book of Mormon (allegedly an ancient record translated from gold plates engraved between roughly 600 BC and 421 AD) contains unique errors and italicized translator-additions that appear only in the <strong>1769 edition of the King James Bible</strong> — the edition Joseph Smith owned. KJV translators in 1611 added English words for readability and marked them with italics; these added words were not in the original Hebrew or Greek manuscripts. Yet they appear verbatim in the Book of Mormon, supposedly written 1,200+ years before the KJV existed.</div>
+    <div class="claim-line">Specific example: <strong>2 Nephi 19:1</strong> (dated to ~550 BC in the Book of Mormon) reproduces the 1611 KJV translation of Isaiah 9:1 — including the italicized translator additions — and even adds the word "Red" to "sea," which is not in any Hebrew source manuscript.</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 1.1</div>
+    <div class="line"><strong>Factually accurate.</strong> The italicized words in the KJV are objectively from 1611 English translators, not from ancient Hebrew. The Book of Mormon does reproduce them. This is verifiable by side-by-side comparison and is not seriously disputed even by LDS apologists.</div>
+    <div class="line"><strong>The standard LDS response</strong> is that God gave Joseph an English translation, and the Holy Spirit chose to clothe the message in familiar KJV phrasing. This is a faith-based response, not an evidential one — it cannot be falsified, but it also cannot be confirmed. It explains the data only by appealing to divine choice that happens to look identical to plagiarism.</div>
+    <div class="line"><strong>Holds up under scrutiny.</strong> This is one of Runnells' strongest factual points.</div>
+  </div>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 1.2</div>
+    <div class="claim-name">DNA Evidence</div>
+    <div class="claim-line">The Book of Mormon originally taught that Lamanites (descendants of Hebrews who sailed to the Americas) were the <strong>"principal ancestors of the American Indians."</strong> Modern DNA evidence shows that Native Americans are overwhelmingly of <strong>Asian (Siberian) origin</strong>, not Middle Eastern. After the DNA results were published, the LDS Church quietly changed the introduction of the 2006 Book of Mormon from "principal ancestors" to "among the ancestors."</div>
+    <div class="claim-line">The LDS Church's own January 2014 essay <em>"<a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/book-of-mormon-and-dna-studies" target="_blank" rel="noopener">Book of Mormon and DNA Studies</a>"</em> concedes that the majority of Native Americans carry Asian DNA.</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 1.2</div>
+    <div class="line"><strong>Factually accurate and Church-confirmed.</strong> The wording change in the 2006 introduction is documented, and the Church's own 2014 essay acknowledges the Asian-origin DNA findings.</div>
+    <div class="line"><strong>LDS apologetic response:</strong> The "Limited Geography Model" proposes that Book of Mormon events happened in a small region (often Mesoamerica), and Lamanite DNA could have been swamped out by a much larger Asian population over 2,500 years.</div>
+    <div class="line"><strong>The problem with the response:</strong> Early LDS prophets, including Joseph Smith himself, taught a hemispheric model (North and South America). The Limited Geography Model is a relatively recent apologetic retrofit and contradicts statements by Joseph Smith, Brigham Young, Spencer W. Kimball, and others. The model also doesn't explain why <em>no</em> Middle Eastern DNA markers have been found in pre-Columbian Native American remains.</div>
+    <div class="line"><strong>Holds up under scrutiny.</strong> Strong factual case.</div>
+  </div>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 1.3</div>
+    <div class="claim-name">Anachronisms</div>
+    <div class="claim-line">The Book of Mormon describes pre-Columbian Americans (2200 BC – 421 AD) using <strong>horses, cattle, oxen, sheep, swine, goats, elephants, wheels, chariots, wheat, silk, steel, and iron</strong>. According to mainstream archaeology and zoology, none of these existed in the pre-Columbian Americas during that period.</div>
+    <div class="claim-line">Apologetic attempts to reframe the items (e.g., "horses" really meant tapirs, "sheep" meant bighorn sheep, "steel" was a different metal) require redefining each term against its natural English meaning.</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 1.3</div>
+    <div class="line"><strong>Mostly accurate.</strong> Mainstream archaeology and zoology do not support the presence of these animals or technologies in pre-Columbian America during Book of Mormon timeframes. Pre-Columbian American horses did exist much earlier but went extinct around 10,000 BC, long before Book of Mormon dates.</div>
+    <div class="line"><strong>Apologetic responses</strong> have proposed "loan-shifting" — that Hebrew speakers might have called unfamiliar American animals by familiar Hebrew names. This is plausible linguistically but doesn't explain wheels, chariots, or steel, which are technologies, not animal naming conventions.</div>
+    <div class="line"><strong>Holds up under scrutiny,</strong> though apologists have legitimate edge cases for a few items.</div>
+  </div>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 1.4</div>
+    <div class="claim-name">Archaeology — The Empty Hill Cumorah</div>
+    <div class="claim-line">The Book of Mormon describes massive battles at the Hill Cumorah in New York, including a final battle around 400 AD with <strong>at least 230,000 Nephite deaths alone</strong>. Yet no bones, weapons, armor, chariots, or artifacts of any kind have been found at the site. John E. Clark, director of BYU's archaeological organization, wrote: <em>"Archaeologically speaking, it is a clean hill. No artifacts, no walls, no trenches, no arrowheads."</em></div>
+    <div class="claim-line">Compare this with documented hillside battle sites elsewhere (Caerau Hillfort in Wales, Roman occupation sites in Britain), which yield abundant artifacts dating back thousands of years.</div>
+    <div class="claim-line">Most striking: Thomas Stuart Ferguson, founder of BYU's New World Archaeological Foundation, spent 17 years and significant Church funding searching for Book of Mormon archaeological evidence. His 1976 conclusion: <em>"You can't set Book of Mormon geography down anywhere — because it is fictional and will never meet the requirements of the dirt-archaeology."</em></div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 1.4</div>
+    <div class="line"><strong>Factually accurate.</strong> No artifacts have been found at Hill Cumorah. Ferguson's letter is authentic and well-documented.</div>
+    <div class="line"><strong>LDS apologetic response:</strong> The "Limited Geography Model" again — the real Cumorah might be in Mesoamerica, not New York. The Church has not officially endorsed this view but allows it.</div>
+    <div class="line"><strong>The problem:</strong> The Church still operates a visitor's center at the New York Hill Cumorah and held the annual Hill Cumorah Pageant there for decades. Joseph Smith and multiple later prophets explicitly identified the New York hill as the Book of Mormon Cumorah. The Limited Geography Model contradicts the founder's stated location.</div>
+    <div class="line"><strong>A fair point on the other side:</strong> "Absence of evidence is not evidence of absence" — but as the comparison cases (Caerau, Roman Britain) show, civilizations of the size described in the Book of Mormon do leave traces. The total absence is striking.</div>
+    <div class="line"><strong>Holds up under scrutiny.</strong></div>
+  </div>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 1.5</div>
+    <div class="claim-name">View of the Hebrews and The Late War</div>
+    <div class="claim-line">Two books published in Joseph Smith's region <strong>before</strong> the Book of Mormon contain striking parallels to it:</div>
+    <ul>
+      <li><strong>View of the Hebrews</strong> (1823, by Reverend Ethan Smith, Vermont) — Oliver Cowdery, one of the Book of Mormon witnesses and Joseph's scribe, was a member of Ethan Smith's congregation. The book argues Native Americans descended from Hebrews who sailed to the Americas, divided into civilized and barbarous groups, fought wars, and had lost records buried in Indian mounds. Over <strong>20+ specific parallels</strong> with the Book of Mormon are documented.</li>
+      <li><strong>The Late War Between the United States and Great Britain</strong> (1819, New York schoolbook) — written in KJV-imitation Jacobean English with phrases that echo the Book of Mormon's opening: "Now it came to pass... in the thirty and sixth year after..."</li>
+    </ul>
+    <div class="claim-line">LDS General Authority <strong>B. H. Roberts</strong> privately investigated this and wrote: <em>"Did Ethan Smith's View of the Hebrews furnish structural material for Joseph Smith's Book of Mormon?... Not a few things merely, one or two, or a half dozen, but many; and it is this fact of many things of similarity and the cumulative force of them that makes them so serious a menace."</em></div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 1.5</div>
+    <div class="line"><strong>Factually accurate.</strong> Both books exist, both predate the Book of Mormon, and B.H. Roberts (a faithful LDS leader and Church historian, not a critic) wrote the cited assessment in research intended only for the First Presidency. It was published posthumously as <em>Studies of the Book of Mormon</em>.</div>
+    <div class="line"><strong>Runnells' restraint here is notable:</strong> He explicitly says this <em>doesn't prove plagiarism</em> — it shows that the conceptual building blocks of the Book of Mormon were circulating in Joseph Smith's region before he produced it.</div>
+    <div class="line"><strong>LDS apologetic response:</strong> Many parallels are generic (wars, civilizations rising and falling) or are common Christian/biblical themes. Word-for-word plagiarism cannot be shown.</div>
+    <div class="line"><strong>The fair middle:</strong> The combination of (a) the existence of these books in Joseph's region, (b) Oliver Cowdery's direct connection to Ethan Smith, (c) the volume of thematic parallels, and (d) B.H. Roberts' own concern is significant — even if it falls short of a smoking gun.</div>
+  </div>
+
+  <h2 class="section-title">📋 Section 1 Bottom Line</h2>
+  <div class="key-quote">The Book of Mormon section is among Runnells' strongest. Most of the factual claims are confirmed by the LDS Church itself. The apologetic responses tend to require either redefining English terms (anachronisms), retroactively shrinking the geography (DNA, archaeology), or appealing to divine choice that conveniently mimics plagiarism (KJV italics). None of this proves Joseph Smith fabricated the Book of Mormon — but it does mean the "keystone" sits on contested ground.</div>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTION 2: TRANSLATION ============ -->
+  <div class="section-header" id="s2-translation"><span>🪨 2. Book of Mormon Translation</span><span class="num">Section 2 of 16</span></div>
+
+  <a class="source-link" href="https://read.cesletter.org/bom-translation/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 2.1</div>
+    <div class="claim-name">The Seer Stone in the Hat</div>
+    <div class="claim-line">The story taught in LDS Sunday schools, missionary training, and Church publications for over 150 years depicted Joseph Smith translating the gold plates using the Urim and Thummim, with the plates visible on a table. The <strong>actual historical method</strong>, now confirmed by the LDS Church itself, was that Joseph placed a <strong>"peep stone" (the same stone he had used for treasure hunting before the gold plates appeared) into a hat, put his face into the hat to block out light, and read off words that appeared on the stone.</strong> The gold plates were typically covered with a cloth, in another room, or even buried — and were not actually used in the translation.</div>
+    <div class="claim-line">Runnells points out: respected LDS historian and scholar <strong>Richard Bushman</strong> publicly acknowledges this and asks the obvious question: <em>"What in the world are the plates for? Why do we need them on the table if they are just wrapped up into a cloth while he looks into a seer stone?"</em></div>
+    <div class="claim-line">The Church confirmed this in its <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/book-of-mormon-translation" target="_blank" rel="noopener">December 2013 <em>Book of Mormon Translation</em> essay</a> and published photographs of the actual stone in the October 2015 <em>Ensign</em>. In June 2016, President Dieter F. Uchtdorf compared the seer stone to an iPhone.</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 2.1</div>
+    <div class="line"><strong>Factually accurate and Church-confirmed.</strong> The seer-stone-in-hat method is documented by multiple primary witnesses (Emma Smith, David Whitmer, Martin Harris) and now officially acknowledged by the LDS Church.</div>
+    <div class="line"><strong>The real issue isn't whether it happened</strong> — it's why members weren't taught this. The standard Church artwork showed Joseph studying the plates with the Urim and Thummim, not looking into a hat. Many Latter-day Saints first learned the actual method as adults, through critics or the 2013 essay, and felt deceived.</div>
+    <div class="line"><strong>The deeper point:</strong> The same stone was used by Joseph in his pre-Mormon career as a <em>"glass looker"</em> claiming to locate buried treasure — for which he was arrested in 1826 in Bainbridge, New York. The Book of Mormon translation method and the treasure-hunting method were physically identical.</div>
+    <div class="line"><strong>Holds up under scrutiny.</strong> Even faithful LDS scholars like Bushman acknowledge the genuine difficulty here.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTION 3: FIRST VISION ============ -->
+  <div class="section-header" id="s3-first-vision"><span>👁️ 3. First Vision</span><span class="num">Section 3 of 16</span></div>
+  <p class="body">President Gordon B. Hinckley taught: <em>"Our whole strength rests on the validity of that [first] vision. It either occurred or it did not occur. If it did not, then this work is a fraud."</em> Runnells takes this seriously and examines the historical record.</p>
+
+  <a class="source-link" href="https://read.cesletter.org/first-vision/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 3.1</div>
+    <div class="claim-name">Four+ Conflicting Accounts</div>
+    <div class="claim-line">Joseph Smith gave <strong>at least four different accounts</strong> of his First Vision over time (1832, two in 1835, 1838, and 1842). The Church now acknowledges this in its <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/first-vision-accounts" target="_blank" rel="noopener">November 2013 essay <em>First Vision Accounts</em></a>. The accounts differ on key facts:</div>
+    <ul>
+      <li><strong><a href="https://www.josephsmithpapers.org/paper-summary/history-circa-summer-1832/1" target="_blank" rel="noopener">1832 (Joseph's only handwritten account)</a>:</strong> Joseph is 15 (in his 16th year). Only the Lord (Jesus) appears. The motive is seeking forgiveness for his sins. Joseph already knew before praying that no true church existed.</li>
+      <li><strong><a href="https://www.josephsmithpapers.org/paper-summary/history-1838-1856-volume-a-1-23-december-1805-30-august-1834/2" target="_blank" rel="noopener">1838 (the official version, now in Pearl of Great Price)</a>:</strong> Joseph is 14. Both the Father and Son appear. The motive is to ask which church to join, because <em>"it had never entered into my heart that all were wrong."</em> A revival in Palmyra prompted the search.</li>
+      <li><strong><a href="https://www.josephsmithpapers.org/paper-summary/journal-1835-1836/24" target="_blank" rel="noopener">1835 and 1842 accounts</a>:</strong> An angel, Jesus, multiple angels, or other configurations.</li>
+    </ul>
+    <div class="claim-line">The accounts differ on who appeared, Joseph's age, his motive for praying, and whether he had pre-existing beliefs.</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 3.1</div>
+    <div class="line"><strong>Factually accurate and Church-confirmed.</strong> The 2013 First Vision Accounts essay acknowledges multiple accounts and attempts to reconcile them.</div>
+    <div class="line"><strong>LDS apologetic response:</strong> People retell important experiences with different emphases over time, like the four Gospels giving different details of Jesus' life. Variation does not equal contradiction.</div>
+    <div class="line"><strong>Where the analogy fails:</strong> The four Gospels are four different authors giving four different perspectives on Jesus' life. The four First Vision accounts are all from <em>the same person</em> (Joseph Smith) about <em>the same event</em>. And several differences are not emphasis but contradiction — particularly the contradiction between knowing all churches were wrong before praying (1832) versus not having entertained that idea (1838).</div>
+    <div class="line"><strong>The late-appearance problem:</strong> No record of any First Vision exists before 1832 — twelve years after it supposedly occurred. James B. Allen, former BYU professor and Assistant Church Historian, acknowledged: <em>"the fact that none of the available contemporary writings about Joseph Smith in the 1830s, none of the publications of the Church in that decade, and no contemporary journal or correspondence yet discovered mentions the story of the first vision is convincing evidence that at best it received only limited circulation in those early days."</em></div>
+    <div class="line"><strong>The 1820 revival problem:</strong> Historical records show no revival in Palmyra, New York in 1820. There was one in 1817 and another in 1824. FairMormon has conceded this. Joseph's account anchors itself to a religious event that didn't happen when he said it did.</div>
+    <div class="line"><strong>Holds up under scrutiny.</strong></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTION 4: BOOK OF ABRAHAM ============ -->
+  <div class="section-header" id="s4-boa"><span>📜 4. Book of Abraham</span><span class="num">Section 4 of 16</span></div>
+
+  <a class="source-link" href="https://read.cesletter.org/boa/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 4.1</div>
+    <div class="claim-name">The Papyri Were Egyptian Funerary Texts, Not Abraham's Writings</div>
+    <div class="claim-line">Joseph Smith claimed in 1835 to have translated an Egyptian papyrus containing the writings of the biblical patriarch <strong>Abraham</strong>, who lived around 2000 BC. The text became the Book of Abraham, canonized as scripture in the Pearl of Great Price. Joseph said it was written <strong>"by his [Abraham's] own hand, upon papyrus."</strong></div>
+    <div class="claim-line">The original papyri were thought lost in an 1871 fire, but were <strong>rediscovered in 1966</strong> in the Metropolitan Museum of Art and returned to the LDS Church. They were then examined by both LDS and non-LDS Egyptologists.</div>
+    <div class="claim-line">The unanimous conclusion: <strong>The papyri are standard Egyptian funerary texts (a "Breathing Permit" for a deceased man named Hor) from the first century BC to first century AD — over 1,800 years after Abraham lived.</strong> The actual hieroglyphics have nothing to do with Abraham and contain no mention of him.</div>
+    <div class="claim-line">The LDS Church confirmed this in its <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/translation-and-historicity-of-the-book-of-abraham" target="_blank" rel="noopener">July 2014 essay <em>Translation and Historicity of the Book of Abraham</em></a>: <em>"None of the characters on the papyrus fragments mentioned Abraham's name or any of the events recorded in the book of Abraham."</em></div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 4.1</div>
+    <div class="line"><strong>Factually accurate and Church-confirmed.</strong> Every Egyptologist who has examined the papyri — LDS and non-LDS — agrees the documents are standard Egyptian funerary texts. The Church's own 2014 essay concedes this.</div>
+    <div class="line"><strong>The facsimile interpretations are demonstrably wrong.</strong> Joseph Smith's interpretations of the three facsimiles (drawings published with the Book of Abraham) are testable claims. Egyptologists across decades have consistently shown Joseph's interpretations don't match the actual Egyptian iconography. For example, Joseph identified Figure 7 in Facsimile 2 as "God sitting on his throne"; modern Egyptology identifies it as <strong>Min, the Egyptian fertility god</strong>, depicted with an erect phallus.</div>
+    <div class="line"><strong>LDS apologetic responses:</strong></div>
+    <ul style="font-family:Arial,sans-serif;font-size:13.5px;line-height:1.7;color:#1F2D3B;margin:6px 0 8px 20px;">
+      <li><strong>"Missing papyrus" theory:</strong> The actual papyrus Joseph translated may have been a different scroll, now lost. <em>Problem:</em> The recovered fragments match the diagrams in Joseph's own Egyptian Alphabet and Grammar papers, suggesting they are exactly what he used.</li>
+      <li><strong>"Catalyst" theory:</strong> The papyrus was a catalyst for revelation; Joseph received the Book of Abraham by inspiration, not literal translation. <em>Problem:</em> This contradicts Joseph's own consistent claim that he was <em>translating</em>, and the heading still says "by his own hand, upon papyrus."</li>
+    </ul>
+    <div class="line"><strong>Why this matters:</strong> Unlike the Book of Mormon (whose source plates were taken away), the Book of Abraham is a <strong>testable translation</strong>. We have the source. Joseph claimed to translate Egyptian. The translation is demonstrably wrong. This is among Runnells' strongest evidential cases.</div>
+    <div class="line"><strong>Holds up under scrutiny — strongly.</strong></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTION 5: POLYGAMY/POLYANDRY ============ -->
+  <div class="section-header" id="s5-polygamy"><span>💍 5. Polygamy &amp; Polyandry</span><span class="num">Section 5 of 16</span></div>
+
+  <a class="source-link" href="https://read.cesletter.org/polygamy/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 5.1</div>
+    <div class="claim-name">34+ Wives Including Teens and Other Men's Wives</div>
+    <div class="claim-line">The LDS Church confirmed in its 2014 polygamy essays that Joseph Smith married at least <strong>34 women</strong>. Among them:</div>
+    <ul>
+      <li><strong>11 were already married</strong> to other living men at the time — this is polyandry. Among them, Marinda Hyde, wife of Apostle Orson Hyde, whom Joseph married while Orson was on a mission to Palestine. LDS Church Historian Elder Marlin K. Jensen has publicly confirmed the polyandry.</li>
+      <li><strong>7 were teenage girls</strong>, including <strong>Helen Mar Kimball at age 14</strong>. Joseph was 37. Helen was promised "eternal salvation and exaltation" for herself and her family if she accepted.</li>
+      <li>The marriages included a <strong>mother-daughter set and three sister sets</strong>, several of whom (the Lawrence sisters, Partridge sisters, Lucy Walker) were Joseph's foster children living in the Smith home.</li>
+      <li>Joseph was sealed to <strong>22 other women before he was sealed to his first legal wife, Emma</strong>. Emma was unaware of most of these marriages.</li>
+      <li>Joseph used <strong>threats that he would be slain by an angel with a drawn sword</strong> to coerce several women into marriage (Zina Huntington, Mary Lightner, Almera Woodard Johnson).</li>
+    </ul>
+    <div class="claim-line">Joseph publicly denied practicing polygamy throughout his life, including in 1835 Doctrine &amp; Covenants 101:4 (now removed). He destroyed the <em>Nauvoo Expositor</em> printing press after it exposed his polygamy — the act that led directly to his arrest and death.</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 5.1</div>
+    <div class="line"><strong>Factually accurate and Church-confirmed.</strong> The <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/plural-marriage-in-kirtland-and-nauvoo" target="_blank" rel="noopener">2014 LDS essay <em>Plural Marriage in Kirtland and Nauvoo</em></a> confirms the number of wives, the polyandry, the marriage to 14-year-old Helen Mar Kimball, and the angel-with-sword coercion narrative.</div>
+    <div class="line"><strong>LDS apologetic response:</strong> Many of these were "dynastic sealings" for eternity only, without sexual relations on earth. They were spiritual unions to bind families across eternity.</div>
+    <div class="line"><strong>The problems with that response:</strong></div>
+    <ul style="font-family:Arial,sans-serif;font-size:13.5px;line-height:1.7;color:#1F2D3B;margin:6px 0 8px 20px;">
+      <li>The "dynastic sealing" defense was developed retroactively by apologists; primary sources describe these as marriages, not spiritual abstractions.</li>
+      <li>If the marriages were purely for eternity, why was secrecy required? Why did Emma weep, Apostle Heber Kimball fast for three days at the demand for his wife, and Joseph deny polygamy publicly?</li>
+      <li>Joseph died without being sealed to his own parents or his own children — but found time to be sealed to other men's wives. This undermines the "dynastic linking" claim.</li>
+      <li>Several women later testified to sexual relations with Joseph (Mary Elizabeth Rollins Lightner, Emily Partridge).</li>
+    </ul>
+    <div class="line"><strong>Biblical standard:</strong> Whatever one's view of Old Testament polygamy (Abraham, David, Solomon), the New Testament is clear: <em>"an overseer must be... the husband of one wife"</em> (1 Timothy 3:2). Jesus reaffirmed the one-flesh marriage of Genesis 2 (Matthew 19:4–6). Deception of one's first wife, coercion of teenagers, and marriages to other men's wives have no scriptural justification under any covenant.</div>
+    <div class="line"><strong>Holds up under scrutiny.</strong> The historical facts are not in dispute even by the LDS Church.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTION 6: PROPHETS ============ -->
+  <div class="section-header" id="s6-prophets"><span>🎤 6. Prophets — Failed Doctrines</span><span class="num">Section 6 of 16</span></div>
+  <p class="body">President Wilford Woodruff taught: <em>"The Lord will never permit me or any other man who stands as President of the Church to lead you astray... If I were to attempt that, the Lord would remove me out of my place."</em> Runnells tests that claim against the historical record.</p>
+
+  <a class="source-link" href="https://read.cesletter.org/prophets/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 6.1</div>
+    <div class="claim-name">Adam-God Doctrine</div>
+    <div class="claim-line">President <strong>Brigham Young</strong> taught publicly, repeatedly, and in temple ceremonies that <strong>Adam was God the Father</strong> — that Adam was the literal father of Jesus Christ and the God with whom Latter-day Saints have to do. He preached this in General Conference in 1852 and 1854 and published it in the <em>Deseret News</em> in 1873, calling it a doctrine he had "revealed" and that "God revealed to me."</div>
+    <div class="claim-line">Later prophets, including <strong>Spencer W. Kimball (1976)</strong> and Elder Bruce R. McConkie, formally <strong>denounced the Adam-God theory as false doctrine and "heresy."</strong></div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 6.1</div>
+    <div class="line"><strong>Factually accurate.</strong> Brigham Young taught Adam-God. Later prophets renounced it. Both are documented in primary LDS sources.</div>
+    <div class="line"><strong>The structural problem this creates:</strong> Either (a) Brigham Young was a true prophet teaching true doctrine that was later wrongly rejected, or (b) Brigham Young was a prophet teaching <em>false doctrine as revelation</em>. Either option contradicts Wilford Woodruff's promise that a prophet cannot lead the Church astray.</div>
+    <div class="line"><strong>LDS apologetic response:</strong> Brigham Young was speaking "as a man, not as a prophet" on this issue. <em>Problem:</em> He taught it in General Conference, published it as revelation, and put it in the Temple endowment ceremony. There is no neutral way to read it as personal opinion.</div>
+    <div class="line"><strong>Holds up under scrutiny.</strong></div>
+  </div>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 6.2</div>
+    <div class="claim-name">Blood Atonement</div>
+    <div class="claim-line">Brigham Young taught that certain sins were beyond the atonement of Jesus Christ — and that to be forgiven of them, the sinner's own blood had to be shed. He said <em>"there are sins that can be atoned for by an offering upon an altar... but they must be atoned for by the blood of the man."</em></div>
+    <div class="claim-line">The LDS Church confirms in its <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/peace-and-violence-among-19th-century-latter-day-saints" target="_blank" rel="noopener"><em>Peace and Violence among 19th-Century Latter-day Saints</em> essay</a> that Blood Atonement was taught by Brigham Young. Later prophets disavowed it.</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 6.2</div>
+    <div class="line"><strong>Factually accurate and Church-confirmed.</strong></div>
+    <div class="line"><strong>Scriptural problem this creates:</strong> The New Testament is emphatic that Christ's blood is sufficient for <em>all</em> sin. Hebrews 10:14: <em>"by one offering He has perfected for all time those who are sanctified."</em> 1 John 1:7: <em>"the blood of Jesus His Son cleanses us from all sin."</em> Blood Atonement directly contradicts the sufficiency of Christ.</div>
+    <div class="line"><strong>This isn't just an LDS-internal contradiction. It's a contradiction with Scripture itself.</strong></div>
+  </div>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 6.3</div>
+    <div class="claim-name">The Priesthood Ban on Black Men (1852–1978)</div>
+    <div class="claim-line">For 126 years, the LDS Church banned <strong>all men of black African descent</strong> from holding the priesthood, and barred black individuals and families from temple ordinances necessary (in LDS theology) for exaltation. Every prophet from Brigham Young to Harold B. Lee upheld the ban.</div>
+    <div class="claim-line">The ban was justified by repeated prophetic teaching that black skin was a curse, a sign of disfavor in pre-mortal life, or the mark of Cain (echoed in Book of Mormon 2 Nephi 5:21).</div>
+    <div class="claim-line">In <strong>1978</strong>, the ban was lifted. In <strong>2013</strong>, the LDS Church's <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/race-and-the-priesthood" target="_blank" rel="noopener"><em>Race and the Priesthood</em> essay</a> <strong>disavowed the racial theories</strong> taught by previous prophets — effectively declaring 130 years of prophetic teaching to be wrong.</div>
+    <div class="claim-line">Joseph Smith himself had ordained at least two black men (Elijah Abel, Walker Lewis) to the priesthood, so the ban began with Brigham Young, not the founding prophet.</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 6.3</div>
+    <div class="line"><strong>Factually accurate and Church-confirmed.</strong></div>
+    <div class="line"><strong>The structural problem:</strong> If the prophet cannot lead the Church astray (Woodruff), and ten consecutive prophets upheld and taught a racial doctrine that the Church has now disavowed, then either (a) the disavowal is wrong, or (b) Woodruff's promise is wrong. There is no third option.</div>
+    <div class="line"><strong>Biblical standard:</strong> Galatians 3:28 — <em>"There is neither Jew nor Greek, there is neither slave nor free man, there is neither male nor female; for you are all one in Christ Jesus."</em> Acts 10:34 — <em>"God is not one to show partiality."</em> The LDS ban contradicts plain New Testament teaching.</div>
+    <div class="line"><strong>Holds up under scrutiny.</strong></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTION 7: KINDERHOOK ============ -->
+  <div class="section-header" id="s7-kinderhook"><span>🥇 7. Kinderhook Plates &amp; Translator Claims</span><span class="num">Section 7 of 16</span></div>
+
+  <a class="source-link" href="https://read.cesletter.org/kinderhook/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 7.1</div>
+    <div class="claim-name">Joseph "Translated" a Documented Hoax</div>
+    <div class="claim-line">In 1843, six brass plates were brought to Joseph Smith from Kinderhook, Illinois. Joseph wrote in <em>History of the Church</em> vol. 5: <em>"I have translated a portion of them, and find they contain the history of the person with whom they were found. He was a descendant of Ham, through the loins of Pharaoh, King of Egypt."</em></div>
+    <div class="claim-line">In <strong>1980</strong>, the Chicago Historical Society scientifically analyzed one of the plates and proved they were a <strong>19th-century forgery</strong> — created by local pranksters to test Joseph Smith. The metallurgy and acid-etch process were both 1840s techniques. The LDS Church conceded this in the August 1981 <em>Ensign</em>: <em>"Kinderhook Plates Brought to Joseph Smith Appear to be a Nineteenth-Century Hoax."</em></div>
+    <div class="claim-line">Runnells' point: <strong>Joseph claimed to translate the plates and produced content from them.</strong> Either he was deceived by an obvious hoax (raising questions about his "gift" of translation) or he was fabricating content (raising larger questions). Either way, the testable claim fails.</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 7.1</div>
+    <div class="line"><strong>Factually accurate and Church-confirmed.</strong> The plates are a hoax. Joseph translated them.</div>
+    <div class="line"><strong>LDS apologetic response:</strong> The "translation" attributed to Joseph was actually written in William Clayton's journal, not Joseph's own — so perhaps Joseph never really translated anything. <em>Problem:</em> Clayton was Joseph's personal scribe, and the entry begins <em>"I have translated a portion of them..."</em> in the first person referring to Joseph. The Church accepted this attribution for nearly 140 years.</div>
+    <div class="line"><strong>Cumulative force:</strong> Runnells observes Joseph claimed to translate three ancient records: Book of Mormon (source plates conveniently removed), Book of Abraham (source recovered, translation disproven), and Kinderhook Plates (source recovered, translation disproven). The two we can test, he failed.</div>
+    <div class="line"><strong>Holds up under scrutiny.</strong></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTION 8: TESTIMONY ============ -->
+  <div class="section-header" id="s8-testimony"><span>💖 8. Testimony &amp; Spiritual Witness</span><span class="num">Section 8 of 16</span></div>
+
+  <a class="source-link" href="https://read.cesletter.org/testimony/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 8.1</div>
+    <div class="claim-name">The Burning-in-the-Bosom Epistemology Doesn't Discriminate</div>
+    <div class="claim-line">LDS members are taught to determine truth by praying about the Book of Mormon and seeking a confirming spiritual feeling (Moroni 10:3–5). But Runnells points out: <strong>members of every religion describe the same epistemic experience.</strong> FLDS Mormons (following Warren Jeffs), Catholics, Muslims, Hindus, Jehovah's Witnesses, Seventh-day Adventists, and members of small offshoot Mormon sects all claim spiritual confirmation that their religion is true.</div>
+    <div class="claim-line">If the same method produces confidence in mutually contradictory religions, the method itself cannot reliably determine truth.</div>
+    <div class="claim-line">Runnells also notes that LDS members have testified to "feeling the Spirit" while listening to General Authority <strong>Paul H. Dunn</strong> tell faith-promoting war and baseball stories — stories Dunn was later forced to admit he had fabricated. If the Spirit confirms false stories, what is the Spirit actually doing?</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 8.1</div>
+    <div class="line"><strong>The factual observation is accurate.</strong> Religious experience-based confirmation does occur across mutually-exclusive religious traditions. The Paul H. Dunn case is documented.</div>
+    <div class="line"><strong>The deeper philosophical point is strong against pure feeling-based epistemology.</strong> If "I felt it was true" is the standard, the standard cannot distinguish between Mormonism and FLDS Mormonism, Islam, or Hinduism.</div>
+    <div class="line"><strong>However, this argument cuts wider than Runnells intends.</strong> Any religion that grounds its claims primarily in subjective experience faces this problem. Conservative biblical Christianity has a different epistemic standard: not <em>just</em> internal feeling but <strong>external, public evidence</strong> — the historical resurrection of Jesus Christ attested by eyewitnesses (1 Corinthians 15:3–8), the fulfillment of Old Testament prophecy in Christ, and the preserved canon of Scripture (2 Timothy 3:16). When Paul argued for Christianity, he appealed to <em>publicly verifiable evidence</em>, not private feelings (Acts 26:26).</div>
+    <div class="line"><strong>The Berean test (Acts 17:11)</strong> is the biblical standard: when Paul preached, the Bereans were called noble because they <em>"examined the Scriptures daily to see whether these things were so."</em> Test claims against Scripture and against evidence — not against feelings alone.</div>
+    <div class="line"><strong>Holds up against Mormonism strongly; calls all faith-by-feeling-alone systems to a higher standard.</strong></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTION 9: PRIESTHOOD ============ -->
+  <div class="section-header" id="s9-priesthood"><span>🤝 9. Priesthood Restoration</span><span class="num">Section 9 of 16</span></div>
+
+  <a class="source-link" href="https://read.cesletter.org/priesthood/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 9.1</div>
+    <div class="claim-name">The Priesthood Restoration Story Was Backdated</div>
+    <div class="claim-line">The official LDS narrative is that <strong>John the Baptist appeared to Joseph Smith and Oliver Cowdery in May 1829</strong> and conferred the Aaronic Priesthood, and that <strong>Peter, James, and John</strong> later appeared to confer the Melchizedek Priesthood.</div>
+    <div class="claim-line">The historical problem: <strong>No record of these visitations exists from 1829.</strong> They are absent from:</div>
+    <ul>
+      <li>Joseph Smith's 1830 statement summarizing his religious experiences</li>
+      <li>The 1833 Book of Commandments (the first compiled book of Joseph's revelations)</li>
+      <li>Contemporary journals of church members in the early 1830s</li>
+    </ul>
+    <div class="claim-line">When the 1833 Book of Commandments was revised into the 1835 Doctrine and Covenants, <strong>Joseph and Oliver added text about the visitations of John the Baptist and Peter, James, and John</strong> to an earlier revelation, presenting the new text as if it had been part of the original 1830 revelation. The added text can be verified by comparing <a href="https://www.josephsmithpapers.org/paper-summary/book-of-commandments-1833/65" target="_blank" rel="noopener">Book of Commandments Chapter 28 (1833)</a> with <a href="https://www.josephsmithpapers.org/paper-summary/doctrine-and-covenants-1835/167" target="_blank" rel="noopener">D&amp;C Section 50 (1835)</a> on the Church's own Joseph Smith Papers website (later renumbered D&amp;C 27).</div>
+    <div class="claim-line">Book of Mormon witness <strong>David Whitmer</strong> testified: <em>"I never heard that an Angel had ordained Joseph and Oliver to the Aaronic Priesthood until the year 1834, 1835, or 1836 — in Ohio... I do not believe that John the Baptist ever ordained Joseph and Oliver."</em></div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 9.1</div>
+    <div class="line"><strong>Factually accurate.</strong> The text addition is documented on the LDS Church's own Joseph Smith Papers website. LDS historian Richard Bushman acknowledges: <em>"The late appearance of these accounts raises the possibility of later fabrication."</em></div>
+    <div class="line"><strong>LDS apologetic response:</strong> The events happened in 1829; they just weren't widely shared or recorded until later. <em>Problem:</em> This is a "miraculous visit from resurrected biblical apostles conferring priesthood authority" — easily one of the most consequential events in LDS theology. It would have been the natural centerpiece of early church preaching and recordkeeping. Its complete absence for 5–7 years is striking.</div>
+    <div class="line"><strong>Compare with the New Testament pattern:</strong> The resurrection of Jesus and the appearance to the apostles are central to <em>every</em> early Christian writing from the very beginning (1 Corinthians 15, written ~AD 55, just 20 years after the event, lists named witnesses). The LDS priesthood restoration story, by contrast, was added years later with no early documentation.</div>
+    <div class="line"><strong>Holds up under scrutiny.</strong></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTION 10: WITNESSES ============ -->
+  <div class="section-header" id="s10-witnesses"><span>👥 10. The Witnesses to the Book of Mormon</span><span class="num">Section 10 of 16</span></div>
+
+  <a class="source-link" href="https://read.cesletter.org/witnesses/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 10.1</div>
+    <div class="claim-name">The Witnesses Shared a Magical Worldview — and Saw the Plates "Spiritually," Not Physically</div>
+    <div class="claim-line">The Book of Mormon includes the testimony of Three Witnesses (Oliver Cowdery, David Whitmer, Martin Harris) and Eight Witnesses claiming to have seen the gold plates.</div>
+    <div class="claim-line">Runnells argues that to evaluate these testimonies fairly, the reader must understand the 1820s New England <strong>"magical worldview"</strong>. The Smith family, the Whitmer family, and Martin Harris all engaged in <strong>folk magic, treasure-digging, divining rods, peep stones, and second sight</strong>. Joseph Smith was arrested in 1826 for being a "disorderly person and impostor" using a peep stone to locate buried treasure.</div>
+    <div class="claim-line">In a documented 1838 court testimony, when asked if he saw the plates with his "naked eyes," Martin Harris replied <em>"I did not see them as I do that pencil-case, yet I saw them with the eye of faith; I saw them just as distinctly as I see anything around me, though at the time they were covered over with a cloth."</em></div>
+    <div class="claim-line">Several witnesses (Oliver Cowdery, David Whitmer, Martin Harris) later left the LDS Church and joined other movements, sometimes claiming new revelations.</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 10.1</div>
+    <div class="line"><strong>Factually accurate.</strong> The folk-magic worldview is well-documented. Martin Harris' "eye of faith" testimony is in the historical record. Multiple witnesses left the Church.</div>
+    <div class="line"><strong>Runnells' larger point:</strong> Even if the witnesses' testimony is taken at face value, it doesn't actually help — because the Church now acknowledges Joseph translated the Book of Mormon by looking into a hat at a seer stone, <em>not</em> by reading the gold plates. The plates were typically covered or in another room. So whatever the witnesses saw or experienced, the plates were not the actual source of the translation.</div>
+    <div class="line"><strong>LDS apologetic response:</strong> The witnesses were honest men of integrity, never recanted, and several saw the plates physically. <em>Partial truth:</em> They never formally recanted, but several left the Church and accepted other prophets. Their continued belief in <em>some</em> form of plates doesn't establish what Joseph Smith translated or how.</div>
+    <div class="line"><strong>Holds up under scrutiny — particularly the point that the plates were not actually used in translation.</strong></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTION 11: TEMPLES ============ -->
+  <div class="section-header" id="s11-temples"><span>🏛️ 11. Temples &amp; Freemasonry</span><span class="num">Section 11 of 16</span></div>
+
+  <a class="source-link" href="https://read.cesletter.org/temples/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 11.1</div>
+    <div class="claim-name">The LDS Endowment Came From Masonry, Not Solomon's Temple</div>
+    <div class="claim-line">In <strong>March 1842</strong>, Joseph Smith was initiated as a Mason in Nauvoo, Illinois. <strong>Seven weeks later</strong>, in <strong>May 1842</strong>, he introduced the LDS Temple endowment ceremony, which contained handshakes, signs, tokens, penalties, the "Five Points of Fellowship," and ritual phrasing <strong>nearly identical to Masonic ritual.</strong></div>
+    <div class="claim-line">The official LDS folk explanation is that Masonry preserves a corrupted version of an original ceremony that traces back to Solomon's Temple — and that Joseph restored the original. But:</div>
+    <ul>
+      <li><strong>Freemasonry has no historical connection to Solomon's Temple.</strong> FairMormon itself acknowledges that Masonry traces only to medieval European stonemason guilds.</li>
+      <li><strong>Solomon's Temple was about animal sacrifice</strong>, not handshakes and secret tokens.</li>
+      <li>If the endowment came from a more ancient pure form, why does it mirror specifically the <strong>1842 version of Masonry Joseph had just been initiated into</strong>, rather than an older form?</li>
+    </ul>
+    <div class="claim-line">In <strong>1990</strong>, the Church removed the most Masonic elements — the blood oath penalties and the Five Points of Fellowship — from the endowment. These had been called essential elements that Joseph "restored" and which would "never again be taken away."</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 11.1</div>
+    <div class="line"><strong>Factually accurate.</strong> The timeline (March 1842 Masonic initiation, May 1842 endowment introduction) is documented. The parallels between Masonic and LDS Temple ritual are documented. FairMormon's concession on Masonry's medieval origins is documented.</div>
+    <div class="line"><strong>LDS apologetic response:</strong> God restored ancient covenant truths through Joseph using the cultural forms Joseph was familiar with — including Masonic forms. <em>Counter:</em> This is a faith-based explanation. It cannot be falsified, but it is also indistinguishable from "Joseph borrowed from what he'd just learned."</div>
+    <div class="line"><strong>The 1990 removals are striking:</strong> If the rituals were truly restored ancient covenant ordinances, removing them suggests they weren't essential — undermining the "restoration" framing.</div>
+    <div class="line"><strong>Holds up under scrutiny.</strong></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTION 12: SCIENCE ============ -->
+  <div class="section-header" id="s12-science"><span>🧬 12. Science</span><span class="num">Section 12 of 16</span></div>
+
+  <a class="source-link" href="https://read.cesletter.org/science/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 12.1</div>
+    <div class="claim-name">Death Before the Fall, Hominids, and Neanderthal DNA</div>
+    <div class="claim-line">LDS scripture (2 Nephi 2:22, Alma 12:23–24, D&C 77:6–7) teaches that there was <strong>no death of any kind on Earth before the Fall of Adam</strong> roughly 7,000 years ago. Runnells points to mainstream geological and biological evidence of:</div>
+    <ul>
+      <li>Death and extinction on Earth for billions of years</li>
+      <li>A dozen or more hominid species (Homo erectus, Neanderthal, Denisovan, etc.) that lived and died over the 35,000 – 2.4 million years before Adam</li>
+      <li>Most modern humans carrying small percentages of Neanderthal DNA — a species that died out roughly 33,000 years before Adam, according to LDS chronology</li>
+      <li>Geological evidence inconsistent with a literal global flood 4,500 years ago</li>
+    </ul>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 12.1 — Important Caveat</div>
+    <div class="line"><strong>This is the one section where Runnells' framework is not specifically anti-LDS — it's anti-traditional-biblical-Christianity generally.</strong></div>
+    <div class="line">Runnells assumes <strong>old-earth secular science as the unquestioned standard</strong> and uses it to challenge LDS scripture. But several of his targets (no death before the Fall, global flood, Noah's Ark, Tower of Babel) are <strong>shared between LDS theology and historic, conservative Christian theology</strong>. Genesis 1–11 teaches these things. Romans 5:12 explicitly states <em>"through one man sin entered into the world, and death through sin."</em></div>
+    <div class="line"><strong>How a conservative Christian reads this section:</strong></div>
+    <ul style="font-family:Arial,sans-serif;font-size:13.5px;line-height:1.7;color:#1F2D3B;margin:6px 0 8px 20px;">
+      <li>The death-before-the-Fall point is a real theological problem for <em>any</em> position attempting to harmonize evolutionary timescales with biblical creation, including LDS positions. But it is not specifically an indictment of Mormonism.</li>
+      <li>The hominid and Neanderthal questions are real questions for theistic evolution and old-earth creationism in any tradition.</li>
+      <li>Young-earth biblical creationists (Answers in Genesis, ICR, Creation Ministries International) offer detailed scientific responses to these claims that Runnells does not engage.</li>
+      <li>The global flood debate has serious scholarly defenders on both sides; calling it "discredited" is overstatement.</li>
+    </ul>
+    <div class="line"><strong>Bottom line:</strong> Runnells' science section is the <em>weakest</em> in terms of LDS-specific critique because his framework would equally challenge any Bible-believing Christianity. The right response from a conservative Christian is not to side with Runnells against LDS scripture but to acknowledge that the same questions apply to Genesis, and to engage them honestly within a high view of Scripture (2 Timothy 3:16).</div>
+    <div class="line"><strong>Mixed — some valid LDS-specific points, but Runnells' framework here would also cut against conservative biblical Christianity.</strong></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTION 13: OTHER ============ -->
+  <div class="section-header" id="s13-other"><span>📂 13. Other — Censorship and Whitewashing</span><span class="num">Section 13 of 16</span></div>
+
+  <a class="source-link" href="https://read.cesletter.org/other/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 13.1</div>
+    <div class="claim-name">The Church Has Systematically Edited Its Own History</div>
+    <div class="claim-line">Runnells documents a pattern of selective curation in official LDS materials:</div>
+    <ul>
+      <li><strong>2013 Official Declaration 2 header:</strong> states the priesthood ban's origins are "not clear" — directly contradicting a 1949 First Presidency statement explicitly attributing the ban to a "direct commandment from the Lord."</li>
+      <li><strong>Zina Diantha Huntington Young's official biography on lds.org:</strong> lists her husbands but omits Joseph Smith (to whom she was sealed while six months pregnant by her legal husband Henry Jacobs) and omits the polyandry.</li>
+      <li><strong>The Brigham Young Sunday School manual</strong> changed "wives" to "[wife]" — concealing Brigham's polygamy from members studying his teachings.</li>
+      <li><strong>Church Historian Elder Steven E. Snow</strong> publicly acknowledged in 2013: <em>"in the past there was a tendency to keep a lot of the records closed or at least not give access to information. But the world has changed in the last generation — with the access to information on the Internet, we can't control it."</em></li>
+    </ul>
+    <div class="claim-line">LDS historian and scholar <strong>Richard Bushman</strong> said publicly: <em>"The dominant narrative is not true. It can't be sustained."</em></div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Claim 13.1</div>
+    <div class="line"><strong>Factually accurate and well-documented.</strong> Each of the cited edits/omissions is verifiable on the LDS Church's own websites.</div>
+    <div class="line"><strong>The Snow and Bushman quotes are critical.</strong> Both are faithful, high-ranking LDS figures (Snow was Church Historian; Bushman is a patriarch and the leading LDS scholar of Joseph Smith). When the Church Historian himself acknowledges past suppression of information, and the leading apologetic historian says "the dominant narrative is not true" — this is not anti-Mormon spin. This is an institutional confession.</div>
+    <div class="line"><strong>The deeper point:</strong> The internet has forced the Church to publish the "Gospel Topics Essays" (2013–2015) that quietly confirm many of the things Runnells documents. The essays exist <em>because</em> people like Runnells made the issues impossible to hide.</div>
+    <div class="line"><strong>Holds up under scrutiny.</strong></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ SECTIONS 14, 15, 16 ============ -->
+  <div class="section-header" id="s14-conclusion"><span>🏁 14. Conclusion</span><span class="num">Section 14 of 16</span></div>
+
+  <a class="source-link" href="https://read.cesletter.org/conclusion/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 14.1</div>
+    <div class="claim-name">Runnells' Summation</div>
+    <div class="claim-line">After walking through 13 categories of evidence, Runnells concludes that he cannot reconcile the LDS Church's truth claims with the historical and scientific record. He explicitly states he is not anti-Mormon, that he loves his LDS family and heritage, and that he writes out of a desire for honest disclosure rather than to harm the Church. He calls on the Church to provide answers — answers he was promised by the CES director and never received.</div>
+    <div class="claim-line">His central call: members and investigators deserve <em>"all of the facts and information on the table"</em> before committing their lives, time, talents, and money to the institution.</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Section 14</div>
+    <div class="line">Runnells' framing is restrained and explicitly non-hostile. He is not arguing for atheism, for evangelical Christianity, or for any particular alternative — he is arguing that the LDS Church's foundational truth claims do not hold up under examination of its own primary sources.</div>
+    <div class="line">A conservative Christian reading this section will agree with Runnells' diagnostic conclusion on the LDS Church but would offer a different prescription: not skepticism, but a return to the historic biblical gospel — Christ crucified and risen, salvation by grace through faith, Scripture as the final authority (Galatians 1:6–9, Ephesians 2:8–9, 2 Timothy 3:16–17).</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-header" id="s15-epilogue"><span>📝 15. Epilogue</span><span class="num">Section 15 of 16</span></div>
+
+  <a class="source-link" href="https://read.cesletter.org/epilogue/" target="_blank" rel="noopener">📖 Read the original section at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 15.1</div>
+    <div class="claim-name">What Happened After</div>
+    <div class="claim-line">In the epilogue, Runnells documents the aftermath. He was eventually summoned to a disciplinary council and faced excommunication from the LDS Church — not for any moral failing, but for publishing the letter. He resigned his membership before the council could be held. The CES Director who promised a response never delivered one.</div>
+    <div class="claim-line">Runnells also notes the publication of the LDS Church's <em>Gospel Topics Essays</em> (2013–2015), many of which quietly confirmed the very issues raised in the CES Letter — but without acknowledging the letter or apologizing to members who had been disciplined for raising the same questions.</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Section 15</div>
+    <div class="line"><strong>Factually accurate.</strong> The disciplinary process and the publication of the Gospel Topics Essays are both publicly documented.</div>
+    <div class="line"><strong>The institutional pattern is significant:</strong> An organization that disciplines members for raising historical questions, then quietly confirms those same questions in its own essays, is not behaving like an organization confident in its truth claims. A confident church engages questions openly.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-header" id="s16-preface"><span>📖 16. Preface &amp; Introduction</span><span class="num">Section 16 of 16</span></div>
+
+  <a class="source-link" href="https://read.cesletter.org/preface/" target="_blank" rel="noopener">📖 Read the Preface at cesletter.org →</a>
+  &nbsp;
+  <a class="source-link" href="https://read.cesletter.org/introduction/" target="_blank" rel="noopener">📖 Read the Introduction at cesletter.org →</a>
+
+  <div class="claim-box">
+    <div class="claim-num">Claim 16.1</div>
+    <div class="claim-name">Runnells' Framing of the Project</div>
+    <div class="claim-line">In the preface and introduction, Runnells gives his personal background — seventh-generation Mormon, Eagle Scout, returned missionary, BYU alumnus, married in the San Diego temple. He explains how he encountered the historical issues in 2012, the faith crisis that followed, the invitation from the CES director, and his decision to write everything down.</div>
+    <div class="claim-line">He explicitly frames the project as the work of an insider asking questions in good faith — not an external attack.</div>
+  </div>
+
+  <div class="analysis-box">
+    <div class="title">🔍 Analysis — Section 16</div>
+    <div class="line">Runnells' biographical credibility matters. He is not an outsider who read about Mormonism and decided to attack it. He is a lifelong faithful member who paid the personal cost of asking honest questions. This framing makes ad-hominem responses harder.</div>
+    <div class="line">The biographical pattern (faithful member encounters primary historical sources, can't reconcile them with what he was taught, undergoes faith transition) is widely repeated. Hans Mattsson (former Area Authority Seventy) and Grant Palmer (35-year CES educator) followed similar trajectories.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ WHERE HONEST ENGAGEMENT LANDS ============ -->
+  <h2 class="section-title">⚖️ Where Honest Engagement Lands</h2>
+
+  <div class="verdict-box">
+    <div class="vtitle">📍 The honest picture</div>
+    <p><strong>1. Most of Runnells' factual claims are airtight.</strong> The seer stone in the hat, the multiple First Vision accounts, the Book of Abraham translation failure, Joseph's 34+ wives including teens and married women, the priesthood ban, the Adam-God doctrine, the Kinderhook Plates, the priesthood restoration backdating, the Masonic timeline, the institutional whitewashing — all of these are confirmed by the LDS Church itself in its Gospel Topics Essays or in primary sources the Church does not dispute. Runnells did not invent these problems. He compiled them.</p>
+    <p><strong>2. The LDS apologetic responses tend to fall into a recognizable pattern:</strong> Either (a) appeal to divine choice that conveniently mimics a natural explanation (KJV italics, Masonic parallels), (b) retroactively redefine terms or geography to dodge specific predictions (horses, Hill Cumorah), or (c) reframe what a "prophet" means to dissolve the contradiction between successive prophets teaching contradictory doctrines (Adam-God, priesthood ban). These responses preserve faith but do so at the cost of the original confident claims of the institution.</p>
+    <p><strong>3. Runnells is on weakest ground in the Science section</strong> — where his framework (old-earth secular naturalism) is not specifically a critique of Mormonism but of biblical theism generally. Conservative biblical Christians would respond differently to that section than to the others.</p>
+    <p><strong>4. The right posture for a Christian reading the CES Letter:</strong> Take the historical claims seriously — the LDS Church itself confirms most of them. Don't assume Runnells is anti-Mormon or attacking faith; he was a believer asking believers' questions. But also don't accept his deeper framework uncritically — the burning-in-the-bosom problem he identifies is real, but the answer is not skepticism, it's the historically and evidentially grounded gospel of Jesus Christ as recorded in publicly verifiable Scripture (1 Corinthians 15:3–8, Luke 1:1–4).</p>
+    <p><strong>5. The Galatians 1 test.</strong> The clearest biblical standard for evaluating any "restored gospel" claim is Galatians 1:6–9: <em>"I am amazed that you are so quickly deserting Him who called you by the grace of Christ, for a different gospel... But even if we, or an angel from heaven, should preach to you a gospel contrary to what we have preached to you, he is to be accursed!"</em> Whatever Joseph Smith taught about the necessity of additional revelation, temple ordinances, or works for exaltation — measure it against the gospel of grace as preached by Paul. The CES Letter shows the historical problems. Galatians shows the theological standard.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ CONNECTIONS ============ -->
+  <h2 class="section-title">🔗 Where this connects in this guide</h2>
+  <p class="body"><strong>Convictions page</strong> — the standard of "Scripture as final authority" anchored in 2 Timothy 3:16–17 is what this Deep Dive applies to LDS truth claims.<br>
+  <strong>Theme 4, Module 5 (New Covenant in Christ)</strong> — Galatians 1 and the sufficiency of Christ's atonement directly answer the LDS claims of additional priesthood, temple ordinances, and "another testament."<br>
+  <strong>Future Deep Dives on Mormonism, Joseph Smith, and the Book of Mormon</strong> — when those are written, this CES Letter walkthrough will serve as their evidentiary base.</p>
+
+  <div class="divider"></div>
+
+  <!-- ============ SOURCES ============ -->
+  <h2 class="section-title">📚 Sources &amp; further reading</h2>
+
+  <div class="info-box">
+    <div class="title">📖 The primary source (read it in full)</div>
+    <div class="line">• <strong>Jeremy Runnells</strong>, <em>CES Letter: My Search for Answers to my Mormon Doubts</em> (CES Letter Foundation, 2013, updated October 2017). Free at <a href="https://cesletter.org" target="_blank" rel="noopener">cesletter.org</a> in HTML, PDF, and ePub. The full text is at <a href="https://read.cesletter.org" target="_blank" rel="noopener">read.cesletter.org</a>.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="title">📚 LDS Church official sources Runnells cites (verify directly)</div>
+    <div class="line">• <strong>Gospel Topics Essays</strong> on churchofjesuschrist.org (the LDS Church's own admissions, 2013–2015):</div>
+    <div class="line" style="margin-left:18px;">— <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/book-of-mormon-translation" target="_blank" rel="noopener">Book of Mormon Translation</a> (Dec 2013) — admits the seer stone in hat method</div>
+    <div class="line" style="margin-left:18px;">— <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/book-of-mormon-and-dna-studies" target="_blank" rel="noopener">Book of Mormon and DNA Studies</a> (Jan 2014) — admits Native Americans carry Asian DNA</div>
+    <div class="line" style="margin-left:18px;">— <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/first-vision-accounts" target="_blank" rel="noopener">First Vision Accounts</a> (Nov 2013) — admits the four conflicting accounts</div>
+    <div class="line" style="margin-left:18px;">— <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/translation-and-historicity-of-the-book-of-abraham" target="_blank" rel="noopener">Translation and Historicity of the Book of Abraham</a> (Jul 2014) — admits the papyri are funerary texts, not Abraham's record</div>
+    <div class="line" style="margin-left:18px;">— <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/plural-marriage-in-kirtland-and-nauvoo" target="_blank" rel="noopener">Plural Marriage in Kirtland and Nauvoo</a> (Oct 2014) — admits 30+ wives, polyandry, marriage to 14-year-old Helen Mar Kimball</div>
+    <div class="line" style="margin-left:18px;">— <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/race-and-the-priesthood" target="_blank" rel="noopener">Race and the Priesthood</a> (Dec 2013) — disavows 130 years of racial doctrine taught by previous prophets</div>
+    <div class="line" style="margin-left:18px;">— <a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics-essays/peace-and-violence-among-19th-century-latter-day-saints" target="_blank" rel="noopener">Peace and Violence among 19th-Century Latter-day Saints</a> — admits Brigham Young taught Blood Atonement</div>
+    <div class="line">• <strong>Joseph Smith Papers</strong> (josephsmithpapers.org, LDS-owned) — primary documents you can examine yourself:</div>
+    <div class="line" style="margin-left:18px;">— <a href="https://www.josephsmithpapers.org/paper-summary/history-circa-summer-1832/1" target="_blank" rel="noopener">1832 First Vision account</a> in Joseph's own handwriting (the only handwritten version)</div>
+    <div class="line" style="margin-left:18px;">— <a href="https://www.josephsmithpapers.org/paper-summary/journal-1835-1836/24" target="_blank" rel="noopener">1835 Journal entries</a> containing the two 1835 First Vision accounts</div>
+    <div class="line" style="margin-left:18px;">— <a href="https://www.josephsmithpapers.org/paper-summary/history-1838-1856-volume-a-1-23-december-1805-30-august-1834/2" target="_blank" rel="noopener">1838 official First Vision account</a> (the version now in the Pearl of Great Price)</div>
+    <div class="line" style="margin-left:18px;">— <a href="https://www.josephsmithpapers.org/paper-summary/book-of-commandments-1833/65" target="_blank" rel="noopener">1833 Book of Commandments Chapter 28</a> — original revelation without priesthood restoration claims</div>
+    <div class="line" style="margin-left:18px;">— <a href="https://www.josephsmithpapers.org/paper-summary/doctrine-and-covenants-1835/167" target="_blank" rel="noopener">1835 D&amp;C Section 50</a> — the same revelation, with priesthood restoration claims added (compare to see the backdating)</div>
+    <div class="line">• <strong>Richard Bushman</strong>, <em>Joseph Smith: Rough Stone Rolling</em> (Knopf, 2005) — the leading faithful LDS scholarly biography, which acknowledges most of the historical issues Runnells raises.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="title">🛡️ LDS apologetic responses worth engaging</div>
+    <div class="line">• <strong>FAIR (FairMormon)</strong> — fairlatterdaysaints.org — provides direct responses to CES Letter claims.</div>
+    <div class="line">• <strong>Jeff Lindsay</strong>, <em>Mormanity</em> blog — long-form apologetic responses.</div>
+    <div class="line">• <strong>Daniel C. Peterson</strong> and <strong>The Interpreter Foundation</strong> — scholarly LDS apologetics.</div>
+    <div class="line">• <strong>Brian Hales</strong>, <em>Joseph Smith's Polygamy</em> (Greg Kofford Books, 3 vols.) — most extensive faithful LDS treatment of polygamy issues.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="title">⚠️ Critical Christian perspectives on Mormonism</div>
+    <div class="line">• <strong>Sandra Tanner</strong> (Utah Lighthouse Ministry, utlm.org) — granddaughter of Brigham Young who left the LDS Church and runs a long-standing evangelical Christian outreach.</div>
+    <div class="line">• <strong>Walter Martin</strong>, <em>The Kingdom of the Cults</em> — classic evangelical Christian apologetic against Mormonism.</div>
+    <div class="line">• <strong>Ron Rhodes</strong>, <em>Reasoning from the Scriptures with the Mormons</em> — practical Christian apologetic resource.</div>
+    <div class="line">• <strong>Bill McKeever and Eric Johnson</strong>, <em>Mormonism 101</em> (Mormonism Research Ministry, mrm.org).</div>
+  </div>
+
+  <div class="info-box">
+    <div class="title">📜 Scripture anchors for this Deep Dive</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/2TI.3.16-17.NASB1995" target="_blank" rel="noopener">2 Timothy 3:16–17</a> — All Scripture is inspired by God; the standard.</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/GAL.1.6-9.NASB1995" target="_blank" rel="noopener">Galatians 1:6–9</a> — Any other gospel, even from an angel, is to be rejected.</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/ACT.17.11.NASB1995" target="_blank" rel="noopener">Acts 17:11</a> — The Bereans examined the Scriptures daily to verify what they were taught.</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/1CO.15.3-8.NASB1995" target="_blank" rel="noopener">1 Corinthians 15:3–8</a> — Paul's defense of the resurrection by named, public eyewitnesses.</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/EPH.2.8-9.NASB1995" target="_blank" rel="noopener">Ephesians 2:8–9</a> — Salvation by grace through faith, not by works.</div>
+    <div class="line">• <a href="https://www.bible.com/bible/100/HEB.10.14.NASB1995" target="_blank" rel="noopener">Hebrews 10:14</a> — By one offering Christ has perfected forever those who are sanctified.</div>
+  </div>
+
+  <div class="notes-box" style="margin-top:24px;">
+    <div class="label">✏️ My notes — The CES Letter Deep Dive:</div>
+    <div class="quill-editor" id="n-dd-cesletter" data-placeholder="Write your notes here. Which claims surprised you? Which apologetic responses hold up? What questions remain? Where does Scripture clearly speak?" style="min-height:120px;"></div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <a href="DeepDives.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">← Back to Deep Dives</a>
+  </div>
+
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = ['n-dd-cesletter'];</script>
+<script src="assets/js/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+<div id="sidebar-overlay" style="display: none;"></div>
+</body></html>
