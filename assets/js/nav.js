@@ -372,6 +372,7 @@ const NAV_STRUCTURE = [
       { label: '↳ 💍 LDS Polygamy',          href: 'DeepDive-LDSPolygamy.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-ldspolygamy' },
       { label: '↳ 📜 The CES Letter',         href: 'DeepDive-CESLetter.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-cesletter' },
       { label: '↳ 👤 Joseph Smith',         href: 'DeepDive-JosephSmith.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', adminOnly: true, completable: true, completeKey: 'complete-dd-josephsmith' },
+      { label: '↳ 📖 Book of Mormon (Research Tool)', href: 'bom/index.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', adminOnly: true },
       { label: '🎧 Listening Notes',        href: 'listening-notes.html', adminOnly: true, itemColor: 'mystudy-listening' },
     ]
   }
