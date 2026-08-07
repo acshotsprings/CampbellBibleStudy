@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The First Promise (The Protoevangelium) &mdash; Foretold &mdash; Campbell Bible Study</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/analytics.js"></script>
+  <style id="cbsg-mb-sub-styles">
+    .mb-hero { margin:8px 0 18px; }
+    .mb-crumb { font-size:13px; }
+    .mb-crumb a { color:#2E75B6; text-decoration:none; }
+    .mb-num { font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#8B6F47;font-weight:bold;margin:10px 0 4px; }
+    .mb-h1 { font-size:26px;color:#1F3864;margin:0 0 4px; font-family:Georgia,serif; }
+    .mb-refs { font-size:14px;color:#444;font-weight:bold; }
+    .mb-body p { font-size:15px;line-height:1.75;color:#2B2B2B; }
+    .scripture-link-row { margin:18px 0 24px;padding:14px 18px;background:#EBF4FC;border-left:4px solid #2E75B6;border-radius:6px;font-family:Arial,sans-serif;font-size:14px;line-height:1.7; }
+    .scripture-link-row .sl-label { font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#1F3864;font-weight:bold;margin-bottom:6px;display:block; }
+    .scripture-link-row a { color:#2E75B6;text-decoration:none;font-weight:bold; }
+    .mb-verse-slot { background:#FFFBF0;border-left:5px solid #C8932B;border-radius:8px;padding:16px 20px;margin:18px 0; }
+    .mb-verse-slot .vs-tag { font-size:11px;color:#8A6A1F;font-weight:bold;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px; }
+    .mb-verse-slot .vs-msg { font-size:14px;color:#3B2D1F;line-height:1.65;margin:0; }
+    .info-box { background:#F4F1E8;border:1px solid #e0dac9;border-radius:6px;padding:14px 18px;margin:18px 0;font-family:Arial,sans-serif; }
+    .info-box .title { font-weight:bold;color:#1F3864;margin-bottom:6px; }
+    .info-box .line { font-size:14px;color:#3B2D1F;line-height:1.7; }
+  
+    /* --- Reusable Prophecy Timeline box (click to reveal) --- */
+    .ptl-wrap { margin: 18px 0; }
+    .ptl-btn {
+      display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+      background: #EEF2FA; border: 1px solid #C7D3EA; border-radius: 8px;
+      padding: 9px 14px; color: #1F3864; font-weight: bold; font-size: 14px;
+      font-family: inherit; line-height: 1.2;
+    }
+    .ptl-btn:hover { background: #E3EAF7; }
+    .ptl-btn .ptl-ico { font-size: 15px; }
+    .ptl-btn .ptl-caret { font-size: 11px; color: #6b7794; transition: transform .15s; }
+    .ptl-btn[aria-expanded="true"] .ptl-caret { transform: rotate(90deg); }
+    .ptl-panel {
+      display: none; margin-top: 10px; background: #F7F9FD; border: 1px solid #C7D3EA;
+      border-left: 4px solid #1F3864; border-radius: 8px; padding: 14px 16px;
+      max-width: 620px;
+    }
+    .ptl-panel.open { display: block; }
+    .ptl-row { display: flex; align-items: baseline; gap: 10px; padding: 5px 0; }
+    .ptl-row + .ptl-row { border-top: 1px dashed #D6DEEC; }
+    .ptl-tag {
+      flex: 0 0 auto; font-size: 11px; font-weight: bold; text-transform: uppercase;
+      letter-spacing: .5px; color: #fff; border-radius: 4px; padding: 2px 8px; margin-top: 1px;
+    }
+    .ptl-tag.spoke { background: #6D5BA8; }
+    .ptl-tag.fulf  { background: #2E7D32; }
+    .ptl-txt { font-size: 14px; color: #33302a; line-height: 1.45; }
+    .ptl-txt .ptl-when { color: #6b6350; font-style: italic; }
+    .ptl-txt a { color: #1F3864; font-weight: bold; text-decoration: underline; }
+    .ptl-gap {
+      margin-top: 10px; font-size: 12.5px; color: #6b6350; font-style: italic;
+      border-top: 1px dashed #D6DEEC; padding-top: 8px;
+    }
+    .ptl-note { margin-top:6px; font-size:11.5px; color:#8a8270; }
+
+  
+    /* --- Reusable "Heard in Worship" song box (click to reveal) --- */
+    .song-wrap { margin: 18px 0; }
+    .song-btn {
+      display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+      background: #F3EEFA; border: 1px solid #D9CBEF; border-radius: 8px;
+      padding: 9px 14px; color: #5B3F8C; font-weight: bold; font-size: 14px;
+      font-family: inherit; line-height: 1.2;
+    }
+    .song-btn:hover { background: #EBE0F7; }
+    .song-btn .song-caret { font-size: 11px; color: #8A76B0; transition: transform .15s; }
+    .song-btn[aria-expanded="true"] .song-caret { transform: rotate(90deg); }
+    .song-panel {
+      display: none; margin-top: 10px; background: #FAF7FE; border: 1px solid #D9CBEF;
+      border-left: 4px solid #6D5BA8; border-radius: 8px; padding: 15px 17px; max-width: 620px;
+    }
+    .song-panel.open { display: block; }
+    .song-title { font-weight: bold; color: #5B3F8C; font-size: 15px; margin-bottom: 2px; }
+    .song-artist { font-size: 12.5px; color: #6b6350; margin-bottom: 11px; }
+    .song-lyric {
+      font-style: italic; color: #33302a; font-size: 15px; line-height: 1.6;
+      border-left: 3px solid #C9B8E6; padding: 4px 0 4px 14px; margin: 0 0 10px 0;
+    }
+    .song-tie { font-size: 13px; color: #4a463d; line-height: 1.5; margin-bottom: 11px; }
+    .song-links a {
+      display: inline-block; color: #5B3F8C; font-weight: bold; font-size: 13px;
+      text-decoration: underline; margin-right: 16px;
+    }
+    .song-cred { margin-top: 10px; font-size: 11px; color: #9a927f; border-top: 1px dashed #E0D6F0; padding-top: 7px; }
+
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+</head>
+<body>
+
+<div id="github-bar">
+  <span class="bar-title">Campbell Bible Study</span>
+  <span class="bar-sep">|</span>
+  <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
+  <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
+  <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
+  <span id="gh-status"></span>
+  <div class="bar-right">
+    <span class="bar-originated">Originated: August 7, 2026</span>
+    <span class="bar-sep">|</span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: August 7, 2026</span></span>
+  </div>
+</div>
+
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+<div id="sidebar"></div>
+
+<div id="app">
+<div id="main">
+<main>
+
+  <section class="mb-hero">
+    <p class="mb-crumb"><a href="DeepDive-MessianicBirth.html">&larr; Foretold: The Promise of Messiah's Birth</a> &middot; Messianic Prophecy</p>
+    <p class="mb-num">Prophecy 01 &middot; In the Garden</p>
+    <h1 class="mb-h1">The First Promise <span style="font-size:18px;color:#8B6F47;">(The Protoevangelium)</span></h1>
+    <p class="mb-refs">Genesis 3:15</p>
+  </section>
+
+  <article class="mb-body">
+
+    <p>The very first promise of a coming Redeemer is spoken not in a temple or to a prophet, but in the middle of the wreckage of the Fall. Adam and Eve have sinned, the serpent has deceived them, and before God pronounces the consequences, He turns to the serpent and makes a promise that will echo all the way to Bethlehem and the cross.</p>
+
+    <p>Theologians call it the <strong>protoevangelium</strong> &mdash; literally "the first gospel." It is the earliest announcement of the gospel in all of Scripture: that One would come, born of woman, who would crush the head of the enemy, though He Himself would be wounded in the doing of it.</p>
+
+    <div class="scripture-link-row">
+      <span class="sl-label">&#128214; Read the passage (NASB 1995)</span>
+      <span style="color:#1F3864;font-weight:bold;">Genesis 3:15</span> &nbsp;&middot;&nbsp;
+      <a href="https://www.bible.com/bible/100/GEN.3.NASB1995" target="_blank" rel="noopener">Open on bible.com &rarr;</a>
+    </div>
+
+        <blockquote style="background:#FCFBF7;border-left:5px solid #8B6F47;border-radius:6px;padding:16px 20px;margin:18px 0;font-family:Georgia,serif;font-size:16px;line-height:1.9;color:#2B2B2B;">
+      &ldquo;And I will put enmity<br>
+      Between you and the woman,<br>
+      And between your seed and her seed;<br>
+      He shall bruise you on the head,<br>
+      And you shall bruise him on the heel.&rdquo;
+      <div style="font-family:Arial,sans-serif;font-size:12px;color:#8B6F47;font-weight:bold;margin-top:12px;">
+        &mdash; Genesis 3:15, NASB 1995
+        &nbsp;&middot;&nbsp;
+        <a href="https://www.bible.com/bible/100/GEN.3.15.NASB1995" target="_blank" rel="noopener" style="color:#2E75B6;text-decoration:none;">bible.com &rarr;</a>
+      </div>
+    </blockquote>
+    <div class="ptl-wrap"><span class="ptl-btn" tabindex="0" role="button" aria-expanded="false"><span class="ptl-ico">&#128198;</span> Prophesied &rarr; Fulfilled <span class="ptl-caret">&#9654;</span></span><div class="ptl-panel"><div class="ptl-row"><span class="ptl-tag spoke">Spoken</span><span class="ptl-txt">God Himself, in Eden, speaking judgment over the serpent <span class="ptl-when">(the beginning &mdash; the first promise of a Redeemer)</span></span></div><div class="ptl-row"><span class="ptl-tag fulf">Fulfilled</span><span class="ptl-txt">Christ crushes the serpent's head through the cross and resurrection; Paul echoes it &mdash; <a href="https://www.bible.com/bible/100/ROM.16.20.NASB1995" target="_blank" rel="noopener">Romans 16:20 &rarr;</a></span></div><div class="ptl-gap">The very first promise of a Deliverer, spoken at humanity's fall, answered at the empty tomb.</div><div class="ptl-note">Prophecy dates are approximate scholarly estimates; fulfillment tied to the life of Christ.</div></div></div>
+
+<div class="info-box">
+      <div class="title">Why this is the "first gospel"</div>
+      <div class="line"><strong>Seed of the woman:</strong> A striking phrase &mdash; descent is normally traced through the man. Many read this as an early hint of a birth unlike any other.</div>
+      <div class="line"><strong>He shall bruise you on the head:</strong> A mortal blow to the serpent &mdash; the enemy's ultimate defeat.</div>
+      <div class="line"><strong>You shall bruise him on the heel:</strong> A real wound to the Redeemer &mdash; long read as pointing to the suffering of the cross.</div>
+    </div>
+
+    <p><strong>Questions for our study:</strong> What did this promise mean to Adam and Eve in the moment they first heard it? How much could they have understood? And how does the rest of Scripture pick up this thread of "the seed"? We hold it loosely where the text is quiet, and let Scripture interpret Scripture (2 Timothy 3:16&ndash;17).</p>
+
+      <div class="song-wrap"><span class="song-btn" tabindex="0" role="button" aria-expanded="false"><span>&#127925;</span> Heard in Worship <span class="song-caret">&#9654;</span></span><div class="song-panel"><div class="song-title">&ldquo;I Know a Name&rdquo;</div><div class="song-artist">Elevation Worship, featuring Chris Brown &amp; Brandon Lake</div><div class="song-lyric">&ldquo;He is the heel that has crushed the serpent&rsquo;s head, / Our resurrected Great I Am.&rdquo;</div><div class="song-tie">That single line sings Genesis 3:15 straight into the resurrection. The first promise in Eden &mdash; the seed of the woman who would bruise the serpent&rsquo;s head &mdash; is answered at the empty tomb. From the garden&rsquo;s curse to the chorus that calls His name: Jesus.</div><div class="song-links"><a href="https://www.youtube.com/results?search_query=Elevation+Worship+I+Know+a+Name+Chris+Brown+Brandon+Lake" target="_blank" rel="noopener">Listen &rarr;</a><a href="https://www.bible.com/bible/100/GEN.3.15.NASB1995" target="_blank" rel="noopener">Genesis 3:15 &rarr;</a></div><div class="song-cred">Lyric quoted briefly for study and worship. Words and music &copy; Elevation Worship / Chris Brown / Brandon Lake. All rights reserved to the songwriters and publishers.</div></div></div>
+  </article>
+
+  <div style="margin: 32px 0 8px; text-align: center;">
+    <div style="border-top:1px solid #ddd;padding-top:28px;margin-bottom:8px;">
+      <p style="font-size:13px;color:#888;font-family:Arial,sans-serif;margin-bottom:14px;">
+        Finished studying this prophecy? Mark it complete to track your progress in the sidebar.
+      </p>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <a href="DeepDive-MessianicBirth.html" style="display:inline-block;font-size:13px;color:#2E75B6;text-decoration:none;font-family:Arial,sans-serif;">&larr; Back to the study index</a>
+  </div>
+
+</main>
+</div>
+</div>
+
+<script>window.PAGE_NOTE_IDS = [];</script>
+<script>
+/* Reusable Prophecy Timeline toggles — self-contained, safe on any page */
+(function(){
+  function wire(){
+    document.querySelectorAll('.ptl-btn').forEach(function(btn){
+      if (btn.__ptlWired) return; btn.__ptlWired = true;
+      var panel = btn.nextElementSibling;
+      function toggle(){
+        var open = panel.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+      btn.addEventListener('click', toggle);
+      btn.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
+  else wire();
+})();
+</script>
+<script>
+/* Reusable "Heard in Worship" toggle — self-contained, safe on any page */
+(function(){
+  function wire(){
+    document.querySelectorAll('.song-btn').forEach(function(btn){
+      if (btn.__songWired) return; btn.__songWired = true;
+      var panel = btn.nextElementSibling;
+      function toggle(){
+        var open = panel.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+      btn.addEventListener('click', toggle);
+      btn.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
+  else wire();
+})();
+</script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/main.js"></script>
+<script>buildSidebar('.');</script>
+
+</body></html>
