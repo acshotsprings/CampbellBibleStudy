@@ -81,13 +81,13 @@
           text-align: left;
         }
       }
-    </style></head>
+    </style><script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script></head>
 <body class="admin-mode">
 
 <div id="github-bar"><span class="bar-title">Campbell Bible Study</span><span class="bar-sep">|</span><input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;"><button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button><button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button><span id="gh-status" style=""></span><div class="bar-right">
     <span class="bar-originated">Originated: March 27, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version"><span style="font-size:11px;">Version: August 8, 2026</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded 11:19 AM</span></span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: August 8, 2026</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded 11:30 AM</span></span>
   </div></div>
 
 <div id="sidebar"></div>
@@ -209,7 +209,7 @@
   <div id="mb-thread-wrap">
     <div class="mb-head">
       <span class="mb-title">💬 Our Study Thread</span>
-      <span class="mb-who" id="mb-whoami">Signed in as: Poppy Laptop</span>
+      <span class="mb-who" id="mb-whoami">Signed in as: Kimberly Campbell</span>
     </div>
     <div id="mb-thread"><div class="mb-entry mb-chris"><div class="mb-meta">Poppy Laptop · Aug 8, 2026, 11:04 AM</div><div class="mb-body">God Didn't Arrange a Marriage — He Courted a Bride
 
@@ -226,7 +226,7 @@ Thank You, Holy Spirit, for feeding me this. I came to study the first coming, a
         <button id="mb-post" type="button">Post to thread</button>
         <button id="mb-photo-btn" type="button" title="Attach a screenshot — its text is read in for you to check, then post">📷 Read a screenshot</button>
         <input id="mb-photo-input" type="file" accept="image/*" style="display:none;">
-        <span id="mb-msg"></span>
+        <span id="mb-msg">Paste your GitHub key once in the top bar, then post.</span>
         <span class="mb-admin-toggle" id="mb-admin-wrap" style="display: inline-flex;">
           <input type="checkbox" id="mb-public-toggle"> <label for="mb-public-toggle">Allow anyone to post (admin)</label>
         </span>
@@ -240,7 +240,7 @@ Thank You, Holy Spirit, for feeding me this. I came to study the first coming, a
         <input id="mb-name-input" type="text" placeholder="Add a name\u2026">
         <button id="mb-name-add" type="button">Add</button>
       </div>
-      <div id="mb-names-msg" style="font-size:11px;color:#555;margin-top:6px;">Saved and synced to all devices.</div>
+      <div id="mb-names-msg" style="font-size:11px;color:#555;margin-top:6px;"></div>
     </div>
   </div>
   <script>
