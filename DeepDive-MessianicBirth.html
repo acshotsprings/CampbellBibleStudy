@@ -125,6 +125,12 @@
     #mb-msg { font-size:12px;color:#555; }
     .mb-readonly-note { background:#F4F1E8;border:1px dashed #c9c2ae;border-radius:6px;padding:10px 13px;font-size:13px;color:#6b6350;margin-top:12px; }
     .mb-admin-toggle { font-size:12px;color:#444;display:inline-flex;align-items:center;gap:6px; }
+    #mb-names-wrap { margin-top:12px;padding:11px 13px;border:1px solid #d7d2c4;border-radius:8px;background:#F7F5EE; }
+    #mb-names-wrap .mb-names-title { font-size:12px;font-weight:bold;color:#1F3864;margin-bottom:8px; }
+    .mb-name-chip { display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #d7d2c4;border-radius:14px;padding:3px 6px 3px 11px;font-size:12px;color:#333;margin:0 5px 5px 0; }
+    .mb-name-x { cursor:pointer;color:#b23030;font-weight:bold;font-size:15px;line-height:1;padding:0 2px; }
+    #mb-name-input { border:1px solid #ccc;border-radius:6px;padding:6px 9px;font-size:13px;font-family:Arial,sans-serif;min-width:160px; }
+    #mb-name-add { background:#1F3864;color:#FFD700;border:none;border-radius:6px;padding:6px 15px;font-size:13px;font-weight:bold;cursor:pointer; }
   </style>
   <div id="mb-thread-wrap">
     <div class="mb-head">
@@ -143,10 +149,20 @@
       </div>
     </div>
     <div id="mb-readonly" class="mb-readonly-note" style="display:none;"></div>
+    <div id="mb-names-wrap" style="display:none;">
+      <div class="mb-names-title">&#10003; Approved names <span style="font-weight:normal;color:#888;">(admin only \u2014 synced to every device)</span></div>
+      <div id="mb-names-list"></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;">
+        <input id="mb-name-input" type="text" placeholder="Add a name\u2026">
+        <button id="mb-name-add" type="button">Add</button>
+      </div>
+      <div id="mb-names-msg" style="font-size:11px;color:#555;margin-top:6px;"></div>
+    </div>
   </div>
   <script>
   (function(){
-    var ALLOWLIST = ['chris','poppy','poppy laptop','kimberly'];
+    var DEFAULT_APPROVED = ['chris','poppy','poppy laptop','kimberly'];
+    var approved = DEFAULT_APPROVED.slice();
     var THREAD_PATH = 'data/messianic-birth-thread.json';
     var REPO = 'acshotsprings/CampbellBibleStudy';
     var BRANCH = 'main';
@@ -155,8 +171,8 @@
     var sha = null;
     function guestName(){ return (localStorage.getItem('cbsg-guest-name')||'').trim(); }
     function norm(n){ return (n||'').trim().toLowerCase(); }
-    function isAllowed(){ return ALLOWLIST.indexOf(norm(guestName())) !== -1; }
-    function isAdmin(){ return localStorage.getItem('cbsg-admin-unlocked')==='1'; }
+    function isAllowed(){ return approved.indexOf(norm(guestName())) !== -1; }
+    function isAdmin(){ return sessionStorage.getItem('cbsg-admin')==='true' || localStorage.getItem('cbsg-admin-unlocked')==='1'; }
     function publicOpen(){ return localStorage.getItem(PUBLIC_KEY)==='1'; }
     function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
     function stamp(d){ try { return d.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}); } catch(e){ return d.toISOString(); } }
@@ -188,13 +204,51 @@
       }
       if(isAdmin()){ adminWrap.style.display='inline-flex'; document.getElementById('mb-public-toggle').checked=publicOpen(); }
       else { adminWrap.style.display='none'; }
+      renderNames();
+    }
+    function renderNames(){
+      var wrap=document.getElementById('mb-names-wrap');
+      var list=document.getElementById('mb-names-list');
+      if(!wrap||!list) return;
+      if(!isAdmin()){ wrap.style.display='none'; return; }
+      wrap.style.display='block';
+      list.innerHTML = approved.length ? approved.map(function(n){
+        return '<span class="mb-name-chip">'+esc(n)+'<span class="mb-name-x" data-name="'+esc(n)+'" title="Remove">&times;</span></span>';
+      }).join('') : '<span style="font-size:11px;color:#8a8266;">No approved names yet.</span>';
+      Array.prototype.forEach.call(list.querySelectorAll('.mb-name-x'), function(x){
+        x.addEventListener('click', function(){ removeName(this.getAttribute('data-name')); });
+      });
+    }
+    async function saveApproved(){
+      var msg=document.getElementById('mb-names-msg');
+      if(msg) msg.textContent='Saving\u2026';
+      var ok=await saveThread();
+      if(msg) msg.textContent = ok ? 'Saved and synced to all devices.' : 'Save failed \u2014 check your GitHub key in the top bar.';
+      render();
+      return ok;
+    }
+    function addName(){
+      var inp=document.getElementById('mb-name-input');
+      var msg=document.getElementById('mb-names-msg');
+      var v=norm(inp.value);
+      if(!v){ if(msg) msg.textContent='Type a name first.'; return; }
+      if(approved.indexOf(v)!==-1){ if(msg) msg.textContent='\u201c'+v+'\u201d is already approved.'; return; }
+      approved.push(v);
+      saveApproved().then(function(ok){ if(ok){ inp.value=''; } else { var i=approved.indexOf(v); if(i!==-1){ approved.splice(i,1); render(); } } });
+    }
+    function removeName(n){
+      n=norm(n);
+      var i=approved.indexOf(n);
+      if(i===-1) return;
+      approved.splice(i,1);
+      saveApproved().then(function(ok){ if(!ok){ approved.push(n); render(); } });
     }
     function ghToken(){ var f=document.getElementById('gh-token'); return (localStorage.getItem('cbsg-gh-token')||(f?f.value.trim():'')).trim(); }
     async function loadThread(){
       try {
         var url='https://raw.githubusercontent.com/'+REPO+'/'+BRANCH+'/'+THREAD_PATH+'?t='+Date.now();
         var r=await fetch(url,{cache:'no-store'});
-        if(r.ok){ var j=await r.json(); entries=Array.isArray(j.entries)?j.entries:[]; }
+        if(r.ok){ var j=await r.json(); entries=Array.isArray(j.entries)?j.entries:[]; if(Array.isArray(j.approved)&&j.approved.length){ approved=j.approved.map(norm); } }
       } catch(e){}
       render();
     }
@@ -204,7 +258,7 @@
       if(!token){ msg.textContent='Paste your GitHub key once in the top bar, then post.'; return false; }
       var api='https://api.github.com/repos/'+REPO+'/contents/'+THREAD_PATH;
       try { var g=await fetch(api+'?ref='+BRANCH,{headers:{Authorization:'token '+token}}); if(g.ok){ var gj=await g.json(); sha=gj.sha; } else { sha=null; } } catch(e){ sha=null; }
-      var content=btoa(unescape(encodeURIComponent(JSON.stringify({entries:entries},null,2))));
+      var content=btoa(unescape(encodeURIComponent(JSON.stringify({entries:entries,approved:approved},null,2))));
       var body={message:'Update Messianic Birth study thread',content:content,branch:BRANCH};
       if(sha) body.sha=sha;
       var p=await fetch(api,{method:'PUT',headers:{Authorization:'token '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
@@ -226,6 +280,8 @@
     }
     document.addEventListener('DOMContentLoaded', function(){
       var btn=document.getElementById('mb-post'); if(btn) btn.addEventListener('click', post);
+      var addBtn=document.getElementById('mb-name-add'); if(addBtn) addBtn.addEventListener('click', addName);
+      var nameInp=document.getElementById('mb-name-input'); if(nameInp) nameInp.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); addName(); } });
       var tog=document.getElementById('mb-public-toggle'); if(tog) tog.addEventListener('change', function(){ localStorage.setItem(PUBLIC_KEY,this.checked?'1':'0'); updateControls(); });
       loadThread(); setInterval(updateControls,2500);
     });
