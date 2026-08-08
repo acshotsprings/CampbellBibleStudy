@@ -122,6 +122,8 @@
     #mb-compose textarea { width:100%;box-sizing:border-box;min-height:90px;border:1px solid #ccc;border-radius:6px;padding:9px 11px;font-family:Arial,sans-serif;font-size:14px;resize:vertical; }
     #mb-compose .mb-row { display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap; }
     #mb-post { background:#2E75B6;color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:14px;font-weight:bold;cursor:pointer; }
+    #mb-photo-btn { background:#fff;color:#2E75B6;border:1px solid #2E75B6;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:bold;cursor:pointer; }
+    #mb-photo-btn:disabled { opacity:.55;cursor:default; }
     #mb-msg { font-size:12px;color:#555; }
     .mb-readonly-note { background:#F4F1E8;border:1px dashed #c9c2ae;border-radius:6px;padding:10px 13px;font-size:13px;color:#6b6350;margin-top:12px; }
     .mb-admin-toggle { font-size:12px;color:#444;display:inline-flex;align-items:center;gap:6px; }
@@ -142,6 +144,8 @@
       <textarea id="mb-input" placeholder="Write your entry. It will be stamped with your name and the date and time when you post."></textarea>
       <div class="mb-row">
         <button id="mb-post" type="button">Post to thread</button>
+        <button id="mb-photo-btn" type="button" title="Attach a screenshot — its text is read in for you to check, then post">&#128247; Read a screenshot</button>
+        <input id="mb-photo-input" type="file" accept="image/*" style="display:none;">
         <span id="mb-msg"></span>
         <span class="mb-admin-toggle" id="mb-admin-wrap" style="display:none;">
           <input type="checkbox" id="mb-public-toggle"> <label for="mb-public-toggle">Allow anyone to post (admin)</label>
@@ -243,6 +247,52 @@
       approved.splice(i,1);
       saveApproved().then(function(ok){ if(!ok){ approved.push(n); render(); } });
     }
+    var _tessLoading=null;
+    function loadTesseract(){
+      if(window.Tesseract) return Promise.resolve();
+      if(_tessLoading) return _tessLoading;
+      _tessLoading=new Promise(function(res,rej){
+        var sc=document.createElement('script');
+        sc.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+        sc.onload=function(){ res(); };
+        sc.onerror=function(){ rej(new Error('tesseract load failed')); };
+        document.head.appendChild(sc);
+      });
+      return _tessLoading;
+    }
+    function fileToDataURL(file){
+      return new Promise(function(res,rej){
+        var r=new FileReader();
+        r.onload=function(){ res(r.result); };
+        r.onerror=function(){ rej(new Error('read failed')); };
+        r.readAsDataURL(file);
+      });
+    }
+    async function readImageToText(file){
+      var msg=document.getElementById('mb-msg');
+      var btn=document.getElementById('mb-photo-btn');
+      var input=document.getElementById('mb-input');
+      if(!file || !/^image\//.test(file.type||'')){ if(msg) msg.textContent='That doesn\u2019t look like an image.'; return; }
+      if(btn) btn.disabled=true;
+      if(msg) msg.textContent='Reading text from the screenshot\u2026 first time may take a few seconds.';
+      try {
+        var url=await fileToDataURL(file);
+        await loadTesseract();
+        var out=await window.Tesseract.recognize(url,'eng');
+        var text=((out&&out.data&&out.data.text)||'').replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+        if(!text){ if(msg) msg.textContent='Couldn\u2019t find readable text in that image \u2014 you can type it in instead.'; }
+        else {
+          var cur=input.value.trim();
+          input.value = cur ? (cur+'\n\n'+text) : text;
+          input.focus();
+          if(msg) msg.textContent='Read in below \u2014 check the wording, then Post.';
+        }
+      } catch(e){
+        if(msg) msg.textContent='Sorry, couldn\u2019t read that image. You can type it in instead.';
+      } finally {
+        if(btn) btn.disabled=false;
+      }
+    }
     function ghToken(){ var f=document.getElementById('gh-token'); return (localStorage.getItem('cbsg-gh-token')||(f?f.value.trim():'')).trim(); }
     async function loadThread(){
       try {
@@ -280,6 +330,10 @@
     }
     document.addEventListener('DOMContentLoaded', function(){
       var btn=document.getElementById('mb-post'); if(btn) btn.addEventListener('click', post);
+      var photoBtn=document.getElementById('mb-photo-btn'); var photoInput=document.getElementById('mb-photo-input');
+      if(photoBtn&&photoInput){ photoBtn.addEventListener('click', function(){ photoInput.click(); }); photoInput.addEventListener('change', function(){ if(this.files&&this.files[0]) readImageToText(this.files[0]); this.value=''; }); }
+      var mbInput=document.getElementById('mb-input');
+      if(mbInput){ mbInput.addEventListener('paste', function(e){ var items=(e.clipboardData||{}).items||[]; for(var i=0;i<items.length;i++){ if(items[i].type&&items[i].type.indexOf('image')===0){ var ff=items[i].getAsFile(); if(ff){ e.preventDefault(); readImageToText(ff); break; } } } }); }
       var addBtn=document.getElementById('mb-name-add'); if(addBtn) addBtn.addEventListener('click', addName);
       var nameInp=document.getElementById('mb-name-input'); if(nameInp) nameInp.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); addName(); } });
       var tog=document.getElementById('mb-public-toggle'); if(tog) tog.addEventListener('change', function(){ localStorage.setItem(PUBLIC_KEY,this.checked?'1':'0'); updateControls(); });
