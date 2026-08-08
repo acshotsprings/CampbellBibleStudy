@@ -146,7 +146,7 @@
   </div>
   <script>
   (function(){
-    var ALLOWLIST = ['chris','kimberly'];
+    var ALLOWLIST = ['chris','poppy','poppy laptop','kimberly'];
     var THREAD_PATH = 'data/messianic-birth-thread.json';
     var REPO = 'acshotsprings/CampbellBibleStudy';
     var BRANCH = 'main';
@@ -166,7 +166,7 @@
         box.innerHTML = '<div style="padding:16px;color:#8a8266;font-size:13px;font-style:italic;">No entries yet. This is where the study begins.</div>';
       } else {
         box.innerHTML = entries.map(function(e){
-          var cls = norm(e.author)==='chris'?' mb-chris':(norm(e.author)==='kimberly'?' mb-kimberly':'');
+          var a=norm(e.author); var cls=(a==='chris'||a==='poppy'||a==='poppy laptop')?' mb-chris':(a==='kimberly'?' mb-kimberly':'');
           return '<div class="mb-entry'+cls+'"><div class="mb-meta">'+esc(e.author)+' &middot; '+esc(e.ts)+'</div><div class="mb-body">'+esc(e.text)+'</div></div>';
         }).join('');
         box.scrollTop = box.scrollHeight;
