@@ -100,6 +100,14 @@
 
   </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+<style id="cbsg-gloss-styles">
+    .gloss { color:#2E75B6; border-bottom:1px dotted #2E75B6; cursor:pointer; font-weight:600; position:relative; white-space:nowrap; }
+    .gloss:focus { outline:2px solid #2E75B6; outline-offset:2px; border-radius:2px; }
+    .gloss-pop { display:none; position:absolute; left:0; top:1.6em; z-index:50; width:min(280px,80vw); background:#FFFDF7; border:1px solid #C8932B; border-left:4px solid #C8932B; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,.18); padding:12px 14px; font-family:Arial,sans-serif; font-weight:normal; white-space:normal; text-align:left; }
+    .gloss-pop.open { display:block; }
+    .gloss-pop .gp-term { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:#8A6A1F; font-weight:bold; margin-bottom:4px; }
+    .gloss-pop .gp-def { font-size:13px; line-height:1.6; color:#3B2D1F; }
+</style>
 </head>
 <body>
 
@@ -144,7 +152,7 @@
     </div>
 
         <blockquote style="background:#FCFBF7;border-left:5px solid #8B6F47;border-radius:6px;padding:16px 20px;margin:18px 0;font-family:Georgia,serif;font-size:16px;line-height:1.9;color:#2B2B2B;">
-      &ldquo;And I will put enmity<br>
+      &ldquo;And I will put <span class="gloss" tabindex="0" role="button" aria-expanded="false">enmity<span class="gloss-pop"><span class="gp-term">enmity</span><span class="gp-def">Deep, settled hostility. God Himself places lasting hostility between the serpent (and those who follow him) and the woman&rsquo;s offspring &mdash; the opening line of the long conflict that ends when the promised Seed crushes the serpent (cf. Romans 16:20).</span></span></span><br>
       Between you and the woman,<br>
       And between your seed and her seed;<br>
       He shall bruise you on the head,<br>
@@ -231,6 +239,34 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
   else wire();
+})();
+</script>
+<script>
+/* Reusable glossary popover — click a .gloss term to toggle its .gloss-pop. Click-away / Esc closes. */
+(function(){
+  function closeAll(except){
+    document.querySelectorAll('.gloss-pop.open').forEach(function(p){ if(p!==except){ p.classList.remove('open'); var t=p.previousElementSibling; if(t&&t.classList.contains('gloss')) t.setAttribute('aria-expanded','false'); }});
+  }
+  document.addEventListener('click', function(e){
+    var term = e.target.closest ? e.target.closest('.gloss') : null;
+    if(term){
+      e.preventDefault();
+      var pop = term.querySelector('.gloss-pop');
+      if(!pop) return;
+      var isOpen = pop.classList.contains('open');
+      closeAll(pop);
+      if(isOpen){ pop.classList.remove('open'); term.setAttribute('aria-expanded','false'); }
+      else { pop.classList.add('open'); term.setAttribute('aria-expanded','true'); }
+      return;
+    }
+    if(!(e.target.closest && e.target.closest('.gloss-pop'))) closeAll(null);
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape') closeAll(null);
+    if((e.key==='Enter'||e.key===' ') && document.activeElement && document.activeElement.classList.contains('gloss')){
+      e.preventDefault(); document.activeElement.click();
+    }
+  });
 })();
 </script>
 <script src="assets/js/nav.js"></script>

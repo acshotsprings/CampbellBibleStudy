@@ -74,6 +74,14 @@
 
   </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script>
+<style id="cbsg-gloss-styles">
+    .gloss { color:#2E75B6; border-bottom:1px dotted #2E75B6; cursor:pointer; font-weight:600; position:relative; white-space:nowrap; }
+    .gloss:focus { outline:2px solid #2E75B6; outline-offset:2px; border-radius:2px; }
+    .gloss-pop { display:none; position:absolute; left:0; top:1.6em; z-index:50; width:min(280px,80vw); background:#FFFDF7; border:1px solid #C8932B; border-left:4px solid #C8932B; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,.18); padding:12px 14px; font-family:Arial,sans-serif; font-weight:normal; white-space:normal; text-align:left; }
+    .gloss-pop.open { display:block; }
+    .gloss-pop .gp-term { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:#8A6A1F; font-weight:bold; margin-bottom:4px; }
+    .gloss-pop .gp-def { font-size:13px; line-height:1.6; color:#3B2D1F; }
+</style>
 </head>
 <body>
 
@@ -118,7 +126,7 @@
     <div class="ptl-wrap"><span class="ptl-btn" tabindex="0" role="button" aria-expanded="false"><span class="ptl-ico">&#128198;</span> Prophesied &rarr; Fulfilled <span class="ptl-caret">&#9654;</span></span><div class="ptl-panel"><div class="ptl-row"><span class="ptl-tag spoke">Spoken</span><span class="ptl-txt">The prophet Isaiah, giving the sign of Immanuel <span class="ptl-when">(about 700 BC)</span></span></div><div class="ptl-row"><span class="ptl-tag fulf">Fulfilled</span><span class="ptl-txt">Matthew records the virgin birth as the direct fulfillment of this sign &mdash; <a href="https://www.bible.com/bible/100/MAT.1.22.NASB1995" target="_blank" rel="noopener">Matthew 1:22-23 &rarr;</a></span></div><div class="ptl-gap">Seven centuries between the sign of the virgin and its fulfillment in Mary.</div><div class="ptl-note">Prophecy dates are approximate scholarly estimates; fulfillment tied to the life of Christ.</div></div></div>
     <div class="info-box">
       <div class="title">Why this matters for the birth of Messiah</div>
-      <div class="line"><strong>"A virgin will be with child":</strong> The birth itself is now the miracle &mdash; not merely the lineage, but the manner.</div>
+      <div class="line"><strong>"A <span class="gloss" tabindex="0" role="button" aria-expanded="false">virgin<span class="gloss-pop"><span class="gp-term">virgin</span><span class="gp-def">The Hebrew <em>almah</em> means a young woman of marriageable age; the Greek Old Testament renders it <em>parthenos</em>, &lsquo;virgin.&rsquo; Matthew cites this verse as fulfilled in the virgin birth of Jesus (Isaiah 7:14; Matthew 1:22&ndash;23).</span></span></span> will be with child":</strong> The birth itself is now the miracle &mdash; not merely the lineage, but the manner.</div>
       <div class="line"><strong>"Immanuel &mdash; God with us":</strong> The name declares the child's identity: God, dwelling among His people.</div>
       <div class="line"><strong>Matthew's citation:</strong> Matthew 1:22&ndash;23 applies this directly to the birth of Jesus &mdash; a link we'll examine, including the near-and-far layers of the sign.</div>
     </div>
@@ -166,6 +174,34 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
   else wire();
+})();
+</script>
+<script>
+/* Reusable glossary popover — click a .gloss term to toggle its .gloss-pop. Click-away / Esc closes. */
+(function(){
+  function closeAll(except){
+    document.querySelectorAll('.gloss-pop.open').forEach(function(p){ if(p!==except){ p.classList.remove('open'); var t=p.previousElementSibling; if(t&&t.classList.contains('gloss')) t.setAttribute('aria-expanded','false'); }});
+  }
+  document.addEventListener('click', function(e){
+    var term = e.target.closest ? e.target.closest('.gloss') : null;
+    if(term){
+      e.preventDefault();
+      var pop = term.querySelector('.gloss-pop');
+      if(!pop) return;
+      var isOpen = pop.classList.contains('open');
+      closeAll(pop);
+      if(isOpen){ pop.classList.remove('open'); term.setAttribute('aria-expanded','false'); }
+      else { pop.classList.add('open'); term.setAttribute('aria-expanded','true'); }
+      return;
+    }
+    if(!(e.target.closest && e.target.closest('.gloss-pop'))) closeAll(null);
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape') closeAll(null);
+    if((e.key==='Enter'||e.key===' ') && document.activeElement && document.activeElement.classList.contains('gloss')){
+      e.preventDefault(); document.activeElement.click();
+    }
+  });
 })();
 </script>
 <script src="assets/js/nav.js"></script>
