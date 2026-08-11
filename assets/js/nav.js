@@ -373,7 +373,7 @@ const NAV_STRUCTURE = [
       { label: '↳ 💍 LDS Polygamy',          href: 'DeepDive-LDSPolygamy.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-ldspolygamy' },
       { label: '↳ 📜 The CES Letter',         href: 'DeepDive-CESLetter.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-cesletter' },
       { label: '↳ 👤 Joseph Smith',         href: 'DeepDive-JosephSmith.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', adminOnly: true, completable: true, completeKey: 'complete-dd-josephsmith' },
-      { label: '↳ 🔬 Foretold: Messiah\'s Birth', href: 'DeepDive-MessianicBirth.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives' },
+      { label: '↳ 🔬 Foretold: Messiah\'s Birth', href: 'DeepDive-MessianicBirth.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-dd-messianicbirth' },
       { label: '↳↳ Prophecy 01 — The First Promise (Gen 3:15)', href: 'DeepDive-MessianicBirth-01-FirstPromise.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-mb-01' },
       { label: '↳↳ Prophecy 02 — The Promise Narrows: Abraham (Gen 12:3)', href: 'DeepDive-MessianicBirth-02-Abraham.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-mb-02' },
       { label: '↳↳ Prophecy 03 — The Promise Narrows: David (2 Sam 7:12-13)', href: 'DeepDive-MessianicBirth-03-David.html', sub: true, underSubKey: 'deepdives', itemColor: 'mystudy-deepdives', completable: true, completeKey: 'complete-mb-03' },

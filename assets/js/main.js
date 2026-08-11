@@ -188,6 +188,18 @@ const COMPLETION_KEYS = {
   'DeepDive-LDSPolygamy':                  'complete-dd-ldspolygamy',
   'DeepDive-JosephSmith':                  'complete-dd-josephsmith',
   'DeepDive-PowerBlocs':                   'complete-dd-powerblocs',
+  'DeepDive-MessianicBirth':               'complete-dd-messianicbirth',
+  'DeepDive-MessianicBirth-01-FirstPromise':'complete-mb-01',
+  'DeepDive-MessianicBirth-02-Abraham':    'complete-mb-02',
+  'DeepDive-MessianicBirth-03-David':      'complete-mb-03',
+  'DeepDive-MessianicBirth-04-Isaiah7':    'complete-mb-04',
+  'DeepDive-MessianicBirth-05-Isaiah9':    'complete-mb-05',
+  'DeepDive-MessianicBirth-06-Micah':      'complete-mb-06',
+  'DeepDive-MessianicBirth-07-Daniel9':    'complete-mb-07',
+  'DeepDive-MessianicBirth-08-Malachi3':   'complete-mb-08',
+  'DeepDive-MessianicBirth-09-Luke1':      'complete-mb-09',
+  'DeepDive-MessianicBirth-10-Matthew1':   'complete-mb-10',
+  'DeepDive-MessianicBirth-11-Luke2':      'complete-mb-11',
 
   // Joseph Library chapters (15 chronological + 7 thematic + 4 appendices).
   // Per Chris's decision 2026-05-26, ALL 26 are completable including appendices
