@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="case">
+<html lang="en" data-theme="case" data-density="compact">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Hot Springs Archive</title>
@@ -23,10 +23,24 @@
   --ink:#15120F; --muted:#5A5248; --accent:#C2185B; --accent2:#1565A8;
   --stamp:#C2185B; --grain:rgba(0,0,0,.03);
 }
+
+/* ============ DENSITY ============ */
+[data-density="compact"]{
+  --fs:14.8px; --lh:1.5; --h1:clamp(30px,6vw,52px); --h2:18px; --lede:14px;
+  --secpad:16px; --rowpad:8px; --rowgap:11px; --title:15px; --meta:11.5px;
+  --ratefs:12px; --ratepad:2px 6px; --dd:14px; --dt:10.5px;
+  --cardmin:148px; --cardgap:11px; --covpad:20px; --specfs:18px;
+}
+[data-density="roomy"]{
+  --fs:16.5px; --lh:1.65; --h1:clamp(40px,8.4vw,78px); --h2:23px; --lede:15.5px;
+  --secpad:24px; --rowpad:14px; --rowgap:14px; --title:17px; --meta:12.5px;
+  --ratefs:15px; --ratepad:3px 8px; --dd:15px; --dt:11px;
+  --cardmin:172px; --cardgap:16px; --covpad:26px; --specfs:21px;
+}
 *{box-sizing:border-box}html,body{margin:0;padding:0}
 body{
   background:var(--bg);color:var(--ink);
-  font-family:'Spectral',Georgia,serif;font-size:16.5px;line-height:1.65;
+  font-family:'Spectral',Georgia,serif;font-size:var(--fs);line-height:var(--lh);
   -webkit-font-smoothing:antialiased;
   background-image:radial-gradient(var(--grain) 1px,transparent 1px);background-size:3px 3px;
 }
@@ -35,7 +49,7 @@ h1,h2,.disp{font-family:'Archivo Black',Impact,sans-serif;text-transform:upperca
 .mono,.mono *{font-family:'Courier Prime',monospace}
 
 /* ---------- case cover ---------- */
-.cover{background:var(--card);border:1px solid var(--edge);margin:24px 0 22px;position:relative;
+.cover{background:var(--card);border:1px solid var(--edge);margin:18px 0 16px;position:relative;
   box-shadow:0 1px 0 var(--edge),0 14px 28px rgba(0,0,0,.14)}
 .tab{position:absolute;top:-1px;right:26px;transform:translateY(-100%);
   background:var(--card);border:1px solid var(--edge);border-bottom:none;
@@ -45,10 +59,10 @@ h1,h2,.disp{font-family:'Archivo Black',Impact,sans-serif;text-transform:upperca
   padding:12px 20px;border-bottom:1px solid var(--edge);
   font-family:'Courier Prime',monospace;font-size:12.5px;letter-spacing:.13em;
   text-transform:uppercase;color:var(--muted)}
-.cover-body{padding:26px 20px 24px;position:relative}
-h1{font-size:clamp(40px,8.4vw,78px);line-height:.94;margin:0;color:var(--ink)}
+.cover-body{padding:var(--covpad) 20px calc(var(--covpad) - 2px);position:relative}
+h1{font-size:var(--h1);line-height:.94;margin:0;color:var(--ink)}
 h1 em{font-style:normal;color:var(--accent)}
-.blurb{max-width:60ch;margin:16px 0 0;color:var(--muted);font-size:16px}
+.blurb{max-width:64ch;margin:12px 0 0;color:var(--muted);font-size:var(--lede)}
 .stamp{position:absolute;top:16px;right:20px;transform:rotate(-8deg);
   border:3px double var(--stamp);color:var(--stamp);padding:7px 14px 5px;
   font-family:'Archivo Black',sans-serif;font-size:15px;letter-spacing:.1em;
@@ -56,12 +70,12 @@ h1 em{font-style:normal;color:var(--accent)}
 .stamp small{display:block;font-family:'Courier Prime',monospace;font-size:10px;
   letter-spacing:.14em;font-weight:400;margin-top:3px}
 @media(max-width:700px){.stamp{position:static;display:inline-block;transform:rotate(-3deg);margin-top:18px}}
-.spec{display:flex;flex-wrap:wrap;margin-top:22px;border-top:1px solid var(--edge)}
-.spec div{flex:1 1 108px;padding:11px 13px 9px;border-right:1px solid var(--edge);
+.spec{display:flex;flex-wrap:wrap;margin-top:16px;border-top:1px solid var(--edge)}
+.spec div{flex:1 1 96px;padding:8px 11px 7px;border-right:1px solid var(--edge);
   font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.13em;
   text-transform:uppercase;color:var(--muted)}
 .spec div:last-child{border-right:none}
-.spec b{display:block;color:var(--ink);font-size:21px;margin-top:4px;
+.spec b{display:block;color:var(--ink);font-size:var(--specfs);margin-top:4px;
   font-family:'Archivo',sans-serif;font-weight:700;letter-spacing:-.01em}
 
 /* ---------- palette switch ---------- */
@@ -77,231 +91,186 @@ h1 em{font-style:normal;color:var(--accent)}
 nav{display:flex;flex-wrap:wrap;border:1px solid var(--edge);border-bottom:none;
   background:var(--card2);position:sticky;top:0;z-index:20}
 nav button{flex:1 1 auto;background:transparent;color:var(--muted);border:none;
-  border-bottom:3px solid transparent;padding:14px 15px;cursor:pointer;
+  border-bottom:3px solid transparent;padding:10px 14px;cursor:pointer;
   font-family:'Archivo',sans-serif;font-weight:600;font-size:13px;
-  letter-spacing:.09em;text-transform:uppercase}
+  letter-spacing:.07em;text-transform:uppercase;font-size:12px}
 nav button:hover{color:var(--ink)}
 nav button[aria-selected=true]{color:var(--accent);border-bottom-color:var(--accent);background:var(--card)}
-section{border:1px solid var(--edge);background:var(--card);padding:24px 20px 30px;margin-bottom:24px}
+section{border:1px solid var(--edge);background:var(--card);padding:var(--secpad) var(--secpad) calc(var(--secpad) + 6px);margin-bottom:18px}
 .hidden{display:none!important}
-h2{font-size:23px;margin:0 0 5px;color:var(--ink)}
-.lede{color:var(--muted);font-size:15.5px;margin:0 0 20px;max-width:62ch}
+h2{font-size:var(--h2);margin:0 0 4px;color:var(--ink)}
+.lede{color:var(--muted);font-size:var(--lede);margin:0 0 15px;max-width:66ch}
 
 /* ---------- controls ---------- */
 input[type=text],select{background:var(--card2);border:1px solid var(--edge);color:var(--ink);
-  padding:11px 12px;font-family:'Courier Prime',monospace;font-size:14px;border-radius:0;width:100%}
+  padding:8px 10px;font-family:'Courier Prime',monospace;font-size:13px;border-radius:0;width:100%}
 input::placeholder{color:var(--muted)}
 input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);outline-offset:1px}
-.tools{display:grid;grid-template-columns:2fr 1fr 1fr;gap:11px;margin-bottom:18px}
+.tools{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:9px;margin-bottom:13px}
 @media(max-width:640px){.tools{grid-template-columns:1fr}}
 
-/* ---------- ledger ---------- */
-.rows{border-top:2px solid var(--ink)}
-.row{border-bottom:1px solid var(--edge)}
-.rowhead{display:grid;grid-template-columns:38px 1fr auto;gap:14px;align-items:center;
-  padding:14px 10px;cursor:pointer;background:none;border:none;width:100%;text-align:left;
-  color:inherit;font:inherit}
-.rowhead:hover{background:var(--card2)}
-.rowhead .n{font-family:'Courier Prime',monospace;font-size:12.5px;color:var(--muted)}
-.rowhead .ti{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;line-height:1.25}
-.rowhead .mt{font-family:'Courier Prime',monospace;font-size:12.5px;color:var(--muted);
-  margin-top:3px;display:block}
-.rate{font-family:'Archivo Black',sans-serif;color:var(--stamp);font-size:15px;
-  white-space:nowrap;border:2px solid var(--stamp);padding:3px 8px 2px;
-  transform:rotate(-3deg);display:inline-block;letter-spacing:.04em}
-.tv{display:inline-block;background:var(--accent2);color:var(--card);
-  font-family:'Courier Prime',monospace;font-weight:700;font-size:10px;letter-spacing:.11em;
-  padding:2px 6px;vertical-align:middle;margin-left:8px}
-.heart{color:var(--accent)}
-.dossier{padding:6px 10px 26px;display:grid;grid-template-columns:132px 1fr;gap:22px}
-@media(max-width:640px){.dossier{grid-template-columns:1fr}.dossier img{max-width:150px}}
-.dossier img{width:100%;display:block;border:1px solid var(--edge)}
-.ov{color:var(--muted);font-size:15.5px;margin:0 0 10px}
-.credits{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:3px 20px;
-  border-top:1px solid var(--edge);padding-top:14px;margin:12px 0 0}
-.credits div{padding:6px 0}
-.credits dt{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--muted);margin:0}
-.credits dd{margin:3px 0 0;font-size:15px;font-family:'Archivo',sans-serif;font-weight:500}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
-.tag{font-family:'Courier Prime',monospace;font-size:12px;background:var(--card2);
-  border:1px solid var(--edge);padding:3px 9px;color:var(--muted)}
-.note{border-left:4px solid var(--accent);padding:8px 0 8px 14px;margin:14px 0 0;
-  font-size:16px;font-style:italic;color:var(--ink)}
 
-/* ---------- crew ---------- */
-.crewrow{display:grid;grid-template-columns:1fr auto;gap:14px;padding:12px 10px;
-  border-bottom:1px solid var(--edge);align-items:baseline}
-.crewrow .nm{font-family:'Archivo',sans-serif;font-weight:700;font-size:16px}
-.crewrow .rl{font-family:'Courier Prime',monospace;font-size:12.5px;color:var(--muted);margin-top:3px}
-.crewrow .tt{font-size:14.5px;color:var(--accent2);margin-top:3px}
-.crewrow .ct{font-family:'Archivo Black',sans-serif;font-size:20px;color:var(--stamp)}
-.crewrow.multi{background:var(--card2);border-left:4px solid var(--accent)}
 
-/* ---------- cards ---------- */
-.films{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:16px}
-.card{background:var(--card2);border:1px solid var(--edge);position:relative}
-.card img{width:100%;display:block;aspect-ratio:2/3;object-fit:cover;background:var(--edge)}
-.card .np{width:100%;aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;
-  color:var(--edge);font-family:'Archivo Black',sans-serif;font-size:38px}
-.card .m{padding:10px 11px 13px}
-.card .t{font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;line-height:1.25}
-.card .y{font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted);margin-top:4px}
-.wt{font-family:'Courier Prime',monospace;font-size:12px;color:var(--accent);
-  margin-top:8px;border-top:1px solid var(--edge);padding-top:7px;line-height:1.4}
-.wt.rentonly{color:var(--muted)}
-.credits.watch{border-top:1px dashed var(--edge);margin-top:12px}
-.card .w{font-size:14px;color:var(--accent2);margin-top:8px;line-height:1.4}
-.card a{color:inherit;text-decoration:none;display:block}
-.card a:hover .t{color:var(--accent)}
-.badge{position:absolute;top:0;right:0;background:var(--stamp);color:var(--card);
-  font-family:'Archivo Black',sans-serif;font-size:14px;padding:4px 9px}
-.rk{position:absolute;top:0;left:0;background:var(--ink);color:var(--card);
-  font-family:'Courier Prime',monospace;font-weight:700;font-size:11.5px;padding:4px 8px}
-.tvs{position:absolute;top:27px;left:0;background:var(--accent2);color:var(--card);
-  font-family:'Courier Prime',monospace;font-weight:700;font-size:10px;letter-spacing:.1em;padding:2px 6px}
-
-/* ---------- charts ---------- */
-.strip{background:var(--card2);border:1px solid var(--edge);padding:18px 0 0;margin-bottom:24px}
-.sprockets{display:flex;gap:7px;padding:0 14px 10px}
-.sprockets i{flex:1;height:10px;background:var(--bg);border:1px solid var(--edge)}
-.bars{display:flex;align-items:flex-end;gap:6px;height:112px;padding:0 14px}
-.bars div{flex:1;background:var(--accent2);min-height:3px}
-.bars div.low{background:var(--edge)}.bars div.high{background:var(--accent)}
-.barlabels{display:flex;gap:6px;padding:8px 14px 14px;font-family:'Courier Prime',monospace;
-  font-size:12px;color:var(--muted)}
-.barlabels span{flex:1;text-align:center}
-.brow{display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:15px}
-.brow .lb{width:146px;flex:none;font-family:'Courier Prime',monospace;font-size:13px;color:var(--muted)}
-.brow .tk{flex:1;height:12px;background:var(--card2);border:1px solid var(--edge)}
-.brow .fl{height:10px;background:var(--accent);display:block}
-.brow .vl{width:38px;text-align:right;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:30px}
-@media(max-width:760px){.cols{grid-template-columns:1fr}}
-
-.setup{border:1px solid var(--edge);background:var(--card2);padding:20px}
-.setupH{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:16px;margin:0 0 6px}
-.setupP{color:var(--muted);font-size:14.5px;margin:0 0 14px}
-.fl{display:block;font-family:'Courier Prime',monospace;font-size:12.5px;letter-spacing:.1em;
- text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
-.fl span{text-transform:none;letter-spacing:0}
-.btn{background:var(--accent);color:var(--card);border:none;padding:12px 20px;cursor:pointer;
- font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase}
-.btn:hover{filter:brightness(1.08)}
-.btn:disabled{background:var(--edge);color:var(--muted);cursor:not-allowed}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--edge)}
-.msg{font-family:'Courier Prime',monospace;font-size:13.5px;margin:12px 0 0;min-height:1.2em}
-.msg.ok{color:var(--accent2)}.msg.bad{color:var(--accent)}
-.entryform{border:1px solid var(--edge);background:var(--card2);padding:18px;margin-top:18px}
-.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-.pick{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
-.pick img{width:72px;border:1px solid var(--edge);display:block}
-.pick .pt{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px}
-.pick .py{font-family:'Courier Prime',monospace;font-size:13px;color:var(--muted);margin-top:3px}
-.card.sel{outline:3px solid var(--accent)}
-.card button{width:100%;background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:left}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.pager{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:9px 2px}
+.pager .count{font-family:'Courier Prime',monospace;font-size:13px;color:var(--muted);margin-right:auto}
+.pager button{background:var(--card2);border:1px solid var(--edge);color:var(--ink);
+ min-width:32px;padding:5px 9px;cursor:pointer;font-family:'Courier Prime',monospace;font-size:12.5px}
+.pager button:hover:not(:disabled):not([aria-current=true]){border-color:var(--accent);color:var(--accent)}
+.pager button[aria-current=true]{background:var(--accent);border-color:var(--accent);color:var(--card);font-weight:700}
+.pager button:disabled{opacity:.4;cursor:not-allowed}
+.pager .gap{font-family:'Courier Prime',monospace;color:var(--muted);padding:0 2px}
+@media(max-width:640px){.pager .count{width:100%;margin-bottom:6px}}
 footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--edge);
   font-family:'Courier Prime',monospace;font-size:12.5px;color:var(--muted);line-height:1.8}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.gate{max-width:440px;margin:60px auto;border:1px solid var(--edge);background:var(--card);padding:26px}
+.gate h2{margin-bottom:6px}
+.gaterow{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.gaterow .btn{flex:1 1 auto}
+.userbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;
+ font-family:'Courier Prime',monospace;font-size:12.5px;color:var(--muted)}
+.userbar .who{margin-left:auto;min-width:180px}
+.userbar b{color:var(--ink)}
+.banner{border:1px solid var(--accent);background:var(--card2);padding:14px;margin-bottom:18px}
+.banner h3{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:14px;margin:0 0 6px}
+.banner p{margin:0 0 10px;font-size:var(--lede);color:var(--muted)}
 </style></head>
-<body><div class="wrap">
+<body>
+<div class="wrap">
 
-<div class="cover">
- <span class="tab mono">Case No. ACS-2026</span>
- <div class="cover-top"><span>Subject: acshotsprings</span><span id="stamp2">Exhibits: 38</span></div>
- <div class="cover-body">
-  <div class="stamp">Closed<small id="stampSub">38 exhibits</small></div>
-  <h1>The Hot<br><em>Springs</em><br>Archive</h1>
-  <p class="blurb">Everything on the record: each title logged, every credit behind it, and where the pattern points next. Assembled from the Letterboxd export and TMDB — nothing loads at runtime.</p>
-  <div class="spec" id="spec"></div>
- </div>
-</div>
-
-<div class="palette">
- <span>Palette</span>
- <button data-p="case" aria-pressed="true">Case File</button>
- <button data-p="late" aria-pressed="false">Late Show</button>
- <button data-p="rental" aria-pressed="false">Rental</button>
-</div>
-
-<nav role="tablist">
- <button role="tab" aria-selected="true" data-v="ledger">The Ledger</button>
- <button role="tab" aria-selected="false" data-v="crew">Crew Index</button>
- <button role="tab" aria-selected="false" data-v="patterns">Patterns</button>
- <button role="tab" aria-selected="false" data-v="next">What's Next</button>
- <button role="tab" aria-selected="false" data-v="log">Log a Film</button>
-</nav>
-
-<section id="v-ledger">
- <h2>The Ledger</h2>
- <p class="lede">Every title on file, ranked by your rating. Open one for the full dossier.</p>
- <div class="tools">
-  <input type="text" id="q" placeholder="search title, director, cast, keyword…">
-  <select id="fType"><option value="">Films &amp; series</option><option value="movie">Films only</option><option value="tv">Series only</option></select>
-  <select id="fSort"><option value="rating">By your rating</option><option value="year">By year</option><option value="title">A–Z</option><option value="runtime">By runtime</option></select>
- </div>
- <div class="rows" id="ledger"></div>
-</section>
-
-<section id="v-crew" class="hidden">
- <h2>Crew Index</h2>
- <p class="lede" id="crewLede"></p>
- <div class="tools" style="grid-template-columns:2fr 1fr">
-  <input type="text" id="cq" placeholder="search a name…">
-  <select id="cf"><option value="multi">Repeat collaborators only</option><option value="all">Everyone</option></select>
- </div>
- <div id="crew"></div>
-</section>
-
-<section id="v-patterns" class="hidden">
- <h2>Patterns</h2>
- <p class="lede">What the record says when you stack it up.</p>
- <div class="strip">
-  <div class="sprockets" id="sp"></div><div class="bars" id="bars"></div><div class="barlabels" id="bl"></div>
- </div>
- <div class="cols">
-  <div><h2 style="font-size:16px">Genres</h2><div id="pGen"></div></div>
-  <div><h2 style="font-size:16px">Decades</h2><div id="pDec"></div></div>
- </div>
- <h2 style="font-size:16px;margin-top:28px">Recurring themes</h2>
- <div class="tags" id="pKw"></div>
-</section>
-
-<section id="v-next" class="hidden">
- <h2>What's Next</h2>
- <p class="lede">Ranked by how many of your favourites point to each one.</p>
- <div class="tools" style="grid-template-columns:1fr 1fr 1fr">
-  <select id="nSvc"><option value="">Any service</option></select>
-  <select id="nType"><option value="">Films &amp; series</option><option value="movie">Films only</option><option value="tv">Series only</option></select>
-  <select id="nGen"><option value="">Any genre</option></select>
- </div>
- <div class="films" id="next"></div>
-</section>
-
-
-<section id="v-log" class="hidden">
- <h2>Log a Film</h2>
- <p class="lede">Search, pick it, rate it. It saves straight into your archive — no export, no rebuild.</p>
-
- <div id="setupPanel" class="setup">
-  <h3 class="setupH">First-time setup</h3>
-  <p class="setupP">Two codes, pasted once and kept on this device only. Never in your website's files.</p>
-  <label class="fl" for="sK">TMDB key <span>— looks up film details</span></label>
-  <input type="password" id="sK" placeholder="32-character key" autocomplete="off">
-  <label class="fl" for="sT">GitHub token <span>— lets the site save into your repo</span></label>
-  <input type="password" id="sT" placeholder="github_pat_…" autocomplete="off">
-  <label class="fl" for="sR">Repo and file</label>
-  <input type="text" id="sR" placeholder="acshotsprings/CampbellBibleStudy" value="acshotsprings/CampbellBibleStudy">
-  <input type="text" id="sF" placeholder="movies/data.json" value="movies/data.json" style="margin-top:8px">
-  <p class="setupP" style="margin-top:12px">Make the token at <b>github.com/settings/personal-access-tokens</b> → Fine-grained → this repo only → Repository permissions → Contents: <b>Read and write</b>.</p>
-  <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-   <button class="btn" id="saveSetup">Save setup</button>
-   <button class="btn ghost" id="clearSetup">Forget these</button>
+<div id="gate">
+ <div class="gate">
+  <h2>The Hot Springs Archive</h2>
+  <p class="lede">A shared film ledger for the family. Sign in, or make an account to start your own.</p>
+  <label class="fl" for="gName">Your name <span>— new accounts only</span></label>
+  <input type="text" id="gName" placeholder="e.g. Chris" autocomplete="name">
+  <label class="fl" for="gEmail">Email</label>
+  <input type="text" id="gEmail" placeholder="you@example.com" autocomplete="email">
+  <label class="fl" for="gPass">Password</label>
+  <input type="password" id="gPass" placeholder="at least 6 characters" autocomplete="current-password">
+  <div class="gaterow">
+   <button class="btn" id="doSignIn">Sign in</button>
+   <button class="btn ghost" id="doSignUp">Create account</button>
   </div>
-  <p class="msg" id="setupMsg"></p>
+  <p class="msg" id="gMsg"></p>
+ </div>
+</div>
+
+<div id="app" class="hidden">
+ <div class="cover">
+  <span class="tab mono">Case No. ACS-2026</span>
+  <div class="cover-top"><span>Subject: <span id="stampSub">the household</span></span><span id="stamp2">Exhibits: 0</span></div>
+  <div class="cover-body">
+   <h1>The Hot<br><em>Springs</em><br>Archive</h1>
+   <p class="blurb">A shared record for the family: what each of us has watched, who made it, and what to watch next.</p>
+   <div class="spec" id="spec"></div>
+  </div>
  </div>
 
- <div id="logPanel" class="hidden">
+ <div class="userbar">
+  <span>Signed in as <b id="meName">…</b></span>
+  <button class="btn ghost" id="doSignOut" style="padding:5px 12px;font-size:12px">Sign out</button>
+  <span class="who"><select id="who"></select></span>
+ </div>
+
+ <div class="palette">
+  <span>Palette</span>
+  <button data-p="case" aria-pressed="true">Case File</button>
+  <button data-p="late" aria-pressed="false">Late Show</button>
+  <button data-p="rental" aria-pressed="false">Rental</button>
+  <span style="margin-left:14px">Density</span>
+  <button data-d="compact" aria-pressed="true">Compact</button>
+  <button data-d="roomy" aria-pressed="false">Roomy</button>
+ </div>
+
+ <nav role="tablist">
+  <button role="tab" aria-selected="true" data-v="ledger">The Ledger</button>
+  <button role="tab" aria-selected="false" data-v="crew">Crew Index</button>
+  <button role="tab" aria-selected="false" data-v="patterns">Patterns</button>
+  <button role="tab" aria-selected="false" data-v="next">What's Next</button>
+  <button role="tab" aria-selected="false" data-v="household">Household</button>
+  <button role="tab" aria-selected="false" data-v="log">Log a Film</button>
+ </nav>
+
+ <section id="v-ledger">
+  <h2>The Ledger</h2>
+  <p class="lede">Every title on file, ranked by rating. Open one for the full dossier.</p>
+  <div class="tools">
+   <input type="text" id="q" placeholder="search title, director, cast, keyword…">
+   <select id="fType"><option value="">Films &amp; series</option><option value="movie">Films only</option><option value="tv">Series only</option></select>
+   <select id="fSort"><option value="rating">By rating</option><option value="year">By year</option><option value="title">A–Z</option><option value="runtime">By runtime</option></select>
+   <select id="fPer"><option value="10">10 per page</option><option value="25" selected>25 per page</option><option value="50">50 per page</option><option value="100">100 per page</option><option value="0">Show all</option></select>
+  </div>
+  <div class="pager" id="pagerTop"></div>
+  <div class="rows" id="ledger"></div>
+  <div class="pager" id="pagerBot"></div>
+ </section>
+
+ <section id="v-crew" class="hidden">
+  <h2>Crew Index</h2>
+  <p class="lede" id="crewLede"></p>
+  <div class="tools" style="grid-template-columns:2fr 1fr 1fr">
+   <input type="text" id="cq" placeholder="search a name…">
+   <select id="cf"><option value="multi">Repeat collaborators only</option><option value="all">Everyone</option></select>
+   <select id="cPer"><option value="25">25 per page</option><option value="50" selected>50 per page</option><option value="100">100 per page</option><option value="0">Show all</option></select>
+  </div>
+  <div id="crew"></div>
+  <div class="pager" id="pagerCrew"></div>
+ </section>
+
+ <section id="v-patterns" class="hidden">
+  <h2>Patterns</h2>
+  <p class="lede">Click any bar to see the titles behind it.</p>
+  <div class="strip">
+   <div class="sprockets" id="sp"></div><div class="bars" id="bars"></div><div class="barlabels" id="bl"></div>
+  </div>
+  <div id="drillBox" class="drill hidden"></div>
+  <div class="cols">
+   <div><h2 style="font-size:16px">Genres</h2><div id="pGen"></div></div>
+   <div><h2 style="font-size:16px">Decades</h2><div id="pDec"></div></div>
+  </div>
+  <h2 style="font-size:16px;margin-top:24px">Recurring themes</h2>
+  <div class="tags" id="pKw"></div>
+ </section>
+
+ <section id="v-next" class="hidden">
+  <h2>What's Next</h2>
+  <p class="lede">Ranked by how many favourites point to each one.</p>
+  <div class="tools" style="grid-template-columns:1fr 1fr 1fr">
+   <select id="nScope"><option value="me">New to me</option><option value="household">New to everyone</option><option value="">Show all</option></select>
+   <select id="nType"><option value="">Films &amp; series</option><option value="movie">Films only</option><option value="tv">Series only</option></select>
+   <select id="nSvc"><option value="">Any service</option></select>
+  </div>
+  <div class="films" id="next"></div>
+ </section>
+
+ <section id="v-household" class="hidden">
+  <h2>Household</h2>
+  <p class="lede">Who's watched what, how your tastes line up, and what to pass along.</p>
+  <div id="hh"></div>
+ </section>
+
+ <section id="v-log" class="hidden">
+  <h2>Log a Film</h2>
+  <p class="lede">Search, pick it, rate it. It saves to your ledger instantly.</p>
+
+  <div id="migrate" class="banner hidden">
+   <h3>Bring in your Letterboxd archive</h3>
+   <p>Your original 38 titles are sitting in this folder. Import them into your account once.</p>
+   <button class="btn" id="doMigrate">Import my 38 titles</button>
+   <p class="msg" id="migMsg"></p>
+  </div>
+
+  <div id="needKey" class="banner hidden">
+   <h3>One-time: TMDB key</h3>
+   <p>Needed to look up film details. Saved to the database, so the whole family shares it and nobody else has to.</p>
+   <input type="password" id="keyIn" placeholder="TMDB v3 key">
+   <div style="margin-top:10px"><button class="btn" id="saveKey">Save key</button></div>
+   <p class="msg" id="keyMsg"></p>
+  </div>
+
   <div class="tools" style="grid-template-columns:1fr auto">
    <input type="text" id="lq" placeholder="search a film or series…">
    <button class="btn" id="lgo">Search</button>
@@ -323,347 +292,437 @@ footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--edge);
     <div><label class="fl" for="llike">Liked it?</label>
      <select id="llike"><option value="0">No</option><option value="1">Yes</option></select></div>
    </div>
-   <label class="fl" for="lrev" style="margin-top:12px">Note (optional)</label>
+   <label class="fl" for="lrev">Note (optional)</label>
    <input type="text" id="lrev" placeholder="a line about it">
    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-    <button class="btn" id="lsave">Save to archive</button>
+    <button class="btn" id="lsave">Save to my ledger</button>
     <button class="btn ghost" id="lcancel">Cancel</button>
    </div>
    <p class="msg" id="smsg"></p>
   </div>
+ </section>
 
-  <div style="margin-top:26px;border-top:1px solid var(--edge);padding-top:16px">
-   <h2 style="font-size:16px">Logged here</h2>
-   <p class="lede" id="entLede" style="margin-bottom:12px"></p>
-   <div id="ents"></div>
-  </div>
- </div>
-</section>
-
-<footer>
- Compiled from the Letterboxd export for acshotsprings. Credits, cast and artwork from TMDB.<br>
- This product uses the TMDB API but is not endorsed or certified by TMDB.<br>
- Streaming availability (US) from JustWatch, via TMDB.<br>
- <span id="built"></span>
-</footer>
+ <footer>
+  A shared archive for the Campbell household. Credits, cast and artwork from TMDB.<br>
+  This product uses the TMDB API but is not endorsed or certified by TMDB.<br>
+  Streaming availability (US) from JustWatch, via TMDB.
+ </footer>
 </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-document.querySelectorAll(".palette button").forEach(b=>b.onclick=()=>{
-  document.documentElement.setAttribute("data-theme",b.dataset.p);
-  document.querySelectorAll(".palette button").forEach(x=>x.setAttribute("aria-pressed",x===b));
-});
-</script>
-<script>
+/* ==========================================================
+   The Hot Springs Archive — family edition
+   Data lives in Supabase. Everyone reads; you write your own.
+   ========================================================== */
+const SUPA_URL="https://utddprddgootmkeylocu.supabase.co";
+const SUPA_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0ZGRwcmRkZ29vdG1rZXlsb2N1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc1ODM2NDEsImV4cCI6MjEwMzE1OTY0MX0.QuyDIHfeEl7UcOX9piux3dumvQt-P71ZCGbZklmmr98";
+const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
 
-
-
-let D=null;
 const $=i=>document.getElementById(i);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const img=(p,w)=>p?`https://image.tmdb.org/t/p/${w}${p}`:null;
-const RL={director:"Director",writer:"Writing",composer:"Music",dop:"Cinematography",editor:"Editing",producer:"Producer",exec:"Exec. Producer"};
-const RO=["director","writer","composer","dop","editor","producer","exec"];
 const stars=r=>"★".repeat(Math.floor(r))+(r%1?"½":"");
+const say=(el,t,cls)=>{const n=$(el);if(!n)return;n.textContent=t;n.className="msg"+(cls?" "+cls:"");};
 
-function render_all(){
-/* masthead */
-const S=D.stats;
-$("spec").innerHTML=[
- ["Titles",S.titles],["Films",S.films],["Series",S.series],["Avg rating",S.avg+"★"],
- ["Liked",S.liked],["Crew credits",S.credits.toLocaleString()],["People",S.people],["Hours",S.hours]
-].map(([k,v])=>`<div>${k}<b>${v}</b></div>`).join("");
-$("stamp2").textContent="Exhibits: "+S.titles;$("stampSub").textContent=S.films+" films · "+S.series+" series";
-$("built").textContent="Archive generated from "+S.credits.toLocaleString()+" credits across "+S.titles+" titles.";
+const GEN={28:"Action",12:"Adventure",16:"Animation",35:"Comedy",80:"Crime",99:"Documentary",18:"Drama",
+10751:"Family",14:"Fantasy",36:"History",27:"Horror",10402:"Music",9648:"Mystery",10749:"Romance",
+878:"Sci-Fi",53:"Thriller",10752:"War",37:"Western",10759:"Action & Adventure",10762:"Kids",10763:"News",
+10764:"Reality",10765:"Sci-Fi & Fantasy",10766:"Soap",10767:"Talk",10768:"War & Politics",10770:"TV Movie"};
+const RL={director:"Director",writer:"Writing",composer:"Music",dop:"Cinematography",
+ editor:"Editing",producer:"Producer",exec:"Exec. Producer"};
+const RO=["director","writer","composer","dop","editor","producer","exec"];
+const JOBS={"Director":"director","Screenplay":"writer","Writer":"writer","Story":"writer",
+ "Original Music Composer":"composer","Music":"composer","Director of Photography":"dop",
+ "Editor":"editor","Producer":"producer","Executive Producer":"exec"};
 
+const S={me:null,profiles:[],rows:[],who:"all",tmdbKey:null,recs:[],PG:{ledger:1,crew:1},drill:null};
 
-/* ---------- where to watch (JustWatch data via TMDB) ---------- */
-function watchLine(f){
- const w=f.watch; if(!w) return "";
- const bits=[];
- if(w.stream&&w.stream.length) bits.push(`<div><dt>Streaming</dt><dd>${esc(dedupe(w.stream).join(", "))}</dd></div>`);
- if(w.rent&&w.rent.length)     bits.push(`<div><dt>Rent</dt><dd>${esc(dedupe(w.rent).slice(0,4).join(", "))}</dd></div>`);
- if(!bits.length) return "";
- return `<dl class="credits watch">${bits.join("")}</dl>`;
+/* ---------- normalise a db row into the shape the views expect ---------- */
+function shape(r){
+  const m=r.meta||{};
+  return {id:r.tmdb_id,type:r.media_type,title:r.title,year:r.year,poster:r.poster,
+    userRating:parseFloat(r.rating),liked:r.liked,review:r.review,diaryDate:r.watched_date,
+    user_id:r.user_id,who:nameOf(r.user_id),rowId:r.id,
+    genres:m.genres||[],genreNames:m.genreNames||[],overview:m.overview||"",tagline:m.tagline||"",
+    runtime:m.runtime||null,episodes:m.episodes||null,keywords:m.keywords||[],roles:m.roles||{},
+    cast:m.cast||[],crewCount:m.crewCount||0,watch:m.watch||null,vote:m.vote||0,votes:m.votes||0,
+    companies:m.companies||[],networks:m.networks||[],language:m.language};
 }
-function watchTag(m){
- const w=m.watch; if(!w) return "";
- const s=dedupe(w.stream||[]);
- if(s.length) return `<div class="wt">${esc(s.slice(0,2).join(" · "))}</div>`;
- if((w.rent||[]).length) return `<div class="wt rentonly">Rent only</div>`;
- return "";
+const nameOf=id=>(S.profiles.find(p=>p.id===id)||{}).name||"Someone";
+const visible=()=>S.rows.filter(r=>S.who==="all"||r.user_id===S.who);
+
+/* ================= auth ================= */
+async function refreshSession(){
+  const {data}=await sb.auth.getSession();
+  S.me=data.session?data.session.user:null;
+  $("gate").classList.toggle("hidden",!!S.me);
+  $("app").classList.toggle("hidden",!S.me);
+  if(S.me) await loadAll();
 }
-/* "Netflix" and "Netflix Standard with Ads" are the same shelf — collapse them */
-function dedupe(list){
- const out=[],seen=new Set();
- for(const p of list){
-  const base=p.replace(/ (Standard )?with Ads$/,"").replace(/ Amazon Channel$/,"").replace(/ (Premium|Essential|Basic)$/,"").trim();
-  if(seen.has(base)) continue; seen.add(base); out.push(base);
- }
- return out;
+$("doSignIn").onclick=async()=>{
+  const email=$("gEmail").value.trim(), password=$("gPass").value;
+  if(!email||!password) return say("gMsg","Enter your email and password.","bad");
+  say("gMsg","Signing in…");
+  const {error}=await sb.auth.signInWithPassword({email,password});
+  if(error) return say("gMsg",error.message,"bad");
+  await refreshSession();
+};
+$("doSignUp").onclick=async()=>{
+  const email=$("gEmail").value.trim(), password=$("gPass").value, name=$("gName").value.trim();
+  if(!email||!password) return say("gMsg","Enter your email and password.","bad");
+  if(password.length<6) return say("gMsg","Password needs at least 6 characters.","bad");
+  if(!name) return say("gMsg","Add your name so the family knows who's who.","bad");
+  say("gMsg","Creating your account…");
+  const {data,error}=await sb.auth.signUp({email,password,options:{data:{name}}});
+  if(error) return say("gMsg",error.message,"bad");
+  if(!data.session) return say("gMsg","Account made — check your email to confirm, then sign in.","ok");
+  await refreshSession();
+};
+$("doSignOut").onclick=async()=>{ await sb.auth.signOut(); location.reload(); };
+
+/* ================= load ================= */
+async function loadAll(){
+  const [{data:profs},{data:ents},{data:cfg}]=await Promise.all([
+    sb.from("profiles").select("*"),
+    sb.from("entries").select("*").order("rating",{ascending:false}),
+    sb.from("app_config").select("*").eq("key","tmdb").maybeSingle()
+  ]);
+  S.profiles=profs||[];
+  S.tmdbKey=cfg?cfg.value:null;
+  S.rows=(ents||[]).map(shape);
+  try{ const r=await fetch("data.json"); if(r.ok){const d=await r.json(); S.recs=d.recs||[];} }catch(e){}
+  paintWho(); paintAll();
+  $("meName").textContent=nameOf(S.me.id);
+  $("needKey").classList.toggle("hidden",!!S.tmdbKey);
+  $("migrate").classList.toggle("hidden", S.rows.some(r=>r.user_id===S.me.id));
+}
+
+function paintWho(){
+  const counts={};
+  S.rows.forEach(r=>counts[r.user_id]=(counts[r.user_id]||0)+1);
+  $("who").innerHTML=`<option value="all">Everyone (${S.rows.length})</option>`+
+    S.profiles.map(p=>`<option value="${p.id}"${p.id===S.me.id?" data-me":""}>${esc(p.name)}${p.id===S.me.id?" (you)":""} — ${counts[p.id]||0}</option>`).join("");
+  $("who").value=S.who;
+}
+$("who").onchange=()=>{ S.who=$("who").value; S.PG.ledger=1; S.PG.crew=1; S.drill=null; paintAll(); };
+
+/* ================= stats ================= */
+function statsOf(L){
+  const R=L.map(f=>f.userRating).filter(n=>!isNaN(n));
+  const hist=[0,0,0,0,0,0,0,0,0,0];
+  R.forEach(r=>hist[Math.min(9,Math.max(0,Math.round(r*2)-1))]++);
+  const dec={},gen={},kw={};
+  L.forEach(f=>{
+    if(f.year){const d=Math.floor(f.year/10)*10; dec[d]=(dec[d]||0)+1;}
+    f.genreNames.forEach(g=>gen[g]=(gen[g]||0)+1);
+    f.keywords.forEach(k=>kw[k]=(kw[k]||0)+1);
+  });
+  const mins=L.map(f=>f.runtime).filter(Boolean).reduce((a,c)=>a+c,0);
+  return {titles:L.length,films:L.filter(f=>f.type==="movie").length,series:L.filter(f=>f.type==="tv").length,
+    liked:L.filter(f=>f.liked).length,
+    avg:R.length?Math.round(R.reduce((a,c)=>a+c,0)/R.length*100)/100:0,
+    hist,minutes:mins,hours:Math.round(mins/60*10)/10,
+    decades:Object.entries(dec).map(([d,n])=>[+d,n]).sort((a,b)=>a[0]-b[0]),
+    genres:Object.entries(gen).sort((a,b)=>b[1]-a[1]).slice(0,12),
+    keywords:Object.entries(kw).sort((a,b)=>b[1]-a[1]).slice(0,20)};
+}
+function crewOf(L){
+  const P={};
+  L.forEach(f=>{
+    Object.entries(f.roles).forEach(([role,ppl])=>ppl.forEach(p=>{
+      P[p.name]=P[p.name]||{name:p.name,roles:{},titles:new Set()};
+      const lab=RL[role]||role; P[p.name].roles[lab]=(P[p.name].roles[lab]||0)+1; P[p.name].titles.add(f.title);}));
+    f.cast.slice(0,8).forEach(c=>{
+      P[c.name]=P[c.name]||{name:c.name,roles:{},titles:new Set()};
+      P[c.name].roles.Cast=(P[c.name].roles.Cast||0)+1; P[c.name].titles.add(f.title);});
+  });
+  return Object.values(P).map(p=>({name:p.name,roles:p.roles,titles:[...p.titles],
+    total:Object.values(p.roles).reduce((a,c)=>a+c,0)}))
+    .sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name));
+}
+
+/* ================= views ================= */
+function paintAll(){ paintMast(); ledger(); crew(); patterns(); next(); household(); paintDrill(); }
+
+function paintMast(){
+  const st=statsOf(visible());
+  const label=S.who==="all"?"the household":nameOf(S.who);
+  $("spec").innerHTML=[["Titles",st.titles],["Films",st.films],["Series",st.series],
+    ["Avg",st.avg?st.avg+"★":"—"],["Liked",st.liked],["People",S.profiles.length],["Hours",st.hours]]
+    .map(([k,v])=>`<div>${k}<b>${v}</b></div>`).join("");
+  $("stamp2").textContent="Exhibits: "+st.titles;
+  $("stampSub").textContent=label;
 }
 
 /* ---------- ledger ---------- */
 let open=new Set();
 function dossier(f){
- const cr=RO.filter(r=>f.roles[r]&&f.roles[r].length)
-   .map(r=>`<div><dt>${RL[r]}</dt><dd>${f.roles[r].map(p=>esc(p.name)).join(", ")}</dd></div>`).join("");
- const cast=f.cast.length?`<div><dt>Cast</dt><dd>${f.cast.slice(0,6).map(c=>esc(c.name)).join(", ")}</dd></div>`:"";
- const meta=[];
- if(f.runtime) meta.push(`<div><dt>Runtime</dt><dd>${f.runtime} min${f.episodes?` × ${f.episodes} eps`:""}</dd></div>`);
- if(f.genreNames.length) meta.push(`<div><dt>Genre</dt><dd>${f.genreNames.join(", ")}</dd></div>`);
- if(f.companies.length||f.networks.length) meta.push(`<div><dt>${f.networks.length?"Network":"Studio"}</dt><dd>${esc((f.networks.length?f.networks:f.companies).join(", "))}</dd></div>`);
- if(f.diaryDate) meta.push(`<div><dt>Logged</dt><dd>${f.diaryDate}</dd></div>`);
- return `<div class="dossier">
-  <div>${img(f.poster,"w342")?`<img loading="lazy" src="${img(f.poster,"w342")}" alt="">`:""}</div>
-  <div>
-   ${f.tagline?`<p class="ov" style="color:var(--accent);font-style:italic">${esc(f.tagline)}</p>`:""}
-   ${f.overview?`<p class="ov">${esc(f.overview)}</p>`:""}
-   ${f.review?`<p class="note">“${esc(f.review)}”</p>`:""}
-   <dl class="credits">${cr}${cast}${meta.join("")}</dl>
-   ${watchLine(f)}
-   ${f.keywords.length?`<div class="tags">${f.keywords.map(k=>`<span class="tag">${esc(k)}</span>`).join("")}</div>`:""}
-  </div></div>`;
+  const cr=RO.filter(r=>f.roles[r]&&f.roles[r].length)
+    .map(r=>`<div><dt>${RL[r]}</dt><dd>${f.roles[r].map(p=>esc(p.name)).join(", ")}</dd></div>`).join("");
+  const cast=f.cast.length?`<div><dt>Cast</dt><dd>${f.cast.slice(0,6).map(c=>esc(c.name)).join(", ")}</dd></div>`:"";
+  const meta=[];
+  if(f.runtime) meta.push(`<div><dt>Runtime</dt><dd>${f.runtime} min${f.episodes?` × ${f.episodes} eps`:""}</dd></div>`);
+  if(f.genreNames.length) meta.push(`<div><dt>Genre</dt><dd>${esc(f.genreNames.join(", "))}</dd></div>`);
+  if(f.diaryDate) meta.push(`<div><dt>Watched</dt><dd>${f.diaryDate}</dd></div>`);
+  meta.push(`<div><dt>Logged by</dt><dd>${esc(f.who)}</dd></div>`);
+  const others=S.rows.filter(r=>r.id===f.id&&r.type===f.type&&r.user_id!==f.user_id);
+  const also=others.length?`<div><dt>Also seen by</dt><dd>${others.map(o=>esc(o.who)+" "+stars(o.userRating)).join(" · ")}</dd></div>`:"";
+  const w=f.watch, wl=[];
+  if(w&&w.stream&&w.stream.length) wl.push(`<div><dt>Streaming</dt><dd>${esc(dedupe(w.stream).join(", "))}</dd></div>`);
+  if(w&&w.rent&&w.rent.length) wl.push(`<div><dt>Rent</dt><dd>${esc(dedupe(w.rent).slice(0,4).join(", "))}</dd></div>`);
+  const mine=f.user_id===S.me.id;
+  return `<div class="dossier">
+   <div>${img(f.poster,"w342")?`<img loading="lazy" src="${img(f.poster,"w342")}" alt="">`:""}</div>
+   <div>
+    ${f.tagline?`<p class="ov" style="color:var(--accent);font-style:italic">${esc(f.tagline)}</p>`:""}
+    ${f.overview?`<p class="ov">${esc(f.overview)}</p>`:""}
+    ${f.review?`<p class="note">“${esc(f.review)}”</p>`:""}
+    <dl class="credits">${cr}${cast}${meta.join("")}${also}</dl>
+    ${wl.length?`<dl class="credits watch">${wl.join("")}</dl>`:""}
+    ${f.keywords.length?`<div class="tags">${f.keywords.map(k=>`<span class="tag">${esc(k)}</span>`).join("")}</div>`:""}
+    ${mine?`<div style="margin-top:12px"><button class="btn ghost del" data-row="${f.rowId}">Remove my entry</button></div>`:""}
+   </div></div>`;
+}
+function dedupe(list){
+  const out=[],seen=new Set();
+  for(const p of list){
+    const b=p.replace(/ (Standard )?with Ads$/,"").replace(/ Amazon Channel$/,"").replace(/ (Premium|Essential|Basic)$/,"").trim();
+    if(!seen.has(b)){seen.add(b);out.push(b);} }
+  return out;
 }
 function ledger(){
- const q=$("q").value.toLowerCase().trim(), ty=$("fType").value, so=$("fSort").value;
- let L=D.films.filter(f=>!ty||f.type===ty);
- if(q) L=L.filter(f=>{
-   const hay=[f.title,...(f.genreNames||[]),...(f.keywords||[]),
-     ...Object.values(f.roles||{}).flat().map(p=>p.name),...(f.cast||[]).map(c=>c.name)].join(" ").toLowerCase();
-   return hay.includes(q);
- });
- L=[...L].sort((a,b)=> so==="year"?(b.year||0)-(a.year||0) : so==="title"?a.title.localeCompare(b.title)
-   : so==="runtime"?(b.runtime||0)-(a.runtime||0) : b.userRating-a.userRating);
- $("ledger").innerHTML=L.length?L.map((f,i)=>{
-  const k=f.type+":"+f.id, isOpen=open.has(k);
-  const dir=(f.roles.director||[]).map(p=>p.name).join(", ");
-  return `<div class="row">
-   <button class="rowhead" data-k="${k}" aria-expanded="${isOpen}">
-    <span class="n">${String(i+1).padStart(2,"0")}</span>
-    <span><span class="ti">${esc(f.title)}</span>${f.type==="tv"?'<span class="tv">SERIES</span>':""}
-     ${f.liked?'<span class="heart"> ♥</span>':""}
-     <span class="mt">${f.year||"—"}${dir?" · "+esc(dir):""}${f.runtime?" · "+f.runtime+" min":""}</span></span>
-    <span class="rate">${stars(f.userRating)}</span></button>
-   ${isOpen?dossier(f):""}</div>`;
- }).join(""):`<p style="color:var(--muted);padding:14px 8px">Nothing matches “${esc(q)}”.</p>`;
- $("ledger").querySelectorAll(".rowhead").forEach(b=>b.onclick=()=>{
-   const k=b.dataset.k; open.has(k)?open.delete(k):open.add(k); ledger();
- });
+  const q=$("q").value.toLowerCase().trim(), ty=$("fType").value, so=$("fSort").value;
+  let L=visible().filter(f=>!ty||f.type===ty);
+  if(q) L=L.filter(f=>[f.title,f.who,...f.genreNames,...f.keywords,
+    ...Object.values(f.roles).flat().map(p=>p.name),...f.cast.map(c=>c.name)].join(" ").toLowerCase().includes(q));
+  L=[...L].sort((a,b)=> so==="year"?(b.year||0)-(a.year||0) : so==="title"?a.title.localeCompare(b.title)
+    : so==="runtime"?(b.runtime||0)-(a.runtime||0) : b.userRating-a.userRating);
+
+  const per=+$("fPer").value||0, count=L.length;
+  const total=per?Math.max(1,Math.ceil(count/per)):1;
+  if(S.PG.ledger>total) S.PG.ledger=total;
+  const cur=S.PG.ledger, from=per?(cur-1)*per:0;
+  const P=per?L.slice(from,from+per):L;
+  drawPager(["pagerTop","pagerBot"],"ledger",cur,total,per||count,count,ledger);
+
+  $("ledger").innerHTML=P.length?P.map((f,j)=>{
+    const i=from+j, k=f.rowId, isOpen=open.has(k);
+    const dir=(f.roles.director||[]).map(p=>p.name).join(", ");
+    return `<div class="row">
+     <button class="rowhead" data-k="${k}" aria-expanded="${isOpen}">
+      <span class="n">${String(i+1).padStart(2,"0")}</span>
+      <span><span class="ti">${esc(f.title)}</span>${f.type==="tv"?'<span class="tv">SERIES</span>':""}
+       ${f.liked?'<span class="heart"> ♥</span>':""}
+       <span class="mt">${f.year||"—"}${dir?" · "+esc(dir):""}${S.who==="all"?" · "+esc(f.who):""}</span></span>
+      <span class="rate">${stars(f.userRating)}</span></button>
+     ${isOpen?dossier(f):""}</div>`;
+  }).join(""):`<p style="color:var(--muted);padding:14px 8px">Nothing here yet.</p>`;
+
+  $("ledger").querySelectorAll(".rowhead").forEach(b=>b.onclick=()=>{
+    const k=+b.dataset.k; open.has(k)?open.delete(k):open.add(k); ledger(); });
+  $("ledger").querySelectorAll(".del").forEach(b=>b.onclick=async()=>{
+    b.disabled=true; b.textContent="Removing…";
+    const {error}=await sb.from("entries").delete().eq("id",+b.dataset.row);
+    if(error){ b.disabled=false; b.textContent="Couldn't remove"; return; }
+    await loadAll(); });
 }
-["q","fType","fSort"].forEach(i=>$(i).addEventListener("input",ledger));
+["q","fType","fSort","fPer"].forEach(i=>$(i).addEventListener("input",()=>{S.PG.ledger=1;ledger();}));
 
 /* ---------- crew ---------- */
-$("crewLede").textContent=`${D.stats.people} people across ${D.stats.credits.toLocaleString()} credits. ${D.stats.repeats} of them turn up more than once.`;
 function crew(){
- const q=$("cq").value.toLowerCase().trim(), mode=$("cf").value;
- let C=D.crew.filter(c=>mode==="all"||c.total>1);
- if(q) C=C.filter(c=>c.name.toLowerCase().includes(q)||c.titles.some(t=>t.toLowerCase().includes(q)));
- $("crew").innerHTML=C.length?C.slice(0,400).map(c=>`
-  <div class="crewrow ${c.total>1?"multi":""}">
-   <div><div class="nm">${esc(c.name)}</div>
-    <div class="rl">${Object.entries(c.roles).map(([r,n])=>r+(n>1?" ×"+n:"")).join(" · ")}</div>
-    <div class="tt">${c.titles.map(esc).join(" · ")}</div></div>
-   <div class="ct">${c.total}</div></div>`).join("")
-  :`<p style="color:var(--muted);padding:14px 8px">No one matches “${esc(q)}”.</p>`;
+  const q=$("cq").value.toLowerCase().trim(), mode=$("cf").value;
+  const all=crewOf(visible());
+  let C=all.filter(c=>mode==="all"||c.total>1);
+  if(q) C=C.filter(c=>c.name.toLowerCase().includes(q)||c.titles.some(t=>t.toLowerCase().includes(q)));
+  $("crewLede").textContent=`${all.length} people across ${visible().reduce((a,f)=>a+f.crewCount,0).toLocaleString()} credits. ${all.filter(c=>c.total>1).length} turn up more than once.`;
+  const per=+$("cPer").value||0, count=C.length;
+  const total=per?Math.max(1,Math.ceil(count/per)):1;
+  if(S.PG.crew>total) S.PG.crew=total;
+  const cur=S.PG.crew, from=per?(cur-1)*per:0;
+  drawPager(["pagerCrew"],"crew",cur,total,per||count,count,crew);
+  const P=per?C.slice(from,from+per):C;
+  $("crew").innerHTML=P.length?P.map(c=>`
+   <div class="crewrow ${c.total>1?"multi":""}">
+    <div><div class="nm">${esc(c.name)}</div>
+     <div class="rl">${Object.entries(c.roles).map(([r,n])=>r+(n>1?" ×"+n:"")).join(" · ")}</div>
+     <div class="tt">${c.titles.map(esc).join(" · ")}</div></div>
+    <div class="ct">${c.total}</div></div>`).join("")
+   :`<p style="color:var(--muted);padding:14px 8px">No one matches that.</p>`;
 }
-["cq","cf"].forEach(i=>$(i).addEventListener("input",crew));
+["cq","cf","cPer"].forEach(i=>$(i).addEventListener("input",()=>{S.PG.crew=1;crew();}));
 
 /* ---------- patterns ---------- */
-$("sp").innerHTML=Array.from({length:24},()=>"<i></i>").join("");
-const mx=Math.max(...S.hist);
-$("bars").innerHTML=S.hist.map((c,i)=>`<div class="${i<3?"low":i>=8?"high":""}" style="height:${Math.max(2,c/mx*100)}%" title="${(i+1)/2}★ — ${c}"></div>`).join("");
-$("bl").innerHTML=S.hist.map((_,i)=>`<span>${(i+1)/2}</span>`).join("");
-const bar=(rows,total)=>{const m=Math.max(...rows.map(r=>r[1]))||1;
- return rows.map(([k,v])=>`<div class="brow"><span class="lb">${esc(k)}</span><span class="tk"><span class="fl" style="width:${v/m*100}%"></span></span><span class="vl">${v}</span></div>`).join("");};
-$("pGen").innerHTML=bar(S.genres);
-$("pDec").innerHTML=bar(S.decades.map(([d,n])=>[d+"s",n]));
-$("pKw").innerHTML=S.keywords.map(([k,v])=>`<span class="tag">${esc(k)}${v>1?" ×"+v:""}</span>`).join("");
+function patterns(){
+  const st=statsOf(visible());
+  $("sp").innerHTML=Array.from({length:24},()=>"<i></i>").join("");
+  const mx=Math.max(...st.hist)||1;
+  $("bars").innerHTML=st.hist.map((c,i)=>`<button type="button" class="${i<3?"low":i>=8?"high":""}" data-star="${(i+1)/2}" ${c?"":"disabled"} aria-pressed="false" style="height:${Math.max(2,c/mx*100)}%" title="${(i+1)/2}★ — ${c}"></button>`).join("");
+  $("bars").querySelectorAll("button[data-star]").forEach(b=>b.onclick=()=>drill("star",+b.dataset.star));
+  $("bl").innerHTML=st.hist.map((_,i)=>`<span>${(i+1)/2}</span>`).join("");
+  const bar=(rows,kind)=>{const m=Math.max(...rows.map(r=>r[1]))||1;
+    return rows.map(([k,v])=>`<button type="button" class="brow" data-kind="${kind}" data-key="${esc(String(k))}" aria-pressed="false"><span class="lb">${esc(k)}</span><span class="tk"><span class="fl" style="width:${v/m*100}%"></span></span><span class="vl">${v}</span></button>`).join("");};
+  $("pGen").innerHTML=bar(st.genres,"genre");
+  $("pDec").innerHTML=bar(st.decades.map(([d,n])=>[d+"s",n]),"decade");
+  document.querySelectorAll(".brow[data-kind]").forEach(b=>b.onclick=()=>drill(b.dataset.kind,b.dataset.key));
+  $("pKw").innerHTML=st.keywords.map(([k,v])=>`<button type="button" class="tag" data-kw="${esc(k)}" style="cursor:pointer">${esc(k)}${v>1?" ×"+v:""}</button>`).join("");
+  $("pKw").querySelectorAll("button[data-kw]").forEach(b=>b.onclick=()=>drill("keyword",b.dataset.kw));
+}
+function drill(kind,key){
+  const same=S.drill&&S.drill.kind===kind&&String(S.drill.key)===String(key);
+  S.drill=same?null:{kind,key}; paintDrill();
+}
+function drillMatch(f,kind,key){
+  if(kind==="star") return f.userRating===+key;
+  if(kind==="genre") return f.genreNames.includes(key);
+  if(kind==="decade") return f.year&&(Math.floor(f.year/10)*10)+"s"===key;
+  if(kind==="keyword") return f.keywords.includes(key);
+  return false;
+}
+function paintDrill(){
+  document.querySelectorAll('.bars button[data-star]').forEach(b=>
+    b.setAttribute("aria-pressed",!!S.drill&&S.drill.kind==="star"&&+S.drill.key===+b.dataset.star));
+  document.querySelectorAll('.brow[data-kind]').forEach(b=>
+    b.setAttribute("aria-pressed",!!S.drill&&S.drill.kind===b.dataset.kind&&S.drill.key===b.dataset.key));
+  const box=$("drillBox");
+  if(!S.drill){ box.classList.add("hidden"); box.innerHTML=""; return; }
+  const {kind,key}=S.drill;
+  const M=visible().filter(f=>drillMatch(f,kind,key)).sort((a,b)=>b.userRating-a.userRating);
+  const label=kind==="star"?key+(+key===1?" star":" stars"):kind==="decade"?"The "+key:kind==="keyword"?"Tagged “"+key+"”":key;
+  const avg=M.length?(M.reduce((a,c)=>a+c.userRating,0)/M.length).toFixed(2):"—";
+  box.classList.remove("hidden");
+  box.innerHTML=`<div class="dh"><span class="dt2">${esc(label)}</span>
+    <span class="dc">${M.length} ${M.length===1?"title":"titles"}${kind==="star"?"":" · avg "+avg+"★"}</span>
+    <button type="button" class="close">Clear</button></div>
+   <div class="dlist">${M.map(f=>`<div class="ditem"><span><span class="dn">${esc(f.title)}</span>
+    <span class="dy">${f.year||"—"}${S.who==="all"?" · "+esc(f.who):""}</span></span>
+    <span class="dr">${stars(f.userRating)}</span></div>`).join("")}</div>`;
+  box.querySelector(".close").onclick=()=>{S.drill=null;paintDrill();};
+}
 
-/* ---------- next ---------- */
-const GN={28:"Action",12:"Adventure",16:"Animation",35:"Comedy",80:"Crime",99:"Documentary",18:"Drama",
-10751:"Family",14:"Fantasy",36:"History",27:"Horror",10402:"Music",9648:"Mystery",10749:"Romance",
-878:"Sci-Fi",53:"Thriller",10752:"War",37:"Western",10759:"Action & Adventure",10763:"News",
-10764:"Reality",10765:"Sci-Fi & Fantasy",10768:"War & Politics",10762:"Kids",10766:"Soap",10767:"Talk",10770:"TV Movie"};
-{const svc={};D.recs.forEach(r=>dedupe((r.watch&&r.watch.stream)||[]).forEach(s=>svc[s]=(svc[s]||0)+1));
- Object.entries(svc).sort((a,b)=>b[1]-a[1]).slice(0,14).forEach(([s,n])=>{
-  const o=document.createElement("option");o.value=s;o.textContent=s+" ("+n+")";$("nSvc").appendChild(o);});}
-[...new Set(D.recs.flatMap(r=>r.genres))].filter(g=>GN[g]).sort((a,b)=>GN[a].localeCompare(GN[b]))
- .forEach(g=>{const o=document.createElement("option");o.value=g;o.textContent=GN[g];$("nGen").appendChild(o);});
+/* ---------- pager ---------- */
+function pageBtns(cur,total){
+  if(total<=7) return Array.from({length:total},(_,i)=>i+1);
+  const out=[1]; let a=Math.max(2,cur-1),b=Math.min(total-1,cur+1);
+  if(cur<=3){a=2;b=4;} if(cur>=total-2){a=total-3;b=total-1;}
+  if(a>2) out.push("…"); for(let i=a;i<=b;i++) out.push(i);
+  if(b<total-1) out.push("…"); out.push(total); return out;
+}
+function drawPager(ids,key,cur,total,shown,count,onGo){
+  const html=total<=1&&count<=shown?`<span class="count">${count} ${count===1?"entry":"entries"}</span>`:`
+    <span class="count">${count?((cur-1)*shown+1)+"–"+Math.min(cur*shown,count):0} of ${count}</span>
+    <button type="button" data-g="${cur-1}" ${cur<=1?"disabled":""}>‹</button>
+    ${pageBtns(cur,total).map(p=>p==="…"?'<span class="gap">…</span>'
+      :`<button type="button" data-g="${p}" aria-current="${p===cur}">${p}</button>`).join("")}
+    <button type="button" data-g="${cur+1}" ${cur>=total?"disabled":""}>›</button>`;
+  ids.forEach(id=>{const el=$(id); if(!el)return; el.innerHTML=html;
+    el.querySelectorAll("button[data-g]").forEach(b=>b.onclick=()=>{
+      S.PG[key]=+b.dataset.g; onGo();
+      $(key==="ledger"?"v-ledger":"v-crew").scrollIntoView({behavior:"smooth",block:"start"});});});
+}
+
+/* ---------- what's next ---------- */
 function next(){
- const ty=$("nType").value, g=$("nGen").value, sv=$("nSvc").value;
- const L=D.recs.filter(r=>(!ty||r.type===ty)&&(!g||r.genres.includes(+g))&&
-   (!sv||(r.watch&&dedupe(r.watch.stream||[]).includes(sv))));
- $("next").innerHTML=L.length?L.map((m,i)=>{
-  const bc=Object.keys(m.seeds||{}).slice(0,2).join(", ");
-  return `<div class="card"><a href="https://www.themoviedb.org/${m.type}/${m.id}" target="_blank" rel="noopener">
-   <span class="rk">${String(i+1).padStart(2,"0")}</span>${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
-   <span class="badge">${Math.round(m.score)}</span>
-   ${img(m.poster,"w342")?`<img loading="lazy" src="${img(m.poster,"w342")}" alt="">`:'<div class="np">?</div>'}
-   <div class="m"><div class="t">${esc(m.title)}</div>
-    <div class="y">${m.year||"—"} · ${m.vote.toFixed(1)} · ${m.votes.toLocaleString()}</div>
-    ${bc?`<div class="w">Because you liked ${esc(bc)}</div>`:""}
-    ${watchTag(m)}</div></a></div>`;
- }).join(""):`<p style="color:var(--muted);grid-column:1/-1">Nothing in that slice.</p>`;
+  const seenAll=new Set(S.rows.map(r=>r.type+":"+r.id));
+  const seenMine=new Set(S.rows.filter(r=>r.user_id===S.me.id).map(r=>r.type+":"+r.id));
+  const scope=$("nScope").value;
+  const ty=$("nType").value, sv=$("nSvc").value;
+  const L=S.recs.filter(r=>{
+    const k=r.type+":"+r.id;
+    if(scope==="me"&&seenMine.has(k)) return false;
+    if(scope==="household"&&seenAll.has(k)) return false;
+    if(ty&&r.type!==ty) return false;
+    if(sv&&!(r.watch&&dedupe(r.watch.stream||[]).includes(sv))) return false;
+    return true;
+  });
+  $("next").innerHTML=L.length?L.map((m,i)=>{
+    const bc=Object.keys(m.seeds||{}).slice(0,2).join(", ");
+    const who=S.rows.filter(r=>r.id===m.id&&r.type===m.type).map(r=>r.who);
+    return `<div class="card"><a href="https://www.themoviedb.org/${m.type}/${m.id}" target="_blank" rel="noopener">
+     <span class="rk">${String(i+1).padStart(2,"0")}</span>${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
+     <span class="badge">${Math.round(m.score)}</span>
+     ${img(m.poster,"w342")?`<img loading="lazy" src="${img(m.poster,"w342")}" alt="">`:'<div class="np">?</div>'}
+     <div class="m"><div class="t">${esc(m.title)}</div>
+      <div class="y">${m.year||"—"} · ${(m.vote||0).toFixed(1)}</div>
+      ${bc?`<div class="w">Because you liked ${esc(bc)}</div>`:""}
+      ${who.length?`<div class="wt">Seen by ${esc(who.join(", "))}</div>`:watchTag(m)}</div></a></div>`;
+  }).join(""):`<p style="color:var(--muted);grid-column:1/-1">Nothing left in that slice.</p>`;
 }
-["nType","nGen","nSvc"].forEach(i=>$(i).addEventListener("change",next));
-
-
-ledger();crew();next();paintEnts();
+function watchTag(m){
+  const w=m.watch; if(!w) return "";
+  const s=dedupe(w.stream||[]);
+  if(s.length) return `<div class="wt">${esc(s.slice(0,2).join(" · "))}</div>`;
+  if((w.rent||[]).length) return `<div class="wt rentonly">Rent only</div>`;
+  return "";
 }
+["nType","nSvc","nScope"].forEach(i=>$(i).addEventListener("change",next));
 
-
-
-/* ================= storage: this device only, never in the repo ================= */
-const SK="hsa.cfg";
-function cfgGet(){ try{ return JSON.parse(localStorage.getItem(SK)||"null"); }catch(e){ return window.__cfg||null; } }
-function cfgSet(v){ try{ localStorage.setItem(SK, JSON.stringify(v)); }catch(e){ window.__cfg=v; } }
-function cfgDel(){ try{ localStorage.removeItem(SK); }catch(e){ window.__cfg=null; } }
-
-const say=(el,t,cls)=>{const n=$(el);n.textContent=t;n.className="msg"+(cls?" "+cls:"");};
-
-/* ================= boot: load the archive file ================= */
-async function boot(){
-  try{
-    const r=await fetch("data.json?t="+Date.now());
-    if(!r.ok) throw new Error("data.json returned "+r.status);
-    D=await r.json();
-  }catch(e){
-    document.querySelector(".wrap").insertAdjacentHTML("afterbegin",
-      `<section><h2>Archive not loaded</h2><p class="lede">Couldn't read <b>data.json</b> — it needs to sit in the same folder as this page. (${esc(e.message)})</p></section>`);
+/* ---------- household ---------- */
+function household(){
+  if(S.profiles.length<2){
+    $("hh").innerHTML=`<p style="color:var(--muted)">Once someone else signs up, this fills in — overlap, taste match, and what to watch together.</p>`;
     return;
   }
-  D.entries=D.entries||[];
-  mergeEntries();
-  render_all();
-}
-/* new logs are the same shape as the baked films, so everything downstream just works */
-function mergeEntries(){
-  const have=new Set(D.films.map(f=>f.type+":"+f.id));
-  D.entries.forEach(e=>{ if(!have.has(e.type+":"+e.id)) D.films.push(e); });
-  D.films.sort((a,b)=>b.userRating-a.userRating);
-  const R=D.films.map(f=>f.userRating);
-  D.stats.titles=D.films.length;
-  D.stats.films=D.films.filter(f=>f.type==="movie").length;
-  D.stats.series=D.films.filter(f=>f.type==="tv").length;
-  D.stats.liked=D.films.filter(f=>f.liked).length;
-  D.stats.avg=Math.round(R.reduce((a,c)=>a+c,0)/R.length*100)/100;
-  const h=[0,0,0,0,0,0,0,0,0,0];
-  R.forEach(r=>h[Math.min(9,Math.max(0,Math.round(r*2)-1))]++);
-  D.stats.hist=h;
-  const rt=D.films.map(f=>f.runtime).filter(Boolean);
-  D.stats.minutes=rt.reduce((a,c)=>a+c,0);
-  D.stats.hours=Math.round(D.stats.minutes/60*10)/10;
+  const byUser={};
+  S.profiles.forEach(p=>byUser[p.id]=S.rows.filter(r=>r.user_id===p.id));
+  let html=`<div class="dlist" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin-bottom:20px">`+
+    S.profiles.map(p=>{const st=statsOf(byUser[p.id]);
+      return `<div class="ditem"><span><span class="dn">${esc(p.name)}</span>
+       <span class="dy">${st.titles} titles · ${st.hours} hrs</span></span>
+       <span class="dr">${st.avg||"—"}★</span></div>`;}).join("")+`</div>`;
+
+  /* taste match: only meaningful where two people rated the same title */
+  const pairs=[];
+  for(let i=0;i<S.profiles.length;i++) for(let j=i+1;j<S.profiles.length;j++){
+    const A=S.profiles[i],B=S.profiles[j];
+    const mapA={}; byUser[A.id].forEach(r=>mapA[r.type+":"+r.id]=r.userRating);
+    const both=byUser[B.id].filter(r=>mapA[r.type+":"+r.id]!==undefined);
+    if(!both.length){ pairs.push({a:A.name,b:B.name,n:0}); continue; }
+    const diff=both.reduce((s,r)=>s+Math.abs(r.userRating-mapA[r.type+":"+r.id]),0)/both.length;
+    pairs.push({a:A.name,b:B.name,n:both.length,match:Math.max(0,Math.round((1-diff/4.5)*100)),diff:diff.toFixed(2)});
+  }
+  html+=`<h2 style="font-size:16px;margin-top:6px">Taste match</h2>`;
+  html+=pairs.map(p=>p.n<3
+    ? `<div class="crewrow"><div><div class="nm">${esc(p.a)} &amp; ${esc(p.b)}</div>
+       <div class="rl">${p.n} title${p.n===1?"":"s"} in common — need at least 3 to compare</div></div><div class="ct">—</div></div>`
+    : `<div class="crewrow multi"><div><div class="nm">${esc(p.a)} &amp; ${esc(p.b)}</div>
+       <div class="rl">${p.n} in common · average gap ${p.diff}★</div></div><div class="ct">${p.match}%</div></div>`).join("");
+
+  /* what one has seen and the other hasn't, rated 4+ */
+  html+=`<h2 style="font-size:16px;margin-top:22px">Recommend to each other</h2>`;
+  const swaps=[];
+  S.profiles.forEach(A=>S.profiles.forEach(B=>{
+    if(A.id===B.id) return;
+    const seenB=new Set(byUser[B.id].map(r=>r.type+":"+r.id));
+    byUser[A.id].filter(r=>r.userRating>=4.5&&!seenB.has(r.type+":"+r.id))
+      .forEach(r=>swaps.push({from:A.name,to:B.name,title:r.title,year:r.year,rating:r.userRating}));
+  }));
+  html+=swaps.length?swaps.slice(0,24).map(s=>`<div class="ditem">
+    <span><span class="dn">${esc(s.title)}</span>
+    <span class="dy">${s.year||"—"} · ${esc(s.from)} → ${esc(s.to)}</span></span>
+    <span class="dr">${stars(s.rating)}</span></div>`).join("")
+   :`<p style="color:var(--muted)">Nothing to pass along yet.</p>`;
+  $("hh").innerHTML=html;
 }
 
-/* ================= TMDB ================= */
+/* ---------- tmdb + logging ---------- */
 async function tmdb(path,params={}){
-  const c=cfgGet(); if(!c||!c.k) throw new Error("No TMDB key saved.");
+  if(!S.tmdbKey) throw new Error("No TMDB key saved yet — add one in Settings.");
   const u=new URL("https://api.themoviedb.org/3"+path);
   Object.entries(params).forEach(([a,b])=>u.searchParams.set(a,b));
-  u.searchParams.set("api_key",c.k);
+  u.searchParams.set("api_key",S.tmdbKey);
   const r=await fetch(u);
-  if(r.status===401) throw new Error("TMDB rejected the key.");
+  if(r.status===401) throw new Error("TMDB rejected the saved key.");
   if(!r.ok) throw new Error("TMDB error "+r.status);
   return r.json();
 }
-const JOBS={"Director":"director","Screenplay":"writer","Writer":"writer","Story":"writer",
- "Original Music Composer":"composer","Music":"composer","Director of Photography":"dop",
- "Editor":"editor","Producer":"producer","Executive Producer":"exec"};
-
-/* build a full record: same fields the baked entries have */
-async function buildEntry(hit, form){
-  const type=hit.media_type||(hit.title?"movie":"tv");
-  let d,crew,cast,kw,runtime;
-  if(type==="movie"){
-    d=await tmdb(`/movie/${hit.id}`,{append_to_response:"credits,keywords"});
-    crew=(d.credits||{}).crew||[]; cast=((d.credits||{}).cast||[]).slice(0,12);
-    kw=((d.keywords||{}).keywords||[]).map(k=>k.name); runtime=d.runtime;
-  }else{
-    d=await tmdb(`/tv/${hit.id}`,{append_to_response:"aggregate_credits,keywords"});
-    const ac=d.aggregate_credits||{};
-    crew=[]; (ac.crew||[]).forEach(c=>(c.jobs||[]).forEach(j=>crew.push({...c,job:j.job})));
-    cast=(ac.cast||[]).slice(0,12).map(c=>({...c,character:((c.roles||[{}])[0]||{}).character||""}));
-    kw=((d.keywords||{}).results||[]).map(k=>k.name);
-    runtime=(d.episode_run_time||[])[0]||null;
-  }
-  const roles={};
-  crew.forEach(c=>{ const k=JOBS[c.job]; if(!k) return;
-    roles[k]=roles[k]||[]; if(!roles[k].some(p=>p.name===c.name)) roles[k].push({name:c.name,id:c.id,job:c.job}); });
-  Object.keys(roles).forEach(k=>roles[k]=roles[k].slice(0,4));
-
-  let watch=null;
-  try{
-    const w=(await tmdb(`/${type}/${hit.id}/watch/providers`)).results||{};
-    const us=w.US; if(us) watch={link:us.link,
-      stream:[...(us.flatrate||[]),...(us.free||[]),...(us.ads||[])].map(p=>p.provider_name),
-      rent:(us.rent||[]).map(p=>p.provider_name), buy:(us.buy||[]).map(p=>p.provider_name)};
-  }catch(e){}
-
-  const date=(d.release_date||d.first_air_date||"");
-  return {
-    id:hit.id, type, title:d.title||d.name,
-    year:date?+date.slice(0,4):null,
-    genres:(d.genres||[]).map(g=>g.id), genreNames:(d.genres||[]).map(g=>g.name),
-    vote:d.vote_average||0, votes:d.vote_count||0, poster:d.poster_path, backdrop:d.backdrop_path,
-    overview:d.overview||"", tagline:d.tagline||"", runtime,
-    episodes:d.number_of_episodes||null, seasons:d.number_of_seasons||null,
-    countries:(d.production_countries||[]).map(c=>c.iso_3166_1),
-    companies:(d.production_companies||[]).slice(0,3).map(c=>c.name),
-    networks:(d.networks||[]).slice(0,2).map(n=>n.name),
-    language:d.original_language, keywords:kw.slice(0,12),
-    roles, cast:cast.map(c=>({name:c.name,id:c.id,character:c.character||"",profile:c.profile_path})),
-    crewCount:crew.length, watch,
-    userRating:parseFloat(form.rating), liked:form.liked==="1",
-    review:form.review||null, diaryDate:form.date||null,
-    loggedHere:true
-  };
-}
-
-/* ================= GitHub: read file, append entry, commit ================= */
-async function ghPut(entry){
-  const c=cfgGet();
-  if(!c||!c.t) throw new Error("No GitHub token saved.");
-  const api=`https://api.github.com/repos/${c.repo}/contents/${c.file}`;
-  const H={Authorization:"Bearer "+c.t, Accept:"application/vnd.github+json"};
-
-  const g=await fetch(api+"?ref=HEAD",{headers:H});
-  if(g.status===401||g.status===403) throw new Error("GitHub rejected the token — check it has Contents: Read and write on this repo.");
-  if(g.status===404) throw new Error(`Couldn't find ${c.file} in ${c.repo}.`);
-  if(!g.ok) throw new Error("GitHub read failed ("+g.status+")");
-  const meta=await g.json();
-
-  const cur=JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\n/g,"")))));
-  cur.entries=cur.entries||[];
-  if(cur.entries.some(e=>e.type===entry.type&&e.id===entry.id)) throw new Error("That title is already logged.");
-  cur.entries.push(entry);
-
-  const body=btoa(unescape(encodeURIComponent(JSON.stringify(cur))));
-  const p=await fetch(api,{method:"PUT",headers:{...H,"Content-Type":"application/json"},
-    body:JSON.stringify({message:`Log: ${entry.title} (${entry.userRating}★)`,content:body,sha:meta.sha})});
-  if(!p.ok){ const t=await p.text(); throw new Error("GitHub save failed ("+p.status+"): "+t.slice(0,120)); }
-  return cur.entries.length;
-}
-
-/* ================= setup panel ================= */
-function paintSetup(){
-  const c=cfgGet(), ready=!!(c&&c.k&&c.t&&c.repo&&c.file);
-  $("logPanel").classList.toggle("hidden",!ready);
-  $("setupPanel").classList.toggle("hidden",ready);
-  if(ready){ $("ldate").value=new Date().toISOString().slice(0,10); paintEnts(); }
-}
-$("saveSetup").onclick=()=>{
-  const k=$("sK").value.trim(), t=$("sT").value.trim(), repo=$("sR").value.trim(), file=$("sF").value.trim();
-  if(!k||!t||!repo||!file) return say("setupMsg","Fill in all four.","bad");
-  if(!/^[\w.-]+\/[\w.-]+$/.test(repo)) return say("setupMsg","Repo should look like owner/name.","bad");
-  cfgSet({k,t,repo,file}); say("setupMsg","Saved on this device.","ok"); paintSetup();
+$("saveKey").onclick=async()=>{
+  const v=$("keyIn").value.trim(); if(!v) return say("keyMsg","Paste the key first.","bad");
+  const {error}=await sb.from("app_config").upsert({key:"tmdb",value:v,updated_by:S.me.id});
+  if(error) return say("keyMsg",error.message,"bad");
+  S.tmdbKey=v; $("needKey").classList.add("hidden"); say("keyMsg","Saved for the whole family.","ok");
 };
-$("clearSetup").onclick=()=>{ cfgDel(); say("setupMsg","Cleared.","ok"); paintSetup(); };
-document.querySelector('nav button[data-v="log"]').addEventListener("click",()=>{
-  const c=cfgGet(); if(c){ $("sK").value=c.k||"";$("sT").value=c.t||"";$("sR").value=c.repo||"";$("sF").value=c.file||""; }
-  paintSetup();
-});
 
-/* ================= search + save ================= */
 let chosen=null;
 async function search(){
   const q=$("lq").value.trim(); if(!q) return;
@@ -671,61 +730,119 @@ async function search(){
   try{
     const d=await tmdb("/search/multi",{query:q,include_adult:"false"});
     const hits=(d.results||[]).filter(r=>r.media_type==="movie"||r.media_type==="tv").slice(0,12);
-    if(!hits.length) return say("lmsg","Nothing found for “"+q+"”.","bad");
+    if(!hits.length) return say("lmsg","Nothing found.","bad");
     say("lmsg",hits.length+" results — pick one.");
     $("lres").innerHTML=hits.map((m,i)=>{
-      const t=m.title||m.name, y=(m.release_date||m.first_air_date||"").slice(0,4);
+      const t=m.title||m.name,y=(m.release_date||m.first_air_date||"").slice(0,4);
       return `<div class="card" data-i="${i}"><button type="button">
-        ${m.media_type==="tv"?'<span class="tvs" style="top:0">SERIES</span>':""}
-        ${m.poster_path?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster_path}" alt="">`:'<div class="np">?</div>'}
-        <div class="m"><div class="t">${esc(t)}</div><div class="y">${y||"—"}</div></div></button></div>`;
+       ${m.media_type==="tv"?'<span class="tvs" style="top:0">SERIES</span>':""}
+       ${m.poster_path?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster_path}" alt="">`:'<div class="np">?</div>'}
+       <div class="m"><div class="t">${esc(t)}</div><div class="y">${y||"—"}</div></div></button></div>`;
     }).join("");
     $("lres").querySelectorAll(".card").forEach(el=>el.onclick=()=>{
       $("lres").querySelectorAll(".card").forEach(x=>x.classList.remove("sel"));
-      el.classList.add("sel");
-      chosen=hits[+el.dataset.i];
-      const t=chosen.title||chosen.name, y=(chosen.release_date||chosen.first_air_date||"").slice(0,4);
+      el.classList.add("sel"); chosen=hits[+el.dataset.i];
+      const t=chosen.title||chosen.name,y=(chosen.release_date||chosen.first_air_date||"").slice(0,4);
       $("lpick").innerHTML=`${chosen.poster_path?`<img src="https://image.tmdb.org/t/p/w185${chosen.poster_path}" alt="">`:""}
-        <div><div class="pt">${esc(t)}</div><div class="py">${y||"—"} · ${chosen.media_type==="tv"?"Series":"Film"}</div></div>`;
+       <div><div class="pt">${esc(t)}</div><div class="py">${y||"—"} · ${chosen.media_type==="tv"?"Series":"Film"}</div></div>`;
       $("lform").classList.remove("hidden"); say("smsg","");
-      $("lform").scrollIntoView({behavior:"smooth",block:"nearest"});
     });
   }catch(e){ say("lmsg",e.message,"bad"); }
 }
 $("lgo").onclick=search;
-$("lq").addEventListener("keydown",e=>{ if(e.key==="Enter") search(); });
-$("lcancel").onclick=()=>{ $("lform").classList.add("hidden"); chosen=null; };
+$("lq").addEventListener("keydown",e=>{if(e.key==="Enter")search();});
+$("lcancel").onclick=()=>{$("lform").classList.add("hidden");chosen=null;};
 
+async function enrich(hit){
+  const type=hit.media_type||(hit.title?"movie":"tv");
+  let d,crewList,cast,kw,runtime;
+  if(type==="movie"){
+    d=await tmdb(`/movie/${hit.id}`,{append_to_response:"credits,keywords"});
+    crewList=(d.credits||{}).crew||[]; cast=((d.credits||{}).cast||[]).slice(0,12);
+    kw=((d.keywords||{}).keywords||[]).map(k=>k.name); runtime=d.runtime;
+  }else{
+    d=await tmdb(`/tv/${hit.id}`,{append_to_response:"aggregate_credits,keywords"});
+    const ac=d.aggregate_credits||{}; crewList=[];
+    (ac.crew||[]).forEach(c=>(c.jobs||[]).forEach(j=>crewList.push({...c,job:j.job})));
+    cast=(ac.cast||[]).slice(0,12).map(c=>({...c,character:((c.roles||[{}])[0]||{}).character||""}));
+    kw=((d.keywords||{}).results||[]).map(k=>k.name);
+    runtime=(d.episode_run_time||[])[0]||null;
+  }
+  const roles={};
+  crewList.forEach(c=>{const k=JOBS[c.job]; if(!k)return;
+    roles[k]=roles[k]||[]; if(!roles[k].some(p=>p.name===c.name)) roles[k].push({name:c.name,id:c.id});});
+  Object.keys(roles).forEach(k=>roles[k]=roles[k].slice(0,4));
+  let watch=null;
+  try{ const us=((await tmdb(`/${type}/${hit.id}/watch/providers`)).results||{}).US;
+    if(us) watch={link:us.link,stream:[...(us.flatrate||[]),...(us.free||[]),...(us.ads||[])].map(p=>p.provider_name),
+      rent:(us.rent||[]).map(p=>p.provider_name),buy:(us.buy||[]).map(p=>p.provider_name)};
+  }catch(e){}
+  const date=d.release_date||d.first_air_date||"";
+  return {type,d,date,meta:{genres:(d.genres||[]).map(g=>g.id),genreNames:(d.genres||[]).map(g=>g.name),
+    overview:d.overview||"",tagline:d.tagline||"",runtime,episodes:d.number_of_episodes||null,
+    keywords:kw.slice(0,12),roles,cast:cast.map(c=>({name:c.name,id:c.id,character:c.character||""})),
+    crewCount:crewList.length,watch,vote:d.vote_average||0,votes:d.vote_count||0,
+    companies:(d.production_companies||[]).slice(0,3).map(c=>c.name),
+    networks:(d.networks||[]).slice(0,2).map(n=>n.name),language:d.original_language}};
+}
 $("lsave").onclick=async()=>{
   if(!chosen) return;
   $("lsave").disabled=true; say("smsg","Looking up credits…");
   try{
-    const entry=await buildEntry(chosen,{rating:$("lrate").value,date:$("ldate").value.trim(),
-      liked:$("llike").value,review:$("lrev").value.trim()});
-    say("smsg","Saving to your archive…");
-    const n=await ghPut(entry);
-    D.entries.push(entry); mergeEntries(); render_all(); paintEnts();
-    say("smsg",`Saved. “${entry.title}” is entry ${n}. It'll appear on the live site in about a minute.`,"ok");
+    const e=await enrich(chosen);
+    say("smsg","Saving…");
+    const {error}=await sb.from("entries").upsert({
+      user_id:S.me.id,tmdb_id:chosen.id,media_type:e.type,
+      title:e.d.title||e.d.name,year:e.date?+e.date.slice(0,4):null,poster:e.d.poster_path,
+      rating:parseFloat($("lrate").value),liked:$("llike").value==="1",
+      watched_date:$("ldate").value.trim()||null,review:$("lrev").value.trim()||null,meta:e.meta
+    },{onConflict:"user_id,tmdb_id,media_type"});
+    if(error) throw new Error(error.message);
+    say("smsg",`Saved. ${e.d.title||e.d.name} is in your ledger.`,"ok");
     $("lform").classList.add("hidden"); $("lres").innerHTML=""; $("lq").value=""; chosen=null;
-  }catch(e){ say("smsg",e.message,"bad"); }
+    await loadAll();
+  }catch(err){ say("smsg",err.message,"bad"); }
   finally{ $("lsave").disabled=false; }
 };
 
-function paintEnts(){
-  const E=(D&&D.entries)||[];
-  $("entLede").textContent=E.length?`${E.length} logged straight into the archive.`:"Nothing logged here yet — your first entry will show up below.";
-  $("ents").innerHTML=E.slice().reverse().map(e=>`
-    <div class="crewrow"><div><div class="nm">${esc(e.title)}</div>
-    <div class="rl">${e.year||"—"} · ${e.diaryDate||"no date"}${e.review?" · “"+esc(e.review)+"”":""}</div></div>
-    <div class="ct">${stars(e.userRating)}</div></div>`).join("");
-}
+/* ---------- one-time import of the original 38 ---------- */
+$("doMigrate").onclick=async()=>{
+  const b=$("doMigrate"); b.disabled=true;
+  try{
+    const r=await fetch("data.json"); const d=await r.json();
+    const rows=(d.films||[]).map(f=>({user_id:S.me.id,tmdb_id:f.id,media_type:f.type,title:f.title,
+      year:f.year,poster:f.poster,rating:f.userRating,liked:!!f.liked,
+      watched_date:f.diaryDate||null,review:f.review||null,
+      meta:{genres:f.genres,genreNames:f.genreNames,overview:f.overview,tagline:f.tagline,
+        runtime:f.runtime,episodes:f.episodes,keywords:f.keywords,roles:f.roles,cast:f.cast,
+        crewCount:f.crewCount,watch:f.watch,vote:f.vote,votes:f.votes,
+        companies:f.companies,networks:f.networks,language:f.language}}));
+    say("migMsg",`Importing ${rows.length} titles…`);
+    for(let i=0;i<rows.length;i+=20){
+      const {error}=await sb.from("entries").upsert(rows.slice(i,i+20),{onConflict:"user_id,tmdb_id,media_type"});
+      if(error) throw new Error(error.message);
+      say("migMsg",`Imported ${Math.min(i+20,rows.length)} of ${rows.length}…`);
+    }
+    say("migMsg","Done — your archive is in the database.","ok");
+    await loadAll();
+  }catch(e){ say("migMsg",e.message,"bad"); b.disabled=false; }
+};
 
-/* ================= nav ================= */
+/* ---------- nav ---------- */
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x===b));
-  ["ledger","crew","patterns","next","log"].forEach(v=>$("v-"+v).classList.toggle("hidden",v!==b.dataset.v));
+  ["ledger","crew","patterns","next","household","log"].forEach(v=>
+    $("v-"+v).classList.toggle("hidden",v!==b.dataset.v));
   window.scrollTo({top:0,behavior:"smooth"});
 });
-boot();
+document.querySelectorAll(".palette button[data-p]").forEach(b=>b.onclick=()=>{
+  document.documentElement.setAttribute("data-theme",b.dataset.p);
+  document.querySelectorAll(".palette button[data-p]").forEach(x=>x.setAttribute("aria-pressed",x===b));});
+document.querySelectorAll(".palette button[data-d]").forEach(b=>b.onclick=()=>{
+  document.documentElement.setAttribute("data-density",b.dataset.d);
+  document.querySelectorAll(".palette button[data-d]").forEach(x=>x.setAttribute("aria-pressed",x===b));});
+
+$("ldate").value=new Date().toISOString().slice(0,10);
+refreshSession();
 
 </script></body></html>
