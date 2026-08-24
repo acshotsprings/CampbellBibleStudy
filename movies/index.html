@@ -371,7 +371,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   <div class="tools">
    <input type="text" id="q" placeholder="search title, director, cast, keyword…">
    <select id="fType"><option value="">Films &amp; series</option><option value="movie">Films only</option><option value="tv">Series only</option></select>
-   <select id="fSort"><option value="rating">By rating</option><option value="year">By year</option><option value="title">A–Z</option><option value="runtime">By runtime</option></select>
+   <select id="fSort"><option value="rating">By rating</option><option value="logged">Recently watched</option><option value="year">By year</option><option value="title">A–Z</option><option value="runtime">By runtime</option></select>
    <select id="fPer"><option value="10">10 per page</option><option value="25" selected>25 per page</option><option value="50">50 per page</option><option value="100">100 per page</option><option value="0">Show all</option></select>
   </div>
   <div class="pager" id="pagerTop"></div>
@@ -680,8 +680,18 @@ function ledger(){
   let L=visible().filter(f=>!ty||f.type===ty);
   if(q) L=L.filter(f=>[f.title,f.who,...f.genreNames,...f.keywords,
     ...Object.values(f.roles).flat().map(p=>p.name),...f.cast.map(c=>c.name)].join(" ").toLowerCase().includes(q));
-  L=[...L].sort((a,b)=> so==="year"?(b.year||0)-(a.year||0) : so==="title"?a.title.localeCompare(b.title)
-    : so==="runtime"?(b.runtime||0)-(a.runtime||0) : b.userRating-a.userRating);
+  /* every sort needs a tiebreaker, or equal values come back in whatever
+     order the database happened to return and it reads as random */
+  const byTitle=(a,b)=>a.title.localeCompare(b.title);
+  const byDate=(a,b)=>String(b.diaryDate||"").localeCompare(String(a.diaryDate||""));
+  const SORTS={
+    rating:(a,b)=> b.userRating-a.userRating || byDate(a,b) || byTitle(a,b),
+    year:  (a,b)=> (b.year||0)-(a.year||0)   || byTitle(a,b),
+    title: byTitle,
+    runtime:(a,b)=>(b.runtime||0)-(a.runtime||0) || byTitle(a,b),
+    logged:(a,b)=> byDate(a,b) || b.userRating-a.userRating || byTitle(a,b)
+  };
+  L=[...L].sort(SORTS[so]||SORTS.rating);
 
   const per=+$("fPer").value||0, count=L.length;
   const total=per?Math.max(1,Math.ceil(count/per)):1;
@@ -775,7 +785,8 @@ function paintDrill(){
   const box=$("drillBox");
   if(!S.drill){ box.classList.add("hidden"); box.innerHTML=""; return; }
   const {kind,key}=S.drill;
-  const M=visible().filter(f=>drillMatch(f,kind,key)).sort((a,b)=>b.userRating-a.userRating);
+  const M=visible().filter(f=>drillMatch(f,kind,key))
+    .sort((a,b)=>b.userRating-a.userRating||a.title.localeCompare(b.title));
   const label=kind==="star"?key+(+key===1?" star":" stars"):kind==="decade"?"The "+key:kind==="keyword"?"Tagged “"+key+"”":key;
   const avg=M.length?(M.reduce((a,c)=>a+c.userRating,0)/M.length).toFixed(2):"—";
   box.classList.remove("hidden");
