@@ -253,6 +253,12 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 .pick img{width:72px;border:1px solid var(--edge);display:block}
 .pick .pt{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px}
 .pick .py{font-family:'Courier Prime',monospace;font-size:13px;color:var(--muted);margin-top:3px}
+.acts{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px;border-top:1px solid var(--edge);padding-top:8px}
+.mini{background:var(--card);border:1px solid var(--edge);color:var(--ink);cursor:pointer;
+ font-family:'Courier Prime',monospace;font-size:11px;padding:4px 7px;text-decoration:none;display:inline-block}
+.mini:hover{border-color:var(--accent);color:var(--accent)}
+.mini.on{background:var(--accent);border-color:var(--accent);color:var(--card)}
+.mini:disabled{opacity:.5;cursor:wait}
 .card.sel{outline:3px solid var(--accent)}
 .card button{width:100%;background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:left}
 .gate{max-width:440px;margin:60px auto;border:1px solid var(--edge);background:var(--card);padding:26px}
@@ -465,7 +471,7 @@ const JOBS={"Director":"director","Screenplay":"writer","Writer":"writer","Story
  "Original Music Composer":"composer","Music":"composer","Director of Photography":"dop",
  "Editor":"editor","Producer":"producer","Executive Producer":"exec"};
 
-const S={me:null,profiles:[],rows:[],who:"all",tmdbKey:null,recs:[],PG:{ledger:1,crew:1},drill:null};
+const S={me:null,profiles:[],rows:[],want:[],who:"all",tmdbKey:null,recs:[],PG:{ledger:1,crew:1},drill:null};
 
 /* ---------- normalise a db row into the shape the views expect ---------- */
 function shape(r){
@@ -512,13 +518,15 @@ $("doSignOut").onclick=async()=>{ await sb.auth.signOut(); location.reload(); };
 
 /* ================= load ================= */
 async function loadAll(){
-  const [{data:profs},{data:ents},{data:cfg}]=await Promise.all([
+  const [{data:profs},{data:ents},{data:cfg},{data:want}]=await Promise.all([
     sb.from("profiles").select("*"),
     sb.from("entries").select("*").order("rating",{ascending:false}),
-    sb.from("app_config").select("*").eq("key","tmdb").maybeSingle()
+    sb.from("app_config").select("*").eq("key","tmdb").maybeSingle(),
+    sb.from("watchlist").select("*")
   ]);
   S.profiles=profs||[];
   S.tmdbKey=cfg?cfg.value:null;
+  S.want=(want||[]).filter(w=>w.user_id===S.me.id);
   S.rows=(ents||[]).map(shape);
   try{ const r=await fetch("data.json"); if(r.ok){const d=await r.json(); S.recs=d.recs||[];} }catch(e){}
   paintWho(); paintAll();
@@ -769,15 +777,44 @@ function next(){
   $("next").innerHTML=L.length?L.map((m,i)=>{
     const bc=Object.keys(m.seeds||{}).slice(0,2).join(", ");
     const who=S.rows.filter(r=>r.id===m.id&&r.type===m.type).map(r=>r.who);
-    return `<div class="card"><a href="https://www.themoviedb.org/${m.type}/${m.id}" target="_blank" rel="noopener">
+    const onList=S.want.some(w=>w.tmdb_id===m.id&&w.media_type===m.type);
+    return `<div class="card">
      <span class="rk">${String(i+1).padStart(2,"0")}</span>${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
      <span class="badge">${Math.round(m.score)}</span>
      ${img(m.poster,"w342")?`<img loading="lazy" src="${img(m.poster,"w342")}" alt="">`:'<div class="np">?</div>'}
      <div class="m"><div class="t">${esc(m.title)}</div>
       <div class="y">${m.year||"—"} · ${(m.vote||0).toFixed(1)}</div>
       ${bc?`<div class="w">Because you liked ${esc(bc)}</div>`:""}
-      ${who.length?`<div class="wt">Seen by ${esc(who.join(", "))}</div>`:watchTag(m)}</div></a></div>`;
+      ${who.length?`<div class="wt">Seen by ${esc(who.join(", "))}</div>`:watchTag(m)}
+      <div class="acts">
+       <button type="button" class="mini want ${onList?"on":""}" data-i="${i}">${onList?"On your list":"Want to see"}</button>
+       <button type="button" class="mini logit" data-i="${i}">I've seen it</button>
+       <a class="mini out" href="https://www.themoviedb.org/${m.type}/${m.id}" target="_blank" rel="noopener">TMDB ↗</a>
+      </div></div></div>`;
   }).join(""):`<p style="color:var(--muted);grid-column:1/-1">Nothing left in that slice.</p>`;
+
+  $("next").querySelectorAll(".want").forEach(b=>b.onclick=async()=>{
+    const m=L[+b.dataset.i]; b.disabled=true;
+    const on=S.want.some(w=>w.tmdb_id===m.id&&w.media_type===m.type);
+    if(on){
+      await sb.from("watchlist").delete().eq("user_id",S.me.id).eq("tmdb_id",m.id).eq("media_type",m.type);
+    }else{
+      await sb.from("watchlist").upsert({user_id:S.me.id,tmdb_id:m.id,media_type:m.type,
+        title:m.title,year:m.year,poster:m.poster,meta:{genres:m.genres,vote:m.vote,watch:m.watch}},
+        {onConflict:"user_id,tmdb_id,media_type"});
+    }
+    await loadAll();
+  });
+  $("next").querySelectorAll(".logit").forEach(b=>b.onclick=()=>{
+    const m=L[+b.dataset.i];
+    document.querySelector('nav button[data-v="log"]').click();
+    chosen={id:m.id,media_type:m.type,title:m.title,name:m.title,poster_path:m.poster,
+            release_date:(m.year||"")+"-01-01"};
+    $("lpick").innerHTML=`${img(m.poster,"w185")?`<img src="${img(m.poster,"w185")}" alt="">`:""}
+      <div><div class="pt">${esc(m.title)}</div><div class="py">${m.year||"—"} · ${m.type==="tv"?"Series":"Film"}</div></div>`;
+    $("lform").classList.remove("hidden"); say("smsg","");
+    $("lform").scrollIntoView({behavior:"smooth",block:"center"});
+  });
 }
 function watchTag(m){
   const w=m.watch; if(!w) return "";
