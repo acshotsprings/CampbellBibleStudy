@@ -259,8 +259,11 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 .mini:hover{border-color:var(--accent);color:var(--accent)}
 .mini.on{background:var(--accent);border-color:var(--accent);color:var(--card)}
 .mini:disabled{opacity:.5;cursor:wait}
+.card .acts .mini{width:auto;font-family:'Courier Prime',monospace;font-size:11px;
+ padding:4px 7px;border:1px solid var(--edge);background:var(--card);text-align:center}
+.card .acts .mini.on{background:var(--accent);border-color:var(--accent);color:var(--card)}
 .card.sel{outline:3px solid var(--accent)}
-.card button{width:100%;background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:left}
+.card > button{width:100%;background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:left}
 .gate{max-width:440px;margin:60px auto;border:1px solid var(--edge);background:var(--card);padding:26px}
 .gaterow{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
 .gaterow .btn{flex:1 1 auto}
@@ -781,7 +784,7 @@ function next(){
     return `<div class="card">
      <span class="rk">${String(i+1).padStart(2,"0")}</span>${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
      <span class="badge">${Math.round(m.score)}</span>
-     ${img(m.poster,"w342")?`<img loading="lazy" src="${img(m.poster,"w342")}" alt="">`:'<div class="np">?</div>'}
+     ${img(m.poster,"w342")?`<img loading="lazy" src="${img(m.poster,"w342")}" alt="" onerror="this.outerHTML='<div class=&quot;np&quot;>?</div>'">`:'<div class="np">?</div>'}
      <div class="m"><div class="t">${esc(m.title)}</div>
       <div class="y">${m.year||"—"} · ${(m.vote||0).toFixed(1)}</div>
       ${bc?`<div class="w">Because you liked ${esc(bc)}</div>`:""}
