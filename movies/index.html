@@ -79,13 +79,6 @@ h1 em{font-style:normal;color:var(--accent)}
   font-family:'Archivo',sans-serif;font-weight:700;letter-spacing:-.01em}
 
 /* ---------- palette switch ---------- */
-.palette{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 16px;
-  font-family:'Courier Prime',monospace;font-size:11.5px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--muted)}
-.palette button{border:1px solid var(--edge);background:var(--card);color:var(--muted);
-  padding:6px 13px;cursor:pointer;font-family:'Courier Prime',monospace;font-size:11.5px;
-  letter-spacing:.11em;text-transform:uppercase}
-.palette button[aria-pressed=true]{background:var(--accent);color:var(--card);border-color:var(--accent);font-weight:700}
 
 /* ---------- nav ---------- */
 nav{display:flex;flex-wrap:wrap;border:1px solid var(--edge);border-bottom:none;
@@ -267,6 +260,43 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 .gate{max-width:440px;margin:60px auto;border:1px solid var(--edge);background:var(--card);padding:26px}
 .gaterow{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
 .gaterow .btn{flex:1 1 auto}
+.tmodal{position:fixed;inset:0;z-index:100;background:rgba(10,8,6,.82);
+ display:flex;align-items:center;justify-content:center;padding:20px}
+.tbox{background:var(--card);border:1px solid var(--edge);width:min(880px,100%);
+ box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.thead{display:flex;justify-content:space-between;align-items:center;gap:14px;
+ padding:11px 14px;border-bottom:1px solid var(--edge);
+ font-family:'Archivo',sans-serif;font-weight:700;font-size:15px}
+.thead button{background:transparent;border:1px solid var(--edge);color:var(--muted);
+ cursor:pointer;font-family:'Courier Prime',monospace;font-size:12px;padding:5px 10px;white-space:nowrap}
+.thead button:hover{border-color:var(--accent);color:var(--accent)}
+.tbody{aspect-ratio:16/9;background:#000;position:relative}
+.tbody iframe{width:100%;height:100%;border:0;display:block}
+.tnone{aspect-ratio:auto;padding:26px 18px;background:var(--card2);color:var(--muted);
+ font-size:var(--lede);text-align:center}
+.tnone a{color:var(--accent)}
+.poster-btn{display:block;width:100%;padding:0;border:none;background:none;cursor:zoom-in;position:relative}
+.poster-btn .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+ opacity:0;transition:opacity .15s;background:rgba(10,8,6,.4);
+ font-family:'Archivo Black',sans-serif;color:#fff;font-size:34px}
+.poster-btn:hover .play,.poster-btn:focus-visible .play{opacity:1}
+.prefs{position:relative;margin-left:8px}
+.prefs > button{background:transparent;border:1px solid var(--edge);color:var(--muted);
+ cursor:pointer;font-family:'Courier Prime',monospace;font-size:11.5px;letter-spacing:.11em;
+ text-transform:uppercase;padding:5px 11px}
+.prefs > button:hover,.prefs > button[aria-expanded=true]{border-color:var(--accent);color:var(--accent)}
+.prefsMenu{position:absolute;right:0;top:calc(100% + 6px);z-index:40;min-width:250px;
+ background:var(--card);border:1px solid var(--edge);padding:12px;
+ box-shadow:0 10px 26px rgba(0,0,0,.22)}
+.prefsRow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.prefsRow:last-child{margin-bottom:0}
+.prefsRow > span{width:100%;font-family:'Courier Prime',monospace;font-size:10.5px;
+ letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.prefsMenu button{background:var(--card2);border:1px solid var(--edge);color:var(--ink);
+ cursor:pointer;font-family:'Courier Prime',monospace;font-size:11.5px;padding:5px 10px}
+.prefsMenu button:hover{border-color:var(--accent);color:var(--accent)}
+.prefsMenu button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);
+ color:var(--card);font-weight:700}
 .userbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;
  font-family:'Courier Prime',monospace;font-size:12.5px;color:var(--muted)}
 .userbar .who{margin-left:auto;min-width:200px}
@@ -311,17 +341,20 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   <span>Signed in as <b id="meName">…</b></span>
   <button class="btn ghost" id="doSignOut" style="padding:5px 12px;font-size:12px">Sign out</button>
   <span class="who"><select id="who"></select></span>
+ <div class="prefs">
+  <button type="button" id="prefsBtn" aria-expanded="false" aria-controls="prefsMenu" title="Appearance">Appearance</button>
+  <div class="prefsMenu hidden" id="prefsMenu" role="group" aria-label="Appearance settings">
+   <div class="prefsRow"><span>Palette</span>
+    <button data-p="case" aria-pressed="true">Case File</button>
+    <button data-p="late" aria-pressed="false">Late Show</button>
+    <button data-p="rental" aria-pressed="false">Rental</button></div>
+   <div class="prefsRow"><span>Density</span>
+    <button data-d="compact" aria-pressed="true">Compact</button>
+    <button data-d="roomy" aria-pressed="false">Roomy</button></div>
+  </div>
+ </div>
  </div>
 
- <div class="palette">
-  <span>Palette</span>
-  <button data-p="case" aria-pressed="true">Case File</button>
-  <button data-p="late" aria-pressed="false">Late Show</button>
-  <button data-p="rental" aria-pressed="false">Rental</button>
-  <span style="margin-left:14px">Density</span>
-  <button data-d="compact" aria-pressed="true">Compact</button>
-  <button data-d="roomy" aria-pressed="false">Roomy</button>
- </div>
 
  <nav role="tablist">
   <button role="tab" aria-selected="true" data-v="ledger">The Ledger</button>
@@ -446,6 +479,14 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   Streaming availability (US) from JustWatch, via TMDB.
  </footer>
 </div>
+</div>
+
+<div id="trailer" class="tmodal hidden" role="dialog" aria-modal="true" aria-labelledby="tTitle">
+ <div class="tbox">
+  <div class="thead"><span id="tTitle"></span>
+   <button type="button" id="tClose" aria-label="Close trailer">Close ✕</button></div>
+  <div class="tbody" id="tBody"></div>
+ </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -621,7 +662,10 @@ function dossier(f){
     <dl class="credits">${cr}${cast}${meta.join("")}${also}</dl>
     ${wl.length?`<dl class="credits watch">${wl.join("")}</dl>`:""}
     ${f.keywords.length?`<div class="tags">${f.keywords.map(k=>`<span class="tag">${esc(k)}</span>`).join("")}</div>`:""}
-    ${mine?`<div style="margin-top:12px"><button class="btn ghost del" data-row="${f.rowId}">Remove my entry</button></div>`:""}
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+     <button class="btn ghost trailD" data-t="${f.type}" data-id="${f.id}" data-n="${esc(f.title)}">Watch trailer</button>
+     ${mine?`<button class="btn ghost del" data-row="${f.rowId}">Remove my entry</button>`:""}
+    </div>
    </div></div>`;
 }
 function dedupe(list){
@@ -663,6 +707,8 @@ function ledger(){
 
   $("ledger").querySelectorAll(".rowhead").forEach(b=>b.onclick=()=>{
     const k=+b.dataset.k; open.has(k)?open.delete(k):open.add(k); ledger(); });
+  $("ledger").querySelectorAll(".trailD").forEach(b=>b.onclick=()=>
+    showTrailer(b.dataset.t,+b.dataset.id,b.dataset.n));
   $("ledger").querySelectorAll(".del").forEach(b=>b.onclick=async()=>{
     b.disabled=true; b.textContent="Removing…";
     const {error}=await sb.from("entries").delete().eq("id",+b.dataset.row);
@@ -742,6 +788,48 @@ function paintDrill(){
   box.querySelector(".close").onclick=()=>{S.drill=null;paintDrill();};
 }
 
+/* ---------- trailers (YouTube keys come from TMDB) ---------- */
+const trailerCache={};
+async function pickTrailer(type,id){
+  const k=type+":"+id;
+  if(trailerCache[k]!==undefined) return trailerCache[k];
+  let v=[];
+  try{ v=((await tmdb(`/${type}/${id}/videos`)).results||[]).filter(x=>x.site==="YouTube"); }
+  catch(e){ trailerCache[k]=null; return null; }
+  /* official trailer first, then any trailer, then a teaser, then whatever exists */
+  const pick=v.find(x=>x.type==="Trailer"&&x.official)||v.find(x=>x.type==="Trailer")
+           ||v.find(x=>x.type==="Teaser")||v[0]||null;
+  trailerCache[k]=pick; return pick;
+}
+async function showTrailer(type,id,title){
+  const box=$("trailer");
+  $("tTitle").textContent=title;
+  $("tBody").className="tbody tnone";
+  $("tBody").innerHTML="Looking for a trailer…";
+  box.classList.remove("hidden");
+  document.body.style.overflow="hidden";
+  const v=await pickTrailer(type,id);
+  if(!v){
+    $("tBody").className="tbody tnone";
+    $("tBody").innerHTML=`No trailer on file for this one — common with smaller documentaries.
+      <br><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(title+" trailer")}"
+      target="_blank" rel="noopener">Search YouTube instead ↗</a>`;
+    return;
+  }
+  $("tBody").className="tbody";
+  $("tBody").innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${v.key}?autoplay=1&rel=0"
+    title="${esc(title)} trailer" allow="accelerometer;autoplay;encrypted-media;picture-in-picture"
+    allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+}
+function closeTrailer(){
+  $("trailer").classList.add("hidden");
+  $("tBody").innerHTML="";              /* stops playback */
+  document.body.style.overflow="";
+}
+$("tClose").onclick=closeTrailer;
+$("trailer").onclick=e=>{ if(e.target.id==="trailer") closeTrailer(); };
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeTrailer(); });
+
 /* ---------- pager ---------- */
 function pageBtns(cur,total){
   if(total<=7) return Array.from({length:total},(_,i)=>i+1);
@@ -784,7 +872,9 @@ function next(){
     return `<div class="card">
      <span class="rk">${String(i+1).padStart(2,"0")}</span>${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
      <span class="badge">${Math.round(m.score)}</span>
-     ${img(m.poster,"w342")?`<img loading="lazy" src="${img(m.poster,"w342")}" alt="" onerror="this.outerHTML='<div class=&quot;np&quot;>?</div>'">`:'<div class="np">?</div>'}
+     <button type="button" class="poster-btn trail" data-i="${i}" title="Watch the trailer">
+      ${img(m.poster,"w342")?`<img loading="lazy" src="${img(m.poster,"w342")}" alt="" onerror="this.outerHTML='<div class=&quot;np&quot;>?</div>'">`:'<div class="np">?</div>'}
+      <span class="play">▶</span></button>
      <div class="m"><div class="t">${esc(m.title)}</div>
       <div class="y">${m.year||"—"} · ${(m.vote||0).toFixed(1)}</div>
       ${bc?`<div class="w">Because you liked ${esc(bc)}</div>`:""}
@@ -796,6 +886,9 @@ function next(){
       </div></div></div>`;
   }).join(""):`<p style="color:var(--muted);grid-column:1/-1">Nothing left in that slice.</p>`;
 
+  $("next").querySelectorAll(".trail").forEach(b=>b.onclick=()=>{
+    const m=L[+b.dataset.i]; showTrailer(m.type,m.id,m.title);
+  });
   $("next").querySelectorAll(".want").forEach(b=>b.onclick=async()=>{
     const m=L[+b.dataset.i]; b.disabled=true;
     const on=S.want.some(w=>w.tmdb_id===m.id&&w.media_type===m.type);
@@ -1006,12 +1099,25 @@ document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
     $("v-"+v).classList.toggle("hidden",v!==b.dataset.v));
   window.scrollTo({top:0,behavior:"smooth"});
 });
-document.querySelectorAll(".palette button[data-p]").forEach(b=>b.onclick=()=>{
+document.querySelectorAll(".prefsMenu button[data-p]").forEach(b=>b.onclick=()=>{
   document.documentElement.setAttribute("data-theme",b.dataset.p);
-  document.querySelectorAll(".palette button[data-p]").forEach(x=>x.setAttribute("aria-pressed",x===b));});
-document.querySelectorAll(".palette button[data-d]").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".prefsMenu button[data-p]").forEach(x=>x.setAttribute("aria-pressed",x===b));});
+document.querySelectorAll(".prefsMenu button[data-d]").forEach(b=>b.onclick=()=>{
   document.documentElement.setAttribute("data-density",b.dataset.d);
-  document.querySelectorAll(".palette button[data-d]").forEach(x=>x.setAttribute("aria-pressed",x===b));});
+  document.querySelectorAll(".prefsMenu button[data-d]").forEach(x=>x.setAttribute("aria-pressed",x===b));});
+
+
+/* appearance menu — tucked away so it can't be hit by accident */
+const pBtn=$("prefsBtn"), pMenu=$("prefsMenu");
+const closePrefs=()=>{pMenu.classList.add("hidden");pBtn.setAttribute("aria-expanded","false");};
+pBtn.onclick=e=>{
+  e.stopPropagation();
+  const open=pMenu.classList.toggle("hidden");
+  pBtn.setAttribute("aria-expanded",String(!open));
+};
+pMenu.onclick=e=>e.stopPropagation();
+document.addEventListener("click",closePrefs);
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePrefs(); });
 
 $("ldate").value=new Date().toISOString().slice(0,10);
 refreshSession();
