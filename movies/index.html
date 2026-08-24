@@ -528,7 +528,7 @@ async function loadAll(){
   S.tmdbKey=cfg?cfg.value:null;
   S.want=(want||[]).filter(w=>w.user_id===S.me.id);
   S.rows=(ents||[]).map(shape);
-  try{ const r=await fetch("data.json"); if(r.ok){const d=await r.json(); S.recs=d.recs||[];} }catch(e){}
+  try{ const r=await fetch("data.json?v="+Date.now()); if(r.ok){const d=await r.json(); S.recs=d.recs||[];} }catch(e){}
   paintWho(); paintAll();
   $("meName").textContent=nameOf(S.me.id);
   $("needKey").classList.toggle("hidden",!!S.tmdbKey);
@@ -977,7 +977,7 @@ $("lsave").onclick=async()=>{
 $("doMigrate").onclick=async()=>{
   const b=$("doMigrate"); b.disabled=true;
   try{
-    const r=await fetch("data.json"); const d=await r.json();
+    const r=await fetch("data.json?v="+Date.now()); const d=await r.json();
     const rows=(d.films||[]).map(f=>({user_id:S.me.id,tmdb_id:f.id,media_type:f.type,title:f.title,
       year:f.year,poster:f.poster,rating:f.userRating,liked:!!f.liked,
       watched_date:f.diaryDate||null,review:f.review||null,
