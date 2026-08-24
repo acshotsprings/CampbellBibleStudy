@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stock — a recommender built from your own ratings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<style>
+  :root{
+    --ink:#14120F; --panel:#1D1A16; --panel-2:#252119;
+    --bone:#EDE6D6; --bone-dim:#9A9385;
+    --marigold:#E0A32E; --oxide:#B4472F; --sage:#8A9A7B; --rule:#332E26;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--ink);color:var(--bone);font-family:'IBM Plex Sans',system-ui,sans-serif;
+       font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px 80px;}
+
+  .box{border:2px solid var(--marigold);margin:28px 0 32px;
+    background:repeating-linear-gradient(90deg,transparent 0 26px,rgba(224,163,46,.05) 26px 28px),var(--panel);}
+  .box-top{display:flex;justify-content:space-between;align-items:baseline;padding:10px 16px;
+    border-bottom:1px solid var(--rule);font-family:'IBM Plex Mono',monospace;font-size:10.5px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--marigold);}
+  .box-body{padding:22px 16px 26px;}
+  h1{font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(44px,11vw,86px);line-height:.9;
+     letter-spacing:-.01em;text-transform:uppercase;margin:0;}
+  h1 em{font-style:normal;color:var(--marigold);}
+  .sub{max-width:54ch;margin:14px 0 0;color:var(--bone-dim);font-size:14.5px;}
+  .spec{display:flex;flex-wrap:wrap;margin-top:22px;border-top:1px solid var(--rule);}
+  .spec div{flex:1 1 120px;padding:10px 12px 8px;border-right:1px solid var(--rule);
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--bone-dim);}
+  .spec div:last-child{border-right:none;}
+  .spec b{display:block;color:var(--bone);font-size:13px;letter-spacing:.04em;margin-top:3px;font-weight:500;}
+
+  section{border:1px solid var(--rule);background:var(--panel);margin-bottom:20px;}
+  .sec-head{padding:11px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:12px;
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--marigold);}
+  .sec-head .num{color:var(--bone-dim);}
+  .sec-body{padding:18px 16px 20px;}
+  label{display:block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--bone-dim);margin-bottom:6px;}
+  input[type=text],input[type=password],select{width:100%;background:var(--ink);border:1px solid var(--rule);
+    color:var(--bone);padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:13px;border-radius:0;}
+  input:focus,select:focus,button:focus-visible,.file-drop:focus-within{outline:2px solid var(--marigold);outline-offset:1px;}
+  .hint{font-size:12.5px;color:var(--bone-dim);margin-top:8px;}
+  .hint a{color:var(--marigold);}
+  button{background:var(--marigold);color:var(--ink);border:none;font-family:'Oswald',sans-serif;
+    font-weight:600;font-size:15px;letter-spacing:.08em;text-transform:uppercase;
+    padding:12px 22px;cursor:pointer;border-radius:0;}
+  button:hover:not(:disabled){background:#F0B441;}
+  button:disabled{background:var(--rule);color:var(--bone-dim);cursor:not-allowed;}
+  button.ghost{background:transparent;color:var(--bone);border:1px solid var(--rule);}
+  button.ghost:hover:not(:disabled){border-color:var(--marigold);color:var(--marigold);background:transparent;}
+  .file-drop{border:1px dashed var(--rule);padding:16px;text-align:center;cursor:pointer;display:block;}
+  .file-drop:hover{border-color:var(--marigold);}
+  .file-drop input{display:none;}
+  .file-drop .fname{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--sage);}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr;}}
+
+  .strip{background:var(--ink);border:1px solid var(--rule);padding:16px 0 0;}
+  .sprockets{display:flex;gap:6px;padding:0 10px 8px;}
+  .sprockets i{flex:1;height:9px;background:var(--panel-2);border:1px solid var(--rule);border-radius:1px;}
+  .bars{display:flex;align-items:flex-end;gap:4px;height:110px;padding:0 12px;}
+  .bars div{flex:1;background:var(--marigold);min-height:2px;}
+  .bars div.low{background:var(--oxide);}
+  .bars div.high{background:var(--sage);}
+  .bar-labels{display:flex;gap:4px;padding:6px 12px 0;font-family:'IBM Plex Mono',monospace;
+    font-size:9px;color:var(--bone-dim);}
+  .bar-labels span{flex:1;text-align:center;}
+  .readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    border-top:1px solid var(--rule);margin:14px 0 0;}
+  .readout div{padding:12px 14px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+  .readout dt{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--bone-dim);margin:0;}
+  .readout dd{margin:4px 0 0;font-family:'Oswald',sans-serif;font-size:24px;font-weight:600;line-height:1.05;}
+  .readout dd small{font-size:12px;color:var(--bone-dim);font-family:'IBM Plex Mono',monospace;font-weight:400;}
+  .taste{padding:14px 16px;}
+  .taste-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;font-size:13px;}
+  .taste-row .nm{width:120px;flex:none;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--bone-dim);}
+  .taste-row .track{flex:1;height:5px;background:var(--panel-2);position:relative;}
+  .taste-row .fill{position:absolute;top:0;bottom:0;background:var(--sage);}
+  .taste-row .fill.neg{background:var(--oxide);}
+  .taste-row .val{width:46px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:11.5px;}
+
+  .films{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px;}
+  .film{background:var(--panel-2);border:1px solid var(--rule);position:relative;}
+  .film img{width:100%;display:block;aspect-ratio:2/3;object-fit:cover;background:var(--ink);}
+  .film .noposter{width:100%;aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;
+    color:var(--rule);font-family:'Oswald',sans-serif;font-size:40px;}
+  .film .meta{padding:9px 10px 11px;}
+  .film .t{font-weight:600;font-size:13.5px;line-height:1.25;}
+  .film .y{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--bone-dim);margin-top:3px;}
+  .film .why{font-size:11.5px;color:var(--sage);margin-top:7px;line-height:1.35;}
+  .score{position:absolute;top:0;right:0;background:var(--marigold);color:var(--ink);
+    font-family:'Oswald',sans-serif;font-weight:700;font-size:14px;padding:3px 8px;}
+  .rank{position:absolute;top:0;left:0;background:rgba(20,18,15,.86);color:var(--bone-dim);
+    font-family:'IBM Plex Mono',monospace;font-size:10px;padding:4px 7px;}
+  .tvtag{position:absolute;top:26px;left:0;background:var(--oxide);color:var(--bone);
+    font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;padding:2px 6px;}
+  .film a{color:inherit;text-decoration:none;display:block;}
+  .film a:hover .t{color:var(--marigold);}
+
+  .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px;}
+  .log{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--bone-dim);
+    background:var(--ink);border:1px solid var(--rule);padding:10px 12px;max-height:130px;
+    overflow-y:auto;white-space:pre-wrap;}
+  .bar-outer{height:3px;background:var(--rule);margin-top:10px;}
+  .bar-inner{height:3px;background:var(--marigold);width:0;transition:width .2s;}
+  .err{color:var(--oxide);font-size:13px;margin-top:10px;}
+  .note{color:var(--marigold);font-size:12.5px;margin-top:10px;}
+  .tabs{display:flex;border-bottom:1px solid var(--rule);flex-wrap:wrap;}
+  .tabs button{background:transparent;color:var(--bone-dim);border:none;border-bottom:2px solid transparent;
+    padding:11px 15px;font-size:11.5px;letter-spacing:.13em;}
+  .tabs button[aria-selected=true]{color:var(--marigold);border-bottom-color:var(--marigold);}
+  .hidden{display:none !important;}
+  footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--rule);
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--bone-dim);line-height:1.7;}
+  footer a{color:var(--bone-dim);}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="box">
+    <div class="box-top"><span>Colour Negative Film · Daylight</span><span>ISO 400 / 36 EXP</span></div>
+    <div class="box-body">
+      <h1>Stock<br><em>400</em></h1>
+      <p class="sub">A recommender that runs on nothing but your own Letterboxd export. It finds what your favourites have in common, then ranks everything adjacent to them — films and series both.</p>
+      <div class="spec">
+        <div>Your ratings<b id="s-ratings">— titles</b></div>
+        <div>Metadata<b>TMDB</b></div>
+        <div>Method<b>Seeded similarity</b></div>
+        <div>Data leaves<b>Never</b></div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="num">01</span><span>Connect TMDB</span></div>
+    <div class="sec-body">
+      <label for="key">TMDB read access token or v3 API key</label>
+      <input type="password" id="key" placeholder="paste key" autocomplete="off" />
+      <p class="hint">Free: make an account at <a href="https://www.themoviedb.org/signup" target="_blank" rel="noopener">themoviedb.org</a>, then Settings → API → request a key. It stays in this tab and is only ever sent to TMDB.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">02</span><span>Load your export</span></div>
+    <div class="sec-body">
+      <div class="grid2">
+        <div>
+          <label>ratings.csv — required</label>
+          <label class="file-drop" tabindex="0"><input type="file" id="f-ratings" accept=".csv" />
+            <span class="fname" id="n-ratings">Choose file</span></label>
+        </div>
+        <div>
+          <label>watchlist.csv — optional</label>
+          <label class="file-drop" tabindex="0"><input type="file" id="f-watch" accept=".csv" />
+            <span class="fname" id="n-watch">Choose file</span></label>
+        </div>
+      </div>
+      <p class="hint">From letterboxd.com/settings/data. Unzip and both files sit at the top level.</p>
+      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+        <button id="go" disabled>Find what's next</button>
+        <button class="ghost" id="reset">Start over</button>
+      </div>
+      <div class="bar-outer"><div class="bar-inner" id="prog"></div></div>
+      <div class="log hidden" id="log"></div>
+      <div class="err" id="err"></div>
+    </div>
+  </section>
+
+  <section id="profile-sec" class="hidden">
+    <div class="sec-head"><span class="num">03</span><span>Your exposure</span></div>
+    <div class="strip">
+      <div class="sprockets" id="sprockets"></div>
+      <div class="bars" id="bars"></div>
+      <div class="bar-labels" id="barlabels"></div>
+      <dl class="readout" id="readout"></dl>
+      <div class="taste">
+        <label style="margin-bottom:10px;">What you gravitate toward — share of library, and how you score it</label>
+        <div id="taste"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="res-sec" class="hidden">
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-mode="all">Everything</button>
+      <button role="tab" aria-selected="false" data-mode="movie">Films only</button>
+      <button role="tab" aria-selected="false" data-mode="tv">Series only</button>
+      <button role="tab" aria-selected="false" data-mode="watchlist">My watchlist</button>
+    </div>
+    <div class="sec-body">
+      <div class="filters">
+        <div><label for="f-from">From year</label><input type="text" id="f-from" value="1900" inputmode="numeric" /></div>
+        <div><label for="f-to">To year</label><input type="text" id="f-to" value="2030" inputmode="numeric" /></div>
+        <div><label for="f-genre">Genre</label><select id="f-genre"><option value="">Any</option></select></div>
+        <div><label for="f-obscure">Popularity floor</label><select id="f-obscure">
+          <option value="0" selected>Anything, however obscure</option>
+          <option value="150">Some footprint (150+ votes)</option>
+          <option value="1200">Well known (1,200+ votes)</option>
+        </select></div>
+      </div>
+      <div class="films" id="films"></div>
+      <div style="margin-top:18px;"><button class="ghost" id="more">Show more</button></div>
+    </div>
+  </section>
+
+  <footer>
+    Runs on your own Letterboxd export and the TMDB API. No scraping, no server, nothing stored.<br>
+    Approach adapted from Victor Verma's Letterboxd-Movie-Recommendations (MIT).<br>
+    This product uses the TMDB API but is not endorsed or certified by TMDB.
+  </footer>
+</div>
+
+<script>
+/* ==========================================================
+   Stock 400 — seeded-similarity recommender
+   Your highly-rated titles seed TMDB similarity lookups;
+   candidates rank by how many of your favourites converge.
+   Works on small libraries and handles TV as well as film.
+   ========================================================== */
+
+const GEN = {
+  28:"Action",12:"Adventure",16:"Animation",35:"Comedy",80:"Crime",99:"Documentary",18:"Drama",
+  10751:"Family",14:"Fantasy",36:"History",27:"Horror",10402:"Music",9648:"Mystery",10749:"Romance",
+  878:"Sci-Fi",10770:"TV Movie",53:"Thriller",10752:"War",37:"Western",
+  10759:"Action & Adventure",10762:"Kids",10763:"News",10764:"Reality",10765:"Sci-Fi & Fantasy",
+  10766:"Soap",10767:"Talk",10768:"War & Politics"
+};
+
+const S = { key:"", rated:[], wlRaw:[], lib:[], cands:[], wl:[],
+            seen:new Set(), mode:"all", shown:24, stats:null, affinity:{} };
+
+const $ = id => document.getElementById(id);
+const log = m => { const l=$("log"); l.classList.remove("hidden"); l.textContent += m+"\n"; l.scrollTop=l.scrollHeight; };
+const prog = p => $("prog").style.width = Math.round(Math.min(1,p)*100)+"%";
+
+/* ---------- TMDB ---------- */
+async function tmdb(path, params={}){
+  const u = new URL("https://api.themoviedb.org/3"+path);
+  Object.entries(params).forEach(([k,v]) => u.searchParams.set(k,v));
+  const bearer = S.key.length > 60;
+  if(!bearer) u.searchParams.set("api_key", S.key);
+  const r = await fetch(u, bearer ? {headers:{Authorization:"Bearer "+S.key}} : {});
+  if(r.status === 401) throw new Error("TMDB rejected that key — check it and try again.");
+  if(r.status === 429){ await new Promise(z=>setTimeout(z,1200)); return tmdb(path,params); }
+  if(!r.ok) throw new Error("TMDB error "+r.status+" on "+path);
+  return r.json();
+}
+
+async function pool(items, worker, concurrency, onTick){
+  const out = new Array(items.length); let i=0, done=0;
+  await Promise.all(Array.from({length:concurrency}, async () => {
+    while(i < items.length){
+      const idx = i++;
+      try{ out[idx] = await worker(items[idx]); }catch(e){ out[idx] = null; }
+      if(onTick) onTick(++done);
+    }
+  }));
+  return out;
+}
+
+/* one shape for movies and series alike */
+function norm(m){
+  const type = m.media_type || (m.title ? "movie" : "tv");
+  const date = m.release_date || m.first_air_date || "";
+  return {
+    id:m.id, type,
+    title: m.title || m.name || "Untitled",
+    year: date ? +date.slice(0,4) : null,
+    genres: m.genre_ids || (m.genres||[]).map(g=>g.id) || [],
+    vote: m.vote_average || 0, votes: m.vote_count || 0,
+    poster: m.poster_path
+  };
+}
+
+/* search across film AND television — a third of a true-crime
+   library is limited series, and /search/movie silently drops them */
+async function match(row){
+  const d = await tmdb("/search/multi", { query: row.title, include_adult:"false" });
+  const hits = (d.results||[]).filter(r => r.media_type === "movie" || r.media_type === "tv");
+  if(!hits.length) return null;
+  let best = hits[0];
+  if(row.year){
+    const exact = hits.find(h => {
+      const y = (h.release_date || h.first_air_date || "").slice(0,4);
+      return y && Math.abs(+y - +row.year) <= 1;
+    });
+    if(exact) best = exact;
+  }
+  return { ...norm(best), userRating: row.rating, sourceTitle: row.title };
+}
+
+/* ---------- the engine ---------- */
+async function build(){
+  $("err").textContent = ""; $("log").textContent = ""; prog(0);
+  $("go").disabled = true;
+  try{
+    log("Matching your titles against TMDB (films and series)…");
+    let t = 0;
+    const lib = (await pool(S.rated, match, 8, d => {
+      if(d - t > 8 || d === S.rated.length){ t = d; prog(d/S.rated.length*0.35); log(`  ${d} / ${S.rated.length}`); }
+    })).filter(Boolean);
+
+    if(lib.length < 8) throw new Error(`Only matched ${lib.length} titles. Check that this is ratings.csv from your export.`);
+    S.lib = lib;
+    lib.forEach(m => S.seen.add(m.type+":"+m.id));
+    const nTv = lib.filter(m=>m.type==="tv").length;
+    log(`Matched ${lib.length} of ${S.rated.length} — ${lib.length-nTv} films, ${nTv} series.`);
+
+    S.stats = profile(lib);
+    S.affinity = affinity(lib);
+    drawProfile();
+
+    const seeds = lib.filter(m => m.userRating >= 4)
+                     .sort((a,b) => b.userRating - a.userRating);
+    if(!seeds.length) throw new Error("No titles rated 4 or above — the engine needs some favourites to work from.");
+    log(`Seeding from your ${seeds.length} highest-rated titles…`);
+
+    const jobs = [];
+    seeds.forEach(s => { jobs.push({s,kind:"recommendations"}); jobs.push({s,kind:"similar"}); });
+    let j = 0;
+    const lists = await pool(jobs,
+      job => tmdb(`/${job.s.type}/${job.s.id}/${job.kind}`, {}).then(r => ({seed:job.s, res:r.results||[]})),
+      6, d => { j = d; prog(0.35 + d/jobs.length*0.6); });
+
+    const agg = new Map();
+    for(const item of lists){
+      if(!item) continue;
+      const w = item.seed.userRating - 3;           // 4★ → 1, 5★ → 2
+      item.res.slice(0,20).forEach((r, i) => {
+        const c = norm(r);
+        if(!c.year || !c.id) return;
+        const key = c.type+":"+c.id;
+        if(S.seen.has(key)) return;
+        const pos = 1 / Math.log2(i + 3);           // position decay
+        let e = agg.get(key);
+        if(!e){ e = { ...c, raw:0, seeds:new Map() }; agg.set(key, e); }
+        e.raw += w * pos;
+        e.seeds.set(item.seed.title, Math.max(e.seeds.get(item.seed.title)||0, w));
+      });
+    }
+
+    const out = [...agg.values()];
+    out.forEach(c => {
+      const conv = c.seeds.size;                    // how many favourites agree
+      const gen  = genreFit(c);                     // your genre affinity
+      const qual = 1 + (c.vote - 6.4) * 0.06;       // gentle quality prior
+      c.score = c.raw * Math.pow(conv, 0.55) * gen * Math.max(0.7, qual);
+    });
+    const mx = Math.max(...out.map(c=>c.score)) || 1;
+    out.forEach(c => c.score = c.score / mx * 100);
+    S.cands = out.sort((a,b) => b.score - a.score);
+    log(`${S.cands.length} candidates ranked.`);
+
+    if(S.wlRaw.length){
+      log("Matching your watchlist…");
+      S.wl = (await pool(S.wlRaw, match, 6)).filter(Boolean);
+      S.wl.forEach(w => {
+        const hit = agg.get(w.type+":"+w.id);
+        w.score = hit ? hit.score : 0;
+        w.seeds = hit ? hit.seeds : new Map();
+      });
+      S.wl.sort((a,b)=>b.score-a.score);
+    }
+    prog(1);
+    $("res-sec").classList.remove("hidden");
+    render();
+    $("res-sec").scrollIntoView({behavior:"smooth", block:"start"});
+  }catch(e){
+    $("err").textContent = e.message;
+  }finally{
+    $("go").disabled = false;
+  }
+}
+
+/* ---------- taste ---------- */
+/* Preference has two parts, and rating alone captures only one.
+   A genre that is half your library is plainly a preference even if
+   its mean rating sits at your average — what you keep choosing to
+   watch counts as much as how generously you score it. */
+function affinity(lib){
+  const mean = lib.reduce((a,c)=>a+c.userRating,0)/lib.length;
+  const byG = {};
+  lib.forEach(m => m.genres.forEach(g => (byG[g] = byG[g] || []).push(m.userRating)));
+  const out = {};
+  Object.entries(byG).forEach(([g, arr]) => {
+    const avg = arr.reduce((a,c)=>a+c,0)/arr.length;
+    const k = arr.length / (arr.length + 3);        // shrink small genres toward the mean
+    out[g] = {
+      delta: (avg - mean) * k,                      // taste: how you score it
+      share: arr.length / lib.length,               // engagement: how often you pick it
+      n: arr.length
+    };
+  });
+  return out;
+}
+
+function genreFit(c){
+  if(!c.genres.length) return 1;
+  let taste = 0, reach = 0, n = 0;
+  c.genres.forEach(g => {
+    const a = S.affinity[g];
+    if(a){ taste += a.delta; reach = Math.max(reach, a.share); n++; }
+  });
+  if(!n) return 0.92;                                // unfamiliar territory: slight discount
+  return Math.max(0.55, Math.min(1.6, 1 + (taste/n) * 0.5 + reach * 0.6));
+}
+
+function profile(lib){
+  const y = lib.map(m => m.userRating);
+  const n = y.length;
+  const mean = y.reduce((a,c)=>a+c,0)/n;
+  const sd = Math.sqrt(y.reduce((a,c)=>a+(c-mean)**2,0)/n);
+  const diffs = lib.map(m => m.userRating - m.vote/2);
+  const dMean = diffs.reduce((a,c)=>a+c,0)/n;
+  const votes = lib.map(m=>m.votes).sort((a,b)=>a-b);
+  const medVotes = votes[Math.floor(n/2)] || 0;
+  const hist = new Array(10).fill(0);
+  y.forEach(r => hist[Math.min(9, Math.max(0, Math.round(r*2)-1))]++);
+  const tv = lib.filter(m=>m.type==="tv").length;
+  return {n, mean, sd, dMean, medVotes, hist, tv};
+}
+
+function drawProfile(){
+  const st = S.stats;
+  $("profile-sec").classList.remove("hidden");
+  $("s-ratings").textContent = st.n + " titles";
+  $("sprockets").innerHTML = Array.from({length:24},()=>"<i></i>").join("");
+  const max = Math.max(...st.hist);
+  $("bars").innerHTML = st.hist.map((c,i) =>
+    `<div class="${i<3?"low":i>=8?"high":""}" style="height:${Math.max(2,c/max*100)}%" title="${(i+1)/2}★ — ${c}"></div>`).join("");
+  $("barlabels").innerHTML = st.hist.map((_,i)=>`<span>${(i+1)/2}</span>`).join("");
+
+  const style = st.dMean > 0.35 ? "Generous" : st.dMean < -0.35 ? "Harsh" : "Level";
+  const obsc = st.medVotes < 800 ? "Deep cuts" : st.medVotes < 4000 ? "Off the beaten path" : "Mainstream";
+  $("readout").innerHTML = `
+    <div><dt>Titles rated</dt><dd>${st.n}</dd></div>
+    <div><dt>Your average</dt><dd>${st.mean.toFixed(2)}<small> ★</small></dd></div>
+    <div><dt>Spread</dt><dd>${st.sd.toFixed(2)}<small> σ</small></dd></div>
+    <div><dt>Vs. the crowd</dt><dd style="font-size:20px">${style}<small> ${st.dMean>0?"+":""}${st.dMean.toFixed(2)}</small></dd></div>
+    <div><dt>Obscurity</dt><dd style="font-size:18px">${obsc}</dd></div>
+    <div><dt>Series in library</dt><dd>${st.tv}<small> of ${st.n}</small></dd></div>`;
+
+  const rows = Object.entries(S.affinity)
+    .filter(([,a]) => a.n >= 2)
+    .map(([g,a]) => ({name: GEN[g] || ("Genre "+g), v: a.delta, share: a.share, n: a.n}))
+    .sort((a,b) => (b.share + Math.abs(b.v)) - (a.share + Math.abs(a.v))).slice(0,8);
+  const mx = Math.max(...rows.map(r=>r.share)) || 1;
+  $("taste").innerHTML = rows.map(r => `
+    <div class="taste-row">
+      <span class="nm">${r.name}</span>
+      <span class="track"><span class="fill" style="left:0;width:${r.share/mx*100}%"></span></span>
+      <span class="val" style="color:${r.v<0?"var(--oxide)":"var(--sage)"}"
+        title="${r.n} titles, ${r.v>0?"+":""}${r.v.toFixed(2)} vs your average">${Math.round(r.share*100)}%</span>
+    </div>`).join("");
+}
+
+/* ---------- render ---------- */
+function render(){
+  const from = +$("f-from").value || 1800, to = +$("f-to").value || 2100;
+  const g = $("f-genre").value, minV = +$("f-obscure").value;
+  let list = S.mode === "watchlist" ? S.wl : S.cands;
+  if(S.mode === "movie") list = list.filter(m => m.type === "movie");
+  if(S.mode === "tv")    list = list.filter(m => m.type === "tv");
+  list = list.filter(m => m.year >= from && m.year <= to && m.votes >= minV &&
+                          (!g || m.genres.includes(+g)));
+
+  if(!list.length){
+    $("films").innerHTML = `<p style="color:var(--bone-dim);grid-column:1/-1">Nothing clears those filters${S.mode==="watchlist"?". Add watchlist.csv and run it again":". Widen the year range or drop the popularity floor"}.</p>`;
+    $("more").classList.add("hidden"); return;
+  }
+
+  $("films").innerHTML = list.slice(0, S.shown).map((m,i) => {
+    const because = [...(m.seeds ? m.seeds.keys() : [])].slice(0,2).join(", ");
+    return `<div class="film">
+      <a href="https://www.themoviedb.org/${m.type}/${m.id}" target="_blank" rel="noopener">
+        <span class="rank">${String(i+1).padStart(2,"0")}</span>
+        ${m.type==="tv"?`<span class="tvtag">SERIES</span>`:""}
+        <span class="score">${Math.round(m.score)}</span>
+        ${m.poster ? `<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster}" alt="">`
+                   : `<div class="noposter">?</div>`}
+        <div class="meta">
+          <div class="t">${m.title}</div>
+          <div class="y">${m.year || "—"} · ${m.vote.toFixed(1)} · ${m.votes.toLocaleString()} votes</div>
+          ${because ? `<div class="why">Because you liked ${because}</div>` : ""}
+        </div>
+      </a></div>`;
+  }).join("");
+  $("more").classList.toggle("hidden", S.shown >= list.length);
+}
+
+/* ---------- csv ---------- */
+const pick = (row, ...names) => {
+  for(const n of names) for(const k of Object.keys(row))
+    if(k.trim().toLowerCase() === n) return row[k];
+};
+const readCSV = (file, cb) => Papa.parse(file, {header:true, skipEmptyLines:true, complete:r=>cb(r.data)});
+
+$("key").addEventListener("input", e => { S.key = e.target.value.trim(); ready(); });
+
+$("f-ratings").addEventListener("change", e => {
+  const f = e.target.files[0]; if(!f) return;
+  readCSV(f, rows => {
+    S.rated = rows.map(r => ({
+      title:(pick(r,"name","title")||"").trim(),
+      year: pick(r,"year"),
+      rating: parseFloat(pick(r,"rating"))
+    })).filter(r => r.title && !isNaN(r.rating));
+    $("n-ratings").textContent = `${f.name} — ${S.rated.length} rated`;
+    ready();
+  });
+});
+
+$("f-watch").addEventListener("change", e => {
+  const f = e.target.files[0]; if(!f) return;
+  readCSV(f, rows => {
+    S.wlRaw = rows.map(r => ({title:(pick(r,"name","title")||"").trim(), year:pick(r,"year"), rating:0}))
+                  .filter(r => r.title);
+    $("n-watch").textContent = `${f.name} — ${S.wlRaw.length} titles`;
+  });
+});
+
+const ready = () => $("go").disabled = !(S.key.length > 10 && S.rated.length >= 5);
+
+$("go").addEventListener("click", build);
+$("reset").addEventListener("click", () => location.reload());
+$("more").addEventListener("click", () => { S.shown += 24; render(); });
+
+document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", x===b));
+  S.mode = b.dataset.mode; S.shown = 24; render();
+}));
+["f-from","f-to","f-genre","f-obscure"].forEach(id =>
+  $(id).addEventListener("change", () => { S.shown = 24; render(); }));
+
+Object.keys(GEN).map(Number).sort((a,b)=>GEN[a].localeCompare(GEN[b])).forEach(g => {
+  const o = document.createElement("option");
+  o.value = g; o.textContent = GEN[g];
+  $("f-genre").appendChild(o);
+});
+</script>
+</body>
+</html>
