@@ -632,8 +632,8 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
  <div class="tbox">
   <div class="thead"><span id="wnTitle">What's new</span>
    <span class="wntabs" role="tablist">
-    <button type="button" class="wntab" data-wt="archive" role="tab" aria-selected="true">Archive</button>
     <button type="button" class="wntab" data-wt="site" role="tab" aria-selected="false">Site changes</button>
+    <button type="button" class="wntab" data-wt="archive" role="tab" aria-selected="true">Archive</button>
    </span>
    <button type="button" id="wnClose" aria-label="Close">Close ✕</button></div>
   <div class="wnbody" id="wnBody"></div>
@@ -743,8 +743,14 @@ async function loadAll(){
     try{
       const r=await fetch("changelog.json?v="+Date.now());
       const d=r.ok?await r.json():null;
+      /* ignore anything dated in the future — a typo in the changelog
+         shouldn't make the banner claim tomorrow */
+      const now=Date.now();
       S.siteLatest=((d&&d.releases)||[]).reduce((m,x)=>{
-        const v=x.at||x.date; return (!m||String(v)>String(m))?v:m; },null)||false;
+        const v=x.at||x.date; if(!v) return m;
+        const t=new Date(/^\d{4}-\d{2}-\d{2}$/.test(String(v))?v+"T12:00:00":v).getTime();
+        if(isNaN(t)||t>now) return m;
+        return (!m||String(v)>String(m))?v:m; },null)||false;
     }catch(e){ S.siteLatest=false; }
   }
   let cached=null;
