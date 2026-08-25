@@ -886,28 +886,45 @@ function stampActivity(){
 }
 
 /* ---------- unreleased titles ---------- */
-const REL_CACHE="cbsRel:v1";
+const REL_CACHE="cbsRel:v2";   // v2 stores status as well as date
 function relCache(){ try{ return JSON.parse(localStorage.getItem(REL_CACHE)||"{}"); }catch(e){ return {}; } }
-function releaseOf(f){
-  if(f.release) return f.release;
-  return relCache()[f.type+":"+f.id]||null;
+function relInfo(f){
+  const c=relCache()[f.type+":"+f.id];
+  return {date:f.release||(c&&c.d)||"", status:f.status||(c&&c.s)||""};
 }
-const comingSoon=f=>{ const r=releaseOf(f); return !!r&&r>todayLocal(); };
+/* TMDB often has no date at all for something years out — Top Gun 3 has none —
+   so the status field is what actually tells us it isn't out. */
+const NOT_OUT=["Rumored","Planned","In Production","Post Production","Canceled"];
+function comingSoon(f){
+  const {date,status}=relInfo(f);
+  if(status&&NOT_OUT.includes(status)) return true;
+  if(status==="Released"||status==="Ended"||status==="Returning Series") return date&&date>todayLocal();
+  return !!date&&date>todayLocal();
+}
 function relLabel(f){
-  const r=releaseOf(f); if(!r) return "";
-  const d=new Date(r+"T12:00:00"); if(isNaN(d)) return "";
-  return d.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+  const {date,status}=relInfo(f);
+  if(date){
+    const d=new Date(date+"T12:00:00");
+    if(!isNaN(d)) return "expected "+d.toLocaleDateString("en-US",
+      {month:"long",day:"numeric",year:"numeric"});
+  }
+  if(status==="In Production")    return "in production";
+  if(status==="Post Production")  return "in post-production";
+  if(status==="Planned")          return "announced, no date yet";
+  if(status==="Rumored")          return "rumoured";
+  if(status==="Canceled")         return "cancelled";
+  return "date not announced";
 }
 /* older rows were logged before we kept the date — look those up once */
 async function backfillReleases(){
   if(!S.tmdbKey) return;
   const yr=+todayLocal().slice(0,4), c=relCache();
-  const need=S.rows.filter(f=>!f.release&&c[f.type+":"+f.id]===undefined&&(f.year==null||f.year>=yr));
+  const need=S.rows.filter(f=>!f.status&&c[f.type+":"+f.id]===undefined&&(f.year==null||f.year>=yr));
   if(!need.length) return;
   await pool(need,async f=>{
     try{ const d=await tmdb(`/${f.type}/${f.id}`);
-      c[f.type+":"+f.id]=d.release_date||d.first_air_date||"";
-    }catch(e){ c[f.type+":"+f.id]=""; }
+      c[f.type+":"+f.id]={d:d.release_date||d.first_air_date||"",s:d.status||""};
+    }catch(e){ c[f.type+":"+f.id]={d:"",s:""}; }
   },5);
   try{ localStorage.setItem(REL_CACHE,JSON.stringify(c)); }catch(e){}
   ledger(); next(); watchlist();
@@ -970,7 +987,7 @@ function dossier(f){
     <dl class="credits">${cr}${cast}${meta.join("")}${also}</dl>
     ${wl.length?`<dl class="credits watch">${wl.join("")}</dl>`:""}
     ${f.keywords.length?`<div class="tags">${f.keywords.map(k=>`<span class="tag">${esc(k)}</span>`).join("")}</div>`:""}
-    ${comingSoon(f)?`<div class="dsoon">COMING SOON \u00b7 ${relLabel(f)?`expected ${esc(relLabel(f))}`:"date not announced"}</div>`:""}
+    ${comingSoon(f)?`<div class="dsoon">COMING SOON \u00b7 ${esc(relLabel(f))}</div>`:""}
     ${mine?`<div class="affrow">
      <span>How you felt</span>
      <button type="button" class="mini aff${!f.liked&&!f.loved?" on":""}" data-row="${f.rowId}" data-aff="0">Not for me</button>
