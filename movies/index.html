@@ -774,13 +774,12 @@ function activityFeed(){
 function stampActivity(){
   const el=$("stampUpd"); if(!el) return;
   const F=activityFeed();
-  if(!F.length){ el.textContent="Updated: \u2014"; return; }
+  if(!F.length){ el.innerHTML=`<span class="what">Recent updates</span>`; wireStampClick(); return; }
   const last=F[0], when=new Date(last.addedAt||last.diaryDate);
   const day=isNaN(when)?"":when.toLocaleDateString("en-US",
     {timeZone:"America/Chicago",month:"short",day:"numeric"});
-  el.innerHTML=`Updated: ${esc(day)} \u2014 `+
-    `<span class="what">${esc(last.who)} added ${esc(last.title)}</span>`;
-  el.title="See everything that's been added";
+  el.innerHTML=`<span class="what">Recent updates</span>`;
+  el.title=`Last: ${last.who} added ${last.title} (${day})`;
   wireStampClick();
 }
 
