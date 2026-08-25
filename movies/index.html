@@ -992,7 +992,8 @@ function next(){
             release_date:(m.year||"")+"-01-01"};
     $("lpick").innerHTML=`${img(m.poster,"w185")?`<img src="${img(m.poster,"w185")}" alt="">`:""}
       <div><div class="pt">${esc(m.title)}</div><div class="py">${m.year||"—"} · ${m.type==="tv"?"Series":"Film"}</div></div>`;
-    $("lform").classList.remove("hidden"); say("smsg","");
+    resetEntryForm();
+    $("lform").classList.remove("hidden");
     $("lform").scrollIntoView({behavior:"smooth",block:"center"});
   });
 }
@@ -1071,6 +1072,17 @@ $("saveKey").onclick=async()=>{
   S.tmdbKey=v; $("needKey").classList.add("hidden"); say("keyMsg","Saved for the whole family.","ok");
 };
 
+function todayLocal(){
+  const d=new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function resetEntryForm(){
+  $("lrate").value="4";
+  $("llike").value="0";
+  $("ldate").value=todayLocal();
+  $("lrev").value="";
+  say("smsg","");
+}
 let chosen=null;
 async function search(){
   const q=$("lq").value.trim(); if(!q) return;
@@ -1093,13 +1105,14 @@ async function search(){
       const t=chosen.title||chosen.name,y=(chosen.release_date||chosen.first_air_date||"").slice(0,4);
       $("lpick").innerHTML=`${chosen.poster_path?`<img src="https://image.tmdb.org/t/p/w185${chosen.poster_path}" alt="">`:""}
        <div><div class="pt">${esc(t)}</div><div class="py">${y||"—"} · ${chosen.media_type==="tv"?"Series":"Film"}</div></div>`;
-      $("lform").classList.remove("hidden"); say("smsg","");
+      resetEntryForm();
+      $("lform").classList.remove("hidden");
     });
   }catch(e){ say("lmsg",e.message,"bad"); }
 }
 $("lgo").onclick=search;
 $("lq").addEventListener("keydown",e=>{if(e.key==="Enter")search();});
-$("lcancel").onclick=()=>{$("lform").classList.add("hidden");chosen=null;};
+$("lcancel").onclick=()=>{$("lform").classList.add("hidden");chosen=null;resetEntryForm();};
 
 async function enrich(hit){
   const type=hit.media_type||(hit.title?"movie":"tv");
@@ -1148,6 +1161,7 @@ $("lsave").onclick=async()=>{
     if(error) throw new Error(error.message);
     say("smsg",`Saved. ${e.d.title||e.d.name} is in your ledger.`,"ok");
     $("lform").classList.add("hidden"); $("lres").innerHTML=""; $("lq").value=""; chosen=null;
+    resetEntryForm();
     await loadAll();
   }catch(err){ say("smsg",err.message,"bad"); }
   finally{ $("lsave").disabled=false; }
