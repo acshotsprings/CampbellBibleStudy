@@ -171,7 +171,7 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .badge{position:absolute;top:0;right:0;background:var(--stamp);color:var(--card);
   font-family:'Archivo Black',sans-serif;font-size:14px;padding:4px 9px}
 .rk{position:absolute;top:0;left:0;background:var(--ink);color:var(--card);
-  font-family:'Courier Prime',monospace;font-weight:700;font-size:11.5px;padding:4px 8px}
+  font-family:'Courier Prime',monospace;font-weight:700;font-size:10px;letter-spacing:.12em;padding:5px 8px}
 .tvs{position:absolute;top:27px;left:0;background:var(--accent2);color:var(--card);
   font-family:'Courier Prime',monospace;font-weight:700;font-size:10px;letter-spacing:.1em;padding:2px 6px}
 
@@ -992,7 +992,8 @@ async function buildRecs(){
     .slice(0,SEED_CAP);
   if(!mine.length) throw new Error("Log and rate a few things first.");
 
-  const seenAll=new Set(S.rows.map(r=>r.type+":"+r.id));
+  // only exclude what I've personally seen — the scope filter handles the household view
+  const seenMine=new Set(S.rows.filter(r=>r.user_id===S.me.id).map(r=>r.type+":"+r.id));
   const tally={};
 
   await pool(mine,async seed=>{
@@ -1003,7 +1004,7 @@ async function buildRecs(){
     const hits=[...(a.results||[]).map(x=>[x,1]),...(b.results||[]).map(x=>[x,.6])];
     hits.forEach(([m,mult])=>{
       const type=m.media_type||seed.type, k=type+":"+m.id;
-      if(seenAll.has(k)) return;
+      if(seenMine.has(k)) return;
       if((m.vote_count||0)<20) return;          // strip out the no-data junk
       const e=tally[k]||(tally[k]={id:m.id,type,title:m.title||m.name,
         year:+((m.release_date||m.first_air_date||"").slice(0,4))||null,
@@ -1087,8 +1088,8 @@ function next(){
     const who=S.rows.filter(r=>r.id===m.id&&r.type===m.type).map(r=>r.who);
     const isOn=onList.has(m.type+":"+m.id);
     return `<div class="card">
-     <span class="rk" title="Rank in this list">${String(i+1).padStart(2,"0")}</span>${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
-     <span class="badge" title="Match strength — 100 is the strongest fit to your ledger">${Math.round(m.score)}</span>
+     <span class="rk" title="How strongly this matches your ledger">MATCH</span>${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
+     <span class="badge" title="Match strength — 100 is the strongest fit to your ledger">${Math.round(m.score)}%</span>
      <button type="button" class="poster-btn trail" data-i="${i}" title="Watch the trailer">
       ${img(m.poster,"w342")?`<img loading="lazy" src="${img(m.poster,"w342")}" alt="" onerror="this.outerHTML='<div class=&quot;np&quot;>?</div>'">`:'<div class="np">?</div>'}
       <span class="play">▶</span></button>
