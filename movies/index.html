@@ -354,6 +354,8 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px}
 .wnrel ul{margin:0;padding-left:18px}
 .wnrel li{font-size:var(--dd);line-height:1.5;margin-bottom:6px}
+.wnrel li .wt{display:inline-block;min-width:74px;color:var(--muted);
+  font-family:'Courier Prime',monospace;font-size:11.5px}
 .wnrel li::marker{color:var(--accent)}
 .wnfoot{border-top:1px solid var(--edge);margin-top:16px;padding-top:12px;
   font-family:'Courier Prime',monospace;font-size:11.5px;color:var(--muted)}
@@ -788,6 +790,13 @@ function activityFeed(){
     .filter(r=>r.addedAt||r.diaryDate)
     .slice()
     .sort((a,b)=>String(b.addedAt||b.diaryDate||"").localeCompare(String(a.addedAt||a.diaryDate||"")));
+}
+/* clock time for one entry, blank when the row predates created_at */
+function rowTime(f){
+  if(!f.addedAt) return "";
+  const d=new Date(f.addedAt); if(isNaN(d)) return "";
+  return d.toLocaleTimeString("en-US",
+    {timeZone:"America/Chicago",hour:"numeric",minute:"2-digit"});
 }
 function stampActivity(){
   const el=$("stampUpd"); if(!el) return;
@@ -1863,7 +1872,9 @@ function renderArchiveFeed(){
 
   box.innerHTML=picker+days.map(g=>`<div class="wnrel">
     <div class="wd">${esc(g.key)}</div>
-    <ul>${g.rows.map(f=>`<li><b>${esc(f.who)}</b> added ${esc(f.title)}`+
+    <ul>${g.rows.map(f=>`<li>`+
+      `<span class="wt">${esc(rowTime(f))}</span>`+
+      `<b>${esc(f.who)}</b> added ${esc(f.title)}`+
       `${f.year?` <span style="color:var(--muted)">(${f.year})</span>`:""}`+
       `${f.userRating?` \u2014 ${stars(f.userRating)}`:""}`+
       `${f.loved?' <span style="color:var(--accent)">\u2665</span>'
