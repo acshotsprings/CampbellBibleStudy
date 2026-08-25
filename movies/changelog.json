@@ -2,6 +2,31 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it just shows the date.",
   "releases": [
     {
+      "at": "2026-08-25T17:05:00-05:00",
+      "title": "Add to watch list from search",
+      "items": [
+        "Search results and filmography pages now have a Want to see button, so you can queue something without logging it as watched.",
+        "Anything already flagged shows On your list instead."
+      ]
+    },
+    {
+      "at": "2026-08-25T16:05:00-05:00",
+      "title": "Crew Index counts",
+      "items": [
+        "The number beside each name counts credits, not titles — someone who shot, edited and directed one film showed as 3.",
+        "It now reads credits / titles when they differ, and Repeat collaborators means more than one title rather than more than one job."
+      ]
+    },
+    {
+      "at": "2026-08-25T12:30:00-05:00",
+      "title": "Coming soon",
+      "items": [
+        "Unreleased titles get a diagonal COMING SOON band across the poster, a pill in the ledger, and an expected date in the dossier.",
+        "Release dates were being fetched and thrown away; they're kept now, with a one-time backfill for older entries.",
+        "Films years out often have no date at all, so TMDB's production status is what flags them."
+      ]
+    },
+    {
       "at": "2026-08-25T12:12:00-05:00",
       "title": "Household membership",
       "items": [
