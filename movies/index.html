@@ -716,7 +716,8 @@ async function loadAll(){
   $("needKey").classList.toggle("hidden",!!S.tmdbKey);
   $("migrate").classList.toggle("hidden", S.rows.some(r=>r.user_id===S.me.id));
   // ledger moved since the last build? go get fresh suggestions
-  if(S.tmdbKey&&ledgerSig()!==S.recsSig) refreshRecs(false);
+  const noScores=!Object.keys(S.scores||{}).length;
+  if(S.tmdbKey&&(ledgerSig()!==S.recsSig||noScores)) refreshRecs(false);
 }
 
 function paintWho(){
@@ -1381,7 +1382,7 @@ async function refreshRecs(manual){
   say("nbuilt","Rebuilding from your ledger"+"…");
   try{
     const n=await buildRecs();
-    fillServices(); next();
+    fillServices(); next(); watchlist();
     say("nbuilt",`${n} suggestions, rebuilt ${builtStamp()}.`,"ok");
   }catch(e){
     say("nbuilt",manual?e.message:"Showing the last saved set — "+e.message,manual?"bad":"");
@@ -1522,7 +1523,7 @@ function watchlist(){
   /* if nothing is scored yet, say why rather than showing a wall of dashes */
   const unscored=L.filter(w=>wlScore(w)==null).length;
   if(L.length&&unscored===L.length&&so==="match")
-    say("wmsg","No match scores yet \u2014 open What's Next and refresh suggestions.");
+    say("wmsg",S.recsBusy?"Scoring your list\u2026":"No match scores yet \u2014 hit Refresh suggestions on What's Next.");
   else if(unscored)
     say("wmsg",`${unscored} not scored yet; they sort last.`);
   else say("wmsg","");
@@ -1768,7 +1769,8 @@ document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
     $("v-"+v).classList.toggle("hidden",v!==b.dataset.v));
   window.scrollTo({top:0,behavior:"smooth"});
   /* ranking changes don't rebuild on every drag — they catch up when you come to look */
-  if(b.dataset.v==="next"&&S.tmdbKey&&ledgerSig()!==S.recsSig) refreshRecs(false);
+  if((b.dataset.v==="next"||b.dataset.v==="watch")&&S.tmdbKey&&
+     (ledgerSig()!==S.recsSig||!Object.keys(S.scores||{}).length)) refreshRecs(false);
 });
 document.querySelectorAll(".prefsMenu button[data-p]").forEach(b=>b.onclick=()=>{
   document.documentElement.setAttribute("data-theme",b.dataset.p);
