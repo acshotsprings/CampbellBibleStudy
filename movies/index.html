@@ -632,8 +632,8 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
  <div class="tbox">
   <div class="thead"><span id="wnTitle">What's new</span>
    <span class="wntabs" role="tablist">
-    <button type="button" class="wntab" data-wt="site" role="tab" aria-selected="false">Site changes</button>
-    <button type="button" class="wntab" data-wt="archive" role="tab" aria-selected="true">Archive</button>
+    <button type="button" class="wntab" data-wt="site" role="tab" aria-selected="true">Site changes</button>
+    <button type="button" class="wntab" data-wt="archive" role="tab" aria-selected="false">Archive</button>
    </span>
    <button type="button" id="wnClose" aria-label="Close">Close ✕</button></div>
   <div class="wnbody" id="wnBody"></div>
@@ -2115,7 +2115,7 @@ function wireStampClick(){
     openWhatsNew();
   });
 }
-let wnTab="archive";
+let wnTab="site";
 function openWhatsNew(){
   $("whatsnew").classList.remove("hidden");
   document.body.style.overflow="hidden";
