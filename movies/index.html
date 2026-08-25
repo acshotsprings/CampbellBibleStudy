@@ -198,6 +198,7 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
   font-size:16px;font-style:italic;color:var(--ink)}
 
 /* ---------- crew ---------- */
+.ct .ctl{color:var(--muted);font-size:.62em;font-weight:400}
 .crewrow{display:grid;grid-template-columns:1fr auto;gap:12px;padding:var(--rowpad) 8px;
   border-bottom:1px solid var(--edge);align-items:baseline}
 .crewrow .nm{font-family:'Archivo',sans-serif;font-weight:700;font-size:var(--title)}
@@ -1164,9 +1165,11 @@ $("fSort").addEventListener("change",async()=>{
 function crew(){
   const q=$("cq").value.toLowerCase().trim(), mode=$("cf").value;
   const all=crewOf(visible());
-  let C=all.filter(c=>mode==="all"||c.total>1);
+  let C=all.filter(c=>mode==="all"||c.titles.length>1);
   if(q) C=C.filter(c=>c.name.toLowerCase().includes(q)||c.titles.some(t=>t.toLowerCase().includes(q)));
-  $("crewLede").textContent=`${all.length} people across ${visible().reduce((a,f)=>a+f.crewCount,0).toLocaleString()} credits. ${all.filter(c=>c.total>1).length} turn up more than once.`;
+  $("crewLede").textContent=`${all.length} people across `+
+    `${visible().reduce((a,f)=>a+f.crewCount,0).toLocaleString()} credits. `+
+    `${all.filter(c=>c.titles.length>1).length} worked on more than one title.`;
   const per=+$("cPer").value||0, count=C.length;
   const total=per?Math.max(1,Math.ceil(count/per)):1;
   if(S.PG.crew>total) S.PG.crew=total;
@@ -1174,12 +1177,12 @@ function crew(){
   drawPager(["pagerCrew"],"crew",cur,total,per||count,count,crew);
   const P=per?C.slice(from,from+per):C;
   $("crew").innerHTML=P.length?P.map(c=>`
-   <div class="crewrow ${c.total>1?"multi":""}">
+   <div class="crewrow ${c.titles.length>1?"multi":""}">
     <div><div class="nm">${c.id?`<button type="button" class="pl" data-pid="${c.id}" data-pn="${esc(c.name)}">${esc(c.name)}</button>`:esc(c.name)}</div>
      <div class="rl">${Object.entries(c.roles).map(([r,n])=>r+(n>1?" ×"+n:"")).join(" · ")}</div>
      <div class="tt">${c.titles.map(t=>
        `<button type="button" class="tl" data-t="${esc(t)}">${esc(t)}</button>`).join(" \u00b7 ")}</div></div>
-    <div class="ct">${c.total}</div></div>`).join("")
+    <div class="ct" title="${c.total} credit${c.total===1?"":"s"} across ${c.titles.length} title${c.titles.length===1?"":"s"}">${c.total}<span class="ctl">${c.titles.length===c.total?"":` / ${c.titles.length}`}</span></div></div>`).join("")
    :`<p style="color:var(--muted);padding:14px 8px">No one matches that.</p>`;
 }
 ["cq","cf","cPer"].forEach(i=>$(i).addEventListener("input",()=>{S.PG.crew=1;crew();}));
