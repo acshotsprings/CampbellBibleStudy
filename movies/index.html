@@ -1069,8 +1069,11 @@ function next(){
   const seenMine=new Set(S.rows.filter(r=>r.user_id===S.me.id).map(r=>r.type+":"+r.id));
   const scope=$("nScope").value;
   const ty=$("nType").value, sv=$("nSvc").value;
+  const onList=new Set(S.want.map(w=>w.media_type+":"+w.tmdb_id));
   const L=S.recs.filter(r=>{
     const k=r.type+":"+r.id;
+    // once it's on the watch list it lives there, not here — unless you asked to see everything
+    if(scope&&onList.has(k)) return false;
     if(scope==="me"&&seenMine.has(k)) return false;
     if(scope==="household"&&seenAll.has(k)) return false;
     if(ty&&r.type!==ty) return false;
@@ -1080,7 +1083,7 @@ function next(){
   $("next").innerHTML=L.length?L.map((m,i)=>{
     const bc=Object.keys(m.seeds||{}).slice(0,2).join(", ");
     const who=S.rows.filter(r=>r.id===m.id&&r.type===m.type).map(r=>r.who);
-    const onList=S.want.some(w=>w.tmdb_id===m.id&&w.media_type===m.type);
+    const isOn=onList.has(m.type+":"+m.id);
     return `<div class="card">
      <span class="rk">${String(i+1).padStart(2,"0")}</span>${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
      <span class="badge">${Math.round(m.score)}</span>
@@ -1092,7 +1095,7 @@ function next(){
       ${bc?`<div class="w">Because you liked ${esc(bc)}</div>`:""}
       ${who.length?`<div class="wt">Seen by ${esc(who.join(", "))}</div>`:watchTag(m)}
       <div class="acts">
-       <button type="button" class="mini want ${onList?"on":""}" data-i="${i}">${onList?"On your list":"Want to see"}</button>
+       <button type="button" class="mini want ${isOn?"on":""}" data-i="${i}">${isOn?"On your list":"Want to see"}</button>
        <button type="button" class="mini logit" data-i="${i}">I've seen it</button>
        <a class="mini out" href="https://www.themoviedb.org/${m.type}/${m.id}" target="_blank" rel="noopener">TMDB ↗</a>
       </div></div></div>`;
@@ -1103,7 +1106,7 @@ function next(){
   });
   $("next").querySelectorAll(".want").forEach(b=>b.onclick=async()=>{
     const m=L[+b.dataset.i]; b.disabled=true;
-    const on=S.want.some(w=>w.tmdb_id===m.id&&w.media_type===m.type);
+    const on=onList.has(m.type+":"+m.id);
     if(on){
       await sb.from("watchlist").delete().eq("user_id",S.me.id).eq("tmdb_id",m.id).eq("media_type",m.type);
     }else{
@@ -1112,6 +1115,8 @@ function next(){
         {onConflict:"user_id,tmdb_id,media_type"});
     }
     await loadAll();
+    say("nmsg",on?`${m.title} put back in the suggestions.`
+                :`${m.title} moved to your Watch List.`,"ok");
   });
   $("next").querySelectorAll(".logit").forEach(b=>b.onclick=()=>{
     openLogFor(L[+b.dataset.i],"next");
