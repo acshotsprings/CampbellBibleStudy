@@ -214,6 +214,35 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
   color:var(--edge);font-family:'Archivo Black',sans-serif;font-size:38px}
 .card .m{padding:8px 9px 10px}
 .card .t{font-family:'Archivo',sans-serif;font-weight:700;font-size:var(--dd);line-height:1.25}
+.memb{margin-top:26px;border-top:1px solid var(--edge);padding-top:18px}
+.memb h3{font-family:'Archivo',sans-serif;font-size:16px;margin:0 0 2px}
+.memb .lede{margin-bottom:12px}
+.mrow{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--edge)}
+.mrow .mn{flex:1;font-family:'Courier Prime',monospace;font-size:13px}
+.mrow .mn em{color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em}
+.mrow.out .mn{color:var(--muted)}
+.tl{background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:left}
+.tl:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.pl{background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit;
+  text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}
+.pl:hover{color:var(--accent)}
+.pstrip{display:flex;gap:10px;flex-wrap:wrap;grid-column:1/-1;margin-bottom:4px}
+.pcard{display:flex;align-items:center;gap:9px;background:var(--card2);cursor:pointer;
+  border:1px solid var(--edge);padding:6px 12px 6px 6px;text-align:left}
+.pcard:hover{border-color:var(--accent)}
+.pcard img{width:38px;height:38px;object-fit:cover;border-radius:50%;display:block}
+.pcard .np.sm{width:38px;height:38px;font-size:16px;border-radius:50%;background:var(--edge);
+  display:flex;align-items:center;justify-content:center;color:var(--card)}
+.pcard .pn{font-family:'Archivo',sans-serif;font-weight:700;font-size:13px}
+.pcard .pr{font-family:'Courier Prime',monospace;font-size:10.5px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.08em}
+.pback{grid-column:1/-1;display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.pback button{background:transparent;border:1px solid var(--edge);color:var(--muted);cursor:pointer;
+  font-family:'Courier Prime',monospace;font-size:11.5px;padding:4px 10px}
+.pback button:hover{border-color:var(--accent);color:var(--accent)}
+.pback span{font-family:'Archivo',sans-serif;font-weight:700}
+.card .wp{font-family:'Courier Prime',monospace;font-size:11px;color:var(--accent2);
+  margin-top:5px;line-height:1.35}
 .card .y{font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted);margin-top:4px}
 .wt{font-family:'Courier Prime',monospace;font-size:12px;color:var(--accent);
   margin-top:8px;border-top:1px solid var(--edge);padding-top:7px;line-height:1.4}
@@ -561,7 +590,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   </div>
 
   <div class="tools" style="grid-template-columns:1fr auto">
-   <input type="text" id="lq" placeholder="search a film or series…">
+   <input type="text" id="lq" placeholder="film, series, actor or director…">
    <button class="btn" id="lgo">Search</button>
   </div>
   <p class="msg" id="lmsg"></p>
@@ -645,7 +674,7 @@ const JOBS={"Director":"director","Screenplay":"writer","Writer":"writer","Story
  "Original Music Composer":"composer","Music":"composer","Director of Photography":"dop",
  "Editor":"editor","Producer":"producer","Executive Producer":"exec"};
 
-const S={me:null,profiles:[],rows:[],want:[],who:"all",tmdbKey:null,recs:[],scores:{},skip:[],skipRemote:true,recsSig:null,recsBuilt:null,recsBusy:false,PG:{ledger:1,crew:1},drill:null};
+const S={me:null,owner:null,profiles:[],allProfiles:[],rows:[],want:[],who:"all",tmdbKey:null,recs:[],scores:{},skip:[],skipRemote:true,recsSig:null,recsBuilt:null,recsBusy:false,PG:{ledger:1,crew:1},drill:null};
 
 /* ---------- normalise a db row into the shape the views expect ---------- */
 function shape(r){
@@ -696,13 +725,18 @@ async function loadAll(){
   const [{data:profs},{data:ents},{data:cfg},{data:want}]=await Promise.all([
     sb.from("profiles").select("*"),
     sb.from("entries").select("*").order("rating",{ascending:false}),
-    sb.from("app_config").select("*").eq("key","tmdb").maybeSingle(),
+    sb.from("app_config").select("*"),
     sb.from("watchlist").select("*")
   ]);
-  S.profiles=profs||[];
-  S.tmdbKey=cfg?cfg.value:null;
+  const conf={}; (cfg||[]).forEach(c=>conf[c.key]=c.value);
+  S.tmdbKey=conf.tmdb||null;
+  S.owner=conf.owner||null;
+  S.allProfiles=profs||[];
+  S.profiles=S.allProfiles.filter(p=>!p.removed);
+  /* a removed member's entries stop counting toward the household */
+  const active=new Set(S.profiles.map(p=>p.id));
   S.want=(want||[]).filter(w=>w.user_id===S.me.id);
-  S.rows=(ents||[]).map(shape);
+  S.rows=(ents||[]).map(shape).filter(r=>active.has(r.user_id));
   await loadSkips();
   let cached=null;
   try{ cached=JSON.parse(localStorage.getItem(RECS_CACHE)||"null"); }catch(e){}
@@ -756,13 +790,15 @@ function crewOf(L){
   const P={};
   L.forEach(f=>{
     Object.entries(f.roles).forEach(([role,ppl])=>ppl.forEach(p=>{
-      P[p.name]=P[p.name]||{name:p.name,roles:{},titles:new Set()};
+      P[p.name]=P[p.name]||{name:p.name,id:p.id,roles:{},titles:new Set()};
+      if(P[p.name].id==null) P[p.name].id=p.id;
       const lab=RL[role]||role; P[p.name].roles[lab]=(P[p.name].roles[lab]||0)+1; P[p.name].titles.add(f.title);}));
     f.cast.slice(0,8).forEach(c=>{
-      P[c.name]=P[c.name]||{name:c.name,roles:{},titles:new Set()};
+      P[c.name]=P[c.name]||{name:c.name,id:c.id,roles:{},titles:new Set()};
+      if(P[c.name].id==null) P[c.name].id=c.id;
       P[c.name].roles.Cast=(P[c.name].roles.Cast||0)+1; P[c.name].titles.add(f.title);});
   });
-  return Object.values(P).map(p=>({name:p.name,roles:p.roles,titles:[...p.titles],
+  return Object.values(P).map(p=>({name:p.name,id:p.id,roles:p.roles,titles:[...p.titles],
     total:Object.values(p.roles).reduce((a,c)=>a+c,0)}))
     .sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name));
 }
@@ -817,10 +853,41 @@ function stampActivity(){
 
 /* ---------- ledger ---------- */
 let open=new Set();
+/* any credited name, clickable through to what else they've made */
+function personLink(p){
+  if(!p||!p.name) return "";
+  if(p.id==null) return esc(p.name);
+  return `<button type="button" class="pl" data-pid="${p.id}" data-pn="${esc(p.name)}">${esc(p.name)}</button>`;
+}
+/* a title anywhere -> open its dossier in the ledger */
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".tl"); if(!b) return;
+  e.preventDefault(); e.stopPropagation();
+  const t=b.dataset.t;
+  const hit=S.rows.find(r=>r.title===t);
+  document.querySelector('nav button[data-v="ledger"]').click();
+  $("q").value=t; S.PG.ledger=1; S.drill=null;
+  open.clear(); if(hit) open.add(hit.rowId);
+  ledger();
+  setTimeout(()=>{
+    const row=$("ledger").querySelector(".row");
+    if(row) row.scrollIntoView({behavior:"smooth",block:"center"});
+  },60);
+});
+
+/* one delegated handler covers the ledger, the crew index, everywhere */
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".pl"); if(!b) return;
+  e.preventDefault(); e.stopPropagation();
+  document.querySelector('nav button[data-v="log"]').click();
+  $("lq").value=b.dataset.pn;
+  showPerson({id:+b.dataset.pid,name:b.dataset.pn},b.dataset.pn);
+});
+
 function dossier(f){
   const cr=RO.filter(r=>f.roles[r]&&f.roles[r].length)
-    .map(r=>`<div><dt>${RL[r]}</dt><dd>${f.roles[r].map(p=>esc(p.name)).join(", ")}</dd></div>`).join("");
-  const cast=f.cast.length?`<div><dt>Cast</dt><dd>${f.cast.slice(0,6).map(c=>esc(c.name)).join(", ")}</dd></div>`:"";
+    .map(r=>`<div><dt>${RL[r]}</dt><dd>${f.roles[r].map(p=>personLink(p)).join(", ")}</dd></div>`).join("");
+  const cast=f.cast.length?`<div><dt>Cast</dt><dd>${f.cast.slice(0,6).map(c=>personLink(c)).join(", ")}</dd></div>`:"";
   const meta=[];
   if(f.runtime) meta.push(`<div><dt>Runtime</dt><dd>${f.runtime} min${f.episodes?` × ${f.episodes} eps`:""}</dd></div>`);
   if(f.genreNames.length) meta.push(`<div><dt>Genre</dt><dd>${esc(f.genreNames.join(", "))}</dd></div>`);
@@ -1027,9 +1094,10 @@ function crew(){
   const P=per?C.slice(from,from+per):C;
   $("crew").innerHTML=P.length?P.map(c=>`
    <div class="crewrow ${c.total>1?"multi":""}">
-    <div><div class="nm">${esc(c.name)}</div>
+    <div><div class="nm">${c.id?`<button type="button" class="pl" data-pid="${c.id}" data-pn="${esc(c.name)}">${esc(c.name)}</button>`:esc(c.name)}</div>
      <div class="rl">${Object.entries(c.roles).map(([r,n])=>r+(n>1?" ×"+n:"")).join(" · ")}</div>
-     <div class="tt">${c.titles.map(esc).join(" · ")}</div></div>
+     <div class="tt">${c.titles.map(t=>
+       `<button type="button" class="tl" data-t="${esc(t)}">${esc(t)}</button>`).join(" \u00b7 ")}</div></div>
     <div class="ct">${c.total}</div></div>`).join("")
    :`<p style="color:var(--muted);padding:14px 8px">No one matches that.</p>`;
 }
@@ -1251,8 +1319,80 @@ async function dropSkip(m){
 }
 
 /* ---------- live recommendation engine ---------- */
-const RECS_CACHE="cbsRecs:v2";  // v2 = rebalanced scoring, forces one rebuild
-const SEED_CAP=30, REC_KEEP=60, PROV_TOP=24;
+const RECS_CACHE="cbsRecs:v3";  // v3 = director/cast weighting, forces one rebuild
+const SEED_CAP=30, REC_KEEP=60, PROV_TOP=24, CRED_TOP=30;
+const CRED_CACHE="cbsCred:v1";
+
+/* Credits never change, so they're worth caching hard — the first rebuild pays
+   for them and every rebuild after that reuses them. */
+let credCache=null;
+function credLoad(){
+  if(credCache) return credCache;
+  try{ credCache=JSON.parse(localStorage.getItem(CRED_CACHE)||"{}"); }
+  catch(e){ credCache={}; }
+  return credCache;
+}
+function credSave(){
+  try{
+    const c=credLoad(), keys=Object.keys(c);
+    /* keep it bounded — drop the oldest half if it gets silly */
+    if(keys.length>1500){ keys.slice(0,keys.length-1000).forEach(k=>delete c[k]); }
+    localStorage.setItem(CRED_CACHE,JSON.stringify(c));
+  }catch(e){}
+}
+async function creditsFor(type,id){
+  const c=credLoad(), k=type+":"+id;
+  if(c[k]) return c[k];
+  const d=await tmdb(`/${type}/${id}/${type==="tv"?"aggregate_credits":"credits"}`);
+  const dirs=(d.crew||[]).filter(x=>x.job==="Director"||x.jobs&&x.jobs.some(j=>j.job==="Director"))
+    .map(x=>x.id);
+  const writers=(d.crew||[]).filter(x=>["Writer","Screenplay","Story"].includes(x.job))
+    .map(x=>x.id);
+  const cast=(d.cast||[]).slice(0,8).map(x=>x.id);
+  c[k]={d:dirs,w:writers,c:cast};
+  return c[k];
+}
+
+/* Who you keep coming back to. Weighted by how you rated the titles they worked
+   on, so one 3-star appearance doesn't make someone a favourite. */
+function peopleAffinity(){
+  const mine=S.rows.filter(r=>r.user_id===S.me.id&&(r.userRating||0)>0);
+  const dir={}, wri={}, act={};
+  const bump=(map,pid,w)=>{ if(pid!=null) map[pid]=(map[pid]||0)+w; };
+  mine.forEach(r=>{
+    const w=seedWeight(r);            // same curve the seeds use
+    if(w<=0) return;
+    (r.roles.director||[]).forEach(pp=>bump(dir,pp.id,w));
+    (r.roles.writer||[]).forEach(pp=>bump(wri,pp.id,w));
+    (r.cast||[]).slice(0,8).forEach(pp=>bump(act,pp.id,w));
+  });
+  return {dir,wri,act};
+}
+/* multiplier for one candidate given its credits */
+/* the specific people driving the boost, for the "because you liked" line */
+function namesBehind(cred,AFF){
+  if(!cred) return [];
+  const byId={};
+  S.rows.filter(r=>r.user_id===S.me.id).forEach(r=>{
+    (r.roles.director||[]).forEach(pp=>byId[pp.id]=pp.name);
+    (r.roles.writer||[]).forEach(pp=>byId[pp.id]=pp.name);
+    (r.cast||[]).slice(0,8).forEach(pp=>byId[pp.id]=pp.name);
+  });
+  const out=[];
+  (cred.d||[]).forEach(id=>{ if(AFF.dir[id]) out.push({n:byId[id],w:AFF.dir[id]*2,r:"directed"}); });
+  (cred.w||[]).forEach(id=>{ if(AFF.wri[id]&&!out.some(o=>o.n===byId[id])) out.push({n:byId[id],w:AFF.wri[id],r:"wrote"}); });
+  (cred.c||[]).forEach(id=>{ if(AFF.act[id]&&!out.some(o=>o.n===byId[id])) out.push({n:byId[id],w:AFF.act[id],r:"is in"}); });
+  return out.filter(o=>o.n).sort((a,b)=>b.w-a.w).slice(0,2);
+}
+function peopleBoost(cred,AFF){
+  if(!cred) return 1;
+  const hit=(ids,map)=>ids.reduce((a,id)=>a+(map[id]||0),0);
+  const d=hit(cred.d||[],AFF.dir), w=hit(cred.w||[],AFF.wri), c=hit(cred.c||[],AFF.act);
+  /* directors count most, then writers, then cast; saturating so a single
+     prolific actor can't run away with the whole list */
+  const raw=d*1.0+w*0.5+c*0.35;
+  return 1+0.55*(raw/(raw+6));        // caps just under 1.55x
+}
 
 /* How much a ledger entry counts as a seed.
    Curved so a 5-star favourite outweighs a 3-star shrug by ~13x instead of 2x —
@@ -1351,14 +1491,28 @@ async function buildRecs(){
          only two of your genuine favourites point at.
        - times a mild quality term, times how you actually rate those genres. */
   const AFF=genreAffinity();
-  Object.values(tally).forEach(e=>{
+  const score=e=>{
     const cs=Object.values(e.seeds).sort((a,b)=>b-a);
     let base=0; cs.forEach((c,i)=>base+=c/(1+.35*i));
     const q=.6+.4*Math.min(1,(e.vote||0)/8);
     const gs=(e.genres||[]).map(g=>AFF[g]||1);
     const ga=gs.length?gs.reduce((a,b)=>a+b,0)/gs.length:1;
-    e.raw=base*q*ga;
+    e.raw=base*q*ga*(e.pb||1);
+  };
+  Object.values(tally).forEach(score);
+
+  /* Pull credits for the leaders only and re-score them. Cached, so this is
+     expensive once and nearly free afterwards. */
+  const PAFF=peopleAffinity();
+  const lead=Object.values(tally).sort((x,y)=>y.raw-x.raw).slice(0,CRED_TOP);
+  await pool(lead,async e=>{
+    const cred=await creditsFor(e.type,e.id);
+    e.cred=cred;
+    e.pb=peopleBoost(cred,PAFF);
+    e.people=namesBehind(cred,PAFF);
+    score(e);
   });
+  credSave();
   const L=Object.values(tally).sort((x,y)=>y.raw-x.raw).slice(0,REC_KEEP);
   if(!L.length) throw new Error("TMDB had nothing new to suggest.");
   L.forEach(x=>{ x.seeds=Object.fromEntries(Object.entries(x.seeds).sort((a,b)=>b[1]-a[1]).slice(0,4)); });
@@ -1452,6 +1606,8 @@ function next(){
      <div class="m"><div class="t">${esc(m.title)}</div>
       <div class="y">${m.year||"—"} · ${(m.vote||0).toFixed(1)}</div>
       ${bc?`<div class="w">Because you liked ${esc(bc)}</div>`:""}
+      ${(m.people||[]).length?`<div class="wp">${esc(m.people.map(o=>
+        `${o.n} ${o.r} one you rated`).join(" \u00b7 "))}</div>`:""}
       ${who.length?`<div class="wt">Seen by ${esc(who.join(", "))}</div>`:watchTag(m)}
       <div class="acts">
        <button type="button" class="mini want ${isOn?"on":""}" data-i="${i}">${isOn?"On your list":"Want to see"}</button>
@@ -1579,9 +1735,45 @@ function watchTag(m){
 ["nType","nSvc","nScope"].forEach(i=>$(i).addEventListener("change",next));
 
 /* ---------- household ---------- */
+const isOwner=()=>!!S.owner&&S.me&&S.owner===S.me.id;
+
+/* Only the owner sees this, and the database enforces the same rule —
+   the button being hidden is convenience, not the security. */
+function memberPanel(){
+  if(!isOwner()) return "";
+  const rows=S.allProfiles
+    .filter(p=>p.id!==S.me.id)
+    .sort((a,b)=>Number(a.removed)-Number(b.removed)||String(a.name||"").localeCompare(String(b.name||"")));
+  if(!rows.length) return "";
+  return `<div class="memb"><h3>Household members</h3>
+   <p class="lede">You're the owner, so only you can see this.</p>
+   ${rows.map(p=>`<div class="mrow${p.removed?" out":""}">
+     <span class="mn">${esc(p.name||"Unnamed")}${p.removed?' <em>removed</em>':""}</span>
+     <button type="button" class="mini ${p.removed?"":"ghost"} memb-t"
+       data-id="${p.id}" data-name="${esc(p.name||"this person")}" data-to="${p.removed?"0":"1"}">
+       ${p.removed?"Let back in":"Remove from household"}</button>
+   </div>`).join("")}
+   <p class="msg" id="membMsg"></p></div>`;
+}
+function wireMemberPanel(){
+  document.querySelectorAll(".memb-t").forEach(b=>b.onclick=async()=>{
+    const to=b.dataset.to==="1";
+    if(to&&!confirm(`Remove ${b.dataset.name} from the household?\n\n`+
+      `They keep their account but lose access to the archive, and their entries `+
+      `stop counting. Nothing is deleted \u2014 you can let them back in.`)) return;
+    b.disabled=true;
+    const {error}=await sb.from("profiles").update({removed:to}).eq("id",b.dataset.id);
+    if(error){ say("membMsg",error.message,"bad"); b.disabled=false; return; }
+    await loadAll();
+    say("membMsg",to?`${b.dataset.name} removed.`:`${b.dataset.name} is back in.`,"ok");
+  });
+}
+
 function household(){
   if(S.profiles.length<2){
-    $("hh").innerHTML=`<p style="color:var(--muted)">Once someone else signs up, this fills in — overlap, taste match, and what to watch together.</p>`;
+    $("hh").innerHTML=`<p style="color:var(--muted)">Once someone else signs up, this fills in — overlap, taste match, and what to watch together.</p>`+
+      memberPanel();
+    wireMemberPanel();
     return;
   }
   const byUser={};
@@ -1623,7 +1815,8 @@ function household(){
     <span class="dy">${s.year||"—"} · ${esc(s.from)} → ${esc(s.to)}</span></span>
     <span class="dr">${stars(s.rating)}</span></div>`).join("")
    :`<p style="color:var(--muted)">Nothing to pass along yet.</p>`;
-  $("hh").innerHTML=html;
+  $("hh").innerHTML=html+memberPanel();
+  wireMemberPanel();
 }
 
 /* ---------- tmdb + logging ---------- */
@@ -1658,19 +1851,24 @@ function resetEntryForm(){
 let chosen=null;
 async function search(){
   const q=$("lq").value.trim(); if(!q) return;
-  say("lmsg","Searching…"); $("lres").innerHTML=""; $("lform").classList.add("hidden");
+  say("lmsg","Searching\u2026"); $("lres").innerHTML=""; $("lform").classList.add("hidden");
   try{
     const d=await tmdb("/search/multi",{query:q,include_adult:"false"});
-    const hits=(d.results||[]).filter(r=>r.media_type==="movie"||r.media_type==="tv").slice(0,12);
-    if(!hits.length) return say("lmsg","Nothing found.","bad");
-    say("lmsg",hits.length+" results — pick one.");
-    $("lres").innerHTML=hits.map((m,i)=>{
+    const all=d.results||[];
+    const people=all.filter(r=>r.media_type==="person").slice(0,4);
+    const hits=all.filter(r=>r.media_type==="movie"||r.media_type==="tv").slice(0,12);
+    if(!hits.length&&!people.length) return say("lmsg","Nothing found.","bad");
+    say("lmsg",`${hits.length} titles${people.length?` and ${people.length} people`:""} \u2014 pick one.`);
+    const peopleHTML=people.length?peopleStrip(people):"";
+    $("lres").innerHTML=peopleHTML+hits.map((m,i)=>{
       const t=m.title||m.name,y=(m.release_date||m.first_air_date||"").slice(0,4);
       return `<div class="card" data-i="${i}"><button type="button">
        ${m.media_type==="tv"?'<span class="tvs" style="top:0">SERIES</span>':""}
        ${m.poster_path?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster_path}" alt="">`:'<div class="np">?</div>'}
        <div class="m"><div class="t">${esc(t)}</div><div class="y">${y||"—"}</div></div></button></div>`;
     }).join("");
+    $("lres").querySelectorAll(".pcard").forEach(b=>b.onclick=()=>
+      showPerson(people[+b.dataset.pi],q));
     $("lres").querySelectorAll(".card").forEach(el=>el.onclick=()=>{
       $("lres").querySelectorAll(".card").forEach(x=>x.classList.remove("sel"));
       el.classList.add("sel"); chosen=hits[+el.dataset.i];
@@ -1685,6 +1883,78 @@ async function search(){
 $("lgo").onclick=search;
 $("lq").addEventListener("keydown",e=>{if(e.key==="Enter")search();});
 $("lcancel").onclick=()=>{$("lform").classList.add("hidden");chosen=null;logOrigin=null;resetEntryForm();};
+
+/* people from the same search — click one to see what they've worked on */
+function peopleStrip(people){
+  return `<div class="pstrip">`+people.map((p,i)=>
+    `<button type="button" class="pcard" data-pi="${i}">
+      ${p.profile_path?`<img src="https://image.tmdb.org/t/p/w185${p.profile_path}" alt="">`
+        :`<span class="np sm">?</span>`}
+      <span class="pn">${esc(p.name)}</span>
+      <span class="pr">${esc(p.known_for_department==="Directing"?"Director"
+        :p.known_for_department==="Writing"?"Writer"
+        :p.known_for_department==="Acting"?"Actor":p.known_for_department||"Crew")}</span>
+    </button>`).join("")+`</div>`;
+}
+
+async function showPerson(p,q){
+  say("lmsg",`Looking up ${p.name}\u2026`);
+  $("lres").innerHTML="";
+  try{
+    const d=await tmdb(`/person/${p.id}/combined_credits`);
+    const seen=new Set(S.rows.filter(r=>r.user_id===S.me.id).map(r=>r.type+":"+r.id));
+    const seed={};
+    /* one entry per title: directing beats a bit part if they did both */
+    const add=(c,role,rank)=>{
+      const type=c.media_type, k=type+":"+c.id;
+      if(!c.id||!type) return;
+      if((c.vote_count||0)<10) return;
+      const prev=seed[k];
+      if(prev&&prev.rank<=rank) return;
+      seed[k]={id:c.id,type,rank,role,
+        title:c.title||c.name,
+        year:+((c.release_date||c.first_air_date||"").slice(0,4))||null,
+        poster:c.poster_path,vote:c.vote_average||0,votes:c.vote_count||0,
+        release_date:c.release_date||c.first_air_date||""};
+    };
+    (d.crew||[]).forEach(c=>{
+      if(c.job==="Director") add(c,"Director",0);
+      else if(["Writer","Screenplay","Story"].includes(c.job)) add(c,c.job,1);
+    });
+    (d.cast||[]).forEach(c=>add(c,c.character?`as ${c.character}`:"Cast",2));
+
+    const list=Object.values(seed)
+      .sort((a,b)=>a.rank-b.rank||(b.votes||0)-(a.votes||0))
+      .slice(0,24);
+    if(!list.length){ say("lmsg",`Nothing on file for ${p.name}.`,"bad"); return; }
+
+    say("lmsg",`${list.length} titles with ${p.name} \u2014 pick one.`);
+    $("lres").innerHTML=`<div class="pback"><button type="button" id="pbk">\u2190 back to search</button>
+      <span>${esc(p.name)}</span></div>`+
+      list.map((m,i)=>`<div class="card psel" data-i="${i}"><button type="button">
+        ${m.type==="tv"?'<span class="tvs" style="top:0">SERIES</span>':""}
+        ${seen.has(m.type+":"+m.id)?'<span class="badge" style="font-size:10px">LOGGED</span>':""}
+        ${m.poster?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster}" alt="">`:'<div class="np">?</div>'}
+        <div class="m"><div class="t">${esc(m.title)}</div>
+         <div class="y">${m.year||"\u2014"} \u00b7 ${(m.vote||0).toFixed(1)}</div>
+         <div class="wp">${esc(m.role)}</div></div></button></div>`).join("");
+
+    $("pbk").onclick=()=>{ $("lq").value=q; search(); };
+    $("lres").querySelectorAll(".psel").forEach(el=>el.onclick=()=>{
+      const m=list[+el.dataset.i];
+      $("lres").querySelectorAll(".card").forEach(x=>x.classList.remove("sel"));
+      el.classList.add("sel");
+      chosen={id:m.id,media_type:m.type,title:m.title,name:m.title,
+              poster_path:m.poster,release_date:m.release_date};
+      $("lpick").innerHTML=`${m.poster?`<img src="https://image.tmdb.org/t/p/w185${m.poster}" alt="">`:""}
+        <div><div class="pt">${esc(m.title)}</div>
+        <div class="py">${m.year||"\u2014"} \u00b7 ${m.type==="tv"?"Series":"Film"}</div></div>`;
+      resetEntryForm();
+      $("lform").classList.remove("hidden");
+      $("lform").scrollIntoView({behavior:"smooth",block:"center"});
+    });
+  }catch(e){ say("lmsg",e.message,"bad"); }
+}
 
 async function enrich(hit){
   const type=hit.media_type||(hit.title?"movie":"tv");

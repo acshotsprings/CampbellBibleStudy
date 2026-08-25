@@ -2,6 +2,36 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it just shows the date.",
   "releases": [
     {
+      "at": "2026-08-25T12:40:00-05:00",
+      "title": "Household membership",
+      "items": [
+        "The household now has an owner — whoever signed up first — and only the owner can remove someone.",
+        "Removing a member blocks their access and stops their entries counting, but deletes nothing. You can let them back in.",
+        "Enforced in the database rather than by hiding a button, so it holds even against someone calling the API directly.",
+        "Ownership itself can't be reassigned by anyone but the owner.",
+        "Titles in the Crew Index are clickable too — click one to open its dossier in the ledger."
+      ]
+    },
+    {
+      "at": "2026-08-25T12:25:00-05:00",
+      "title": "Search people, not just titles",
+      "items": [
+        "Log a Film now finds actors and directors as well as films and series — the people were always in the results, they were just being thrown away.",
+        "Click a person to see up to 24 of their titles, directing credits first, with anything already in your ledger marked LOGGED.",
+        "Every credited name in a dossier and in the Crew Index is now clickable through to that person's filmography."
+      ]
+    },
+    {
+      "at": "2026-08-25T12:10:00-05:00",
+      "title": "Directors and cast now count",
+      "items": [
+        "Match scores now weigh who made a title, not just what people co-watch with it. Directors count most, then writers, then top-billed cast.",
+        "A director you keep rating highly — Skye Borgman, say — now lifts their other work up the list.",
+        "Cards say who: \"Skye Borgman directed one you rated.\"",
+        "Credits are cached in your browser, so the first rebuild costs about a second and a half and later ones are nearly free."
+      ]
+    },
+    {
       "at": "2026-08-25T11:51:00-05:00",
       "title": "Watch List ranks itself",
       "items": [
