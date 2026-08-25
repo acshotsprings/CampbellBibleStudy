@@ -1,0 +1,21 @@
+{
+  "releases": [
+    {
+      "date": "2026-08-25",
+      "title": "Watch list, live suggestions, and personal ranking",
+      "items": [
+        "New Watch List tab — reads the flagged titles that had been saving with nowhere to show them.",
+        "What's Next now rebuilds from your ledger every time you log something, instead of serving a frozen list.",
+        "Match scoring rebalanced: your favourites count far more than lukewarm entries, genre affinity is back, and dense clusters of cross-referencing docs no longer bury better matches.",
+        "New \"Not interested\" button, with undo and a reset.",
+        "My ranking sort — drag your own entries into the order you actually liked them. Feeds the suggestions.",
+        "Flagged titles leave What's Next and live on the Watch List instead.",
+        "Match badges are visible again; the trailer button had been covering them.",
+        "Service filter dropdown now fills in — it only ever offered \"Any service\".",
+        "Log a Film clears itself after saving, and defaults the date to today.",
+        "Watch dates no longer jump a day ahead when logging after 7pm.",
+        "Header shows when the site was last deployed, and what changed."
+      ]
+    }
+  ]
+}

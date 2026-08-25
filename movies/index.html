@@ -55,6 +55,10 @@ h1,h2,.disp{font-family:'Archivo Black',Impact,sans-serif;text-transform:upperca
   background:var(--card);border:1px solid var(--edge);border-bottom:none;
   padding:6px 18px 5px;font-family:'Courier Prime',monospace;font-size:12px;
   letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+#stampUpd a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--edge)}
+#stampUpd a:hover{color:var(--accent);border-color:var(--accent)}
+#stampUpd .what{display:inline-block;max-width:34ch;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;vertical-align:bottom}
 .cover-top{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
   padding:12px 20px;border-bottom:1px solid var(--edge);
   font-family:'Courier Prime',monospace;font-size:12.5px;letter-spacing:.13em;
@@ -290,6 +294,18 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 .thead button{background:transparent;border:1px solid var(--edge);color:var(--muted);
  cursor:pointer;font-family:'Courier Prime',monospace;font-size:12px;padding:5px 10px;white-space:nowrap}
 .thead button:hover{border-color:var(--accent);color:var(--accent)}
+.wnbody{background:var(--card2);padding:18px 20px 22px;max-height:70vh;overflow:auto}
+.wnrel{margin-bottom:22px}
+.wnrel:last-child{margin-bottom:0}
+.wnrel h4{font-family:'Archivo',sans-serif;font-size:15px;margin:0 0 2px}
+.wnrel .wd{font-family:'Courier Prime',monospace;font-size:11.5px;color:var(--muted);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px}
+.wnrel ul{margin:0;padding-left:18px}
+.wnrel li{font-size:var(--dd);line-height:1.5;margin-bottom:6px}
+.wnrel li::marker{color:var(--accent)}
+.wnfoot{border-top:1px solid var(--edge);margin-top:16px;padding-top:12px;
+  font-family:'Courier Prime',monospace;font-size:11.5px;color:var(--muted)}
+.wnfoot a{color:var(--accent)}
 .tbody{aspect-ratio:16/9;background:#000;position:relative}
 .tbody iframe{width:100%;height:100%;border:0;display:block}
 .tnone{aspect-ratio:auto;padding:26px 18px;background:var(--card2);color:var(--muted);
@@ -349,7 +365,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 <div id="app" class="hidden">
  <div class="cover">
   <span class="tab mono">Case No. ACS-2026</span>
-  <div class="cover-top"><span>Subject: <span id="stampSub">the household</span></span><span id="stamp2">Exhibits: 0</span></div>
+  <div class="cover-top"><span>Subject: <span id="stampSub">the household</span></span><span id="stampUpd">Updated: —</span><span id="stamp2">Exhibits: 0</span></div>
   <div class="cover-body">
    <h1>The Hot<br><em>Springs</em><br>Archive</h1>
    <p class="blurb">A shared record for the family: what each of us has watched, who made it, and what to watch next.</p>
@@ -514,6 +530,14 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   Streaming availability (US) from JustWatch, via TMDB.
  </footer>
 </div>
+</div>
+
+<div id="whatsnew" class="tmodal hidden" role="dialog" aria-modal="true" aria-labelledby="wnTitle">
+ <div class="tbox">
+  <div class="thead"><span id="wnTitle">What's new</span>
+   <button type="button" id="wnClose" aria-label="Close">Close ✕</button></div>
+  <div class="wnbody" id="wnBody"></div>
+ </div>
 </div>
 
 <div id="trailer" class="tmodal hidden" role="dialog" aria-modal="true" aria-labelledby="tTitle">
@@ -756,7 +780,11 @@ async function moveTo(list,fromIdx,toIdx){
   const rest=list.filter((_,i)=>i!==fromIdx);
   const before=toIdx>0?rest[toIdx-1].rank:null;
   const after =toIdx<rest.length?rest[toIdx].rank:null;
-  if(await placeBetween(f,before,after)){ RANKPOS=null; ledger(); }
+  if(await placeBetween(f,before,after)){
+    RANKPOS=null; ledger();
+    if(S.recsSig&&ledgerSig()!==S.recsSig)
+      say("nbuilt","Ranking changed \u2014 suggestions will rebuild when you open What's Next.");
+  }
 }
 
 function ledger(){
@@ -1592,6 +1620,8 @@ document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
   ["ledger","crew","patterns","next","watch","household","log"].forEach(v=>
     $("v-"+v).classList.toggle("hidden",v!==b.dataset.v));
   window.scrollTo({top:0,behavior:"smooth"});
+  /* ranking changes don't rebuild on every drag — they catch up when you come to look */
+  if(b.dataset.v==="next"&&S.tmdbKey&&ledgerSig()!==S.recsSig) refreshRecs(false);
 });
 document.querySelectorAll(".prefsMenu button[data-p]").forEach(b=>b.onclick=()=>{
   document.documentElement.setAttribute("data-theme",b.dataset.p);
@@ -1613,7 +1643,114 @@ pMenu.onclick=e=>e.stopPropagation();
 document.addEventListener("click",closePrefs);
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePrefs(); });
 
-$("ldate").value=new Date().toISOString().slice(0,10);
+/* When the site itself was last deployed. GitHub Pages sends a Last-Modified
+   header on index.html, which is what document.lastModified reflects — no API
+   call, no rate limit, and it updates itself on every push. */
+(function stampUpdated(){
+  const d=new Date(document.lastModified);
+  const el=$("stampUpd");
+  if(isNaN(d)){ el.textContent="Updated: \u2014"; return; }
+  el.textContent="Updated: "+d.toLocaleString("en-US",
+    {timeZone:"America/Chicago",month:"short",day:"numeric",year:"numeric",
+     hour:"numeric",minute:"2-digit"})+" CT";
+  const days=Math.floor((Date.now()-d.getTime())/86400000);
+  el.title=days<=0?"Deployed today":days===1?"Deployed yesterday":`Deployed ${days} days ago`;
+  wireStampClick();
+  stampCommit(el.textContent);
+})();
+
+/* What changed, from the commit that produced this file. Public repo, so no token;
+   cached for an hour because unauthenticated GitHub allows 60 calls/hour per IP. */
+async function stampCommit(prefix){
+  const REPO="acshotsprings/CampbellBibleStudy", PATH="movies/index.html", CK="cbsCommit:v1";
+  let c=null;
+  try{ const v=JSON.parse(localStorage.getItem(CK)||"null");
+       if(v&&Date.now()-v.at<36e5) c=v.c; }catch(e){}
+  if(!c){
+    try{
+      const r=await fetch(`https://api.github.com/repos/${REPO}/commits`+
+        `?path=${encodeURIComponent(PATH)}&per_page=1`);
+      if(!r.ok) return;                                  // rate-limited or offline: keep the date
+      const j=await r.json();
+      if(!Array.isArray(j)||!j.length) return;
+      c={msg:String(j[0].commit.message||"").split("\n")[0].trim(),
+         url:j[0].html_url,
+         sha:String(j[0].sha||"").slice(0,7)};
+      localStorage.setItem(CK,JSON.stringify({at:Date.now(),c}));
+    }catch(e){ return; }
+  }
+  if(!c.msg) return;
+  const generic=/^update(d)?\s+(movies\/)?index\.html$/i.test(c.msg);
+  const label=generic?`no note (${c.sha})`:c.msg;
+  $("stampUpd").innerHTML=`${esc(prefix)} \u2014 `+
+    `<a href="${esc(c.url)}" target="_blank" rel="noopener" `+
+    `title="${esc(generic?"Commit message was the GitHub default — type one to see it here":c.msg)}">`+
+    `<span class="what">${esc(label)}</span></a>`;
+  wireStampClick();
+}
+
+/* ---------- what's new panel ---------- */
+function wireStampClick(){
+  const el=$("stampUpd");
+  if(el.dataset.wired) return;
+  el.dataset.wired="1";
+  el.style.cursor="pointer";
+  el.addEventListener("click",e=>{
+    if(e.target.closest("a")) return;      // the commit link still goes to GitHub
+    openWhatsNew();
+  });
+}
+let wnLoaded=null;
+async function openWhatsNew(){
+  $("whatsnew").classList.remove("hidden");
+  document.body.style.overflow="hidden";
+  const box=$("wnBody");
+  if(wnLoaded){ box.innerHTML=wnLoaded; return; }
+  box.innerHTML=`<p style="color:var(--muted)">Loading\u2026</p>`;
+  let html="";
+  try{
+    const r=await fetch("changelog.json?v="+Date.now());
+    if(!r.ok) throw new Error("no changelog");
+    const d=await r.json();
+    html=(d.releases||[]).map(rel=>`<div class="wnrel">
+      <h4>${esc(rel.title||"Update")}</h4>
+      <div class="wd">${esc(fmtDay(rel.date))}</div>
+      <ul>${(rel.items||[]).map(i=>`<li>${esc(i)}</li>`).join("")}</ul>
+    </div>`).join("");
+  }catch(e){ html=""; }
+  if(!html) html=await commitFallback();
+  box.innerHTML=wnLoaded=html+
+    `<div class="wnfoot">Full history on <a href="https://github.com/acshotsprings/CampbellBibleStudy/commits/main/movies" target="_blank" rel="noopener">GitHub \u2197</a></div>`;
+}
+/* if changelog.json isn't there, list the commits instead */
+async function commitFallback(){
+  try{
+    const r=await fetch("https://api.github.com/repos/acshotsprings/CampbellBibleStudy/commits"+
+      "?path=movies%2Findex.html&per_page=15");
+    if(!r.ok) throw new Error();
+    const j=await r.json();
+    return `<div class="wnrel"><h4>Recent changes</h4><div class="wd">from the repo</div><ul>`+
+      j.map(c=>`<li>${esc(String(c.commit.message||"").split("\n")[0])}
+        <span style="color:var(--muted)">\u00b7 ${esc(fmtDay(c.commit.committer.date))}</span></li>`).join("")+
+      `</ul></div>`;
+  }catch(e){
+    return `<p style="color:var(--muted)">No changelog available right now.</p>`;
+  }
+}
+function fmtDay(v){
+  const d=new Date(v); if(isNaN(d)) return String(v||"");
+  return d.toLocaleDateString("en-US",{timeZone:"America/Chicago",
+    month:"long",day:"numeric",year:"numeric"});
+}
+function closeWhatsNew(){
+  $("whatsnew").classList.add("hidden");
+  document.body.style.overflow="";
+}
+$("wnClose").onclick=closeWhatsNew;
+$("whatsnew").onclick=e=>{ if(e.target.id==="whatsnew") closeWhatsNew(); };
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeWhatsNew(); });
+
+$("ldate").value=todayLocal();   // local date, not UTC — after 7pm CT those differ
 refreshSession();
 
 </script></body></html>
