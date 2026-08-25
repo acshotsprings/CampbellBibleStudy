@@ -347,6 +347,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 .pick .pt{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px}
 .pick .py{font-family:'Courier Prime',monospace;font-size:13px;color:var(--muted);margin-top:3px}
 .acts{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px;border-top:1px solid var(--edge);padding-top:8px}
+.card .acts.one{margin:0;padding:8px 10px 10px;border-top:1px solid var(--edge)}
 .mini{background:var(--card);border:1px solid var(--edge);color:var(--ink);cursor:pointer;
  font-family:'Courier Prime',monospace;font-size:11px;padding:4px 7px;text-decoration:none;display:inline-block}
 .mini:hover{border-color:var(--accent);color:var(--accent)}
@@ -1797,6 +1798,20 @@ function wlShape(w){
           vote:mt.vote||0,genres:mt.genres||[],watch:mt.watch||null};
 }
 
+/* add straight to the watch list, without logging it as watched */
+const onWatchlist=(type,id)=>S.want.some(w=>w.media_type===type&&w.tmdb_id===id);
+async function addToWatchlist(m,btn){
+  btn.disabled=true; btn.textContent="Adding\u2026";
+  const {error}=await sb.from("watchlist").upsert({
+    user_id:S.me.id,tmdb_id:m.id,media_type:m.type,title:m.title,year:m.year,
+    poster:m.poster,meta:{genres:m.genres||[],vote:m.vote||0}
+  },{onConflict:"user_id,tmdb_id,media_type"});
+  if(error){ btn.textContent="Failed"; btn.disabled=false; say("lmsg",error.message,"bad"); return; }
+  btn.textContent="On your list"; btn.classList.add("on");
+  await loadAll();
+  say("lmsg",`${m.title} added to your watch list.`,"ok");
+}
+
 /* open Log a Film pre-filled, remembering which tab sent us here */
 let logOrigin=null;
 function openLogFor(m,origin){
@@ -1951,10 +1966,20 @@ async function search(){
       return `<div class="card" data-i="${i}"><button type="button">
        ${m.media_type==="tv"?'<span class="tvs" style="top:0">SERIES</span>':""}
        ${m.poster_path?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster_path}" alt="">`:'<div class="np">?</div>'}
-       <div class="m"><div class="t">${esc(t)}</div><div class="y">${y||"—"}</div></div></button></div>`;
+       <div class="m"><div class="t">${esc(t)}</div><div class="y">${y||"—"}</div></div></button>
+       <div class="acts one"><button type="button" class="mini wl${onWatchlist(m.media_type,m.id)?" on":""}"
+         data-i="${i}">${onWatchlist(m.media_type,m.id)?"On your list":"Want to see"}</button></div></div>`;
     }).join("");
     $("lres").querySelectorAll(".pcard").forEach(b=>b.onclick=()=>
       showPerson(people[+b.dataset.pi],q));
+    $("lres").querySelectorAll(".wl").forEach(b=>b.onclick=ev=>{
+      ev.stopPropagation();                       // don't also select it for logging
+      if(b.classList.contains("on")) return;
+      const m=hits[+b.dataset.i];
+      addToWatchlist({id:m.id,type:m.media_type,title:m.title||m.name,
+        year:+((m.release_date||m.first_air_date||"").slice(0,4))||null,
+        poster:m.poster_path,genres:m.genre_ids||[],vote:m.vote_average||0},b);
+    });
     $("lres").querySelectorAll(".card").forEach(el=>el.onclick=()=>{
       $("lres").querySelectorAll(".card").forEach(x=>x.classList.remove("sel"));
       el.classList.add("sel"); chosen=hits[+el.dataset.i];
@@ -2023,9 +2048,18 @@ async function showPerson(p,q){
         ${m.poster?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster}" alt="">`:'<div class="np">?</div>'}
         <div class="m"><div class="t">${esc(m.title)}</div>
          <div class="y">${m.year||"\u2014"} \u00b7 ${(m.vote||0).toFixed(1)}</div>
-         <div class="wp">${esc(m.role)}</div></div></button></div>`).join("");
+         <div class="wp">${esc(m.role)}</div></div></button>
+        <div class="acts one"><button type="button" class="mini pwl${onWatchlist(m.type,m.id)?" on":""}"
+          data-i="${i}">${onWatchlist(m.type,m.id)?"On your list":"Want to see"}</button></div></div>`).join("");
 
     $("pbk").onclick=()=>{ $("lq").value=q; search(); };
+    $("lres").querySelectorAll(".pwl").forEach(b=>b.onclick=ev=>{
+      ev.stopPropagation();
+      if(b.classList.contains("on")) return;
+      const m=list[+b.dataset.i];
+      addToWatchlist({id:m.id,type:m.type,title:m.title,year:m.year,
+        poster:m.poster,genres:[],vote:m.vote||0},b);
+    });
     $("lres").querySelectorAll(".psel").forEach(el=>el.onclick=()=>{
       const m=list[+el.dataset.i];
       $("lres").querySelectorAll(".card").forEach(x=>x.classList.remove("sel"));
