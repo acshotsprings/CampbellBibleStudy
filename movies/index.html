@@ -674,7 +674,7 @@ const JOBS={"Director":"director","Screenplay":"writer","Writer":"writer","Story
  "Original Music Composer":"composer","Music":"composer","Director of Photography":"dop",
  "Editor":"editor","Producer":"producer","Executive Producer":"exec"};
 
-const S={me:null,owner:null,profiles:[],allProfiles:[],rows:[],want:[],who:"all",tmdbKey:null,recs:[],scores:{},skip:[],skipRemote:true,recsSig:null,recsBuilt:null,recsBusy:false,PG:{ledger:1,crew:1},drill:null};
+const S={me:null,owner:null,siteLatest:null,profiles:[],allProfiles:[],rows:[],want:[],who:"all",tmdbKey:null,recs:[],scores:{},skip:[],skipRemote:true,recsSig:null,recsBuilt:null,recsBusy:false,PG:{ledger:1,crew:1},drill:null};
 
 /* ---------- normalise a db row into the shape the views expect ---------- */
 function shape(r){
@@ -738,6 +738,15 @@ async function loadAll(){
   S.want=(want||[]).filter(w=>w.user_id===S.me.id);
   S.rows=(ents||[]).map(shape).filter(r=>active.has(r.user_id));
   await loadSkips();
+  /* newest site release, so the banner moves when the site changes too */
+  if(S.siteLatest===null){
+    try{
+      const r=await fetch("changelog.json?v="+Date.now());
+      const d=r.ok?await r.json():null;
+      S.siteLatest=((d&&d.releases)||[]).reduce((m,x)=>{
+        const v=x.at||x.date; return (!m||String(v)>String(m))?v:m; },null)||false;
+    }catch(e){ S.siteLatest=false; }
+  }
   let cached=null;
   try{ cached=JSON.parse(localStorage.getItem(RECS_CACHE)||"null"); }catch(e){}
   if(cached&&cached.uid===S.me.id&&(cached.recs||[]).length){
@@ -838,16 +847,23 @@ function stampActivity(){
   const el=$("stampUpd"); if(!el) return;
   const F=activityFeed();
   if(!F.length){ el.innerHTML=`<span class="what">Recent updates</span>`; wireStampClick(); return; }
-  const last=F[0], when=new Date(last.addedAt||last.diaryDate);
+  const last=F[0];
+  const archiveAt=new Date(last.addedAt||last.diaryDate);
+  const siteAt=S.siteLatest?new Date(S.siteLatest):null;
+  const siteWins=!!(siteAt&&!isNaN(siteAt)&&(isNaN(archiveAt)||siteAt>archiveAt));
+  const when=siteWins?siteAt:archiveAt;
   /* watched_date is date-only, so it has no clock to show — only stamp a time
      when the row actually carries one */
-  const hasTime=!!last.addedAt;
+  const hasTime=siteWins
+    ? !/^\d{4}-\d{2}-\d{2}$/.test(String(S.siteLatest))
+    : !!last.addedAt;
   const day=isNaN(when)?"":when.toLocaleString("en-US",Object.assign(
     {timeZone:"America/Chicago",month:"short",day:"numeric"},
     hasTime?{hour:"numeric",minute:"2-digit"}:{}))+(hasTime?" CT":"");
   el.innerHTML=`<span class="what">Recent updates</span>`+
     `<span class="lastup">last updated ${esc(day)}</span>`;
-  el.title=`${last.who} added ${last.title}`;
+  el.title=siteWins?"Site updated \u2014 open Site changes"
+    :`${last.who} added ${last.title}`;
   wireStampClick();
 }
 
