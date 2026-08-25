@@ -256,6 +256,10 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 .mini:hover{border-color:var(--accent);color:var(--accent)}
 .mini.on{background:var(--accent);border-color:var(--accent);color:var(--card)}
 .mini:disabled{opacity:.5;cursor:wait}
+/* secondary actions — present but not competing with the primary ones */
+.mini.ghost{color:var(--muted);border-style:dashed}
+.mini.ghost:hover{color:var(--accent);border-color:var(--accent);border-style:solid}
+.msg .mini{margin-left:6px;vertical-align:baseline}
 .card .acts .mini{width:auto;font-family:'Courier Prime',monospace;font-size:11px;
  padding:4px 7px;border:1px solid var(--edge);background:var(--card);text-align:center}
 .card .acts .mini.on{background:var(--accent);border-color:var(--accent);color:var(--card)}
@@ -419,9 +423,10 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
    <select id="nType"><option value="">Films &amp; series</option><option value="movie">Films only</option><option value="tv">Series only</option></select>
    <select id="nSvc"><option value="">Any service</option></select>
   </div>
-  <div class="tools" style="grid-template-columns:auto 1fr;align-items:center;margin-top:-6px">
+  <div class="tools" style="grid-template-columns:auto 1fr auto;align-items:center;margin-top:-6px">
    <button class="btn ghost" id="nRefresh">Refresh suggestions</button>
    <p class="msg" id="nbuilt" style="margin:0"></p>
+   <button class="btn ghost hidden" id="nClearSkips">Clear hidden</button>
   </div>
   <p class="msg" id="nmsg"></p>
   <div class="films" id="next"></div>
@@ -532,7 +537,7 @@ const JOBS={"Director":"director","Screenplay":"writer","Writer":"writer","Story
  "Original Music Composer":"composer","Music":"composer","Director of Photography":"dop",
  "Editor":"editor","Producer":"producer","Executive Producer":"exec"};
 
-const S={me:null,profiles:[],rows:[],want:[],who:"all",tmdbKey:null,recs:[],recsSig:null,recsBuilt:null,recsBusy:false,PG:{ledger:1,crew:1},drill:null};
+const S={me:null,profiles:[],rows:[],want:[],who:"all",tmdbKey:null,recs:[],skip:[],skipRemote:true,recsSig:null,recsBuilt:null,recsBusy:false,PG:{ledger:1,crew:1},drill:null};
 
 /* ---------- normalise a db row into the shape the views expect ---------- */
 function shape(r){
@@ -589,6 +594,7 @@ async function loadAll(){
   S.tmdbKey=cfg?cfg.value:null;
   S.want=(want||[]).filter(w=>w.user_id===S.me.id);
   S.rows=(ents||[]).map(shape);
+  await loadSkips();
   let cached=null;
   try{ cached=JSON.parse(localStorage.getItem(RECS_CACHE)||"null"); }catch(e){}
   if(cached&&cached.uid===S.me.id&&(cached.recs||[]).length){
@@ -959,6 +965,38 @@ function drawPager(ids,key,cur,total,shown,count,onGo){
       $(key==="ledger"?"v-ledger":"v-crew").scrollIntoView({behavior:"smooth",block:"start"});});});
 }
 
+/* ---------- "not interested" ---------- */
+const SKIP_CACHE="cbsSkip:v1";
+const skipKey=(t,i)=>t+":"+i;
+function lsSkips(){ try{ return JSON.parse(localStorage.getItem(SKIP_CACHE)||"[]"); }catch(e){ return []; } }
+function lsSaveSkips(v){ try{ localStorage.setItem(SKIP_CACHE,JSON.stringify(v)); }catch(e){} }
+
+/* the table may not exist yet — fall back to this browser so the button still works */
+async function loadSkips(){
+  const {data,error}=await sb.from("dismissed").select("*").eq("user_id",S.me.id);
+  if(error){ S.skipRemote=false; S.skip=lsSkips(); }
+  else{ S.skipRemote=true; S.skip=data||[]; }
+}
+async function addSkip(m){
+  const row={user_id:S.me.id,tmdb_id:m.id,media_type:m.type,title:m.title};
+  if(S.skipRemote){
+    const {error}=await sb.from("dismissed").upsert(row,{onConflict:"user_id,tmdb_id,media_type"});
+    if(!error) return;
+    S.skipRemote=false;                       // table missing — quietly switch to local
+  }
+  const v=lsSkips().filter(x=>skipKey(x.media_type,x.tmdb_id)!==skipKey(m.type,m.id));
+  v.push(row); lsSaveSkips(v);
+}
+async function dropSkip(m){
+  if(S.skipRemote){
+    const {error}=await sb.from("dismissed").delete()
+      .eq("user_id",S.me.id).eq("tmdb_id",m.id).eq("media_type",m.type);
+    if(!error) return;
+    S.skipRemote=false;
+  }
+  lsSaveSkips(lsSkips().filter(x=>skipKey(x.media_type,x.tmdb_id)!==skipKey(m.type,m.id)));
+}
+
 /* ---------- live recommendation engine ---------- */
 const RECS_CACHE="cbsRecs:v1";
 const SEED_CAP=30, REC_KEEP=60, PROV_TOP=24;
@@ -994,6 +1032,7 @@ async function buildRecs(){
 
   // only exclude what I've personally seen — the scope filter handles the household view
   const seenMine=new Set(S.rows.filter(r=>r.user_id===S.me.id).map(r=>r.type+":"+r.id));
+  const skipped=new Set(S.skip.map(x=>skipKey(x.media_type,x.tmdb_id)));
   const tally={};
 
   await pool(mine,async seed=>{
@@ -1004,7 +1043,7 @@ async function buildRecs(){
     const hits=[...(a.results||[]).map(x=>[x,1]),...(b.results||[]).map(x=>[x,.6])];
     hits.forEach(([m,mult])=>{
       const type=m.media_type||seed.type, k=type+":"+m.id;
-      if(seenMine.has(k)) return;
+      if(seenMine.has(k)||skipped.has(k)) return;
       if((m.vote_count||0)<20) return;          // strip out the no-data junk
       const e=tally[k]||(tally[k]={id:m.id,type,title:m.title||m.name,
         year:+((m.release_date||m.first_air_date||"").slice(0,4))||null,
@@ -1065,6 +1104,11 @@ function fillServices(){
   sel.value=[...names].includes(cur)?cur:"";
 }
 $("nRefresh").onclick=()=>refreshRecs(true);
+$("nClearSkips").onclick=async()=>{
+  if(!confirm(`Bring back all ${S.skip.length} hidden titles?`)) return;
+  for(const x of S.skip) await dropSkip({id:x.tmdb_id,type:x.media_type});
+  await loadSkips(); next(); say("nmsg","Hidden titles are back.","ok");
+};
 
 /* ---------- what's next ---------- */
 function next(){
@@ -1073,8 +1117,10 @@ function next(){
   const scope=$("nScope").value;
   const ty=$("nType").value, sv=$("nSvc").value;
   const onList=new Set(S.want.map(w=>w.media_type+":"+w.tmdb_id));
+  const skipped=new Set(S.skip.map(x=>skipKey(x.media_type,x.tmdb_id)));
   const L=S.recs.filter(r=>{
     const k=r.type+":"+r.id;
+    if(skipped.has(k)) return false;
     // once it's on the watch list it lives there, not here — unless you asked to see everything
     if(scope&&onList.has(k)) return false;
     if(scope==="me"&&seenMine.has(k)) return false;
@@ -1083,6 +1129,8 @@ function next(){
     if(sv&&!(r.watch&&dedupe(r.watch.stream||[]).includes(sv))) return false;
     return true;
   });
+  $("nClearSkips").classList.toggle("hidden",!S.skip.length);
+  $("nClearSkips").textContent=`Clear ${S.skip.length} hidden`;
   $("next").innerHTML=L.length?L.map((m,i)=>{
     const bc=Object.keys(m.seeds||{}).slice(0,2).join(", ");
     const who=S.rows.filter(r=>r.id===m.id&&r.type===m.type).map(r=>r.who);
@@ -1100,6 +1148,7 @@ function next(){
       <div class="acts">
        <button type="button" class="mini want ${isOn?"on":""}" data-i="${i}">${isOn?"On your list":"Want to see"}</button>
        <button type="button" class="mini logit" data-i="${i}">I've seen it</button>
+       <button type="button" class="mini ghost nope" data-i="${i}">Not interested</button>
        <a class="mini out" href="https://www.themoviedb.org/${m.type}/${m.id}" target="_blank" rel="noopener">TMDB ↗</a>
       </div></div></div>`;
   }).join(""):`<p style="color:var(--muted);grid-column:1/-1">Nothing left in that slice.</p>`;
@@ -1123,6 +1172,15 @@ function next(){
   });
   $("next").querySelectorAll(".logit").forEach(b=>b.onclick=()=>{
     openLogFor(L[+b.dataset.i],"next");
+  });
+  $("next").querySelectorAll(".nope").forEach(b=>b.onclick=async()=>{
+    const m=L[+b.dataset.i]; b.disabled=true;
+    await addSkip(m); await loadSkips(); next();
+    $("nmsg").innerHTML=`Hidden \u2014 ${esc(m.title)} won't come back. `+
+      `<button type="button" class="mini ghost" id="undoSkip">Undo</button>`;
+    $("nmsg").className="msg ok";
+    $("undoSkip").onclick=async()=>{ await dropSkip(m); await loadSkips(); next();
+      say("nmsg",`${m.title} is back in the mix.`,"ok"); };
   });
 }
 function watchlist(){
