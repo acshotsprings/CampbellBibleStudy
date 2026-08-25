@@ -2239,11 +2239,16 @@ async function renderSiteLog(){
     const d=await r.json();
     const rels=(d.releases||[]).slice()
       .sort((x,y)=>String(y.at||y.date||"").localeCompare(String(x.at||x.date||"")));
-    html=rels.map(rel=>`<div class="wnrel">
+    /* Times come from the commits that deployed the work, not from anything
+       typed by hand — matched newest release to newest deploy. */
+    const deploys=await deployTimes();
+    html=rels.map((rel,i)=>{
+      const real=deploys[i];
+      return `<div class="wnrel">
       <h4>${esc(rel.title||"Update")}</h4>
-      <div class="wd">${esc(fmtWhen(rel.at||rel.date))}</div>
+      <div class="wd">${esc(real?fmtWhen(real):fmtWhen(rel.at||rel.date))}</div>
       <ul>${(rel.items||[]).map(i=>`<li>${esc(i)}</li>`).join("")}</ul>
-    </div>`).join("");
+    </div>`;}).join("");
   }catch(e){
     html=`<p style="color:var(--muted)">Couldn't load the site history \u2014
       changelog.json may not be deployed yet.</p>`;
@@ -2253,6 +2258,29 @@ async function renderSiteLog(){
   siteFootnote();
 }
 /* a bare date shows as a date; a full timestamp shows the clock too */
+/* deploy timestamps straight from the repo, cached for an hour */
+async function deployTimes(){
+  const CK="cbsDeploy:v1";
+  try{ const v=JSON.parse(localStorage.getItem(CK)||"null");
+       if(v&&Date.now()-v.at<36e5) return v.list; }catch(e){}
+  try{
+    const r=await fetch("https://api.github.com/repos/acshotsprings/CampbellBibleStudy/"+
+      "commits?path=movies&per_page=40");
+    if(!r.ok) return [];
+    const j=await r.json();
+    if(!Array.isArray(j)) return [];
+    /* several commits often land within a few minutes for one piece of work —
+       collapse those so one release maps to one deploy */
+    const times=j.map(c=>c.commit.committer.date).sort().reverse();
+    const list=[];
+    times.forEach(t=>{
+      const last=list[list.length-1];
+      if(!last||Math.abs(new Date(last)-new Date(t))>12*60000) list.push(t);
+    });
+    localStorage.setItem(CK,JSON.stringify({at:Date.now(),list}));
+    return list;
+  }catch(e){ return []; }
+}
 function fmtWhen(v){
   if(!v) return "";
   const dateOnly=/^\d{4}-\d{2}-\d{2}$/.test(String(v));
