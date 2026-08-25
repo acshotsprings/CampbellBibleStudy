@@ -5,6 +5,14 @@
 <title>The Hot Springs Archive</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Archivo+Black&family=Courier+Prime:wght@400;700&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script>
+/* restore the saved look before anything renders, or you get a flash of Case File */
+(function(){try{
+  var t=localStorage.getItem("cbsTheme"), d=localStorage.getItem("cbsDensity");
+  if(t) document.documentElement.setAttribute("data-theme",t);
+  if(d) document.documentElement.setAttribute("data-density",d);
+}catch(e){}})();
+</script>
 <style>
 /* ============ PALETTES ============
    Body text clears 12:1 on every one. Muted text clears 5.5:1.        */
@@ -22,6 +30,31 @@
   --bg:#EFEAE4; --card:#FFFFFF; --card2:#F4F0EA; --edge:#CFC6BA;
   --ink:#15120F; --muted:#5A5248; --accent:#C2185B; --accent2:#1565A8;
   --stamp:#C2185B; --grain:rgba(0,0,0,.03);
+}
+[data-theme="drive"]{      /* drive-in at night — neon on deep purple */
+  --bg:#140B22; --card:#1E1233; --card2:#281846; --edge:#4A2F6F;
+  --ink:#F6ECFF; --muted:#B9A6D6; --accent:#FF3D8B; --accent2:#3FD8E0;
+  --stamp:#FF3D8B; --grain:rgba(255,255,255,.035);
+}
+[data-theme="nitrate"]{      /* silent era — silver nitrate and brass */
+  --bg:#DED8CD; --card:#F3EFE7; --card2:#E9E3D9; --edge:#B3A996;
+  --ink:#161410; --muted:#57503F; --accent:#7A5A22; --accent2:#3F5148;
+  --stamp:#7A5A22; --grain:rgba(22,20,16,.05);
+}
+[data-theme="terminal"]{      /* green screen — CRT phosphor */
+  --bg:#050A06; --card:#0B140D; --card2:#111E14; --edge:#24422B;
+  --ink:#D6FFD9; --muted:#7FBF8A; --accent:#39FF6A; --accent2:#4FD6C0;
+  --stamp:#39FF6A; --grain:rgba(57,255,106,.035);
+}
+[data-theme="techni"]{      /* technicolor — saturated on cream */
+  --bg:#F3E8D8; --card:#FFF9EE; --card2:#F7EDDD; --edge:#D2BC9A;
+  --ink:#17130E; --muted:#5B4A33; --accent:#C3352B; --accent2:#1E6F63;
+  --stamp:#C3352B; --grain:rgba(23,19,14,.04);
+}
+[data-theme="noir"]{      /* noir — high contrast, one red */
+  --bg:#0B0B0C; --card:#141416; --card2:#1C1C20; --edge:#3A3A40;
+  --ink:#F4F4F5; --muted:#A3A3AC; --accent:#FF4D4D; --accent2:#9AA1B5;
+  --stamp:#FF4D4D; --grain:rgba(255,255,255,.028);
 }
 
 /* ============ DENSITY ============ */
@@ -325,6 +358,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
  background:var(--card);border:1px solid var(--edge);padding:12px;
  box-shadow:0 10px 26px rgba(0,0,0,.22)}
 .prefsRow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.prefsRow span{min-width:58px}
 .prefsRow:last-child{margin-bottom:0}
 .prefsRow > span{width:100%;font-family:'Courier Prime',monospace;font-size:10.5px;
  letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
@@ -383,7 +417,12 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
    <div class="prefsRow"><span>Palette</span>
     <button data-p="case" aria-pressed="true">Case File</button>
     <button data-p="late" aria-pressed="false">Late Show</button>
-    <button data-p="rental" aria-pressed="false">Rental</button></div>
+    <button data-p="rental" aria-pressed="false">Rental</button>
+    <button data-p="noir" aria-pressed="false">Noir</button>
+    <button data-p="drive" aria-pressed="false">Drive-In</button>
+    <button data-p="techni" aria-pressed="false">Technicolor</button>
+    <button data-p="nitrate" aria-pressed="false">Nitrate</button>
+    <button data-p="terminal" aria-pressed="false">Terminal</button></div>
    <div class="prefsRow"><span>Density</span>
     <button data-d="compact" aria-pressed="true">Compact</button>
     <button data-d="roomy" aria-pressed="false">Roomy</button></div>
@@ -1625,10 +1664,21 @@ document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
 });
 document.querySelectorAll(".prefsMenu button[data-p]").forEach(b=>b.onclick=()=>{
   document.documentElement.setAttribute("data-theme",b.dataset.p);
+  try{ localStorage.setItem("cbsTheme",b.dataset.p); }catch(e){}
   document.querySelectorAll(".prefsMenu button[data-p]").forEach(x=>x.setAttribute("aria-pressed",x===b));});
 document.querySelectorAll(".prefsMenu button[data-d]").forEach(b=>b.onclick=()=>{
   document.documentElement.setAttribute("data-density",b.dataset.d);
+  try{ localStorage.setItem("cbsDensity",b.dataset.d); }catch(e){}
   document.querySelectorAll(".prefsMenu button[data-d]").forEach(x=>x.setAttribute("aria-pressed",x===b));});
+/* reflect whatever the early script restored */
+(function markPrefs(){
+  const t=document.documentElement.getAttribute("data-theme");
+  const d=document.documentElement.getAttribute("data-density");
+  document.querySelectorAll(".prefsMenu button[data-p]").forEach(x=>
+    x.setAttribute("aria-pressed",String(x.dataset.p===t)));
+  document.querySelectorAll(".prefsMenu button[data-d]").forEach(x=>
+    x.setAttribute("aria-pressed",String(x.dataset.d===d)));
+})();
 
 
 /* appearance menu — tucked away so it can't be hit by accident */

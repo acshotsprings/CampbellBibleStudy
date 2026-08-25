@@ -14,7 +14,9 @@
         "Service filter dropdown now fills in — it only ever offered \"Any service\".",
         "Log a Film clears itself after saving, and defaults the date to today.",
         "Watch dates no longer jump a day ahead when logging after 7pm.",
-        "Header shows when the site was last deployed, and what changed."
+        "Header shows when the site was last deployed, and what changed.",
+        "Five more palettes: Noir, Drive-In, Technicolor, Nitrate and Terminal.",
+        "Your palette and density now stick between visits instead of resetting."
       ]
     }
   ]
