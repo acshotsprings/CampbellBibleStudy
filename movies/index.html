@@ -363,6 +363,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   <button role="tab" aria-selected="false" data-v="crew">Crew Index</button>
   <button role="tab" aria-selected="false" data-v="patterns">Patterns</button>
   <button role="tab" aria-selected="false" data-v="next">What's Next</button>
+  <button role="tab" aria-selected="false" data-v="watch">Watch List</button>
   <button role="tab" aria-selected="false" data-v="household">Household</button>
   <button role="tab" aria-selected="false" data-v="log">Log a Film</button>
  </nav>
@@ -416,7 +417,19 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
    <select id="nType"><option value="">Films &amp; series</option><option value="movie">Films only</option><option value="tv">Series only</option></select>
    <select id="nSvc"><option value="">Any service</option></select>
   </div>
+  <div class="tools" style="grid-template-columns:auto 1fr;align-items:center;margin-top:-6px">
+   <button class="btn ghost" id="nRefresh">Refresh suggestions</button>
+   <p class="msg" id="nbuilt" style="margin:0"></p>
+  </div>
+  <p class="msg" id="nmsg"></p>
   <div class="films" id="next"></div>
+ </section>
+
+ <section id="v-watch" class="hidden">
+  <h2>Watch List</h2>
+  <p class="lede">Everything you flagged as "want to see." Log it once you've watched it.</p>
+  <p class="msg" id="wmsg"></p>
+  <div class="films" id="wlist"></div>
  </section>
 
  <section id="v-household" class="hidden">
@@ -517,7 +530,7 @@ const JOBS={"Director":"director","Screenplay":"writer","Writer":"writer","Story
  "Original Music Composer":"composer","Music":"composer","Director of Photography":"dop",
  "Editor":"editor","Producer":"producer","Executive Producer":"exec"};
 
-const S={me:null,profiles:[],rows:[],want:[],who:"all",tmdbKey:null,recs:[],PG:{ledger:1,crew:1},drill:null};
+const S={me:null,profiles:[],rows:[],want:[],who:"all",tmdbKey:null,recs:[],recsSig:null,recsBuilt:null,recsBusy:false,PG:{ledger:1,crew:1},drill:null};
 
 /* ---------- normalise a db row into the shape the views expect ---------- */
 function shape(r){
@@ -574,11 +587,20 @@ async function loadAll(){
   S.tmdbKey=cfg?cfg.value:null;
   S.want=(want||[]).filter(w=>w.user_id===S.me.id);
   S.rows=(ents||[]).map(shape);
-  try{ const r=await fetch("data.json?v="+Date.now()); if(r.ok){const d=await r.json(); S.recs=d.recs||[];} }catch(e){}
-  paintWho(); paintAll();
+  let cached=null;
+  try{ cached=JSON.parse(localStorage.getItem(RECS_CACHE)||"null"); }catch(e){}
+  if(cached&&cached.uid===S.me.id&&(cached.recs||[]).length){
+    S.recs=cached.recs; S.recsSig=cached.sig; S.recsBuilt=cached.built;
+  }else{
+    try{ const r=await fetch("data.json?v="+Date.now()); if(r.ok){const d=await r.json(); S.recs=d.recs||[];} }catch(e){}
+  }
+  paintWho(); paintAll(); fillServices();
+  say("nbuilt",S.recsBuilt?`Rebuilt ${builtStamp()}.`:"Starter set — log something to build your own.");
   $("meName").textContent=nameOf(S.me.id);
   $("needKey").classList.toggle("hidden",!!S.tmdbKey);
   $("migrate").classList.toggle("hidden", S.rows.some(r=>r.user_id===S.me.id));
+  // ledger moved since the last build? go get fresh suggestions
+  if(S.tmdbKey&&ledgerSig()!==S.recsSig) refreshRecs(false);
 }
 
 function paintWho(){
@@ -626,7 +648,7 @@ function crewOf(L){
 }
 
 /* ================= views ================= */
-function paintAll(){ paintMast(); ledger(); crew(); patterns(); next(); household(); paintDrill(); }
+function paintAll(){ paintMast(); ledger(); crew(); patterns(); next(); watchlist(); household(); paintDrill(); }
 
 function paintMast(){
   const st=statsOf(visible());
@@ -935,6 +957,112 @@ function drawPager(ids,key,cur,total,shown,count,onGo){
       $(key==="ledger"?"v-ledger":"v-crew").scrollIntoView({behavior:"smooth",block:"start"});});});
 }
 
+/* ---------- live recommendation engine ---------- */
+const RECS_CACHE="cbsRecs:v1";
+const SEED_CAP=30, REC_KEEP=60, PROV_TOP=24;
+
+/* how much a ledger entry counts as a seed */
+function seedWeight(r){
+  const rt=r.userRating||0;
+  if(r.liked&&rt>=4) return 2;
+  if(r.liked||rt>=4)  return 1.5;
+  if(rt>=3)           return 1;
+  return 0;
+}
+/* fingerprint of MY ledger — changes whenever I log or re-rate something */
+function ledgerSig(){
+  return S.rows.filter(r=>r.user_id===S.me.id)
+    .map(r=>r.type+":"+r.id+":"+(r.userRating||0)+":"+(r.liked?1:0))
+    .sort().join("|");
+}
+/* small concurrency pool so we don't fire 60 requests at once */
+async function pool(items,worker,size=5){
+  const q=items.slice();
+  await Promise.all(Array.from({length:Math.min(size,q.length)},async()=>{
+    while(q.length){ const it=q.shift(); try{ await worker(it); }catch(e){} }
+  }));
+}
+
+async function buildRecs(){
+  if(!S.tmdbKey) throw new Error("No TMDB key saved yet.");
+  const mine=S.rows.filter(r=>r.user_id===S.me.id&&seedWeight(r)>0)
+    .sort((a,b)=>seedWeight(b)-seedWeight(a)||(b.userRating||0)-(a.userRating||0))
+    .slice(0,SEED_CAP);
+  if(!mine.length) throw new Error("Log and rate a few things first.");
+
+  const seenAll=new Set(S.rows.map(r=>r.type+":"+r.id));
+  const tally={};
+
+  await pool(mine,async seed=>{
+    const [a,b]=await Promise.all([
+      tmdb(`/${seed.type}/${seed.id}/recommendations`).catch(()=>({})),
+      tmdb(`/${seed.type}/${seed.id}/similar`).catch(()=>({}))
+    ]);
+    const hits=[...(a.results||[]).map(x=>[x,1]),...(b.results||[]).map(x=>[x,.6])];
+    hits.forEach(([m,mult])=>{
+      const type=m.media_type||seed.type, k=type+":"+m.id;
+      if(seenAll.has(k)) return;
+      if((m.vote_count||0)<20) return;          // strip out the no-data junk
+      const e=tally[k]||(tally[k]={id:m.id,type,title:m.title||m.name,
+        year:+((m.release_date||m.first_air_date||"").slice(0,4))||null,
+        poster:m.poster_path,backdrop:m.backdrop_path,
+        genres:m.genre_ids||[],vote:m.vote_average||0,votes:m.vote_count||0,
+        seeds:{},raw:0,watch:null});
+      const w=seedWeight(seed)*mult;
+      e.seeds[seed.title]=(e.seeds[seed.title]||0)+w;
+      e.raw+=w*(.6+.4*Math.min(1,(m.vote_average||0)/8));   // nudge toward better-reviewed
+    });
+  });
+
+  const L=Object.values(tally).sort((x,y)=>y.raw-x.raw).slice(0,REC_KEEP);
+  if(!L.length) throw new Error("TMDB had nothing new to suggest.");
+  L.forEach(x=>{ x.seeds=Object.fromEntries(Object.entries(x.seeds).sort((a,b)=>b[1]-a[1]).slice(0,4)); });
+  const max=L[0].raw||1;
+  L.forEach(x=>x.score=Math.round(1000*x.raw/max)/10);
+
+  // streaming availability only for the ones actually near the top
+  await pool(L.slice(0,PROV_TOP),async m=>{
+    const us=((await tmdb(`/${m.type}/${m.id}/watch/providers`)).results||{}).US;
+    if(us) m.watch={link:us.link,
+      stream:[...(us.flatrate||[]),...(us.free||[]),...(us.ads||[])].map(p=>p.provider_name),
+      rent:(us.rent||[]).map(p=>p.provider_name),buy:(us.buy||[]).map(p=>p.provider_name)};
+  });
+
+  S.recs=L; S.recsSig=ledgerSig(); S.recsBuilt=new Date().toISOString();
+  try{ localStorage.setItem(RECS_CACHE,JSON.stringify(
+    {uid:S.me.id,sig:S.recsSig,built:S.recsBuilt,recs:L})); }catch(e){}
+  return L.length;
+}
+
+/* rebuild in the background, then repaint */
+async function refreshRecs(manual){
+  if(S.recsBusy) return;
+  S.recsBusy=true;
+  say("nbuilt","Rebuilding from your ledger"+"…");
+  try{
+    const n=await buildRecs();
+    fillServices(); next();
+    say("nbuilt",`${n} suggestions, rebuilt ${builtStamp()}.`,"ok");
+  }catch(e){
+    say("nbuilt",manual?e.message:"Showing the last saved set — "+e.message,manual?"bad":"");
+  }
+  finally{ S.recsBusy=false; }
+}
+function builtStamp(){
+  if(!S.recsBuilt) return "";
+  return new Date(S.recsBuilt).toLocaleString("en-US",
+    {timeZone:"America/Chicago",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})+" CT";
+}
+/* the service dropdown was never being filled — populate it from whatever's live */
+function fillServices(){
+  const sel=$("nSvc"), cur=sel.value, names=new Set();
+  S.recs.forEach(m=>dedupe((m.watch||{}).stream||[]).forEach(n=>names.add(n)));
+  sel.innerHTML='<option value="">Any service</option>'+
+    [...names].sort().map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join("");
+  sel.value=[...names].includes(cur)?cur:"";
+}
+$("nRefresh").onclick=()=>refreshRecs(true);
+
 /* ---------- what's next ---------- */
 function next(){
   const seenAll=new Set(S.rows.map(r=>r.type+":"+r.id));
@@ -986,17 +1114,61 @@ function next(){
     await loadAll();
   });
   $("next").querySelectorAll(".logit").forEach(b=>b.onclick=()=>{
-    const m=L[+b.dataset.i];
-    document.querySelector('nav button[data-v="log"]').click();
-    chosen={id:m.id,media_type:m.type,title:m.title,name:m.title,poster_path:m.poster,
-            release_date:(m.year||"")+"-01-01"};
-    $("lpick").innerHTML=`${img(m.poster,"w185")?`<img src="${img(m.poster,"w185")}" alt="">`:""}
-      <div><div class="pt">${esc(m.title)}</div><div class="py">${m.year||"—"} · ${m.type==="tv"?"Series":"Film"}</div></div>`;
-    resetEntryForm();
-    $("lform").classList.remove("hidden");
-    $("lform").scrollIntoView({behavior:"smooth",block:"center"});
+    openLogFor(L[+b.dataset.i],"next");
   });
 }
+function watchlist(){
+  const L=S.want.slice().sort((x,y)=>String(y.created_at||"").localeCompare(String(x.created_at||""))||
+                                     String(x.title||"").localeCompare(String(y.title||"")));
+  $("wlist").innerHTML=L.length?L.map((w,i)=>{
+    const m=wlShape(w);
+    return `<div class="card">
+     ${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
+     <button type="button" class="poster-btn wtrail" data-i="${i}" title="Watch the trailer">
+      ${img(m.poster,"w342")?`<img loading="lazy" src="${img(m.poster,"w342")}" alt="" onerror="this.outerHTML='<div class=&quot;np&quot;>?</div>'">`:'<div class="np">?</div>'}
+      <span class="play">▶</span></button>
+     <div class="m"><div class="t">${esc(m.title)}</div>
+      <div class="y">${m.year||"—"} · ${(m.vote||0).toFixed(1)}</div>
+      ${watchTag(m)}
+      <div class="acts">
+       <button type="button" class="mini wlogit" data-i="${i}">I've seen it</button>
+       <button type="button" class="mini ghost wdrop" data-i="${i}">Remove</button>
+       <a class="mini out" href="https://www.themoviedb.org/${m.type}/${m.id}" target="_blank" rel="noopener">TMDB ↗</a>
+      </div></div></div>`;
+  }).join(""):`<p style="color:var(--muted);grid-column:1/-1">Nothing on your list yet. Flag something over in What's Next.</p>`;
+
+  $("wlist").querySelectorAll(".wtrail").forEach(b=>b.onclick=()=>{
+    const m=wlShape(L[+b.dataset.i]); showTrailer(m.type,m.id,m.title);
+  });
+  $("wlist").querySelectorAll(".wdrop").forEach(b=>b.onclick=async()=>{
+    const w=L[+b.dataset.i]; b.disabled=true;
+    await sb.from("watchlist").delete().eq("user_id",S.me.id).eq("tmdb_id",w.tmdb_id).eq("media_type",w.media_type);
+    await loadAll();
+  });
+  $("wlist").querySelectorAll(".wlogit").forEach(b=>b.onclick=()=>{
+    openLogFor(wlShape(L[+b.dataset.i]),"watch");
+  });
+}
+function wlShape(w){
+  const mt=w.meta||{};
+  return {id:w.tmdb_id,type:w.media_type,title:w.title,year:w.year,poster:w.poster,
+          vote:mt.vote||0,genres:mt.genres||[],watch:mt.watch||null};
+}
+
+/* open Log a Film pre-filled, remembering which tab sent us here */
+let logOrigin=null;
+function openLogFor(m,origin){
+  logOrigin=origin||null;
+  document.querySelector('nav button[data-v="log"]').click();
+  chosen={id:m.id,media_type:m.type,title:m.title,name:m.title,poster_path:m.poster,
+          release_date:(m.year||"")+"-01-01"};
+  $("lpick").innerHTML=`${img(m.poster,"w185")?`<img src="${img(m.poster,"w185")}" alt="">`:""}
+    <div><div class="pt">${esc(m.title)}</div><div class="py">${m.year||"—"} · ${m.type==="tv"?"Series":"Film"}</div></div>`;
+  resetEntryForm();
+  $("lform").classList.remove("hidden");
+  $("lform").scrollIntoView({behavior:"smooth",block:"center"});
+}
+
 function watchTag(m){
   const w=m.watch; if(!w) return "";
   const s=dedupe(w.stream||[]);
@@ -1112,7 +1284,7 @@ async function search(){
 }
 $("lgo").onclick=search;
 $("lq").addEventListener("keydown",e=>{if(e.key==="Enter")search();});
-$("lcancel").onclick=()=>{$("lform").classList.add("hidden");chosen=null;resetEntryForm();};
+$("lcancel").onclick=()=>{$("lform").classList.add("hidden");chosen=null;logOrigin=null;resetEntryForm();};
 
 async function enrich(hit){
   const type=hit.media_type||(hit.title?"movie":"tv");
@@ -1148,6 +1320,8 @@ async function enrich(hit){
 }
 $("lsave").onclick=async()=>{
   if(!chosen) return;
+  const back=logOrigin, tmdbId=chosen.id;
+  logOrigin=null;
   $("lsave").disabled=true; say("smsg","Looking up credits…");
   try{
     const e=await enrich(chosen);
@@ -1159,10 +1333,16 @@ $("lsave").onclick=async()=>{
       watched_date:$("ldate").value.trim()||null,review:$("lrev").value.trim()||null,meta:e.meta
     },{onConflict:"user_id,tmdb_id,media_type"});
     if(error) throw new Error(error.message);
+    // watched means it no longer belongs on the want-to-see list
+    await sb.from("watchlist").delete().eq("user_id",S.me.id).eq("tmdb_id",tmdbId).eq("media_type",e.type);
     say("smsg",`Saved. ${e.d.title||e.d.name} is in your ledger.`,"ok");
     $("lform").classList.add("hidden"); $("lres").innerHTML=""; $("lq").value=""; chosen=null;
     resetEntryForm();
     await loadAll();
+    if(back){
+      document.querySelector(`nav button[data-v="${back}"]`).click();
+      say(back==="watch"?"wmsg":"nmsg",`Logged — ${e.d.title||e.d.name} is off the list.`,"ok");
+    }
   }catch(err){ say("smsg",err.message,"bad"); }
   finally{ $("lsave").disabled=false; }
 };
@@ -1193,7 +1373,7 @@ $("doMigrate").onclick=async()=>{
 /* ---------- nav ---------- */
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x===b));
-  ["ledger","crew","patterns","next","household","log"].forEach(v=>
+  ["ledger","crew","patterns","next","watch","household","log"].forEach(v=>
     $("v-"+v).classList.toggle("hidden",v!==b.dataset.v));
   window.scrollTo({top:0,behavior:"smooth"});
 });
