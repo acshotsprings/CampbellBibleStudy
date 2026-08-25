@@ -327,6 +327,12 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 .thead button{background:transparent;border:1px solid var(--edge);color:var(--muted);
  cursor:pointer;font-family:'Courier Prime',monospace;font-size:12px;padding:5px 10px;white-space:nowrap}
 .thead button:hover{border-color:var(--accent);color:var(--accent)}
+.wntabs{display:flex;gap:6px;margin-left:auto;margin-right:10px}
+.wntab{background:transparent;border:1px solid var(--edge);color:var(--muted);cursor:pointer;
+  font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;padding:4px 10px}
+.wntab:hover{border-color:var(--accent);color:var(--accent)}
+.wntab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--card)}
 .wnbody{background:var(--card2);padding:18px 20px 22px;max-height:70vh;overflow:auto}
 .wnrel{margin-bottom:22px}
 .wnrel:last-child{margin-bottom:0}
@@ -574,6 +580,10 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 <div id="whatsnew" class="tmodal hidden" role="dialog" aria-modal="true" aria-labelledby="wnTitle">
  <div class="tbox">
   <div class="thead"><span id="wnTitle">What's new</span>
+   <span class="wntabs" role="tablist">
+    <button type="button" class="wntab" data-wt="archive" role="tab" aria-selected="true">Archive</button>
+    <button type="button" class="wntab" data-wt="site" role="tab" aria-selected="false">Site changes</button>
+   </span>
    <button type="button" id="wnClose" aria-label="Close">Close ✕</button></div>
   <div class="wnbody" id="wnBody"></div>
  </div>
@@ -1727,11 +1737,25 @@ function wireStampClick(){
     openWhatsNew();
   });
 }
-async function openWhatsNew(){
+let wnTab="archive";
+function openWhatsNew(){
   $("whatsnew").classList.remove("hidden");
   document.body.style.overflow="hidden";
+  renderWhatsNew();
+}
+function renderWhatsNew(){
+  document.querySelectorAll(".wntab").forEach(b=>
+    b.setAttribute("aria-selected",String(b.dataset.wt===wnTab)));
+  $("wnTitle").textContent=wnTab==="archive"?"What's new in the archive":"What's changed on the site";
+  if(wnTab==="archive") renderArchiveFeed(); else renderSiteLog();
+}
+document.querySelectorAll(".wntab").forEach(b=>b.onclick=()=>{
+  wnTab=b.dataset.wt; renderWhatsNew();
+});
+
+/* --- tab 1: what the family added --- */
+function renderArchiveFeed(){
   const box=$("wnBody");
-  $("wnTitle").textContent="What's new in the archive";
   const F=activityFeed().slice(0,40);
   if(!F.length){ box.innerHTML=`<p style="color:var(--muted)">Nothing logged yet.</p>`; return; }
 
@@ -1752,8 +1776,37 @@ async function openWhatsNew(){
       `${f.userRating?` \u2014 ${stars(f.userRating)}`:""}`+
       `${f.liked?' <span style="color:var(--accent)">\u2665</span>':""}</li>`).join("")}</ul>
   </div>`).join("")+
-  `<div class="wnfoot" id="wnSite">Site itself last deployed \u2014</div>`;
+  `<div class="wnfoot">Most recent ${Math.min(40,activityFeed().length)} additions.</div>`;
+}
+
+/* --- tab 2: what we changed about the site itself --- */
+let siteLog=null;
+async function renderSiteLog(){
+  const box=$("wnBody");
+  if(siteLog){ box.innerHTML=siteLog; siteFootnote(); return; }
+  box.innerHTML=`<p style="color:var(--muted)">Loading\u2026</p>`;
+  let html="";
+  try{
+    const r=await fetch("changelog.json?v="+Date.now());
+    if(!r.ok) throw new Error();
+    const d=await r.json();
+    html=(d.releases||[]).map(rel=>`<div class="wnrel">
+      <h4>${esc(rel.title||"Update")}</h4>
+      <div class="wd">${esc(fmtDay(rel.date))}</div>
+      <ul>${(rel.items||[]).map(i=>`<li>${esc(i)}</li>`).join("")}</ul>
+    </div>`).join("");
+  }catch(e){
+    html=`<p style="color:var(--muted)">Couldn't load the site history \u2014
+      changelog.json may not be deployed yet.</p>`;
+  }
+  siteLog=html+`<div class="wnfoot" id="wnSite"></div>`;
+  box.innerHTML=siteLog;
   siteFootnote();
+}
+function fmtDay(v){
+  const d=new Date(v+"T12:00:00");
+  if(isNaN(d)) return String(v||"");
+  return d.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
 }
 
 /* the deploy info moves down here, out of the way */
