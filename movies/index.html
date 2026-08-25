@@ -333,6 +333,12 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   text-transform:uppercase;padding:4px 10px}
 .wntab:hover{border-color:var(--accent);color:var(--accent)}
 .wntab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--card)}
+.wnpick{display:flex;align-items:center;gap:8px;margin-bottom:16px;
+  padding-bottom:12px;border-bottom:1px solid var(--edge)}
+.wnpick label{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted)}
+.wnpick select{flex:1;max-width:280px;background:var(--card);border:1px solid var(--edge);
+  color:var(--ink);font-family:'Courier Prime',monospace;font-size:12.5px;padding:5px 8px}
 .wnbody{background:var(--card2);padding:18px 20px 22px;max-height:70vh;overflow:auto}
 .wnrel{margin-bottom:22px}
 .wnrel:last-child{margin-bottom:0}
@@ -1754,10 +1760,25 @@ document.querySelectorAll(".wntab").forEach(b=>b.onclick=()=>{
 });
 
 /* --- tab 1: what the family added --- */
+let wnWho="all";
 function renderArchiveFeed(){
   const box=$("wnBody");
-  const F=activityFeed().slice(0,40);
-  if(!F.length){ box.innerHTML=`<p style="color:var(--muted)">Nothing logged yet.</p>`; return; }
+  const all=activityFeed();
+  const counts={};
+  all.forEach(f=>counts[f.user_id]=(counts[f.user_id]||0)+1);
+  const picker=`<div class="wnpick">
+    <label for="wnWho">Who</label>
+    <select id="wnWho">
+      <option value="all">Everyone (${all.length})</option>
+      ${S.profiles.map(pr=>`<option value="${pr.id}"${pr.id===wnWho?" selected":""}>`+
+        `${esc(pr.name)}${pr.id===S.me.id?" (you)":""} \u2014 ${counts[pr.id]||0}</option>`).join("")}
+    </select></div>`;
+
+  const F=(wnWho==="all"?all:all.filter(f=>f.user_id===wnWho)).slice(0,40);
+  if(!F.length){
+    box.innerHTML=picker+`<p style="color:var(--muted)">Nothing logged by them yet.</p>`;
+    wirePicker(); return;
+  }
 
   /* group by the day it was added */
   const days=[];
@@ -1769,14 +1790,20 @@ function renderArchiveFeed(){
     g.rows.push(f);
   });
 
-  box.innerHTML=days.map(g=>`<div class="wnrel">
+  box.innerHTML=picker+days.map(g=>`<div class="wnrel">
     <div class="wd">${esc(g.key)}</div>
     <ul>${g.rows.map(f=>`<li><b>${esc(f.who)}</b> added ${esc(f.title)}`+
       `${f.year?` <span style="color:var(--muted)">(${f.year})</span>`:""}`+
       `${f.userRating?` \u2014 ${stars(f.userRating)}`:""}`+
       `${f.liked?' <span style="color:var(--accent)">\u2665</span>':""}</li>`).join("")}</ul>
   </div>`).join("")+
-  `<div class="wnfoot">Most recent ${Math.min(40,activityFeed().length)} additions.</div>`;
+  `<div class="wnfoot">Showing ${F.length} most recent.</div>`;
+  wirePicker();
+}
+function wirePicker(){
+  const sel=$("wnWho"); if(!sel) return;
+  sel.value=wnWho;
+  sel.onchange=()=>{ wnWho=sel.value; renderArchiveFeed(); };
 }
 
 /* --- tab 2: what we changed about the site itself --- */
