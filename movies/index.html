@@ -208,7 +208,17 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 
 /* ---------- cards ---------- */
 .films{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--cardmin),1fr));gap:var(--cardgap)}
-.card{background:var(--card2);border:1px solid var(--edge);position:relative}
+.card{background:var(--card2);border:1px solid var(--edge);position:relative;overflow:hidden}
+/* diagonal band across the poster for anything not out yet */
+.soon{position:absolute;top:26px;left:-42px;width:170px;z-index:4;pointer-events:none;
+  transform:rotate(-38deg);background:var(--accent);color:var(--card);text-align:center;
+  font-family:'Archivo Black',sans-serif;font-size:10px;letter-spacing:.14em;
+  padding:5px 0;box-shadow:0 1px 6px rgba(0,0,0,.35)}
+.card .rel{font-family:'Courier Prime',monospace;font-size:11px;color:var(--accent);margin-top:4px}
+.soonpill{background:var(--accent);color:var(--card);font-family:'Courier Prime',monospace;
+  font-size:9.5px;font-weight:700;letter-spacing:.1em;padding:2px 6px;margin-left:7px;vertical-align:2px}
+.dsoon{margin-top:12px;border:1px dashed var(--accent);color:var(--accent);padding:8px 12px;
+  font-family:'Courier Prime',monospace;font-size:12.5px;display:inline-block}
 .card img{width:100%;display:block;aspect-ratio:2/3;object-fit:cover;background:var(--edge)}
 .card .np{width:100%;aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;
   color:var(--edge);font-family:'Archivo Black',sans-serif;font-size:38px}
@@ -682,6 +692,7 @@ function shape(r){
   return {id:r.tmdb_id,type:r.media_type,title:r.title,year:r.year,poster:r.poster,
     userRating:parseFloat(r.rating),liked:r.liked,loved:!!r.loved,review:r.review,diaryDate:r.watched_date,
     rank:(r.rank==null?null:+r.rank),addedAt:r.created_at||null,
+    release:m.release||null,status:m.status||"",
     user_id:r.user_id,who:nameOf(r.user_id),rowId:r.id,
     genres:m.genres||[],genreNames:m.genreNames||[],overview:m.overview||"",tagline:m.tagline||"",
     runtime:m.runtime||null,episodes:m.episodes||null,keywords:m.keywords||[],roles:m.roles||{},
@@ -767,6 +778,7 @@ async function loadAll(){
   $("needKey").classList.toggle("hidden",!!S.tmdbKey);
   $("migrate").classList.toggle("hidden", S.rows.some(r=>r.user_id===S.me.id));
   // ledger moved since the last build? go get fresh suggestions
+  backfillReleases();
   const noScores=!Object.keys(S.scores||{}).length;
   if(S.tmdbKey&&(ledgerSig()!==S.recsSig||noScores)) refreshRecs(false);
 }
@@ -873,6 +885,34 @@ function stampActivity(){
   wireStampClick();
 }
 
+/* ---------- unreleased titles ---------- */
+const REL_CACHE="cbsRel:v1";
+function relCache(){ try{ return JSON.parse(localStorage.getItem(REL_CACHE)||"{}"); }catch(e){ return {}; } }
+function releaseOf(f){
+  if(f.release) return f.release;
+  return relCache()[f.type+":"+f.id]||null;
+}
+const comingSoon=f=>{ const r=releaseOf(f); return !!r&&r>todayLocal(); };
+function relLabel(f){
+  const r=releaseOf(f); if(!r) return "";
+  const d=new Date(r+"T12:00:00"); if(isNaN(d)) return "";
+  return d.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+}
+/* older rows were logged before we kept the date — look those up once */
+async function backfillReleases(){
+  if(!S.tmdbKey) return;
+  const yr=+todayLocal().slice(0,4), c=relCache();
+  const need=S.rows.filter(f=>!f.release&&c[f.type+":"+f.id]===undefined&&(f.year==null||f.year>=yr));
+  if(!need.length) return;
+  await pool(need,async f=>{
+    try{ const d=await tmdb(`/${f.type}/${f.id}`);
+      c[f.type+":"+f.id]=d.release_date||d.first_air_date||"";
+    }catch(e){ c[f.type+":"+f.id]=""; }
+  },5);
+  try{ localStorage.setItem(REL_CACHE,JSON.stringify(c)); }catch(e){}
+  ledger(); next(); watchlist();
+}
+
 /* ---------- ledger ---------- */
 let open=new Set();
 /* any credited name, clickable through to what else they've made */
@@ -930,6 +970,7 @@ function dossier(f){
     <dl class="credits">${cr}${cast}${meta.join("")}${also}</dl>
     ${wl.length?`<dl class="credits watch">${wl.join("")}</dl>`:""}
     ${f.keywords.length?`<div class="tags">${f.keywords.map(k=>`<span class="tag">${esc(k)}</span>`).join("")}</div>`:""}
+    ${comingSoon(f)?`<div class="dsoon">COMING SOON \u00b7 ${relLabel(f)?`expected ${esc(relLabel(f))}`:"date not announced"}</div>`:""}
     ${mine?`<div class="affrow">
      <span>How you felt</span>
      <button type="button" class="mini aff${!f.liked&&!f.loved?" on":""}" data-row="${f.rowId}" data-aff="0">Not for me</button>
@@ -1037,6 +1078,7 @@ function ledger(){
       <span><span class="ti">${esc(f.title)}</span>${f.type==="tv"?'<span class="tv">SERIES</span>':""}
        ${f.loved?'<span class="heart loved" title="Loved it"> ♥</span>'
          :f.liked?'<span class="heart" title="Liked it"> ♡</span>':""}
+       ${comingSoon(f)?'<span class="soonpill">COMING SOON</span>':""}
        <span class="mt">${f.year||"—"}${dir?" · "+esc(dir):""}${S.who==="all"?" · "+esc(f.who):""}</span></span>
       <span class="rate">${stars(f.userRating)}</span></button>
      ${isOpen?dossier(f):""}</div>`;
@@ -1620,6 +1662,7 @@ function next(){
     const who=S.rows.filter(r=>r.id===m.id&&r.type===m.type).map(r=>r.who);
     const isOn=onList.has(m.type+":"+m.id);
     return `<div class="card">
+     ${comingSoon(m)?'<span class="soon">COMING SOON</span>':""}
      <span class="rk" title="How strongly this matches your ledger">MATCH</span>${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
      <span class="badge" title="Match strength — 100 is the strongest fit to your ledger">${Math.round(m.score)}%</span>
      <button type="button" class="poster-btn trail" data-i="${i}" title="Watch the trailer">
@@ -1688,6 +1731,7 @@ function watchlist(){
     const m=wlShape(w);
     const sc=wlScore(w);
     return `<div class="card">
+     ${comingSoon(m)?'<span class="soon">COMING SOON</span>':""}
      <span class="rk" title="How strongly this matches your ledger">MATCH</span>
      <span class="badge" title="${sc==null?"Not scored yet — refresh suggestions":"Match strength"}">${sc==null?"\u2014":Math.round(sc)+"%"}</span>
      ${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
@@ -2003,7 +2047,8 @@ async function enrich(hit){
       rent:(us.rent||[]).map(p=>p.provider_name),buy:(us.buy||[]).map(p=>p.provider_name)};
   }catch(e){}
   const date=d.release_date||d.first_air_date||"";
-  return {type,d,date,meta:{genres:(d.genres||[]).map(g=>g.id),genreNames:(d.genres||[]).map(g=>g.name),
+  return {type,d,date,meta:{release:date,status:d.status||"",
+    genres:(d.genres||[]).map(g=>g.id),genreNames:(d.genres||[]).map(g=>g.name),
     overview:d.overview||"",tagline:d.tagline||"",runtime,episodes:d.number_of_episodes||null,
     keywords:kw.slice(0,12),roles,cast:cast.map(c=>({name:c.name,id:c.id,character:c.character||""})),
     crewCount:crewList.length,watch,vote:d.vote_average||0,votes:d.vote_count||0,
