@@ -105,6 +105,18 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 /* ---------- ledger ---------- */
 .rows{border-top:2px solid var(--ink)}
 .row{border-bottom:1px solid var(--edge)}
+/* ---- drag-to-rank ---- */
+.row.drag{position:relative;cursor:grab}
+.row.drag:active{cursor:grabbing}
+.row.dragging{opacity:.4}
+.row.over{box-shadow:inset 0 3px 0 var(--accent)}
+.row.drag .movers{position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:2px;z-index:3}
+.row.drag .mv{background:var(--card);border:1px solid var(--edge);color:var(--muted);
+  font-size:9px;line-height:1;padding:3px 5px;cursor:pointer}
+.row.drag .mv:hover{border-color:var(--accent);color:var(--accent)}
+.row.drag .rowhead{padding-right:34px}
+.row.drag .n{letter-spacing:.08em}
 .rowhead{display:grid;grid-template-columns:26px var(--thumb) 1fr auto;gap:var(--rowgap);
   align-items:center;padding:var(--rowpad) 8px;cursor:pointer;background:none;border:none;
   width:100%;text-align:left;color:inherit;font:inherit}
@@ -380,9 +392,10 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   <div class="tools">
    <input type="text" id="q" placeholder="search title, director, cast, keyword…">
    <select id="fType"><option value="">Films &amp; series</option><option value="movie">Films only</option><option value="tv">Series only</option></select>
-   <select id="fSort"><option value="rating">By rating</option><option value="logged">Recently watched</option><option value="year">By year</option><option value="title">A–Z</option><option value="runtime">By runtime</option></select>
+   <select id="fSort"><option value="rating">By rating</option><option value="mine">My ranking</option><option value="logged">Recently watched</option><option value="year">By year</option><option value="title">A–Z</option><option value="runtime">By runtime</option></select>
    <select id="fPer"><option value="10">10 per page</option><option value="25" selected>25 per page</option><option value="50">50 per page</option><option value="100">100 per page</option><option value="0">Show all</option></select>
   </div>
+  <p class="msg" id="lmsg"></p>
   <div class="pager" id="pagerTop"></div>
   <div class="rows" id="ledger"></div>
   <div class="pager" id="pagerBot"></div>
@@ -544,6 +557,7 @@ function shape(r){
   const m=r.meta||{};
   return {id:r.tmdb_id,type:r.media_type,title:r.title,year:r.year,poster:r.poster,
     userRating:parseFloat(r.rating),liked:r.liked,review:r.review,diaryDate:r.watched_date,
+    rank:(r.rank==null?null:+r.rank),
     user_id:r.user_id,who:nameOf(r.user_id),rowId:r.id,
     genres:m.genres||[],genreNames:m.genreNames||[],overview:m.overview||"",tagline:m.tagline||"",
     runtime:m.runtime||null,episodes:m.episodes||null,keywords:m.keywords||[],roles:m.roles||{},
@@ -707,9 +721,49 @@ function dedupe(list){
     if(!seen.has(b)){seen.add(b);out.push(b);} }
   return out;
 }
+/* ---------- personal ranking ---------- */
+/* Ranks are fractional on purpose: dropping a title between two neighbours
+   only has to write one row, instead of renumbering the whole ledger. */
+async function seedRanks(){
+  const mine=S.rows.filter(r=>r.user_id===S.me.id);
+  if(!mine.length||mine.every(r=>r.rank!=null)) return;
+  const ordered=[...mine].sort((a,b)=>
+    b.userRating-a.userRating ||
+    String(b.diaryDate||"").localeCompare(String(a.diaryDate||"")) ||
+    a.title.localeCompare(b.title));
+  say("lmsg","Setting up your ranking from the current star order\u2026");
+  await pool(ordered.map((f,i)=>({f,r:(i+1)*1000})), async ({f,r})=>{
+    const {error}=await sb.from("entries").update({rank:r}).eq("id",f.rowId);
+    if(!error) f.rank=r;
+  }, 6);
+  say("lmsg","");
+}
+/* write one row's new rank, given the neighbours it landed between */
+async function placeBetween(f,before,after){
+  let r;
+  if(before==null&&after==null) r=1000;
+  else if(before==null) r=after-1000;
+  else if(after==null)  r=before+1000;
+  else                  r=(before+after)/2;
+  const {error}=await sb.from("entries").update({rank:r}).eq("id",f.rowId);
+  if(error){ say("lmsg",error.message,"bad"); return false; }
+  f.rank=r; return true;
+}
+/* move a row to a given index within the list as currently displayed */
+async function moveTo(list,fromIdx,toIdx){
+  if(toIdx===fromIdx||toIdx<0||toIdx>=list.length) return;
+  const f=list[fromIdx];
+  const rest=list.filter((_,i)=>i!==fromIdx);
+  const before=toIdx>0?rest[toIdx-1].rank:null;
+  const after =toIdx<rest.length?rest[toIdx].rank:null;
+  if(await placeBetween(f,before,after)){ RANKPOS=null; ledger(); }
+}
+
 function ledger(){
   const q=$("q").value.toLowerCase().trim(), ty=$("fType").value, so=$("fSort").value;
+  const rankMode=(so==="mine");
   let L=visible().filter(f=>!ty||f.type===ty);
+  if(rankMode) L=L.filter(f=>f.user_id===S.me.id);   // you can only rank your own
   if(q) L=L.filter(f=>[f.title,f.who,...f.genreNames,...f.keywords,
     ...Object.values(f.roles).flat().map(p=>p.name),...f.cast.map(c=>c.name)].join(" ").toLowerCase().includes(q));
   /* every sort needs a tiebreaker, or equal values come back in whatever
@@ -721,7 +775,14 @@ function ledger(){
     year:  (a,b)=> (b.year||0)-(a.year||0)   || byTitle(a,b),
     title: byTitle,
     runtime:(a,b)=>(b.runtime||0)-(a.runtime||0) || byTitle(a,b),
-    logged:(a,b)=> byDate(a,b) || b.userRating-a.userRating || byTitle(a,b)
+    logged:(a,b)=> byDate(a,b) || b.userRating-a.userRating || byTitle(a,b),
+    mine:(a,b)=>{
+      const ra=a.rank, rb=b.rank;
+      if(ra!=null&&rb!=null) return ra-rb;
+      if(ra!=null) return -1;
+      if(rb!=null) return 1;
+      return b.userRating-a.userRating || byDate(a,b) || byTitle(a,b);
+    }
   };
   L=[...L].sort(SORTS[so]||SORTS.rating);
 
@@ -735,9 +796,10 @@ function ledger(){
   $("ledger").innerHTML=P.length?P.map((f,j)=>{
     const i=from+j, k=f.rowId, isOpen=open.has(k);
     const dir=(f.roles.director||[]).map(p=>p.name).join(", ");
-    return `<div class="row">
+    return `<div class="row${rankMode?" drag":""}"${rankMode?` draggable="true" data-rk="${k}"`:""}>
+     ${rankMode?`<div class="movers"><button type="button" class="mv up" data-k="${k}" title="Move up">\u25b2</button><button type="button" class="mv dn" data-k="${k}" title="Move down">\u25bc</button></div>`:""}
      <button class="rowhead" data-k="${k}" aria-expanded="${isOpen}">
-      <span class="n">${String(i+1).padStart(2,"0")}</span>
+      <span class="n">${rankMode?"\u283f":""}${String(i+1).padStart(2,"0")}</span>
       ${img(f.poster,"w92")?`<img class="th" loading="lazy" src="${img(f.poster,"w92")}" alt="">`
         :`<span class="th none">?</span>`}
       <span><span class="ti">${esc(f.title)}</span>${f.type==="tv"?'<span class="tv">SERIES</span>':""}
@@ -749,6 +811,40 @@ function ledger(){
 
   $("ledger").querySelectorAll(".rowhead").forEach(b=>b.onclick=()=>{
     const k=+b.dataset.k; open.has(k)?open.delete(k):open.add(k); ledger(); });
+
+  if(rankMode){
+    const idxOf=k=>P.findIndex(f=>f.rowId===k);
+    /* arrows: work on touch, where HTML5 drag doesn't */
+    $("ledger").querySelectorAll(".mv").forEach(b=>b.onclick=async ev=>{
+      ev.stopPropagation();
+      const i=idxOf(+b.dataset.k); if(i<0) return;
+      await moveTo(P,i,b.classList.contains("up")?i-1:i+1);
+    });
+    let dragK=null;
+    $("ledger").querySelectorAll(".row.drag").forEach(row=>{
+      row.addEventListener("dragstart",ev=>{
+        dragK=+row.dataset.rk; row.classList.add("dragging");
+        ev.dataTransfer.effectAllowed="move";
+        try{ ev.dataTransfer.setData("text/plain",String(dragK)); }catch(e){}
+      });
+      row.addEventListener("dragend",()=>{
+        row.classList.remove("dragging");
+        $("ledger").querySelectorAll(".row").forEach(r=>r.classList.remove("over"));
+      });
+      row.addEventListener("dragover",ev=>{
+        ev.preventDefault(); ev.dataTransfer.dropEffect="move";
+        if(+row.dataset.rk!==dragK) row.classList.add("over");
+      });
+      row.addEventListener("dragleave",()=>row.classList.remove("over"));
+      row.addEventListener("drop",async ev=>{
+        ev.preventDefault(); row.classList.remove("over");
+        const to=idxOf(+row.dataset.rk), from=idxOf(dragK);
+        dragK=null;
+        if(from<0||to<0||from===to) return;
+        await moveTo(P,from,to);
+      });
+    });
+  }
   $("ledger").querySelectorAll(".trailD").forEach(b=>b.onclick=()=>
     showTrailer(b.dataset.t,+b.dataset.id,b.dataset.n));
   $("ledger").querySelectorAll(".del").forEach(b=>b.onclick=async()=>{
@@ -757,7 +853,12 @@ function ledger(){
     if(error){ b.disabled=false; b.textContent="Couldn't remove"; return; }
     await loadAll(); });
 }
-["q","fType","fSort","fPer"].forEach(i=>$(i).addEventListener("input",()=>{S.PG.ledger=1;ledger();}));
+["q","fType","fPer"].forEach(i=>$(i).addEventListener("input",()=>{S.PG.ledger=1;ledger();}));
+$("fSort").addEventListener("change",async()=>{
+  S.PG.ledger=1;
+  if($("fSort").value==="mine") await seedRanks();   // first time in, inherit the star order
+  ledger();
+});
 
 /* ---------- crew ---------- */
 function crew(){
@@ -1007,7 +1108,21 @@ const SEED_CAP=30, REC_KEEP=60, PROV_TOP=24;
 function seedWeight(r){
   const rt=r.userRating||0;
   if(rt<3) return 0;
-  return Math.pow(rt-2.5,1.6)*(r.liked?1.35:1);
+  return Math.pow(rt-2.5,1.6)*(r.liked?1.35:1)*rankBoost(r);
+}
+/* Where you dragged it counts too: your #1 pulls ~1.5x, the bottom ~0.75x.
+   Stars are coarse (half your ledger is 5-star) — the ranking breaks those ties. */
+let RANKPOS=null;
+function rankPositions(){
+  const mine=S.rows.filter(r=>r.user_id===S.me.id&&r.rank!=null)
+    .sort((a,b)=>a.rank-b.rank);
+  const m={}; mine.forEach((f,i)=>m[f.rowId]=mine.length>1?i/(mine.length-1):0);
+  return m;
+}
+function rankBoost(r){
+  if(!RANKPOS) RANKPOS=rankPositions();
+  const p=RANKPOS[r.rowId];
+  return p==null?1:1.5-0.75*p;
 }
 
 /* (2) Genre affinity: how you rate each genre against your own average.
@@ -1033,7 +1148,7 @@ function genreAffinity(){
 /* fingerprint of MY ledger — changes whenever I log or re-rate something */
 function ledgerSig(){
   return S.rows.filter(r=>r.user_id===S.me.id)
-    .map(r=>r.type+":"+r.id+":"+(r.userRating||0)+":"+(r.liked?1:0))
+    .map(r=>r.type+":"+r.id+":"+(r.userRating||0)+":"+(r.liked?1:0)+":"+(r.rank==null?"-":r.rank))
     .sort().join("|");
 }
 /* small concurrency pool so we don't fire 60 requests at once */
@@ -1046,6 +1161,7 @@ async function pool(items,worker,size=5){
 
 async function buildRecs(){
   if(!S.tmdbKey) throw new Error("No TMDB key saved yet.");
+  RANKPOS=rankPositions();
   const mine=S.rows.filter(r=>r.user_id===S.me.id&&seedWeight(r)>0)
     .sort((a,b)=>seedWeight(b)-seedWeight(a)||(b.userRating||0)-(a.userRating||0))
     .slice(0,SEED_CAP);
