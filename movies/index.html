@@ -176,6 +176,11 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
   font-family:'Courier Prime',monospace;font-weight:700;font-size:10px;letter-spacing:.11em;
   padding:2px 6px;vertical-align:middle;margin-left:8px}
 .heart{color:var(--accent)}
+.heart.loved{font-size:1.15em}
+.affrow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:14px;
+  padding-top:12px;border-top:1px solid var(--edge)}
+.affrow span{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin-right:2px}
 .dossier{padding:2px 8px 18px;display:grid;grid-template-columns:112px 1fr;gap:18px}
 @media(max-width:640px){.dossier{grid-template-columns:1fr}.dossier img{max-width:150px}}
 .dossier img{width:100%;display:block;border:1px solid var(--edge)}
@@ -565,7 +570,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
       <option value="1">★ — 1</option><option value="0.5">½ — 0.5</option></select></div>
     <div><label class="fl" for="ldate">Watched on</label><input type="text" id="ldate" placeholder="YYYY-MM-DD"></div>
     <div><label class="fl" for="llike">Liked it?</label>
-     <select id="llike"><option value="0">No</option><option value="1">Yes</option></select></div>
+     <select id="llike"><option value="0">No</option><option value="1">Liked it</option><option value="2">Loved it</option></select></div>
    </div>
    <label class="fl" for="lrev">Note (optional)</label>
    <input type="text" id="lrev" placeholder="a line about it">
@@ -637,7 +642,7 @@ const S={me:null,profiles:[],rows:[],want:[],who:"all",tmdbKey:null,recs:[],skip
 function shape(r){
   const m=r.meta||{};
   return {id:r.tmdb_id,type:r.media_type,title:r.title,year:r.year,poster:r.poster,
-    userRating:parseFloat(r.rating),liked:r.liked,review:r.review,diaryDate:r.watched_date,
+    userRating:parseFloat(r.rating),liked:r.liked,loved:!!r.loved,review:r.review,diaryDate:r.watched_date,
     rank:(r.rank==null?null:+r.rank),addedAt:r.created_at||null,
     user_id:r.user_id,who:nameOf(r.user_id),rowId:r.id,
     genres:m.genres||[],genreNames:m.genreNames||[],overview:m.overview||"",tagline:m.tagline||"",
@@ -728,7 +733,8 @@ function statsOf(L){
   });
   const mins=L.map(f=>f.runtime).filter(Boolean).reduce((a,c)=>a+c,0);
   return {titles:L.length,films:L.filter(f=>f.type==="movie").length,series:L.filter(f=>f.type==="tv").length,
-    liked:L.filter(f=>f.liked).length,
+    liked:L.filter(f=>f.liked&&!f.loved).length,
+    loved:L.filter(f=>f.loved).length,
     avg:R.length?Math.round(R.reduce((a,c)=>a+c,0)/R.length*100)/100:0,
     hist,minutes:mins,hours:Math.round(mins/60*10)/10,
     decades:Object.entries(dec).map(([d,n])=>[+d,n]).sort((a,b)=>a[0]-b[0]),
@@ -757,7 +763,8 @@ function paintMast(){
   const st=statsOf(visible());
   const label=S.who==="all"?"everyone":nameOf(S.who);
   $("spec").innerHTML=[["Titles",st.titles],["Films",st.films],["Series",st.series],
-    ["Avg",st.avg?st.avg+"★":"—"],["Liked",st.liked],["People",S.profiles.length],["Hours",st.hours]]
+    ["Avg",st.avg?st.avg+"★":"—"],["Liked",st.liked],["Loved",st.loved],
+    ["People",S.profiles.length],["Hours",st.hours]]
     .map(([k,v])=>`<div>${k}<b>${v}</b></div>`).join("");
   $("stamp2").textContent="Exhibits: "+st.titles;
   $("stampSub").textContent=label;
@@ -816,6 +823,12 @@ function dossier(f){
     <dl class="credits">${cr}${cast}${meta.join("")}${also}</dl>
     ${wl.length?`<dl class="credits watch">${wl.join("")}</dl>`:""}
     ${f.keywords.length?`<div class="tags">${f.keywords.map(k=>`<span class="tag">${esc(k)}</span>`).join("")}</div>`:""}
+    ${mine?`<div class="affrow">
+     <span>How you felt</span>
+     <button type="button" class="mini aff${!f.liked&&!f.loved?" on":""}" data-row="${f.rowId}" data-aff="0">Not for me</button>
+     <button type="button" class="mini aff${f.liked&&!f.loved?" on":""}" data-row="${f.rowId}" data-aff="1">\u2661 Liked it</button>
+     <button type="button" class="mini aff${f.loved?" on":""}" data-row="${f.rowId}" data-aff="2">\u2665 Loved it</button>
+    </div>`:""}
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
      <button class="btn ghost trailD" data-t="${f.type}" data-id="${f.id}" data-n="${esc(f.title)}">Watch trailer</button>
      ${mine?`<button class="btn ghost del" data-row="${f.rowId}">Remove my entry</button>`:""}
@@ -915,7 +928,8 @@ function ledger(){
       ${img(f.poster,"w92")?`<img class="th" loading="lazy" src="${img(f.poster,"w92")}" alt="">`
         :`<span class="th none">?</span>`}
       <span><span class="ti">${esc(f.title)}</span>${f.type==="tv"?'<span class="tv">SERIES</span>':""}
-       ${f.liked?'<span class="heart"> ♥</span>':""}
+       ${f.loved?'<span class="heart loved" title="Loved it"> ♥</span>'
+         :f.liked?'<span class="heart" title="Liked it"> ♡</span>':""}
        <span class="mt">${f.year||"—"}${dir?" · "+esc(dir):""}${S.who==="all"?" · "+esc(f.who):""}</span></span>
       <span class="rate">${stars(f.userRating)}</span></button>
      ${isOpen?dossier(f):""}</div>`;
@@ -959,6 +973,14 @@ function ledger(){
   }
   $("ledger").querySelectorAll(".trailD").forEach(b=>b.onclick=()=>
     showTrailer(b.dataset.t,+b.dataset.id,b.dataset.n));
+  $("ledger").querySelectorAll(".aff").forEach(b=>b.onclick=async()=>{
+    const v=+b.dataset.aff;
+    b.disabled=true;
+    const {error}=await sb.from("entries")
+      .update({liked:v>=1,loved:v===2}).eq("id",+b.dataset.row);
+    if(error){ say("lmsg",error.message,"bad"); b.disabled=false; return; }
+    await loadAll();
+  });
   $("ledger").querySelectorAll(".del").forEach(b=>b.onclick=async()=>{
     b.disabled=true; b.textContent="Removing…";
     const {error}=await sb.from("entries").delete().eq("id",+b.dataset.row);
@@ -1220,7 +1242,8 @@ const SEED_CAP=30, REC_KEEP=60, PROV_TOP=24;
 function seedWeight(r){
   const rt=r.userRating||0;
   if(rt<3) return 0;
-  return Math.pow(rt-2.5,1.6)*(r.liked?1.35:1)*rankBoost(r);
+  const affection=r.loved?1.6:r.liked?1.25:1;
+  return Math.pow(rt-2.5,1.6)*affection*rankBoost(r);
 }
 /* Where you dragged it counts too: your #1 pulls ~1.5x, the bottom ~0.75x.
    Stars are coarse (half your ledger is 5-star) — the ranking breaks those ties. */
@@ -1260,7 +1283,7 @@ function genreAffinity(){
 /* fingerprint of MY ledger — changes whenever I log or re-rate something */
 function ledgerSig(){
   return S.rows.filter(r=>r.user_id===S.me.id)
-    .map(r=>r.type+":"+r.id+":"+(r.userRating||0)+":"+(r.liked?1:0)+":"+(r.rank==null?"-":r.rank))
+    .map(r=>r.type+":"+r.id+":"+(r.userRating||0)+":"+(r.liked?1:0)+(r.loved?"L":"")+":"+(r.rank==null?"-":r.rank))
     .sort().join("|");
 }
 /* small concurrency pool so we don't fire 60 requests at once */
@@ -1657,7 +1680,8 @@ $("lsave").onclick=async()=>{
     const {error}=await sb.from("entries").upsert({
       user_id:S.me.id,tmdb_id:chosen.id,media_type:e.type,
       title:e.d.title||e.d.name,year:e.date?+e.date.slice(0,4):null,poster:e.d.poster_path,
-      rating:parseFloat($("lrate").value),liked:$("llike").value==="1",
+      rating:parseFloat($("lrate").value),
+      liked:$("llike").value!=="0", loved:$("llike").value==="2",
       watched_date:$("ldate").value.trim()||null,review:$("lrev").value.trim()||null,meta:e.meta
     },{onConflict:"user_id,tmdb_id,media_type"});
     if(error) throw new Error(error.message);
@@ -1801,7 +1825,8 @@ function renderArchiveFeed(){
     <ul>${g.rows.map(f=>`<li><b>${esc(f.who)}</b> added ${esc(f.title)}`+
       `${f.year?` <span style="color:var(--muted)">(${f.year})</span>`:""}`+
       `${f.userRating?` \u2014 ${stars(f.userRating)}`:""}`+
-      `${f.liked?' <span style="color:var(--accent)">\u2665</span>':""}</li>`).join("")}</ul>
+      `${f.loved?' <span style="color:var(--accent)">\u2665</span>'
+        :f.liked?' <span style="color:var(--accent)">\u2661</span>':""}</li>`).join("")}</ul>
   </div>`).join("")+
   `<div class="wnfoot">Showing ${F.length} most recent.</div>`;
   wirePicker();
