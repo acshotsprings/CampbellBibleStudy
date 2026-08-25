@@ -185,8 +185,8 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .barlabels span{flex:1;text-align:center}
 .brow{display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:15px}
 .brow .lb{width:146px;flex:none;font-family:'Courier Prime',monospace;font-size:13px;color:var(--muted)}
-.brow .tk{flex:1;height:12px;background:var(--card2);border:1px solid var(--edge)}
-.brow .fl{height:10px;background:var(--accent);display:block}
+.brow .tk{flex:1;height:12px;background:var(--card2);border:1px solid var(--edge);min-width:40px}
+.brow .fl{height:100%;background:var(--accent);display:block}
 .brow .vl{width:38px;text-align:right;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:30px}
 @media(max-width:760px){.cols{grid-template-columns:1fr}}
@@ -212,12 +212,14 @@ footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--edge);
 .bars button:hover{filter:brightness(1.18)}
 .bars button[aria-pressed=true]{outline:2px solid var(--ink);outline-offset:-2px}
 .bars button:disabled{cursor:default;opacity:.5}
-button.brow{cursor:pointer;background:none;border:none;padding:2px 0;width:100%;text-align:left;color:inherit;font:inherit}
+button.brow{display:flex;align-items:center;gap:12px;cursor:pointer;background:none;border:none;
+ padding:2px 0;width:100%;text-align:left;color:inherit;font:inherit;margin-bottom:8px}
 button.brow:hover .fl{filter:brightness(1.15)}
 button.brow[aria-pressed=true] .lb{color:var(--accent);font-weight:700}
 button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offset:1px}
 .drill{border:1px solid var(--edge);background:var(--card2);padding:14px;margin:0 0 20px}
-.drill .dh{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:11px}
+.drill .dh{display:flex;justify-content:flex-start;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:11px}
+.drill .dh .dc{margin-right:auto}
 .drill .dt2{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:15px}
 .drill .dc{font-family:'Courier Prime',monospace;font-size:12.5px;color:var(--muted)}
 .drill .close{background:none;border:1px solid var(--edge);color:var(--muted);cursor:pointer;
@@ -792,11 +794,15 @@ function paintDrill(){
   box.classList.remove("hidden");
   box.innerHTML=`<div class="dh"><span class="dt2">${esc(label)}</span>
     <span class="dc">${M.length} ${M.length===1?"title":"titles"}${kind==="star"?"":" · avg "+avg+"★"}</span>
+    ${kind!=="star"?`<button type="button" class="mini more">Find more like this</button>`:""}
     <button type="button" class="close">Clear</button></div>
    <div class="dlist">${M.map(f=>`<div class="ditem"><span><span class="dn">${esc(f.title)}</span>
     <span class="dy">${f.year||"—"}${S.who==="all"?" · "+esc(f.who):""}</span></span>
-    <span class="dr">${stars(f.userRating)}</span></div>`).join("")}</div>`;
+    <span class="dr">${stars(f.userRating)}</span></div>`).join("")}</div>
+   <div id="moreBox"></div>`;
   box.querySelector(".close").onclick=()=>{S.drill=null;paintDrill();};
+  const mb=box.querySelector(".more");
+  if(mb) mb.onclick=()=>discoverLike(kind,key,label);
 }
 
 /* ---------- trailers (YouTube keys come from TMDB) ---------- */
@@ -840,6 +846,73 @@ function closeTrailer(){
 $("tClose").onclick=closeTrailer;
 $("trailer").onclick=e=>{ if(e.target.id==="trailer") closeTrailer(); };
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeTrailer(); });
+
+/* ---------- "more like this": ask TMDB for titles nobody here has seen ---------- */
+const kwCache={};
+async function keywordId(name){
+  if(kwCache[name]!==undefined) return kwCache[name];
+  try{
+    const d=await tmdb("/search/keyword",{query:name});
+    const hit=(d.results||[]).find(k=>k.name.toLowerCase()===name.toLowerCase())||(d.results||[])[0];
+    kwCache[name]=hit?hit.id:null;
+  }catch(e){ kwCache[name]=null; }
+  return kwCache[name];
+}
+const GENID=Object.fromEntries(Object.entries(GEN).map(([id,n])=>[n,+id]));
+
+async function discoverLike(kind,key,label){
+  const out=$("moreBox");
+  out.innerHTML=`<p class="msg">Searching TMDB…</p>`;
+  try{
+    const p={include_adult:"false",sort_by:"vote_average.desc","vote_count.gte":80};
+    if(kind==="keyword"){
+      const id=await keywordId(key);
+      if(!id){ out.innerHTML=`<p class="msg bad">TMDB doesn't index “${esc(key)}” as a theme.</p>`; return; }
+      p.with_keywords=id;
+    }else if(kind==="genre"){
+      const id=GENID[key];
+      if(!id){ out.innerHTML=`<p class="msg bad">No matching genre on TMDB.</p>`; return; }
+      p.with_genres=id;
+    }else if(kind==="decade"){
+      const y=parseInt(key,10);
+      p["primary_release_date.gte"]=y+"-01-01";
+      p["primary_release_date.lte"]=(y+9)+"-12-31";
+      p.sort_by="vote_count.desc";
+    }
+    const [a,b]=await Promise.all([
+      tmdb("/discover/movie",{...p,page:1}),
+      tmdb("/discover/movie",{...p,page:2})
+    ]);
+    const seen=new Set(S.rows.map(r=>r.type+":"+r.id));
+    const hits=[...(a.results||[]),...(b.results||[])]
+      .filter(m=>!seen.has("movie:"+m.id)).slice(0,12);
+    if(!hits.length){ out.innerHTML=`<p class="msg">Nothing new — you've seen the obvious ones.</p>`; return; }
+    out.innerHTML=`<h2 style="font-size:15px;margin:18px 0 10px">More ${esc(label.toLowerCase())} you haven't seen</h2>
+      <div class="films">${hits.map((m,i)=>`
+      <div class="card">
+       <button type="button" class="poster-btn dtrail" data-i="${i}" title="Watch the trailer">
+        ${m.poster_path?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster_path}" alt="">`:'<div class="np">?</div>'}
+        <span class="play">▶</span></button>
+       <div class="m"><div class="t">${esc(m.title)}</div>
+        <div class="y">${(m.release_date||"—").slice(0,4)} · ${(m.vote_average||0).toFixed(1)} · ${(m.vote_count||0).toLocaleString()}</div>
+        <div class="acts">
+         <button type="button" class="mini dwant" data-i="${i}">Want to see</button>
+         <a class="mini out" href="https://www.themoviedb.org/movie/${m.id}" target="_blank" rel="noopener">TMDB ↗</a>
+        </div></div></div>`).join("")}</div>`;
+    out.querySelectorAll(".dtrail").forEach(btn=>btn.onclick=()=>{
+      const m=hits[+btn.dataset.i]; showTrailer("movie",m.id,m.title);
+    });
+    out.querySelectorAll(".dwant").forEach(btn=>btn.onclick=async()=>{
+      const m=hits[+btn.dataset.i]; btn.disabled=true; btn.textContent="Adding…";
+      const {error}=await sb.from("watchlist").upsert({user_id:S.me.id,tmdb_id:m.id,media_type:"movie",
+        title:m.title,year:(m.release_date||"").slice(0,4)||null,poster:m.poster_path,
+        meta:{genres:m.genre_ids||[],vote:m.vote_average}},{onConflict:"user_id,tmdb_id,media_type"});
+      btn.textContent=error?"Failed":"On your list";
+      btn.classList.toggle("on",!error);
+      if(!error) await loadAll();
+    });
+  }catch(e){ out.innerHTML=`<p class="msg bad">${esc(e.message)}</p>`; }
+}
 
 /* ---------- pager ---------- */
 function pageBtns(cur,total){
