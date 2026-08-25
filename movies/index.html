@@ -399,7 +399,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 <div id="app" class="hidden">
  <div class="cover">
   <span class="tab mono">Case No. ACS-2026</span>
-  <div class="cover-top"><span>Subject: <span id="stampSub">the household</span></span><span id="stampUpd">Updated: —</span><span id="stamp2">Exhibits: 0</span></div>
+  <div class="cover-top"><span>Showing: <span id="stampSub">everyone</span></span><span id="stampUpd">Updated: —</span><span id="stamp2">Exhibits: 0</span></div>
   <div class="cover-body">
    <h1>The Hot<br><em>Springs</em><br>Archive</h1>
    <p class="blurb">A shared record for the family: what each of us has watched, who made it, and what to watch next.</p>
@@ -620,7 +620,7 @@ function shape(r){
   const m=r.meta||{};
   return {id:r.tmdb_id,type:r.media_type,title:r.title,year:r.year,poster:r.poster,
     userRating:parseFloat(r.rating),liked:r.liked,review:r.review,diaryDate:r.watched_date,
-    rank:(r.rank==null?null:+r.rank),
+    rank:(r.rank==null?null:+r.rank),addedAt:r.created_at||null,
     user_id:r.user_id,who:nameOf(r.user_id),rowId:r.id,
     genres:m.genres||[],genreNames:m.genreNames||[],overview:m.overview||"",tagline:m.tagline||"",
     runtime:m.runtime||null,episodes:m.episodes||null,keywords:m.keywords||[],roles:m.roles||{},
@@ -737,12 +737,35 @@ function paintAll(){ paintMast(); ledger(); crew(); patterns(); next(); watchlis
 
 function paintMast(){
   const st=statsOf(visible());
-  const label=S.who==="all"?"the household":nameOf(S.who);
+  const label=S.who==="all"?"everyone":nameOf(S.who);
   $("spec").innerHTML=[["Titles",st.titles],["Films",st.films],["Series",st.series],
     ["Avg",st.avg?st.avg+"★":"—"],["Liked",st.liked],["People",S.profiles.length],["Hours",st.hours]]
     .map(([k,v])=>`<div>${k}<b>${v}</b></div>`).join("");
   $("stamp2").textContent="Exhibits: "+st.titles;
   $("stampSub").textContent=label;
+  stampActivity();
+}
+
+/* ---------- what's new in the archive ---------- */
+/* Sorted by when the row was created where the table records it, and by the
+   watch date otherwise, so this still reads sensibly on older entries. */
+function activityFeed(){
+  return S.rows
+    .filter(r=>r.addedAt||r.diaryDate)
+    .slice()
+    .sort((a,b)=>String(b.addedAt||b.diaryDate||"").localeCompare(String(a.addedAt||a.diaryDate||"")));
+}
+function stampActivity(){
+  const el=$("stampUpd"); if(!el) return;
+  const F=activityFeed();
+  if(!F.length){ el.textContent="Updated: \u2014"; return; }
+  const last=F[0], when=new Date(last.addedAt||last.diaryDate);
+  const day=isNaN(when)?"":when.toLocaleDateString("en-US",
+    {timeZone:"America/Chicago",month:"short",day:"numeric"});
+  el.innerHTML=`Updated: ${esc(day)} \u2014 `+
+    `<span class="what">${esc(last.who)} added ${esc(last.title)}</span>`;
+  el.title="See everything that's been added";
+  wireStampClick();
 }
 
 /* ---------- ledger ---------- */
@@ -1693,52 +1716,6 @@ pMenu.onclick=e=>e.stopPropagation();
 document.addEventListener("click",closePrefs);
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePrefs(); });
 
-/* When the site itself was last deployed. GitHub Pages sends a Last-Modified
-   header on index.html, which is what document.lastModified reflects — no API
-   call, no rate limit, and it updates itself on every push. */
-(function stampUpdated(){
-  const d=new Date(document.lastModified);
-  const el=$("stampUpd");
-  if(isNaN(d)){ el.textContent="Updated: \u2014"; return; }
-  el.textContent="Updated: "+d.toLocaleString("en-US",
-    {timeZone:"America/Chicago",month:"short",day:"numeric",year:"numeric",
-     hour:"numeric",minute:"2-digit"})+" CT";
-  const days=Math.floor((Date.now()-d.getTime())/86400000);
-  el.title=days<=0?"Deployed today":days===1?"Deployed yesterday":`Deployed ${days} days ago`;
-  wireStampClick();
-  stampCommit(el.textContent);
-})();
-
-/* What changed, from the commit that produced this file. Public repo, so no token;
-   cached for an hour because unauthenticated GitHub allows 60 calls/hour per IP. */
-async function stampCommit(prefix){
-  const REPO="acshotsprings/CampbellBibleStudy", PATH="movies/index.html", CK="cbsCommit:v1";
-  let c=null;
-  try{ const v=JSON.parse(localStorage.getItem(CK)||"null");
-       if(v&&Date.now()-v.at<36e5) c=v.c; }catch(e){}
-  if(!c){
-    try{
-      const r=await fetch(`https://api.github.com/repos/${REPO}/commits`+
-        `?path=${encodeURIComponent(PATH)}&per_page=1`);
-      if(!r.ok) return;                                  // rate-limited or offline: keep the date
-      const j=await r.json();
-      if(!Array.isArray(j)||!j.length) return;
-      c={msg:String(j[0].commit.message||"").split("\n")[0].trim(),
-         url:j[0].html_url,
-         sha:String(j[0].sha||"").slice(0,7)};
-      localStorage.setItem(CK,JSON.stringify({at:Date.now(),c}));
-    }catch(e){ return; }
-  }
-  if(!c.msg) return;
-  const generic=/^update(d)?\s+(movies\/)?index\.html$/i.test(c.msg);
-  const label=generic?`no note (${c.sha})`:c.msg;
-  $("stampUpd").innerHTML=`${esc(prefix)} \u2014 `+
-    `<a href="${esc(c.url)}" target="_blank" rel="noopener" `+
-    `title="${esc(generic?"Commit message was the GitHub default — type one to see it here":c.msg)}">`+
-    `<span class="what">${esc(label)}</span></a>`;
-  wireStampClick();
-}
-
 /* ---------- what's new panel ---------- */
 function wireStampClick(){
   const el=$("stampUpd");
@@ -1750,47 +1727,42 @@ function wireStampClick(){
     openWhatsNew();
   });
 }
-let wnLoaded=null;
 async function openWhatsNew(){
   $("whatsnew").classList.remove("hidden");
   document.body.style.overflow="hidden";
   const box=$("wnBody");
-  if(wnLoaded){ box.innerHTML=wnLoaded; return; }
-  box.innerHTML=`<p style="color:var(--muted)">Loading\u2026</p>`;
-  let html="";
-  try{
-    const r=await fetch("changelog.json?v="+Date.now());
-    if(!r.ok) throw new Error("no changelog");
-    const d=await r.json();
-    html=(d.releases||[]).map(rel=>`<div class="wnrel">
-      <h4>${esc(rel.title||"Update")}</h4>
-      <div class="wd">${esc(fmtDay(rel.date))}</div>
-      <ul>${(rel.items||[]).map(i=>`<li>${esc(i)}</li>`).join("")}</ul>
-    </div>`).join("");
-  }catch(e){ html=""; }
-  if(!html) html=await commitFallback();
-  box.innerHTML=wnLoaded=html+
-    `<div class="wnfoot">Full history on <a href="https://github.com/acshotsprings/CampbellBibleStudy/commits/main/movies" target="_blank" rel="noopener">GitHub \u2197</a></div>`;
+  $("wnTitle").textContent="What's new in the archive";
+  const F=activityFeed().slice(0,40);
+  if(!F.length){ box.innerHTML=`<p style="color:var(--muted)">Nothing logged yet.</p>`; return; }
+
+  /* group by the day it was added */
+  const days=[];
+  F.forEach(f=>{
+    const d=new Date(f.addedAt||f.diaryDate);
+    const key=isNaN(d)?"\u2014":d.toLocaleDateString("en-US",
+      {timeZone:"America/Chicago",year:"numeric",month:"long",day:"numeric"});
+    const g=days.find(x=>x.key===key)||(days.push({key,rows:[]}),days[days.length-1]);
+    g.rows.push(f);
+  });
+
+  box.innerHTML=days.map(g=>`<div class="wnrel">
+    <div class="wd">${esc(g.key)}</div>
+    <ul>${g.rows.map(f=>`<li><b>${esc(f.who)}</b> added ${esc(f.title)}`+
+      `${f.year?` <span style="color:var(--muted)">(${f.year})</span>`:""}`+
+      `${f.userRating?` \u2014 ${stars(f.userRating)}`:""}`+
+      `${f.liked?' <span style="color:var(--accent)">\u2665</span>':""}</li>`).join("")}</ul>
+  </div>`).join("")+
+  `<div class="wnfoot" id="wnSite">Site itself last deployed \u2014</div>`;
+  siteFootnote();
 }
-/* if changelog.json isn't there, list the commits instead */
-async function commitFallback(){
-  try{
-    const r=await fetch("https://api.github.com/repos/acshotsprings/CampbellBibleStudy/commits"+
-      "?path=movies%2Findex.html&per_page=15");
-    if(!r.ok) throw new Error();
-    const j=await r.json();
-    return `<div class="wnrel"><h4>Recent changes</h4><div class="wd">from the repo</div><ul>`+
-      j.map(c=>`<li>${esc(String(c.commit.message||"").split("\n")[0])}
-        <span style="color:var(--muted)">\u00b7 ${esc(fmtDay(c.commit.committer.date))}</span></li>`).join("")+
-      `</ul></div>`;
-  }catch(e){
-    return `<p style="color:var(--muted)">No changelog available right now.</p>`;
-  }
-}
-function fmtDay(v){
-  const d=new Date(v); if(isNaN(d)) return String(v||"");
-  return d.toLocaleDateString("en-US",{timeZone:"America/Chicago",
-    month:"long",day:"numeric",year:"numeric"});
+
+/* the deploy info moves down here, out of the way */
+async function siteFootnote(){
+  const el=$("wnSite"); if(!el) return;
+  const d=new Date(document.lastModified);
+  const when=isNaN(d)?"\u2014":d.toLocaleString("en-US",
+    {timeZone:"America/Chicago",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})+" CT";
+  el.textContent=`Site itself last deployed ${when}`;
 }
 function closeWhatsNew(){
   $("whatsnew").classList.add("hidden");
