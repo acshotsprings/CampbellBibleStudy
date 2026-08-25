@@ -521,8 +521,15 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 
  <section id="v-watch" class="hidden">
   <h2>Watch List</h2>
-  <p class="lede">Everything you flagged as "want to see." Log it once you've watched it.</p>
-  <p class="msg" id="wmsg"></p>
+  <p class="lede">Everything you flagged as "want to see," ranked against your ledger.</p>
+  <div class="tools" style="grid-template-columns:auto auto 1fr;align-items:center">
+   <label for="wSort" style="font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted)">Order</label>
+   <select id="wSort">
+    <option value="match">Best match first</option>
+    <option value="added">Recently added</option>
+   </select>
+   <p class="msg" id="wmsg" style="margin:0"></p>
+  </div>
   <div class="films" id="wlist"></div>
  </section>
 
@@ -636,7 +643,7 @@ const JOBS={"Director":"director","Screenplay":"writer","Writer":"writer","Story
  "Original Music Composer":"composer","Music":"composer","Director of Photography":"dop",
  "Editor":"editor","Producer":"producer","Executive Producer":"exec"};
 
-const S={me:null,profiles:[],rows:[],want:[],who:"all",tmdbKey:null,recs:[],skip:[],skipRemote:true,recsSig:null,recsBuilt:null,recsBusy:false,PG:{ledger:1,crew:1},drill:null};
+const S={me:null,profiles:[],rows:[],want:[],who:"all",tmdbKey:null,recs:[],scores:{},skip:[],skipRemote:true,recsSig:null,recsBuilt:null,recsBusy:false,PG:{ledger:1,crew:1},drill:null};
 
 /* ---------- normalise a db row into the shape the views expect ---------- */
 function shape(r){
@@ -699,6 +706,7 @@ async function loadAll(){
   try{ cached=JSON.parse(localStorage.getItem(RECS_CACHE)||"null"); }catch(e){}
   if(cached&&cached.uid===S.me.id&&(cached.recs||[]).length){
     S.recs=cached.recs; S.recsSig=cached.sig; S.recsBuilt=cached.built;
+    S.scores=cached.scores||{};
   }else{
     try{ const r=await fetch("data.json?v="+Date.now()); if(r.ok){const d=await r.json(); S.recs=d.recs||[];} }catch(e){}
   }
@@ -1346,6 +1354,11 @@ async function buildRecs(){
   L.forEach(x=>{ x.seeds=Object.fromEntries(Object.entries(x.seeds).sort((a,b)=>b[1]-a[1]).slice(0,4)); });
   const max=L[0].raw||1;
   L.forEach(x=>x.score=Math.round(1000*x.raw/max)/10);
+  /* the full tally is thousands of titles but only a number each — keeping it
+     lets the Watch List score things that fell outside the visible 60 */
+  const scores={};
+  Object.values(tally).forEach(x=>{ scores[x.type+":"+x.id]=Math.round(1000*x.raw/max)/10; });
+  S.scores=scores;
 
   // streaming availability only for the ones actually near the top
   await pool(L.slice(0,PROV_TOP),async m=>{
@@ -1357,7 +1370,7 @@ async function buildRecs(){
 
   S.recs=L; S.recsSig=ledgerSig(); S.recsBuilt=new Date().toISOString();
   try{ localStorage.setItem(RECS_CACHE,JSON.stringify(
-    {uid:S.me.id,sig:S.recsSig,built:S.recsBuilt,recs:L})); }catch(e){}
+    {uid:S.me.id,sig:S.recsSig,built:S.recsBuilt,recs:L,scores})); }catch(e){}
   return L.length;
 }
 
@@ -1468,12 +1481,27 @@ function next(){
       say("nmsg",`${m.title} is back in the mix.`,"ok"); };
   });
 }
+const wlScore=w=>{ const v=S.scores[w.media_type+":"+w.tmdb_id]; return v==null?null:v; };
 function watchlist(){
-  const L=S.want.slice().sort((x,y)=>String(y.created_at||"").localeCompare(String(x.created_at||""))||
-                                     String(x.title||"").localeCompare(String(y.title||"")));
+  const so=($("wSort")||{}).value||"match";
+  const byAdded=(x,y)=>String(y.created_at||"").localeCompare(String(x.created_at||""))||
+                       String(x.title||"").localeCompare(String(y.title||""));
+  /* unscored titles sort last rather than as zero — they were never offered
+     as candidates, which isn't the same as being a poor match */
+  const byMatch=(x,y)=>{
+    const a=wlScore(x), b=wlScore(y);
+    if(a==null&&b==null) return byAdded(x,y);
+    if(a==null) return 1;
+    if(b==null) return -1;
+    return b-a || byAdded(x,y);
+  };
+  const L=S.want.slice().sort(so==="added"?byAdded:byMatch);
   $("wlist").innerHTML=L.length?L.map((w,i)=>{
     const m=wlShape(w);
+    const sc=wlScore(w);
     return `<div class="card">
+     <span class="rk" title="How strongly this matches your ledger">MATCH</span>
+     <span class="badge" title="${sc==null?"Not scored yet — refresh suggestions":"Match strength"}">${sc==null?"\u2014":Math.round(sc)+"%"}</span>
      ${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
      <button type="button" class="poster-btn wtrail" data-i="${i}" title="Watch the trailer">
       ${img(m.poster,"w342")?`<img loading="lazy" src="${img(m.poster,"w342")}" alt="" onerror="this.outerHTML='<div class=&quot;np&quot;>?</div>'">`:'<div class="np">?</div>'}
@@ -1487,6 +1515,17 @@ function watchlist(){
        <a class="mini out" href="https://www.themoviedb.org/${m.type}/${m.id}" target="_blank" rel="noopener">TMDB ↗</a>
       </div></div></div>`;
   }).join(""):`<p style="color:var(--muted);grid-column:1/-1">Nothing on your list yet. Flag something over in What's Next.</p>`;
+
+  const ws=$("wSort");
+  if(ws&&!ws.dataset.wired){ ws.dataset.wired="1"; ws.onchange=watchlist; }
+
+  /* if nothing is scored yet, say why rather than showing a wall of dashes */
+  const unscored=L.filter(w=>wlScore(w)==null).length;
+  if(L.length&&unscored===L.length&&so==="match")
+    say("wmsg","No match scores yet \u2014 open What's Next and refresh suggestions.");
+  else if(unscored)
+    say("wmsg",`${unscored} not scored yet; they sort last.`);
+  else say("wmsg","");
 
   $("wlist").querySelectorAll(".wtrail").forEach(b=>b.onclick=()=>{
     const m=wlShape(L[+b.dataset.i]); showTrailer(m.type,m.id,m.title);
