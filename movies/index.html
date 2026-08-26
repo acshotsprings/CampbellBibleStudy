@@ -220,7 +220,7 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .dsoon{margin-top:12px;border:1px dashed var(--accent);color:var(--accent);padding:8px 12px;
   font-family:'Courier Prime',monospace;font-size:12.5px;display:inline-block}
 .card img{width:100%;display:block;aspect-ratio:2/3;object-fit:cover;background:var(--edge)}
-.card .np{width:100%;aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;
+.card .np{width:100%;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;
   color:var(--edge);font-family:'Archivo Black',sans-serif;font-size:38px}
 .card .m{padding:8px 9px 10px}
 .card .t{font-family:'Archivo',sans-serif;font-weight:700;font-size:var(--dd);line-height:1.25}
@@ -1962,7 +1962,13 @@ async function search(){
     const d=await tmdb("/search/multi",{query:q,include_adult:"false"});
     const all=d.results||[];
     const people=all.filter(r=>r.media_type==="person").slice(0,4);
-    const hits=all.filter(r=>r.media_type==="movie"||r.media_type==="tv").slice(0,12);
+    /* rank the ones we can actually show: artwork first, then how well known */
+    const hits=all.filter(r=>r.media_type==="movie"||r.media_type==="tv")
+      .sort((a,b)=>
+        (b.poster_path?1:0)-(a.poster_path?1:0) ||
+        (b.vote_count||0)-(a.vote_count||0) ||
+        (b.popularity||0)-(a.popularity||0))
+      .slice(0,12);
     if(!hits.length&&!people.length) return say("lmsg","Nothing found.","bad");
     say("lmsg",`${hits.length} titles${people.length?` and ${people.length} people`:""} \u2014 pick one.`);
     const peopleHTML=people.length?peopleStrip(people):"";
