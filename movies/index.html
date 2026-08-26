@@ -232,27 +232,28 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .mrow .mn em{color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em}
 .mrow.out .mn{color:var(--muted)}
 .tl{background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:left}
-.tt .tx{color:var(--muted);font-family:'Courier Prime',monospace;font-size:11px;margin-left:3px}
+.tt .tx{color:var(--ink);opacity:.82;font-family:'Courier Prime',monospace;font-size:11px;margin-left:3px}
 .tl:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
 .pl{background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit;
   text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}
 .pl:hover{color:var(--accent)}
 .pstrip{display:flex;gap:10px;flex-wrap:wrap;grid-column:1/-1;margin-bottom:4px}
 .pcard{display:flex;align-items:center;gap:9px;background:var(--card2);cursor:pointer;
-  border:1px solid var(--edge);padding:6px 12px 6px 6px;text-align:left}
+  border:1px solid var(--edge);padding:6px 12px 6px 6px;text-align:left;color:var(--ink)}
 .pcard:hover{border-color:var(--accent)}
+.pcard:hover .pn{color:var(--accent)}
 .pcard img{width:38px;height:38px;object-fit:cover;border-radius:50%;display:block}
 .pcard .np.sm{width:38px;height:38px;font-size:16px;border-radius:50%;background:var(--edge);
   display:flex;align-items:center;justify-content:center;color:var(--card)}
-.pcard .pn{font-family:'Archivo',sans-serif;font-weight:700;font-size:13px}
-.pcard .pr{font-family:'Courier Prime',monospace;font-size:10.5px;color:var(--muted);
-  text-transform:uppercase;letter-spacing:.08em}
+.pcard .pn{font-family:'Archivo',sans-serif;font-weight:800;font-size:13.5px;color:var(--ink)}
+.pcard .pr{font-family:'Courier Prime',monospace;font-size:11px;color:var(--ink);
+  opacity:.8;text-transform:uppercase;letter-spacing:.08em}
 .pback{grid-column:1/-1;display:flex;align-items:center;gap:12px;margin-bottom:6px}
 .pback button{background:transparent;border:1px solid var(--edge);color:var(--muted);cursor:pointer;
   font-family:'Courier Prime',monospace;font-size:11.5px;padding:4px 10px}
 .pback button:hover{border-color:var(--accent);color:var(--accent)}
 .pback span{font-family:'Archivo',sans-serif;font-weight:700}
-.badge.fit{opacity:.45;font-size:11px;letter-spacing:.1em}
+.badge.fit{opacity:.75;font-size:11px;letter-spacing:.1em}
 .badge.fit.ready{opacity:1;font-size:14px;letter-spacing:0}
 .card .wp{font-family:'Courier Prime',monospace;font-size:11px;color:var(--accent2);
   margin-top:5px;line-height:1.35}
@@ -356,7 +357,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 .mini.on{background:var(--accent);border-color:var(--accent);color:var(--card)}
 .mini:disabled{opacity:.5;cursor:wait}
 /* secondary actions — present but not competing with the primary ones */
-.mini.ghost{color:var(--muted);border-style:dashed}
+.mini.ghost{color:var(--ink);opacity:.85;border-style:dashed}
 .mini.ghost:hover{color:var(--accent);border-color:var(--accent);border-style:solid}
 .msg .mini{margin-left:6px;vertical-align:baseline}
 .card .acts .mini{width:auto;font-family:'Courier Prime',monospace;font-size:11px;
@@ -397,7 +398,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px}
 .wnrel ul{margin:0;padding-left:18px}
 .wnrel li{font-size:var(--dd);line-height:1.5;margin-bottom:6px}
-.wnrel li .wt{display:inline-block;min-width:74px;color:var(--muted);
+.wnrel li .wt{display:inline-block;min-width:74px;color:var(--ink);opacity:.82;
   font-family:'Courier Prime',monospace;font-size:11.5px}
 .wnrel li::marker{color:var(--accent)}
 .wnfoot{border-top:1px solid var(--edge);margin-top:16px;padding-top:12px;
