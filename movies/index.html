@@ -252,6 +252,8 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
   font-family:'Courier Prime',monospace;font-size:11.5px;padding:4px 10px}
 .pback button:hover{border-color:var(--accent);color:var(--accent)}
 .pback span{font-family:'Archivo',sans-serif;font-weight:700}
+.badge.fit{opacity:.45;font-size:11px;letter-spacing:.1em}
+.badge.fit.ready{opacity:1;font-size:14px;letter-spacing:0}
 .card .wp{font-family:'Courier Prime',monospace;font-size:11px;color:var(--accent2);
   margin-top:5px;line-height:1.35}
 .card .y{font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted);margin-top:4px}
@@ -1803,6 +1805,67 @@ function wlShape(w){
           vote:mt.vote||0,genres:mt.genres||[],watch:mt.watch||null};
 }
 
+/* ---------- fit score for an arbitrary title ----------
+   The recommendation engine scores things it proposed. A title you searched for
+   was never a candidate, so we work backwards: ask TMDB what this title sits
+   near, and measure how much of that is already in your ledger. Then apply the
+   same genre and people weighting the main engine uses. */
+const FIT_CACHE="cbsFit:v1";
+function fitCache(){ try{ return JSON.parse(localStorage.getItem(FIT_CACHE)||"{}"); }catch(e){ return {}; } }
+let fitAff=null, fitPpl=null;
+
+async function fitScore(m){
+  const key=m.type+":"+m.id;
+  if(S.scores&&S.scores[key]!=null) return Math.round(S.scores[key]);  // free if the engine already ranked it
+  const c=fitCache();
+  if(c[key]!=null&&c[key].sig===S.recsSig) return c[key].v;
+
+  const mine={};
+  S.rows.filter(r=>r.user_id===S.me.id).forEach(r=>mine[r.type+":"+r.id]=r);
+  if(!Object.keys(mine).length) return null;
+  if(!fitAff) fitAff=genreAffinity();
+  if(!fitPpl) fitPpl=peopleAffinity();
+
+  let overlap=0;
+  try{
+    const [a,b]=await Promise.all([
+      tmdb(`/${m.type}/${m.id}/recommendations`).catch(()=>({})),
+      tmdb(`/${m.type}/${m.id}/similar`).catch(()=>({}))
+    ]);
+    const seen=new Set();
+    [...(a.results||[]).map(x=>[x,1]),...(b.results||[]).map(x=>[x,.6])]
+      .forEach(([x,mult],i)=>{
+        const k=(x.media_type||m.type)+":"+x.id;
+        if(seen.has(k)) return; seen.add(k);
+        const row=mine[k];
+        if(row) overlap+=seedWeight(row)*mult/(1+.18*i);   // earlier hits count more
+      });
+  }catch(e){}
+
+  let pb=1;
+  try{ pb=peopleBoost(await creditsFor(m.type,m.id),fitPpl); credSave(); }catch(e){}
+
+  const gs=(m.genres||[]).map(g=>fitAff[g]||1);
+  const ga=gs.length?gs.reduce((x,y)=>x+y,0)/gs.length:1;
+
+  const raw=(0.5+overlap)*ga*pb;
+  const v=Math.round(100*(raw/(raw+4)));                   // saturating, 0-100
+  c[key]={v,sig:S.recsSig};
+  try{ localStorage.setItem(FIT_CACHE,JSON.stringify(c)); }catch(e){}
+  return v;
+}
+/* fill the badges in after the cards are on screen */
+async function paintFit(sel,list,shape){
+  const nodes=[...document.querySelectorAll(sel)];
+  await pool(nodes,async n=>{
+    const m=shape(list[+n.dataset.i]);
+    const v=await fitScore(m);
+    if(v==null){ n.textContent="\u2014"; return; }
+    n.textContent=v+"%";
+    n.classList.add("ready");
+  },4);
+}
+
 /* add straight to the watch list, without logging it as watched */
 const onWatchlist=(type,id)=>S.want.some(w=>w.media_type===type&&w.tmdb_id===id);
 async function addToWatchlist(m,btn){
@@ -1977,12 +2040,14 @@ async function search(){
       return `<div class="card" data-i="${i}"><button type="button">
        ${m.media_type==="tv"?'<span class="tvs" style="top:0">SERIES</span>':""}
        ${m.poster_path?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster_path}" alt="">`:'<div class="np">?</div>'}
+       <span class="rk">MATCH</span><span class="badge fit" data-i="${i}">\u00b7\u00b7</span>
        <div class="m"><div class="t">${esc(t)}</div><div class="y">${y||"—"}</div></div></button>
        <div class="acts one"><button type="button" class="mini wl${onWatchlist(m.media_type,m.id)?" on":""}"
          data-i="${i}">${onWatchlist(m.media_type,m.id)?"On your list":"Want to see"}</button></div></div>`;
     }).join("");
     $("lres").querySelectorAll(".pcard").forEach(b=>b.onclick=()=>
       showPerson(people[+b.dataset.pi],q));
+    paintFit("#lres .badge.fit",hits,m=>({id:m.id,type:m.media_type,genres:m.genre_ids||[]}));
     $("lres").querySelectorAll(".wl").forEach(b=>b.onclick=ev=>{
       ev.stopPropagation();                       // don't also select it for logging
       if(b.classList.contains("on")) return;
@@ -2055,7 +2120,8 @@ async function showPerson(p,q){
       <span>${esc(p.name)}</span></div>`+
       list.map((m,i)=>`<div class="card psel" data-i="${i}"><button type="button">
         ${m.type==="tv"?'<span class="tvs" style="top:0">SERIES</span>':""}
-        ${seen.has(m.type+":"+m.id)?'<span class="badge" style="font-size:10px">LOGGED</span>':""}
+        ${seen.has(m.type+":"+m.id)?'<span class="badge" style="font-size:10px">LOGGED</span>'
+          :`<span class="rk">MATCH</span><span class="badge fit" data-i="${i}">\u00b7\u00b7</span>`}
         ${m.poster?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster}" alt="">`:'<div class="np">?</div>'}
         <div class="m"><div class="t">${esc(m.title)}</div>
          <div class="y">${m.year||"\u2014"} \u00b7 ${(m.vote||0).toFixed(1)}</div>
@@ -2064,6 +2130,7 @@ async function showPerson(p,q){
           data-i="${i}">${onWatchlist(m.type,m.id)?"On your list":"Want to see"}</button></div></div>`).join("");
 
     $("pbk").onclick=()=>{ $("lq").value=q; search(); };
+    paintFit("#lres .badge.fit",list,m=>({id:m.id,type:m.type,genres:[]}));
     $("lres").querySelectorAll(".pwl").forEach(b=>b.onclick=ev=>{
       ev.stopPropagation();
       if(b.classList.contains("on")) return;

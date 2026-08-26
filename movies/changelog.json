@@ -2,6 +2,15 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it just shows the date.",
   "releases": [
     {
+      "at": "2026-08-26T10:05:00-05:00",
+      "title": "Match scores on search results",
+      "items": [
+        "Search results and filmography pages now show a match percentage, so you can tell whether something is your kind of thing before logging it.",
+        "It's worked out backwards from the suggestions engine: TMDB is asked what a title sits near, and that's measured against your ledger, then weighted by genre and by directors and cast you rate highly.",
+        "Scores are cached until your ledger changes, so repeat searches are instant."
+      ]
+    },
+    {
       "at": "2026-08-26T09:45:00-05:00",
       "title": "Search results ranked by what's usable",
       "items": [
