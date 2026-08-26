@@ -2,6 +2,23 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it just shows the date.",
   "releases": [
     {
+      "at": "2026-08-26T09:45:00-05:00",
+      "title": "Search results ranked by what's usable",
+      "items": [
+        "TMDB sorts search by text relevance, so obscure titles with no poster and no year were outranking the ones you'd actually want. Results now lead with artwork, then how well known the title is.",
+        "The blank placeholder for a missing poster is shorter, so a few data-less results no longer fill the screen."
+      ]
+    },
+    {
+      "at": "2026-08-25T21:45:00-05:00",
+      "title": "Crew Index counts, readable",
+      "items": [
+        "Back to a single number beside each name.",
+        "Each title now carries its own credit count — Ben Berman reads 5 with 'The Amazing Johnathan Documentary ×5', so the total visibly adds up.",
+        "Titles within a row sort by how much work the person did on them."
+      ]
+    },
+    {
       "at": "2026-08-25T17:05:00-05:00",
       "title": "Add to watch list from search",
       "items": [
