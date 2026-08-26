@@ -2,6 +2,14 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it just shows the date.",
   "releases": [
     {
+      "at": "2026-08-26T10:55:00-05:00",
+      "title": "Not interested, on the Patterns strip too",
+      "items": [
+        "The discovery strip under a Patterns chart now has a Not interested button, like What's Next.",
+        "It also respects things you've already dismissed — it was ignoring them and offering the same titles back."
+      ]
+    },
+    {
       "at": "2026-08-26T10:05:00-05:00",
       "title": "Match scores on search results",
       "items": [

@@ -1328,8 +1328,9 @@ async function discoverLike(kind,key,label){
       tmdb("/discover/movie",{...p,page:2})
     ]);
     const seen=new Set(S.rows.map(r=>r.type+":"+r.id));
+    const skipped=new Set(S.skip.map(x=>skipKey(x.media_type,x.tmdb_id)));
     const hits=[...(a.results||[]),...(b.results||[])]
-      .filter(m=>!seen.has("movie:"+m.id)).slice(0,12);
+      .filter(m=>!seen.has("movie:"+m.id)&&!skipped.has("movie:"+m.id)).slice(0,12);
     if(!hits.length){ out.innerHTML=`<p class="msg">Nothing new — you've seen the obvious ones.</p>`; return; }
     out.innerHTML=`<h2 style="font-size:15px;margin:18px 0 10px">More ${esc(label.toLowerCase())} you haven't seen</h2>
       <div class="films">${hits.map((m,i)=>`
@@ -1341,6 +1342,7 @@ async function discoverLike(kind,key,label){
         <div class="y">${(m.release_date||"—").slice(0,4)} · ${(m.vote_average||0).toFixed(1)} · ${(m.vote_count||0).toLocaleString()}</div>
         <div class="acts">
          <button type="button" class="mini dwant" data-i="${i}">Want to see</button>
+         <button type="button" class="mini ghost dnope" data-i="${i}">Not interested</button>
          <a class="mini out" href="https://www.themoviedb.org/movie/${m.id}" target="_blank" rel="noopener">TMDB ↗</a>
         </div></div></div>`).join("")}</div>`;
     out.querySelectorAll(".dtrail").forEach(btn=>btn.onclick=()=>{
@@ -1354,6 +1356,13 @@ async function discoverLike(kind,key,label){
       btn.textContent=error?"Failed":"On your list";
       btn.classList.toggle("on",!error);
       if(!error) await loadAll();
+    });
+    out.querySelectorAll(".dnope").forEach(btn=>btn.onclick=async()=>{
+      const m=hits[+btn.dataset.i]; btn.disabled=true;
+      await addSkip({id:m.id,type:"movie",title:m.title});
+      await loadSkips();
+      const card=btn.closest(".card");
+      if(card) card.remove();      // drop it in place rather than refetching discover
     });
   }catch(e){ out.innerHTML=`<p class="msg bad">${esc(e.message)}</p>`; }
 }
