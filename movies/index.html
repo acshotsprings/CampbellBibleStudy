@@ -2110,6 +2110,36 @@ function wireMemberPanel(){
   });
 }
 
+let hhWho=null, hhDir="toMe";     // toMe = what they'd pass to you
+function paintPairs(byUser){
+  const sel=$("hhWho"); if(!sel) return;
+  const them=S.profiles.find(p=>p.id===hhWho); if(!them) return;
+  const A=hhDir==="toMe"?them:{id:S.me.id,name:nameOf(S.me.id)};
+  const B=hhDir==="toMe"?{id:S.me.id,name:nameOf(S.me.id)}:them;
+
+  $("hhDirLabel").textContent=hhDir==="toMe"
+    ? `\u2192 what ${them.name} would pass to you`
+    : `\u2192 what you would pass to ${them.name}`;
+
+  const seenB=new Set((byUser[B.id]||[]).map(r=>r.type+":"+r.id));
+  const list=(byUser[A.id]||[])
+    .filter(r=>r.userRating>=4&&!seenB.has(r.type+":"+r.id))
+    .sort((x,y)=>y.userRating-x.userRating||
+      (y.loved?1:0)-(x.loved?1:0)||x.title.localeCompare(y.title))
+    .slice(0,30);
+
+  $("hhPairs").innerHTML=list.length
+    ? list.map(r=>`<div class="ditem">
+        <span><button type="button" class="tl dn" data-t="${esc(r.title)}">${esc(r.title)}</button>
+        <span class="dy">${r.year||"\u2014"}${r.loved?" \u00b7 loved it":r.liked?" \u00b7 liked it":""}</span></span>
+        <span class="dr">${stars(r.userRating)}</span></div>`).join("")
+    : `<p style="color:var(--muted)">${esc(A.name)} hasn't rated anything 4\u2605 or better that ${
+        B.id===S.me.id?"you haven't":esc(B.name)+" hasn't"} seen.</p>`;
+
+  sel.onchange=()=>{ hhWho=sel.value; household(); };
+  $("hhSwap").onclick=()=>{ hhDir=hhDir==="toMe"?"fromMe":"toMe"; household(); };
+}
+
 function household(){
   if(S.profiles.length<2){
     $("hh").innerHTML=`<p style="color:var(--muted)">Once someone else signs up, this fills in — overlap, taste match, and what to watch together.</p>`+
@@ -2119,6 +2149,7 @@ function household(){
   }
   const byUser={};
   S.profiles.forEach(p=>byUser[p.id]=S.rows.filter(r=>r.user_id===p.id));
+  if(!byUser[S.me.id]) byUser[S.me.id]=S.rows.filter(r=>r.user_id===S.me.id);
   let html=`<div class="dlist" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin-bottom:20px">`+
     S.profiles.map(p=>{const st=statsOf(byUser[p.id]);
       return `<div class="ditem"><span><span class="dn">${esc(p.name)}</span>
@@ -2163,22 +2194,24 @@ function household(){
     : `<div class="crewrow multi"><div><div class="nm">${esc(p.a)} &amp; ${esc(p.b)}</div>
        <div class="rl">${p.n} in common · average gap ${p.diff}★</div></div><div class="ct">${p.match}%</div></div>`).join("");
 
-  /* what one has seen and the other hasn't, rated 4+ */
+  /* one direction at a time — pick the other person and which way it runs */
+  const others=S.profiles.filter(p=>p.id!==S.me.id);
   html+=`<h2 style="font-size:16px;margin-top:22px">Recommend to each other</h2>`;
-  const swaps=[];
-  S.profiles.forEach(A=>S.profiles.forEach(B=>{
-    if(A.id===B.id) return;
-    const seenB=new Set(byUser[B.id].map(r=>r.type+":"+r.id));
-    byUser[A.id].filter(r=>r.userRating>=4.5&&!seenB.has(r.type+":"+r.id))
-      .forEach(r=>swaps.push({from:A.name,to:B.name,title:r.title,year:r.year,rating:r.userRating}));
-  }));
-  html+=swaps.length?swaps.slice(0,24).map(s=>`<div class="ditem">
-    <span><span class="dn">${esc(s.title)}</span>
-    <span class="dy">${s.year||"—"} · ${esc(s.from)} → ${esc(s.to)}</span></span>
-    <span class="dr">${stars(s.rating)}</span></div>`).join("")
-   :`<p style="color:var(--muted)">Nothing to pass along yet.</p>`;
+  if(!others.length){
+    html+=`<p style="color:var(--muted)">Nobody else has joined yet.</p>`;
+  }else{
+    if(!hhWho||!others.some(p=>p.id===hhWho)) hhWho=others[0].id;
+    html+=`<div class="tools" style="grid-template-columns:auto 1fr auto;align-items:center;margin-bottom:6px">
+      <select id="hhWho">${others.map(p=>
+        `<option value="${p.id}"${p.id===hhWho?" selected":""}>${esc(p.name)}</option>`).join("")}</select>
+      <span class="lede" style="margin:0" id="hhDirLabel"></span>
+      <button type="button" class="btn ghost" id="hhSwap">Swap direction</button>
+     </div>
+     <div id="hhPairs"></div>`;
+  }
   $("hh").innerHTML=html+memberPanel();
   wireMemberPanel();
+  if(others.length) paintPairs(byUser);
 }
 
 /* ---------- tmdb + logging ---------- */
