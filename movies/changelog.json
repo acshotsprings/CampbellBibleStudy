@@ -2,6 +2,15 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-27T16:30:00-05:00",
+      "by": "Chris",
+      "title": "The ledger opens on your own titles",
+      "items": [
+        "With several members, defaulting to Everyone made it unclear whose ratings you were reading. It now opens on yours, and Everyone is still one click away.",
+        "Whichever you pick is remembered for next time."
+      ]
+    },
+    {
       "at": "2026-08-27T16:20:00-05:00",
       "by": "Chris",
       "title": "Add someone else's title to your own ledger",
