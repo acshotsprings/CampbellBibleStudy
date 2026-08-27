@@ -8,7 +8,8 @@
         "Search results now show WATCHED on anything already in your ledger, instead of a match score — search only ever checked the filmography view before.",
         "Clicking a watched result won't open the rating form; it offers to take you to the entry in the ledger instead.",
         "The save button refuses a duplicate as a last line of defence, so it can't happen by any route.",
-        "The Want to see button is hidden on titles you've already watched."
+        "The Want to see button is hidden on titles you've already watched.",
+        "Trailer buttons on search results and filmography cards — the poster there is the select-to-log target, so there was nowhere to click for a trailer."
       ]
     },
     {

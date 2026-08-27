@@ -949,6 +949,13 @@ function personLink(p){
   if(p.id==null) return esc(p.name);
   return `<button type="button" class="pl" data-pid="${p.id}" data-pn="${esc(p.name)}">${esc(p.name)}</button>`;
 }
+/* trailer buttons on the search and filmography cards */
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".trailm"); if(!b) return;
+  e.preventDefault(); e.stopPropagation();          // don't select the card for logging
+  showTrailer(b.dataset.mt,+b.dataset.mid,b.dataset.mn);
+});
+
 /* a title anywhere -> open its dossier in the ledger */
 document.addEventListener("click",e=>{
   const b=e.target.closest(".tl"); if(!b) return;
@@ -2060,7 +2067,9 @@ async function search(){
        <div class="acts one">${mineHas
          ? `<button type="button" class="mini seenbtn" data-t="${esc(t)}">In your ledger \u2192</button>`
          : `<button type="button" class="mini wl${onWatchlist(m.media_type,m.id)?" on":""}" data-i="${i}">`+
-           `${onWatchlist(m.media_type,m.id)?"On your list":"Want to see"}</button>`}</div></div>`;
+           `${onWatchlist(m.media_type,m.id)?"On your list":"Want to see"}</button>`}`+
+        `<button type="button" class="mini trailm" data-mt="${m.media_type}" data-mid="${m.id}"
+          data-mn="${esc(t)}">\u25b6 Trailer</button></div></div>`;
     }).join("");
     $("lres").querySelectorAll(".pcard").forEach(b=>b.onclick=()=>
       showPerson(people[+b.dataset.pi],q));
@@ -2154,7 +2163,9 @@ async function showPerson(p,q){
          <div class="y">${m.year||"\u2014"} \u00b7 ${(m.vote||0).toFixed(1)}</div>
          <div class="wp">${esc(m.role)}</div></div></button>
         <div class="acts one"><button type="button" class="mini pwl${onWatchlist(m.type,m.id)?" on":""}"
-          data-i="${i}">${onWatchlist(m.type,m.id)?"On your list":"Want to see"}</button></div></div>`).join("");
+          data-i="${i}">${onWatchlist(m.type,m.id)?"On your list":"Want to see"}</button>`+
+         `<button type="button" class="mini trailm" data-mt="${m.type}" data-mid="${m.id}"
+           data-mn="${esc(m.title)}">\u25b6 Trailer</button></div></div>`).join("");
 
     $("pbk").onclick=()=>{ $("lq").value=q; search(); };
     paintFit("#lres .badge.fit",list,m=>({id:m.id,type:m.type,genres:[]}));
