@@ -179,6 +179,13 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .heart.loved{font-size:1.15em}
 .affrow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:14px;
   padding-top:12px;border-top:1px solid var(--edge)}
+.tsrow{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px}
+.tsrow img{width:92px;display:block;border:1px solid var(--edge)}
+.tsy{font-family:'Courier Prime',monospace;font-size:12.5px;color:var(--ink);opacity:.8}
+.tsw{font-family:'Courier Prime',monospace;font-size:12px;color:var(--ink);opacity:.85;margin-top:6px}
+.tsacts{display:flex;gap:8px;flex-wrap:wrap}
+.tsacts .btn{text-decoration:none;display:inline-flex;align-items:center}
+.hhacts{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .hhbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
 .hhbar select{min-width:170px}
 .hhbar .lede{margin:0;flex-basis:100%}
@@ -345,7 +352,9 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 .drill .close:hover{border-color:var(--accent);color:var(--accent)}
 .dlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2px 18px}
 .ditem{display:grid;grid-template-columns:1fr auto;gap:10px;padding:5px 0;border-bottom:1px solid var(--edge);align-items:baseline}
-.ditem .dn{font-family:'Archivo',sans-serif;font-weight:600;font-size:13.5px}
+.ditem .dn.tsopen{background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:left;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}
+.dn.tsopen:hover{color:var(--accent)}
+.dn{font-family:'Archivo',sans-serif;font-weight:600;font-size:13.5px}
 .ditem .dy{font-family:'Courier Prime',monospace;font-size:11px;color:var(--muted)}
 .ditem .dr{font-family:'Archivo Black',sans-serif;font-size:12px;color:var(--stamp);white-space:nowrap}
 
@@ -671,6 +680,14 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   Streaming availability (US) from JustWatch, via TMDB.
  </footer>
 </div>
+</div>
+
+<div id="tsheet" class="tmodal hidden" role="dialog" aria-modal="true" aria-labelledby="tsTitle">
+ <div class="tbox">
+  <div class="thead"><span id="tsTitle"></span>
+   <button type="button" id="tsClose" aria-label="Close">Close ✕</button></div>
+  <div class="wnbody" id="tsBody"></div>
+ </div>
 </div>
 
 <div id="guide" class="tmodal hidden" role="dialog" aria-modal="true" aria-labelledby="gdTitle">
@@ -1011,6 +1028,61 @@ function personLink(p){
   if(p.id==null) return esc(p.name);
   return `<button type="button" class="pl" data-pid="${p.id}" data-pn="${esc(p.name)}">${esc(p.name)}</button>`;
 }
+/* Everything you might want to do with a title, from wherever you clicked it. */
+let tsFilm=null;
+function openTitleSheet(m){
+  tsFilm=m;
+  $("tsTitle").textContent=m.title;
+  $("tsheet").classList.remove("hidden");
+  document.body.style.overflow="hidden";
+  const mine=loggedByMe(m.type,m.id);
+  const want=onWatchlist(m.type,m.id);
+  const others=S.rows.filter(r=>r.user_id!==S.me.id&&r.type===m.type&&r.id===m.id);
+  $("tsBody").innerHTML=`
+    <div class="tsrow">
+      ${m.poster?`<img src="https://image.tmdb.org/t/p/w185${m.poster}" alt="">`:""}
+      <div>
+        <div class="tsy">${m.year||"\u2014"} \u00b7 ${m.type==="tv"?"Series":"Film"}</div>
+        ${others.length?`<div class="tsw">${esc(others.map(r=>
+          `${nameOf(r.user_id)} rated it ${r.userRating}\u2605${r.loved?" and loved it":""}`
+          ).join(" \u00b7 "))}</div>`:""}
+        ${mine?`<div class="tsw" style="color:var(--accent2)">Already in your ledger</div>`:""}
+      </div>
+    </div>
+    <div class="tsacts">
+      <button type="button" class="btn ghost" id="tsTrail">\u25b6 Watch trailer</button>
+      ${mine
+        ? `<button type="button" class="btn ghost" id="tsOpen">Open in your ledger</button>`
+        : `<button type="button" class="btn ghost" id="tsWant"${want?" disabled":""}>${
+             want?"On your watch list":"Want to see"}</button>
+           <button type="button" class="btn" id="tsLog">I've seen it \u2014 log it</button>`}
+      <a class="btn ghost" href="https://www.themoviedb.org/${m.type}/${m.id}"
+         target="_blank" rel="noopener">TMDB \u2197</a>
+    </div>`;
+
+  $("tsTrail").onclick=()=>{ closeTitleSheet(); showTrailer(m.type,m.id,m.title); };
+  const o=$("tsOpen");
+  if(o) o.onclick=()=>{
+    closeTitleSheet();
+    document.querySelector('nav button[data-v="ledger"]').click();
+    $("q").value=m.title; S.PG.ledger=1; ledger();
+  };
+  const w=$("tsWant");
+  if(w) w.onclick=async()=>{
+    await addToWatchlist({id:m.id,type:m.type,title:m.title,year:m.year,
+      poster:m.poster,genres:m.genres||[],vote:m.vote||0},w);
+  };
+  const lg=$("tsLog");
+  if(lg) lg.onclick=()=>{ closeTitleSheet(); openLogFor(m,"household"); };
+}
+function closeTitleSheet(){
+  $("tsheet").classList.add("hidden");
+  document.body.style.overflow="";
+}
+$("tsClose").onclick=closeTitleSheet;
+$("tsheet").onclick=e=>{ if(e.target.id==="tsheet") closeTitleSheet(); };
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeTitleSheet(); });
+
 /* trailer buttons on the search and filmography cards */
 document.addEventListener("click",e=>{
   const b=e.target.closest(".trailm"); if(!b) return;
@@ -1084,7 +1156,13 @@ function dossier(f){
     </div>`:""}
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
      <button class="btn ghost trailD" data-t="${f.type}" data-id="${f.id}" data-n="${esc(f.title)}">Watch trailer</button>
-     ${mine?`<button class="btn ghost del" data-row="${f.rowId}">Remove my entry</button>`:""}
+     ${mine?`<button class="btn ghost del" data-row="${f.rowId}">Remove my entry</button>`
+       :loggedByMe(f.type,f.id)?""
+       :`<button class="btn ghost dwant" data-t="${f.type}" data-id="${f.id}" data-n="${esc(f.title)}"
+           data-y="${f.year||""}" data-p="${f.poster||""}">${
+             onWatchlist(f.type,f.id)?"On your watch list":"Want to see"}</button>
+         <button class="btn dlog" data-t="${f.type}" data-id="${f.id}" data-n="${esc(f.title)}"
+           data-y="${f.year||""}" data-p="${f.poster||""}">I've seen it \u2014 log it</button>`}
     </div>
    </div></div>`;
 }
@@ -1227,6 +1305,19 @@ function ledger(){
   }
   $("ledger").querySelectorAll(".trailD").forEach(b=>b.onclick=()=>
     showTrailer(b.dataset.t,+b.dataset.id,b.dataset.n));
+  /* someone else's entry — let me queue it or log my own */
+  const dm=b=>({id:+b.dataset.id,type:b.dataset.t,title:b.dataset.n,
+                year:+b.dataset.y||null,poster:b.dataset.p||null});
+  $("ledger").querySelectorAll(".dwant").forEach(b=>b.onclick=async ev=>{
+    ev.stopPropagation();
+    if(b.textContent.startsWith("On your")) return;
+    await addToWatchlist(dm(b),b);
+  });
+  $("ledger").querySelectorAll(".dlog").forEach(b=>b.onclick=ev=>{
+    ev.stopPropagation();
+    openLogFor(dm(b),"ledger");
+  });
+
   $("ledger").querySelectorAll(".ratesel").forEach(sel=>sel.onchange=async ev=>{
     ev.stopPropagation();
     sel.disabled=true;
@@ -2131,13 +2222,36 @@ function paintPairs(byUser){
       (y.loved?1:0)-(x.loved?1:0)||x.title.localeCompare(y.title))
     .slice(0,30);
 
+  const toMe=hhDir==="toMe";
   $("hhPairs").innerHTML=list.length
-    ? list.map(r=>`<div class="ditem">
-        <span><button type="button" class="tl dn" data-t="${esc(r.title)}">${esc(r.title)}</button>
+    ? list.map((r,i)=>`<div class="ditem">
+        <span><button type="button" class="dn tsopen" data-i="${i}">${esc(r.title)}</button>
         <span class="dy">${r.year||"\u2014"}${r.loved?" \u00b7 loved it":r.liked?" \u00b7 liked it":""}</span></span>
-        <span class="dr">${stars(r.userRating)}</span></div>`).join("")
+        <span class="hhacts">${toMe?
+          `<button type="button" class="mini hhwant" data-i="${i}">${
+            onWatchlist(r.type,r.id)?"On your list":"Want to see"}</button>
+           <button type="button" class="mini ghost hhseen" data-i="${i}">I've seen it</button>`:""}
+         <span class="dr">${stars(r.userRating)}</span></span></div>`).join("")
     : `<p style="color:var(--muted)">${esc(A.name)} hasn't rated anything 4\u2605 or better that ${
         B.id===S.me.id?"you haven't":esc(B.name)+" hasn't"} seen.</p>`;
+
+  /* act on it here rather than hunting for the title in Log a Film */
+  $("hhPairs").querySelectorAll(".tsopen").forEach(b=>b.onclick=()=>{
+    const r=list[+b.dataset.i];
+    openTitleSheet({id:r.id,type:r.type,title:r.title,year:r.year,
+                    poster:r.poster,genres:r.genres||[]});
+  });
+  $("hhPairs").querySelectorAll(".hhwant").forEach(b=>b.onclick=async()=>{
+    const r=list[+b.dataset.i];
+    if(onWatchlist(r.type,r.id)) return;
+    await addToWatchlist({id:r.id,type:r.type,title:r.title,year:r.year,
+      poster:r.poster,genres:r.genres||[],vote:0},b);
+  });
+  $("hhPairs").querySelectorAll(".hhseen").forEach(b=>b.onclick=()=>{
+    openLogFor({id:r_(b).id,type:r_(b).type,title:r_(b).title,
+                year:r_(b).year,poster:r_(b).poster},"household");
+  });
+  function r_(b){ return list[+b.dataset.i]; }
 
   sel.onchange=()=>{ hhWho=sel.value; household(); };
   $("hhSwap").onclick=()=>{ hhDir=hhDir==="toMe"?"fromMe":"toMe"; household(); };
@@ -2483,7 +2597,9 @@ $("lsave").onclick=async()=>{
     await loadAll();
     if(back){
       document.querySelector(`nav button[data-v="${back}"]`).click();
-      say(back==="watch"?"wmsg":"nmsg",`Logged — ${e.d.title||e.d.name} is off the list.`,"ok");
+      /* each tab has its own message slot; household has none, so stay quiet there */
+      const slot={watch:"wmsg",next:"nmsg"}[back];
+      if(slot) say(slot,`Logged \u2014 ${e.d.title||e.d.name} is off the list.`,"ok");
     }
   }catch(err){ say("smsg",err.message,"bad"); }
   finally{ $("lsave").disabled=false; }

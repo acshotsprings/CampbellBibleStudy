@@ -2,6 +2,33 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-27T16:20:00-05:00",
+      "by": "Chris",
+      "title": "Add someone else's title to your own ledger",
+      "items": [
+        "Opening an entry logged by another member now offers Want to see and 'I've seen it — log it'. Before there was only the trailer button, so there was no way to act on what you were reading.",
+        "Neither appears if it's already in your ledger."
+      ]
+    },
+    {
+      "at": "2026-08-27T16:10:00-05:00",
+      "by": "Chris",
+      "title": "Click a recommended title to do something with it",
+      "items": [
+        "Clicking a title in 'Recommend to each other' opens a panel with the poster, who else has rated it and how, and buttons to watch the trailer, add it to your watch list, or log it.",
+        "It used to jump to the Ledger and search for a title you hadn't logged, which found nothing."
+      ]
+    },
+    {
+      "at": "2026-08-27T16:00:00-05:00",
+      "by": "Chris",
+      "title": "Act on a recommendation where you see it",
+      "items": [
+        "Titles someone would pass to you now have Want to see and I've seen it, so you can queue or log them without going to Log a Film.",
+        "The entries query pages through everything rather than stopping at Supabase's 1000-row limit — precautionary, but it would have bitten as the household grows."
+      ]
+    },
+    {
       "at": "2026-08-27T15:50:00-05:00",
       "by": "Chris",
       "title": "The ledger was being truncated",
