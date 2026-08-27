@@ -254,6 +254,8 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .pback button:hover{border-color:var(--accent);color:var(--accent)}
 .pback span{font-family:'Archivo',sans-serif;font-weight:700}
 .badge.fit{opacity:.75;font-size:11px;letter-spacing:.1em}
+.rk.seen{background:var(--accent2);letter-spacing:.1em}
+.mini.seenbtn{color:var(--ink);opacity:.85}
 .badge.fit.ready{opacity:1;font-size:14px;letter-spacing:0}
 .card .wp{font-family:'Courier Prime',monospace;font-size:11px;color:var(--accent2);
   margin-top:5px;line-height:1.35}
@@ -1878,6 +1880,7 @@ async function paintFit(sel,list,shape){
 
 /* add straight to the watch list, without logging it as watched */
 const onWatchlist=(type,id)=>S.want.some(w=>w.media_type===type&&w.tmdb_id===id);
+const loggedByMe=(type,id)=>S.rows.some(r=>r.user_id===S.me.id&&r.type===type&&r.id===id);
 async function addToWatchlist(m,btn){
   btn.disabled=true; btn.textContent="Adding\u2026";
   const {error}=await sb.from("watchlist").upsert({
@@ -2047,13 +2050,17 @@ async function search(){
     const peopleHTML=people.length?peopleStrip(people):"";
     $("lres").innerHTML=peopleHTML+hits.map((m,i)=>{
       const t=m.title||m.name,y=(m.release_date||m.first_air_date||"").slice(0,4);
+      const mineHas=loggedByMe(m.media_type,m.id);
       return `<div class="card" data-i="${i}"><button type="button">
        ${m.media_type==="tv"?'<span class="tvs" style="top:0">SERIES</span>':""}
        ${m.poster_path?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster_path}" alt="">`:'<div class="np">?</div>'}
-       <span class="rk">MATCH</span><span class="badge fit" data-i="${i}">\u00b7\u00b7</span>
+       ${mineHas?'<span class="rk seen">WATCHED</span>'
+         :`<span class="rk">MATCH</span><span class="badge fit" data-i="${i}">\u00b7\u00b7</span>`}
        <div class="m"><div class="t">${esc(t)}</div><div class="y">${y||"—"}</div></div></button>
-       <div class="acts one"><button type="button" class="mini wl${onWatchlist(m.media_type,m.id)?" on":""}"
-         data-i="${i}">${onWatchlist(m.media_type,m.id)?"On your list":"Want to see"}</button></div></div>`;
+       <div class="acts one">${mineHas
+         ? `<button type="button" class="mini seenbtn" data-t="${esc(t)}">In your ledger \u2192</button>`
+         : `<button type="button" class="mini wl${onWatchlist(m.media_type,m.id)?" on":""}" data-i="${i}">`+
+           `${onWatchlist(m.media_type,m.id)?"On your list":"Want to see"}</button>`}</div></div>`;
     }).join("");
     $("lres").querySelectorAll(".pcard").forEach(b=>b.onclick=()=>
       showPerson(people[+b.dataset.pi],q));
@@ -2066,7 +2073,17 @@ async function search(){
         year:+((m.release_date||m.first_air_date||"").slice(0,4))||null,
         poster:m.poster_path,genres:m.genre_ids||[],vote:m.vote_average||0},b);
     });
+    $("lres").querySelectorAll(".seenbtn").forEach(b=>b.onclick=ev=>{
+      ev.stopPropagation();
+      document.querySelector('nav button[data-v="ledger"]').click();
+      $("q").value=b.dataset.t; S.PG.ledger=1; ledger();
+    });
     $("lres").querySelectorAll(".card").forEach(el=>el.onclick=()=>{
+      const h=hits[+el.dataset.i];
+      if(h&&loggedByMe(h.media_type,h.id)){
+        say("lmsg",`${h.title||h.name} is already in your ledger.`,"bad");
+        return;                                   // never open the form for something logged
+      }
       $("lres").querySelectorAll(".card").forEach(x=>x.classList.remove("sel"));
       el.classList.add("sel"); chosen=hits[+el.dataset.i];
       const t=chosen.title||chosen.name,y=(chosen.release_date||chosen.first_air_date||"").slice(0,4);
@@ -2130,7 +2147,7 @@ async function showPerson(p,q){
       <span>${esc(p.name)}</span></div>`+
       list.map((m,i)=>`<div class="card psel" data-i="${i}"><button type="button">
         ${m.type==="tv"?'<span class="tvs" style="top:0">SERIES</span>':""}
-        ${seen.has(m.type+":"+m.id)?'<span class="badge" style="font-size:10px">LOGGED</span>'
+        ${seen.has(m.type+":"+m.id)?'<span class="rk seen">WATCHED</span>'
           :`<span class="rk">MATCH</span><span class="badge fit" data-i="${i}">\u00b7\u00b7</span>`}
         ${m.poster?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster}" alt="">`:'<div class="np">?</div>'}
         <div class="m"><div class="t">${esc(m.title)}</div>
@@ -2150,6 +2167,9 @@ async function showPerson(p,q){
     });
     $("lres").querySelectorAll(".psel").forEach(el=>el.onclick=()=>{
       const m=list[+el.dataset.i];
+      if(loggedByMe(m.type,m.id)){
+        say("lmsg",`${m.title} is already in your ledger.`,"bad"); return;
+      }
       $("lres").querySelectorAll(".card").forEach(x=>x.classList.remove("sel"));
       el.classList.add("sel");
       chosen={id:m.id,media_type:m.type,title:m.title,name:m.title,
@@ -2199,6 +2219,10 @@ async function enrich(hit){
 }
 $("lsave").onclick=async()=>{
   if(!chosen) return;
+  if(loggedByMe(chosen.media_type,chosen.id)){
+    say("smsg","That's already in your ledger \u2014 open it there to change the rating.","bad");
+    return;
+  }
   const back=logOrigin, tmdbId=chosen.id;
   logOrigin=null;
   $("lsave").disabled=true; say("smsg","Looking up credits…");

@@ -2,6 +2,16 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it just shows the date.",
   "releases": [
     {
+      "at": "2026-08-27T12:35:00-05:00",
+      "title": "No double logging",
+      "items": [
+        "Search results now show WATCHED on anything already in your ledger, instead of a match score — search only ever checked the filmography view before.",
+        "Clicking a watched result won't open the rating form; it offers to take you to the entry in the ledger instead.",
+        "The save button refuses a duplicate as a last line of defence, so it can't happen by any route.",
+        "The Want to see button is hidden on titles you've already watched."
+      ]
+    },
+    {
       "at": "2026-08-26T10:55:00-05:00",
       "title": "Not interested, on the Patterns strip too",
       "items": [
