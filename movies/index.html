@@ -268,6 +268,8 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .badge.fit.ready{opacity:1;font-size:14px;letter-spacing:0}
 .card .wp{font-family:'Courier Prime',monospace;font-size:11px;color:var(--accent2);
   margin-top:5px;line-height:1.35}
+.card .hw{font-family:'Courier Prime',monospace;font-size:11px;color:var(--ink);opacity:.8;
+  margin-top:4px;line-height:1.35}
 .card .y{font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted);margin-top:4px}
 .wt{font-family:'Courier Prime',monospace;font-size:12px;color:var(--accent);
   margin-top:8px;border-top:1px solid var(--edge);padding-top:7px;line-height:1.4}
@@ -1502,6 +1504,56 @@ async function dropSkip(m){
   lsSaveSkips(lsSkips().filter(x=>skipKey(x.media_type,x.tmdb_id)!==skipKey(m.type,m.id)));
 }
 
+/* ---------- likeness ratio ----------
+   How much another member's opinion should count for you. Built from the
+   titles you have both rated: a small average gap means a high likeness
+   ratio, a wide gap means a low one. Shrunk toward neutral when you have
+   only a handful of titles in common, so early noise can't swing anything. */
+const LIKENESS_FLOOR=0.85, LIKENESS_CEIL=1.15;   // deliberately the gentlest lever in the engine
+
+function likenessRatios(){
+  const me=S.rows.filter(r=>r.user_id===S.me.id&&(r.userRating||0)>0);
+  if(!me.length) return {};
+  const mine={}; me.forEach(r=>mine[r.type+":"+r.id]=r.userRating);
+  const out={};
+  S.profiles.filter(p=>p.id!==S.me.id).forEach(p=>{
+    const theirs=S.rows.filter(r=>r.user_id===p.id&&(r.userRating||0)>0);
+    if(!theirs.length) return;
+    const both=theirs.filter(r=>mine[r.type+":"+r.id]!==undefined);
+    const mean=theirs.reduce((a,r)=>a+r.userRating,0)/theirs.length;
+    if(!both.length){ out[p.id]={agree:0,conf:0,n:0,mean,name:p.name}; return; }
+    const gap=both.reduce((a,r)=>a+Math.abs(r.userRating-mine[r.type+":"+r.id]),0)/both.length;
+    const agree=Math.max(-1,Math.min(1,1-2*gap/4.5));   // 0 gap -> +1, 2.25 -> 0, 4.5 -> -1
+    const conf=both.length/(both.length+6);             // 3 titles ~ a third, 30 ~ most of the way
+    out[p.id]={agree,conf,n:both.length,mean,name:p.name};
+  });
+  return out;
+}
+
+/* what the household thinks of one title, weighted by likeness ratio */
+function householdView(type,id,LR){
+  const rows=S.rows.filter(r=>r.user_id!==S.me.id&&r.type===type&&r.id===id&&(r.userRating||0)>0);
+  if(!rows.length) return {mult:1,who:[]};
+  let num=0,den=0;
+  const who=[];
+  rows.forEach(r=>{
+    const lr=LR[r.user_id]; if(!lr) return;
+    const w=lr.agree*lr.conf;
+    /* centred on their own average, so a 4 from a harsh rater outweighs a 4 from a generous one */
+    let z=Math.max(-1,Math.min(1,(r.userRating-lr.mean)/1.5));
+    if(r.loved) z=Math.min(1,z+.25);
+    num+=w*z; den+=Math.abs(w);
+    who.push({name:lr.name,rating:r.userRating,loved:r.loved,liked:r.liked});
+  });
+  if(!den) return {mult:1,who};
+  /* Sum, don't average: dividing by the total weight would cancel the
+     confidence term, and a single rater with three titles in common would
+     count as much as one with thirty. */
+  const hs=Math.max(-1,Math.min(1,num));
+  const span=(LIKENESS_CEIL-LIKENESS_FLOOR)/2;
+  return {mult:1+span*hs, who};
+}
+
 /* ---------- live recommendation engine ---------- */
 const RECS_CACHE="cbsRecs:v3";  // v3 = director/cast weighting, forces one rebuild
 const SEED_CAP=30, REC_KEEP=60, PROV_TOP=24, CRED_TOP=30;
@@ -1675,13 +1727,16 @@ async function buildRecs(){
          only two of your genuine favourites point at.
        - times a mild quality term, times how you actually rate those genres. */
   const AFF=genreAffinity();
+  const LR=likenessRatios();
   const score=e=>{
     const cs=Object.values(e.seeds).sort((a,b)=>b-a);
     let base=0; cs.forEach((c,i)=>base+=c/(1+.35*i));
     const q=.6+.4*Math.min(1,(e.vote||0)/8);
     const gs=(e.genres||[]).map(g=>AFF[g]||1);
     const ga=gs.length?gs.reduce((a,b)=>a+b,0)/gs.length:1;
-    e.raw=base*q*ga*(e.pb||1);
+    const hv=householdView(e.type,e.id,LR);
+    e.hh=hv.mult; e.hwho=hv.who;
+    e.raw=base*q*ga*(e.pb||1)*hv.mult;
   };
   Object.values(tally).forEach(score);
 
@@ -1793,6 +1848,9 @@ function next(){
       ${bc?`<div class="w">Because you liked ${esc(bc)}</div>`:""}
       ${(m.people||[]).length?`<div class="wp">${esc(m.people.map(o=>
         `${o.n} ${o.r} one you rated`).join(" \u00b7 "))}</div>`:""}
+      ${(m.hwho||[]).length?`<div class="hw">${esc(m.hwho.map(o=>
+        `${o.name} ${o.loved?"loved it":o.liked?"liked it":"rated it "+o.rating+"\u2605"}`
+        ).join(" \u00b7 "))}</div>`:""}
       ${who.length?`<div class="wt">Seen by ${esc(who.join(", "))}</div>`:watchTag(m)}
       <div class="acts">
        <button type="button" class="mini want ${isOn?"on":""}" data-i="${i}">${isOn?"On your list":"Want to see"}</button>
@@ -1960,7 +2018,8 @@ async function fitScore(m){
   const gs=(m.genres||[]).map(g=>fitAff[g]||1);
   const ga=gs.length?gs.reduce((x,y)=>x+y,0)/gs.length:1;
 
-  const raw=(0.5+overlap)*ga*pb;
+  const hv=householdView(m.type,m.id,likenessRatios());
+  const raw=(0.5+overlap)*ga*pb*hv.mult;
   const v=Math.round(100*(raw/(raw+4)));                   // saturating, 0-100
   c[key]={v,sig:S.recsSig};
   try{ localStorage.setItem(FIT_CACHE,JSON.stringify(c)); }catch(e){}
@@ -2076,6 +2135,27 @@ function household(){
     const diff=both.reduce((s,r)=>s+Math.abs(r.userRating-mapA[r.type+":"+r.id]),0)/both.length;
     pairs.push({a:A.name,b:B.name,n:both.length,match:Math.max(0,Math.round((1-diff/4.5)*100)),diff:diff.toFixed(2)});
   }
+  /* how much each person's opinion currently counts toward your suggestions */
+  const LR=likenessRatios();
+  const lrRows=S.profiles.filter(p=>p.id!==S.me.id).map(p=>{
+    const l=LR[p.id];
+    if(!l||!l.n) return {name:p.name,n:0};
+    const w=l.agree*l.conf;
+    const mult=1+((LIKENESS_CEIL-LIKENESS_FLOOR)/2)*Math.max(-1,Math.min(1,w));
+    return {name:p.name,n:l.n,agree:Math.round(l.agree*100),mult:mult.toFixed(2)};
+  });
+  html+=`<h2 style="font-size:16px;margin-top:6px">Likeness ratio</h2>
+   <p class="lede">How much each person's opinion counts toward your suggestions.
+    It grows as you rate more of the same titles, and never moves a score by more than
+    ${Math.round((LIKENESS_CEIL-1)*100)}%.</p>`;
+  html+=lrRows.map(r=>r.n
+    ? `<div class="crewrow multi"><div><div class="nm">${esc(r.name)}</div>
+       <div class="rl">${r.n} rated in common \u00b7 ${r.agree}% agreement</div></div>
+       <div class="ct">${r.mult}\u00d7</div></div>`
+    : `<div class="crewrow"><div><div class="nm">${esc(r.name)}</div>
+       <div class="rl">nothing rated in common yet \u2014 no effect</div></div>
+       <div class="ct">1.00\u00d7</div></div>`).join("");
+
   html+=`<h2 style="font-size:16px;margin-top:6px">Taste match</h2>`;
   html+=pairs.map(p=>p.n<3
     ? `<div class="crewrow"><div><div class="nm">${esc(p.a)} &amp; ${esc(p.b)}</div>

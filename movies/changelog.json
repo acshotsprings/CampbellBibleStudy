@@ -2,6 +2,17 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it just shows the date.",
   "releases": [
     {
+      "at": "2026-08-27T14:30:00-05:00",
+      "title": "Likeness ratio",
+      "items": [
+        "Suggestions now take account of what the rest of the household thinks, weighted by how closely each person's ratings track yours — the likeness ratio.",
+        "It grows with the number of titles you've both rated, so three in common counts a little and thirty counts a lot. Someone who consistently disagrees with you pulls a title down instead of up.",
+        "Capped at 0.85x to 1.15x — deliberately the gentlest lever in the engine. Your own ratings still decide.",
+        "Cards say who: 'Chase loved it · Damon rated it 4★'.",
+        "The Household tab shows each person's current ratio and what it's based on."
+      ]
+    },
+    {
       "at": "2026-08-27T14:00:00-05:00",
       "title": "A guide for new members",
       "items": [
