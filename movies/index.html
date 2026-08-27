@@ -2150,11 +2150,11 @@ function household(){
     ${Math.round((LIKENESS_CEIL-1)*100)}%.</p>`;
   html+=lrRows.map(r=>r.n
     ? `<div class="crewrow multi"><div><div class="nm">${esc(r.name)}</div>
-       <div class="rl">${r.n} rated in common \u00b7 ${r.agree}% agreement</div></div>
-       <div class="ct">${r.mult}\u00d7</div></div>`
+       <div class="rl">${r.n} rated in common \u00b7 counts ${r.mult}\u00d7 toward your scores</div></div>
+       <div class="ct">${r.agree}%</div></div>`
     : `<div class="crewrow"><div><div class="nm">${esc(r.name)}</div>
-       <div class="rl">nothing rated in common yet \u2014 no effect</div></div>
-       <div class="ct">1.00\u00d7</div></div>`).join("");
+       <div class="rl">nothing rated in common yet \u2014 counts 1.00\u00d7</div></div>
+       <div class="ct">\u2014</div></div>`).join("");
 
   html+=`<h2 style="font-size:16px;margin-top:6px">Taste match</h2>`;
   html+=pairs.map(p=>p.n<3
