@@ -602,6 +602,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
    <p class="msg" id="nbuilt" style="margin:0"></p>
    <button class="btn ghost hidden" id="nClearSkips">Clear hidden</button>
   </div>
+  <p class="lede" id="npersonal" style="margin-top:-2px"></p>
   <p class="msg" id="nmsg"></p>
   <div class="films" id="next"></div>
  </section>
@@ -617,6 +618,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
    </select>
    <p class="msg" id="wmsg" style="margin:0"></p>
   </div>
+  <p class="lede" id="wpersonal" style="margin-top:-4px"></p>
   <p class="banner hidden" id="wdone"></p>
   <div class="films" id="wlist"></div>
  </section>
@@ -1959,6 +1961,10 @@ function next(){
     if(sv&&!(r.watch&&dedupe(r.watch.stream||[]).includes(sv))) return false;
     return true;
   });
+  const np=$("npersonal");
+  if(np) np.textContent=(S.who!=="all"&&S.who!==S.me.id)
+    ? `Built from your own ledger \u2014 the ${nameOf(S.who)} filter above doesn't change these.`
+    : "";
   $("nClearSkips").classList.toggle("hidden",!S.skip.length);
   $("nClearSkips").textContent=`Clear ${S.skip.length} hidden`;
   $("next").innerHTML=L.length?L.map((m,i)=>{
@@ -2058,6 +2064,11 @@ function watchlist(){
        <a class="mini out" href="https://www.themoviedb.org/${m.type}/${m.id}" target="_blank" rel="noopener">TMDB ↗</a>
       </div></div></div>`;
   }).join(""):`<p style="color:var(--muted);grid-column:1/-1">Nothing on your list yet. Flag something over in What's Next.</p>`;
+
+  const pn=$("wpersonal");
+  if(pn) pn.textContent=(S.who!=="all"&&S.who!==S.me.id)
+    ? `The ${nameOf(S.who)} filter above doesn't apply here \u2014 watch lists are personal, and this is yours.`
+    : "";
 
   const done=L.filter(w=>loggedByMe(w.media_type,w.tmdb_id));
   const bn=$("wdone");
