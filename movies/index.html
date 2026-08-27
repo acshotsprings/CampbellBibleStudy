@@ -443,6 +443,9 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 .wnfoot a{color:var(--accent)}
 .tbody{aspect-ratio:16/9;background:#000;position:relative}
 .tbody iframe{width:100%;height:100%;border:0;display:block}
+.talt{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card2);
+  padding:9px 14px;border-top:1px solid var(--edge)}
+.talt span{font-family:'Courier Prime',monospace;font-size:11.5px;color:var(--ink);opacity:.8;flex:1}
 .tnone{aspect-ratio:auto;padding:26px 18px;background:var(--card2);color:var(--muted);
  font-size:var(--lede);text-align:center}
 .tnone a{color:var(--accent)}
@@ -716,6 +719,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   <div class="thead"><span id="tTitle"></span>
    <button type="button" id="tClose" aria-label="Close trailer">Close ✕</button></div>
   <div class="tbody" id="tBody"></div>
+  <div class="talt" id="tAlt"></div>
  </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1445,11 +1449,17 @@ async function pickTrailer(type,id){
   if(trailerCache[k]!==undefined) return trailerCache[k];
   let v=[];
   try{ v=((await tmdb(`/${type}/${id}/videos`)).results||[]).filter(x=>x.site==="YouTube"); }
-  catch(e){ trailerCache[k]=null; return null; }
-  /* official trailer first, then any trailer, then a teaser, then whatever exists */
-  const pick=v.find(x=>x.type==="Trailer"&&x.official)||v.find(x=>x.type==="Trailer")
-           ||v.find(x=>x.type==="Teaser")||v[0]||null;
-  trailerCache[k]=pick; return pick;
+  catch(e){ trailerCache[k]=[]; return []; }
+  /* Rank rather than pick one: a region-locked upload plays nowhere and we
+     can't tell from here, so keep the alternatives ready. US and English
+     uploads first — foreign-territory ones are the usual culprits. */
+  const rank=x=>
+    (x.iso_3166_1==="US"?0:8)+
+    (x.iso_639_1==="en"?0:4)+
+    (x.type==="Trailer"?0:x.type==="Teaser"?1:2)+
+    (x.official?0:1);
+  const list=v.slice().sort((a,b)=>rank(a)-rank(b));
+  trailerCache[k]=list; return list;
 }
 async function showTrailer(type,id,title){
   const box=$("trailer");
@@ -1458,22 +1468,36 @@ async function showTrailer(type,id,title){
   $("tBody").innerHTML="Looking for a trailer…";
   box.classList.remove("hidden");
   document.body.style.overflow="hidden";
-  const v=await pickTrailer(type,id);
-  if(!v){
+  const list=await pickTrailer(type,id);
+  const search=`https://www.youtube.com/results?search_query=${encodeURIComponent(title+" trailer")}`;
+  if(!list.length){
     $("tBody").className="tbody tnone";
-    $("tBody").innerHTML=`No trailer on file for this one — common with smaller documentaries.
-      <br><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(title+" trailer")}"
-      target="_blank" rel="noopener">Search YouTube instead ↗</a>`;
+    $("tBody").innerHTML=`No trailer on file for this one \u2014 common with smaller documentaries.
+      <br><a href="${search}" target="_blank" rel="noopener">Search YouTube instead \u2197</a>`;
     return;
   }
-  $("tBody").className="tbody";
-  $("tBody").innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${v.key}?autoplay=1&rel=0"
-    title="${esc(title)} trailer" allow="accelerometer;autoplay;encrypted-media;picture-in-picture"
-    allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  let i=0;
+  const play=()=>{
+    const v=list[i];
+    $("tBody").className="tbody";
+    $("tBody").innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${v.key}?autoplay=1&rel=0"
+      title="${esc(title)} trailer" allow="accelerometer;autoplay;encrypted-media;picture-in-picture"
+      allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+    /* the iframe can't tell us it was blocked, so offer the way out up front */
+    $("tAlt").innerHTML=
+      `<span>${esc(v.name||"Trailer")}${v.iso_3166_1&&v.iso_3166_1!=="US"?` \u00b7 ${esc(v.iso_3166_1)}`:""}</span>`+
+      (list.length>1?`<button type="button" class="mini" id="tNext">Won't play \u2014 try another (${i+1}/${list.length})</button>`:"")+
+      `<a class="mini out" href="https://www.youtube.com/watch?v=${v.key}" target="_blank" rel="noopener">Open on YouTube \u2197</a>`+
+      `<a class="mini out" href="${search}" target="_blank" rel="noopener">Search \u2197</a>`;
+    const nx=$("tNext");
+    if(nx) nx.onclick=()=>{ i=(i+1)%list.length; play(); };
+  };
+  play();
 }
 function closeTrailer(){
   $("trailer").classList.add("hidden");
   $("tBody").innerHTML="";              /* stops playback */
+  $("tAlt").innerHTML="";
   document.body.style.overflow="";
 }
 $("tClose").onclick=closeTrailer;
