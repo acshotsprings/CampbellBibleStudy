@@ -1,5 +1,5 @@
 {
-  "note": "Newest first. 'at' is an ISO timestamp; omit the time and it just shows the date.",
+  "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
       "at": "2026-08-27T14:30:00-05:00",
@@ -10,7 +10,8 @@
         "Capped at 0.85x to 1.15x — deliberately the gentlest lever in the engine. Your own ratings still decide.",
         "Cards say who: 'Chase loved it · Damon rated it 4★'.",
         "The Household tab shows each person's current ratio and what it's based on."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-27T14:00:00-05:00",
@@ -18,7 +19,8 @@
       "items": [
         "First time someone signs in with an empty ledger, a short guide explains what each tab does.",
         "A Guide button next to Sign out reopens it any time."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-27T13:45:00-05:00",
@@ -27,7 +29,8 @@
         "A member with no profile row was having their own entries hidden from them — their own rows now always show.",
         "Falls back to the account name instead of 'Someone' until a profile exists.",
         "Comes with SQL that removes any leftover uniqueness rule stopping two people logging the same title, and backfills missing profiles."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-27T13:20:00-05:00",
@@ -35,7 +38,8 @@
       "items": [
         "Open any of your entries and there's a star selector next to How you felt — change it there instead of deleting and re-logging.",
         "Re-rating rebuilds your suggestions, since ratings are what the engine seeds from."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-27T13:05:00-05:00",
@@ -44,7 +48,8 @@
         "Anything on the watch list that's already in your ledger is marked WATCHED, dimmed, and offers a link to the entry instead of 'I've seen it'.",
         "A banner at the top counts them and clears them all in one click.",
         "Logging a title already removes it from the list; this catches anything that slipped through before that existed."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-27T12:35:00-05:00",
@@ -56,7 +61,8 @@
         "The Want to see button is hidden on titles you've already watched.",
         "Trailer buttons on search results and filmography cards — the poster there is the select-to-log target, so there was nowhere to click for a trailer.",
         "A title already in your ledger now looks it — the card dims, the name gets a tick, and the button reads 'In your ledger'. Clicking gives it a nudge rather than silently doing nothing."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-26T10:55:00-05:00",
@@ -64,7 +70,8 @@
       "items": [
         "The discovery strip under a Patterns chart now has a Not interested button, like What's Next.",
         "It also respects things you've already dismissed — it was ignoring them and offering the same titles back."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-26T10:05:00-05:00",
@@ -75,7 +82,8 @@
         "Scores are cached until your ledger changes, so repeat searches are instant.",
         "People chips in search results are readable on the dark palettes — the buttons weren't inheriting a text colour.",
         "Small print — role labels, credit counts, entry times, secondary buttons — now clears AAA contrast on all eight palettes instead of leaning on the muted grey."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-26T09:45:00-05:00",
@@ -83,7 +91,8 @@
       "items": [
         "TMDB sorts search by text relevance, so obscure titles with no poster and no year were outranking the ones you'd actually want. Results now lead with artwork, then how well known the title is.",
         "The blank placeholder for a missing poster is shorter, so a few data-less results no longer fill the screen."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-25T21:45:00-05:00",
@@ -92,7 +101,8 @@
         "Back to a single number beside each name.",
         "Each title now carries its own credit count — Ben Berman reads 5 with 'The Amazing Johnathan Documentary ×5', so the total visibly adds up.",
         "Titles within a row sort by how much work the person did on them."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-25T17:05:00-05:00",
@@ -100,7 +110,8 @@
       "items": [
         "Search results and filmography pages now have a Want to see button, so you can queue something without logging it as watched.",
         "Anything already flagged shows On your list instead."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-25T16:05:00-05:00",
@@ -108,7 +119,8 @@
       "items": [
         "The number beside each name counts credits, not titles — someone who shot, edited and directed one film showed as 3.",
         "It now reads credits / titles when they differ, and Repeat collaborators means more than one title rather than more than one job."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-25T12:30:00-05:00",
@@ -117,7 +129,8 @@
         "Unreleased titles get a diagonal COMING SOON band across the poster, a pill in the ledger, and an expected date in the dossier.",
         "Release dates were being fetched and thrown away; they're kept now, with a one-time backfill for older entries.",
         "Films years out often have no date at all, so TMDB's production status is what flags them."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-25T12:12:00-05:00",
@@ -128,7 +141,8 @@
         "Enforced in the database rather than by hiding a button, so it holds even against someone calling the API directly.",
         "Ownership itself can't be reassigned by anyone but the owner.",
         "Titles in the Crew Index are clickable too — click one to open its dossier in the ledger."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-25T12:06:00-05:00",
@@ -137,7 +151,8 @@
         "Log a Film now finds actors and directors as well as films and series — the people were always in the results, they were just being thrown away.",
         "Click a person to see up to 24 of their titles, directing credits first, with anything already in your ledger marked LOGGED.",
         "Every credited name in a dossier and in the Crew Index is now clickable through to that person's filmography."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-25T12:00:00-05:00",
@@ -147,7 +162,8 @@
         "A director you keep rating highly — Skye Borgman, say — now lifts their other work up the list.",
         "Cards say who: \"Skye Borgman directed one you rated.\"",
         "Credits are cached in your browser, so the first rebuild costs about a second and a half and later ones are nearly free."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-25T11:51:00-05:00",
@@ -157,7 +173,8 @@
         "The engine keeps a score for every candidate it considered, not just the visible 60, so titles flagged weeks ago still get a real number.",
         "Titles never offered as candidates show a dash and sort last, rather than being treated as a zero.",
         "Scores rebuild automatically when they're missing, instead of waiting for the next time you log something."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-25T11:29:00-05:00",
@@ -167,7 +184,8 @@
         "A loved title pulls about 60% harder as a recommendation seed than a plain rating — real signal inside the five-star band.",
         "Hollow heart for liked, solid for loved, and the masthead counts them separately.",
         "Each dossier gained a 'How you felt' row, so you can promote older entries without deleting and re-logging them."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-25T11:15:00-05:00",
@@ -177,7 +195,8 @@
         "Archive: who added what, grouped by day, with a filter for each family member.",
         "Site changes: this list.",
         "Five more palettes — Noir, Drive-In, Technicolor, Nitrate, Terminal — and your palette and density now stick between visits."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-25T10:42:00-05:00",
@@ -186,7 +205,8 @@
         "My ranking sort on the Ledger: drag your own entries into the order you actually liked them, or use the arrows on a phone.",
         "Ranks are fractional, so moving one title writes one row instead of renumbering the whole ledger.",
         "Where you place a title feeds the suggestions — your number one pulls twice as hard as your last."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-25T09:50:00-05:00",
@@ -198,7 +218,8 @@
         "Flagged titles leave What's Next and live on the Watch List instead.",
         "Fixed: candidates were excluding anything anyone in the house had watched, which made \"New to me\" impossible to satisfy.",
         "Service filter dropdown now fills in — it only ever offered \"Any service\"."
-      ]
+      ],
+      "by": "Chris"
     },
     {
       "at": "2026-08-24T19:45:00-05:00",
@@ -209,7 +230,8 @@
         "Watch date defaults to today from the local clock; anything logged after 7pm was being stamped with tomorrow's date.",
         "Logging something clears it off the Watch List automatically.",
         "Match badges are visible again — the trailer button had been painting over them since it went in."
-      ]
+      ],
+      "by": "Chris"
     }
   ]
 }

@@ -2596,7 +2596,7 @@ async function renderSiteLog(){
       .sort((x,y)=>String(y.at||y.date||"").localeCompare(String(x.at||x.date||"")));
     html=rels.map(rel=>`<div class="wnrel">
       <h4>${esc(rel.title||"Update")}</h4>
-      <div class="wd">${esc(fmtWhen(rel.at||rel.date))}</div>
+      <div class="wd">${esc(fmtWhen(rel.at||rel.date))}${rel.by?` \u00b7 asked for by ${esc(rel.by)}`:""}</div>
       <ul>${(rel.items||[]).map(i=>`<li>${esc(i)}</li>`).join("")}</ul>
     </div>`).join("");
   }catch(e){
