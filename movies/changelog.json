@@ -2,6 +2,23 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it just shows the date.",
   "releases": [
     {
+      "at": "2026-08-27T13:20:00-05:00",
+      "title": "Change a rating from the dossier",
+      "items": [
+        "Open any of your entries and there's a star selector next to How you felt — change it there instead of deleting and re-logging.",
+        "Re-rating rebuilds your suggestions, since ratings are what the engine seeds from."
+      ]
+    },
+    {
+      "at": "2026-08-27T13:05:00-05:00",
+      "title": "Watch list knows what you've watched",
+      "items": [
+        "Anything on the watch list that's already in your ledger is marked WATCHED, dimmed, and offers a link to the entry instead of 'I've seen it'.",
+        "A banner at the top counts them and clears them all in one click.",
+        "Logging a title already removes it from the list; this catches anything that slipped through before that existed."
+      ]
+    },
+    {
       "at": "2026-08-27T12:35:00-05:00",
       "title": "No double logging",
       "items": [
@@ -9,7 +26,8 @@
         "Clicking a watched result won't open the rating form; it offers to take you to the entry in the ledger instead.",
         "The save button refuses a duplicate as a last line of defence, so it can't happen by any route.",
         "The Want to see button is hidden on titles you've already watched.",
-        "Trailer buttons on search results and filmography cards — the poster there is the select-to-log target, so there was nowhere to click for a trailer."
+        "Trailer buttons on search results and filmography cards — the poster there is the select-to-log target, so there was nowhere to click for a trailer.",
+        "A title already in your ledger now looks it — the card dims, the name gets a tick, and the button reads 'In your ledger'. Clicking gives it a nudge rather than silently doing nothing."
       ]
     },
     {

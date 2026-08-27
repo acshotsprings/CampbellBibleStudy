@@ -180,7 +180,11 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .affrow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:14px;
   padding-top:12px;border-top:1px solid var(--edge)}
 .affrow span{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--muted);margin-right:2px}
+  text-transform:uppercase;color:var(--muted);margin-right:2px;min-width:86px}
+.affrow + .affrow{margin-top:8px;padding-top:0;border-top:0}
+.ratesel{background:var(--card);border:1px solid var(--edge);color:var(--ink);
+  font-family:'Courier Prime',monospace;font-size:12.5px;padding:4px 8px}
+.ratesel:hover{border-color:var(--accent)}
 .dossier{padding:2px 8px 18px;display:grid;grid-template-columns:112px 1fr;gap:18px}
 @media(max-width:640px){.dossier{grid-template-columns:1fr}.dossier img{max-width:150px}}
 .dossier img{width:100%;display:block;border:1px solid var(--edge)}
@@ -255,6 +259,11 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .pback span{font-family:'Archivo',sans-serif;font-weight:700}
 .badge.fit{opacity:.75;font-size:11px;letter-spacing:.1em}
 .rk.seen{background:var(--accent2);letter-spacing:.1em}
+.card.logged{opacity:.62}
+.card.logged:hover{opacity:.78}
+.card.logged .m .t::after{content:" \u2713";color:var(--accent2)}
+@keyframes nudge{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.card.nudge{animation:nudge .3s ease-in-out 2}
 .mini.seenbtn{color:var(--ink);opacity:.85}
 .badge.fit.ready{opacity:1;font-size:14px;letter-spacing:0}
 .card .wp{font-family:'Courier Prime',monospace;font-size:11px;color:var(--accent2);
@@ -578,6 +587,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
    </select>
    <p class="msg" id="wmsg" style="margin:0"></p>
   </div>
+  <p class="banner hidden" id="wdone"></p>
   <div class="films" id="wlist"></div>
  </section>
 
@@ -1007,6 +1017,14 @@ function dossier(f){
     ${f.keywords.length?`<div class="tags">${f.keywords.map(k=>`<span class="tag">${esc(k)}</span>`).join("")}</div>`:""}
     ${comingSoon(f)?`<div class="dsoon">COMING SOON \u00b7 ${esc(relLabel(f))}</div>`:""}
     ${mine?`<div class="affrow">
+     <span>Your rating</span>
+     <select class="ratesel" data-row="${f.rowId}">
+      ${[5,4.5,4,3.5,3,2.5,2,1.5,1,0.5].map(v=>
+        `<option value="${v}"${Math.abs((f.userRating||0)-v)<.01?" selected":""}>${stars(v)} \u2014 ${v}</option>`
+      ).join("")}
+     </select>
+    </div>
+    <div class="affrow">
      <span>How you felt</span>
      <button type="button" class="mini aff${!f.liked&&!f.loved?" on":""}" data-row="${f.rowId}" data-aff="0">Not for me</button>
      <button type="button" class="mini aff${f.liked&&!f.loved?" on":""}" data-row="${f.rowId}" data-aff="1">\u2661 Liked it</button>
@@ -1157,6 +1175,14 @@ function ledger(){
   }
   $("ledger").querySelectorAll(".trailD").forEach(b=>b.onclick=()=>
     showTrailer(b.dataset.t,+b.dataset.id,b.dataset.n));
+  $("ledger").querySelectorAll(".ratesel").forEach(sel=>sel.onchange=async ev=>{
+    ev.stopPropagation();
+    sel.disabled=true;
+    const {error}=await sb.from("entries")
+      .update({rating:parseFloat(sel.value)}).eq("id",+sel.dataset.row);
+    if(error){ say("lmsg",error.message,"bad"); sel.disabled=false; return; }
+    await loadAll();          // re-rating changes the seeds, so suggestions rebuild too
+  });
   $("ledger").querySelectorAll(".aff").forEach(b=>b.onclick=async()=>{
     const v=+b.dataset.aff;
     b.disabled=true;
@@ -1777,9 +1803,11 @@ function watchlist(){
   $("wlist").innerHTML=L.length?L.map((w,i)=>{
     const m=wlShape(w);
     const sc=wlScore(w);
-    return `<div class="card">
-     ${comingSoon(m)?'<span class="soon">COMING SOON</span>':""}
-     <span class="rk" title="How strongly this matches your ledger">MATCH</span>
+    const done=loggedByMe(m.type,m.id);
+    return `<div class="card${done?" logged":""}">
+     ${done?'<span class="rk seen">WATCHED</span>':""}
+     ${comingSoon(m)&&!done?'<span class="soon">COMING SOON</span>':""}
+     ${done?"":'<span class="rk" title="How strongly this matches your ledger">MATCH</span>'}
      <span class="badge" title="${sc==null?"Not scored yet — refresh suggestions":"Match strength"}">${sc==null?"\u2014":Math.round(sc)+"%"}</span>
      ${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
      <button type="button" class="poster-btn wtrail" data-i="${i}" title="Watch the trailer">
@@ -1789,11 +1817,29 @@ function watchlist(){
       <div class="y">${m.year||"—"} · ${(m.vote||0).toFixed(1)}</div>
       ${watchTag(m)}
       <div class="acts">
-       <button type="button" class="mini wlogit" data-i="${i}">I've seen it</button>
+       ${done
+         ? `<button type="button" class="mini seenbtn" data-t="${esc(m.title)}">In your ledger \u2192</button>`
+         : `<button type="button" class="mini wlogit" data-i="${i}">I've seen it</button>`}
        <button type="button" class="mini ghost wdrop" data-i="${i}">Remove</button>
        <a class="mini out" href="https://www.themoviedb.org/${m.type}/${m.id}" target="_blank" rel="noopener">TMDB ↗</a>
       </div></div></div>`;
   }).join(""):`<p style="color:var(--muted);grid-column:1/-1">Nothing on your list yet. Flag something over in What's Next.</p>`;
+
+  const done=L.filter(w=>loggedByMe(w.media_type,w.tmdb_id));
+  const bn=$("wdone");
+  if(done.length){
+    bn.classList.remove("hidden");
+    bn.innerHTML=`${done.length} ${done.length===1?"title is":"titles are"} already in your ledger. `+
+      `<button type="button" class="mini" id="wclear">Clear ${done.length} watched</button>`;
+    $("wclear").onclick=async()=>{
+      $("wclear").disabled=true;
+      for(const w of done)
+        await sb.from("watchlist").delete()
+          .eq("user_id",S.me.id).eq("tmdb_id",w.tmdb_id).eq("media_type",w.media_type);
+      await loadAll();
+      say("wmsg",`Removed ${done.length} already-watched ${done.length===1?"title":"titles"}.`,"ok");
+    };
+  }else bn.classList.add("hidden");
 
   const ws=$("wSort");
   if(ws&&!ws.dataset.wired){ ws.dataset.wired="1"; ws.onchange=watchlist; }
@@ -2058,7 +2104,7 @@ async function search(){
     $("lres").innerHTML=peopleHTML+hits.map((m,i)=>{
       const t=m.title||m.name,y=(m.release_date||m.first_air_date||"").slice(0,4);
       const mineHas=loggedByMe(m.media_type,m.id);
-      return `<div class="card" data-i="${i}"><button type="button">
+      return `<div class="card${mineHas?" logged":""}" data-i="${i}"><button type="button">
        ${m.media_type==="tv"?'<span class="tvs" style="top:0">SERIES</span>':""}
        ${m.poster_path?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster_path}" alt="">`:'<div class="np">?</div>'}
        ${mineHas?'<span class="rk seen">WATCHED</span>'
@@ -2091,6 +2137,7 @@ async function search(){
       const h=hits[+el.dataset.i];
       if(h&&loggedByMe(h.media_type,h.id)){
         say("lmsg",`${h.title||h.name} is already in your ledger.`,"bad");
+        el.classList.add("nudge"); setTimeout(()=>el.classList.remove("nudge"),600);
         return;                                   // never open the form for something logged
       }
       $("lres").querySelectorAll(".card").forEach(x=>x.classList.remove("sel"));
@@ -2154,7 +2201,7 @@ async function showPerson(p,q){
     say("lmsg",`${list.length} titles with ${p.name} \u2014 pick one.`);
     $("lres").innerHTML=`<div class="pback"><button type="button" id="pbk">\u2190 back to search</button>
       <span>${esc(p.name)}</span></div>`+
-      list.map((m,i)=>`<div class="card psel" data-i="${i}"><button type="button">
+      list.map((m,i)=>`<div class="card psel${seen.has(m.type+":"+m.id)?" logged":""}" data-i="${i}"><button type="button">
         ${m.type==="tv"?'<span class="tvs" style="top:0">SERIES</span>':""}
         ${seen.has(m.type+":"+m.id)?'<span class="rk seen">WATCHED</span>'
           :`<span class="rk">MATCH</span><span class="badge fit" data-i="${i}">\u00b7\u00b7</span>`}
@@ -2162,8 +2209,10 @@ async function showPerson(p,q){
         <div class="m"><div class="t">${esc(m.title)}</div>
          <div class="y">${m.year||"\u2014"} \u00b7 ${(m.vote||0).toFixed(1)}</div>
          <div class="wp">${esc(m.role)}</div></div></button>
-        <div class="acts one"><button type="button" class="mini pwl${onWatchlist(m.type,m.id)?" on":""}"
-          data-i="${i}">${onWatchlist(m.type,m.id)?"On your list":"Want to see"}</button>`+
+        <div class="acts one">${seen.has(m.type+":"+m.id)
+          ? `<button type="button" class="mini seenbtn" data-t="${esc(m.title)}">In your ledger \u2192</button>`
+          : `<button type="button" class="mini pwl${onWatchlist(m.type,m.id)?" on":""}" data-i="${i}">`+
+            `${onWatchlist(m.type,m.id)?"On your list":"Want to see"}</button>`}`+
          `<button type="button" class="mini trailm" data-mt="${m.type}" data-mid="${m.id}"
            data-mn="${esc(m.title)}">\u25b6 Trailer</button></div></div>`).join("");
 
@@ -2179,7 +2228,9 @@ async function showPerson(p,q){
     $("lres").querySelectorAll(".psel").forEach(el=>el.onclick=()=>{
       const m=list[+el.dataset.i];
       if(loggedByMe(m.type,m.id)){
-        say("lmsg",`${m.title} is already in your ledger.`,"bad"); return;
+        say("lmsg",`${m.title} is already in your ledger.`,"bad");
+        el.classList.add("nudge"); setTimeout(()=>el.classList.remove("nudge"),600);
+        return;
       }
       $("lres").querySelectorAll(".card").forEach(x=>x.classList.remove("sel"));
       el.classList.add("sel");
