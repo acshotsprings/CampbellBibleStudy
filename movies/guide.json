@@ -1,0 +1,22 @@
+{
+  "note": "Bump 'version' whenever you change this and everyone sees the guide once more, so they pick up what's new.",
+  "version": "2026-08-27",
+  "intro": "A shared record of what the family has watched. Everyone keeps their own ratings; the archive is shared.",
+  "sections": [
+    { "tab": "The Ledger",
+      "text": "Everything logged, newest-rated first. Open a title for the full dossier — cast, crew, streaming, trailer — and to change your rating or how you felt about it. The dropdown up top switches between the whole household and one person. Sort by My ranking to drag your own entries into the order you actually liked them." },
+    { "tab": "Crew Index",
+      "text": "Every director, writer and actor across the archive, with how many credits they have. Click a name to see the rest of their work; click a title to open it. The number counts credits, so someone who wrote and directed the same film counts twice." },
+    { "tab": "Patterns",
+      "text": "Your ratings by star, genre and decade. Click any bar to see the titles behind it, plus more of the same you haven't seen." },
+    { "tab": "What's Next",
+      "text": "Suggestions built from your own ledger, rebuilt whenever you log something. MATCH is how strongly a title fits your taste — 100% is the best fit in the current set, not a perfect score. Not interested hides something for good." },
+    { "tab": "Watch List",
+      "text": "Things you flagged as \"want to see,\" ranked by match. Log one and it comes off the list automatically." },
+    { "tab": "Household",
+      "text": "Per-person stats, and your likeness ratio with each member — how closely your ratings track theirs. The closer you agree, the more their opinion nudges your suggestions, up to 15%. Pick a person to see what they'd pass along to you." },
+    { "tab": "Log a Film",
+      "text": "Search a film, series, actor or director. Pick it, rate it, save. Anything already in your ledger is marked WATCHED so you can't add it twice, and Want to see queues something without logging it as watched." }
+  ],
+  "footer": "Start by logging a handful of things you've seen and rating them honestly — the suggestions are only as good as what you feed them. Appearance, top right, changes the look."
+}

@@ -2,6 +2,36 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-27T15:00:00-05:00",
+      "by": "Chris",
+      "title": "Tell me what you think of a change",
+      "items": [
+        "Once you're past the how-to guide, signing in shows anything that's changed since you were last here.",
+        "Each change has a yes / not really. Choosing 'not really' opens a box to say what's wrong with it.",
+        "Feedback is saved to the archive and, if a webhook is configured, emailed to Chris."
+      ]
+    },
+    {
+      "at": "2026-08-27T14:50:00-05:00",
+      "by": "Chris",
+      "title": "Guide lives in its own file",
+      "items": [
+        "The how-to popup now reads from guide.json instead of being baked into the page, so it can be updated without touching code.",
+        "It carries a version. Bump it after a change and everyone sees the guide once more, so they pick up what's new — then it goes quiet again.",
+        "Still three showings for a new member, and the Guide button any time."
+      ]
+    },
+    {
+      "at": "2026-08-27T14:40:00-05:00",
+      "by": "Chris",
+      "title": "Guide shows three times",
+      "items": [
+        "New members get the how-to popup on their first three sign-ins rather than once, then it stops.",
+        "The count lives on their profile, so it follows them between phone and laptop instead of restarting on each device.",
+        "It says how many more times they'll see it, and the Guide button always brings it back."
+      ]
+    },
+    {
       "at": "2026-08-27T14:20:00-05:00",
       "by": "Chris",
       "title": "Recommendations one pair at a time",
