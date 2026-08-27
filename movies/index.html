@@ -179,6 +179,10 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .heart.loved{font-size:1.15em}
 .affrow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:14px;
   padding-top:12px;border-top:1px solid var(--edge)}
+.hhbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.hhbar select{min-width:170px}
+.hhbar .lede{margin:0;flex-basis:100%}
+@media(min-width:760px){.hhbar .lede{flex-basis:auto;flex:1}}
 .affrow span{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--muted);margin-right:2px;min-width:86px}
 .affrow + .affrow{margin-top:8px;padding-top:0;border-top:0}
@@ -778,10 +782,27 @@ $("doSignUp").onclick=async()=>{
 $("doSignOut").onclick=async()=>{ await sb.auth.signOut(); location.reload(); };
 
 /* ================= load ================= */
+/* Supabase caps a plain select at 1000 rows. Across a household that ceiling
+   is easy to pass, and a truncated ledger makes the site think you haven't
+   seen things you have. Page through instead. */
+async function fetchAllEntries(){
+  const PAGE=1000, out=[];
+  for(let from=0;;from+=PAGE){
+    const {data,error}=await sb.from("entries").select("*")
+      .order("rating",{ascending:false}).order("id",{ascending:true})
+      .range(from,from+PAGE-1);
+    if(error) return {data:out,error};
+    out.push(...(data||[]));
+    if(!data||data.length<PAGE) break;
+    if(from>20000) break;                 // sanity stop
+  }
+  return {data:out,error:null};
+}
+
 async function loadAll(){
   const [{data:profs},{data:ents},{data:cfg},{data:want}]=await Promise.all([
     sb.from("profiles").select("*"),
-    sb.from("entries").select("*").order("rating",{ascending:false}),
+    fetchAllEntries(),
     sb.from("app_config").select("*"),
     sb.from("watchlist").select("*")
   ]);
@@ -2169,12 +2190,25 @@ function household(){
        <div class="rl">nothing rated in common yet \u2014 counts 1.00\u00d7</div></div>
        <div class="ct">\u2014</div></div>`).join("");
 
+  /* Only pairs we can actually measure. With seven members there are 21
+     pairings and listing the empty ones buries the real ones. */
+  const ready=pairs.filter(p=>p.n>=3).sort((x,y)=>y.match-x.match||y.n-x.n);
+  const partial=pairs.filter(p=>p.n>0&&p.n<3).sort((x,y)=>y.n-x.n);
+  const empty=pairs.length-ready.length-partial.length;
+
   html+=`<h2 style="font-size:16px;margin-top:6px">Taste match</h2>`;
-  html+=pairs.map(p=>p.n<3
-    ? `<div class="crewrow"><div><div class="nm">${esc(p.a)} &amp; ${esc(p.b)}</div>
-       <div class="rl">${p.n} title${p.n===1?"":"s"} in common — need at least 3 to compare</div></div><div class="ct">—</div></div>`
-    : `<div class="crewrow multi"><div><div class="nm">${esc(p.a)} &amp; ${esc(p.b)}</div>
-       <div class="rl">${p.n} in common · average gap ${p.diff}★</div></div><div class="ct">${p.match}%</div></div>`).join("");
+  html+=ready.map(p=>`<div class="crewrow multi"><div><div class="nm">${esc(p.a)} &amp; ${esc(p.b)}</div>
+       <div class="rl">${p.n} in common \u00b7 average gap ${p.diff}\u2605</div></div>
+       <div class="ct">${p.match}%</div></div>`).join("");
+  html+=partial.map(p=>`<div class="crewrow"><div><div class="nm">${esc(p.a)} &amp; ${esc(p.b)}</div>
+       <div class="rl">${p.n} in common \u2014 ${3-p.n} more to compare</div></div>
+       <div class="ct">\u2014</div></div>`).join("");
+  if(!ready.length&&!partial.length)
+    html+=`<p style="color:var(--muted)">Nobody has rated the same title yet. This fills in
+      as people log things \u2014 three shared titles is enough to start comparing.</p>`;
+  else if(empty)
+    html+=`<p style="color:var(--muted);font-size:var(--dd);margin-top:8px">
+      ${empty} other pairing${empty===1?"":"s"} with nothing in common yet.</p>`;
 
   /* one direction at a time — pick the other person and which way it runs */
   const others=S.profiles.filter(p=>p.id!==S.me.id);
@@ -2183,11 +2217,11 @@ function household(){
     html+=`<p style="color:var(--muted)">Nobody else has joined yet.</p>`;
   }else{
     if(!hhWho||!others.some(p=>p.id===hhWho)) hhWho=others[0].id;
-    html+=`<div class="tools" style="grid-template-columns:auto 1fr auto;align-items:center;margin-bottom:6px">
+    html+=`<div class="hhbar">
       <select id="hhWho">${others.map(p=>
         `<option value="${p.id}"${p.id===hhWho?" selected":""}>${esc(p.name)}</option>`).join("")}</select>
-      <span class="lede" style="margin:0" id="hhDirLabel"></span>
       <button type="button" class="btn ghost" id="hhSwap">Swap direction</button>
+      <span class="lede" id="hhDirLabel"></span>
      </div>
      <div id="hhPairs"></div>`;
   }

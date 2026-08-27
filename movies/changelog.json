@@ -2,6 +2,25 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-27T15:50:00-05:00",
+      "by": "Chris",
+      "title": "The ledger was being truncated",
+      "items": [
+        "Supabase returns at most 1000 rows for a plain query. With seven members that ceiling was being passed, so part of the archive silently went missing — which is why recommendations offered titles you'd already watched.",
+        "The query now pages through everything.",
+        "The recommend controls stack properly on a phone instead of squashing into a column."
+      ]
+    },
+    {
+      "at": "2026-08-27T15:40:00-05:00",
+      "by": "Chris",
+      "title": "Taste match only shows what it can measure",
+      "items": [
+        "With seven members there are 21 pairings, and listing the empty ones buried anything real. Now only pairs with something in common appear, best match first.",
+        "Pairs one or two titles short of comparable show how many more are needed; the rest are summarised in a single line."
+      ]
+    },
+    {
       "at": "2026-08-27T15:00:00-05:00",
       "by": "Chris",
       "title": "Tell me what you think of a change",
