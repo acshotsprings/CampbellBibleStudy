@@ -2,6 +2,23 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it just shows the date.",
   "releases": [
     {
+      "at": "2026-08-27T14:00:00-05:00",
+      "title": "A guide for new members",
+      "items": [
+        "First time someone signs in with an empty ledger, a short guide explains what each tab does.",
+        "A Guide button next to Sign out reopens it any time."
+      ]
+    },
+    {
+      "at": "2026-08-27T13:45:00-05:00",
+      "title": "Everyone gets their own ledger",
+      "items": [
+        "A member with no profile row was having their own entries hidden from them — their own rows now always show.",
+        "Falls back to the account name instead of 'Someone' until a profile exists.",
+        "Comes with SQL that removes any leftover uniqueness rule stopping two people logging the same title, and backfills missing profiles."
+      ]
+    },
+    {
       "at": "2026-08-27T13:20:00-05:00",
       "title": "Change a rating from the dossier",
       "items": [

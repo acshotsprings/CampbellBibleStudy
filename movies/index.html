@@ -401,6 +401,10 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   text-transform:uppercase;color:var(--muted)}
 .wnpick select{flex:1;max-width:280px;background:var(--card);border:1px solid var(--edge);
   color:var(--ink);font-family:'Courier Prime',monospace;font-size:12.5px;padding:5px 8px}
+.gd div{border-top:1px solid var(--edge);padding:10px 0}
+.gd div:first-child{border-top:0;padding-top:0}
+.gd dt{font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;margin-bottom:3px}
+.gd dd{margin:0;font-size:var(--dd);line-height:1.5;color:var(--ink);opacity:.85}
 .wnbody{background:var(--card2);padding:18px 20px 22px;max-height:70vh;overflow:auto}
 .wnrel{margin-bottom:22px}
 .wnrel:last-child{margin-bottom:0}
@@ -485,6 +489,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 
  <div class="userbar">
   <span>Signed in as <b id="meName">…</b></span>
+  <button class="btn ghost" id="gdOpen" style="padding:5px 12px;font-size:12px">Guide</button>
   <button class="btn ghost" id="doSignOut" style="padding:5px 12px;font-size:12px">Sign out</button>
   <span class="who"><select id="who"></select></span>
  <div class="prefs">
@@ -655,6 +660,38 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 </div>
 </div>
 
+<div id="guide" class="tmodal hidden" role="dialog" aria-modal="true" aria-labelledby="gdTitle">
+ <div class="tbox">
+  <div class="thead"><span id="gdTitle">How this works</span>
+   <button type="button" id="gdClose" aria-label="Close">Close ✕</button></div>
+  <div class="wnbody">
+   <p class="lede" style="margin-bottom:16px">A shared record of what the family has watched.
+    Everyone keeps their own ratings; the archive is shared.</p>
+   <dl class="gd">
+    <div><dt>The Ledger</dt><dd>Everything logged, newest-rated first. Open a title for the full
+     dossier — cast, crew, streaming, trailer — and to change your rating. The dropdown up top
+     switches between the whole household and one person.</dd></div>
+    <div><dt>Crew Index</dt><dd>Every director, writer and actor across the archive, with how often
+     they turn up. Click a name to see the rest of their work; click a title to open it.</dd></div>
+    <div><dt>Patterns</dt><dd>Your ratings by star, genre and decade. Click any bar to see the
+     titles behind it, plus more of the same you haven't seen.</dd></div>
+    <div><dt>What's Next</dt><dd>Suggestions built from your own ledger, rebuilt whenever you log
+     something. The MATCH percentage is how strongly it fits your taste — 100 is the best fit in
+     the current set, not a perfect score.</dd></div>
+    <div><dt>Watch List</dt><dd>Things you flagged as "want to see," ranked by match. Log one and
+     it comes off automatically.</dd></div>
+    <div><dt>Household</dt><dd>Per-person stats, how closely your tastes agree, and what to watch
+     together.</dd></div>
+    <div><dt>Log a Film</dt><dd>Search a film, series, actor or director. Pick it, rate it, save.
+     Anything you've already logged is marked WATCHED so you can't add it twice.</dd></div>
+   </dl>
+   <p class="lede" style="margin-top:16px">Start by logging a handful of things you've seen and
+    rating them honestly — the suggestions are only as good as what you feed them.
+    <em>Appearance</em>, top right, changes the look.</p>
+  </div>
+ </div>
+</div>
+
 <div id="whatsnew" class="tmodal hidden" role="dialog" aria-modal="true" aria-labelledby="wnTitle">
  <div class="tbox">
   <div class="thead"><span id="wnTitle">What's new</span>
@@ -716,7 +753,13 @@ function shape(r){
     cast:m.cast||[],crewCount:m.crewCount||0,watch:m.watch||null,vote:m.vote||0,votes:m.votes||0,
     companies:m.companies||[],networks:m.networks||[],language:m.language};
 }
-const nameOf=id=>(S.profiles.find(p=>p.id===id)||{}).name||"Someone";
+const nameOf=id=>{
+  const p=(S.allProfiles||S.profiles).find(x=>x.id===id);
+  if(p&&p.name) return p.name;
+  /* no profile row yet — fall back to the email rather than "Someone" */
+  if(S.me&&id===S.me.id) return (S.me.email||"").split("@")[0]||"You";
+  return "Someone";
+};
 const visible=()=>S.rows.filter(r=>S.who==="all"||r.user_id===S.who);
 
 /* ================= auth ================= */
@@ -794,6 +837,10 @@ async function loadAll(){
   $("meName").textContent=nameOf(S.me.id);
   $("needKey").classList.toggle("hidden",!!S.tmdbKey);
   $("migrate").classList.toggle("hidden", S.rows.some(r=>r.user_id===S.me.id));
+  /* first visit — show the guide once, then leave it to the button */
+  let seenGuide=false;
+  try{ seenGuide=!!localStorage.getItem("cbsGuide:v1"); }catch(e){}
+  if(!seenGuide&&!S.rows.some(r=>r.user_id===S.me.id)) openGuide();
   // ledger moved since the last build? go get fresh suggestions
   backfillReleases();
   const noScores=!Object.keys(S.scores||{}).length;
@@ -2504,6 +2551,21 @@ function closeWhatsNew(){
   $("whatsnew").classList.add("hidden");
   document.body.style.overflow="";
 }
+const GUIDE_SEEN="cbsGuide:v1";
+function openGuide(){
+  $("guide").classList.remove("hidden");
+  document.body.style.overflow="hidden";
+  try{ localStorage.setItem(GUIDE_SEEN,"1"); }catch(e){}
+}
+function closeGuide(){
+  $("guide").classList.add("hidden");
+  document.body.style.overflow="";
+}
+$("gdOpen").onclick=openGuide;
+$("gdClose").onclick=closeGuide;
+$("guide").onclick=e=>{ if(e.target.id==="guide") closeGuide(); };
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeGuide(); });
+
 $("wnClose").onclick=closeWhatsNew;
 $("whatsnew").onclick=e=>{ if(e.target.id==="whatsnew") closeWhatsNew(); };
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeWhatsNew(); });
