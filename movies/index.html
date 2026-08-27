@@ -2333,11 +2333,14 @@ function household(){
   const LR=likenessRatios();
   const lrRows=S.profiles.filter(p=>p.id!==S.me.id).map(p=>{
     const l=LR[p.id];
-    if(!l||!l.n) return {name:p.name,n:0};
+    if(!l||!l.n) return {name:p.name,n:0,w:-99};
     const w=l.agree*l.conf;
     const mult=1+((LIKENESS_CEIL-LIKENESS_FLOOR)/2)*Math.max(-1,Math.min(1,w));
-    return {name:p.name,n:l.n,agree:Math.round(l.agree*100),mult:mult.toFixed(2)};
-  });
+    return {name:p.name,n:l.n,agree:Math.round(l.agree*100),mult:mult.toFixed(2),w};
+  })
+  /* Ranked by how much they actually count, not by the raw percentage — one
+     shared title always reads 100% and that shouldn't outrank thirty. */
+  .sort((x,y)=>y.w-x.w||y.n-x.n||x.name.localeCompare(y.name));
   html+=`<h2 style="font-size:16px;margin-top:6px">Likeness ratio</h2>
    <p class="lede">How much each person's opinion counts toward your suggestions.
     It grows as you rate more of the same titles, and never moves a score by more than

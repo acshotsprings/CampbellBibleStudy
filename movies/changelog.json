@@ -2,6 +2,24 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-27T17:00:00-05:00",
+      "by": "Chris",
+      "title": "Likeness ratio, ranked",
+      "items": [
+        "The list is ordered by how much each person actually counts, strongest first, with anyone you've nothing in common with at the bottom.",
+        "Ranked by influence rather than the raw percentage — one shared title always reads 100%, and that shouldn't sit above someone with thirty."
+      ]
+    },
+    {
+      "at": "2026-08-27T16:50:00-05:00",
+      "by": "Chris",
+      "title": "Whose list you're looking at",
+      "items": [
+        "Watch lists and suggestions are personal — the who dropdown only governs the shared archive. That wasn't stated anywhere, so pointing the dropdown at someone else looked like a bug.",
+        "Both tabs now say so when the dropdown is set to another member, and the guide explains it."
+      ]
+    },
+    {
       "at": "2026-08-27T16:40:00-05:00",
       "by": "Chris",
       "title": "Trailers that won't play in the US",
