@@ -2278,6 +2278,7 @@ function wireMemberPanel(){
 }
 
 let hhWho=null, hhDir="toMe";     // toMe = what they'd pass to you
+const toMe0=()=>hhDir==="toMe";   // your dismissals only apply to your own side
 function paintPairs(byUser){
   const sel=$("hhWho"); if(!sel) return;
   const them=S.profiles.find(p=>p.id===hhWho); if(!them) return;
@@ -2289,8 +2290,10 @@ function paintPairs(byUser){
     : `\u2192 what you would pass to ${them.name}`;
 
   const seenB=new Set((byUser[B.id]||[]).map(r=>r.type+":"+r.id));
+  const skipped=new Set(S.skip.map(x=>skipKey(x.media_type,x.tmdb_id)));
   const list=(byUser[A.id]||[])
-    .filter(r=>r.userRating>=4&&!seenB.has(r.type+":"+r.id))
+    .filter(r=>r.userRating>=4&&!seenB.has(r.type+":"+r.id)
+               &&!(toMe0()&&skipped.has(r.type+":"+r.id)))
     .sort((x,y)=>y.userRating-x.userRating||
       (y.loved?1:0)-(x.loved?1:0)||x.title.localeCompare(y.title))
     .slice(0,30);
@@ -2303,7 +2306,8 @@ function paintPairs(byUser){
         <span class="hhacts">${toMe?
           `<button type="button" class="mini hhwant" data-i="${i}">${
             onWatchlist(r.type,r.id)?"On your list":"Want to see"}</button>
-           <button type="button" class="mini ghost hhseen" data-i="${i}">I've seen it</button>`:""}
+           <button type="button" class="mini ghost hhseen" data-i="${i}">I've seen it</button>
+           <button type="button" class="mini ghost hhnope" data-i="${i}">Not interested</button>`:""}
          <span class="dr">${stars(r.userRating)}</span></span></div>`).join("")
     : `<p style="color:var(--muted)">${esc(A.name)} hasn't rated anything 4\u2605 or better that ${
         B.id===S.me.id?"you haven't":esc(B.name)+" hasn't"} seen.</p>`;
@@ -2313,6 +2317,12 @@ function paintPairs(byUser){
     const r=list[+b.dataset.i];
     openTitleSheet({id:r.id,type:r.type,title:r.title,year:r.year,
                     poster:r.poster,genres:r.genres||[]});
+  });
+  $("hhPairs").querySelectorAll(".hhnope").forEach(b=>b.onclick=async()=>{
+    const r=list[+b.dataset.i]; b.disabled=true;
+    await addSkip({id:r.id,type:r.type,title:r.title});
+    await loadSkips();
+    household();
   });
   $("hhPairs").querySelectorAll(".hhwant").forEach(b=>b.onclick=async()=>{
     const r=list[+b.dataset.i];
