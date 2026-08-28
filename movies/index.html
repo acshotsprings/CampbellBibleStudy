@@ -279,6 +279,13 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .badge.fit.ready{opacity:1;font-size:14px;letter-spacing:0}
 .card .wp{font-family:'Courier Prime',monospace;font-size:11px;color:var(--accent2);
   margin-top:5px;line-height:1.35}
+.ntools{display:grid;grid-template-columns:repeat(3,1fr) auto;gap:9px;align-items:center;margin-bottom:13px}
+@media(max-width:900px){.ntools{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.ntools{grid-template-columns:1fr}}
+.nex{display:inline-flex;align-items:center;gap:6px;font-family:'Courier Prime',monospace;
+  font-size:12px;color:var(--ink);opacity:.85;white-space:nowrap}
+.nex input{accent-color:var(--accent)}
+.nex:has(input:disabled){opacity:.4}
 .card .hw{font-family:'Courier Prime',monospace;font-size:11px;color:var(--ink);opacity:.8;
   margin-top:4px;line-height:1.35}
 .card .y{font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted);margin-top:4px}
@@ -592,10 +599,12 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
  <section id="v-next" class="hidden">
   <h2>What's Next</h2>
   <p class="lede">Ranked by how many favourites point to each one.</p>
-  <div class="tools" style="grid-template-columns:1fr 1fr 1fr">
+  <div class="ntools">
    <select id="nScope"><option value="me">New to me</option><option value="household">New to everyone</option><option value="">Show all</option></select>
    <select id="nType"><option value="">Films &amp; series</option><option value="movie">Films only</option><option value="tv">Series only</option></select>
    <select id="nSvc"><option value="">Any service</option></select>
+   <select id="nGen"><option value="">Any genre</option></select>
+   <label class="nex"><input type="checkbox" id="nGex"> exclude it</label>
   </div>
   <div class="tools" style="grid-template-columns:auto 1fr auto;align-items:center;margin-top:-6px">
    <button class="btn ghost" id="nRefresh">Refresh suggestions</button>
@@ -863,7 +872,7 @@ async function loadAll(){
   }else{
     try{ const r=await fetch("data.json?v="+Date.now()); if(r.ok){const d=await r.json(); S.recs=d.recs||[];} }catch(e){}
   }
-  paintWho(); paintAll(); fillServices();
+  paintWho(); paintAll(); fillServices(); fillGenres();
   say("nbuilt",S.recsBuilt?`Rebuilt ${builtStamp()}.`:"Starter set — log something to build your own.");
   $("meName").textContent=nameOf(S.me.id);
   $("needKey").classList.toggle("hidden",!!S.tmdbKey);
@@ -1915,7 +1924,7 @@ async function refreshRecs(manual){
   say("nbuilt","Rebuilding from your ledger"+"…");
   try{
     const n=await buildRecs();
-    fillServices(); next(); watchlist();
+    fillServices(); fillGenres(); next(); watchlist();
     say("nbuilt",`${n} suggestions, rebuilt ${builtStamp()}.`,"ok");
   }catch(e){
     say("nbuilt",manual?e.message:"Showing the last saved set — "+e.message,manual?"bad":"");
@@ -1928,6 +1937,16 @@ function builtStamp(){
     {timeZone:"America/Chicago",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})+" CT";
 }
 /* the service dropdown was never being filled — populate it from whatever's live */
+function fillGenres(){
+  const sel=$("nGen"); if(!sel) return;
+  const cur=sel.value, ids=new Set();
+  S.recs.forEach(m=>(m.genres||[]).forEach(g=>{ if(GEN[g]) ids.add(g); }));
+  sel.innerHTML='<option value="">Any genre</option>'+
+    [...ids].sort((a,b)=>GEN[a].localeCompare(GEN[b]))
+      .map(g=>`<option value="${g}">${esc(GEN[g])}</option>`).join("");
+  sel.value=[...ids].map(String).includes(cur)?cur:"";
+  $("nGex").disabled=!sel.value;
+}
 function fillServices(){
   const sel=$("nSvc"), cur=sel.value, names=new Set();
   S.recs.forEach(m=>dedupe((m.watch||{}).stream||[]).forEach(n=>names.add(n)));
@@ -1948,6 +1967,7 @@ function next(){
   const seenMine=new Set(S.rows.filter(r=>r.user_id===S.me.id).map(r=>r.type+":"+r.id));
   const scope=$("nScope").value;
   const ty=$("nType").value, sv=$("nSvc").value;
+  const gen=$("nGen").value, gex=$("nGex").checked;
   const onList=new Set(S.want.map(w=>w.media_type+":"+w.tmdb_id));
   const skipped=new Set(S.skip.map(x=>skipKey(x.media_type,x.tmdb_id)));
   const L=S.recs.filter(r=>{
@@ -1955,6 +1975,10 @@ function next(){
     if(skipped.has(k)) return false;
     // once it's on the watch list it lives there, not here — unless you asked to see everything
     if(scope&&onList.has(k)) return false;
+    if(gen){
+      const has=(r.genres||[]).includes(+gen);
+      if(gex?has:!has) return false;      // "exclude it" flips the test
+    }
     if(scope==="me"&&seenMine.has(k)) return false;
     if(scope==="household"&&seenAll.has(k)) return false;
     if(ty&&r.type!==ty) return false;
@@ -2213,7 +2237,10 @@ function watchTag(m){
   if((w.rent||[]).length) return `<div class="wt rentonly">Rent only</div>`;
   return "";
 }
-["nType","nSvc","nScope"].forEach(i=>$(i).addEventListener("change",next));
+["nType","nSvc","nScope","nGen","nGex"].forEach(i=>$(i).addEventListener("change",()=>{
+  $("nGex").disabled=!$("nGen").value;
+  next();
+}));
 
 /* ---------- household ---------- */
 const isOwner=()=>!!S.owner&&S.me&&S.owner===S.me.id;
