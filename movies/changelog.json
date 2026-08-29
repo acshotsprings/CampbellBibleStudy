@@ -2,6 +2,17 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-29T12:35:00-05:00",
+      "by": "Chris",
+      "title": "Import button removed — it was handing out the wrong ledger",
+      "items": [
+        "A leftover setup button offered to \"bring in your Letterboxd archive\". It was only ever meant for Chris's original import, but it appeared for anyone whose ledger was still empty.",
+        "Anyone who pressed it got Chris's 38 titles copied into their own account, with his ratings and his hearts attached. That is not anybody's fault but the app's.",
+        "The button is gone. Affected ledgers are being cleared so everyone starts from their own watching again.",
+        "Nothing changes for a ledger that was typed in by hand."
+      ]
+    },
+    {
       "at": "2026-08-29T12:10:00-05:00",
       "by": "Chris",
       "title": "Season counts no longer include a season that hasn't started",
