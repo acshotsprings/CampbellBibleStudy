@@ -2,6 +2,17 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-29T13:45:00-05:00",
+      "by": "Chris",
+      "title": "The search stays put after you log something",
+      "items": [
+        "Logging a title used to wipe the search box and the results with it. Rating one Rocky meant typing \"rocky\" again for the next one.",
+        "Now the results stay where they are and the one you just logged turns into a WATCHED card in place, so you can work straight down a series.",
+        "Same for saving a batch — the list you searched is still there afterwards.",
+        "Search an actor or director, open their filmography, and the same \"+ Log it\" and \"Not interested\" buttons are there — so a run of Rockys, or everything you've seen by one director, goes in as a single pass."
+      ]
+    },
+    {
       "at": "2026-08-29T13:20:00-05:00",
       "by": "Chris",
       "title": "Ratings are now out of 10, and you can log a whole evening at once",

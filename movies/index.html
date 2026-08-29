@@ -2783,35 +2783,7 @@ async function search(){
     /* "Not interested" from a search: the title stays on screen — you went
        looking for it — but it stops turning up in suggestions. Click again to
        undo, same as the button on What's Next. */
-    $("lres").querySelectorAll(".snope").forEach(b=>b.onclick=async ev=>{
-      ev.stopPropagation();
-      const h=hits[+b.dataset.i];
-      const m={id:h.id,type:h.media_type,title:h.title||h.name};
-      b.disabled=true;
-      const was=isSkipped(m.type,m.id);
-      await (was?dropSkip(m):addSkip(m));
-      await loadSkips();
-      b.disabled=false;
-      b.classList.toggle("on",!was);
-      b.textContent=was?"Not interested":"Not interested ✓";
-      const card=b.closest(".card");
-      if(card) card.classList.toggle("skipped",!was);
-      say("lmsg",was?`${m.title} is back in the mix.`
-                   :`${m.title} won't be suggested again.`,"ok");
-    });
-    $("lres").querySelectorAll(".card").forEach(el=>{
-      const h=hits[+el.dataset.i];
-      if(h&&isSkipped(h.media_type,h.id)) el.classList.add("skipped");
-    });
-    $("lres").querySelectorAll(".qbtn").forEach(b=>b.onclick=ev=>{
-      ev.stopPropagation();                       // queueing is not selecting
-      const m=hits[+b.dataset.i];
-      if(inBatch(m.media_type,m.id)) batchDrop(m.media_type,m.id);
-      else if(!batchAdd(m)) return;
-      say("lmsg",batch.length?`${batch.length} queued — rate them below.`
-                             :`${hits.length} titles — pick one.`);
-    });
-    markQueued();
+    wireQueueAndSkip(hits,SHAPE_HIT,`${hits.length} titles — pick one.`);
     $("lres").querySelectorAll(".card").forEach(el=>el.onclick=()=>{
       const h=hits[+el.dataset.i];
       if(h&&loggedByMe(h.media_type,h.id)){
@@ -2904,6 +2876,43 @@ function paintBatch(){
   });
   markQueued();
 }
+/* The queue and dismiss buttons behave identically on a search list and on an
+   actor's filmography, so both wire through here. `shape` normalises whatever
+   the list holds into what the tray wants. */
+function wireQueueAndSkip(items,shape,idleMsg){
+  $("lres").querySelectorAll(".qbtn").forEach(b=>b.onclick=ev=>{
+    ev.stopPropagation();
+    const m=shape(items[+b.dataset.i]);
+    if(inBatch(m.type,m.id)) batchDrop(m.type,m.id);
+    else if(!batchAdd(m)) return;
+    say("lmsg",batch.length?`${batch.length} queued — rate them below.`:idleMsg);
+  });
+  $("lres").querySelectorAll(".snope").forEach(b=>b.onclick=async ev=>{
+    ev.stopPropagation();
+    const m=shape(items[+b.dataset.i]);
+    b.disabled=true;
+    const was=isSkipped(m.type,m.id);
+    await (was?dropSkip({id:m.id,type:m.type}):addSkip({id:m.id,type:m.type,title:m.title}));
+    await loadSkips();
+    b.disabled=false;
+    b.classList.toggle("on",!was);
+    b.textContent=was?"Not interested":"Not interested ✓";
+    const card=b.closest(".card");
+    if(card) card.classList.toggle("skipped",!was);
+    say("lmsg",was?`${m.title} is back in the mix.`
+                 :`${m.title} won't be suggested again.`,"ok");
+  });
+  $("lres").querySelectorAll(".card[data-i]").forEach(el=>{
+    const m=shape(items[+el.dataset.i]);
+    if(m&&isSkipped(m.type,m.id)) el.classList.add("skipped");
+  });
+  markQueued();
+}
+const SHAPE_HIT=h=>({id:h.id,type:h.media_type,title:h.title||h.name,
+  release_date:h.release_date||h.first_air_date,poster:h.poster_path});
+const SHAPE_CREDIT=m=>({id:m.id,type:m.type,title:m.title,
+  release_date:m.release_date,poster:m.poster});
+
 $("bdateall").onclick=()=>{
   const d=$("bdate").value.trim();
   if(!d) return say("bmsg","Put a date in the box first.","bad");
@@ -2942,9 +2951,10 @@ $("bsave").onclick=async()=>{
     batch=batch.filter(b=>!saved.some(s=>s.type===b.type&&s.id===b.id));
     paintBatch();
     await loadAll();
+    /* the search stays put — carry on down the list of Rockys */
+    if($("lq").value.trim()) await search();
     if(saved.length&&!failed.length){
       say("bmsg",`Saved ${saved.length} ${saved.length===1?"title":"titles"} to your ledger.`,"ok");
-      $("lres").innerHTML=""; $("lq").value="";
     }else if(saved.length){
       say("bmsg",`Saved ${saved.length}. Still to sort out: ${failed.join("; ")}`,"bad");
     }else{
@@ -3011,7 +3021,11 @@ async function showPerson(p,q){
         <div class="acts one">${seen.has(m.type+":"+m.id)
           ? `<button type="button" class="mini seenbtn" data-t="${esc(m.title)}">In your ledger \u2192</button>`
           : `<button type="button" class="mini pwl${onWatchlist(m.type,m.id)?" on":""}" data-i="${i}">`+
-            `${onWatchlist(m.type,m.id)?"On your list":"Want to see"}</button>`}`+
+            `${onWatchlist(m.type,m.id)?"On your list":"Want to see"}</button>`+
+            `<button type="button" class="mini qbtn" data-i="${i}"
+              data-mt="${m.type}" data-mid="${m.id}">+ Log it</button>`+
+            `<button type="button" class="mini ghost snope${isSkipped(m.type,m.id)?" on":""}" data-i="${i}">`+
+            `${isSkipped(m.type,m.id)?"Not interested \u2713":"Not interested"}</button>`}`+
          `<button type="button" class="mini trailm" data-mt="${m.type}" data-mid="${m.id}"
            data-mn="${esc(m.title)}">\u25b6 Trailer</button></div></div>`).join("");
 
@@ -3024,11 +3038,18 @@ async function showPerson(p,q){
       addToWatchlist({id:m.id,type:m.type,title:m.title,year:m.year,
         poster:m.poster,genres:[],vote:m.vote||0},b);
     });
+    /* same queue-and-dismiss buttons as a search, so you can work down an
+       actor's filmography in one pass */
+    wireQueueAndSkip(list,SHAPE_CREDIT,`${list.length} titles with ${p.name} — pick one.`);
     $("lres").querySelectorAll(".psel").forEach(el=>el.onclick=()=>{
       const m=list[+el.dataset.i];
       if(loggedByMe(m.type,m.id)){
         say("lmsg",`${m.title} is already in your ledger.`,"bad");
         el.classList.add("nudge"); setTimeout(()=>el.classList.remove("nudge"),600);
+        return;
+      }
+      if(batch.length){                     // a list is going — add to it
+        if(inBatch(m.type,m.id)) batchDrop(m.type,m.id); else batchAdd(m);
         return;
       }
       $("lres").querySelectorAll(".card").forEach(x=>x.classList.remove("sel"));
@@ -3101,9 +3122,13 @@ $("lsave").onclick=async()=>{
     // watched means it no longer belongs on the want-to-see list
     await sb.from("watchlist").delete().eq("user_id",S.me.id).eq("tmdb_id",tmdbId).eq("media_type",e.type);
     say("smsg",`Saved. ${e.d.title||e.d.name} is in your ledger.`,"ok");
-    $("lform").classList.add("hidden"); $("lres").innerHTML=""; $("lq").value=""; chosen=null;
+    $("lform").classList.add("hidden"); chosen=null;
     resetEntryForm();
     await loadAll();
+    /* Leave the search where it was. Rating one Rocky shouldn't mean typing
+       "rocky" again for the next one — redraw the same results instead, so the
+       one just logged turns into a WATCHED card in place. */
+    if(!back&&$("lq").value.trim()) await search();
     if(back){
       document.querySelector(`nav button[data-v="${back}"]`).click();
       /* each tab has its own message slot; household has none, so stay quiet there */
