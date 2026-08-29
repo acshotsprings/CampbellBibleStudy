@@ -2,6 +2,15 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-29T11:45:00-05:00",
+      "by": "Chris",
+      "title": "Season counts actually appear, and the genre filter says what it does",
+      "items": [
+        "The seasons line was rendering an empty slot on What's Next and in search — the code that fills it was only wired to the Watch List. Fixed.",
+        "The 'exclude it' tick-box meant nothing on its own. The genre dropdown now spells both out: 'Only Documentary' or 'No Documentary'."
+      ]
+    },
+    {
       "at": "2026-08-29T11:35:00-05:00",
       "by": "Chris",
       "title": "Seasons, and when the next one starts",

@@ -607,7 +607,6 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
    <select id="nType"><option value="">Films &amp; series</option><option value="movie">Films only</option><option value="tv">Series only</option></select>
    <select id="nSvc"><option value="">Any service</option></select>
    <select id="nGen"><option value="">Any genre</option></select>
-   <label class="nex"><input type="checkbox" id="nGex"> exclude it</label>
   </div>
   <div class="tools" style="grid-template-columns:auto 1fr auto;align-items:center;margin-top:-6px">
    <button class="btn ghost" id="nRefresh">Refresh suggestions</button>
@@ -1951,11 +1950,17 @@ function fillGenres(){
   const sel=$("nGen"); if(!sel) return;
   const cur=sel.value, ids=new Set();
   S.recs.forEach(m=>(m.genres||[]).forEach(g=>{ if(GEN[g]) ids.add(g); }));
+  const names=[...ids].sort((a,b)=>GEN[a].localeCompare(GEN[b]));
+  /* Spelled out both ways rather than a separate "exclude" tick-box,
+     which said nothing on its own. */
   sel.innerHTML='<option value="">Any genre</option>'+
-    [...ids].sort((a,b)=>GEN[a].localeCompare(GEN[b]))
-      .map(g=>`<option value="${g}">${esc(GEN[g])}</option>`).join("");
-  sel.value=[...ids].map(String).includes(cur)?cur:"";
-  $("nGex").disabled=!sel.value;
+    `<optgroup label="Only show">`+
+      names.map(g=>`<option value="only:${g}">Only ${esc(GEN[g])}</option>`).join("")+
+    `</optgroup><optgroup label="Hide">`+
+      names.map(g=>`<option value="not:${g}">No ${esc(GEN[g])}</option>`).join("")+
+    `</optgroup>`;
+  const opts=[...sel.options].map(o=>o.value);
+  sel.value=opts.includes(cur)?cur:"";
 }
 function fillServices(){
   const sel=$("nSvc"), cur=sel.value, names=new Set();
@@ -1977,7 +1982,8 @@ function next(){
   const seenMine=new Set(S.rows.filter(r=>r.user_id===S.me.id).map(r=>r.type+":"+r.id));
   const scope=$("nScope").value;
   const ty=$("nType").value, sv=$("nSvc").value;
-  const gen=$("nGen").value, gex=$("nGex").checked;
+  const gv=$("nGen").value;
+  const gex=gv.startsWith("not:"), gen=gv?+gv.split(":")[1]:0;
   const onList=new Set(S.want.map(w=>w.media_type+":"+w.tmdb_id));
   const skipped=new Set(S.skip.map(x=>skipKey(x.media_type,x.tmdb_id)));
   const L=S.recs.filter(r=>{
@@ -2030,6 +2036,7 @@ function next(){
       </div></div></div>`;
   }).join(""):`<p style="color:var(--muted);grid-column:1/-1">Nothing left in that slice.</p>`;
 
+  paintTv("#next .tvline",L,m=>({id:m.id,type:m.type}));
   $("next").querySelectorAll(".trail").forEach(b=>b.onclick=()=>{
     const m=L[+b.dataset.i]; showTrailer(m.type,m.id,m.title);
   });
@@ -2250,10 +2257,7 @@ function watchTag(m){
   if((w.rent||[]).length) return `<div class="wt rentonly">Rent only</div>`;
   return "";
 }
-["nType","nSvc","nScope","nGen","nGex"].forEach(i=>$(i).addEventListener("change",()=>{
-  $("nGex").disabled=!$("nGen").value;
-  next();
-}));
+["nType","nSvc","nScope","nGen"].forEach(i=>$(i).addEventListener("change",next));
 
 /* ---------- household ---------- */
 const isOwner=()=>!!S.owner&&S.me&&S.owner===S.me.id;
@@ -2509,6 +2513,7 @@ async function search(){
     $("lres").querySelectorAll(".pcard").forEach(b=>b.onclick=()=>
       showPerson(people[+b.dataset.pi],q));
     paintFit("#lres .badge.fit",hits,m=>({id:m.id,type:m.media_type,genres:m.genre_ids||[]}));
+    paintTv("#lres .tvline",hits,m=>({id:m.id,type:m.media_type}));
     $("lres").querySelectorAll(".wl").forEach(b=>b.onclick=ev=>{
       ev.stopPropagation();                       // don't also select it for logging
       if(b.classList.contains("on")) return;
