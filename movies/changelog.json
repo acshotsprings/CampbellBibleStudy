@@ -2,47 +2,12 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
-      "at": "2026-08-29T13:45:00-05:00",
+      "at": "2026-08-29T17:00:00-05:00",
       "by": "Chris",
-      "title": "The search stays put after you log something",
+      "title": "Stray u2713, and seasons in search",
       "items": [
-        "Logging a title used to wipe the search box and the results with it. Rating one Rocky meant typing \"rocky\" again for the next one.",
-        "Now the results stay where they are and the one you just logged turns into a WATCHED card in place, so you can work straight down a series.",
-        "Same for saving a batch — the list you searched is still there afterwards.",
-        "Search an actor or director, open their filmography, and the same \"+ Log it\" and \"Not interested\" buttons are there — so a run of Rockys, or everything you've seen by one director, goes in as a single pass."
-      ]
-    },
-    {
-      "at": "2026-08-29T13:20:00-05:00",
-      "by": "Chris",
-      "title": "Ratings are now out of 10, and you can log a whole evening at once",
-      "items": [
-        "Ratings run 1 to 10 instead of half-stars out of 5. Every rating already on file was converted, so nothing moved relative to anything else — a four-star favourite is now an 8.",
-        "Rate by clicking the stars instead of picking from a list. The left half of a star is the odd number, the right half the even one. On a phone the stars are bigger and you can drag your thumb across them.",
-        "Log several at once: press \"+ Log it\" on as many search results as you like, rate them all in one panel, then save the lot. Each one keeps its own rating, date and whether you liked it.",
-        "\"Not interested\" now appears on search results too, so something you never want suggested can be waved off the moment you see it. It stays visible in the search you asked for; click again to undo.",
-        "Suggestions now take a public score less seriously when hardly anyone has voted on it. A 9 from twelve people no longer counts the same as a 9 from forty thousand."
-      ]
-    },
-    {
-      "at": "2026-08-29T12:35:00-05:00",
-      "by": "Chris",
-      "title": "Import button removed — it was handing out the wrong ledger",
-      "items": [
-        "A leftover setup button offered to \"bring in your Letterboxd archive\". It was only ever meant for Chris's original import, but it appeared for anyone whose ledger was still empty.",
-        "Anyone who pressed it got Chris's 38 titles copied into their own account, with his ratings and his hearts attached. That is not anybody's fault but the app's.",
-        "The button is gone. Affected ledgers are being cleared so everyone starts from their own watching again.",
-        "Nothing changes for a ledger that was typed in by hand."
-      ]
-    },
-    {
-      "at": "2026-08-29T12:10:00-05:00",
-      "by": "Chris",
-      "title": "Season counts no longer include a season that hasn't started",
-      "items": [
-        "A show with an announced-but-unaired next season was counted as if that season had already run: Tracker read \"4 seasons · series 4 from Oct 4\", which argues with itself.",
-        "The count now only includes seasons that have actually aired, so that line reads \"3 seasons · series 4 from Oct 4\".",
-        "A show in the middle of a season still counts that season, and a series that has never aired now just shows its premiere date instead of \"0 seasons\"."
+        "A tick mark on already-logged titles was written with a JavaScript escape inside CSS, so it printed the characters u2713 instead of drawing a tick.",
+        "Season counts now appear on search results and filmography cards too — the code to fill them was pointed at an element those cards never had."
       ]
     },
     {

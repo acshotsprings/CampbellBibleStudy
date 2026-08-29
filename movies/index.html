@@ -193,7 +193,9 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .affrow span{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--muted);margin-right:2px;min-width:86px}
 .affrow + .affrow{margin-top:8px;padding-top:0;border-top:0}
-.ratepick .starpick .st{font-size:20px}
+.ratesel{background:var(--card);border:1px solid var(--edge);color:var(--ink);
+  font-family:'Courier Prime',monospace;font-size:12.5px;padding:4px 8px}
+.ratesel:hover{border-color:var(--accent)}
 .dossier{padding:2px 8px 18px;display:grid;grid-template-columns:112px 1fr;gap:18px}
 @media(max-width:640px){.dossier{grid-template-columns:1fr}.dossier img{max-width:150px}}
 .dossier img{width:100%;display:block;border:1px solid var(--edge)}
@@ -273,7 +275,7 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .rk.seen{background:var(--accent2);letter-spacing:.1em}
 .card.logged{opacity:.62}
 .card.logged:hover{opacity:.78}
-.card.logged .m .t::after{content:" \u2713";color:var(--accent2)}
+.card.logged .m .t::after{content:" \2713";color:var(--accent2)}
 @keyframes nudge{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 .card.nudge{animation:nudge .3s ease-in-out 2}
 .mini.seenbtn{color:var(--ink);opacity:.85}
@@ -398,71 +400,7 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
  padding:4px 7px;border:1px solid var(--edge);background:var(--card);text-align:center}
 .card .acts .mini.on{background:var(--accent);border-color:var(--accent);color:var(--card)}
 .card.sel{outline:3px solid var(--accent)}
-.card.queued{outline:3px solid var(--stamp)}
-/* dismissed from a search: still there, visibly set aside */
-.card.skipped{opacity:.45}
-.card.skipped:hover{opacity:.8}
 .card > button{width:100%;background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:left}
-
-/* ---- click-to-rate stars ----
-   Each star is two invisible hit targets: left half sets the .5, right half the
-   whole. The fill is a second glyph clipped by width, so a half star is one
-   character wide either way and never reflows the row. */
-/* pan-y keeps the page scrollable with a finger that starts on the stars,
-   while horizontal movement belongs to the drag-to-rate gesture */
-.starpick{display:inline-flex;align-items:center;gap:1px;vertical-align:middle;touch-action:pan-y}
-.starpick .st{position:relative;display:inline-block;width:1em;height:1.15em;
- font-size:23px;line-height:1.15;color:var(--edge)}
-.starpick .st::before,.starpick .st::after{content:"\2605";position:absolute;left:0;top:0;
- white-space:nowrap;overflow:hidden}
-.starpick .st::before{color:var(--edge);width:100%}
-.starpick .st::after{color:var(--stamp);width:0}
-.starpick .st.h::after{width:50%}
-.starpick .st.f::after{width:100%}
-.starpick button{position:absolute;top:0;height:100%;width:50%;padding:0;margin:0;
- background:none;border:0;cursor:pointer;z-index:1}
-.starpick .sh{left:0}
-.starpick .sf{right:0}
-.starpick button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.starpick:hover .st::after{opacity:.75}
-.starpick .sv{font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted);
- margin-left:8px;min-width:2.8em}
-.starpick.on .sv{color:var(--stamp)}
-.starpick.drag{cursor:ew-resize}
-/* On a phone each half-star target would be about 22px — half the size a thumb
-   reliably hits. There is a whole row's width going spare, so spend it. */
-@media(max-width:560px){
- .starpick .st{font-size:34px;width:1.05em}
- .starpick .sv{font-size:14px}
-}
-@media(pointer:coarse){
- .starpick .st{font-size:34px;width:1.05em}
-}
-
-/* ---- batch logging tray ---- */
-#lbatch{margin-top:16px}
-.bhead{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
- border-bottom:1px solid var(--edge);padding-bottom:12px;margin-bottom:4px}
-.bhead h3{margin:0;font-size:16px}
-.ballrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.brow{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;
- padding:12px 0;border-bottom:1px solid var(--edge)}
-.brow:last-child{border-bottom:0}
-.brow img{width:44px;height:66px;object-fit:cover;display:block}
-.brow .np{width:44px;height:66px;display:flex;align-items:center;justify-content:center;
- background:var(--card);color:var(--muted);font-family:'Courier Prime',monospace}
-.brow .bt{font-family:'Archivo',sans-serif;font-weight:700;font-size:15px}
-.brow .by{font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted);margin-top:2px}
-.brow .bctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:7px}
-.brow .bdate{width:118px;font-family:'Courier Prime',monospace;font-size:12px;padding:4px 6px;
- background:var(--card);border:1px solid var(--edge);color:var(--ink)}
-.brow .drop{align-self:start;background:none;border:1px solid var(--edge);color:var(--muted);
- cursor:pointer;font-family:'Courier Prime',monospace;font-size:13px;padding:3px 8px;line-height:1}
-.brow .drop:hover{color:var(--stamp);border-color:var(--stamp)}
-@media(max-width:560px){
- .brow{grid-template-columns:36px 1fr auto}
- .brow img,.brow .np{width:36px;height:54px}
-}
 .gate{max-width:440px;margin:60px auto;border:1px solid var(--edge);background:var(--card);padding:26px}
 .gaterow{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
 .gaterow .btn{flex:1 1 auto}
@@ -706,6 +644,13 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   <h2>Log a Film</h2>
   <p class="lede">Search, pick it, rate it. It saves to your ledger instantly.</p>
 
+  <div id="migrate" class="banner hidden">
+   <h3>Bring in your Letterboxd archive</h3>
+   <p>Your original 38 titles are sitting in this folder. Import them into your account once.</p>
+   <button class="btn" id="doMigrate">Import my 38 titles</button>
+   <p class="msg" id="migMsg"></p>
+  </div>
+
   <div id="needKey" class="banner hidden">
    <h3>One-time: TMDB key</h3>
    <p>Needed to look up film details. Saved to the database, so the whole family shares it and nobody else has to.</p>
@@ -721,30 +666,16 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   <p class="msg" id="lmsg"></p>
   <div id="lres" class="films"></div>
 
-  <div id="lbatch" class="hidden entryform">
-   <div class="bhead">
-    <h3><span id="bcount">0</span> to log</h3>
-    <div class="ballrow">
-     <span class="fl" style="margin:0">Set all</span>
-     <div id="ballStars"></div>
-     <input type="text" id="bdate" class="bdate" placeholder="YYYY-MM-DD">
-     <button type="button" class="mini ghost" id="bdateall">apply date to all</button>
-    </div>
-   </div>
-   <div id="blist"></div>
-   <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-    <button class="btn" id="bsave">Save all to my ledger</button>
-    <button class="btn ghost" id="bclear">Clear the list</button>
-   </div>
-   <p class="msg" id="bmsg"></p>
-  </div>
-
   <div id="lform" class="hidden entryform">
    <div class="pick" id="lpick"></div>
    <div class="fgrid">
-    <div><span class="fl">Your rating</span>
-     <input type="hidden" id="lrate" value="8">
-     <div id="lrateStars"></div></div>
+    <div><label class="fl" for="lrate">Your rating</label>
+     <select id="lrate">
+      <option value="5">★★★★★ — 5</option><option value="4.5">★★★★½ — 4.5</option>
+      <option value="4" selected>★★★★ — 4</option><option value="3.5">★★★½ — 3.5</option>
+      <option value="3">★★★ — 3</option><option value="2.5">★★½ — 2.5</option>
+      <option value="2">★★ — 2</option><option value="1.5">★½ — 1.5</option>
+      <option value="1">★ — 1</option><option value="0.5">½ — 0.5</option></select></div>
     <div><label class="fl" for="ldate">Watched on</label><input type="text" id="ldate" placeholder="YYYY-MM-DD"></div>
     <div><label class="fl" for="llike">Liked it?</label>
      <select id="llike"><option value="0">No</option><option value="1">Liked it</option><option value="2">Loved it</option></select></div>
@@ -817,106 +748,7 @@ const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
 const $=i=>document.getElementById(i);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const img=(p,w)=>p?`https://image.tmdb.org/t/p/${w}${p}`:null;
-/* Ratings are whole numbers 1–10. Five star shapes still carry them: two points
-   to a star, so an odd score shows as a half. Changed from the old 0.5–5 scale
-   on 8/29/26 — every stored rating was doubled in the same move. */
-const RMAX=10;
-const stars=r=>"★".repeat(Math.floor((+r||0)/2))+((+r||0)%2?"½":"");
-
-/* ---------- click-to-rate ----------
-   A widget rather than a dropdown: five stars, ten hit targets, left half of a
-   star is the half point. Arrow keys and the number row work too, so it is no
-   slower for anyone who was tabbing through the old select. Writes through a
-   callback, so the log form, the batch tray and the dossier all share it. */
-function starGlyphs(v){
-  let s="";
-  for(let i=1;i<=5;i++){
-    const full=2*i, half=2*i-1;                  // star 3 covers 5 and 6
-    const cls=v>=full?" f":(v>=half?" h":"");
-    s+=`<span class="st${cls}">`+
-       `<button type="button" class="sh" data-v="${half}" tabindex="-1" aria-label="${half} out of 10"></button>`+
-       `<button type="button" class="sf" data-v="${full}" tabindex="-1" aria-label="${full} out of 10"></button>`+
-       "</span>";
-  }
-  return s;
-}
-function paintStars(el,v){
-  if(!el) return;
-  v=+v||0;
-  el.dataset.val=v;
-  el.classList.toggle("on",v>0);
-  [...el.querySelectorAll(".st")].forEach((st,i)=>{
-    const full=2*i+2, half=2*i+1;
-    st.classList.toggle("f",v>=full);
-    st.classList.toggle("h",v<full&&v>=half);
-  });
-  const sv=el.querySelector(".sv");
-  if(sv) sv.textContent=v?v+"/10":"—";
-  el.setAttribute("aria-valuenow",v);
-  el.setAttribute("aria-valuetext",v?`${v} out of 10`:"no rating");
-}
-function starPicker(mount,value,onChange){
-  if(!mount) return null;
-  const v=+value||0;
-  mount.innerHTML=`<span class="starpick" role="slider" tabindex="0" aria-label="Your rating"`+
-    ` aria-valuemin="0.5" aria-valuemax="5">${starGlyphs(v)}<span class="sv"></span></span>`;
-  const el=mount.querySelector(".starpick");
-  paintStars(el,v);
-  el.addEventListener("click",e=>{
-    const b=e.target.closest("button[data-v]");
-    if(!b) return;
-    e.preventDefault(); e.stopPropagation();   // never let it also select the card behind
-    paintStars(el,+b.dataset.v); onChange(+b.dataset.v);
-  });
-  /* Drag to rate: on a touch screen the gesture carries the precision, so the
-     value follows the finger instead of depending on hitting a small target. */
-  const valueAt=x=>{
-    const st=el.querySelectorAll(".st");
-    if(!st.length) return null;
-    const a=st[0].getBoundingClientRect(), b=st[st.length-1].getBoundingClientRect();
-    const width=b.right-a.left;                 // the stars themselves, not the number beside them
-    if(width<=0) return null;
-    const frac=Math.min(1,Math.max(0,(x-a.left)/width));
-    return Math.min(RMAX,Math.max(1,Math.ceil(frac*RMAX)));
-  };
-  let dragging=false;
-  el.addEventListener("pointerdown",e=>{
-    if(e.pointerType==="mouse"&&e.button!==0) return;
-    const nv=valueAt(e.clientX);
-    if(nv==null) return;
-    dragging=true; el.classList.add("drag");
-    try{ el.setPointerCapture(e.pointerId); }catch(err){}
-    paintStars(el,nv); onChange(nv);
-  });
-  el.addEventListener("pointermove",e=>{
-    if(!dragging) return;
-    e.preventDefault();
-    const nv=valueAt(e.clientX);
-    if(nv==null||nv===+el.dataset.val) return;
-    paintStars(el,nv); onChange(nv);
-  });
-  const endDrag=e=>{
-    if(!dragging) return;
-    dragging=false; el.classList.remove("drag");
-    try{ el.releasePointerCapture(e.pointerId); }catch(err){}
-  };
-  el.addEventListener("pointerup",endDrag);
-  el.addEventListener("pointercancel",endDrag);
-  el.addEventListener("keydown",e=>{
-    const cur=+el.dataset.val||0;
-    let nv=null;
-    if(e.key==="ArrowRight"||e.key==="ArrowUp") nv=Math.min(RMAX,cur+1);
-    else if(e.key==="ArrowLeft"||e.key==="ArrowDown") nv=Math.max(1,cur-1);
-    else if(e.key==="Home") nv=1;
-    else if(e.key==="End") nv=RMAX;
-    else if(/^[1-9]$/.test(e.key)) nv=+e.key;
-    else if(e.key==="0") nv=RMAX;              // 0 is the only key left for ten
-    if(nv==null) return;
-    e.preventDefault(); e.stopPropagation();
-    paintStars(el,nv); onChange(nv);
-  });
-  return el;
-}
+const stars=r=>"★".repeat(Math.floor(r))+(r%1?"½":"");
 const say=(el,t,cls)=>{const n=$(el);if(!n)return;n.textContent=t;n.className="msg"+(cls?" "+cls:"");};
 
 const GEN={28:"Action",12:"Adventure",16:"Animation",35:"Comedy",80:"Crime",99:"Documentary",18:"Drama",
@@ -1046,6 +878,7 @@ async function loadAll(){
   say("nbuilt",S.recsBuilt?`Rebuilt ${builtStamp()}.`:"Starter set — log something to build your own.");
   $("meName").textContent=nameOf(S.me.id);
   $("needKey").classList.toggle("hidden",!!S.tmdbKey);
+  $("migrate").classList.toggle("hidden", S.rows.some(r=>r.user_id===S.me.id));
   maybeShowGuide().then(maybeShowChanges);
   // ledger moved since the last build? go get fresh suggestions
   backfillReleases();
@@ -1077,7 +910,7 @@ $("who").onchange=()=>{
 function statsOf(L){
   const R=L.map(f=>f.userRating).filter(n=>!isNaN(n));
   const hist=[0,0,0,0,0,0,0,0,0,0];
-  R.forEach(r=>hist[Math.min(9,Math.max(0,Math.round(r)-1))]++);
+  R.forEach(r=>hist[Math.min(9,Math.max(0,Math.round(r*2)-1))]++);
   const dec={},gen={},kw={};
   L.forEach(f=>{
     if(f.year){const d=Math.floor(f.year/10)*10; dec[d]=(dec[d]||0)+1;}
@@ -1209,21 +1042,14 @@ async function tvInfo(id){
 }
 function tvLine(v){
   if(!v||!v.seasons) return "";
-  const nx=(v.next&&v.next.date)?v.next:null;
-  /* TMDB counts a season the moment it has a premiere date, so a show with three
-     aired seasons and a fourth announced reports four. Don't count a season that
-     hasn't started: only when the next episode is episode 1 of the newest season.
-     Mid-season (next episode is 2 or later) that season really has aired. */
-  const aired=(nx&&nx.season>=v.seasons&&nx.episode===1)?v.seasons-1:v.seasons;
-  const parts=[];
-  if(aired>0) parts.push(`${aired} season${aired===1?"":"s"}`);
-  if(nx){
-    const d=new Date(nx.date+"T12:00:00");
+  const parts=[`${v.seasons} season${v.seasons===1?"":"s"}`];
+  if(v.next&&v.next.date){
+    const d=new Date(v.next.date+"T12:00:00");
     if(!isNaN(d)){
       const thisYear=d.getFullYear()===new Date().getFullYear();
       const when=d.toLocaleDateString("en-US",
         thisYear?{month:"short",day:"numeric"}:{month:"short",day:"numeric",year:"numeric"});
-      parts.push(`series ${nx.season} from ${when}`);
+      parts.push(`series ${v.next.season} from ${when}`);
     }
   } else if(v.status==="Ended") parts.push("ended");
   else if(v.status==="Canceled") parts.push("cancelled");
@@ -1412,7 +1238,11 @@ function dossier(f){
     ${comingSoon(f)?`<div class="dsoon">COMING SOON \u00b7 ${esc(relLabel(f))}</div>`:""}
     ${mine?`<div class="affrow">
      <span>Your rating</span>
-     <span class="ratepick" data-row="${f.rowId}" data-cur="${f.userRating||0}"></span>
+     <select class="ratesel" data-row="${f.rowId}">
+      ${[5,4.5,4,3.5,3,2.5,2,1.5,1,0.5].map(v=>
+        `<option value="${v}"${Math.abs((f.userRating||0)-v)<.01?" selected":""}>${stars(v)} \u2014 ${v}</option>`
+      ).join("")}
+     </select>
     </div>
     <div class="affrow">
      <span>How you felt</span>
@@ -1590,16 +1420,13 @@ function ledger(){
     if(t) n.textContent=t;
   },3);
 
-  $("ledger").querySelectorAll(".ratepick").forEach(mount=>{
-    const row=+mount.dataset.row;
-    let busy=false;
-    starPicker(mount,+mount.dataset.cur||0,async v=>{
-      if(busy) return;
-      busy=true;
-      const {error}=await sb.from("entries").update({rating:v}).eq("id",row);
-      if(error){ say("lmsg",error.message,"bad"); busy=false; return; }
-      await loadAll();        // re-rating changes the seeds, so suggestions rebuild too
-    });
+  $("ledger").querySelectorAll(".ratesel").forEach(sel=>sel.onchange=async ev=>{
+    ev.stopPropagation();
+    sel.disabled=true;
+    const {error}=await sb.from("entries")
+      .update({rating:parseFloat(sel.value)}).eq("id",+sel.dataset.row);
+    if(error){ say("lmsg",error.message,"bad"); sel.disabled=false; return; }
+    await loadAll();          // re-rating changes the seeds, so suggestions rebuild too
   });
   $("ledger").querySelectorAll(".aff").forEach(b=>b.onclick=async()=>{
     const v=+b.dataset.aff;
@@ -1654,9 +1481,9 @@ function patterns(){
   const st=statsOf(visible());
   $("sp").innerHTML=Array.from({length:24},()=>"<i></i>").join("");
   const mx=Math.max(...st.hist)||1;
-  $("bars").innerHTML=st.hist.map((c,i)=>`<button type="button" class="${i<3?"low":i>=8?"high":""}" data-star="${i+1}" ${c?"":"disabled"} aria-pressed="false" style="height:${Math.max(2,c/mx*100)}%" title="${i+1}/10 — ${c}"></button>`).join("");
+  $("bars").innerHTML=st.hist.map((c,i)=>`<button type="button" class="${i<3?"low":i>=8?"high":""}" data-star="${(i+1)/2}" ${c?"":"disabled"} aria-pressed="false" style="height:${Math.max(2,c/mx*100)}%" title="${(i+1)/2}★ — ${c}"></button>`).join("");
   $("bars").querySelectorAll("button[data-star]").forEach(b=>b.onclick=()=>drill("star",+b.dataset.star));
-  $("bl").innerHTML=st.hist.map((_,i)=>`<span>${i+1}</span>`).join("");
+  $("bl").innerHTML=st.hist.map((_,i)=>`<span>${(i+1)/2}</span>`).join("");
   const bar=(rows,kind)=>{const m=Math.max(...rows.map(r=>r[1]))||1;
     return rows.map(([k,v])=>`<button type="button" class="brow" data-kind="${kind}" data-key="${esc(String(k))}" aria-pressed="false"><span class="lb">${esc(k)}</span><span class="tk"><span class="bfill" style="width:${v/m*100}%"></span></span><span class="vl">${v}</span></button>`).join("");};
   $("pGen").innerHTML=bar(st.genres,"genre");
@@ -1864,7 +1691,6 @@ function drawPager(ids,key,cur,total,shown,count,onGo){
 /* ---------- "not interested" ---------- */
 const SKIP_CACHE="cbsSkip:v1";
 const skipKey=(t,i)=>t+":"+i;
-const isSkipped=(t,i)=>S.skip.some(x=>skipKey(x.media_type,x.tmdb_id)===skipKey(t,i));
 function lsSkips(){ try{ return JSON.parse(localStorage.getItem(SKIP_CACHE)||"[]"); }catch(e){ return []; } }
 function lsSaveSkips(v){ try{ localStorage.setItem(SKIP_CACHE,JSON.stringify(v)); }catch(e){} }
 
@@ -1913,7 +1739,7 @@ function likenessRatios(){
     const mean=theirs.reduce((a,r)=>a+r.userRating,0)/theirs.length;
     if(!both.length){ out[p.id]={agree:0,conf:0,n:0,mean,name:p.name}; return; }
     const gap=both.reduce((a,r)=>a+Math.abs(r.userRating-mine[r.type+":"+r.id]),0)/both.length;
-    const agree=Math.max(-1,Math.min(1,1-2*gap/9));     // 0 gap -> +1, 4.5 -> 0, 9 -> -1
+    const agree=Math.max(-1,Math.min(1,1-2*gap/4.5));   // 0 gap -> +1, 2.25 -> 0, 4.5 -> -1
     const conf=both.length/(both.length+6);             // 3 titles ~ a third, 30 ~ most of the way
     out[p.id]={agree,conf,n:both.length,mean,name:p.name};
   });
@@ -1930,7 +1756,7 @@ function householdView(type,id,LR){
     const lr=LR[r.user_id]; if(!lr) return;
     const w=lr.agree*lr.conf;
     /* centred on their own average, so a 4 from a harsh rater outweighs a 4 from a generous one */
-    let z=Math.max(-1,Math.min(1,(r.userRating-lr.mean)/3));
+    let z=Math.max(-1,Math.min(1,(r.userRating-lr.mean)/1.5));
     if(r.loved) z=Math.min(1,z+.25);
     num+=w*z; den+=Math.abs(w);
     who.push({name:lr.name,rating:r.userRating,loved:r.loved,liked:r.liked});
@@ -2025,11 +1851,9 @@ function peopleBoost(cred,AFF){
    the old flat spread let a pile of lukewarm entries outvote the films you love. */
 function seedWeight(r){
   const rt=r.userRating||0;
-  if(rt<6) return 0;                       // was <3 on the old five-point scale
+  if(rt<3) return 0;
   const affection=r.loved?1.6:r.liked?1.25:1;
-  /* (rt-5)/2 is the old (rating-2.5) expressed in tenths, so the curve — and the
-     roughly 17x spread between a loved 10 and a bare 6 — is exactly as tuned. */
-  return Math.pow((rt-5)/2,1.6)*affection*rankBoost(r);
+  return Math.pow(rt-2.5,1.6)*affection*rankBoost(r);
 }
 /* Where you dragged it counts too: your #1 pulls ~1.5x, the bottom ~0.75x.
    Stars are coarse (half your ledger is 5-star) — the ranking breaks those ties. */
@@ -2061,8 +1885,8 @@ function genreAffinity(){
   Object.keys(n).forEach(g=>{
     const avg=sum[g]/n[g], share=n[g]/mine.length;
     const shrink=n[g]/(n[g]+2);                       // few samples -> pull toward neutral
-    const delta=Math.max(-3,Math.min(3,avg-avgAll))*shrink;
-    out[g]=Math.max(.55,1+.15*delta+.25*share);
+    const delta=Math.max(-1.5,Math.min(1.5,avg-avgAll))*shrink;
+    out[g]=Math.max(.55,1+.30*delta+.25*share);
   });
   return out;
 }
@@ -2123,12 +1947,7 @@ async function buildRecs(){
   const score=e=>{
     const cs=Object.values(e.seeds).sort((a,b)=>b-a);
     let base=0; cs.forEach((c,i)=>base+=c/(1+.35*i));
-    /* Crowd score, but only as far as the crowd is real. An 8.5 from 40,000
-       voters means something; an 8.5 from 12 is noise, and thin counts are the
-       norm for the older and stranger titles worth surfacing. Shrink toward
-       neutral (0.8) when few people have voted — added 8/29/26. */
-    const trust=(e.votes||0)/((e.votes||0)+150);
-    const q=.6+.4*(.5+(Math.min(1,(e.vote||0)/8)-.5)*trust);
+    const q=.6+.4*Math.min(1,(e.vote||0)/8);
     const gs=(e.genres||[]).map(g=>AFF[g]||1);
     const ga=gs.length?gs.reduce((a,b)=>a+b,0)/gs.length:1;
     const hv=householdView(e.type,e.id,LR);
@@ -2557,7 +2376,7 @@ function paintPairs(byUser){
   const seenB=new Set((byUser[B.id]||[]).map(r=>r.type+":"+r.id));
   const skipped=new Set(S.skip.map(x=>skipKey(x.media_type,x.tmdb_id)));
   const list=(byUser[A.id]||[])
-    .filter(r=>r.userRating>=8&&!seenB.has(r.type+":"+r.id)
+    .filter(r=>r.userRating>=4&&!seenB.has(r.type+":"+r.id)
                &&!(toMe0()&&skipped.has(r.type+":"+r.id)))
     .sort((x,y)=>y.userRating-x.userRating||
       (y.loved?1:0)-(x.loved?1:0)||x.title.localeCompare(y.title))
@@ -2629,7 +2448,7 @@ function household(){
     const both=byUser[B.id].filter(r=>mapA[r.type+":"+r.id]!==undefined);
     if(!both.length){ pairs.push({a:A.name,b:B.name,n:0}); continue; }
     const diff=both.reduce((s,r)=>s+Math.abs(r.userRating-mapA[r.type+":"+r.id]),0)/both.length;
-    pairs.push({a:A.name,b:B.name,n:both.length,match:Math.max(0,Math.round((1-diff/9)*100)),diff:diff.toFixed(2)});
+    pairs.push({a:A.name,b:B.name,n:both.length,match:Math.max(0,Math.round((1-diff/4.5)*100)),diff:diff.toFixed(2)});
   }
   /* how much each person's opinion currently counts toward your suggestions */
   const LR=likenessRatios();
@@ -2718,8 +2537,7 @@ function todayLocal(){
   return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 }
 function resetEntryForm(){
-  $("lrate").value="8";
-  paintStars($("lrateStars").querySelector(".starpick"),8);
+  $("lrate").value="4";
   $("llike").value="0";
   $("ldate").value=todayLocal();
   $("lrev").value="";
@@ -2751,15 +2569,12 @@ async function search(){
        ${m.poster_path?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster_path}" alt="">`:'<div class="np">?</div>'}
        ${mineHas?'<span class="rk seen">WATCHED</span>'
          :`<span class="rk">MATCH</span><span class="badge fit" data-i="${i}">\u00b7\u00b7</span>`}
-       <div class="m"><div class="t">${esc(t)}</div><div class="y">${y||"—"}</div></div></button>
+       <div class="m"><div class="t">${esc(t)}</div><div class="y">${y||"—"}</div>
+       ${m.media_type==="tv"?`<div class="tvline" data-i="${i}"></div>`:""}</div></button>
        <div class="acts one">${mineHas
          ? `<button type="button" class="mini seenbtn" data-t="${esc(t)}">In your ledger \u2192</button>`
          : `<button type="button" class="mini wl${onWatchlist(m.media_type,m.id)?" on":""}" data-i="${i}">`+
-           `${onWatchlist(m.media_type,m.id)?"On your list":"Want to see"}</button>`+
-           `<button type="button" class="mini qbtn" data-i="${i}"
-             data-mt="${m.media_type}" data-mid="${m.id}">+ Log it</button>`+
-           `<button type="button" class="mini ghost snope${isSkipped(m.media_type,m.id)?" on":""}" data-i="${i}">`+
-           `${isSkipped(m.media_type,m.id)?"Not interested ✓":"Not interested"}</button>`}`+
+           `${onWatchlist(m.media_type,m.id)?"On your list":"Want to see"}</button>`}`+
         `<button type="button" class="mini trailm" data-mt="${m.media_type}" data-mid="${m.id}"
           data-mn="${esc(t)}">\u25b6 Trailer</button></div></div>`;
     }).join("");
@@ -2780,22 +2595,12 @@ async function search(){
       document.querySelector('nav button[data-v="ledger"]').click();
       $("q").value=b.dataset.t; S.PG.ledger=1; ledger();
     });
-    /* "Not interested" from a search: the title stays on screen — you went
-       looking for it — but it stops turning up in suggestions. Click again to
-       undo, same as the button on What's Next. */
-    wireQueueAndSkip(hits,SHAPE_HIT,`${hits.length} titles — pick one.`);
     $("lres").querySelectorAll(".card").forEach(el=>el.onclick=()=>{
       const h=hits[+el.dataset.i];
       if(h&&loggedByMe(h.media_type,h.id)){
         say("lmsg",`${h.title||h.name} is already in your ledger.`,"bad");
         el.classList.add("nudge"); setTimeout(()=>el.classList.remove("nudge"),600);
         return;                                   // never open the form for something logged
-      }
-      /* Once a list is going, a card click means "add that one too" — dropping
-         into the single-title form mid-queue would strand what you'd gathered. */
-      if(batch.length){
-        if(inBatch(h.media_type,h.id)) batchDrop(h.media_type,h.id); else batchAdd(h);
-        return;
       }
       $("lres").querySelectorAll(".card").forEach(x=>x.classList.remove("sel"));
       el.classList.add("sel"); chosen=hits[+el.dataset.i];
@@ -2810,158 +2615,6 @@ async function search(){
 $("lgo").onclick=search;
 $("lq").addEventListener("keydown",e=>{if(e.key==="Enter")search();});
 $("lcancel").onclick=()=>{$("lform").classList.add("hidden");chosen=null;logOrigin=null;resetEntryForm();};
-
-/* ---------- logging several at once ----------
-   Queue titles off the search results, rate the lot in one pass, save in one go.
-   Every row keeps its own rating, feeling and date; the header sets all of them
-   at once for an evening watched back to back. */
-let batch=[];
-const inBatch=(type,id)=>batch.some(b=>b.type===type&&b.id===id);
-function batchAdd(m){
-  const type=m.media_type||m.type||(m.title?"movie":"tv");
-  if(loggedByMe(type,m.id)||inBatch(type,m.id)) return false;   // guard #1: never queue a dupe
-  batch.push({id:m.id,type,
-    title:m.title||m.name,
-    year:+String(m.release_date||m.first_air_date||m.year||"").slice(0,4)||null,
-    poster:m.poster_path||m.poster||null,
-    rating:8,aff:0,date:$("bdate").value.trim()||todayLocal()});
-  paintBatch();
-  return true;
-}
-function batchDrop(type,id){
-  batch=batch.filter(b=>!(b.type===type&&b.id===id));
-  paintBatch();
-}
-/* keep the search cards in step with the tray */
-function markQueued(){
-  $("lres").querySelectorAll(".qbtn").forEach(btn=>{
-    const on=inBatch(btn.dataset.mt,+btn.dataset.mid);
-    btn.classList.toggle("on",on);
-    btn.textContent=on?"✓ On the list":"+ Log it";
-    const card=btn.closest(".card");
-    if(card) card.classList.toggle("queued",on);
-  });
-}
-function paintBatch(){
-  $("lbatch").classList.toggle("hidden",!batch.length);
-  $("bcount").textContent=String(batch.length);
-  if(!batch.length){ $("blist").innerHTML=""; say("bmsg",""); markQueued(); return; }
-  $("blist").innerHTML=batch.map(b=>`<div class="brow" data-k="${b.type}:${b.id}">
-    ${b.poster?`<img loading="lazy" src="https://image.tmdb.org/t/p/w92${b.poster}" alt="">`
-              :'<div class="np">?</div>'}
-    <div>
-     <div class="bt">${esc(b.title)}</div>
-     <div class="by">${b.year||"—"} · ${b.type==="tv"?"Series":"Film"}</div>
-     <div class="bctl">
-      <span class="rstars"></span>
-      <button type="button" class="mini baff${b.aff===0?" on":""}" data-a="0">Not for me</button>
-      <button type="button" class="mini baff${b.aff===1?" on":""}" data-a="1">♡ Liked</button>
-      <button type="button" class="mini baff${b.aff===2?" on":""}" data-a="2">♥ Loved</button>
-      <input type="text" class="bdate rdate" value="${esc(b.date||"")}" placeholder="YYYY-MM-DD"
-        aria-label="Watched on">
-     </div>
-    </div>
-    <button type="button" class="drop" aria-label="Take ${esc(b.title)} off the list">✕</button>
-   </div>`).join("");
-  $("blist").querySelectorAll(".brow").forEach(row=>{
-    const b=batch.find(x=>x.type+":"+x.id===row.dataset.k);
-    if(!b) return;
-    starPicker(row.querySelector(".rstars"),b.rating,v=>{b.rating=v;});
-    row.querySelectorAll(".baff").forEach(btn=>btn.onclick=()=>{
-      b.aff=+btn.dataset.a;
-      row.querySelectorAll(".baff").forEach(x=>x.classList.toggle("on",x===btn));
-    });
-    row.querySelector(".rdate").oninput=e=>{ b.date=e.target.value.trim(); };
-    row.querySelector(".drop").onclick=()=>batchDrop(b.type,b.id);
-  });
-  markQueued();
-}
-/* The queue and dismiss buttons behave identically on a search list and on an
-   actor's filmography, so both wire through here. `shape` normalises whatever
-   the list holds into what the tray wants. */
-function wireQueueAndSkip(items,shape,idleMsg){
-  $("lres").querySelectorAll(".qbtn").forEach(b=>b.onclick=ev=>{
-    ev.stopPropagation();
-    const m=shape(items[+b.dataset.i]);
-    if(inBatch(m.type,m.id)) batchDrop(m.type,m.id);
-    else if(!batchAdd(m)) return;
-    say("lmsg",batch.length?`${batch.length} queued — rate them below.`:idleMsg);
-  });
-  $("lres").querySelectorAll(".snope").forEach(b=>b.onclick=async ev=>{
-    ev.stopPropagation();
-    const m=shape(items[+b.dataset.i]);
-    b.disabled=true;
-    const was=isSkipped(m.type,m.id);
-    await (was?dropSkip({id:m.id,type:m.type}):addSkip({id:m.id,type:m.type,title:m.title}));
-    await loadSkips();
-    b.disabled=false;
-    b.classList.toggle("on",!was);
-    b.textContent=was?"Not interested":"Not interested ✓";
-    const card=b.closest(".card");
-    if(card) card.classList.toggle("skipped",!was);
-    say("lmsg",was?`${m.title} is back in the mix.`
-                 :`${m.title} won't be suggested again.`,"ok");
-  });
-  $("lres").querySelectorAll(".card[data-i]").forEach(el=>{
-    const m=shape(items[+el.dataset.i]);
-    if(m&&isSkipped(m.type,m.id)) el.classList.add("skipped");
-  });
-  markQueued();
-}
-const SHAPE_HIT=h=>({id:h.id,type:h.media_type,title:h.title||h.name,
-  release_date:h.release_date||h.first_air_date,poster:h.poster_path});
-const SHAPE_CREDIT=m=>({id:m.id,type:m.type,title:m.title,
-  release_date:m.release_date,poster:m.poster});
-
-$("bdateall").onclick=()=>{
-  const d=$("bdate").value.trim();
-  if(!d) return say("bmsg","Put a date in the box first.","bad");
-  batch.forEach(b=>b.date=d); paintBatch();
-  say("bmsg",`All ${batch.length} set to ${d}.`,"ok");
-};
-$("bclear").onclick=()=>{ batch=[]; paintBatch(); };
-$("bsave").onclick=async()=>{
-  if(!batch.length) return;
-  const btn=$("bsave"); btn.disabled=true;
-  const queue=batch.slice(), saved=[], failed=[];
-  try{
-    for(let i=0;i<queue.length;i++){
-      const b=queue[i];
-      say("bmsg",`Saving ${i+1} of ${queue.length} — ${b.title}…`);
-      if(loggedByMe(b.type,b.id)){        // guard #3: re-check at the moment of writing
-        failed.push(`${b.title} (already in your ledger)`); continue;
-      }
-      try{
-        const e=await enrich({id:b.id,media_type:b.type});
-        const {error}=await sb.from("entries").upsert({
-          user_id:S.me.id,tmdb_id:b.id,media_type:e.type,
-          title:e.d.title||e.d.name,
-          year:e.date?+e.date.slice(0,4):b.year,
-          poster:e.d.poster_path,
-          rating:b.rating,liked:b.aff>=1,loved:b.aff===2,
-          watched_date:(b.date||"").trim()||null,review:null,meta:e.meta
-        },{onConflict:"user_id,tmdb_id,media_type"});
-        if(error) throw new Error(error.message);
-        await sb.from("watchlist").delete().eq("user_id",S.me.id)
-          .eq("tmdb_id",b.id).eq("media_type",e.type);
-        saved.push(b);
-      }catch(err){ failed.push(`${b.title} (${err.message})`); }
-    }
-    /* anything that failed stays on the list so it can be retried */
-    batch=batch.filter(b=>!saved.some(s=>s.type===b.type&&s.id===b.id));
-    paintBatch();
-    await loadAll();
-    /* the search stays put — carry on down the list of Rockys */
-    if($("lq").value.trim()) await search();
-    if(saved.length&&!failed.length){
-      say("bmsg",`Saved ${saved.length} ${saved.length===1?"title":"titles"} to your ledger.`,"ok");
-    }else if(saved.length){
-      say("bmsg",`Saved ${saved.length}. Still to sort out: ${failed.join("; ")}`,"bad");
-    }else{
-      say("bmsg",`Nothing saved. ${failed.join("; ")}`,"bad");
-    }
-  }finally{ btn.disabled=false; }
-};
 
 /* people from the same search — click one to see what they've worked on */
 function peopleStrip(people){
@@ -3017,20 +2670,18 @@ async function showPerson(p,q){
         ${m.poster?`<img loading="lazy" src="https://image.tmdb.org/t/p/w342${m.poster}" alt="">`:'<div class="np">?</div>'}
         <div class="m"><div class="t">${esc(m.title)}</div>
          <div class="y">${m.year||"\u2014"} \u00b7 ${(m.vote||0).toFixed(1)}</div>
-         <div class="wp">${esc(m.role)}</div></div></button>
+         <div class="wp">${esc(m.role)}</div>
+         ${m.type==="tv"?`<div class="tvline" data-i="${i}"></div>`:""}</div></button>
         <div class="acts one">${seen.has(m.type+":"+m.id)
           ? `<button type="button" class="mini seenbtn" data-t="${esc(m.title)}">In your ledger \u2192</button>`
           : `<button type="button" class="mini pwl${onWatchlist(m.type,m.id)?" on":""}" data-i="${i}">`+
-            `${onWatchlist(m.type,m.id)?"On your list":"Want to see"}</button>`+
-            `<button type="button" class="mini qbtn" data-i="${i}"
-              data-mt="${m.type}" data-mid="${m.id}">+ Log it</button>`+
-            `<button type="button" class="mini ghost snope${isSkipped(m.type,m.id)?" on":""}" data-i="${i}">`+
-            `${isSkipped(m.type,m.id)?"Not interested \u2713":"Not interested"}</button>`}`+
+            `${onWatchlist(m.type,m.id)?"On your list":"Want to see"}</button>`}`+
          `<button type="button" class="mini trailm" data-mt="${m.type}" data-mid="${m.id}"
            data-mn="${esc(m.title)}">\u25b6 Trailer</button></div></div>`).join("");
 
     $("pbk").onclick=()=>{ $("lq").value=q; search(); };
     paintFit("#lres .badge.fit",list,m=>({id:m.id,type:m.type,genres:[]}));
+    paintTv("#lres .tvline",list,m=>({id:m.id,type:m.type}));
     $("lres").querySelectorAll(".pwl").forEach(b=>b.onclick=ev=>{
       ev.stopPropagation();
       if(b.classList.contains("on")) return;
@@ -3038,18 +2689,11 @@ async function showPerson(p,q){
       addToWatchlist({id:m.id,type:m.type,title:m.title,year:m.year,
         poster:m.poster,genres:[],vote:m.vote||0},b);
     });
-    /* same queue-and-dismiss buttons as a search, so you can work down an
-       actor's filmography in one pass */
-    wireQueueAndSkip(list,SHAPE_CREDIT,`${list.length} titles with ${p.name} — pick one.`);
     $("lres").querySelectorAll(".psel").forEach(el=>el.onclick=()=>{
       const m=list[+el.dataset.i];
       if(loggedByMe(m.type,m.id)){
         say("lmsg",`${m.title} is already in your ledger.`,"bad");
         el.classList.add("nudge"); setTimeout(()=>el.classList.remove("nudge"),600);
-        return;
-      }
-      if(batch.length){                     // a list is going — add to it
-        if(inBatch(m.type,m.id)) batchDrop(m.type,m.id); else batchAdd(m);
         return;
       }
       $("lres").querySelectorAll(".card").forEach(x=>x.classList.remove("sel"));
@@ -3122,13 +2766,9 @@ $("lsave").onclick=async()=>{
     // watched means it no longer belongs on the want-to-see list
     await sb.from("watchlist").delete().eq("user_id",S.me.id).eq("tmdb_id",tmdbId).eq("media_type",e.type);
     say("smsg",`Saved. ${e.d.title||e.d.name} is in your ledger.`,"ok");
-    $("lform").classList.add("hidden"); chosen=null;
+    $("lform").classList.add("hidden"); $("lres").innerHTML=""; $("lq").value=""; chosen=null;
     resetEntryForm();
     await loadAll();
-    /* Leave the search where it was. Rating one Rocky shouldn't mean typing
-       "rocky" again for the next one — redraw the same results instead, so the
-       one just logged turns into a WATCHED card in place. */
-    if(!back&&$("lq").value.trim()) await search();
     if(back){
       document.querySelector(`nav button[data-v="${back}"]`).click();
       /* each tab has its own message slot; household has none, so stay quiet there */
@@ -3139,11 +2779,28 @@ $("lsave").onclick=async()=>{
   finally{ $("lsave").disabled=false; }
 };
 
-/* The one-time Letterboxd import lived here. It was removed 8/29/26: the banner
-   showed to anyone with an empty ledger, not just Chris, so a new member who
-   clicked it got Chris's 38 titles and his ratings written under their own name.
-   data.json is still read above for the starter recommendation set — don't delete it.
-   If a real import comes back, it must read the member's OWN uploaded export. */
+/* ---------- one-time import of the original 38 ---------- */
+$("doMigrate").onclick=async()=>{
+  const b=$("doMigrate"); b.disabled=true;
+  try{
+    const r=await fetch("data.json?v="+Date.now()); const d=await r.json();
+    const rows=(d.films||[]).map(f=>({user_id:S.me.id,tmdb_id:f.id,media_type:f.type,title:f.title,
+      year:f.year,poster:f.poster,rating:f.userRating,liked:!!f.liked,
+      watched_date:f.diaryDate||null,review:f.review||null,
+      meta:{genres:f.genres,genreNames:f.genreNames,overview:f.overview,tagline:f.tagline,
+        runtime:f.runtime,episodes:f.episodes,keywords:f.keywords,roles:f.roles,cast:f.cast,
+        crewCount:f.crewCount,watch:f.watch,vote:f.vote,votes:f.votes,
+        companies:f.companies,networks:f.networks,language:f.language}}));
+    say("migMsg",`Importing ${rows.length} titles…`);
+    for(let i=0;i<rows.length;i+=20){
+      const {error}=await sb.from("entries").upsert(rows.slice(i,i+20),{onConflict:"user_id,tmdb_id,media_type"});
+      if(error) throw new Error(error.message);
+      say("migMsg",`Imported ${Math.min(i+20,rows.length)} of ${rows.length}…`);
+    }
+    say("migMsg","Done — your archive is in the database.","ok");
+    await loadAll();
+  }catch(e){ say("migMsg",e.message,"bad"); b.disabled=false; }
+};
 
 /* ---------- nav ---------- */
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
@@ -3489,9 +3146,6 @@ $("whatsnew").onclick=e=>{ if(e.target.id==="whatsnew") closeWhatsNew(); };
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeWhatsNew(); });
 
 $("ldate").value=todayLocal();   // local date, not UTC — after 7pm CT those differ
-$("bdate").value=todayLocal();
-starPicker($("lrateStars"),8,v=>{ $("lrate").value=String(v); });
-starPicker($("ballStars"),8,v=>{ batch.forEach(b=>b.rating=v); paintBatch(); });
 refreshSession();
 
 </script></body></html>
