@@ -1042,14 +1042,21 @@ async function tvInfo(id){
 }
 function tvLine(v){
   if(!v||!v.seasons) return "";
-  const parts=[`${v.seasons} season${v.seasons===1?"":"s"}`];
-  if(v.next&&v.next.date){
-    const d=new Date(v.next.date+"T12:00:00");
+  const nx=(v.next&&v.next.date)?v.next:null;
+  /* TMDB counts a season the moment it has a premiere date, so a show with three
+     aired seasons and a fourth announced reports four. Don't count a season that
+     hasn't started: only when the next episode is episode 1 of the newest season.
+     Mid-season (next episode is 2 or later) that season really has aired. */
+  const aired=(nx&&nx.season>=v.seasons&&nx.episode===1)?v.seasons-1:v.seasons;
+  const parts=[];
+  if(aired>0) parts.push(`${aired} season${aired===1?"":"s"}`);
+  if(nx){
+    const d=new Date(nx.date+"T12:00:00");
     if(!isNaN(d)){
       const thisYear=d.getFullYear()===new Date().getFullYear();
       const when=d.toLocaleDateString("en-US",
         thisYear?{month:"short",day:"numeric"}:{month:"short",day:"numeric",year:"numeric"});
-      parts.push(`series ${v.next.season} from ${when}`);
+      parts.push(`series ${nx.season} from ${when}`);
     }
   } else if(v.status==="Ended") parts.push("ended");
   else if(v.status==="Canceled") parts.push("cancelled");
