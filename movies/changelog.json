@@ -2,6 +2,16 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-29T11:35:00-05:00",
+      "by": "Chris",
+      "title": "Seasons, and when the next one starts",
+      "items": [
+        "Series now show how many seasons they have and what's coming — 'The Penguin · 1 season · series 2 from Sep 15', or 'Breaking Bad · 5 seasons · ended'.",
+        "Shows on What's Next, the Watch List, search results and the dossier. Films are unaffected.",
+        "Cached for a day rather than permanently, since a next-episode date moves."
+      ]
+    },
+    {
       "at": "2026-08-28T09:00:00-05:00",
       "by": "Chris",
       "title": "Patterns bars read as one bar again",
