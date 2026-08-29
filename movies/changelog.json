@@ -2,6 +2,18 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-29T13:20:00-05:00",
+      "by": "Chris",
+      "title": "Ratings are now out of 10, and you can log a whole evening at once",
+      "items": [
+        "Ratings run 1 to 10 instead of half-stars out of 5. Every rating already on file was converted, so nothing moved relative to anything else — a four-star favourite is now an 8.",
+        "Rate by clicking the stars instead of picking from a list. The left half of a star is the odd number, the right half the even one. On a phone the stars are bigger and you can drag your thumb across them.",
+        "Log several at once: press \"+ Log it\" on as many search results as you like, rate them all in one panel, then save the lot. Each one keeps its own rating, date and whether you liked it.",
+        "\"Not interested\" now appears on search results too, so something you never want suggested can be waved off the moment you see it. It stays visible in the search you asked for; click again to undo.",
+        "Suggestions now take a public score less seriously when hardly anyone has voted on it. A 9 from twelve people no longer counts the same as a 9 from forty thousand."
+      ]
+    },
+    {
       "at": "2026-08-29T12:35:00-05:00",
       "by": "Chris",
       "title": "Import button removed — it was handing out the wrong ledger",
