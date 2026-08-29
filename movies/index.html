@@ -317,8 +317,8 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .barlabels span{flex:1;text-align:center}
 .brow{display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:15px}
 .brow .lb{width:146px;flex:none;font-family:'Courier Prime',monospace;font-size:13px;color:var(--muted)}
-.brow .tk{flex:1;height:12px;background:var(--card2);border:1px solid var(--edge);min-width:40px}
-.brow .fl{height:100%;background:var(--accent);display:block}
+.brow .tk{flex:1;height:14px;background:var(--card2);border:1px solid var(--edge);min-width:40px;overflow:hidden}
+.brow .bfill{height:100%;background:var(--accent);display:block;margin:0}
 .brow .vl{width:38px;text-align:right;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:30px}
 @media(max-width:760px){.cols{grid-template-columns:1fr}}
@@ -346,7 +346,7 @@ footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--edge);
 .bars button:disabled{cursor:default;opacity:.5}
 button.brow{display:flex;align-items:center;gap:12px;cursor:pointer;background:none;border:none;
  padding:2px 0;width:100%;text-align:left;color:inherit;font:inherit;margin-bottom:8px}
-button.brow:hover .fl{filter:brightness(1.15)}
+button.brow:hover .bfill{filter:brightness(1.15)}
 button.brow[aria-pressed=true] .lb{color:var(--accent);font-weight:700}
 button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offset:1px}
 .drill{border:1px solid var(--edge);background:var(--card2);padding:14px;margin:0 0 20px}
@@ -1409,7 +1409,7 @@ function patterns(){
   $("bars").querySelectorAll("button[data-star]").forEach(b=>b.onclick=()=>drill("star",+b.dataset.star));
   $("bl").innerHTML=st.hist.map((_,i)=>`<span>${(i+1)/2}</span>`).join("");
   const bar=(rows,kind)=>{const m=Math.max(...rows.map(r=>r[1]))||1;
-    return rows.map(([k,v])=>`<button type="button" class="brow" data-kind="${kind}" data-key="${esc(String(k))}" aria-pressed="false"><span class="lb">${esc(k)}</span><span class="tk"><span class="fl" style="width:${v/m*100}%"></span></span><span class="vl">${v}</span></button>`).join("");};
+    return rows.map(([k,v])=>`<button type="button" class="brow" data-kind="${kind}" data-key="${esc(String(k))}" aria-pressed="false"><span class="lb">${esc(k)}</span><span class="tk"><span class="bfill" style="width:${v/m*100}%"></span></span><span class="vl">${v}</span></button>`).join("");};
   $("pGen").innerHTML=bar(st.genres,"genre");
   $("pDec").innerHTML=bar(st.decades.map(([d,n])=>[d+"s",n]),"decade");
   document.querySelectorAll(".brow[data-kind]").forEach(b=>b.onclick=()=>drill(b.dataset.kind,b.dataset.key));

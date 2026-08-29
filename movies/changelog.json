@@ -2,6 +2,15 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-28T09:00:00-05:00",
+      "by": "Chris",
+      "title": "Patterns bars read as one bar again",
+      "items": [
+        "Genre and decade rows were drawing as an empty outlined box with a separate red bar underneath. The fill shared a class name with the form labels, which forced it onto its own line.",
+        "The fill now sits inside its track, so each row is a single bar."
+      ]
+    },
+    {
       "at": "2026-08-27T22:00:00-05:00",
       "by": "Chris",
       "title": "Not interested, on recommendations too",
