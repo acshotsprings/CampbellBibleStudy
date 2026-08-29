@@ -949,7 +949,24 @@ function crewOf(L){
 }
 
 /* ================= views ================= */
-function paintAll(){ paintMast(); ledger(); crew(); patterns(); next(); watchlist(); household(); paintDrill(); }
+function safely(name,fn,slot){
+  try{ fn(); }
+  catch(err){
+    console.error(name,err);
+    const n=slot&&$(slot);
+    if(n) n.innerHTML=`<p class="msg bad">Couldn't draw this: ${esc(err.message)}</p>`;
+  }
+}
+function paintAll(){
+  safely("mast",paintMast);
+  safely("ledger",ledger,"ledger");
+  safely("crew",crew,"crew");
+  safely("patterns",patterns);
+  safely("next",next,"next");
+  safely("watchlist",watchlist,"wlist");
+  safely("household",household,"hh");
+  safely("drill",paintDrill);
+}
 
 function paintMast(){
   const st=statsOf(visible());
@@ -1001,6 +1018,56 @@ function stampActivity(){
   el.title=siteWins?"Site updated \u2014 open Site changes"
     :`${last.who} added ${last.title}`;
   wireStampClick();
+}
+
+/* ---------- series detail: seasons and what's coming ----------
+   Cached for a day rather than forever, because "next episode" moves. */
+const TV_CACHE="cbsTv:v1";
+function tvCache(){ try{ return JSON.parse(localStorage.getItem(TV_CACHE)||"{}"); }catch(e){ return {}; } }
+async function tvInfo(id){
+  const c=tvCache(), k=String(id), now=Date.now();
+  if(c[k]&&now-c[k].at<864e5) return c[k].v;
+  try{
+    const d=await tmdb(`/tv/${id}`);
+    const ne=d.next_episode_to_air;
+    c[k]={at:now,v:{
+      seasons:d.number_of_seasons||0,
+      episodes:d.number_of_episodes||0,
+      status:d.status||"",
+      next:ne?{date:ne.air_date||"",season:ne.season_number,episode:ne.episode_number}:null
+    }};
+    try{ localStorage.setItem(TV_CACHE,JSON.stringify(c)); }catch(e){}
+    return c[k].v;
+  }catch(e){ return null; }
+}
+function tvLine(v){
+  if(!v||!v.seasons) return "";
+  const parts=[`${v.seasons} season${v.seasons===1?"":"s"}`];
+  if(v.next&&v.next.date){
+    const d=new Date(v.next.date+"T12:00:00");
+    if(!isNaN(d)){
+      const thisYear=d.getFullYear()===new Date().getFullYear();
+      const when=d.toLocaleDateString("en-US",
+        thisYear?{month:"short",day:"numeric"}:{month:"short",day:"numeric",year:"numeric"});
+      parts.push(`series ${v.next.season} from ${when}`);
+    }
+  } else if(v.status==="Ended") parts.push("ended");
+  else if(v.status==="Canceled") parts.push("cancelled");
+  else if(v.status==="Returning Series") parts.push("returning, no date yet");
+  return parts.join(" \u00b7 ");
+}
+/* fill the lines in after the cards are on screen */
+async function paintTv(sel,list,shape){
+  const nodes=[...document.querySelectorAll(sel)];
+  if(!nodes.length) return;
+  await pool(nodes,async n=>{
+    const item=list[+n.dataset.i];
+    if(!item) return;
+    const m=shape(item);
+    if(!m||m.type!=="tv") return;
+    const t=tvLine(await tvInfo(m.id));
+    if(t) n.textContent=t;
+  },4);
 }
 
 /* ---------- unreleased titles ---------- */
@@ -2067,7 +2134,7 @@ function next(){
       say("nmsg",`${m.title} is back in the mix.`,"ok"); };
   });
 }
-const wlScore=w=>{ const v=S.scores[w.media_type+":"+w.tmdb_id]; return v==null?null:v; };
+const wlScore=w=>{ const v=(S.scores||{})[w.media_type+":"+w.tmdb_id]; return v==null?null:v; };
 function watchlist(){
   const so=($("wSort")||{}).value||"match";
   const byAdded=(x,y)=>String(y.created_at||"").localeCompare(String(x.created_at||""))||
@@ -2081,7 +2148,7 @@ function watchlist(){
     if(b==null) return -1;
     return b-a || byAdded(x,y);
   };
-  const L=S.want.slice().sort(so==="added"?byAdded:byMatch);
+  const L=(S.want||[]).slice().sort(so==="added"?byAdded:byMatch);
   $("wlist").innerHTML=L.length?L.map((w,i)=>{
     const m=wlShape(w);
     const sc=wlScore(w);

@@ -2,6 +2,16 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-29T11:55:00-05:00",
+      "by": "Chris",
+      "title": "Watch list restored, seasons working",
+      "items": [
+        "The watch list was rendering nothing at all: it called a function that had never made it into the file, so the whole panel died on the first line.",
+        "Season counts and next-episode dates now actually appear, on What's Next, the watch list, search and the dossier.",
+        "If a tab ever fails to draw again it now says why instead of going blank, and one broken tab no longer takes the others with it."
+      ]
+    },
+    {
       "at": "2026-08-29T11:45:00-05:00",
       "by": "Chris",
       "title": "Season counts actually appear, and the genre filter says what it does",
