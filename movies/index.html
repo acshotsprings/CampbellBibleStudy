@@ -907,7 +907,9 @@ async function loadAllInner(){
   $("meName").textContent=nameOf(S.me.id);
   $("needKey").classList.toggle("hidden",!!S.tmdbKey);
   $("migrate").classList.toggle("hidden", S.rows.some(r=>r.user_id===S.me.id));
-  maybeShowGuide().then(maybeShowChanges);
+  /* the change popup shouldn't depend on the guide succeeding */
+  maybeShowGuide().catch(e=>console.error("guide",e)).then(()=>maybeShowChanges())
+    .catch(e=>console.error("changes",e));
   // ledger moved since the last build? go get fresh suggestions
   backfillReleases();
   const noScores=!Object.keys(S.scores||{}).length;
