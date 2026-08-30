@@ -852,6 +852,16 @@ async function fetchAllEntries(){
 }
 
 async function loadAll(){
+  try{ return await loadAllInner(); }
+  catch(err){
+    console.error("loadAll",err);
+    const b=$("needKey");
+    if(b){ b.classList.remove("hidden");
+      b.innerHTML=`<h3>Couldn't load the archive</h3><p>${esc(err.message)}</p>`; }
+    throw err;
+  }
+}
+async function loadAllInner(){
   const [{data:profs},{data:ents},{data:cfg},{data:want}]=await Promise.all([
     sb.from("profiles").select("*"),
     fetchAllEntries(),
@@ -2291,7 +2301,8 @@ function watchlist(){
      the same way search results are */
   paintFit("#wlist .badge.fit",L,w=>{const m=wlShape(w);
     return {id:m.id,type:m.type,genres:m.genres||[]};})
-    .then(()=>{ if(unscored&&!wlResorting){ wlResorting=true; watchlist(); wlResorting=false; } });
+    .then(()=>{ if(unscored&&!wlResorting){ wlResorting=true; watchlist(); wlResorting=false; } })
+    .catch(()=>{ wlResorting=false; });
   $("wlist").querySelectorAll(".wtrail").forEach(b=>b.onclick=()=>{
     const m=wlShape(L[+b.dataset.i]); showTrailer(m.type,m.id,m.title);
   });
@@ -2504,9 +2515,16 @@ function paintPairs(byUser){
         B.id===S.me.id?"you haven't":esc(B.name)+" hasn't"} seen.</p>`;
 
   /* act on it here rather than hunting for the title in Log a Film */
-  if(toMe){
+  /* Re-render once, only if something was actually missing a score. The flag
+     has to survive until the promise resolves, or this loops forever. */
+  const missing=toMe&&list.some(r=>fitOf(r)==null);
+  if(toMe&&missing&&!hhResorting){
+    hhResorting=true;
     paintFit("#hhPairs .hhfit",list,r=>({id:r.id,type:r.type,genres:r.genres||[]}))
-      .then(()=>{ if(!hhResorting){ hhResorting=true; household(); hhResorting=false; } });
+      .then(()=>{ hhResorting=false; household(); })
+      .catch(()=>{ hhResorting=false; });
+  }else if(toMe){
+    paintFit("#hhPairs .hhfit",list,r=>({id:r.id,type:r.type,genres:r.genres||[]}));
   }
   $("hhPairs").querySelectorAll(".tsopen").forEach(b=>b.onclick=()=>{
     const r=list[+b.dataset.i];

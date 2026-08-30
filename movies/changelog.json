@@ -2,6 +2,16 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-30T18:55:00-05:00",
+      "by": "Chris",
+      "title": "Fixed a crash on the Household tab",
+      "items": [
+        "Scoring the cross-recommendations re-rendered the tab in a loop that never stopped, which hung the page and left it blank.",
+        "It now re-renders once, only when something was actually missing a score.",
+        "If the archive ever fails to load again, the page says why instead of showing an empty shell."
+      ]
+    },
+    {
       "at": "2026-08-30T18:45:00-05:00",
       "by": "Chris",
       "title": "Recommendations weighed against your own taste",
