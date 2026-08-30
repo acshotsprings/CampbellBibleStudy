@@ -2,6 +2,16 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-29T19:00:00-05:00",
+      "by": "Chris",
+      "title": "Suggestions reach beyond what you've already seen",
+      "items": [
+        "Candidates only ever came from titles TMDB links to films you'd rated. For war films you have too few to point anywhere, and for documentaries the graph loops back on ones you've already logged — so neither showed up.",
+        "The engine now also pulls well-rated titles directly from your four strongest genres, at about a fifth of the weight of a genuine favourite, so they widen the field without taking it over.",
+        "Cards credit them as 'your taste in Documentary' rather than pretending a specific film pointed there."
+      ]
+    },
+    {
       "at": "2026-08-29T18:40:00-05:00",
       "by": "Haley",
       "title": "See what other people said",

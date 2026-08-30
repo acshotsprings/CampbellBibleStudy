@@ -1796,7 +1796,7 @@ function householdView(type,id,LR){
 }
 
 /* ---------- live recommendation engine ---------- */
-const RECS_CACHE="cbsRecs:v3";  // v3 = director/cast weighting, forces one rebuild
+const RECS_CACHE="cbsRecs:v4";  // v4 = genre discovery added  // v3 = director/cast weighting, forces one rebuild
 const SEED_CAP=30, REC_KEEP=60, PROV_TOP=24, CRED_TOP=30;
 const CRED_CACHE="cbsCred:v1";
 
@@ -2006,6 +2006,35 @@ async function buildRecs(){
     score(e);
   });
   credSave();
+  /* Seeds only surface what TMDB already links to what you've watched. For a
+     genre you like but have few titles in — war — almost nothing points there,
+     and for one you've watched heavily — documentary — the graph loops back on
+     titles you've already logged. So pull directly from the genres you rate
+     highest as well, at a lower weight so they support rather than dominate. */
+  const topGenres=Object.entries(AFF).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([g])=>+g);
+  await pool(topGenres,async g=>{
+    for(const kind of ["movie","tv"]){
+      try{
+        const d=await tmdb(`/discover/${kind}`,{
+          with_genres:g, sort_by:"vote_average.desc",
+          "vote_count.gte":200, page:1
+        });
+        (d.results||[]).slice(0,12).forEach((m,i)=>{
+          const k=kind+":"+m.id;
+          if(seenMine.has(k)||skipped.has(k)) return;
+          const e=tally[k]||(tally[k]={id:m.id,type:kind,title:m.title||m.name,
+            year:+((m.release_date||m.first_air_date||"").slice(0,4))||null,
+            poster:m.poster_path,backdrop:m.backdrop_path,
+            genres:m.genre_ids||[],vote:m.vote_average||0,votes:m.vote_count||0,
+            seeds:{},raw:0,watch:null,fromGenre:GEN[g]||""});
+          /* modest, and decaying down the list, so a strong seed match still wins */
+          const label=`your taste in ${GEN[g]||"this genre"}`;
+          e.seeds[label]=Math.max(e.seeds[label]||0, 1.1/(1+.25*i));
+        });
+      }catch(e){}
+    }
+  },3);
+
   const L=Object.values(tally).sort((x,y)=>y.raw-x.raw).slice(0,REC_KEEP);
   if(!L.length) throw new Error("TMDB had nothing new to suggest.");
   L.forEach(x=>{ x.seeds=Object.fromEntries(Object.entries(x.seeds).sort((a,b)=>b[1]-a[1]).slice(0,4)); });
