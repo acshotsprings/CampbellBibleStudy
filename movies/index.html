@@ -2445,6 +2445,7 @@ function wireMemberPanel(){
   });
 }
 
+let hhResorting=false;
 let hhWho=null, hhDir="toMe";     // toMe = what they'd pass to you
 const toMe0=()=>hhDir==="toMe";   // your dismissals only apply to your own side
 function paintPairs(byUser){
@@ -2453,17 +2454,38 @@ function paintPairs(byUser){
   const A=hhDir==="toMe"?them:{id:S.me.id,name:nameOf(S.me.id)};
   const B=hhDir==="toMe"?{id:S.me.id,name:nameOf(S.me.id)}:them;
 
+  const lede=$("hhLede");
+  if(lede) lede.textContent=hhDir==="toMe"
+    ? "Their favourites you haven't logged, ordered by how well each matches your own ledger."
+    : "Your favourites they haven't logged.";
   $("hhDirLabel").textContent=hhDir==="toMe"
     ? `\u2192 what ${them.name} would pass to you`
     : `\u2192 what you would pass to ${them.name}`;
 
   const seenB=new Set((byUser[B.id]||[]).map(r=>r.type+":"+r.id));
   const skipped=new Set(S.skip.map(x=>skipKey(x.media_type,x.tmdb_id)));
+  const fitOf=r=>{
+    const k=r.type+":"+r.id;
+    const v=(S.scores||{})[k];
+    if(v!=null) return v;
+    const c=fitCache()[k];
+    return (c&&c.sig===S.recsSig)?c.v:null;
+  };
   const list=(byUser[A.id]||[])
     .filter(r=>r.userRating>=4&&!seenB.has(r.type+":"+r.id)
                &&!(toMe0()&&skipped.has(r.type+":"+r.id)))
-    .sort((x,y)=>y.userRating-x.userRating||
-      (y.loved?1:0)-(x.loved?1:0)||x.title.localeCompare(y.title))
+    /* Otherwise this is just a list of their favourites. Once we know how well
+       each suits you, lead with that. */
+    .sort((x,y)=>{
+      if(toMe0()){
+        const a=fitOf(x), b=fitOf(y);
+        if(a!=null&&b!=null&&a!==b) return b-a;
+        if(a!=null&&b==null) return -1;
+        if(b!=null&&a==null) return 1;
+      }
+      return y.userRating-x.userRating||(y.loved?1:0)-(x.loved?1:0)||
+             x.title.localeCompare(y.title);
+    })
     .slice(0,30);
 
   const toMe=hhDir==="toMe";
@@ -2471,7 +2493,8 @@ function paintPairs(byUser){
     ? list.map((r,i)=>`<div class="ditem">
         <span><button type="button" class="dn tsopen" data-i="${i}">${esc(r.title)}</button>
         <span class="dy">${r.year||"\u2014"}${r.loved?" \u00b7 loved it":r.liked?" \u00b7 liked it":""}</span></span>
-        <span class="hhacts">${toMe?
+        <span class="hhacts">${toMe?`<span class="badge fit hhfit" data-i="${i}"
+            title="How well this matches your ledger">\u00b7\u00b7</span>`:""}${toMe?
           `<button type="button" class="mini hhwant" data-i="${i}">${
             onWatchlist(r.type,r.id)?"On your list":"Want to see"}</button>
            <button type="button" class="mini ghost hhseen" data-i="${i}">I've seen it</button>
@@ -2481,6 +2504,10 @@ function paintPairs(byUser){
         B.id===S.me.id?"you haven't":esc(B.name)+" hasn't"} seen.</p>`;
 
   /* act on it here rather than hunting for the title in Log a Film */
+  if(toMe){
+    paintFit("#hhPairs .hhfit",list,r=>({id:r.id,type:r.type,genres:r.genres||[]}))
+      .then(()=>{ if(!hhResorting){ hhResorting=true; household(); hhResorting=false; } });
+  }
   $("hhPairs").querySelectorAll(".tsopen").forEach(b=>b.onclick=()=>{
     const r=list[+b.dataset.i];
     openTitleSheet({id:r.id,type:r.type,title:r.title,year:r.year,
@@ -2580,7 +2607,8 @@ function household(){
 
   /* one direction at a time — pick the other person and which way it runs */
   const others=S.profiles.filter(p=>p.id!==S.me.id);
-  html+=`<h2 style="font-size:16px;margin-top:22px">Recommend to each other</h2>`;
+  html+=`<h2 style="font-size:16px;margin-top:22px">Recommend to each other</h2>
+   <p class="lede" id="hhLede"></p>`;
   if(!others.length){
     html+=`<p style="color:var(--muted)">Nobody else has joined yet.</p>`;
   }else{

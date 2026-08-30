@@ -2,6 +2,16 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-30T18:45:00-05:00",
+      "by": "Chris",
+      "title": "Recommendations weighed against your own taste",
+      "items": [
+        "'Recommend to each other' listed everything someone rated four stars or better that you hadn't seen, in their order — your taste never entered into it.",
+        "Each row now carries your match percentage, and the list leads with the ones that actually suit you.",
+        "Their rating still shows on the right, so you can see where you'd disagree."
+      ]
+    },
+    {
       "at": "2026-08-29T19:00:00-05:00",
       "by": "Chris",
       "title": "Suggestions reach beyond what you've already seen",
