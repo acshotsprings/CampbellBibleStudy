@@ -1927,8 +1927,8 @@ function rankBoost(r){
 /* (2) Genre affinity: how you rate each genre against your own average.
    Shrunk toward neutral when a genre has only a couple of entries, so one
    lucky 5-star doesn't crown a whole genre. */
-function genreAffinity(){
-  const mine=S.rows.filter(r=>r.user_id===S.me.id&&(r.userRating||0)>0);
+function genreAffinity(rows){
+  const mine=(rows||S.rows.filter(r=>r.user_id===S.me.id)).filter(r=>(r.userRating||0)>0);
   if(mine.length<5) return {};
   const avgAll=mine.reduce((a,r)=>a+r.userRating,0)/mine.length;
   const sum={},n={};
@@ -2502,6 +2502,15 @@ function paintPairs(byUser){
     const c=fitCache()[k];
     return (c&&c.sig===S.recsSig)?c.v:null;
   };
+  /* Going out, we can't use your match score — that measures fit against your
+     own ledger. Their genre affinity is computable from their ratings though,
+     so lead with your favourites that sit in genres they actually rate well. */
+  const theirAff=toMe?null:genreAffinity(byUser[B.id]||[]);
+  const suitsThem=r=>{
+    if(!theirAff) return 0;
+    const gs=(r.genres||[]).map(g=>theirAff[g]).filter(v=>v!=null);
+    return gs.length?gs.reduce((a,b)=>a+b,0)/gs.length:1;
+  };
   const list=(byUser[A.id]||[])
     .filter(r=>r.userRating>=4&&!seenB.has(r.type+":"+r.id)
                &&!(toMe0()&&skipped.has(r.type+":"+r.id)))
@@ -2514,16 +2523,22 @@ function paintPairs(byUser){
         if(a!=null&&b==null) return -1;
         if(b!=null&&a==null) return 1;
       }
+      if(theirAff){
+        const d=suitsThem(y)*y.userRating-suitsThem(x)*x.userRating;
+        if(Math.abs(d)>0.01) return d;
+      }
       return y.userRating-x.userRating||(y.loved?1:0)-(x.loved?1:0)||
              x.title.localeCompare(y.title);
     })
-    .slice(0,30);
+    .slice(0,12);
 
   const toMe=hhDir==="toMe";
   $("hhPairs").innerHTML=list.length
     ? list.map((r,i)=>`<div class="ditem">
         <span><button type="button" class="dn tsopen" data-i="${i}">${esc(r.title)}</button>
-        <span class="dy">${r.year||"\u2014"}${r.loved?" \u00b7 loved it":r.liked?" \u00b7 liked it":""}</span></span>
+        <span class="dy">${r.year||"\u2014"}${r.loved?" \u00b7 loved it":r.liked?" \u00b7 liked it":""}${
+          !toMe&&theirAff&&suitsThem(r)>1.05
+            ? ` \u00b7 suits their taste in ${esc(((r.genreNames||[])[0])||"this")}`:""}</span></span>
         <span class="hhacts">${toMe?`<span class="badge fit hhfit" data-i="${i}"
             title="How well this matches your ledger">\u00b7\u00b7</span>`:""}${toMe?
           `<button type="button" class="mini hhwant" data-i="${i}">${
