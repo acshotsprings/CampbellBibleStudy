@@ -183,6 +183,14 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .tsrow img{width:92px;display:block;border:1px solid var(--edge)}
 .tsy{font-family:'Courier Prime',monospace;font-size:12.5px;color:var(--ink);opacity:.8}
 .tsw{font-family:'Courier Prime',monospace;font-size:12px;color:var(--ink);opacity:.85;margin-top:6px}
+.tssaid{margin-top:8px}
+.alsorow{margin-bottom:6px}
+.alsorow:last-child{margin-bottom:0}
+.tssay{font-family:'Courier Prime',monospace;font-size:12.5px;color:var(--ink);
+  padding:5px 0;border-top:1px solid var(--edge)}
+.tssay:first-child{border-top:0}
+.tsnote{font-family:'Newsreader',Georgia,serif;font-size:14px;color:var(--ink);
+  opacity:.9;margin-top:3px;padding-left:10px;border-left:2px solid var(--edge)}
 .tsacts{display:flex;gap:8px;flex-wrap:wrap}
 .tsacts .btn{text-decoration:none;display:inline-flex;align-items:center}
 .hhacts{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
@@ -291,6 +299,8 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .nex:has(input:disabled){opacity:.4}
 .card .hw{font-family:'Courier Prime',monospace;font-size:11px;color:var(--ink);opacity:.8;
   margin-top:4px;line-height:1.35}
+.card button.hw{background:none;border:0;padding:0;text-align:left;cursor:pointer;width:100%}
+.card button.hw:hover{color:var(--accent);opacity:1}
 .card .y{font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted);margin-top:4px}
 .wt{font-family:'Courier Prime',monospace;font-size:12px;color:var(--accent);
   margin-top:8px;border-top:1px solid var(--edge);padding-top:7px;line-height:1.4}
@@ -1146,9 +1156,12 @@ function openTitleSheet(m){
       ${m.poster?`<img src="https://image.tmdb.org/t/p/w185${m.poster}" alt="">`:""}
       <div>
         <div class="tsy">${m.year||"\u2014"} \u00b7 ${m.type==="tv"?"Series":"Film"}</div>
-        ${others.length?`<div class="tsw">${esc(others.map(r=>
-          `${nameOf(r.user_id)} rated it ${r.userRating}\u2605${r.loved?" and loved it":""}`
-          ).join(" \u00b7 "))}</div>`:""}
+        ${others.length?`<div class="tssaid">${others.map(r=>
+          `<div class="tssay"><b>${esc(nameOf(r.user_id))}</b> ${stars(r.userRating)}`+
+          `${r.loved?' <span style="color:var(--accent)">\u2665 loved it</span>'
+            :r.liked?' <span style="color:var(--accent)">\u2661 liked it</span>':""}`+
+          `${r.review?`<div class="tsnote">\u201c${esc(r.review)}\u201d</div>`:""}</div>`
+          ).join("")}</div>`:""}
         ${mine?`<div class="tsw" style="color:var(--accent2)">Already in your ledger</div>`:""}
       </div>
     </div>
@@ -1228,7 +1241,12 @@ function dossier(f){
   if(f.diaryDate) meta.push(`<div><dt>Watched</dt><dd>${f.diaryDate}</dd></div>`);
   meta.push(`<div><dt>Logged by</dt><dd>${esc(f.who)}</dd></div>`);
   const others=S.rows.filter(r=>r.id===f.id&&r.type===f.type&&r.user_id!==f.user_id);
-  const also=others.length?`<div><dt>Also seen by</dt><dd>${others.map(o=>esc(o.who)+" "+stars(o.userRating)).join(" · ")}</dd></div>`:"";
+  const also=others.length?`<div><dt>Also seen by</dt><dd>${others.map(o=>
+    `<div class="alsorow">${esc(o.who)} ${stars(o.userRating)}`+
+    `${o.loved?' <span style="color:var(--accent)">\u2665</span>'
+      :o.liked?' <span style="color:var(--accent)">\u2661</span>':""}`+
+    `${o.review?`<div class="tsnote">\u201c${esc(o.review)}\u201d</div>`:""}</div>`
+    ).join("")}</dd></div>`:"";
   const w=f.watch, wl=[];
   if(w&&w.stream&&w.stream.length) wl.push(`<div><dt>Streaming</dt><dd>${esc(dedupe(w.stream).join(", "))}</dd></div>`);
   if(w&&w.rent&&w.rent.length) wl.push(`<div><dt>Rent</dt><dd>${esc(dedupe(w.rent).slice(0,4).join(", "))}</dd></div>`);
@@ -2111,9 +2129,9 @@ function next(){
       ${bc?`<div class="w">Because you liked ${esc(bc)}</div>`:""}
       ${(m.people||[]).length?`<div class="wp">${esc(m.people.map(o=>
         `${o.n} ${o.r} one you rated`).join(" \u00b7 "))}</div>`:""}
-      ${(m.hwho||[]).length?`<div class="hw">${esc(m.hwho.map(o=>
+      ${(m.hwho||[]).length?`<button type="button" class="hw hwbtn" data-i="${i}">${esc(m.hwho.map(o=>
         `${o.name} ${o.loved?"loved it":o.liked?"liked it":"rated it "+o.rating+"\u2605"}`
-        ).join(" \u00b7 "))}</div>`:""}
+        ).join(" \u00b7 "))} \u2192</button>`:""}
       ${who.length?`<div class="wt">Seen by ${esc(who.join(", "))}</div>`:watchTag(m)}
       <div class="acts">
        <button type="button" class="mini want ${isOn?"on":""}" data-i="${i}">${isOn?"On your list":"Want to see"}</button>
@@ -2123,6 +2141,12 @@ function next(){
       </div></div></div>`;
   }).join(""):`<p style="color:var(--muted);grid-column:1/-1">Nothing left in that slice.</p>`;
 
+  $("next").querySelectorAll(".hwbtn").forEach(b=>b.onclick=ev=>{
+    ev.stopPropagation();
+    const m=L[+b.dataset.i];
+    openTitleSheet({id:m.id,type:m.type,title:m.title,year:m.year,
+                    poster:m.poster,genres:m.genres||[],vote:m.vote});
+  });
   paintTv("#next .tvline",L,m=>({id:m.id,type:m.type}));
   $("next").querySelectorAll(".trail").forEach(b=>b.onclick=()=>{
     const m=L[+b.dataset.i]; showTrailer(m.type,m.id,m.title);

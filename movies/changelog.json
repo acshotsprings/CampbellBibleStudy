@@ -2,6 +2,16 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-29T18:40:00-05:00",
+      "by": "Haley",
+      "title": "See what other people said",
+      "items": [
+        "The 'Chase loved it' line on a suggestion is now a button — click it to see everyone who has rated that title, their stars, and the note they wrote.",
+        "Notes also appear under 'Also seen by' in the dossier, instead of just names and stars.",
+        "The notes were always being saved; nothing had ever displayed them."
+      ]
+    },
+    {
       "at": "2026-08-29T21:10:00-05:00",
       "by": "Chris",
       "title": "Ten stars became five again",
