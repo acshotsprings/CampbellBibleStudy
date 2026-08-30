@@ -6,6 +6,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Archivo+Black&family=Courier+Prime:wght@400;700&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <script>
+/* If anything throws during startup, say so on the page. A blank archive with
+   no explanation is the worst possible failure mode. */
+window.addEventListener("error",e=>{
+  const box=document.getElementById("bootfail");
+  if(!box) return;
+  box.style.display="block";
+  box.textContent="Something broke: "+(e.message||"unknown")+
+    (e.filename?"  ["+String(e.filename).split("/").pop()+":"+e.lineno+"]":"");
+});
+window.addEventListener("unhandledrejection",e=>{
+  const box=document.getElementById("bootfail");
+  if(!box) return;
+  box.style.display="block";
+  box.textContent="Something broke: "+((e.reason&&e.reason.message)||e.reason||"unknown");
+});
 /* restore the saved look before anything renders, or you get a flash of Case File */
 (function(){try{
   var t=localStorage.getItem("cbsTheme"), d=localStorage.getItem("cbsDensity");
@@ -501,6 +516,8 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
 .banner p{margin:0 0 10px;font-size:var(--lede);color:var(--muted)}
 </style></head>
 <body>
+<div id="bootfail" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;
+ background:#b3261e;color:#fff;font:13px/1.5 monospace;padding:10px 14px"></div>
 <div class="wrap">
 
 <div id="gate">
