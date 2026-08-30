@@ -2,6 +2,26 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-29T20:40:00-05:00",
+      "by": "Chris",
+      "title": "Anything you change rebuilds the suggestions",
+      "items": [
+        "Dragging your ranking used to wait until you opened What's Next. It now rebuilds on its own.",
+        "Dismissing something counts as a change too, so the freed slot gets refilled rather than leaving a gap.",
+        "A burst of drags or dismissals waits a couple of seconds and rebuilds once, instead of firing eighty API calls per click.",
+        "Rating, liked/loved, logging and deleting already triggered a rebuild and still do."
+      ]
+    },
+    {
+      "at": "2026-08-29T20:25:00-05:00",
+      "by": "Chris",
+      "title": "Every watch list title gets a match score",
+      "items": [
+        "Titles the last rebuild never considered showed a dash forever. They're now scored on demand, the same way search results are.",
+        "Once the numbers land the list re-sorts itself, so a newly scored title doesn't sit at the bottom showing 80%."
+      ]
+    },
+    {
       "at": "2026-08-29T17:00:00-05:00",
       "by": "Chris",
       "title": "Stray u2713, and seasons in search",

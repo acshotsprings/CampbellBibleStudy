@@ -1306,8 +1306,7 @@ async function moveTo(list,fromIdx,toIdx){
   const after =toIdx<rest.length?rest[toIdx].rank:null;
   if(await placeBetween(f,before,after)){
     RANKPOS=null; ledger();
-    if(S.recsSig&&ledgerSig()!==S.recsSig)
-      say("nbuilt","Ranking changed \u2014 suggestions will rebuild when you open What's Next.");
+    scheduleRebuild();
   }
 }
 
@@ -1660,7 +1659,7 @@ async function discoverLike(kind,key,label){
     out.querySelectorAll(".dnope").forEach(btn=>btn.onclick=async()=>{
       const m=hits[+btn.dataset.i]; btn.disabled=true;
       await addSkip({id:m.id,type:"movie",title:m.title});
-      await loadSkips();
+      await loadSkips(); scheduleRebuild();
       const card=btn.closest(".card");
       if(card) card.remove();      // drop it in place rather than refetching discover
     });
@@ -1892,9 +1891,22 @@ function genreAffinity(){
 }
 /* fingerprint of MY ledger — changes whenever I log or re-rate something */
 function ledgerSig(){
-  return S.rows.filter(r=>r.user_id===S.me.id)
+  const mine=S.rows.filter(r=>r.user_id===S.me.id)
     .map(r=>r.type+":"+r.id+":"+(r.userRating||0)+":"+(r.liked?1:0)+(r.loved?"L":"")+":"+(r.rank==null?"-":r.rank))
     .sort().join("|");
+  /* dismissals free up slots in the ranked set, so they count as a change too */
+  const skips=(S.skip||[]).map(x=>x.media_type+":"+x.tmdb_id).sort().join(",");
+  return mine+"#"+skips;
+}
+
+/* Rebuilds cost ~84 TMDB calls, so a burst of drags or dismissals waits for
+   things to settle rather than firing one each. */
+let rebuildTimer=null;
+function scheduleRebuild(ms=2500){
+  clearTimeout(rebuildTimer);
+  rebuildTimer=setTimeout(()=>{
+    if(S.tmdbKey&&ledgerSig()!==S.recsSig) refreshRecs(false);
+  },ms);
 }
 /* small concurrency pool so we don't fire 60 requests at once */
 async function pool(items,worker,size=5){
@@ -2040,7 +2052,7 @@ $("nRefresh").onclick=()=>refreshRecs(true);
 $("nClearSkips").onclick=async()=>{
   if(!confirm(`Bring back all ${S.skip.length} hidden titles?`)) return;
   for(const x of S.skip) await dropSkip({id:x.tmdb_id,type:x.media_type});
-  await loadSkips(); next(); say("nmsg","Hidden titles are back.","ok");
+  await loadSkips(); next(); scheduleRebuild(); say("nmsg","Hidden titles are back.","ok");
 };
 
 /* ---------- what's next ---------- */
@@ -2126,15 +2138,23 @@ function next(){
   });
   $("next").querySelectorAll(".nope").forEach(b=>b.onclick=async()=>{
     const m=L[+b.dataset.i]; b.disabled=true;
-    await addSkip(m); await loadSkips(); next();
+    await addSkip(m); await loadSkips(); next(); scheduleRebuild();
     $("nmsg").innerHTML=`Hidden \u2014 ${esc(m.title)} won't come back. `+
       `<button type="button" class="mini ghost" id="undoSkip">Undo</button>`;
     $("nmsg").className="msg ok";
     $("undoSkip").onclick=async()=>{ await dropSkip(m); await loadSkips(); next();
+      scheduleRebuild();
       say("nmsg",`${m.title} is back in the mix.`,"ok"); };
   });
 }
-const wlScore=w=>{ const v=(S.scores||{})[w.media_type+":"+w.tmdb_id]; return v==null?null:v; };
+let wlResorting=false;
+const wlScore=w=>{
+  const k=w.media_type+":"+w.tmdb_id;
+  const v=(S.scores||{})[k];
+  if(v!=null) return v;
+  const c=fitCache()[k];               // worked out on demand earlier
+  return (c&&c.sig===S.recsSig)?c.v:null;
+};
 function watchlist(){
   const so=($("wSort")||{}).value||"match";
   const byAdded=(x,y)=>String(y.created_at||"").localeCompare(String(x.created_at||""))||
@@ -2157,7 +2177,8 @@ function watchlist(){
      ${done?'<span class="rk seen">WATCHED</span>':""}
      ${comingSoon(m)&&!done?'<span class="soon">COMING SOON</span>':""}
      ${done?"":'<span class="rk" title="How strongly this matches your ledger">MATCH</span>'}
-     <span class="badge" title="${sc==null?"Not scored yet — refresh suggestions":"Match strength"}">${sc==null?"\u2014":Math.round(sc)+"%"}</span>
+     <span class="badge${sc==null?" fit":""}" data-i="${i}"
+       title="${sc==null?"Working it out\u2026":"Match strength"}">${sc==null?"\u00b7\u00b7":Math.round(sc)+"%"}</span>
      ${m.type==="tv"?'<span class="tvs">SERIES</span>':""}
      <button type="button" class="poster-btn wtrail" data-i="${i}" title="Watch the trailer">
       ${img(m.poster,"w342")?`<img loading="lazy" src="${img(m.poster,"w342")}" alt="" onerror="this.outerHTML='<div class=&quot;np&quot;>?</div>'">`:'<div class="np">?</div>'}
@@ -2201,13 +2222,15 @@ function watchlist(){
 
   /* if nothing is scored yet, say why rather than showing a wall of dashes */
   const unscored=L.filter(w=>wlScore(w)==null).length;
-  if(L.length&&unscored===L.length&&so==="match")
-    say("wmsg",S.recsBusy?"Scoring your list\u2026":"No match scores yet \u2014 hit Refresh suggestions on What's Next.");
-  else if(unscored)
-    say("wmsg",`${unscored} not scored yet; they sort last.`);
+  if(unscored) say("wmsg",`Scoring ${unscored} of these\u2026`);
   else say("wmsg","");
 
   paintTv("#wlist .tvline",L,w=>{const m=wlShape(w);return {id:m.id,type:m.type};});
+  /* anything the last rebuild never considered gets scored on demand,
+     the same way search results are */
+  paintFit("#wlist .badge.fit",L,w=>{const m=wlShape(w);
+    return {id:m.id,type:m.type,genres:m.genres||[]};})
+    .then(()=>{ if(unscored&&!wlResorting){ wlResorting=true; watchlist(); wlResorting=false; } });
   $("wlist").querySelectorAll(".wtrail").forEach(b=>b.onclick=()=>{
     const m=wlShape(L[+b.dataset.i]); showTrailer(m.type,m.id,m.title);
   });
@@ -2406,7 +2429,7 @@ function paintPairs(byUser){
     const r=list[+b.dataset.i]; b.disabled=true;
     await addSkip({id:r.id,type:r.type,title:r.title});
     await loadSkips();
-    household();
+    household(); scheduleRebuild();
   });
   $("hhPairs").querySelectorAll(".hhwant").forEach(b=>b.onclick=async()=>{
     const r=list[+b.dataset.i];
