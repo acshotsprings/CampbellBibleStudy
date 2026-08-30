@@ -2237,7 +2237,7 @@ function next(){
       say("nmsg",`${m.title} is back in the mix.`,"ok"); };
   });
 }
-let wlResorting=false;
+let wlFitKey=null;
 const wlScore=w=>{
   const k=w.media_type+":"+w.tmdb_id;
   const v=(S.scores||{})[k];
@@ -2291,6 +2291,7 @@ function watchlist(){
     ? `The ${nameOf(S.who)} filter above doesn't apply here \u2014 watch lists are personal, and this is yours.`
     : "";
 
+  const wlKey=[S.recsSig,so,L.length].join("|");
   const done=L.filter(w=>loggedByMe(w.media_type,w.tmdb_id));
   const bn=$("wdone");
   if(done.length){
@@ -2320,8 +2321,8 @@ function watchlist(){
      the same way search results are */
   paintFit("#wlist .badge.fit",L,w=>{const m=wlShape(w);
     return {id:m.id,type:m.type,genres:m.genres||[]};})
-    .then(()=>{ if(unscored&&!wlResorting){ wlResorting=true; watchlist(); wlResorting=false; } })
-    .catch(()=>{ wlResorting=false; });
+    .then(()=>{ if(unscored&&wlFitKey!==wlKey){ wlFitKey=wlKey; watchlist(); } })
+    .catch(()=>{});
   $("wlist").querySelectorAll(".wtrail").forEach(b=>b.onclick=()=>{
     const m=wlShape(L[+b.dataset.i]); showTrailer(m.type,m.id,m.title);
   });
@@ -2475,7 +2476,7 @@ function wireMemberPanel(){
   });
 }
 
-let hhResorting=false;
+let hhFitKey=null;
 let hhWho=null, hhDir="toMe";     // toMe = what they'd pass to you
 const toMe0=()=>hhDir==="toMe";   // your dismissals only apply to your own side
 function paintPairs(byUser){
@@ -2536,14 +2537,15 @@ function paintPairs(byUser){
   /* act on it here rather than hunting for the title in Log a Film */
   /* Re-render once, only if something was actually missing a score. The flag
      has to survive until the promise resolves, or this loops forever. */
-  const missing=toMe&&list.some(r=>fitOf(r)==null);
-  if(toMe&&missing&&!hhResorting){
-    hhResorting=true;
-    paintFit("#hhPairs .hhfit",list,r=>({id:r.id,type:r.type,genres:r.genres||[]}))
-      .then(()=>{ hhResorting=false; household(); })
-      .catch(()=>{ hhResorting=false; });
-  }else if(toMe){
-    paintFit("#hhPairs .hhfit",list,r=>({id:r.id,type:r.type,genres:r.genres||[]}));
+  if(toMe){
+    const key=[S.recsSig,hhWho,hhDir,list.length].join("|");
+    const missing=list.some(r=>fitOf(r)==null);
+    const p=paintFit("#hhPairs .hhfit",list,r=>({id:r.id,type:r.type,genres:r.genres||[]}));
+    /* one re-sort per state, whether or not every score came back */
+    if(missing&&hhFitKey!==key){
+      hhFitKey=key;
+      p.then(()=>household()).catch(()=>{});
+    }
   }
   $("hhPairs").querySelectorAll(".tsopen").forEach(b=>b.onclick=()=>{
     const r=list[+b.dataset.i];
