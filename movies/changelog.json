@@ -2,6 +2,17 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-30T20:05:00-05:00",
+      "by": "Chris",
+      "title": "The household drives What's Next",
+      "items": [
+        "What other people have watched is now a source of suggestions, not just a tiebreaker. A title someone loved can reach you even when nothing in your own ledger points at it — which is the whole reason for a shared archive.",
+        "Weighted by likeness ratio, so it only counts from people whose ratings track yours. Someone you rarely agree with is ignored.",
+        "The likeness ratio range widened from 0.85–1.15 to 0.80–1.30, roughly double the pull it had.",
+        "Cards say who and why: 'Damon loved it — you agree 84% of the time'."
+      ]
+    },
+    {
       "at": "2026-08-30T19:45:00-05:00",
       "by": "Chris",
       "title": "Household tab draws again",

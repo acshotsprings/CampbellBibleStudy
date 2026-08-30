@@ -315,6 +315,7 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
 .card .hw{font-family:'Courier Prime',monospace;font-size:11px;color:var(--ink);opacity:.8;
   margin-top:4px;line-height:1.35}
 .card button.hw{background:none;border:0;padding:0;text-align:left;cursor:pointer;width:100%}
+.card button.hw{line-height:1.4}
 .card button.hw:hover{color:var(--accent);opacity:1}
 .card .y{font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted);margin-top:4px}
 .wt{font-family:'Courier Prime',monospace;font-size:12px;color:var(--accent);
@@ -1779,7 +1780,10 @@ async function dropSkip(m){
    titles you have both rated: a small average gap means a high likeness
    ratio, a wide gap means a low one. Shrunk toward neutral when you have
    only a handful of titles in common, so early noise can't swing anything. */
-const LIKENESS_FLOOR=0.85, LIKENESS_CEIL=1.15;   // deliberately the gentlest lever in the engine
+const LIKENESS_FLOOR=0.80, LIKENESS_CEIL=1.30;
+/* Wider than it started. Sharing what the household is watching is the point
+   of the site, so someone whose taste tracks yours closely should be able to
+   move a title meaningfully — not just break a tie. */
 
 function likenessRatios(){
   const me=S.rows.filter(r=>r.user_id===S.me.id&&(r.userRating||0)>0);
@@ -1825,7 +1829,7 @@ function householdView(type,id,LR){
 }
 
 /* ---------- live recommendation engine ---------- */
-const RECS_CACHE="cbsRecs:v4";  // v4 = genre discovery added  // v3 = director/cast weighting, forces one rebuild
+const RECS_CACHE="cbsRecs:v5";  // v5 = household titles as candidates  // v4 = genre discovery added  // v3 = director/cast weighting, forces one rebuild
 const SEED_CAP=30, REC_KEEP=60, PROV_TOP=24, CRED_TOP=30;
 const CRED_CACHE="cbsCred:v1";
 
@@ -2019,6 +2023,13 @@ async function buildRecs(){
     const ga=gs.length?gs.reduce((a,b)=>a+b,0)/gs.length:1;
     const hv=householdView(e.type,e.id,LR);
     e.hh=hv.mult; e.hwho=hv.who;
+    /* who liked it, and how closely their taste tracks yours */
+    e.hagree=hv.who.map(o=>{
+      const row=S.rows.find(r=>r.user_id!==S.me.id&&r.type===e.type&&r.id===e.id&&
+                               nameOf(r.user_id)===o.name);
+      const lr=row?LR[row.user_id]:null;
+      return {...o, agree:lr&&lr.n?Math.round(lr.agree*100):null, n:lr?lr.n:0};
+    });
     e.raw=base*q*ga*(e.pb||1)*hv.mult;
   };
   Object.values(tally).forEach(score);
@@ -2040,6 +2051,26 @@ async function buildRecs(){
      and for one you've watched heavily — documentary — the graph loops back on
      titles you've already logged. So pull directly from the genres you rate
      highest as well, at a lower weight so they support rather than dominate. */
+  /* What the household has actually watched. Until now these only counted if
+     your own seeds happened to surface the same title — so a film Damon loved
+     that TMDB doesn't link to anything you've rated never appeared at all. */
+  S.rows.filter(r=>r.user_id!==S.me.id&&(r.userRating||0)>=4).forEach(r=>{
+    const k=r.type+":"+r.id;
+    if(seenMine.has(k)||skipped.has(k)) return;
+    const lr=LR[r.user_id];
+    if(!lr||!lr.n) return;                       // nothing rated in common yet
+    const w=lr.agree*lr.conf;
+    if(w<=0.05) return;                          // tastes don't line up enough to trust
+    const e=tally[k]||(tally[k]={id:r.id,type:r.type,title:r.title,year:r.year,
+      poster:r.poster,backdrop:null,genres:r.genres||[],vote:r.vote||0,votes:r.votes||0,
+      seeds:{},raw:0,watch:r.watch||null});
+    /* weight by how much you agree with them and how strongly they rated it */
+    const strength=(r.loved?2.6:r.liked?2.1:1.7)*w;
+    const label=`${nameOf(r.user_id)} ${r.loved?"loved it":r.liked?"liked it":"rated it "+r.userRating+"\u2605"}`;
+    e.seeds[label]=Math.max(e.seeds[label]||0,strength);
+    e.fromHousehold=true;
+  });
+
   const topGenres=Object.entries(AFF).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([g])=>+g);
   await pool(topGenres,async g=>{
     for(const kind of ["movie","tv"]){
@@ -2187,9 +2218,11 @@ function next(){
       ${bc?`<div class="w">Because you liked ${esc(bc)}</div>`:""}
       ${(m.people||[]).length?`<div class="wp">${esc(m.people.map(o=>
         `${o.n} ${o.r} one you rated`).join(" \u00b7 "))}</div>`:""}
-      ${(m.hwho||[]).length?`<button type="button" class="hw hwbtn" data-i="${i}">${esc(m.hwho.map(o=>
-        `${o.name} ${o.loved?"loved it":o.liked?"liked it":"rated it "+o.rating+"\u2605"}`
-        ).join(" \u00b7 "))} \u2192</button>`:""}
+      ${(m.hwho||[]).length?`<button type="button" class="hw hwbtn" data-i="${i}">${
+        (m.hagree||m.hwho).map(o=>esc(
+          `${o.name} ${o.loved?"loved it":o.liked?"liked it":"rated it "+o.rating+"\u2605"}`+
+          (o.agree!=null?` \u2014 you agree ${o.agree}% of the time`:"")
+        )).join("<br>")} \u2192</button>`:""}
       ${who.length?`<div class="wt">Seen by ${esc(who.join(", "))}</div>`:watchTag(m)}
       <div class="acts">
        <button type="button" class="mini want ${isOn?"on":""}" data-i="${i}">${isOn?"On your list":"Want to see"}</button>
