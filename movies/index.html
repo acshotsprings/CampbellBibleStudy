@@ -749,6 +749,14 @@ const $=i=>document.getElementById(i);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const img=(p,w)=>p?`https://image.tmdb.org/t/p/${w}${p}`:null;
 const stars=r=>"★".repeat(Math.floor(r))+(r%1?"½":"");
+/* Some rows are stored on a 10-point scale. Nothing in this app writes above
+   5, so anything higher can only be a doubled value — fold it back rather
+   than drawing ten stars. Harmless once the data is corrected. */
+const normRating=v=>{
+  const n=parseFloat(v);
+  if(isNaN(n)) return NaN;
+  return n>5?Math.round((n/2)*2)/2:n;
+};
 const say=(el,t,cls)=>{const n=$(el);if(!n)return;n.textContent=t;n.className="msg"+(cls?" "+cls:"");};
 
 const GEN={28:"Action",12:"Adventure",16:"Animation",35:"Comedy",80:"Crime",99:"Documentary",18:"Drama",
@@ -768,7 +776,7 @@ const S={me:null,owner:null,siteLatest:null,profiles:[],allProfiles:[],rows:[],w
 function shape(r){
   const m=r.meta||{};
   return {id:r.tmdb_id,type:r.media_type,title:r.title,year:r.year,poster:r.poster,
-    userRating:parseFloat(r.rating),liked:r.liked,loved:!!r.loved,review:r.review,diaryDate:r.watched_date,
+    userRating:normRating(r.rating),liked:r.liked,loved:!!r.loved,review:r.review,diaryDate:r.watched_date,
     rank:(r.rank==null?null:+r.rank),addedAt:r.created_at||null,
     release:m.release||null,status:m.status||"",
     user_id:r.user_id,who:nameOf(r.user_id),rowId:r.id,
@@ -1423,7 +1431,7 @@ function ledger(){
     ev.stopPropagation();
     sel.disabled=true;
     const {error}=await sb.from("entries")
-      .update({rating:parseFloat(sel.value)}).eq("id",+sel.dataset.row);
+      .update({rating:Math.min(5,parseFloat(sel.value)||0)}).eq("id",+sel.dataset.row);
     if(error){ say("lmsg",error.message,"bad"); sel.disabled=false; return; }
     await loadAll();          // re-rating changes the seeds, so suggestions rebuild too
   });
@@ -2781,7 +2789,7 @@ $("lsave").onclick=async()=>{
     const {error}=await sb.from("entries").upsert({
       user_id:S.me.id,tmdb_id:chosen.id,media_type:e.type,
       title:e.d.title||e.d.name,year:e.date?+e.date.slice(0,4):null,poster:e.d.poster_path,
-      rating:parseFloat($("lrate").value),
+      rating:Math.min(5,parseFloat($("lrate").value)||0),
       liked:$("llike").value!=="0", loved:$("llike").value==="2",
       watched_date:$("ldate").value.trim()||null,review:$("lrev").value.trim()||null,meta:e.meta
     },{onConflict:"user_id,tmdb_id,media_type"});
