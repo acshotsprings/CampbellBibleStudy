@@ -2482,8 +2482,9 @@ const toMe0=()=>hhDir==="toMe";   // your dismissals only apply to your own side
 function paintPairs(byUser){
   const sel=$("hhWho"); if(!sel) return;
   const them=S.profiles.find(p=>p.id===hhWho); if(!them) return;
-  const A=hhDir==="toMe"?them:{id:S.me.id,name:nameOf(S.me.id)};
-  const B=hhDir==="toMe"?{id:S.me.id,name:nameOf(S.me.id)}:them;
+  const toMe=hhDir==="toMe";
+  const A=toMe?them:{id:S.me.id,name:nameOf(S.me.id)};
+  const B=toMe?{id:S.me.id,name:nameOf(S.me.id)}:them;
 
   const lede=$("hhLede");
   if(lede) lede.textContent=hhDir==="toMe"
@@ -2532,7 +2533,6 @@ function paintPairs(byUser){
     })
     .slice(0,12);
 
-  const toMe=hhDir==="toMe";
   $("hhPairs").innerHTML=list.length
     ? list.map((r,i)=>`<div class="ditem">
         <span><button type="button" class="dn tsopen" data-i="${i}">${esc(r.title)}</button>

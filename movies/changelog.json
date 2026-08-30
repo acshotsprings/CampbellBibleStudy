@@ -2,6 +2,15 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-30T19:45:00-05:00",
+      "by": "Chris",
+      "title": "Household tab draws again",
+      "items": [
+        "The outgoing-recommendation ranking read a variable declared further down the same function, which throws before anything renders.",
+        "The error banner added earlier is what identified it — the tab said exactly what was wrong instead of going blank."
+      ]
+    },
+    {
       "at": "2026-08-30T19:30:00-05:00",
       "by": "Chris",
       "title": "Fewer, better cross-recommendations",
