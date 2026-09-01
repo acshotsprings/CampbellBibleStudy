@@ -2714,7 +2714,19 @@ function household(){
 }
 
 /* ---------- tmdb + logging ---------- */
+/* The key lives in the database. If our copy is missing — a load that failed
+   part way, a tab open since before it was saved — fetch it rather than
+   telling someone to add a key that already exists. */
+async function ensureKey(){
+  if(S.tmdbKey) return S.tmdbKey;
+  try{
+    const {data}=await sb.from("app_config").select("value").eq("key","tmdb").maybeSingle();
+    if(data&&data.value){ S.tmdbKey=data.value; $("needKey").classList.add("hidden"); }
+  }catch(e){}
+  return S.tmdbKey;
+}
 async function tmdb(path,params={}){
+  if(!S.tmdbKey) await ensureKey();
   if(!S.tmdbKey) throw new Error("No TMDB key saved yet — add one in Settings.");
   const u=new URL("https://api.themoviedb.org/3"+path);
   Object.entries(params).forEach(([a,b])=>u.searchParams.set(a,b));

@@ -2,6 +2,16 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-09-01T17:55:00-05:00",
+      "by": "Chris",
+      "title": "No more phantom 'add a TMDB key'",
+      "items": [
+        "Saving a film could report that no TMDB key was saved even though search had just worked — the page's copy of the key had been lost by a load that failed part way.",
+        "It now fetches the key from the database when its copy is missing, instead of telling you to add one that already exists.",
+        "The film you picked stays selected if a save fails, so you can just press save again."
+      ]
+    },
+    {
       "at": "2026-08-30T23:50:00-05:00",
       "by": "Chris",
       "title": "Import banner gone",
