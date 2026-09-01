@@ -672,13 +672,6 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   <h2>Log a Film</h2>
   <p class="lede">Search, pick it, rate it. It saves to your ledger instantly.</p>
 
-  <div id="migrate" class="banner hidden">
-   <h3>Bring in your Letterboxd archive</h3>
-   <p>Your original 38 titles are sitting in this folder. Import them into your account once.</p>
-   <button class="btn" id="doMigrate">Import my 38 titles</button>
-   <p class="msg" id="migMsg"></p>
-  </div>
-
   <div id="needKey" class="banner hidden">
    <h3>One-time: TMDB key</h3>
    <p>Needed to look up film details. Saved to the database, so the whole family shares it and nobody else has to.</p>
@@ -924,7 +917,6 @@ async function loadAllInner(){
   say("nbuilt",S.recsBuilt?`Rebuilt ${builtStamp()}.`:"Starter set — log something to build your own.");
   $("meName").textContent=nameOf(S.me.id);
   $("needKey").classList.toggle("hidden",!!S.tmdbKey);
-  $("migrate").classList.toggle("hidden", S.rows.some(r=>r.user_id===S.me.id));
   /* the change popup shouldn't depend on the guide succeeding */
   maybeShowGuide().catch(e=>console.error("guide",e)).then(()=>maybeShowChanges())
     .catch(e=>console.error("changes",e));
@@ -944,9 +936,17 @@ function paintWho(){
   }
   const counts={};
   S.rows.forEach(r=>counts[r.user_id]=(counts[r.user_id]||0)+1);
+  /* Only people with something to show. Someone who has joined but not logged
+     anything just gives you an empty ledger, and with a dozen accounts that's
+     most of the list. Removed members are already out — S.profiles excludes them. */
+  const listed=S.profiles.filter(p=>p.id===S.me.id||(counts[p.id]||0)>0);
+  const hidden=S.profiles.length-listed.length;
   $("who").innerHTML=`<option value="all">Everyone (${S.rows.length})</option>`+
-    S.profiles.map(p=>`<option value="${p.id}"${p.id===S.me.id?" data-me":""}>${esc(p.name)}${p.id===S.me.id?" (you)":""} — ${counts[p.id]||0}</option>`).join("");
-  $("who").value=S.who;
+    listed.map(p=>`<option value="${p.id}"${p.id===S.me.id?" data-me":""}>${esc(p.name)}${p.id===S.me.id?" (you)":""} — ${counts[p.id]||0}</option>`).join("")+
+    (hidden?`<option value="" disabled>${hidden} member${hidden===1?"":"s"} with nothing logged yet</option>`:"");
+  /* a saved choice can point at someone no longer listed */
+  $("who").value=[...$("who").options].some(o=>o.value===S.who)?S.who:S.me.id;
+  if($("who").value!==S.who){ S.who=$("who").value; }
 }
 $("who").onchange=()=>{
   S.who=$("who").value;
@@ -2979,28 +2979,6 @@ $("lsave").onclick=async()=>{
 };
 
 /* ---------- one-time import of the original 38 ---------- */
-$("doMigrate").onclick=async()=>{
-  const b=$("doMigrate"); b.disabled=true;
-  try{
-    const r=await fetch("data.json?v="+Date.now()); const d=await r.json();
-    const rows=(d.films||[]).map(f=>({user_id:S.me.id,tmdb_id:f.id,media_type:f.type,title:f.title,
-      year:f.year,poster:f.poster,rating:f.userRating,liked:!!f.liked,
-      watched_date:f.diaryDate||null,review:f.review||null,
-      meta:{genres:f.genres,genreNames:f.genreNames,overview:f.overview,tagline:f.tagline,
-        runtime:f.runtime,episodes:f.episodes,keywords:f.keywords,roles:f.roles,cast:f.cast,
-        crewCount:f.crewCount,watch:f.watch,vote:f.vote,votes:f.votes,
-        companies:f.companies,networks:f.networks,language:f.language}}));
-    say("migMsg",`Importing ${rows.length} titles…`);
-    for(let i=0;i<rows.length;i+=20){
-      const {error}=await sb.from("entries").upsert(rows.slice(i,i+20),{onConflict:"user_id,tmdb_id,media_type"});
-      if(error) throw new Error(error.message);
-      say("migMsg",`Imported ${Math.min(i+20,rows.length)} of ${rows.length}…`);
-    }
-    say("migMsg","Done — your archive is in the database.","ok");
-    await loadAll();
-  }catch(e){ say("migMsg",e.message,"bad"); b.disabled=false; }
-};
-
 /* ---------- nav ---------- */
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x===b));

@@ -2,6 +2,25 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-08-30T23:50:00-05:00",
+      "by": "Chris",
+      "title": "Import banner gone",
+      "items": [
+        "The 'Bring in your Letterboxd archive' banner appeared for anyone with an empty ledger — so every new member saw it, and it would have imported Chris's 38 titles into their account.",
+        "Removed entirely: banner, button and the code behind it. The original import happened months ago."
+      ]
+    },
+    {
+      "at": "2026-08-30T22:50:00-05:00",
+      "by": "Chris",
+      "title": "Only people with something to show",
+      "items": [
+        "The who dropdown listed everyone who had ever signed up, including accounts with nothing logged — selecting one gave you an empty ledger.",
+        "It now lists you and anyone with entries, and notes how many are hidden until they log something.",
+        "Members you've removed from the household were already excluded."
+      ]
+    },
+    {
       "at": "2026-08-30T20:05:00-05:00",
       "by": "Chris",
       "title": "The household drives What's Next",
