@@ -2,6 +2,16 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-09-01T18:10:00-05:00",
+      "by": "Chris",
+      "title": "Search results survive a save",
+      "items": [
+        "Saving a film cleared the results and the search box, so logging three titles by one actor meant searching three times.",
+        "The list now stays put and redraws, with the one you just logged marked WATCHED and a note to pick another.",
+        "Works for a filmography as well as a plain search."
+      ]
+    },
+    {
       "at": "2026-09-01T17:55:00-05:00",
       "by": "Chris",
       "title": "No more phantom 'add a TMDB key'",

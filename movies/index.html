@@ -2755,6 +2755,7 @@ function resetEntryForm(){
   say("smsg","");
 }
 let chosen=null;
+let lastView=null;     // {kind:"search",q} or {kind:"person",p,q}
 async function search(){
   const q=$("lq").value.trim(); if(!q) return;
   say("lmsg","Searching\u2026"); $("lres").innerHTML=""; $("lform").classList.add("hidden");
@@ -2771,6 +2772,7 @@ async function search(){
       .slice(0,12);
     if(!hits.length&&!people.length) return say("lmsg","Nothing found.","bad");
     say("lmsg",`${hits.length} titles${people.length?` and ${people.length} people`:""} \u2014 pick one.`);
+    lastView={kind:"search",q};
     const peopleHTML=people.length?peopleStrip(people):"";
     $("lres").innerHTML=peopleHTML+hits.map((m,i)=>{
       const t=m.title||m.name,y=(m.release_date||m.first_air_date||"").slice(0,4);
@@ -2841,6 +2843,7 @@ function peopleStrip(people){
 }
 
 async function showPerson(p,q){
+  lastView={kind:"person",p,q};
   say("lmsg",`Looking up ${p.name}\u2026`);
   $("lres").innerHTML="";
   try{
@@ -2977,9 +2980,18 @@ $("lsave").onclick=async()=>{
     // watched means it no longer belongs on the want-to-see list
     await sb.from("watchlist").delete().eq("user_id",S.me.id).eq("tmdb_id",tmdbId).eq("media_type",e.type);
     say("smsg",`Saved. ${e.d.title||e.d.name} is in your ledger.`,"ok");
-    $("lform").classList.add("hidden"); $("lres").innerHTML=""; $("lq").value=""; chosen=null;
+    $("lform").classList.add("hidden"); chosen=null;
     resetEntryForm();
     await loadAll();
+    /* Stay where you were — logging three films by one actor shouldn't mean
+       three searches. Redraw so the one just saved shows as WATCHED. */
+    if(!back&&lastView){
+      if(lastView.kind==="person") await showPerson(lastView.p,lastView.q);
+      else { $("lq").value=lastView.q; await search(); }
+      say("lmsg",`Saved ${e.d.title||e.d.name}. Pick another.`,"ok");
+    }else{
+      $("lres").innerHTML=""; $("lq").value="";
+    }
     if(back){
       document.querySelector(`nav button[data-v="${back}"]`).click();
       /* each tab has its own message slot; household has none, so stay quiet there */
