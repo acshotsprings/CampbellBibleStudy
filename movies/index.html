@@ -153,6 +153,14 @@ input[type=text],select{background:var(--card2);border:1px solid var(--edge);col
   padding:8px 10px;font-family:'Courier Prime',monospace;font-size:13px;border-radius:0;width:100%}
 input::placeholder{color:var(--muted)}
 input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);outline-offset:1px}
+.clr{position:relative;display:block}
+.clr input{width:100%;padding-right:34px}
+.clrx{position:absolute;right:6px;top:50%;transform:translateY(-50%);display:none;
+  background:none;border:0;cursor:pointer;color:var(--muted);font-size:15px;line-height:1;
+  padding:4px 6px}
+.clrx.on{display:block}
+.clrx:hover{color:var(--accent)}
+.clr input[type=search]::-webkit-search-cancel-button{display:none}
 .tools{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:9px;margin-bottom:13px}
 @media(max-width:640px){.tools{grid-template-columns:1fr}}
 
@@ -230,6 +238,11 @@ input:focus,select:focus,button:focus-visible{outline:3px solid var(--accent2);o
   text-transform:uppercase;color:var(--muted);margin:0}
 .credits dd{margin:2px 0 0;font-size:var(--dd);font-family:'Archivo',sans-serif;font-weight:500}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.kwbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;
+  padding:10px 12px;border:1px solid var(--accent);background:var(--card2)}
+.kwbar span{font-family:'Courier Prime',monospace;font-size:12.5px;flex:1;color:var(--ink)}
+button.tag{cursor:pointer}
+button.tag.on{background:var(--accent);border-color:var(--accent);color:var(--card)}
 .tag{font-family:'Courier Prime',monospace;font-size:12px;background:var(--card2);
   border:1px solid var(--edge);padding:3px 9px;color:var(--muted)}
 .note{border-left:4px solid var(--accent);padding:8px 0 8px 14px;margin:14px 0 0;
@@ -589,12 +602,13 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   <h2>The Ledger</h2>
   <p class="lede">Every title on file, ranked by rating. Open one for the full dossier.</p>
   <div class="tools">
-   <input type="text" id="q" placeholder="search title, director, cast, keyword…">
+   <span class="clr"><input type="search" id="q" placeholder="search title, director, cast, keyword…"><button type="button" class="clrx" data-for="q" aria-label="Clear">✕</button></span>
    <select id="fType"><option value="">Films &amp; series</option><option value="movie">Films only</option><option value="tv">Series only</option></select>
    <select id="fSort"><option value="rating">By rating</option><option value="mine">My ranking</option><option value="logged">Recently watched</option><option value="year">By year</option><option value="title">A–Z</option><option value="runtime">By runtime</option></select>
    <select id="fPer"><option value="10">10 per page</option><option value="25" selected>25 per page</option><option value="50">50 per page</option><option value="100">100 per page</option><option value="0">Show all</option></select>
   </div>
   <p class="msg" id="lmsg"></p>
+  <div class="kwbar hidden" id="kwbar"></div>
   <div class="pager" id="pagerTop"></div>
   <div class="rows" id="ledger"></div>
   <div class="pager" id="pagerBot"></div>
@@ -681,10 +695,10 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
   </div>
 
   <div class="tools" style="grid-template-columns:1fr auto">
-   <input type="text" id="lq" placeholder="film, series, actor or director…">
+   <span class="clr"><input type="search" id="lq" placeholder="film, series, actor or director…"><button type="button" class="clrx" data-for="lq" aria-label="Clear">✕</button></span>
    <button class="btn" id="lgo">Search</button>
   </div>
-  <p class="msg" id="lmsg"></p>
+  <p class="msg" id="fmsg"></p>
   <div id="lres" class="films"></div>
 
   <div id="lform" class="hidden entryform">
@@ -769,6 +783,8 @@ const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
 const $=i=>document.getElementById(i);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const img=(p,w)=>p?`https://image.tmdb.org/t/p/${w}${p}`:null;
+/* keywords picked off a dossier, to search on together */
+const kwPicked=new Set();
 const stars=r=>"★".repeat(Math.floor(r))+(r%1?"½":"");
 /* Some rows are stored on a 10-point scale. Nothing in this app writes above
    5, so anything higher can only be a doubled value — fold it back rather
@@ -1289,7 +1305,9 @@ function dossier(f){
     ${f.review?`<p class="note">“${esc(f.review)}”</p>`:""}
     <dl class="credits">${cr}${cast}${meta.join("")}${also}</dl>
     ${wl.length?`<dl class="credits watch">${wl.join("")}</dl>`:""}
-    ${f.keywords.length?`<div class="tags">${f.keywords.map(k=>`<span class="tag">${esc(k)}</span>`).join("")}</div>`:""}
+    ${f.keywords.length?`<div class="tags">${f.keywords.map(k=>
+      `<button type="button" class="tag kw${kwPicked.has(k)?" on":""}" data-k="${esc(k)}">${esc(k)}</button>`
+      ).join("")}</div>`:""}
     ${f.type==="tv"?`<div class="dtv" data-tv="${f.id}"></div>`:""}
     ${comingSoon(f)?`<div class="dsoon">COMING SOON \u00b7 ${esc(relLabel(f))}</div>`:""}
     ${mine?`<div class="affrow">
@@ -1475,6 +1493,14 @@ function ledger(){
     if(t) n.textContent=t;
   },3);
 
+  $("ledger").querySelectorAll(".kw").forEach(b=>b.onclick=ev=>{
+    ev.stopPropagation();
+    const k=b.dataset.k;
+    kwPicked.has(k)?kwPicked.delete(k):kwPicked.add(k);
+    b.classList.toggle("on");
+    paintKwBar();
+  });
+
   $("ledger").querySelectorAll(".ratesel").forEach(sel=>sel.onchange=async ev=>{
     ev.stopPropagation();
     sel.disabled=true;
@@ -1647,6 +1673,41 @@ $("trailer").onclick=e=>{ if(e.target.id==="trailer") closeTrailer(); };
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeTrailer(); });
 
 /* ---------- "more like this": ask TMDB for titles nobody here has seen ---------- */
+function paintKwBar(){
+  const bar=$("kwbar"); if(!bar) return;
+  if(!kwPicked.size){ bar.classList.add("hidden"); bar.innerHTML=""; return; }
+  bar.classList.remove("hidden");
+  bar.innerHTML=`<span>${[...kwPicked].map(esc).join(" + ")}</span>`+
+    `<button type="button" class="btn" id="kwGo">Find titles like this</button>`+
+    `<button type="button" class="btn ghost" id="kwClear">Clear</button>`;
+  $("kwGo").onclick=keywordSearch;
+  $("kwClear").onclick=()=>{ kwPicked.clear(); paintKwBar(); ledger(); };
+}
+async function keywordSearch(){
+  const names=[...kwPicked];
+  document.querySelector('nav button[data-v="log"]').click();
+  say("fmsg",`Looking for titles tagged ${names.join(" + ")}\u2026`);
+  $("lres").innerHTML=""; $("lform").classList.add("hidden");
+  try{
+    const ids=(await Promise.all(names.map(keywordId))).filter(Boolean);
+    if(!ids.length){ say("fmsg","TMDB doesn't index those keywords.","bad"); return; }
+    const seen=new Set(S.rows.filter(r=>r.user_id===S.me.id).map(r=>r.type+":"+r.id));
+    const q={with_keywords:ids.join(","),sort_by:"vote_count.desc",include_adult:"false"};
+    const [mv,tv]=await Promise.all([
+      tmdb("/discover/movie",q).catch(()=>({})),
+      tmdb("/discover/tv",{with_keywords:q.with_keywords,sort_by:q.sort_by}).catch(()=>({}))
+    ]);
+    const hits=[...(mv.results||[]).map(m=>({...m,media_type:"movie"})),
+                ...(tv.results||[]).map(m=>({...m,media_type:"tv"}))]
+      .filter(m=>(m.vote_count||0)>=15&&!seen.has(m.media_type+":"+m.id))
+      .sort((a,b)=>(b.vote_count||0)-(a.vote_count||0))
+      .slice(0,18);
+    if(!hits.length){ say("fmsg","Nothing else carries all of those \u2014 try fewer.","bad"); return; }
+    lastView={kind:"keywords"};
+    renderHits(hits,`${hits.length} tagged ${names.join(" + ")} \u2014 pick one.`);
+  }catch(e){ say("fmsg",e.message,"bad"); }
+}
+
 const kwCache={};
 async function keywordId(name){
   if(kwCache[name]!==undefined) return kwCache[name];
@@ -2445,10 +2506,10 @@ async function addToWatchlist(m,btn){
     user_id:S.me.id,tmdb_id:m.id,media_type:m.type,title:m.title,year:m.year,
     poster:m.poster,meta:{genres:m.genres||[],vote:m.vote||0}
   },{onConflict:"user_id,tmdb_id,media_type"});
-  if(error){ btn.textContent="Failed"; btn.disabled=false; say("lmsg",error.message,"bad"); return; }
+  if(error){ btn.textContent="Failed"; btn.disabled=false; say("fmsg",error.message,"bad"); return; }
   btn.textContent="On your list"; btn.classList.add("on");
   await loadAll();
-  say("lmsg",`${m.title} added to your watch list.`,"ok");
+  say("fmsg",`${m.title} added to your watch list.`,"ok");
 }
 
 /* open Log a Film pre-filled, remembering which tab sent us here */
@@ -2664,13 +2725,22 @@ function household(){
    <p class="lede">How much each person's opinion counts toward your suggestions.
     It grows as you rate more of the same titles, and never moves a score by more than
     ${Math.round((LIKENESS_CEIL-1)*100)}%.</p>`;
-  html+=lrRows.map(r=>r.n
-    ? `<div class="crewrow multi"><div><div class="nm">${esc(r.name)}</div>
-       <div class="rl">${r.n} rated in common \u00b7 counts ${r.mult}\u00d7 toward your scores</div></div>
-       <div class="ct">${r.agree}%</div></div>`
-    : `<div class="crewrow"><div><div class="nm">${esc(r.name)}</div>
-       <div class="rl">nothing rated in common yet \u2014 counts 1.00\u00d7</div></div>
-       <div class="ct">\u2014</div></div>`).join("");
+  /* One title rated the same way is a coincidence, not a taste match — showing
+     100% off a single row overstates it. Same three-title minimum the taste
+     match table uses. */
+  const MIN_SHARED=3;
+  html+=lrRows.map(r=>{
+    if(!r.n) return `<div class="crewrow"><div><div class="nm">${esc(r.name)}</div>
+      <div class="rl">nothing rated in common yet \u2014 counts 1.00\u00d7</div></div>
+      <div class="ct">\u2014</div></div>`;
+    if(r.n<MIN_SHARED) return `<div class="crewrow"><div><div class="nm">${esc(r.name)}</div>
+      <div class="rl">${r.n} rated in common \u2014 ${MIN_SHARED-r.n} more before this means anything
+      \u00b7 counts ${r.mult}\u00d7</div></div>
+      <div class="ct">\u2014</div></div>`;
+    return `<div class="crewrow multi"><div><div class="nm">${esc(r.name)}</div>
+      <div class="rl">${r.n} rated in common \u00b7 counts ${r.mult}\u00d7 toward your scores</div></div>
+      <div class="ct">${r.agree}%</div></div>`;
+  }).join("");
 
   /* Only pairs we can actually measure. With seven members there are 21
      pairings and listing the empty ones buries the real ones. */
@@ -2758,7 +2828,7 @@ let chosen=null;
 let lastView=null;     // {kind:"search",q} or {kind:"person",p,q}
 async function search(){
   const q=$("lq").value.trim(); if(!q) return;
-  say("lmsg","Searching\u2026"); $("lres").innerHTML=""; $("lform").classList.add("hidden");
+  say("fmsg","Searching\u2026"); $("lres").innerHTML=""; $("lform").classList.add("hidden");
   try{
     const d=await tmdb("/search/multi",{query:q,include_adult:"false"});
     const all=d.results||[];
@@ -2770,11 +2840,17 @@ async function search(){
         (b.vote_count||0)-(a.vote_count||0) ||
         (b.popularity||0)-(a.popularity||0))
       .slice(0,12);
-    if(!hits.length&&!people.length) return say("lmsg","Nothing found.","bad");
-    say("lmsg",`${hits.length} titles${people.length?` and ${people.length} people`:""} \u2014 pick one.`);
+    if(!hits.length&&!people.length) return say("fmsg","Nothing found.","bad");
+    say("fmsg",`${hits.length} titles${people.length?` and ${people.length} people`:""} \u2014 pick one.`);
     lastView={kind:"search",q};
     const peopleHTML=people.length?peopleStrip(people):"";
-    $("lres").innerHTML=peopleHTML+hits.map((m,i)=>{
+    $("lres").innerHTML=peopleHTML+cardsFor(hits);
+    wireHitCards(hits,people,q);
+    return;
+  }catch(e){ say("fmsg",e.message,"bad"); }
+}
+function cardsFor(hits){
+  return hits.map((m,i)=>{
       const t=m.title||m.name,y=(m.release_date||m.first_air_date||"").slice(0,4);
       const mineHas=loggedByMe(m.media_type,m.id);
       return `<div class="card${mineHas?" logged":""}" data-i="${i}"><button type="button">
@@ -2791,6 +2867,14 @@ async function search(){
         `<button type="button" class="mini trailm" data-mt="${m.media_type}" data-mid="${m.id}"
           data-mn="${esc(t)}">\u25b6 Trailer</button></div></div>`;
     }).join("");
+}
+function renderHits(hits,msg){
+  lastView=lastView||{kind:"keywords"};
+  $("lres").innerHTML=cardsFor(hits);
+  say("fmsg",msg||"");
+  wireHitCards(hits,[],"");
+}
+function wireHitCards(hits,people,q){
     $("lres").querySelectorAll(".pcard").forEach(b=>b.onclick=()=>
       showPerson(people[+b.dataset.pi],q));
     paintFit("#lres .badge.fit",hits,m=>({id:m.id,type:m.media_type,genres:m.genre_ids||[]}));
@@ -2811,7 +2895,7 @@ async function search(){
     $("lres").querySelectorAll(".card").forEach(el=>el.onclick=()=>{
       const h=hits[+el.dataset.i];
       if(h&&loggedByMe(h.media_type,h.id)){
-        say("lmsg",`${h.title||h.name} is already in your ledger.`,"bad");
+        say("fmsg",`${h.title||h.name} is already in your ledger.`,"bad");
         el.classList.add("nudge"); setTimeout(()=>el.classList.remove("nudge"),600);
         return;                                   // never open the form for something logged
       }
@@ -2823,8 +2907,26 @@ async function search(){
       resetEntryForm();
       $("lform").classList.remove("hidden");
     });
-  }catch(e){ say("lmsg",e.message,"bad"); }
 }
+/* a visible clear on both search boxes — the native one only shows on some
+   browsers, and not at all on iOS unless the field is focused */
+function wireClears(){
+  document.querySelectorAll(".clrx").forEach(b=>{
+    const inp=$(b.dataset.for);
+    const sync=()=>b.classList.toggle("on",!!inp.value);
+    inp.addEventListener("input",sync);
+    b.onclick=()=>{
+      inp.value="";
+      sync();
+      inp.focus();
+      if(b.dataset.for==="q"){ S.PG.ledger=1; ledger(); }
+      else { $("lres").innerHTML=""; say("fmsg",""); lastView=null; }
+    };
+    sync();
+  });
+}
+wireClears();
+
 $("lgo").onclick=search;
 $("lq").addEventListener("keydown",e=>{if(e.key==="Enter")search();});
 $("lcancel").onclick=()=>{$("lform").classList.add("hidden");chosen=null;logOrigin=null;resetEntryForm();};
@@ -2844,7 +2946,7 @@ function peopleStrip(people){
 
 async function showPerson(p,q){
   lastView={kind:"person",p,q};
-  say("lmsg",`Looking up ${p.name}\u2026`);
+  say("fmsg",`Looking up ${p.name}\u2026`);
   $("lres").innerHTML="";
   try{
     const d=await tmdb(`/person/${p.id}/combined_credits`);
@@ -2872,9 +2974,9 @@ async function showPerson(p,q){
     const list=Object.values(seed)
       .sort((a,b)=>a.rank-b.rank||(b.votes||0)-(a.votes||0))
       .slice(0,24);
-    if(!list.length){ say("lmsg",`Nothing on file for ${p.name}.`,"bad"); return; }
+    if(!list.length){ say("fmsg",`Nothing on file for ${p.name}.`,"bad"); return; }
 
-    say("lmsg",`${list.length} titles with ${p.name} \u2014 pick one.`);
+    say("fmsg",`${list.length} titles with ${p.name} \u2014 pick one.`);
     $("lres").innerHTML=`<div class="pback"><button type="button" id="pbk">\u2190 back to search</button>
       <span>${esc(p.name)}</span></div>`+
       list.map((m,i)=>`<div class="card psel${seen.has(m.type+":"+m.id)?" logged":""}" data-i="${i}"><button type="button">
@@ -2906,7 +3008,7 @@ async function showPerson(p,q){
     $("lres").querySelectorAll(".psel").forEach(el=>el.onclick=()=>{
       const m=list[+el.dataset.i];
       if(loggedByMe(m.type,m.id)){
-        say("lmsg",`${m.title} is already in your ledger.`,"bad");
+        say("fmsg",`${m.title} is already in your ledger.`,"bad");
         el.classList.add("nudge"); setTimeout(()=>el.classList.remove("nudge"),600);
         return;
       }
@@ -2921,7 +3023,7 @@ async function showPerson(p,q){
       $("lform").classList.remove("hidden");
       $("lform").scrollIntoView({behavior:"smooth",block:"center"});
     });
-  }catch(e){ say("lmsg",e.message,"bad"); }
+  }catch(e){ say("fmsg",e.message,"bad"); }
 }
 
 async function enrich(hit){
@@ -2988,7 +3090,7 @@ $("lsave").onclick=async()=>{
     if(!back&&lastView){
       if(lastView.kind==="person") await showPerson(lastView.p,lastView.q);
       else { $("lq").value=lastView.q; await search(); }
-      say("lmsg",`Saved ${e.d.title||e.d.name}. Pick another.`,"ok");
+      say("fmsg",`Saved ${e.d.title||e.d.name}. Pick another.`,"ok");
     }else{
       $("lres").innerHTML=""; $("lq").value="";
     }

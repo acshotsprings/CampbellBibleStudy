@@ -2,6 +2,35 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-09-01T22:40:00-05:00",
+      "by": "Chris",
+      "title": "Clear button on the search boxes",
+      "items": [
+        "Both search fields — Log a Film and the Ledger — now have an X to clear them, showing only when there's something to clear.",
+        "Clearing the Log a Film box also empties the results; clearing the Ledger box restores the full list."
+      ]
+    },
+    {
+      "at": "2026-09-01T22:20:00-05:00",
+      "by": "Chris",
+      "title": "Pick keywords, find titles like it",
+      "items": [
+        "The tags on a dossier are now buttons. Select several — underdog, stock car racing, rivalry — and a bar appears offering to find other titles carrying all of them.",
+        "Results open in Log a Film as normal cards with match scores, so you can log or queue them straight away. Anything you've already seen is filtered out.",
+        "Fixed along the way: two elements shared the same id, so search messages were being written into the Ledger tab where nobody could see them."
+      ]
+    },
+    {
+      "at": "2026-09-01T22:00:00-05:00",
+      "by": "Chris",
+      "title": "No more 100% off a single title",
+      "items": [
+        "Agreement is the average gap between your ratings, so one title rated the same way read as a perfect match. It was arithmetically right and told you nothing.",
+        "Three shared titles are now needed before a percentage appears — the same minimum the taste match table already used. Below that it shows how many more are needed.",
+        "The multiplier was already discounting these properly; only the headline number was overstating it."
+      ]
+    },
+    {
       "at": "2026-09-01T18:10:00-05:00",
       "by": "Chris",
       "title": "Search results survive a save",
