@@ -400,7 +400,11 @@ button.brow[aria-pressed=true] .tk{outline:2px solid var(--accent);outline-offse
  font-family:'Courier Prime',monospace;font-size:12px;padding:3px 9px}
 .drill .close:hover{border-color:var(--accent);color:var(--accent)}
 .dlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2px 18px}
-.ditem{display:grid;grid-template-columns:1fr auto;gap:10px;padding:5px 0;border-bottom:1px solid var(--edge);align-items:baseline}
+.ditem{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:5px 0;border-bottom:1px solid var(--edge);align-items:baseline}
+#hhPairs .ditem{align-items:start}
+#hhPairs .ditem>span{min-width:0;overflow-wrap:anywhere}
+@media (max-width:640px){#hhPairs .ditem{grid-template-columns:minmax(0,1fr)}
+#hhPairs .hhacts{justify-content:flex-start}}
 .ditem .dn.tsopen{background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:left;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}
 .dn.tsopen:hover{color:var(--accent)}
 .dn{font-family:'Archivo',sans-serif;font-weight:600;font-size:13.5px}
@@ -2606,7 +2610,7 @@ function paintPairs(byUser){
     const gs=(r.genres||[]).map(g=>theirAff[g]).filter(v=>v!=null);
     return gs.length?gs.reduce((a,b)=>a+b,0)/gs.length:1;
   };
-  const list=(byUser[A.id]||[])
+  const ranked=(byUser[A.id]||[])
     .filter(r=>r.userRating>=4&&!seenB.has(r.type+":"+r.id)
                &&!(toMe0()&&skipped.has(r.type+":"+r.id)))
     /* Otherwise this is just a list of their favourites. Once we know how well
@@ -2625,7 +2629,12 @@ function paintPairs(byUser){
       return y.userRating-x.userRating||(y.loved?1:0)-(x.loved?1:0)||
              x.title.localeCompare(y.title);
     })
-    .slice(0,12);
+    ;
+  /* Score more than we show. Slicing to 12 before the fit scores exist picks the
+     twelve highest-rated, then only reorders those — the best matches never make
+     the cut. Rank a wider pool, then show the top of it. */
+  const cands=ranked.slice(0,toMe0()?36:12);
+  const list=cands.slice(0,12);
 
   $("hhPairs").innerHTML=list.length
     ? list.map((r,i)=>`<div class="ditem">
@@ -2647,13 +2656,14 @@ function paintPairs(byUser){
   /* Re-render once, only if something was actually missing a score. The flag
      has to survive until the promise resolves, or this loops forever. */
   if(toMe){
-    const key=[S.recsSig,hhWho,hhDir,list.length].join("|");
-    const missing=list.some(r=>fitOf(r)==null);
+    const key=[S.recsSig,hhWho,hhDir,cands.length].join("|");
+    const gap=cands.filter(r=>fitOf(r)==null);
     const p=paintFit("#hhPairs .hhfit",list,r=>({id:r.id,type:r.type,genres:r.genres||[]}));
     /* one re-sort per state, whether or not every score came back */
-    if(missing&&hhFitKey!==key){
+    if(gap.length&&hhFitKey!==key){
       hhFitKey=key;
-      p.then(()=>household()).catch(()=>{});
+      Promise.all([p,pool(gap,r=>fitScore({id:r.id,type:r.type,genres:r.genres||[]}),4)])
+        .then(()=>household()).catch(()=>{});
     }
   }
   $("hhPairs").querySelectorAll(".tsopen").forEach(b=>b.onclick=()=>{

@@ -2,6 +2,15 @@
   "note": "Newest first. 'at' is an ISO timestamp; omit the time and it shows just the date. 'by' is who asked for it.",
   "releases": [
     {
+      "at": "2026-09-05T19:35:00-05:00",
+      "by": "Chris",
+      "title": "Recommend to each other actually leads with the best match",
+      "items": [
+        "The suggestions each of you would pass to the other are now genuinely ordered by match. Before, the list was cut to twelve by star rating first and only reshuffled within those twelve — so a title that suited you better than anything on screen could be sitting just outside the cut and never appear. It now ranks a much wider pool, scores all of it, and shows you the strongest matches from that.",
+        "Fixed the rows on that list overlapping on a phone. Long titles were being squeezed to one word per line by the buttons beside them and spilling over the entry underneath. Titles now get real width, and on a narrow screen the buttons drop to their own line."
+      ]
+    },
+    {
       "at": "2026-09-01T22:40:00-05:00",
       "by": "Chris",
       "title": "Clear button on the search boxes",
