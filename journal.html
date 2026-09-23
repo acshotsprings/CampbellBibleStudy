@@ -24,7 +24,7 @@
     .archive-status.ok { background: #D1E7DD; color: #0F5132; display: inline-block; }
     .archive-status.err { background: #F8D7DA; color: #842029; display: inline-block; }
   </style>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script></head>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-P44J6HEJYG"></script></head>
 <body class="admin-mode">
 
 <div id="github-bar">
@@ -33,12 +33,12 @@
   <input id="gh-token" type="password" placeholder="Paste GitHub token here (saved locally, never shared)" style="display: inline-block;">
   <button class="btn-save" onclick="saveToGitHub()" style="display: inline-block;">Save to GitHub</button>
   <button class="btn-load" onclick="loadFromGitHub()" style="display: inline-block;">Load from GitHub</button>
-  <span id="gh-status"></span>
+  <span id="gh-status" style=""></span>
   <div class="bar-right">
     <button onclick="insertTimestamp()" style="background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;">New Entry</button>
     <span class="bar-originated">Originated: March 27, 2026</span>
     <span class="bar-sep">|</span>
-    <span id="gh-bar-version"><span style="font-size:11px;">Version: July 8, 2026</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded 4:58 PM</span></span>
+    <span id="gh-bar-version"><span style="font-size:11px;">Version: September 13, 2026</span><br><span style="font-size:9px;color:rgba(255,255,255,0.35);">Loaded 8:01 PM</span></span>
   </div>
 </div>
 
@@ -59,7 +59,7 @@
     <div class="archive-btn-row">
       <button class="archive-btn" onclick="archiveJournalEntry()">📥 Archive This Entry</button>
       <span class="archive-hint">Moves this entry into "Past Entries" below, then clears this box. Remember to Save to GitHub afterward.</span>
-      <span id="archive-status" class="archive-status ok">✅ Archived! Remember to "Save to GitHub" above.</span>
+      <span id="archive-status" class="archive-status"></span>
     </div>
   </div>
 
@@ -228,6 +228,17 @@
         <div style="margin-top:12px;padding-top:8px;border-top:1px dashed #ddd;font-size:11px;font-family:Arial,sans-serif;">
           <button onclick="deleteArchivedEntry(0)" style="background:#F8D7DA;color:#842029;border:1px solid #F5C2C7;border-radius:4px;padding:3px 10px;font-size:11px;cursor:pointer;">🗑️ Delete</button>
           <span style="color:#aaa;margin-left:10px;">Archived: Jul 8, 2026, 4:58 PM</span>
+        </div>
+      </div>
+    
+      <div class="journal-box" data-archive-idx="1">
+        <div class="journal-date">September 13, 2026</div>
+        <div class="journal-topic">Topic: Revelation Chapter 1 study</div>
+        
+        <div class="journal-p">────────────────────────────────────────<br>September 13, 2026 at 8:01 PM<br>────────────────────────────────────────<br>THis was after Revelation study tonight<br>When somebody tells me they lean preterist, the first thing I ask is which kind — because there are two, and they're not the same conversation. Full preterism says Christ already came back in AD 70 and we're living in the aftermath. That one I can answer. Partial preterism says Matthew 24 and a lot of Revelation were fulfilled in AD 70, but the bodily return and the final judgment are still ahead. That one is held by solid, orthodox men, and I'm not going to pretend it's foolish.</div><div class="journal-p">Against full preterism I'd make four points. Paul already dealt with this — he names Hymenaeus and Philetus for teaching the resurrection had already happened, and says they were overturning people's faith. The angels at the ascension said Jesus would come back the same way the disciples watched Him leave: visible and bodily, and nothing like that happened in AD 70. Death is still here, and Scripture says the last enemy destroyed is death — so whatever AD 70 was, it wasn't the end. And every branch of the historic church confesses He will come again to judge the living and the dead, which puts full preterism outside orthodoxy, not just in the minority.</div><div class="journal-p">Their best text is Matthew 24:34, "this generation will not pass away." I'd grant that it pinches. My answer is that Jesus was asked two questions at once — when the temple falls, and what's the sign of His coming — and prophecy often has a near fulfillment and a far one. That's a reasonable answer, not a knockout, and I'd say so.</div><div class="journal-p">Where I'd land: Zechariah says His feet touch the Mount of Olives and the mountain splits in two. That's geology, and it didn't happen. And 1948 is the one that gets me — if it was all finished in AD 70, then Israel's regathering got fulfilled before the scattering was even over. The timeline runs backward.</div><div class="journal-p">The thing I'd hold honestly: my own checklist is a model of one reading, and futurism has verses to answer too — "the time is near" in Revelation 1 is real, and "imminent, not immediate" is an answer rather than a proof.</div>
+        <div style="margin-top:12px;padding-top:8px;border-top:1px dashed #ddd;font-size:11px;font-family:Arial,sans-serif;">
+          <button onclick="deleteArchivedEntry(1)" style="background:#F8D7DA;color:#842029;border:1px solid #F5C2C7;border-radius:4px;padding:3px 10px;font-size:11px;cursor:pointer;">🗑️ Delete</button>
+          <span style="color:#aaa;margin-left:10px;">Archived: Sep 13, 2026, 8:03 PM</span>
         </div>
       </div>
     </div>
